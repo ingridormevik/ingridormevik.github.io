@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing - Ingrid Ormevik</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1><a href="index.html">Ingrid Ormevik</a></h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="blog.html" class="active">Writing</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+    
+    <main>
+        <h2>Writing</h2>
+        <p class="intro">Essays, microfiction, and reflections on digital culture, AI ethics, and queer activism.</p>
+        
+        <!-- Post 1 -->
+        <article class="post-preview">
+            <h3><a href="posts/2026-02-05-when-the-mirror-knows-better.html">When the Mirror Knows Better</a></h3>
+            <p class="meta">
+                <time datetime="2026-02-05">5 February 2026</time> 
+                <span class="separator">·</span> 
+                <span class="category">Microfiction</span>
+                <span class="separator">·</span>
+                <span class="tags">AI, Identity, Surveillance</span>
+            </p>
+            <p class="excerpt">A microfiction exploring artificial recognition and the intimate unsettling experience of being known by algorithms. What happens when the interface knows your sleep patterns better than you know yourself?</p>
+        </article>
+
+        <!-- Når du legger til flere poster, kopier strukturen over -->
+        
+    </main>
+    
+    <footer>
+        <p>&copy; 2026 Ingrid Ormevik</p>
+        <p>Digital Culture MA Student, University of Bergen | Intern at Centre for Digital Narrative</p>
+    </footer>
+</body>
+</html>
