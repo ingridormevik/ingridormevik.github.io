@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Ingrid Ormevik</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1><a href="index.html">Ingrid Ormevik</a></h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="blog.html">Writing</a>
+            <a href="about.html" class="active">About</a>
+        </nav>
+    </header>
+    
+    <main>
+        <h2>About</h2>
+        
+        <section class="bio">
+            <p>I'm a Digital Culture MA student at the University of Bergen, currently interning with the <a href="https://survivingsogice.org/" target="_blank">SurvivingSOGICE</a> research project at the Centre for Digital Narrative.</p>
+            
+            <p>My work sits at the intersection of digital ethics, queer activism, and critical AI studies. I explore how algorithmic systems shape identity, visibility, and community safety—both through academic research and hands-on digital activism.</p>
+            
+            <p>I serve as Digital Media Strategist for Bergen Pride and board member of FRI Vestland, Norway's organization for gender and sexuality diversity, where I develop content strategies that navigate platform governance and algorithmic suppression.</p>
+        </section>
+        
+        <section class="current-work">
+            <h3>Current Work</h3>
+            <ul>
+                <li>Research intern: SurvivingSOGICE project (January–May 2026)</li>
+                <li>MA thesis research on digital ethics and platform governance</li>
+                <li>Digital activism combating algorithmic bias in social media</li>
+            </ul>
+        </section>
+        
+        <section class="interests">
+            <h3>Research Interests</h3>
+            <ul>
+                <li>AI ethics and algorithmic bias</li>
+                <li>Platform governance and content moderation</li>
+                <li>Digital activism and queer visibility</li>
+                <li>Surveillance capitalism and privacy</li>
+                <li>Interactive fiction and digital narratives</li>
+            </ul>
+        </section>
+        
+        <section class="contact">
+            <h3>Contact</h3>
+            <p>You can reach me via email or connect on LinkedIn.</p>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2026 Ingrid Ormevik</p>
+        <p>Digital Culture MA Student, University of Bergen | Intern at Centre for Digital Narrative</p>
+    </footer>
+</body>
+</html>
