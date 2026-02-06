@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Turing Test - Ingrid's Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Game-specific styles */
+        .game-showcase {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .game-header h1 {
+            color: var(--pride-pink, #fa5c5c);
+            margin-bottom: 1rem;
+        }
+
+        .game-meta {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin: 3rem 0;
+            align-items: start;
+        }
+
+        .game-meta img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .game-details {
+            background: rgba(255,255,255,0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #fa5c5c;
+        }
+
+        .game-details li {
+            margin-bottom: 0.5rem;
+        }
+
+        .game-player {
+            background: rgba(0,0,0,0.3);
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            border-radius: 8px;
+        }
+
+        .game-player h2 {
+            text-align: center;
+            color: #fa5c5c;
+            margin-bottom: 2rem;
+        }
+
+        .game-player iframe {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            display: block;
+            border: 2px solid #fa5c5c;
+            border-radius: 4px;
+        }
+
+        .play-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .play-link a {
+            color: #fa5c5c;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .research-context {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+
+        .research-context h2,
+        .research-context h3 {
+            color: #fa5c5c;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .game-meta {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="game.html">Interactive Fiction</a>
+        <!-- Add to your existing nav links -->
+    </nav>
+
+    <main class="game-showcase">
+        <section class="game-header">
+            <h1>The Turing Test: Fragments of a Life Saved by Pixels</h1>
+            <p>Interactive Fiction | DIKULT105 Final Project | 2024</p>
+        </section>
+
+        <section class="game-meta">
+            <img src="images/turing-test-cover.jpg" alt="Game cover exploring AI bias against Norwegian LGBTQ+ organizations">
+            
+            <div>
+                <p>An autoethnographic interactive fiction exploring how AI systems provide dangerous misinformation about Norwegian LGBTQ+ organizations and crisis resources.</p>
+                
+                <ul class="game-details">
+                    <li><strong>Platform:</strong> Twine (Browser-based)</li>
+                    <li><strong>Genre:</strong> Interactive Fiction</li>
+                    <li><strong>Academic Context:</strong> DIKULT105 Digital Culture</li>
+                    <li><strong>Themes:</strong> AI ethics, algorithmic bias, community survival, platform capitalism</li>
+                    <li><strong>Methodology:</strong> Autoethnography, critical play, digital activism</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="game-player">
+            <h2>Play Now</h2>
+            <iframe 
+                src="https://ingridormevik.itch.io/the-turing-test-a-life-saved-by-pixels/embed" 
+                width="100%" 
+                height="600" 
+                frameborder="0"
+                title="Play The Turing Test interactive fiction"
+                allowfullscreen>
+            </iframe>
+            
+            <p class="play-link">
+                <a href="https://ingridormevik.itch.io/the-turing-test-a-life-saved-by-pixels" target="_blank">
+                    Open in full window ↗
+                </a>
+            </p>
+        </section>
+
+        <section class="research-context">
+            <h2>Research Context</h2>
+            <p>This project emerged from my work as Digital Media Strategist for Bergen Pride and board member of FRI Vestland, where I documented systematic algorithmic suppression of Norwegian LGBTQ+ community content across social media platforms.</p>
+
+            <h3>Key Research Findings</h3>
+            <ul>
+                <li><strong>Strategic Invisibility:</strong> Norwegian-language posts avoided shadowbanning while English accessibility content triggered algorithmic suppression</li>
+                <li><strong>AI Hallucinations:</strong> AI systems consistently provided incorrect information about Norwegian crisis resources and community organizations</li>
+                <li><strong>"Ethical AI" Gap:</strong> The disconnect between corporate claims of ethical AI and material harm to marginalized communities</li>
+                <li><strong>Platform Dependency:</strong> How community survival becomes dependent on algorithmic literacy and strategic adaptation</li>
+            </ul>
+
+            <h3>Methodology</h3>
+            <p>Rather than simply analyzing algorithmic violence academically, this interactive fiction <em>demonstrates</em> the lived experience of navigating AI systems as a queer activist in Norway. The fragmented narrative structure mirrors how algorithmic suppression fractures community knowledge and resource access.</p>
+
+            <p>The project combines autoethnographic documentation with critical game design, using interactive narrative as both research methodology and activist intervention.</p>
+
+            <h3>Academic Framework</h3>
+            <p>Grounded in surveillance capitalism theory (Zuboff), platform studies, and queer digital activism, this work examines how supposedly neutral AI systems encode structural violence against marginalized communities—particularly those operating in "peripheral" languages like Norwegian.</p>
+        </section>
+
+        <section class="research-context">
+            <h2>Related Work</h2>
+            <p>This project connects to my broader research at the Centre for Digital Narrative's Surviving SOGICE research group, examining how digital platforms mediate LGBTQ+ community survival and resistance.</p>
+            
+            <p><a href="index.html">← Back to Portfolio</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Ingrid | Digital Culture Student | Bergen Pride | FRI Vestland | CDN Research Intern</p>
+    </footer>
+</body>
+</html>
