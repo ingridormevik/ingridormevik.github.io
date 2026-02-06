@@ -15,43 +15,54 @@
             letter-spacing: 0.08em;
             text-transform: uppercase;
             font-weight: 400;
+            display: block;
+        }
+
+        .game-description {
+            margin-bottom: 3em;
         }
 
         .game-player {
             background: var(--bg-alt);
             padding: 50px;
-            margin: 5em 0;
+            margin: 3em 0 5em 0;
             border-left: 2px solid var(--primary);
             transition: background 0.4s ease;
         }
 
         .game-player h3 {
             margin-top: 0;
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: 500;
             margin-bottom: 1.5em;
+            text-align: left;
+        }
+
+        .game-player h3::after {
+            display: none;
         }
 
         .iframe-container {
             position: relative;
             width: 100%;
-            background: var(--bg-white);
-            border-radius: 2px;
+            max-width: 100%;
+            background: #000;
+            border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 2px 8px var(--shadow-sm);
+            box-shadow: 0 4px 12px var(--shadow-md);
         }
 
         .iframe-container iframe {
             display: block;
             width: 100%;
-            height: 600px;
+            height: 650px;
             border: none;
         }
 
         .play-link {
             text-align: center;
             margin-top: 1.5em;
-            font-size: 0.8em;
+            font-size: 0.75em;
         }
 
         .play-link a {
@@ -60,19 +71,29 @@
             letter-spacing: 0.05em;
         }
 
+        .play-link a::after {
+            display: none;
+        }
+
         .play-link a:hover {
             color: var(--primary);
         }
 
         .research-context {
             margin-top: 5em;
+            padding-top: 3em;
+            border-top: 1px solid var(--border-color);
         }
 
         .research-context h3 {
-            font-size: 1.8em;
-            margin-top: 2.5em;
-            margin-bottom: 1.2em;
+            font-size: 2em;
+            margin-top: 2em;
+            margin-bottom: 1em;
             font-weight: 500;
+        }
+
+        .research-context h3:first-child {
+            margin-top: 0;
         }
 
         .research-context h3::after {
@@ -85,10 +106,16 @@
         }
 
         .research-context h4 {
-            font-size: 1.3em;
+            font-size: 1.4em;
             margin-top: 2em;
             margin-bottom: 1em;
             font-weight: 600;
+        }
+
+        .research-context p {
+            color: var(--text-light);
+            margin-bottom: 1.5em;
+            line-height: 1.75;
         }
 
         .research-context ul {
@@ -106,9 +133,14 @@
             color: var(--text-lighter);
         }
 
+        .research-context strong {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
         @media (max-width: 768px) {
             .game-player {
-                padding: 35px;
+                padding: 35px 25px;
             }
 
             .iframe-container iframe {
@@ -118,11 +150,11 @@
 
         @media (max-width: 480px) {
             .game-player {
-                padding: 25px;
+                padding: 25px 20px;
             }
 
             .iframe-container iframe {
-                height: 400px;
+                height: 450px;
             }
         }
     </style>
@@ -143,19 +175,27 @@
             <h2>The Turing Test: Fragments of a Life Saved by Pixels</h2>
             <span class="game-meta">Interactive Fiction | DIKULT105 Final Project | 2025</span>
             
-            <p>The Turing Test: Fragments of a Life Saved by Pixels is an interactive fiction that documents what happens when you systematically test AI systems for their knowledge of marginalized communities.</p>
+            <div class="game-description">
+                <p>The Turing Test: Fragments of a Life Saved by Pixels is an interactive fiction that documents what happens when you systematically test AI systems for their knowledge of marginalized communities.</p>
 
-            <p>Created for DIKULT105 (2nd year Digital Culture) at the University of Bergen, this work combines empirical research with interactive narrative. During my digital ethics research, I tested large language models on their ability to provide accurate information about Norwegian LGBTQ+ organizations and crisis resources. The results revealed dangerous patterns: hallucinated organizations, invented contact information, and misinformation that could harm vulnerable people seeking help.</p>
+                <p>Created for DIKULT105 (2nd year Digital Culture) at the University of Bergen, this work combines empirical research with interactive narrative. During my digital ethics research, I tested large language models on their ability to provide accurate information about Norwegian LGBTQ+ organizations and crisis resources. The results revealed dangerous patterns: hallucinated organizations, invented contact information, and misinformation that could harm vulnerable people seeking help.</p>
 
-            <p>Rather than writing a traditional research paper, I embedded these findings into a playable narrative that uses glitch aesthetics to visualize algorithmic instability. As you navigate the story, the interface itself becomes unstable—screen shake, visual corruption, and system errors mirror the epistemic breakdown that occurs when digital systems fail.</p>
+                <p>Rather than writing a traditional research paper, I embedded these findings into a playable narrative that uses glitch aesthetics to visualize algorithmic instability. As you navigate the story, the interface itself becomes unstable—screen shake, visual corruption, and system errors mirror the epistemic breakdown that occurs when digital systems fail.</p>
 
-            <p>The work draws from computing history, glitch theory, affordance analysis, and autoethnographic methodology. It concludes with a proposal for The Turing Network, a community-owned alternative designed to provide verified, accessible information for communities that existing systems consistently fail.</p>
+                <p>The work draws from computing history, glitch theory, affordance analysis, and autoethnographic methodology. It concludes with a proposal for The Turing Network, a community-owned alternative designed to provide verified, accessible information for communities that existing systems consistently fail.</p>
 
-            <p><em>This is research you can experience. This is what it feels like when systems break down.</em></p>
+                <p><em>This is research you can experience. This is what it feels like when systems break down.</em></p>
+            </div>
 
             <div class="game-player">
                 <h3>Play Now</h3>
-               <iframe frameborder="0" src="https://itch.io/embed-upload/15885079?color=000000" allowfullscreen="" width="640" height="380"><a href="https://ingridormevik.itch.io/the-turing-test-a-life-saved-by-pixels">Play The Turing Test: Fragments of a Life Saved by Pixels on itch.io</a></iframe>
+                <div class="iframe-container">
+                    <iframe 
+                        src="https://ingridormevik.itch.io/the-turing-test-a-life-saved-by-pixels/embed" 
+                        allowfullscreen
+                        title="The Turing Test: Fragments of a Life Saved by Pixels - Interactive Fiction Game">
+                    </iframe>
+                </div>
                 <p class="play-link">
                     <a href="https://ingridormevik.itch.io/the-turing-test-a-life-saved-by-pixels" target="_blank">
                         Open in full window →
@@ -163,7 +203,7 @@
                 </p>
             </div>
 
-            <div class="research-context">
+            <section class="research-context">
                 <h3>Methodology & Framework</h3>
                 
                 <p>This project employs autoethnographic methodology, positioning the researcher's lived experience as both subject and method. By testing AI systems from the perspective of a digital activist working with Norwegian LGBTQ+ organizations, the research reveals how algorithmic failures manifest in material harm.</p>
@@ -181,7 +221,7 @@
                 <p>The narrative concludes with a speculative design intervention: The Turing Network, a community-owned information infrastructure that prioritizes accuracy, accessibility, and accountability for marginalized communities systematically failed by existing AI systems.</p>
 
                 <p>This proposal challenges the assumption that centralized, profit-driven AI can ever adequately serve communities it does not recognize or value.</p>
-            </div>
+            </section>
         </article>
     </main>
     
