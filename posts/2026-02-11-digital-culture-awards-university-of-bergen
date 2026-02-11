@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Culture Awards | Ingrid Ormevik</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+
+:root {
+–bg: #0a0a0a;
+–text: #e8e8e8;
+–cyan: #00ccff;
+–pink: #ff0066;
+–green: #00ff41;
+–purple: #9900ff;
+–mono: ‘Share Tech Mono’, monospace;
+–serif: ‘Crimson Pro’, Georgia, serif;
+}
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: var(–serif);
+font-size: 1.2rem;
+line-height: 1.8;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+#neural-canvas {
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+opacity: 0.3;
+pointer-events: none;
+z-index: 0;
+}
+
+.scanline {
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+background: repeating-linear-gradient(
+0deg,
+transparent,
+transparent 2px,
+rgba(255,255,255,0.015) 2px,
+rgba(255,255,255,0.015) 4px
+);
+pointer-events: none;
+z-index: 1;
+animation: scanMove 8s linear infinite;
+}
+
+@keyframes scanMove {
+0% { background-position: 0 0; }
+100% { background-position: 0 100px; }
+}
+
+.container {
+max-width: 720px;
+margin: 0 auto;
+padding: 80px 30px 120px;
+position: relative;
+z-index: 2;
+}
+
+.post-meta {
+font-family: var(–mono);
+font-size: 0.75rem;
+color: var(–cyan);
+letter-spacing: 2px;
+text-transform: uppercase;
+margin-bottom: 40px;
+opacity: 0;
+animation: fadeIn 0.8s ease forwards 0.2s;
+}
+
+.post-title {
+font-family: var(–mono);
+font-size: clamp(2rem, 6vw, 3.5rem);
+font-weight: normal;
+line-height: 1.1;
+color: var(–green);
+margin-bottom: 20px;
+padding-bottom: 10px;
+opacity: 0;
+animation: fadeIn 0.8s ease forwards 0.4s;
+text-shadow: 0 0 30px rgba(0,255,65,0.4);
+position: relative;
+z-index: 3;
+}
+
+.post-title .glitch {
+position: relative;
+display: inline-block;
+}
+
+.post-title .glitch::before {
+content: attr(data-text);
+position: absolute;
+top: 0; left: -2px;
+color: var(–pink);
+clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+animation: glitch-top 4s infinite;
+opacity: 0.8;
+}
+
+.post-title .glitch::after {
+content: attr(data-text);
+position: absolute;
+top: 0; left: 2px;
+color: var(–cyan);
+clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+animation: glitch-bottom 4s infinite;
+opacity: 0.8;
+}
+
+@keyframes glitch-top {
+0%, 90%, 100% { transform: translate(0); }
+92% { transform: translate(-3px, 1px); }
+94% { transform: translate(3px, -1px); }
+96% { transform: translate(0); }
+}
+
+@keyframes glitch-bottom {
+0%, 88%, 100% { transform: translate(0); }
+90% { transform: translate(2px, 1px); }
+93% { transform: translate(-2px, -1px); }
+95% { transform: translate(0); }
+}
+
+.post-subtitle {
+font-family: var(–mono);
+font-size: 0.85rem;
+color: var(–purple);
+letter-spacing: 1px;
+margin-bottom: 50px;
+opacity: 0;
+animation: fadeIn 0.8s ease forwards 0.6s;
+}
+
+.divider {
+width: 60px;
+height: 2px;
+background: linear-gradient(90deg, var(–pink), var(–cyan));
+margin: 40px 0 60px 0;
+opacity: 0;
+animation: fadeIn 0.8s ease forwards 0.8s;
+}
+
+.post-body {
+opacity: 0;
+animation: fadeIn 1s ease forwards 1s;
+}
+
+.post-body p {
+margin-bottom: 28px;
+color: #d4d4d4;
+font-weight: 300;
+}
+
+.post-body p:first-child::first-letter {
+font-size: 3.5rem;
+font-weight: 400;
+color: var(–green);
+float: left;
+line-height: 0.85;
+margin-right: 8px;
+margin-top: 4px;
+font-style: italic;
+}
+
+.highlight {
+border-left: 3px solid var(–pink);
+padding: 20px 25px;
+margin: 35px 0;
+background: rgba(255,0,102,0.05);
+font-style: italic;
+font-size: 1.3rem;
+color: var(–text);
+}
+
+.highlight.cyan {
+border-left-color: var(–cyan);
+background: rgba(0,204,255,0.05);
+}
+
+.highlight.green {
+border-left-color: var(–green);
+background: rgba(0,255,65,0.05);
+color: var(–green);
+font-family: var(–mono);
+font-size: 1rem;
+font-style: normal;
+}
+
+.cta-block {
+margin-top: 60px;
+padding: 35px;
+border: 1px solid var(–purple);
+background: rgba(153,0,255,0.05);
+position: relative;
+overflow: hidden;
+}
+
+.cta-block::before {
+content: ‘’;
+position: absolute;
+top: 0; left: -100%;
+width: 100%; height: 2px;
+background: linear-gradient(90deg, var(–purple), var(–cyan), var(–pink));
+animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+0% { left: -100%; }
+100% { left: 100%; }
+}
+
+.cta-label {
+font-family: var(–mono);
+font-size: 0.7rem;
+color: var(–purple);
+letter-spacing: 3px;
+text-transform: uppercase;
+margin-bottom: 15px;
+}
+
+.cta-block p {
+color: #d4d4d4;
+margin-bottom: 20px;
+font-size: 1.1rem;
+}
+
+.cta-email {
+display: inline-block;
+font-family: var(–mono);
+font-size: 1rem;
+color: var(–green);
+text-decoration: none;
+border: 1px solid var(–green);
+padding: 12px 24px;
+transition: all 0.2s;
+position: relative;
+overflow: hidden;
+}
+
+.cta-email::before {
+content: ‘’;
+position: absolute;
+top: 0; left: -100%;
+width: 100%; height: 100%;
+background: rgba(0,255,65,0.1);
+transition: left 0.2s;
+}
+
+.cta-email:hover::before { left: 0; }
+.cta-email:hover {
+box-shadow: 0 0 20px rgba(0,255,65,0.3);
+text-shadow: 0 0 10px rgba(0,255,65,0.5);
+}
+
+.post-footer {
+margin-top: 80px;
+padding-top: 30px;
+border-top: 1px solid rgba(255,255,255,0.1);
+font-family: var(–mono);
+font-size: 0.75rem;
+color: #555;
+display: flex;
+justify-content: space-between;
+flex-wrap: wrap;
+gap: 10px;
+}
+
+.post-footer a {
+color: var(–cyan);
+text-decoration: none;
+}
+
+.post-footer a:hover { text-decoration: underline; }
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(12px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+.container { padding: 50px 20px 80px; }
+.post-footer { flex-direction: column; }
+}
+</style>
+
+</head>
+<body>
+
+<canvas id="neural-canvas"></canvas>
+
+<div class="scanline"></div>
+
+<div class="container">
+
+  <div class="post-meta">February 11, 2026 &nbsp;·&nbsp; Bergen, Norway</div>
+
+  <h1 class="post-title">
+    <span class="glitch" data-text="Digital Culture Awards 2025">Digital Culture Awards 2025</span>
+  </h1>
+
+  <div class="post-subtitle">// Electronic Literature &nbsp;·&nbsp; University of Bergen</div>
+
+  <div class="divider"></div>
+
+  <div class="post-body">
+
+```
+<p>
+  Today I had the honor of receiving first place in the Electronic Literature 
+  category at the Digital Culture Awards ceremony at the University of Bergen 
+  for my interactive fiction project
+  <em>The Turing Test: Fragments of a Life Saved by Pixels</em>.
+  I am humbled and deeply grateful, still reflecting on what this recognition means,
+  both personally and for the communities this work is about.
+</p>
+
+<div class="highlight cyan">
+  "This is research you can experience. This is what it feels like when systems break down."
+</div>
+
+<p>
+  The project sits at the intersection of digital ethics, platform governance,
+  and autoethnographic methodology. Drawing on Jill Walker Rettberg's concept of
+  algorithmic failure, Ian Bogost's procedural rhetoric, and Rosa Menkman's glitch
+  aesthetics, it documents what happens when large language models are systematically
+  tested on their knowledge of Norwegian LGBTQ+ organizations and crisis resources.
+  The results revealed dangerous patterns: hallucinated organizations, invented contact
+  information, and misinformation that could harm vulnerable people seeking help.
+</p>
+
+<p>
+  Rather than presenting these findings in a traditional research paper, I embedded
+  them into a playable narrative where the interface itself becomes unstable as the
+  player moves through the documented failures. Screen shake, visual corruption,
+  and system errors are not aesthetic choices added after the fact. They enact
+  Menkman's argument that glitch exposes the invisible infrastructures of digital
+  systems. The form and the argument are the same thing.
+</p>
+
+<div class="highlight green">
+  $traumaGate = true<br>
+  $survival.information_saved_me = true<br>
+  $survival.now_helping_others = true
+</div>
+
+<p>
+  This work is also personal. I know what it means to need accurate crisis information
+  and not be able to find it. I named the project after Alan Turing because the machines
+  he made possible should serve the communities he belonged to. Documenting the gap
+  between that aspiration and the current reality is both a scholarly obligation
+  and a deeply personal one.
+</p>
+
+<p>
+  I am profoundly grateful to the Digital Culture programme at the University of Bergen,
+  to my professors who encouraged this work, and to everyone who played the game and
+  engaged with its argument. Receiving this recognition as a second-year student,
+  writing in my second language, means more than I can easily express.
+  Thank you for taking this work seriously.
+</p>
+
+<div class="highlight">
+  The project concludes with a proposal for <strong>The Turing Network</strong>,
+  a community-owned alternative designed to provide verified, accessible, multilingual
+  crisis and emergency information for communities that existing systems consistently fail.
+  That proposal is not aspirational. It is urgent. I want to build it.
+</div>
+
+<p>
+  If you are a developer, researcher, community organizer, or someone who believes
+  that marginalized communities deserve accurate crisis resources, I would be very
+  grateful to hear from you. This is too important to do alone.
+</p>
+
+<div class="cta-block">
+  <div class="cta-label">// Get involved</div>
+  <p>
+    If you want to help build The Turing Network, a community-owned tool providing
+    verified, multilingual crisis and emergency resources for LGBTQ+ communities,
+    refugees, and migrants: reach out.
+  </p>
+  <a href="/cdn-cgi/l/email-protection#a0c9cec7d2c9c4e0c2c5d2c7c5ced0d2c9c4c58ececf" class="cta-email"><span class="__cf_email__" data-cfemail="3e5750594c575a7e5c5b4c595b504e4c575a5b105051">[email&#160;protected]</span></a>
+</div>
+```
+
+  </div>
+
+  <div class="post-footer">
+    <span>Ingrid Ormevik &nbsp;·&nbsp; Digital Media Strategist, Bergen Pride</span>
+    <span>
+      <a href="https://ingridormevik.itch.io" target="_blank">Play the game &#8599;</a>
+    </span>
+  </div>
+
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+// Neural network canvas - exact Turing Test implementation
+// 50 nodes, connecting lines within 150px, opacity 0.3
+const canvas = document.getElementById(‘neural-canvas’);
+const ctx = canvas.getContext(‘2d’);
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener(‘resize’, () => {
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+});
+
+class Node {
+constructor() {
+this.x = Math.random() * canvas.width;
+this.y = Math.random() * canvas.height;
+this.vx = (Math.random() - 0.5) * 0.5;
+this.vy = (Math.random() - 0.5) * 0.5;
+}
+
+update() {
+this.x += this.vx;
+this.y += this.vy;
+if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+}
+
+draw() {
+ctx.beginPath();
+ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+ctx.fillStyle = ‘#00ff41’;
+ctx.shadowBlur = 10;
+ctx.shadowColor = ‘#00ff41’;
+ctx.fill();
+ctx.shadowBlur = 0;
+}
+}
+
+const nodes = [];
+for (let i = 0; i < 50; i++) {
+nodes.push(new Node());
+}
+
+function connectNodes() {
+for (let i = 0; i < nodes.length; i++) {
+for (let j = i + 1; j < nodes.length; j++) {
+const dx = nodes[i].x - nodes[j].x;
+const dy = nodes[i].y - nodes[j].y;
+const distance = Math.sqrt(dx * dx + dy * dy);
+if (distance < 150) {
+ctx.beginPath();
+c
