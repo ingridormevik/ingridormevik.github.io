@@ -400,7 +400,7 @@ to { opacity: 1; transform: translateY(0); }
     verified, multilingual crisis and emergency resources for LGBTQ+ communities,
     refugees, and migrants: reach out.
   </p>
-  <a href="/cdn-cgi/l/email-protection#a0c9cec7d2c9c4e0c2c5d2c7c5ced0d2c9c4c58ececf" class="cta-email"><span class="__cf_email__" data-cfemail="3e5750594c575a7e5c5b4c595b504e4c575a5b105051">[email&#160;protected]</span></a>
+  <a href="mailto:ingrid@bergenpride.no" class="cta-email">ingrid@bergenpride.no</a>
 </div>
 ```
 
@@ -415,79 +415,78 @@ to { opacity: 1; transform: translateY(0); }
 
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-
+<script>
 // Neural network canvas - exact Turing Test implementation
 // 50 nodes, connecting lines within 150px, opacity 0.3
-const canvas = document.getElementById(‘neural-canvas’);
-const ctx = canvas.getContext(‘2d’);
+const canvas = document.getElementById('neural-canvas');
+const ctx = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-window.addEventListener(‘resize’, () => {
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 });
 
 class Node {
-constructor() {
-this.x = Math.random() * canvas.width;
-this.y = Math.random() * canvas.height;
-this.vx = (Math.random() - 0.5) * 0.5;
-this.vy = (Math.random() - 0.5) * 0.5;
-}
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+  }
 
-update() {
-this.x += this.vx;
-this.y += this.vy;
-if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-}
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+  }
 
-draw() {
-ctx.beginPath();
-ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-ctx.fillStyle = ‘#00ff41’;
-ctx.shadowBlur = 10;
-ctx.shadowColor = ‘#00ff41’;
-ctx.fill();
-ctx.shadowBlur = 0;
-}
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+    ctx.fillStyle = '#00ff41';
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = '#00ff41';
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
 }
 
 const nodes = [];
 for (let i = 0; i < 50; i++) {
-nodes.push(new Node());
+  nodes.push(new Node());
 }
 
 function connectNodes() {
-for (let i = 0; i < nodes.length; i++) {
-for (let j = i + 1; j < nodes.length; j++) {
-const dx = nodes[i].x - nodes[j].x;
-const dy = nodes[i].y - nodes[j].y;
-const distance = Math.sqrt(dx * dx + dy * dy);
-if (distance < 150) {
-ctx.beginPath();
-ctx.moveTo(nodes[i].x, nodes[i].y);
-ctx.lineTo(nodes[j].x, nodes[j].y);
-ctx.strokeStyle = `rgba(0, 255, 65, ${1 - distance / 150})`;
-ctx.lineWidth = 0.5;
-ctx.stroke();
-}
-}
-}
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance < 150) {
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.strokeStyle = `rgba(0, 255, 65, ${1 - distance / 150})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
 }
 
 function animate() {
-ctx.fillStyle = ‘rgba(0, 0, 0, 0.05)’;
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-nodes.forEach(node => {
-node.update();
-node.draw();
-});
-connectNodes();
-requestAnimationFrame(animate);
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  nodes.forEach(node => {
+    node.update();
+    node.draw();
+  });
+  connectNodes();
+  requestAnimationFrame(animate);
 }
 
 animate();
