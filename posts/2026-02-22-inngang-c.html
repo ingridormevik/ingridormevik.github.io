@@ -338,12 +338,16 @@ p .sting { color: var(--red); font-style: italic; }
 }
 
 .freddie-block {
-  margin: 80px -40px;
-  padding: 80px 56px;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+
+  padding: 80px 0;
   background: var(--freddie-bg);
   color: var(--freddie-fg);
-  position: relative;
-  overflow: hidden;
 }
 
 .freddie-block::before {
@@ -398,6 +402,11 @@ p .sting { color: var(--red); font-style: italic; }
   color: var(--red);
   margin-top: -16px;
   margin-bottom: 28px;
+}
+  .freddie-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 40px;
 }
 
 .source-links {
@@ -578,18 +587,33 @@ footer {
 
   <p>De sang med på alle sangene. De kjente alle ordene. Hvert eneste ett. De bare visste ikke hvem som hadde skrevet dem. Eller kanskje de visste. De valgte bare å ikke tenke på det. For det er jo lettere sånn. Musikken er jo så fin. Og billetten var jo en så hyggelig julegave. <span class="sting">Og Freddie er jo så underholdende når han ikke er homofil og syk og redd og død.</span></p>
 
-  <div class="freddie-block">
+<div class="freddie-block">
+  <div class="freddie-inner">
+
     <div class="dates">Farrokh Bulsara · 05.09.1946 og 24.11.1991</div>
 
     <p>Han kom ut offentlig <em>dagen før han døde</em>. Ikke fordi han endelig var trygg. Men fordi han ikke hadde noe mer å tape.</p>
 
     <p>Den 23. november 1991 ga han ut denne uttalelsen, mens han lå på dødsleiet:</p>
 
-    <blockquote>"Following the enormous conjecture in the press over the last two weeks, I wish to confirm that I have been tested HIV positive and have AIDS. I felt it correct to keep this information private to date to protect the privacy of those around me. However, the time has come now for my friends and fans around the world to know the truth and I hope that everyone will join with me, my doctors and all those worldwide in the fight against this terrible disease."</blockquote>
+    <blockquote>
+     "Following the enormous conjecture in the press over the last two weeks, I wish to confirm that I have been tested HIV positive and have AIDS. I felt it correct to keep this information private to date to protect the privacy of those around me. However, the time has come now for my friends and fans around the world to know the truth and I hope that everyone will join with me, my doctors and all those worldwide in the fight against this terrible disease."
+    </blockquote>
 
     <p class="quote-attr">Freddie Mercury · 23. november 1991 · 24 timer før han døde</p>
 
     <p>Han døde dagen etter. Han var 45 år gammel. Han levde et helt liv i skyggen av den mannen han egentlig var, og ga verden <strong>alt</strong> likevel. Det er ikke en detalj i historien hans. Det er hele historien.</p>
+
+    <div class="source-links">
+      <p class="sources-label">Kilder og videre lesing</p>
+      <a href="https://www.history.com/this-day-in-history/November-24/freddie-mercury-death-aids" target="_blank">History.com: Freddie Mercury succumbs to AIDS, 24. november 1991</a>
+      <a href="https://www.smithsonianmag.com/smart-news/read-freddie-mercurys-heartbreaking-announcement-of-his-diagnosis-with-hivaids-released-on-this-date-in-1991-just-a-day-before-the-queen-frontman-died-180985325/" target="_blank">Smithsonian Magazine: Hans siste uttalelse</a>
+      <a href="https://www.euronews.com/culture/2023/11/24/culture-re-view-how-freddie-mercurys-death-changed-aids-perceptions" target="_blank">Euronews: Hvordan hans død endret AIDS-forståelsen</a>
+      <a href="https://www.mercuryphoenixtrust.com/" target="_blank">Mercury Phoenix Trust: Hans AIDS-stiftelse</a>
+    </div>
+
+  </div>
+</div>
 
  <div class="source-links">
   <p class="sources-label">Kilder og videre lesing</p>
