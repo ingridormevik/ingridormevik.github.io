@@ -42,9 +42,6 @@ overflow-x: hidden;
 transition: background 0.4s, color 0.4s;
 }
 
-/* MODE TOGGLE */
-
-/* STAGE LIGHTS */
 .stage-lights {
 position: fixed;
 top: 0; left: 0;
@@ -86,7 +83,6 @@ from { opacity: 0.3; }
 to { opacity: 1; }
 }
 
-/* GRIEGHALLEN BARS */
 .facade {
 position: fixed;
 top: 0; left: 0;
@@ -101,7 +97,6 @@ transition: opacity 0.4s;
 }
 .bar { flex: 1; background: var(–fg); }
 
-/* SCANLINE */
 .scanline {
 position: fixed;
 top: 0; left: 0;
@@ -118,7 +113,6 @@ from { transform: translateY(-3px); }
 to { transform: translateY(100vh); }
 }
 
-/* GLITCH */
 @keyframes glitch {
 0%,89%,100% { text-shadow: none; transform: none; }
 90% { text-shadow: -3px 0 var(–red), 3px 0 var(–gold); transform: skewX(-1deg); }
@@ -138,7 +132,6 @@ from { opacity:0; transform: translateY(40px); }
 to { opacity:1; transform: translateY(0); }
 }
 
-/* HERO */
 .hero {
 position: relative;
 z-index: 10;
@@ -185,16 +178,15 @@ background-clip: text;
 animation: shimmer 3s linear infinite;
 }
 
-.hero-sub { color: #bbb !important;
+.hero-sub {
+color: #bbb;
 font-size: clamp(17px, 2vw, 22px);
 font-style: italic;
-color: #aaa;
 margin-top: 24px;
 opacity: 0;
 animation: fadeUp 1s 1s both;
 max-width: 600px;
 line-height: 1.7;
-transition: color 0.4s;
 }
 
 .hero-meta {
@@ -214,7 +206,6 @@ text-transform: uppercase;
 color: var(–fg);
 border-left: 3px solid var(–gold);
 padding-left: 14px;
-transition: color 0.4s;
 }
 
 .hero-meta .role {
@@ -223,10 +214,8 @@ font-size: 9px;
 letter-spacing: 2px;
 text-transform: uppercase;
 color: #aaa;
-transition: color 0.4s;
 }
 
-/* GOLD BAR */
 .gold-bar {
 height: 6px;
 background: linear-gradient(90deg, var(–red), var(–gold), var(–gold-light), var(–gold), var(–red));
@@ -236,7 +225,6 @@ position: relative;
 z-index: 10;
 }
 
-/* ARTICLE */
 article {
 position: relative;
 z-index: 10;
@@ -255,7 +243,6 @@ display: flex;
 align-items: center;
 gap: 20px;
 margin: 64px 0 40px;
-transition: color 0.4s;
 }
 
 .section-mark::after {
@@ -263,7 +250,6 @@ content: ‘’;
 flex: 1;
 height: 1px;
 background: var(–border);
-transition: background 0.4s;
 }
 
 p {
@@ -272,7 +258,6 @@ line-height: 1.9;
 color: var(–fg2);
 margin-bottom: 28px;
 font-weight: 300;
-transition: color 0.4s;
 }
 
 p em { color: var(–gold-light); font-style: italic; }
@@ -288,7 +273,6 @@ padding: 3px 10px;
 color: var(–gold);
 letter-spacing: 1px;
 display: inline;
-transition: all 0.4s;
 }
 
 .rad26 {
@@ -304,7 +288,6 @@ position: relative;
 top: -2px;
 }
 
-/* PULL QUOTE */
 .pull-quote {
 margin: 72px -40px;
 padding: 64px 56px;
@@ -312,7 +295,6 @@ background: var(–bg2);
 border-left: 5px solid var(–gold);
 position: relative;
 overflow: hidden;
-transition: background 0.4s;
 }
 
 .pull-quote::before {
@@ -354,7 +336,6 @@ color: var(–gold);
 font-style: normal;
 }
 
-/* FREDDIE BLOCK */
 .freddie-block {
 margin: 80px -40px;
 padding: 80px 56px;
@@ -362,7 +343,6 @@ background: var(–freddie-bg);
 color: var(–freddie-fg);
 position: relative;
 overflow: hidden;
-transition: background 0.4s, color 0.4s;
 }
 
 .freddie-block::before {
@@ -422,7 +402,7 @@ margin-bottom: 28px;
 .source-links {
 margin-top: 40px;
 padding-top: 28px;
-border-top: 1px solid rgba(0,0,0,0.12);
+border-top: 1px solid rgba(255,255,255,0.08);
 }
 
 .source-links .sources-label {
@@ -454,7 +434,6 @@ opacity: 1;
 border-left-color: var(–red);
 }
 
-/* ENDING */
 .ending {
 margin-top: 80px;
 text-align: center;
@@ -467,7 +446,6 @@ letter-spacing: 4px;
 line-height: 1;
 color: var(–fg);
 display: block;
-transition: color 0.4s;
 }
 
 .ending .big em { color: var(–red); font-style: normal; }
@@ -479,10 +457,8 @@ font-size: 22px;
 color: #aaa;
 display: block;
 margin-top: 16px;
-transition: color 0.4s;
 }
 
-/* FOOTER */
 footer {
 position: relative;
 z-index: 10;
@@ -491,7 +467,6 @@ padding: 40px 60px;
 display: flex;
 justify-content: space-between;
 align-items: center;
-transition: border-color 0.4s;
 }
 
 .footer-left {
@@ -500,7 +475,6 @@ font-size: 9px;
 letter-spacing: 4px;
 text-transform: uppercase;
 color: #aaa;
-transition: color 0.4s;
 }
 
 .footer-right {
@@ -577,16 +551,15 @@ z-index: 10;
 
   <p>Kompisen min hvisket at denne sangen sang Freddie da han visste han skulle dø av AIDS.</p>
 
-<p>Foran oss satt et ektepar på 60-pluss. Han: bred rygg, grått hår, hendene i fanget. Hun: ansiktsuttrykket som bare norske koner som har ventet i 35 år på at mannen sin skal kjenne noe som helst, har. Og så skjedde det. Tårene kom. Stille, kontrollerte, typisk norsk, som om følelsene hadde søkt om byggetillatelse og endelig fått svar.</p>
+  <p>Foran oss satt et ektepar på 60-pluss. Han: bred rygg, grått hår, hendene i fanget. Hun: ansiktsuttrykket som bare norske koner som har ventet i 35 år på at mannen sin skal kjenne noe som helst, har. Og så skjedde det. Tårene kom. Stille, kontrollerte, typisk norsk, som om følelsene hadde søkt om byggetillatelse og endelig fått svar.</p>
 
-<p>Hun la hånden på armen hans. Han lot den ligge der. Det var sannsynligvis den mest fysiske kontakten de hadde hatt siden jul.</p>
+  <p>Hun la hånden på armen hans. Han lot den ligge der. Det var sannsynligvis den mest fysiske kontakten de hadde hatt siden jul.</p>
 
-<p>Godt hjerte, begge to. Det mener jeg. Men det var noe rørende absurd med det hele. Baby boomer-generasjonen som tok Queen til sitt bryst i 1975 og har brukt "Bohemian Rhapsody" som sin personlige følelsesventil i 50 år. Musikken som fikk dem til å gråte på bryllup, begravelser, bilferger til Danmark og nå altså Grieghallen på en lørdag. Freddie Mercury som terapeut for en hel generasjon som aldri gikk til terapeut.</p>
+  <p>Godt hjerte, begge to. Det mener jeg. Men det var noe rørende absurd med det hele. Baby boomer-generasjonen som tok Queen til sitt bryst i 1975 og har brukt "Bohemian Rhapsody" som sin personlige følelsesventil i 50 år. Musikken som fikk dem til å gråte på bryllup, begravelser, bilferger til Danmark og nå altså Grieghallen på en lørdag. Freddie Mercury som terapeut for en hel generasjon som aldri gikk til terapeut.</p>
 
-<p>Det er nesten vakkert. Det hadde vært vakkert. Hvis ikke Freddie hadde levd og dødd i en verden der nøyaktig denne generasjonen enten så bort, eller aktivt stemte imot menneskene som lignet på ham.</p>
+  <p>Det er nesten vakkert. Det hadde vært vakkert. Hvis ikke Freddie hadde levd og dødd i en verden der nøyaktig denne generasjonen enten så bort, eller aktivt stemte imot menneskene som lignet på ham.</p>
 
-<p>Freddie ga ham disse tårene. Han vet bare ikke hvem som ga dem til ham.</p>
-
+  <p>Freddie ga ham disse tårene. Han vet bare ikke hvem som ga dem til ham.</p>
 
   <div class="pull-quote">
     <p>Et annet sted, på et annet tidspunkt, gråt Freddie Mercury denne sangen inn i et mikrofon mens han visste han skulle dø. Og ingen i rommet gråt for ham.</p>
@@ -608,7 +581,6 @@ z-index: 10;
   <div class="freddie-block">
     <div class="dates">Farrokh Bulsara · 05.09.1946 og 24.11.1991</div>
 
-```
 <p>Han kom ut offentlig <em>dagen før han døde</em>. Ikke fordi han endelig var trygg. Men fordi han ikke hadde noe mer å tape.</p>
 
 <p>Den 23. november 1991 ga han ut denne uttalelsen, mens han lå på dødsleiet:</p>
@@ -621,12 +593,11 @@ z-index: 10;
 
 <div class="source-links">
   <p class="sources-label">Kilder og videre lesing</p>
-  <a href="https://en.wikipedia.org/wiki/Freddie_Mercury" target="_blank">Wikipedia: Freddie Mercury</a>
-  <a href="https://www.smithsonianmag.com/smart-news/read-freddie-mercurys-heartbreaking-announcement-of-his-diagnosis-with-hivaids-released-on-this-date-in-1991-just-a-day-before-the-queen-frontman-died-180985325/" target="_blank">Smithsonian: Hans siste uttalelse</a>
+  <a href="https://www.history.com/this-day-in-history/November-24/freddie-mercury-death-aids" target="_blank">History.com: Freddie Mercury succumbs to AIDS, 24. november 1991</a>
+  <a href="https://www.smithsonianmag.com/smart-news/read-freddie-mercurys-heartbreaking-announcement-of-his-diagnosis-with-hivaids-released-on-this-date-in-1991-just-a-day-before-the-queen-frontman-died-180985325/" target="_blank">Smithsonian Magazine: Hans siste uttalelse</a>
   <a href="https://www.euronews.com/culture/2023/11/24/culture-re-view-how-freddie-mercurys-death-changed-aids-perceptions" target="_blank">Euronews: Hvordan hans død endret AIDS-forståelsen</a>
-  <a href="https://www.mercuryphoenixtrust.com/" target="_blank">Mercury Phoenix Trust</a>
+  <a href="https://www.mercuryphoenixtrust.com/" target="_blank">Mercury Phoenix Trust: Hans AIDS-stiftelse</a>
 </div>
-```
 
   </div>
 
@@ -640,7 +611,7 @@ z-index: 10;
 <div class="rainbow-line"></div>
 
 <footer>
-  <div class="footer-left">Bergen · 🌈 · For Freddie</div>
+  <div class="footer-left">Bergen · 🏳️‍🌈 · For Freddie</div>
   <div class="footer-right">Ingrid · FRI Vestland</div>
 </footer>
 
