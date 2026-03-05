@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - Ingrid Ormevik</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        (function() {
+            var t = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 ```
     :root {
-        --bg:      #0d0d0d;
-        --text:    #f0ede8;
-        --muted:   #b0aa9f;
-        --border:  rgba(240,237,232,0.12);
-        --primary: #f0ede8;
+        --bg:     #0d0d0d;
+        --text:   #f0ede8;
+        --muted:  #b0aa9f;
+        --border: rgba(240,237,232,0.12);
     }
 
     [data-theme="light"] {
-        --bg:      #fafaf9;
-        --text:    #1a1a1a;
-        --muted:   #666;
-        --border:  rgba(0,0,0,0.1);
-        --primary: #0a0a0a;
+        --bg:     #fafaf9;
+        --text:   #1a1a1a;
+        --muted:  #666666;
+        --border: rgba(0,0,0,0.1);
     }
 
     body {
@@ -35,7 +39,6 @@
         transition: background 0.4s ease, color 0.4s ease;
     }
 
-    /* Canvas behind everything */
     #neural-canvas {
         position: fixed;
         top: 0; left: 0;
@@ -45,7 +48,6 @@
         opacity: 0.22;
     }
 
-    /* Reading column */
     header, main, footer {
         position: relative;
         z-index: 10;
@@ -56,7 +58,6 @@
         padding-right: 36px;
     }
 
-    /* === HEADER === */
     header {
         padding-top: 70px;
         padding-bottom: 50px;
@@ -64,7 +65,6 @@
     }
 
     header h1 {
-        font-family: 'Cormorant Garamond', serif;
         font-size: 1.9em;
         font-weight: 300;
         letter-spacing: -0.01em;
@@ -90,9 +90,7 @@
 
     nav a:hover, nav a.active { color: var(--text); }
 
-    /* === PAGE TITLE === */
     .page-title {
-        font-family: 'Cormorant Garamond', serif;
         font-size: clamp(3rem, 10vw, 5.5rem);
         font-weight: 300;
         letter-spacing: -0.03em;
@@ -109,9 +107,7 @@
         margin-bottom: 3.5rem;
     }
 
-    /* === BODY TEXT — large, white, readable === */
     .about-intro {
-        font-family: 'Cormorant Garamond', serif;
         font-size: clamp(1.35rem, 3.5vw, 1.7rem);
         font-weight: 300;
         line-height: 1.65;
@@ -128,9 +124,12 @@
         transition: text-decoration-color 0.2s;
     }
 
+    [data-theme="light"] .about-intro a {
+        text-decoration-color: rgba(0,0,0,0.2);
+    }
+
     .about-intro a:hover { text-decoration-color: var(--text); }
 
-    /* === SECTION LABEL === */
     .section-label {
         font-family: 'Space Mono', monospace;
         font-size: 0.6rem;
@@ -143,10 +142,7 @@
 
     .section-label::before { content: '// '; }
 
-    /* === NODE TAGS === */
-    .tags-row {
-        margin-bottom: 0.4rem;
-    }
+    .tags-row { margin-bottom: 0.4rem; }
 
     .node-tag {
         display: inline-block;
@@ -174,7 +170,6 @@
     .node-tag.tech     { color: #7ee8f9; }
     .node-tag.tech:hover     { background: rgba(126,232,249,0.1); }
 
-    /* === DIVIDER === */
     .signal-line {
         width: 100%;
         height: 1px;
@@ -195,7 +190,6 @@
 
     @keyframes signal { 0% { left: -40%; } 100% { left: 140%; } }
 
-    /* === AWARD === */
     .award-callout {
         border-left: 2px solid #f9a8d4;
         padding: 1rem 1.4rem;
@@ -208,7 +202,6 @@
         font-weight: 300;
     }
 
-    /* === CONTACT === */
     .contact-text {
         font-size: clamp(1.1rem, 2.5vw, 1.35rem);
         font-weight: 300;
@@ -226,7 +219,6 @@
 
     .contact-text a:hover { text-decoration-color: var(--text); }
 
-    /* === FOOTER === */
     footer {
         border-top: 1px solid var(--border);
         padding-top: 36px;
@@ -242,7 +234,6 @@
 
     footer p { margin-bottom: 0.5em; }
 
-    /* === THEME TOGGLE === */
     .theme-toggle {
         position: fixed;
         bottom: 32px; right: 32px;
@@ -260,8 +251,12 @@
         transition: background 0.2s, transform 0.2s;
     }
 
+    [data-theme="light"] .theme-toggle {
+        background: rgba(0,0,0,0.06);
+    }
+
     .theme-toggle:hover {
-        background: rgba(240,237,232,0.14);
+        background: rgba(240,237,232,0.16);
         transform: translateY(-2px);
     }
 
@@ -269,7 +264,6 @@
     [data-theme="light"] .sun-icon  { display: block; }
     [data-theme="light"] .moon-icon { display: none; }
 
-    /* === FADE IN === */
     .fade-in {
         opacity: 0;
         transform: translateY(18px);
@@ -278,7 +272,6 @@
 
     @keyframes fadeup { to { opacity: 1; transform: translateY(0); } }
 
-    main > * { animation-fill-mode: both; }
     main > *:nth-child(1)  { animation-delay: 0.05s; }
     main > *:nth-child(2)  { animation-delay: 0.12s; }
     main > *:nth-child(3)  { animation-delay: 0.19s; }
@@ -297,8 +290,9 @@
     main > *:nth-child(16) { animation-delay: 1.10s; }
     main > *:nth-child(17) { animation-delay: 1.17s; }
     main > *:nth-child(18) { animation-delay: 1.24s; }
+    main > *:nth-child(19) { animation-delay: 1.31s; }
+    main > *:nth-child(20) { animation-delay: 1.38s; }
 
-    /* === RESPONSIVE === */
     @media (max-width: 600px) {
         header, main, footer { padding-left: 24px; padding-right: 24px; }
         header { padding-top: 48px; }
@@ -313,12 +307,10 @@
 
     ::selection { background: var(--text); color: var(--bg); }
 </style>
-```
 
 </head>
 <body>
 
-```
 <canvas id="neural-canvas"></canvas>
 
 <header>
@@ -333,97 +325,99 @@
 
 <main>
 
-    <h2 class="page-title fade-in">About</h2>
-    <div class="title-rule fade-in"></div>
+```
+<h2 class="page-title fade-in">About</h2>
+<div class="title-rule fade-in"></div>
 
-    <p class="about-intro fade-in">I study Digital Culture at the University of Bergen. Second year. This semester it is DIKULT216 Digital Games and an internship at the Centre for Digital Narrative, where I am part of the SurvivingSOGICE research group.</p>
+<p class="about-intro fade-in">I study Digital Culture at the University of Bergen. Second year. This semester I am studying DIKULT216 Digital Games and I am doing a internship at the Centre for Digital Narrative, where I am part of the SurvivingSOGICE research group.</p>
 
-    <p class="about-intro fade-in">This is where I put things. Essays, reflections, experiments. The thread running through all of it is the same: what does technology actually do to people, and who gets to decide that.</p>
+<p class="about-intro fade-in">This is where I put things. Essays, reflections, experiments. The thread running through all of it is the same: what does technology actually do to people, and who gets to decide that.</p>
 
-    <div class="signal-line fade-in"></div>
+<div class="signal-line fade-in"></div>
 
-    <p class="section-label fade-in">Frameworks I work with</p>
-    <div class="tags-row fade-in">
-        <span class="node-tag theory">Procedural rhetoric</span>
-        <span class="node-tag theory">Posthumanism</span>
-        <span class="node-tag theory">Cyborg theory</span>
-        <span class="node-tag theory">Technogenesis</span>
-        <span class="node-tag theory">Queer game studies</span>
-        <span class="node-tag theory">Homonormativity</span>
-        <span class="node-tag theory">Haptics &amp; embodiment</span>
-        <span class="node-tag theory">Surveillance capitalism</span>
-        <span class="node-tag theory">Interface criticism</span>
-        <span class="node-tag theory">Affordance theory</span>
-        <span class="node-tag theory">Play ethics</span>
-        <span class="node-tag theory">Electronic literature</span>
-    </div>
+<p class="section-label fade-in">Frameworks I work with</p>
+<div class="tags-row fade-in">
+    <span class="node-tag theory">Procedural rhetoric</span>
+    <span class="node-tag theory">Posthumanism</span>
+    <span class="node-tag theory">Cyborg theory</span>
+    <span class="node-tag theory">Technogenesis</span>
+    <span class="node-tag theory">Queer game studies</span>
+    <span class="node-tag theory">Homonormativity</span>
+    <span class="node-tag theory">Haptics &amp; embodiment</span>
+    <span class="node-tag theory">Surveillance capitalism</span>
+    <span class="node-tag theory">Interface criticism</span>
+    <span class="node-tag theory">Affordance theory</span>
+    <span class="node-tag theory">Play ethics</span>
+    <span class="node-tag theory">Electronic literature</span>
+</div>
 
-    <p class="section-label fade-in">Theorists</p>
-    <div class="tags-row fade-in">
-        <span class="node-tag method">Bogost</span>
-        <span class="node-tag method">Haraway</span>
-        <span class="node-tag method">Hayles</span>
-        <span class="node-tag method">K. Jørgensen</span>
-        <span class="node-tag method">Sicart</span>
-        <span class="node-tag method">Ruberg &amp; Shaw</span>
-        <span class="node-tag method">Duggan</span>
-        <span class="node-tag method">Paterson</span>
-        <span class="node-tag method">Zuboff</span>
-        <span class="node-tag method">Norman</span>
-        <span class="node-tag method">Andersen &amp; Pold</span>
-        <span class="node-tag method">Foucault</span>
-        <span class="node-tag method">Terranova</span>
-    </div>
+<p class="section-label fade-in">Theorists</p>
+<div class="tags-row fade-in">
+    <span class="node-tag method">Bogost</span>
+    <span class="node-tag method">Haraway</span>
+    <span class="node-tag method">Hayles</span>
+    <span class="node-tag method">K. Jørgensen</span>
+    <span class="node-tag method">Sicart</span>
+    <span class="node-tag method">Ruberg &amp; Shaw</span>
+    <span class="node-tag method">Duggan</span>
+    <span class="node-tag method">Paterson</span>
+    <span class="node-tag method">Zuboff</span>
+    <span class="node-tag method">Norman</span>
+    <span class="node-tag method">Andersen &amp; Pold</span>
+    <span class="node-tag method">Foucault</span>
+    <span class="node-tag method">Terranova</span>
+</div>
 
-    <div class="signal-line fade-in"></div>
+<div class="signal-line fade-in"></div>
 
-    <p class="section-label fade-in">Research at CDN</p>
-    <p class="about-intro fade-in">I am interning on the <a href="https://survivingsogice.eu/" target="_blank">SurvivingSOGICE</a> project at CDN. We document Sexual Orientation and Gender Identity Change Efforts across Europe. Conversion therapy, basically, and the networks that keep it alive after it has been banned. My part is database work in Zotero, mapping organisations, and building a Twine game for the project website where survivors can share their stories safely.</p>
-    <p class="about-intro fade-in">Norway banned conversion practices in 2022. Three reports filed since then. Zero prosecutions. That gap is what the research is about.</p>
-    <div class="tags-row fade-in">
-        <span class="node-tag tech">Zotero</span>
-        <span class="node-tag tech">Twine / SugarCube</span>
-        <span class="node-tag tech">Notion</span>
-        <span class="node-tag tech">Trauma-informed design</span>
-        <span class="node-tag tech">Haptic feedback</span>
-    </div>
+<p class="section-label fade-in">Research at CDN</p>
+<p class="about-intro fade-in">I am interning on the <a href="https://survivingsogice.eu/" target="_blank">SurvivingSOGICE</a> project at CDN. We document Sexual Orientation and Gender Identity Change Efforts across Europe. Conversion therapy, basically, and the networks that keep it alive after it has been banned. My part is database work in Zotero, mapping organisations, and building a Twine game for the project website where survivors can share their stories safely.</p>
+<p class="about-intro fade-in">Norway banned conversion practices in 2022. Three reports filed since then. Zero prosecutions. That gap is what the research is about.</p>
+<div class="tags-row fade-in">
+    <span class="node-tag tech">Zotero</span>
+    <span class="node-tag tech">Twine / SugarCube</span>
+    <span class="node-tag tech">Notion</span>
+    <span class="node-tag tech">Trauma-informed design</span>
+    <span class="node-tag tech">Haptic feedback</span>
+</div>
 
-    <div class="signal-line fade-in"></div>
+<div class="signal-line fade-in"></div>
 
-    <p class="section-label fade-in">Activism</p>
-    <p class="about-intro fade-in">I run social media and content strategy for <a href="https://bergenpride.no" target="_blank">Bergen Pride</a>. I have been doing that since 2022. One thing I found during my DIKULT106 research: Norwegian Pride content reached 273,000 people. English content got suppressed. The algorithm does not treat all queerness equally. I wrote about that as strategic invisibility.</p>
-    <p class="about-intro fade-in">I am on the board of <a href="https://frivestland.no" target="_blank">FRI Vestland</a> and run their social media. I started KIM as a collective for women, non-binary and trans people in Bergen. It became a FRI subgroup in late 2025. Last Christmas I organised Skeiv Jul, seven events across December for people who would otherwise spend the holidays alone. About 40 people came to the Christmas Eve dinner. We got 75,000 kr from Vestland Fylkeskommune for it.</p>
-    <div class="tags-row fade-in">
-        <span class="node-tag activist">Bergen Pride</span>
-        <span class="node-tag activist">FRI Vestland</span>
-        <span class="node-tag activist">KIM collective</span>
-        <span class="node-tag activist">Skeiv Jul</span>
-        <span class="node-tag activist">Skeiv Verden Vest</span>
-        <span class="node-tag activist">Strategic invisibility</span>
-        <span class="node-tag activist">Platform resistance</span>
-    </div>
+<p class="section-label fade-in">Activism</p>
+<p class="about-intro fade-in">I run social media and content strategy for <a href="https://www.bergen.pride.no" target="_blank">Bergen Pride</a>. I have been doing that since 2022. One thing I found during my DIKULT106 research: Norwegian Pride content reached 273,000 people. English content got suppressed. The algorithm does not treat all queerness equally. I wrote about that as strategic invisibility.</p>
+<p class="about-intro fade-in">I am on the board of the Western Department of <a href="https://www.foreningenfri.no" target="_blank">FRI Vestland</a> and run their social media. I started KIM as a collective for women, non-binary and trans people in Bergen. It became a FRI subgroup in late 2025. Last Christmas I organised Skeiv Jul, seven events across December for people who would otherwise spend the holidays alone. About 40 people came to the Christmas Eve dinner. We got 75,000 kr from Vestland Fylkeskommune for it.</p>
+<div class="tags-row fade-in">
+    <span class="node-tag activist">Bergen Pride</span>
+    <span class="node-tag activist">FRI Vestland</span>
+    <span class="node-tag activist">KIM collective</span>
+    <span class="node-tag activist">Skeiv Jul</span>
+    <span class="node-tag activist">Skeiv Verden Vest</span>
+    <span class="node-tag activist">Strategic invisibility</span>
+    <span class="node-tag activist">Platform resistance</span>
+</div>
 
-    <div class="signal-line fade-in"></div>
+<div class="signal-line fade-in"></div>
 
-    <p class="section-label fade-in">Regnbuenatt 2026</p>
-    <p class="about-intro fade-in">Right now I am building Regnbuenatt 2026, the closing party for Bergen Pride. It is a Twine game and a real event at Marinehagen with performance and live music. The concept uses Norwegian folklore creatures as queer archetypes: Huldra, Nøkken, Bergtrollet, Fossegrimen, Draugen. Each one maps onto something. When I was building it I discovered that Android lets you vibrate the phone from HTML but Apple locks that completely. So on iOS you get a low-frequency audio tone through headphones instead, bone conduction. That ended up becoming part of the essay about the whole thing.</p>
-    <div class="tags-row fade-in">
-        <span class="node-tag tech">Twine</span>
-        <span class="node-tag theory">Procedural rhetoric</span>
-        <span class="node-tag theory">Haptic embodiment</span>
-        <span class="node-tag activist">Queer ritual</span>
-        <span class="node-tag tech">Self-hosted HTML</span>
-        <span class="node-tag method">Norwegian folklore</span>
-    </div>
+<p class="section-label fade-in">Regnbuenatt 2026</p>
+<p class="about-intro fade-in">Right now I am building Regnbuenatt 2026, the closing party for Bergen Pride. It is a Twine game and a real event played out at Marinehagen 6. of june with DJs and professional performers. The concept uses Norwegian folklore creatures as queer archetypes: Huldra, Nøkken, Bergtrollet, Fossegrimen, Draugen. Each one maps onto something. When I was building it I discovered that Android lets you vibrate the phone from HTML but Apple locks that completely. So on iOS you get a low-frequency audio tone through headphones instead, bone conduction. That ended up becoming part of the essay about the whole thing. </p>
+<div class="tags-row fade-in">
+    <span class="node-tag tech">Twine</span>
+    <span class="node-tag theory">Procedural rhetoric</span>
+    <span class="node-tag theory">Haptic embodiment</span>
+    <span class="node-tag activist">Queer ritual</span>
+    <span class="node-tag tech">Self-hosted HTML</span>
+    <span class="node-tag method">Norwegian folklore</span>
+</div>
 
-    <div class="signal-line fade-in"></div>
+<div class="signal-line fade-in"></div>
 
-    <div class="award-callout fade-in">
-        First place, Digital Culture Awards for Electronic Literature 2026. The piece was <em>The Turing Test: Fragments of a Life Saved by Pixels</em>. A Twine game about AI bias against Norwegian queer organisations.
-    </div>
+<div class="award-callout fade-in">
+    First place, Digital Culture Awards for Electronic Literature 2026. The piece was <em>The Turing Test: Fragments of a Life Saved by Pixels</em>. A Twine game about AI bias against Norwegian queer organisations.
+</div>
 
-    <p class="section-label fade-in">Contact</p>
-    <p class="contact-text fade-in">You can reach me at <a href="mailto:ingrid@bergenpride.no">ingrid@bergenpride.no</a>. The code lives at <a href="https://github.com/ingridormevik" target="_blank">github.com/ingridormevik</a>.</p>
+<p class="section-label fade-in">Contact</p>
+<p class="contact-text fade-in">You can reach me at <a href="mailto:ingrid@bergenpride.no">ingrid@bergenpride.no</a>. The code lives at <a href="https://github.com/ingridormevik" target="_blank">github.com/ingridormevik</a>.</p>
+```
 
 </main>
 
@@ -450,113 +444,120 @@
 </button>
 
 <script>
-// === THEME ===
-const toggle = document.getElementById('themeToggle');
-const saved  = localStorage.getItem('theme') || 'dark';
-document.documentElement.setAttribute('data-theme', saved);
+    // === THEME TOGGLE ===
+    const toggle = document.getElementById('themeToggle');
 
-toggle.addEventListener('click', () => {
-    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-});
-
-// === NEURAL NETWORK ===
-const canvas = document.getElementById('neural-canvas');
-const ctx    = canvas.getContext('2d');
-
-const groups = ['theory','theory','theory','theory','theory','theory',
-                'activist','activist','activist','activist',
-                'method','method','method','method','method',
-                'tech','tech','tech','tech','tech'];
-
-const colors = {
-    theory:   [179, 157, 250],
-    activist: [74,  222, 154],
-    method:   [249, 168, 212],
-    tech:     [126, 232, 249],
-};
-
-let nodes = [], pulses = [], raf;
-
-function resize() {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-    nodes = groups.map(g => ({
-        x:  Math.random() * canvas.width,
-        y:  Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.28,
-        vy: (Math.random() - 0.5) * 0.28,
-        r:  2 + Math.random() * 2.5,
-        c:  colors[g],
-    }));
-}
-
-function spawnPulse() {
-    const a = Math.floor(Math.random() * nodes.length);
-    let   b = Math.floor(Math.random() * nodes.length);
-    while (b === a) b = Math.floor(Math.random() * nodes.length);
-    pulses.push({ a, b, t: 0, spd: 0.003 + Math.random() * 0.004 });
-}
-
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    nodes.forEach(n => {
-        n.x += n.vx; n.y += n.vy;
-        if (n.x < 0 || n.x > canvas.width)  n.vx *= -1;
-        if (n.y < 0 || n.y > canvas.height)  n.vy *= -1;
+    toggle.addEventListener('click', function() {
+        var current = document.documentElement.getAttribute('data-theme');
+        var next    = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
     });
 
-    for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-            const dx = nodes[i].x - nodes[j].x;
-            const dy = nodes[i].y - nodes[j].y;
-            const d  = Math.sqrt(dx*dx + dy*dy);
-            if (d < 200) {
-                const [r,g,b] = nodes[i].c;
-                ctx.beginPath();
-                ctx.strokeStyle = `rgba(${r},${g},${b},${(1 - d/200) * 0.18})`;
-                ctx.lineWidth   = 0.5;
-                ctx.moveTo(nodes[i].x, nodes[i].y);
-                ctx.lineTo(nodes[j].x, nodes[j].y);
-                ctx.stroke();
+    // === NEURAL NETWORK ===
+    var canvas = document.getElementById('neural-canvas');
+    var ctx    = canvas.getContext('2d');
+
+    var groups = [
+        'theory','theory','theory','theory','theory','theory',
+        'activist','activist','activist','activist',
+        'method','method','method','method','method',
+        'tech','tech','tech','tech','tech'
+    ];
+
+    var colors = {
+        theory:   [179, 157, 250],
+        activist: [74,  222, 154],
+        method:   [249, 168, 212],
+        tech:     [126, 232, 249]
+    };
+
+    var nodes = [], pulses = [], raf;
+
+    function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+        nodes = groups.map(function(g) {
+            return {
+                x:  Math.random() * canvas.width,
+                y:  Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.28,
+                vy: (Math.random() - 0.5) * 0.28,
+                r:  2 + Math.random() * 2.5,
+                c:  colors[g]
+            };
+        });
+    }
+
+    function spawnPulse() {
+        var a = Math.floor(Math.random() * nodes.length);
+        var b = Math.floor(Math.random() * nodes.length);
+        while (b === a) { b = Math.floor(Math.random() * nodes.length); }
+        pulses.push({ a: a, b: b, t: 0, spd: 0.003 + Math.random() * 0.004 });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        nodes.forEach(function(n) {
+            n.x += n.vx; n.y += n.vy;
+            if (n.x < 0 || n.x > canvas.width)  n.vx *= -1;
+            if (n.y < 0 || n.y > canvas.height)  n.vy *= -1;
+        });
+
+        for (var i = 0; i < nodes.length; i++) {
+            for (var j = i + 1; j < nodes.length; j++) {
+                var dx = nodes[i].x - nodes[j].x;
+                var dy = nodes[i].y - nodes[j].y;
+                var d  = Math.sqrt(dx*dx + dy*dy);
+                if (d < 200) {
+                    var c = nodes[i].c;
+                    ctx.beginPath();
+                    ctx.strokeStyle = 'rgba('+c[0]+','+c[1]+','+c[2]+','+(1 - d/200) * 0.18+')';
+                    ctx.lineWidth   = 0.5;
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.stroke();
+                }
             }
         }
+
+        for (var i = pulses.length - 1; i >= 0; i--) {
+            var p  = pulses[i];
+            p.t   += p.spd;
+            if (p.t >= 1) { pulses.splice(i, 1); continue; }
+            var na = nodes[p.a], nb = nodes[p.b];
+            var x  = na.x + (nb.x - na.x) * p.t;
+            var y  = na.y + (nb.y - na.y) * p.t;
+            var c  = na.c;
+            var gr = ctx.createRadialGradient(x, y, 0, x, y, 9);
+            gr.addColorStop(0, 'rgba('+c[0]+','+c[1]+','+c[2]+',0.85)');
+            gr.addColorStop(1, 'rgba('+c[0]+','+c[1]+','+c[2]+',0)');
+            ctx.beginPath();
+            ctx.fillStyle = gr;
+            ctx.arc(x, y, 9, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        nodes.forEach(function(n) {
+            var c = n.c;
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba('+c[0]+','+c[1]+','+c[2]+',0.55)';
+            ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        raf = requestAnimationFrame(draw);
     }
 
-    for (let i = pulses.length - 1; i >= 0; i--) {
-        const p = pulses[i];
-        p.t += p.spd;
-        if (p.t >= 1) { pulses.splice(i, 1); continue; }
-        const na = nodes[p.a], nb = nodes[p.b];
-        const x  = na.x + (nb.x - na.x) * p.t;
-        const y  = na.y + (nb.y - na.y) * p.t;
-        const [r,g,b] = na.c;
-        const gr = ctx.createRadialGradient(x, y, 0, x, y, 9);
-        gr.addColorStop(0, `rgba(${r},${g},${b},0.85)`);
-        gr.addColorStop(1, `rgba(${r},${g},${b},0)`);
-        ctx.beginPath();
-        ctx.fillStyle = gr;
-        ctx.arc(x, y, 9, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    nodes.forEach(n => {
-        const [r,g,b] = n.c;
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(${r},${g},${b},0.55)`;
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fill();
+    setInterval(spawnPulse, 650);
+    resize();
+    draw();
+    window.addEventListener('resize', function() {
+        cancelAnimationFrame(raf);
+        resize();
+        draw();
     });
-
-    raf = requestAnimationFrame(draw);
-}
-
-setInterval(spawnPulse, 650);
-resize();
-draw();
-window.addEventListener('resize', () => { cancelAnimationFrame(raf); resize(); draw(); });
 </script>
 
 </body>
