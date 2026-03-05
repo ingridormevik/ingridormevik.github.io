@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>
         (function() {
-            var t = localStorage.getItem('theme') || 'dark';
+            var t = localStorage.getItem('ingrid-theme') || 'dark';
             document.documentElement.setAttribute('data-theme', t);
         })();
     </script>
@@ -125,7 +125,7 @@
     }
 
     [data-theme="light"] .about-intro a {
-        text-decoration-color: rgba(0,0,0,0.2);
+        text-decoration-color: rgba(0,0,0,0.25);
     }
 
     .about-intro a:hover { text-decoration-color: var(--text); }
@@ -217,6 +217,10 @@
         transition: text-decoration-color 0.2s;
     }
 
+    [data-theme="light"] .contact-text a {
+        text-decoration-color: rgba(0,0,0,0.25);
+    }
+
     .contact-text a:hover { text-decoration-color: var(--text); }
 
     footer {
@@ -251,18 +255,16 @@
         transition: background 0.2s, transform 0.2s;
     }
 
-    [data-theme="light"] .theme-toggle {
-        background: rgba(0,0,0,0.06);
-    }
-
     .theme-toggle:hover {
         background: rgba(240,237,232,0.16);
         transform: translateY(-2px);
     }
 
+    /* Moon = visible in dark mode, Sun = visible in light mode */
+    .moon-icon { display: block; }
     .sun-icon  { display: none; }
-    [data-theme="light"] .sun-icon  { display: block; }
     [data-theme="light"] .moon-icon { display: none; }
+    [data-theme="light"] .sun-icon  { display: block; }
 
     .fade-in {
         opacity: 0;
@@ -307,6 +309,7 @@
 
     ::selection { background: var(--text); color: var(--bg); }
 </style>
+```
 
 </head>
 <body>
@@ -329,7 +332,7 @@
 <h2 class="page-title fade-in">About</h2>
 <div class="title-rule fade-in"></div>
 
-<p class="about-intro fade-in">I study Digital Culture at the University of Bergen. Second year. This semester I am studying DIKULT216 Digital Games and I am doing a internship at the Centre for Digital Narrative, where I am part of the SurvivingSOGICE research group.</p>
+<p class="about-intro fade-in">I study Digital Culture at the University of Bergen. Second year. This semester it is DIKULT216 Digital Games and an internship at the Centre for Digital Narrative, where I am part of the SurvivingSOGICE research group.</p>
 
 <p class="about-intro fade-in">This is where I put things. Essays, reflections, experiments. The thread running through all of it is the same: what does technology actually do to people, and who gets to decide that.</p>
 
@@ -384,14 +387,13 @@
 <div class="signal-line fade-in"></div>
 
 <p class="section-label fade-in">Activism</p>
-<p class="about-intro fade-in">I run social media and content strategy for <a href="https://www.bergen.pride.no" target="_blank">Bergen Pride</a>. I have been doing that since 2022. One thing I found during my DIKULT106 research: Norwegian Pride content reached 273,000 people. English content got suppressed. The algorithm does not treat all queerness equally. I wrote about that as strategic invisibility.</p>
-<p class="about-intro fade-in">I am on the board of the Western Department of <a href="https://www.foreningenfri.no" target="_blank">FRI Vestland</a> and run their social media. I started KIM as a collective for women, non-binary and trans people in Bergen. It became a FRI subgroup in late 2025. Last Christmas I organised Skeiv Jul, seven events across December for people who would otherwise spend the holidays alone. About 40 people came to the Christmas Eve dinner. We got 75,000 kr from Vestland Fylkeskommune for it.</p>
+<p class="about-intro fade-in">I run social media and content strategy for <a href="https://bergenpride.no" target="_blank">Bergen Pride</a>. I have been doing that since 2022. One thing I found during my DIKULT106 research: Norwegian Pride content reached 273,000 people. English content got suppressed. The algorithm does not treat all queerness equally. I wrote about that as strategic invisibility.</p>
+<p class="about-intro fade-in">I am on the board of <a href="https://frivestland.no" target="_blank">FRI Vestland</a> and run their social media. I started KIM as a collective for women, non-binary and trans people in Bergen. It became a FRI subgroup in late 2025. Last Christmas I organised Skeiv Jul, seven events across December for people who would otherwise spend the holidays alone. About 40 people came to the Christmas Eve dinner. We got 75,000 kr from Vestland Fylkeskommune for it.</p>
 <div class="tags-row fade-in">
     <span class="node-tag activist">Bergen Pride</span>
     <span class="node-tag activist">FRI Vestland</span>
     <span class="node-tag activist">KIM collective</span>
     <span class="node-tag activist">Skeiv Jul</span>
-    <span class="node-tag activist">Skeiv Verden Vest</span>
     <span class="node-tag activist">Strategic invisibility</span>
     <span class="node-tag activist">Platform resistance</span>
 </div>
@@ -399,7 +401,7 @@
 <div class="signal-line fade-in"></div>
 
 <p class="section-label fade-in">Regnbuenatt 2026</p>
-<p class="about-intro fade-in">Right now I am building Regnbuenatt 2026, the closing party for Bergen Pride. It is a Twine game and a real event played out at Marinehagen 6. of june with DJs and professional performers. The concept uses Norwegian folklore creatures as queer archetypes: Huldra, Nøkken, Bergtrollet, Fossegrimen, Draugen. Each one maps onto something. When I was building it I discovered that Android lets you vibrate the phone from HTML but Apple locks that completely. So on iOS you get a low-frequency audio tone through headphones instead, bone conduction. That ended up becoming part of the essay about the whole thing. </p>
+<p class="about-intro fade-in">Right now I am building Regnbuenatt 2026, the closing party for Bergen Pride. It is a interactive hype-game and a real event at Marinehagen with DJs and peeformers. The concept uses Norwegian folklore creatures as queer archetypes: Huldra, Nøkken, Bergtrollet, Fossegrimen, Draugen. Each one maps onto something. When I was building it I discovered that Android lets you vibrate the phone from HTML but Apple locks that completely. So on iOS you get a low-frequency audio tone through headphones instead, bone conduction. That ended up becoming part of the essay about the whole thing.</p>
 <div class="tags-row fade-in">
     <span class="node-tag tech">Twine</span>
     <span class="node-tag theory">Procedural rhetoric</span>
@@ -407,6 +409,7 @@
     <span class="node-tag activist">Queer ritual</span>
     <span class="node-tag tech">Self-hosted HTML</span>
     <span class="node-tag method">Norwegian folklore</span>
+    <span class="node-tag method">Post-human Coding</span>
 </div>
 
 <div class="signal-line fade-in"></div>
@@ -427,10 +430,10 @@
 </footer>
 
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-    <svg class="icon moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
     </svg>
-    <svg class="icon sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="5"/>
         <line x1="12" y1="1" x2="12" y2="3"/>
         <line x1="12" y1="21" x2="12" y2="23"/>
@@ -444,17 +447,15 @@
 </button>
 
 <script>
-    // === THEME TOGGLE ===
-    const toggle = document.getElementById('themeToggle');
+    var toggle = document.getElementById('themeToggle');
 
     toggle.addEventListener('click', function() {
         var current = document.documentElement.getAttribute('data-theme');
         var next    = current === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
+        localStorage.setItem('ingrid-theme', next);
     });
 
-    // === NEURAL NETWORK ===
     var canvas = document.getElementById('neural-canvas');
     var ctx    = canvas.getContext('2d');
 
