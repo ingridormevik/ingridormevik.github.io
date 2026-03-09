@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why I Code Like Ada Lovelace</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-1: #07000d;
+      --bg-2: #130018;
+      --bg-3: #1d0627;
+      --bg-4: #08131f;
+      --text: #f8f2ff;
+      --muted: #d8cde8;
+      --soft: #baa8d0;
+      --mint: #9bffe0;
+      --aqua: #8edcff;
+      --violet: #d58cff;
+      --rose: #ff85c2;
+      --gold: #ffd88e;
+      --pearl: rgba(255,255,255,0.08);
+      --glass: rgba(255,255,255,0.05);
+      --glass-strong: rgba(255,255,255,0.09);
+      --line: rgba(255,255,255,0.14);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --glow-rose: 0 0 28px rgba(255, 133, 194, 0.22);
+      --glow-violet: 0 0 28px rgba(213, 140, 255, 0.18);
+      --glow-gold: 0 0 28px rgba(255, 216, 142, 0.16);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 15%, rgba(255, 133, 194, 0.14), transparent 26%),
+        radial-gradient(circle at 85% 18%, rgba(142, 220, 255, 0.11), transparent 24%),
+        radial-gradient(circle at 50% 70%, rgba(213, 140, 255, 0.12), transparent 30%),
+        linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 28%, var(--bg-3) 62%, var(--bg-4) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.018) 0%, transparent 20%, transparent 78%, rgba(255,255,255,0.03) 100%);
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: screen;
+    }
+
+    #binary-bg {
+      position: fixed;
+      inset: 0;
+      opacity: 0.08;
+      z-index: 0;
+      pointer-events: none;
+      font-size: 11px;
+      line-height: 1.35;
+      overflow: hidden;
+      color: var(--rose);
+      font-family: "Courier New", monospace;
+      text-shadow: 0 0 2px var(--rose);
+      white-space: pre;
+    }
+
+    #network-canvas,
+    #sound-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    #sound-canvas {
+      opacity: 0.45;
+    }
+
+    #mountains {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 38%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .mountain {
+      position: absolute;
+      bottom: 0;
+      opacity: 0.3;
+      filter: blur(0.6px);
+    }
+
+    .mountain-1 {
+      left: -30px;
+      width: 0;
+      height: 0;
+      border-left: 230px solid transparent;
+      border-right: 230px solid transparent;
+      border-bottom: 315px solid #2b0a40;
+    }
+
+    .mountain-2 {
+      left: 260px;
+      width: 0;
+      height: 0;
+      border-left: 290px solid transparent;
+      border-right: 290px solid transparent;
+      border-bottom: 365px solid #14273b;
+    }
+
+    .mountain-3 {
+      right: 180px;
+      width: 0;
+      height: 0;
+      border-left: 210px solid transparent;
+      border-right: 210px solid transparent;
+      border-bottom: 290px solid #39114f;
+    }
+
+    .mountain-4 {
+      right: -35px;
+      width: 0;
+      height: 0;
+      border-left: 240px solid transparent;
+      border-right: 240px solid transparent;
+      border-bottom: 325px solid #13283a;
+    }
+
+    .page-frame {
+      position: relative;
+      z-index: 1;
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 28px 20px 90px;
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 26px;
+      flex-wrap: wrap;
+    }
+
+    .micro-badge,
+    .micro-note {
+      font-family: "Courier New", monospace;
+      font-size: 0.8rem;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: var(--gold);
+      box-shadow: var(--glow-gold);
+    }
+
+    .micro-note {
+      color: var(--aqua);
+      box-shadow: 0 0 18px rgba(142, 220, 255, 0.12);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 34px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .manifesto,
+    .project-panel,
+    .turing-test,
+    .references,
+    .quote-card {
+      background: var(--glass);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: 34px 30px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(255, 133, 194, 0.22), transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-kicker {
+      font-family: "Courier New", monospace;
+      font-size: 0.82rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 5.8vw, 5.6rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 18px;
+      color: #fff8ff;
+      text-shadow: 0 0 18px rgba(255,255,255,0.08), 0 0 30px rgba(213, 140, 255, 0.14);
+    }
+
+    .hero-dek {
+      font-size: 1.18rem;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 700px;
+      margin-bottom: 22px;
+    }
+
+    .hero-highlight {
+      display: inline-block;
+      padding: 10px 14px;
+      background: rgba(255, 133, 194, 0.1);
+      border-left: 3px solid var(--rose);
+      color: #ffe5f2;
+      font-style: italic;
+      line-height: 1.8;
+      box-shadow: var(--glow-rose);
+    }
+
+    .hero-side {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .side-label {
+      font-family: "Courier New", monospace;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      color: var(--mint);
+      margin-bottom: 10px;
+    }
+
+    .side-big {
+      font-size: clamp(1.6rem, 3vw, 2.5rem);
+      line-height: 1.08;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .side-copy {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .vertical-line {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 26px;
+      align-items: start;
+    }
+
+    .main-column {
+      min-width: 0;
+    }
+
+    .rail {
+      position: sticky;
+      top: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .manifesto,
+    .quote-card {
+      padding: 20px;
+    }
+
+    .manifesto-title,
+    .quote-title {
+      font-family: "Courier New", monospace;
+      font-size: 0.84rem;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 14px;
+    }
+
+    .manifesto p,
+    .quote-card p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 0;
+    }
+
+    h2 {
+      font-size: 1.65rem;
+      line-height: 1.15;
+      margin: 42px 0 18px;
+      color: #fff4ff;
+      letter-spacing: -0.01em;
+      position: relative;
+      padding-bottom: 12px;
+    }
+
+    h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 110px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--rose), var(--gold), transparent);
+      box-shadow: var(--glow-rose);
+    }
+
+    p {
+      font-size: 1.08rem;
+      line-height: 1.95;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+
+    em {
+      color: #f6deff;
+    }
+
+    .highlight {
+      color: var(--mint);
+      font-style: italic;
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(155, 255, 224, 0.22);
+    }
+
+    .dropcap:first-letter {
+      float: left;
+      font-size: 4rem;
+      line-height: 0.85;
+      padding-right: 10px;
+      padding-top: 6px;
+      color: var(--gold);
+      text-shadow: var(--glow-gold);
+    }
+
+    .code-block {
+      margin: 22px 0;
+      padding: 18px 18px 18px 20px;
+      background: rgba(10, 8, 18, 0.5);
+      border-left: 3px solid var(--mint);
+      color: #e9fff7;
+      font-family: "Courier New", monospace;
+      font-size: 0.95rem;
+      line-height: 1.9;
+      overflow-x: auto;
+      box-shadow: inset 0 0 20px rgba(155, 255, 224, 0.06);
+    }
+
+    .project-panel {
+      padding: 24px;
+      margin: 28px 0 8px;
+    }
+
+    .panel-title,
+    .references h3 {
+      font-family: "Courier New", monospace;
+      font-size: 0.92rem;
+      text-transform: uppercase;
+      letter-spacing: 1.7px;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .project-item {
+      padding: 16px;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.1);
+      min-height: 150px;
+    }
+
+    .project-item strong {
+      display: block;
+      font-size: 1rem;
+      color: #fff0ce;
+      margin-bottom: 10px;
+      line-height: 1.35;
+    }
+
+    .project-item span {
+      display: block;
+      font-size: 0.96rem;
+      line-height: 1.72;
+      color: var(--muted);
+    }
+
+    .turing-test {
+      padding: 24px;
+      margin: 30px 0;
+      border-color: rgba(142, 220, 255, 0.28);
+      box-shadow: 0 0 30px rgba(142, 220, 255, 0.14);
+      transition: all 0.18s ease;
+    }
+
+    .turing-test strong {
+      color: var(--gold);
+      letter-spacing: 0.02em;
+    }
+
+    .turing-test em {
+      color: #ffe3f1;
+    }
+
+    .references {
+      margin-top: 46px;
+      padding: 28px;
+    }
+
+    .ref-item {
+      padding: 16px;
+      margin: 16px 0;
+      background: rgba(0,0,0,0.24);
+      border-left: 3px solid var(--rose);
+    }
+
+    .ref-item strong {
+      color: #fff1d1;
+    }
+
+    .ref-detail {
+      display: block;
+      margin-top: 8px;
+      color: var(--soft);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.14);
+      font-family: "Courier New", monospace;
+      font-size: 0.86rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--soft);
+      line-height: 1.8;
+    }
+
+    a {
+      color: var(--aqua);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(142, 220, 255, 0.45);
+      transition: all 0.25s ease;
+    }
+
+    a:hover {
+      color: var(--mint);
+      border-bottom-color: var(--mint);
+      text-shadow: 0 0 10px rgba(155, 255, 224, 0.35);
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .rail {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page-frame {
+        padding: 18px 14px 70px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .manifesto,
+      .project-panel,
+      .turing-test,
+      .references,
+      .quote-card {
+        padding: 18px;
+      }
+
+      .project-list {
+        grid-template-columns: 1fr;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .hero-dek {
+        font-size: 1.05rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="binary-bg"></div>
+  <canvas id="network-canvas"></canvas>
+  <canvas id="sound-canvas"></canvas>
+
+  <div id="mountains">
+    <div class="mountain mountain-1"></div>
+    <div class="mountain mountain-2"></div>
+    <div class="mountain mountain-3"></div>
+    <div class="mountain mountain-4"></div>
+  </div>
+
+  <div class="page-frame">
+    <div class="topline">
+      <div class="micro-badge">Happy Women’s Day · Digital feminist remix</div>
+      <div class="micro-note">Ada Lovelace · Regnbuenatt · Sound reaktiv · 2026</div>
+    </div>
+
+    <section class="hero">
+      <div class="hero-main">
+        <div class="hero-kicker">Why I code the way I do</div>
+        <h1>Why I Code Like Ada Lovelace</h1>
+        <p class="hero-dek">
+          Not as a performance of purity. Not as a fantasy of lone genius.
+          As feminist method. As remix. As survival. As a way to turn code into atmosphere,
+          community memory, queer storytelling, and work that actually moves.
+        </p>
+        <div class="hero-highlight">
+          She wanted time with her children. I want time on mountains, time with my community,
+          time to build immersive worlds, and time to stay fully alive inside the life I am actually living.
+        </div>
+      </div>
+
+      <aside class="hero-side">
+        <div>
+          <div class="side-label">Women’s Day mood</div>
+          <div class="side-big">Female coding empowerment is not about pretending the work is easy.</div>
+          <p class="side-copy">
+            It is about refusing the lie that only one type of builder counts.
+            Women, girls, and femmes build with fragments, intuition, rigor, aesthetics, adaptation,
+            unfinished certainty, and vision. That still counts. It counts completely.
+          </p>
+        </div>
+        <div class="vertical-line"></div>
+        <div>
+          <div class="side-label">Current practice</div>
+          <p class="side-copy">
+            HTML appropriated. CSS transformed. JavaScript remixed.
+            Sound-reactive interfaces. Regnbuenatt worldbuilding.
+            Queer digital atmosphere. Strategic community design.
+          </p>
+        </div>
+      </aside>
+    </section>
+
+    <div class="content-grid">
+      <main class="main-column">
+        <p class="dropcap">
+          <em>I chose Ada Lovelace and Alan Turing for my computing history exam. Hours of research led me here:
+          Ada did not write her Notes to stage some timeless myth of genius. She wrote because repetitive calculation
+          was tedious, because intellect mattered, because life was already full, and because automation could create room
+          for more meaningful thought. That lands differently when read through Women’s Day. It lands personally.</em>
+        </p>
+
+        <h2>Happy Women’s Day to everyone coding anyway</h2>
+        <p>
+          Happy Women’s Day to every woman, girl, and femme who has ever built from partial knowledge, open tabs,
+          copied snippets, intuition, revision, taste, and stubbornness. Happy Women’s Day to the ones who learned by touching the code,
+          breaking it, fixing it, and making it beautiful. Happy Women’s Day to the ones who were told they were not technical enough,
+          not original enough, not logical enough, not “from scratch” enough.
+        </p>
+
+        <p>
+          <span class="highlight">We still build.</span> We still learn. We still ship.
+          We still create infrastructures of feeling, design systems of care, and interfaces that hold more than function.
+          We hold politics, memory, grief, joy, and community in them too.
+        </p>
+
+        <h2>The Process</h2>
+        <p>
+          I copy code. Ask AI to extract colors. Generate gradients. Tweak spacing. Rewrite tone. Rebuild sections.
+          Add motion. Test on mobile. Make it more immersive. Make it more editorial. Make it clearer. Ship it.
+        </p>
+
+        <p>
+          If you are waiting for an apology, you are still reading the wrong page.
+        </p>
+
+        <h2>What Ada Actually Wanted</h2>
+        <p>
+          In 1840, while trying to work on Babbage’s Analytical Engine with two toddlers and a baby, Ada wrote with a startling honesty
+          that still cuts: <span class="highlight">“How many, many moments there are, when their presence is most irritating and intolerable to me.”</span>
+        </p>
+
+        <p>
+          She called her Notes “my first-born” while she had three actual children under eight.
+          Her life was not a clean narrative of genius unfolding in a vacuum. It was crowded, demanding, embodied, interrupted,
+          and intellectually alive. That complexity matters to me more than hero worship ever could.
+        </p>
+
+        <div class="code-block">
+          // The Lovelace Principle (1843 → 2026)<br>
+          if (machine.canDoIt()) {<br>
+          &nbsp;&nbsp;machine.execute();<br>
+          &nbsp;&nbsp;human.reserveEnergyForMeaning();<br>
+          }
+        </div>
+
+        <h2>My Version</h2>
+        <p>
+          I work in digital culture, queer storytelling, community-facing design, and social media strategy.
+          I build things that need to feel alive, not just function. I study. I research. I organize.
+          I make work for real people and real communities, not for the fantasy of an empty room where one perfect coder invents everything alone.
+        </p>
+
+        <p>
+          If I spent all my cognitive labor writing every single line of CSS from nothing, I would have less left for accessibility,
+          concept, narrative atmosphere, research, editing, ethical framing, queer community context, and the actual reason the work exists.
+        </p>
+
+        <p>
+          AI extracts palettes. AI helps restructure. AI helps debug. I focus on intent: what does this page need to feel like,
+          what should this interface communicate, who is it for, what kind of world does it build, and what politics live inside its aesthetics.
+        </p>
+
+        <h2>What I’ve Been Coding Recently</h2>
+        <p>
+          This is not theoretical anymore. My recent coding is part of the argument. The work I have been making lives between code,
+          digital narrative, immersion, folklore, queer atmosphere, and experimental interface design.
+        </p>
+
+        <section class="project-panel">
+          <div class="panel-title">Recent coded practice</div>
+          <div class="project-list">
+            <div class="project-item">
+              <strong>Sound reaktiv web design</strong>
+              <span>
+                Interfaces built around pulse, rhythm, signal, and emotional movement.
+                Motion that feels responsive, embodied, and atmospheric rather than decorative.
+              </span>
+            </div>
+            <div class="project-item">
+              <strong>Regnbuenatt immersive worldbuilding</strong>
+              <span>
+                Folklore, queer magic, spirits, passages, visual depth, and interactive narrative systems
+                shaped into something more cinematic and alive.
+              </span>
+            </div>
+            <div class="project-item">
+              <strong>HTML, CSS, and JavaScript remix craft</strong>
+              <span>
+                Full pages, glitch layers, responsive layouts, layered backgrounds, moving fields,
+                dramatic editorial composition, and transformed code structures.
+              </span>
+            </div>
+            <div class="project-item">
+              <strong>Community-centered digital aesthetics</strong>
+              <span>
+                Work shaped by Bergen Pride, queer cultural context, accessibility, strategy,
+                and interfaces that need both beauty and purpose.
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <p>
+          <span class="highlight">Sound-reactive design and Regnbuenatt belong inside this essayistic page because they prove what kind of coder I actually am.</span>
+          I am not just trying to make things function. I am trying to make them resonate. That matters.
+        </p>
+
+        <h2>Posthuman Work</h2>
+        <p>
+          Katherine Hayles writes about informational patterns moving across bodies and machines.
+          That feels close to how I work in practice. I collect code fragments, color systems, references, prompts,
+          prose, interface logic, emotional textures, and design intentions, then move them between tools until something coherent emerges.
+        </p>
+
+        <p>
+          My webpage is not the product of isolated genius. It is distributed agency.
+          My design thinking plus existing code plus AI processing plus queer community needs plus revision plus feedback becomes a page that works.
+          That is not lesser. It is simply more honest.
+        </p>
+
+        <p>
+          Byron Russell’s writing on appropriation and remix matters here too. Transformation is not the absence of authorship.
+          It is often how authorship actually happens in digital culture.
+        </p>
+
+        <h2>Women Who Build Are Not Required to Perform Purity</h2>
+        <p>
+          One of the most exhausting myths in tech is that legitimacy comes from visible suffering.
+          As if the only respectable builder is the one who writes everything from nothing and never accepts assistance.
+          As if elegance only counts when it begins in isolation and ends in exhaustion.
+        </p>
+
+        <p>
+          I reject that. <span class="highlight">Female coding empowerment means using every available tool with intention, intelligence, style, and purpose.</span>
+          It means adaptation. It means synthesis. It means refusing shame around collaboration, iteration, reuse, and machine assistance.
+        </p>
+
+        <div class="turing-test">
+          <strong>Women’s Day test:</strong><br><br>
+          Is she still a real coder if she remixes, directs, transforms, art-directs, and ships instead of worshipping difficulty?<br><br>
+          <strong>Answer:</strong> yes.<br><br>
+          <em>
+            What matters is whether the work carries thought, reaches people, holds feeling,
+            and makes something possible for others.
+          </em>
+        </div>
+
+        <h2>Time Outside vs Time Writing Hex Code</h2>
+        <p>
+          I would still rather spend three hours hiking than three hours manually calculating every visual choice from scratch.
+          Not because coding lacks value. Because my life needs range. My body needs motion.
+          My creativity needs air. My community work needs energy.
+        </p>
+
+        <p>
+          Ada wanted time with her children. I want time with mountains, with activism, with my people, with my nervous system,
+          and with the parts of myself that are not productive but still essential. I am not interested in wasting life proving I can memorize syntax as a ritual of worthiness.
+        </p>
+
+        <h2>Code as Commons</h2>
+        <p>
+          Code is collective knowledge. Design patterns are shared culture. Stack Overflow snippets, GitHub fragments, tutorials,
+          remixed JavaScript, AI-assisted restructuring, and visual references are part of how digital culture actually works:
+          <span class="highlight">iterative, collaborative, cumulative, and built on what others made available.</span>
+        </p>
+
+        <p>
+          The myth of the lone coder serves branding and gatekeeping far more than it serves actual creative practice.
+        </p>
+
+        <h2>What I’m Actually Good At</h2>
+        <p>
+          <strong>Good at:</strong> atmosphere, concept, accessibility, digital storytelling, emotional tone, editorial composition,
+          cultural context, queer worldbuilding, and knowing when an interface has a soul.
+        </p>
+
+        <p>
+          <strong>Decent at:</strong> finding solutions, directing AI, adapting code, building from fragments, and iterating fast.
+        </p>
+
+        <p>
+          <strong>Still learning:</strong> elegant architecture, memorized syntax, and lower-level implementation details.
+        </p>
+
+        <p class="highlight">
+          That does not weaken the work. It clarifies how the work is made.
+        </p>
+
+        <h2>The Point</h2>
+        <p>
+          Efficiency is not laziness. It is <span class="highlight">the strategic redistribution of cognitive labor toward human priorities.</span>
+        </p>
+
+        <p>
+          Ada wrote algorithms so she could live beyond calculation. I use AI collaboration and remix-based coding so I can study,
+          organize, research, build Regnbuenatt, experiment with sound-reactive interfaces, make community-facing work, and still have enough self left to remain human.
+        </p>
+
+        <p>
+          The wheel exists. So do shared libraries, snippets, prompts, and machine assistance.
+          I am not here to prove I invented the wheel. I am here to build something luminous with it.
+        </p>
+
+        <div class="turing-test">
+          <strong>Final thought:</strong><br><br>
+          Ada did not need purity politics. Neither do I.<br><br>
+          <em>
+            This page: HTML appropriated, CSS transformed, JavaScript remixed, tone rewritten toward Women’s Day,
+            recent coding integrated, vibe shifted toward a more editorial female coding empowerment manifesto.
+          </em>
+        </div>
+
+        <section class="references">
+          <h3>References</h3>
+
+          <div class="ref-item">
+            <strong>Hayles, N. Katherine.</strong> (1999). <em>How We Became Posthuman: Virtual Bodies in Cybernetics, Literature, and Informatics</em>. University of Chicago Press.
+            <span class="ref-detail">
+              Foundational posthuman theory for thinking about distributed agency, information flow, and human-machine entanglement.
+            </span>
+          </div>
+
+          <div class="ref-item">
+            <strong>Russell, Byron.</strong> (2015). Appropriation Is Activism. In E. Navas, O. Gallagher, and X. Burrough (Eds.), <em>The Routledge Companion to Remix Studies</em>. Routledge.
+            <span class="ref-detail">
+              Helpful for grounding appropriation and remix as transformation rather than absence of originality.
+            </span>
+          </div>
+
+          <div class="ref-item">
+            <strong>Toole, Betty A.</strong> (1992). <em>Ada, the Enchantress of Numbers: A Selection from the Letters of Lord Byron’s Daughter and Her Description of the First Computer</em>. Strawberry Press.
+            <span class="ref-detail">
+              Rich in primary material and essential for understanding Ada’s letters, ambitions, domestic realities, and intellectual life.
+            </span>
+          </div>
+
+          <div class="ref-item">
+            <strong>Computer History Museum.</strong> Ada Lovelace.
+            <span class="ref-detail">
+              Broad historical overview of Ada Lovelace’s relationship to Babbage’s Analytical Engine and her legacy in computing history.
+            </span>
+          </div>
+
+          <div class="ref-item">
+            <strong>Primary sources.</strong> Ada Lovelace’s letters, journals, and correspondence preserved at Oxford’s Bodleian Library and the British Library. Her 1843 Notes on the Analytical Engine published in <em>Scientific Memoirs</em>.
+          </div>
+        </section>
+
+        <div class="footer">
+          Happy Women’s Day to every woman, girl, and femme turning fragments into systems,
+          systems into stories, and stories into futures.
+        </div>
+      </main>
+
+      <aside class="rail">
+        <div class="manifesto">
+          <div class="manifesto-title">Manifesto fragment</div>
+          <p>
+            Women’s Day coding energy is not sterile, minimal, or apologetic.
+            It can be lush, atmospheric, intelligent, emotional, strategic, and visibly authored.
+          </p>
+        </div>
+
+        <div class="quote-card">
+          <div class="quote-title">Working method</div>
+          <p>
+            Copy. Transform. Reframe. Integrate. Make it immersive.
+            Make it true. Make it useful. Make it beautiful enough to carry the idea.
+          </p>
+        </div>
+
+        <div class="quote-card">
+          <div class="quote-title">Current signature</div>
+          <p>
+            Sound-reactive motion. Regnbuenatt atmosphere. Queer folklore.
+            Editorial web composition. Digital feminist texture. Remix as method.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('network-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const soundCanvas = document.getElementById('sound-canvas');
+    const sctx = soundCanvas.getContext('2d');
+
+    function resizeCanvases() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      soundCanvas.width = window.innerWidth;
+      soundCanvas.height = window.innerHeight;
+    }
+
+    resizeCanvases();
+    window.addEventListener('resize', resizeCanvases);
+
+    const nodes = [];
+    const nodeCount = 46;
+    const connectionDistance = 220;
+    let hueShift = 0;
+
+    class Node {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.42;
+        this.vy = (Math.random() - 0.5) * 0.42;
+        this.radius = Math.random() * 2.1 + 1;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${180 + Math.sin(hueShift) * 35}, 100%, 78%, 0.9)`;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = '#ff85c2';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    for (let i = 0; i < nodeCount; i++) {
+      nodes.push(new Node());
+    }
+
+    function drawConnections() {
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < connectionDistance) {
+            const opacity = (1 - distance / connectionDistance) * 0.22;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(255, 133, 194, ${opacity})`;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    const soundBars = Array.from({ length: 70 }, (_, i) => ({
+      index: i,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.012 + Math.random() * 0.022,
+      heightFactor: 0.24 + Math.random() * 0.88
+    }));
+
+    function drawSoundReactiveField(time) {
+      sctx.clearRect(0, 0, soundCanvas.width, soundCanvas.height);
+
+      const centerY = soundCanvas.height * 0.72;
+      const barWidth = soundCanvas.width / soundBars.length;
+      const pulse = (Math.sin(time * 0.0018) + 1) * 0.5;
+
+      soundBars.forEach((bar, i) => {
+        const wave =
+          Math.sin(time * bar.speed + bar.phase) * 0.5 +
+          Math.sin(time * 0.0021 + i * 0.22) * 0.34 +
+          pulse * 0.45;
+
+        const amplitude = Math.max(18, wave * 96 * bar.heightFactor + 42);
+        const x = i * barWidth;
+
+        const gradient = sctx.createLinearGradient(x, centerY - amplitude, x, centerY + amplitude);
+        gradient.addColorStop(0, 'rgba(255, 216, 142, 0)');
+        gradient.addColorStop(0.28, 'rgba(255, 133, 194, 0.18)');
+        gradient.addColorStop(0.63, 'rgba(142, 220, 255, 0.18)');
+        gradient.addColorStop(1, 'rgba(155, 255, 224, 0)');
+
+        sctx.fillStyle = gradient;
+        sctx.fillRect(x + 1, centerY - amplitude, Math.max(2, barWidth - 2), amplitude * 2);
+      });
+
+      sctx.beginPath();
+      for (let x = 0; x <= soundCanvas.width; x += 8) {
+        const y =
+          soundCanvas.height * 0.29 +
+          Math.sin((x * 0.012) + time * 0.0021) * 18 +
+          Math.sin((x * 0.019) - time * 0.0016) * 10;
+        if (x === 0) sctx.moveTo(x, y);
+        else sctx.lineTo(x, y);
+      }
+      sctx.strokeStyle = 'rgba(213, 140, 255, 0.16)';
+      sctx.lineWidth = 2;
+      sctx.stroke();
+    }
+
+    function animate(time = 0) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hueShift += 0.01;
+
+      drawConnections();
+
+      nodes.forEach(node => {
+        node.update();
+        node.draw();
+      });
+
+      drawSoundReactiveField(time);
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    const binaryBg = document.getElementById('binary-bg');
+
+    function generateBinary() {
+      let binary = '';
+      const rows = Math.floor(window.innerHeight / 16);
+      const cols = Math.floor(window.innerWidth / 9);
+      const glyphs = ['1', '0', '◆', '◇', '●', '▓', '█', '✦', '✧'];
+
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+          if (i % 8 === 0 && j % 12 === 0) {
+            binary += '█';
+          } else if (Math.random() > 0.986) {
+            binary += glyphs[Math.floor(Math.random() * glyphs.length)];
+          } else {
+            binary += Math.random() > 0.5 ? '1' : '0';
+          }
+          if (j % 8 === 7) binary += ' ';
+        }
+        binary += '\n';
+      }
+
+      return binary;
+    }
+
+    binaryBg.textContent = generateBinary();
+
+    let glitchCounter = 0;
+    setInterval(() => {
+      const chars = binaryBg.textContent.split('');
+
+      for (let i = 0; i < 34; i++) {
+        const pos = Math.floor(Math.random() * chars.length);
+        if (chars[pos] === '1') chars[pos] = '0';
+        else if (chars[pos] === '0') chars[pos] = '1';
+      }
+
+      glitchCounter++;
+      if (glitchCounter % 18 === 0) {
+        for (let i = 0; i < 8; i++) {
+          const pos = Math.floor(Math.random() * chars.length);
+          chars[pos] = ['█', '▓', '◆', '✦'][Math.floor(Math.random() * 4)];
+        }
+      }
+
+      binaryBg.textContent = chars.join('');
+    }, 110);
+
+    const turingBoxes = document.querySelectorAll('.turing-test');
+    turingBoxes.forEach(box => {
+      box.addEventListener('click', () => {
+        box.style.background = 'rgba(255, 133, 194, 0.1)';
+        box.style.transform = 'scale(0.985)';
+        box.style.borderColor = 'rgba(255, 216, 142, 0.42)';
+        box.style.boxShadow = '0 0 40px rgba(255, 216, 142, 0.2)';
+
+        setTimeout(() => {
+          box.style.background = 'rgba(255,255,255,0.05)';
+          box.style.transform = 'scale(1)';
+          box.style.borderColor = 'rgba(142, 220, 255, 0.28)';
+          box.style.boxShadow = '0 0 30px rgba(142, 220, 255, 0.14)';
+        }, 170);
+      });
+    });
+
+    console.log('%c╔══════════════════════════════════════════════════════════════════════╗', 'color: #ffd88e; font-size: 10px; font-family: Courier New;');
+    console.log('%c║  ADA → TURING → REMIX WEBCRAFT → REGNBUENATT → SOUND REAKTIV       ║', 'color: #ff85c2; font-size: 11px; font-family: Courier New; font-weight: bold;');
+    console.log('%c║  Editorial feminist interface protocols successfully initialized    ║', 'color: #8edcff; font-size: 10px; font-family: Courier New;');
+    console.log('%c╚══════════════════════════════════════════════════════════════════════╝', 'color: #9bffe0; font-size: 10px; font-family: Courier New;');
+    console.log('%c[1843] Lovelace writes beyond repetitive calculation...', 'color: #c4b7d7; font-size: 10px; font-family: Courier New;');
+    console.log('%c[2026] HTML appropriated, CSS transformed, JavaScript remixed...', 'color: #8edcff; font-size: 10px; font-family: Courier New;');
+    console.log('%c[2026] Regnbuenatt expands into immersive queer folklore systems...', 'color: #ff85c2; font-size: 10px; font-family: Courier New;');
+    console.log('%c[2026] Sound-reactive field humming beneath the page...', 'color: #ffd88e; font-size: 10px; font-family: Courier New;');
+    console.log('%c>>> OUTPUT: Feminist. Atmospheric. Editorial. Community-centered. <<<', 'color: #9bffe0; font-size: 11px; font-weight: bold; font-family: Courier New;');
+  </script>
+</body>
+</html>
