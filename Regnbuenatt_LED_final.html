@@ -1,0 +1,2778 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<title>BERGTATT — Ingrid Ormevik</title>
+<meta name="description" content="A generative audiovisual system by Ingrid Ormevik. Activation: Regnbuenatt 2026 · Marinehagen · 6 June.">
+<meta name="author" content="Ingrid Ormevik">
+
+<!-- Open Graph -->
+
+<meta property="og:title" content="BERGTATT — Ingrid Ormevik">
+<meta property="og:description" content="A generative audiovisual system. Activation: Regnbuenatt 2026 · Marinehagen · 6 June.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingridormevik.github.io/regnbuenatt_ingrid.html">
+<meta property="og:image" content="https://ingridormevik.github.io/regnbuenatt_preview.jpg">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="Bergtatt · Ingrid Ormevik">
+
+<!-- Twitter / X Card -->
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BERGTATT — Ingrid Ormevik">
+<meta name="twitter:description" content="A generative audiovisual system. Activation: Regnbuenatt 2026 · Marinehagen · 6 June.">
+<meta name="twitter:image" content="https://ingridormevik.github.io/regnbuenatt_preview.jpg">
+
+<!-- Theme color -->
+
+<meta name="theme-color" content="#000408">
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400;700&family=Courier+Prime&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;overflow:hidden;width:100vw;height:100vh;cursor:none;}
+canvas{position:fixed;inset:0;pointer-events:none;}
+#c-bg{z-index:0;}
+#c-mount{z-index:1;}
+#c-fjord{z-index:2;}
+#c-fog{z-index:3;}
+#c-roots{z-index:4;}
+#c-forest{z-index:5;}
+#c-shrooms{z-index:6;}
+#c-wisps{z-index:7;}
+#c-creatures{z-index:8;}
+#c-rain{z-index:9;opacity:0.35;}
+#c-parts{z-index:9;}
+#c-wave{z-index:10;bottom:-30px;top:auto;height:120px;}
+#c-shaman{z-index:13;}
+#c-nature{z-index:11;}
+#c-rivers{z-index:12;}
+#c-bergen{z-index:14;}
+#c-digital{z-index:15;}
+#c-witch{z-index:16;}
+#c-text{z-index:20;}
+
+@keyframes flicker{0%,100%{opacity:0.85}50%{opacity:1}60%{opacity:0.9}80%{opacity:0.95}}
+@keyframes roseGlow{0%,100%{text-shadow:0 0 40px rgba(255,120,90,0.5),0 0 80px rgba(255,80,60,0.2)}50%{text-shadow:0 0 60px rgba(255,160,100,0.7),0 0 120px rgba(255,100,70,0.35)}}
+@keyframes goldPulse{0%,100%{box-shadow:0 0 30px rgba(60,190,220,0.08),inset 0 0 20px rgba(60,190,220,0.03)}50%{box-shadow:0 0 60px rgba(60,190,220,0.15),inset 0 0 40px rgba(60,190,220,0.06)}}
+@keyframes witchPulse{0%,100%{box-shadow:0 0 40px rgba(140,60,200,0.10),inset 0 0 30px rgba(100,40,160,0.05)}50%{box-shadow:0 0 80px rgba(180,80,255,0.18),inset 0 0 60px rgba(140,60,200,0.09)}}
+@keyframes witchGlow{0%,100%{text-shadow:0 0 40px rgba(180,100,255,0.5),0 0 80px rgba(120,40,200,0.2)}50%{text-shadow:0 0 70px rgba(220,140,255,0.7),0 0 140px rgba(160,60,240,0.35)}}
+
+#startcard.witch-mode{
+border-color:rgba(140,60,200,0.25);
+background:rgba(4,0,10,0.92);
+animation:witchPulse 5s ease infinite;
+}
+#startcard.witch-mode .sc-title{animation:witchGlow 4s ease infinite;color:#f0e4ff;letter-spacing:0.55em;}
+.btn.witch{border-color:rgba(140,60,200,0.5);color:rgba(200,140,255,0.9);}
+.btn.witch:hover,.btn.witch.active{border-color:rgba(180,100,255,0.9);color:#f0e4ff;background:rgba(140,60,200,0.08);box-shadow:0 0 22px rgba(140,60,200,0.18);}
+.witch-sub{font-family:‘Courier Prime’,monospace;font-size:9px;letter-spacing:0.3em;color:rgba(180,120,255,0.35);margin-top:4px;}
+#bpm-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-family:‘Courier Prime’,monospace;font-size:8px;letter-spacing:0.22em;color:rgba(180,120,255,0.4);pointer-events:none;}
+
+#startcard.bergen-mode{
+border-color:rgba(60,190,220,0.2);
+background:rgba(0,4,10,0.90);
+animation:goldPulse 4s ease infinite;
+}
+#startcard.bergen-mode .sc-title{
+font-size:clamp(16px,3.8vw,28px);
+letter-spacing:0.6em;
+animation:roseGlow 3s ease infinite;
+color:#e0f8ff;
+}
+.btn.bergen{border-color:rgba(60,190,220,0.5);color:rgba(140,220,240,0.9);}
+.btn.bergen:hover,.btn.bergen.active{border-color:rgba(100,220,240,0.9);color:#e0f8ff;background:rgba(60,190,220,0.08);box-shadow:0 0 20px rgba(60,190,220,0.15);}
+.bergen-sub{font-family:‘Courier Prime’,monospace;font-size:9px;letter-spacing:0.3em;color:rgba(100,210,230,0.35);margin-top:4px;}
+
+/* ── ROTATE NUDGE ── */
+#rotate-nudge{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.92);display:none;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-family:‘Cinzel’,serif;font-size:13px;letter-spacing:0.3em;text-align:center;gap:16px;}
+#rotate-nudge svg{opacity:0.5;}
+#cursor{position:fixed;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,rgba(255,45,109,0.9),transparent 70%);box-shadow:0 0 20px rgba(255,45,109,0.5);pointer-events:none;z-index:999;transform:translate(-50%,-50%);mix-blend-mode:screen;}
+
+@keyframes auroraShift {
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+#ui{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;}
+#startcard{
+border:1px solid rgba(255,255,255,0.14);
+padding:38px 36px 36px;
+text-align:center;
+background:rgba(0,3,6,0.82);
+backdrop-filter:blur(12px);
+max-width:440px;
+width:90%;
+display:flex;
+flex-direction:column;
+align-items:center;
+position:relative;
+overflow:hidden;
+}
+#startcard::before{
+content:’’;
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,
+rgba(228,3,3,0.04) 0%,
+rgba(255,140,0,0.04) 16%,
+rgba(255,237,0,0.04) 33%,
+rgba(0,160,60,0.05) 50%,
+rgba(0,100,220,0.05) 66%,
+rgba(120,10,180,0.04) 83%,
+rgba(228,3,3,0.04) 100%
+);
+background-size:300% 300%;
+animation:auroraShift 8s ease infinite;
+pointer-events:none;
+}
+.sc-title{
+font-family:‘Cinzel’,serif;
+font-size:clamp(16px,3.8vw,28px);
+letter-spacing:0.6em;
+color:#fff;
+margin-bottom:8px;
+position:relative;
+text-shadow:0 0 30px rgba(100,220,160,0.4);
+}
+.sc-sub{font-family:‘Courier Prime’,monospace;font-size:10px;letter-spacing:0.28em;color:rgba(255,255,255,0.35);margin-bottom:28px;position:relative;}
+.sc-label{font-family:‘Cinzel’,serif;font-size:8px;letter-spacing:0.35em;color:rgba(255,255,255,0.28);margin-bottom:9px;margin-top:16px;position:relative;}
+.row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:4px;position:relative;}
+.btn{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:0.2em;padding:0;width:120px;height:38px;text-align:center;border:1px solid rgba(255,255,255,0.22);background:transparent;color:rgba(255,255,255,0.65);cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;justify-content:center;}
+.btn:hover,.btn.active{border-color:rgba(255,255,255,0.75);color:#fff;background:rgba(255,255,255,0.05);}
+.btn-play{font-family:‘Bebas Neue’,sans-serif;font-size:18px;letter-spacing:0.3em;padding:13px 36px;border:1px solid rgba(100,220,160,0.4);background:transparent;color:rgba(200,255,220,0.9);cursor:pointer;margin-top:22px;transition:all 0.2s;position:relative;text-shadow:0 0 12px rgba(100,220,160,0.5);}
+.btn-play:hover{background:rgba(100,220,160,0.07);box-shadow:0 0 30px rgba(100,220,160,0.12);}
+
+#hud{position:fixed;z-index:50;width:100%;height:100%;display:none;pointer-events:none;}
+#hud-stats{position:absolute;top:20px;left:24px;font-family:‘Courier Prime’,monospace;font-size:10px;letter-spacing:0.2em;color:rgba(255,255,255,0.2);line-height:1.8;}
+#chapter-name{position:absolute;top:20px;right:24px;font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:0.35em;color:rgba(255,255,255,0.2);text-align:right;line-height:1.9;}
+#hud-ctrl{position:absolute;bottom:130px;right:24px;display:flex;flex-direction:column;gap:8px;align-items:flex-end;pointer-events:all;}
+.hbtn{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:0.2em;padding:7px 14px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;}
+.hbtn:hover,.hbtn.active{border-color:rgba(255,255,255,0.7);color:#fff;}
+#mic-badge{font-family:‘Cinzel’,serif;font-size:8px;letter-spacing:0.3em;color:rgba(255,80,120,0.8);display:none;padding:4px 10px;border:1px solid rgba(255,80,120,0.3);}
+</style>
+
+</head>
+<body>
+<div id="cursor"></div>
+<div id="rotate-nudge">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22h6"/><path d="M2 9l3-3 3 3"/><path d="M5 6v6"/></svg>
+  ROTATE FOR BEST EXPERIENCE
+</div>
+<div id="beat-flash"></div>
+<canvas id="c-bg"></canvas>
+<canvas id="c-mount"></canvas>
+<canvas id="c-fjord"></canvas>
+<canvas id="c-fog"></canvas>
+<canvas id="c-roots"></canvas>
+<canvas id="c-forest"></canvas>
+<canvas id="c-shrooms"></canvas>
+<canvas id="c-wisps"></canvas>
+<canvas id="c-creatures"></canvas>
+<canvas id="c-rain"></canvas>
+<canvas id="c-parts"></canvas>
+<canvas id="c-wave" style="position:fixed;bottom:-30px;left:0;width:100%;height:120px;z-index:10;"></canvas>
+<canvas id="c-shaman"></canvas>
+<canvas id="c-nature"></canvas>
+<canvas id="c-rivers"></canvas>
+<canvas id="c-bergen"></canvas>
+<canvas id="c-digital"></canvas>
+<canvas id="c-witch"></canvas>
+<canvas id="c-text"></canvas>
+
+<div id="ui">
+  <div id="startcard">
+    <div class="sc-title">BERGTATT</div>
+    <div class="sc-sub">ACTIVATION: REGNBUENATT 2026 · MARINEHAGEN · 6 JUNE</div>
+    <div class="witch-sub" id="pride-sub" style="display:none;">BERGEN PRIDE 2026 · 30 MAY — 6 JUNE · Det Akademiske Kvarter &amp; Nygårdsparken</div>
+    <div class="witch-sub" id="magical-sub" style="display:none;">WHERE THE OLD CREATURES STILL WALK · Nøkken · Draugen · Huldra · Bergtrollet · Fossegrimen</div>
+    <div class="witch-sub" id="forbidden-sub" style="display:none;">THE FORBIDDEN FOREST OPENS AT MIDNIGHT · Club Seduction · Marinehagen · 6 June</div>
+    <div class="bergen-sub" id="bergen-sub" style="display:none;">DEDICATED TO OUR CITY · SEVEN MOUNTAINS · ONE FJORD · Bergen, du er oss</div>
+    <div class="witch-sub" id="witch-sub" style="display:none;">WITCH PRINCESS · LIQUID MOON · FOREST MEETING</div>
+    <div class="witch-sub" id="digital-sub" style="display:none;">WHERE THE FOREST MEETS THE NETWORK · roots · nodes · signal · memory</div>
+    <div class="sc-label">MOOD</div>
+    <div class="row" id="mood-row">
+      <button class="btn active" data-mode="pride">PRIDE</button>
+      <button class="btn" data-mode="magical">MAGICAL</button>
+      <button class="btn" data-mode="forbidden">FORBIDDEN</button>
+      <button class="btn bergen" data-mode="bergen">BERGEN</button>
+      <button class="btn witch" data-mode="witch">WITCH</button>
+      <button class="btn" data-mode="digital" style="border-color:rgba(0,255,180,0.5);color:rgba(0,255,180,0.9);">DIGITAL</button>
+    </div>
+    <button class="btn-play" id="btn-play">🎙 ENTER THE FOREST</button>
+    <div id="bpm-hint"></div>
+  </div>
+</div>
+
+<div id="hud">
+  <div id="hud-stats">
+    BPM <b id="s-bpm">—</b><br>
+    BASS <b id="s-bass">—</b><br>
+    ENERGY <b id="s-energy">—</b>
+  </div>
+  <div id="chapter-name">
+    <span id="s-chapter"></span><br>
+    <span id="s-creature" style="opacity:0.5;font-size:8px;letter-spacing:0.2em;"></span>
+  </div>
+  <div id="hud-ctrl">
+    <div class="row" id="hud-mood">
+      <button class="hbtn active" data-mode="pride">PRIDE</button>
+      <button class="hbtn" data-mode="magical">MAGICAL</button>
+      <button class="hbtn" data-mode="forbidden">FORBIDDEN</button>
+      <button class="hbtn" data-mode="bergen" style="border-color:rgba(60,190,220,0.4);color:rgba(140,220,240,0.7);">BERGEN</button>
+      <button class="hbtn" data-mode="witch" style="border-color:rgba(140,60,200,0.5);color:rgba(200,140,255,0.8);">WITCH</button>
+      <button class="hbtn" data-mode="digital" style="border-color:rgba(0,255,180,0.4);color:rgba(0,255,180,0.8);">DIGITAL</button>
+    </div>
+    <button class="hbtn" id="btn-stop">STOP</button>
+    <div id="mic-badge">🎙 LIVE MIC</div>
+  </div>
+</div>
+
+<script>
+const W=()=>window.innerWidth, H=()=>window.innerHeight, TAU=Math.PI*2;
+const isMobile=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+
+// Rotate nudge for portrait mode on mobile
+const rotateNudge=document.getElementById('rotate-nudge');
+function checkOrientation(){
+  if(isMobile&&window.innerHeight>window.innerWidth){rotateNudge.style.display='flex';}
+  else{rotateNudge.style.display='none';}
+}
+checkOrientation();
+window.addEventListener('resize',checkOrientation);
+window.addEventListener('orientationchange',()=>setTimeout(checkOrientation,200));
+
+// iOS Safari: resume AudioContext on any touch
+document.addEventListener('touchstart',()=>{if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();},{passive:true});
+// cursor
+
+const CID=['c-bg','c-mount','c-fjord','c-fog','c-roots','c-forest','c-shrooms','c-wisps','c-creatures','c-rain','c-parts','c-wave','c-shaman','c-nature','c-rivers','c-bergen','c-digital','c-witch','c-text'];
+const C={};
+CID.forEach(id=>{const el=document.getElementById(id);C[id]={el,cx:el.getContext('2d',{alpha:true,desynchronized:true,willReadFrequently:false})};});
+
+function setSize(id,w,h){const dpr=Math.min(window.devicePixelRatio||1,3),{el,cx}=C[id];el.width=Math.round(w*dpr);el.height=Math.round(h*dpr);el.style.width=w+'px';el.style.height=h+'px';cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality='high';}
+function resizeAll(){const w=W(),h=H();CID.forEach(id=>{if(id==='c-wave')setSize(id,w,120);else setSize(id,w,h);});initForest();initFog();initRain();initRoots();initShrooms();initWisps();initShamanLayer();initMoss();initNeuronNodes();renderMountains();}
+window.addEventListener('resize',resizeAll);
+
+const curEl=document.getElementById('cursor');
+if(!isMobile){document.addEventListener('mousemove',e=>{curEl.style.left=e.clientX+'px';curEl.style.top=e.clientY+'px';});}else{curEl.style.display='none';}
+
+// ============================================================
+//  COLOR MODES
+// ============================================================
+const PRIDE_COLORS=[[228,3,3],[255,140,0],[255,237,0],[0,128,38],[0,77,255],[117,7,135]];
+
+const MODES={
+  pride:{
+    // Cool aurora teal — northern lights, fjord, cosmic
+    primary:[0,220,210],secondary:[120,80,255],
+    forestGlow:[0,200,190],fogColor:[0,12,22],
+    wispColor:[140,255,250],rootColor:[0,140,130],
+    shroomColor:[0,230,210],rainColor:[60,200,220],
+    flash:'rgba(0,220,210,',bg:'rgba(0,2,12,1)',
+    particles:['228,3,3','255,140,0','255,237,0','0,200,83','30,136,229','142,36,170'],
+    auroraColors:[[228,3,3],[255,140,0],[255,237,0],[0,180,60],[0,100,255],[120,10,180]],
+  },
+  magical:{
+    // Deep bioluminescent Norwegian summer forest — mossy, wet, alive
+    primary:[60,255,120],secondary:[20,200,80],
+    forestGlow:[30,200,70],fogColor:[2,14,4],
+    wispColor:[120,255,160],rootColor:[20,120,45],
+    shroomColor:[40,230,90],rainColor:[50,180,80],
+    flash:'rgba(60,255,120,',bg:'rgba(0,6,1,1)',
+    particles:['0,255,80','40,230,100','100,255,60','20,200,90','160,255,100','0,180,60'],
+    auroraColors:[[0,180,50],[20,230,80],[60,255,110],[10,160,40],[80,240,100],[0,200,60]],
+  },
+  forbidden:{
+    primary:[255,20,147],secondary:[255,0,80],
+    forestGlow:[255,20,147],fogColor:[60,0,40],
+    wispColor:[255,80,200],rootColor:[120,0,60],
+    shroomColor:[255,20,147],rainColor:[200,80,160],
+    flash:'rgba(255,20,147,',bg:'rgba(10,0,6,1)',
+    particles:['255,20,147','255,0,80','255,100,200'],
+    auroraColors:[[180,0,120],[255,0,80],[200,0,150],[120,0,80],[255,20,147],[100,0,60]],
+  },
+  bergen:{
+    // Bergen deep nature: bioluminescent blue-green, river teal, neural frost
+    primary:[80,200,220],secondary:[120,240,180],
+    forestGlow:[40,160,180],fogColor:[0,8,14],
+    wispColor:[100,220,240],rootColor:[30,100,120],
+    shroomColor:[60,200,210],rainColor:[80,180,220],
+    flash:'rgba(80,200,220,',bg:'rgba(0,4,10,1)',
+    particles:['80,200,220','120,240,180','60,180,255','180,240,255','100,255,200','40,160,200'],
+    auroraColors:[[20,120,180],[40,160,220],[80,210,240],[60,180,200],[30,140,180],[100,220,240]],
+  },
+  witch:{
+    // Mallika / Witch Princess: deep violet earth, amber ritual fire, forest dark
+    primary:[160,80,255],secondary:[220,140,100],
+    forestGlow:[100,40,180],fogColor:[6,2,10],
+    wispColor:[200,140,255],rootColor:[80,30,120],
+    shroomColor:[180,100,255],rainColor:[140,80,200],
+    flash:'rgba(160,80,255,',bg:'rgba(4,0,10,1)',
+    particles:['160,80,255','220,140,100','100,200,180','200,120,255','255,180,100','80,160,200'],
+    auroraColors:[[100,30,160],[140,60,200],[180,100,255],[80,20,140],[200,120,255],[60,20,120]],
+  },
+  digital:{
+    // Academic dark: deep indigo aurora, cold phosphor green, electric blue, pale gold
+    primary:[80,140,255],secondary:[0,255,180],
+    forestGlow:[40,80,200],fogColor:[2,2,12],
+    wispColor:[140,160,255],rootColor:[40,60,160],
+    shroomColor:[80,120,255],rainColor:[60,100,220],
+    flash:'rgba(80,140,255,',bg:'rgba(1,1,8,1)',
+    particles:['80,140,255','0,255,180','180,160,255','60,200,255','200,180,255','0,180,140'],
+    auroraColors:[[20,20,80],[40,40,140],[80,60,200],[120,80,255],[180,140,255],[220,200,255]],
+  }
+};
+let currentMode='pride';
+const theme=()=>MODES[currentMode];
+
+// BPM fine-tuning per mode — Witch Princess tracks: 85 BPM (Trøllabundin/Forest Meeting), 100 BPM (Guardians/Snow Raven)
+// BEAT_COOL adapts: at 85bpm interval=0.706s → cool=0.34; at 100bpm interval=0.6s → cool=0.28
+// We expose a live BEAT_COOL that the witch mode can adjust
+let BEAT_COOL_LIVE=0.38;
+let BEAT_THRESH_LIVE=130;
+
+function getBeatCool(){
+  if(currentMode==='witch') return 0.32; // tuned between 85 and 100 BPM
+  return 0.38;
+}
+function getBeatThresh(){
+  if(currentMode==='witch') return 118; // slightly more sensitive for organic tribal drums
+  return 130;
+}
+
+// ============================================================
+//  BEAT STATE
+// ============================================================
+let masterBeat=0,smoothBpmFactor=0,smoothEnergy=0,energy=0,bassLevel=0;
+let beatCount=0,bpmEst=50,lastBeatTime=0,globalAngle=0,beatFlashV=0;
+const beatFlashEl=document.getElementById('beat-flash');
+
+let audioCtx=null,analyserHi=null,analyserLo=null,freqHi=null,freqLo=null,timeD=null,micStream=null;
+const BEAT_COOL=0.38,BEAT_THRESH=130;
+// Per-band smooth energy — computed every frame from analyserHi, never touches beat detection
+let sBass=0,sMid=0,sHi=0,sPresence=0;
+
+function detectBeat(){
+  if(!analyserLo)return;
+  analyserLo.getByteFrequencyData(freqLo);
+  let bass=0;for(let i=0;i<6;i++)bass+=freqLo[i];bass/=6;
+  bassLevel=bass;
+  let tot=0;for(const v of freqLo)tot+=v;energy=tot/freqLo.length;
+  if(!audioCtx)return;
+  const now=audioCtx.currentTime;
+  const cool=getBeatCool(), thresh=getBeatThresh();
+  if(bass>thresh&&(now-lastBeatTime)>cool){
+    onBeat();
+    const dt=now-lastBeatTime;
+    if(dt>0.3&&dt<2)bpmEst=Math.round(0.85*bpmEst+0.15*(60/dt));
+    lastBeatTime=now;beatCount++;
+  }
+  // Silence gate: no beat for 3s → kill text and HUD
+  const since=lastBeatTime>0?(now-lastBeatTime):999;
+  if(since>3.0){
+    nTarget=0;nAlpha*=0.85;inPhrase=false;
+    masterBeat*=0.85;smoothBpmFactor*=0.90;smoothEnergy*=0.90;
+    document.getElementById('s-bpm').textContent='—';
+    document.getElementById('s-bass').textContent='—';
+    document.getElementById('s-energy').textContent='—';
+  } else {
+    document.getElementById('s-bass').textContent=Math.round(bass);
+    document.getElementById('s-energy').textContent=Math.round(energy);
+    document.getElementById('s-bpm').textContent=bpmEst;
+  }
+}
+
+function updateBeat(){
+  const t=(energy||0)/255;
+  smoothEnergy+=(t-smoothEnergy)*(t>smoothEnergy?0.18:0.04);
+  smoothEnergy=Math.max(0,Math.min(1,smoothEnergy));
+  const bpmT=smoothEnergy>0.02?Math.min(2,bpmEst/120)*smoothEnergy:0;
+  smoothBpmFactor+=(bpmT-smoothBpmFactor)*(bpmT>smoothBpmFactor?0.008:0.06);
+  smoothBpmFactor=Math.max(0,smoothBpmFactor);
+  const decR=smoothEnergy>0.02?Math.max(0.05,1-(bpmEst/60)*(1/60)*1.6):0.88;
+  masterBeat=Math.max(0,masterBeat*decR);
+  if(audioCtx&&lastBeatTime>0){const spb=60/Math.max(20,bpmEst);globalAngle=((globalAngle+(TAU/(spb*60))*smoothBpmFactor)%(TAU*1000));}
+  // Frequency bands from full-spectrum analyser — each drives different visuals
+  if(analyserHi&&freqHi){
+    analyserHi.getByteFrequencyData(freqHi);
+    const bins=freqHi.length;
+    // Sub-bass + kick: bins 1-8 (~20-350Hz) — ground, mountains, shockwave
+    let rB=0;for(let i=1;i<=8;i++)rB+=freqHi[i];rB/=8;rB=Math.min(1,rB/200);
+    // Mid 250Hz-2kHz: bins 6-45 — forest sway, fog, roots
+    let rM=0;for(let i=6;i<=45;i++)rM+=freqHi[i];rM/=40;rM=Math.min(1,rM/140);
+    // Upper mid 2-6kHz: bins 46-136 — wisps, shrooms, creatures
+    let rP=0;for(let i=46;i<=136;i++)rP+=freqHi[i];rP/=91;rP=Math.min(1,rP/110);
+    // Air / hi-freq 6-16kHz: bins 137-362 — aurora, rain, particles
+    let rH=0;for(let i=137;i<=Math.min(362,bins-1);i++)rH+=freqHi[i];rH/=226;rH=Math.min(1,rH/80);
+    // Silence gate — all bands hard zero below noise floor
+    const gate=energy>12?1:0;
+    sBass+=(rB*gate-sBass)*(rB*gate>sBass?0.6:0.12);
+    sMid+=(rM*gate-sMid)*(rM*gate>sMid?0.4:0.08);
+    sPresence+=(rP*gate-sPresence)*(rP*gate>sPresence?0.5:0.10);
+    sHi+=(rH*gate-sHi)*(rH*gate>sHi?0.55:0.07);
+    sBass=Math.max(0,sBass);sMid=Math.max(0,sMid);sPresence=Math.max(0,sPresence);sHi=Math.max(0,sHi);
+  } else {
+    sBass*=0.85;sMid*=0.85;sPresence*=0.85;sHi*=0.85;
+  }
+}
+
+function onBeat(){
+  masterBeat=1.0;beatFlashV=1.0;
+  spawnBeatParticles();tickNarrative();
+  tickCreatureOnBeat();spawnBeatRipple();tickShamanOnBeat();
+  trees.forEach(t=>{t.swayV+=(Math.random()-0.5)*0.3*0.8;});
+  shrooms.forEach(s=>{s.glow=1.0;s.ring=1.0;});
+  wisps.forEach(w=>{w.speed*=1+(masterBeat*0.5);});
+  roots.forEach(r=>{r.pulse=1.0;});
+  mossPatches.forEach(m=>{m.glow=Math.min(1,m.glow+masterBeat*0.9);});
+  neuronNodes.forEach(n=>{if(Math.random()<0.35+bassLevel/500)n.pulse=masterBeat;});
+}
+
+// ============================================================
+//  NARRATIVE ARC — 5 chapters × 12 phrases = 60 phrases
+//  Tied to the 5 creatures. Each chapter ~1 minute at 128 BPM.
+//  Full arc = 60 minutes. Loop for a 2-hour set.
+// ============================================================
+const CHAPTERS=[
+  { name:'NOKKEN',    creature:'nokken',     colour:'rgba(80,160,255,' },
+  { name:'DRAUGEN',   creature:'draugen',    colour:'rgba(180,230,255,' },
+  { name:'BERGTROLLET',creature:'bergtrollet',colour:'rgba(120,180,80,' },
+  { name:'HULDRA',    creature:'huldra',     colour:'rgba(255,215,150,' },
+  { name:'FOSSEGRIMEN',creature:'fossegrimen',colour:'rgba(120,220,160,' },
+];
+
+const NARRATIVE=[
+  // ── CHAPTER 1: NØKKEN — the water calls ──
+  {main:'the fjord is calling you',sub:'before you knew its name',ch:0},
+  {main:'the water knows the shape of longing',sub:'it has always known you',ch:0},
+  {main:'you have been shapeshifting your whole life',sub:'this is not new',ch:0},
+  {main:'what you thought was drowning',sub:'was transformation',ch:0},
+  {main:'every mirror is a question',sub:'you are the answer',ch:0},
+  {main:'nøkken plays at the edge of becoming',sub:'listen',ch:0},
+  {main:'the water does not ask permission to be deep',sub:'',ch:0},
+  {main:'come to the waterline',sub:'let it show you your real face',ch:0},
+  {main:'the fjord holds your reflection like a love letter',sub:'',ch:0},
+  {main:'you are not lost',sub:'you are finding the path that was always yours',ch:0},
+  {main:'your name echoes off the water',sub:'hear it',ch:0},
+  {main:'nøkken is not the monster they warned you about',sub:'they lied',ch:0},
+  {main:'the water has always known your name',sub:'',ch:0},
+  {main:'pride is not performance',sub:'it is remembering',ch:0},
+  {main:'your body is the flag',sub:'',ch:0},
+  {main:'you did not survive to be quiet about it',sub:'',ch:0},
+  {main:'look at what we built',sub:'look at what we are',ch:0},
+
+  // ── CHAPTER 2: DRAUGEN — rise from the deep ──
+  {main:'they thought they could keep you under',sub:'the sea disagrees',ch:1},
+  {main:'every silenced voice rises eventually',sub:'the fjord proves this',ch:1},
+  {main:'draugen screams because silence was the violence',sub:'',ch:1},
+  {main:'your emergence does not have to be gentle',sub:'',ch:1},
+  {main:'they tried to drown your history',sub:'it floated back',ch:1},
+  {main:'the sea does not forget what it carries',sub:'',ch:1},
+  {main:'grief and rage and beauty',sub:'are not opposites',ch:1},
+  {main:'you rose from the water before',sub:'you will rise again',ch:1},
+  {main:'every wave that breaks is a refusal to stay contained',sub:'',ch:1},
+  {main:'your body is not a shipwreck',sub:'it is a lighthouse',ch:1},
+  {main:'what they called monstrous',sub:'was just the truth they feared',ch:1},
+  {main:'you are not haunting this place',sub:'you are claiming it',ch:1},
+  {main:'we rose from everything they tried to bury us in',sub:'',ch:1},
+  {main:'every generation danced before us',sub:'the door was already open',ch:1},
+  {main:'we are not a phase',sub:'we are a frequency',ch:1},
+  {main:'the sea gave us back everything they threw in',sub:'',ch:1},
+
+  // ── CHAPTER 3: BERGTROLLET — the stone cracks open ──
+  {main:'the mountain does not argue with those who deny it',sub:'it simply exists',ch:2},
+  {main:'you have been here longer than their names for you',sub:'',ch:2},
+  {main:'the stone does not rush to crack',sub:'but it always does',ch:2},
+  {main:'your roots go deeper than their memory',sub:'',ch:2},
+  {main:'they built their rules on stone that was already yours',sub:'',ch:2},
+  {main:'every generation of stone holds the record of pressure',sub:'',ch:2},
+  {main:'patience is a form of power',sub:'you have had centuries of it',ch:2},
+  {main:'the pride cracks through you like light through granite',sub:'',ch:2},
+  {main:'you are not a phase',sub:'you are a geological formation',ch:2},
+  {main:'the mountain is not silent',sub:'it speaks in deep time',ch:2},
+  {main:'Bergen knew you before the city had a name',sub:'',ch:2},
+  {main:'when the stone opens',sub:'what comes out is light',ch:2},
+  {main:'you are not new',sub:'you are ancient',ch:2},
+  {main:'every stone thrown at us',sub:'we are still standing',ch:2},
+  {main:'we cracked through every law that tried to contain us',sub:'',ch:2},
+  {main:'we built this',sub:'',ch:2},
+
+  // ── CHAPTER 4: HULDRA — the hidden becomes visible ──
+  {main:'huldra kept her tail hidden because they made her',sub:'she will no longer',ch:3},
+  {main:'the forest has always known what you are',sub:'it never judged',ch:3},
+  {main:'your wildness is not a flaw',sub:'it is the oldest thing about you',ch:3},
+  {main:'they wanted you beautiful and domesticated',sub:'the tail disagrees',ch:3},
+  {main:'what you hide in daylight',sub:'comes out dancing at night',ch:3},
+  {main:'the pine knows how to be itself in every season',sub:'',ch:3},
+  {main:"huldra's song draws people in",sub:'because truth is magnetic',ch:3},
+  {main:'you owe no one a version of yourself that fits their comfort',sub:'',ch:3},
+  {main:'the forest does not apologize for its darkness',sub:'',ch:3},
+  {main:'every creature here knows your scent',sub:'they are not afraid',ch:3},
+  {main:'you belong to this forest',sub:'not to their expectations',ch:3},
+  {main:'let your tail show',sub:'it is gorgeous',ch:3},
+  {main:'your strangeness is not a burden',sub:'it is your gift',ch:3},
+  {main:'show all of it',sub:'',ch:3},
+  {main:'desire is not shameful',sub:'it is sacred',ch:3},
+
+  // ── CHAPTER 5: FOSSEGRIMEN — the music that survives ──
+  {main:'fossegrimen plays and the water follows',sub:'play yourself into existence',ch:4},
+  {main:'every note is a refusal to be silent',sub:'',ch:4},
+  {main:'the fiddle strings are every colour at once',sub:'',ch:4},
+  {main:"you don't need their permission to make music of your life",sub:'',ch:4},
+  {main:'the waterfall plays without stopping',sub:'be that',ch:4},
+  {main:'queer hands have always held the bow',sub:'we taught the first musicians',ch:4},
+  {main:'your joy is not frivolous',sub:'it is radical',ch:4},
+  {main:'we have been dancing in every century',sub:'this one is ours',ch:4},
+  {main:'the music is older than the law',sub:'it will outlast it',ch:4},
+  {main:'every heartbeat is a rhythm in the oldest song',sub:'',ch:4},
+  {main:'Bergen is ours tonight',sub:'this mountain knows our names',ch:4},
+  {main:'we are the ones who survive',sub:'we are the ones who sing',ch:4},
+  {main:'every queer person who ever danced is in this room with you',sub:'',ch:4},
+  {main:'your joy is a political act',sub:'never forget that',ch:4},
+  {main:'this is what we fought for',sub:'this floor. this night.',ch:4},
+  {main:'the music outlasts everything they threw at it',sub:'',ch:4},
+  {main:'your body remembers every time it was free',sub:'',ch:4},
+];
+
+// ── BERGEN NARRATIVE — mountains, magic, belonging ──
+const BERGEN_NARRATIVE=[
+  // ── Mountains and geography ──
+  {main:'munkebotn knows your name at midnight',sub:'the mountain has always known',ch:0},
+  {main:'stoltzekleiven is not a climb',sub:'it is a return',ch:0},
+  {main:'sandviksbatteriet: the fortress was never theirs',sub:'it was always yours',ch:0},
+  {main:'seven mountains hold seven secrets',sub:'you know every single one',ch:0},
+  {main:'fløyen sees you every morning',sub:'and says: yes, still you',ch:0},
+  {main:'ulriken is the tallest',sub:'and it bends toward you',ch:0},
+  {main:"bergen's rain is not sad",sub:'it is intimate',ch:0},
+  {main:'this city is small enough to know you',sub:'large enough to hold you',ch:0},
+  {main:'the fjord stretches toward the horizon',sub:'carrying everything it knows about you',ch:0},
+
+  // ── Bergen and belonging ──
+  {main:'bryggen has seen everything',sub:'it keeps quiet about all of it',ch:1},
+  {main:'bergen survived the plague and everything after',sub:'and you',ch:1},
+  {main:'the rain falls on queer and non-queer alike',sub:'it is democratic',ch:1},
+  {main:'we marched in these streets when the law said we should not',sub:'the mountains watched',ch:1},
+  {main:'bergen is not kind to everyone',sub:'it is kind to us',ch:1},
+  {main:'this city received you',sub:'that is not an accident',ch:1},
+
+  // ── Mysticism and westland energy ──
+  {main:'the seven mountains are not just geography',sub:'they are character',ch:2},
+  {main:"bergen's magic is grey and green and wet",sub:'and absolutely real',ch:2},
+  {main:'you can walk from city centre to forest in fifteen minutes',sub:'that is not normal. it is beautiful.',ch:2},
+  {main:'the mountain above the city reminds you that you are small',sub:'and that this is a relief',ch:2},
+  {main:'the mystical energy of the west coast is not metaphor',sub:'it is in the ground',ch:2},
+  {main:'bergen was built in a landscape that was already magical',sub:'we simply joined it',ch:2},
+
+  // ── Queerness and nature ──
+  {main:'the west norwegian nature is not innocent',sub:'it is ancient and it knows things',ch:3},
+  {main:'bergen is a city for those who want mountain and sea and darkness at once',sub:'',ch:3},
+  {main:'the rain makes everything intimate',sub:'that is very queer of the rain',ch:3},
+  {main:'those of us who grew up here knew early',sub:'nature held us even when people did not',ch:3},
+  {main:'fløyen remembers you as a child',sub:'and as the one you became',ch:3},
+  {main:"the west coast's wildness is our wildness",sub:'we belong to this landscape',ch:3},
+
+  // ── Digital and closing ──
+  {main:'the Turing test: fragments of a life saved by pixels',sub:'first place. always.',ch:4},
+  {main:'twine holds what words alone cannot',sub:'',ch:4},
+  {main:'the dragonborn within is always queer',sub:'skyrim knew before you did',ch:4},
+  {main:'every path you choose is the right one',sub:'',ch:4},
+  {main:'den forbudte skogen was never forbidden',sub:'just waiting',ch:4},
+  {main:'we are bergensers and we are queer',sub:'that is the same sentence',ch:4},
+  {main:'bergen is a city where music is played near water',sub:'that is not coincidental',ch:4},
+  {main:'tonight this entire mountain belongs to us',sub:'',ch:4},
+  {main:'regnbuenatt 2026: this is the closing song',sub:'Bergen Pride · Marinehagen · June 6',ch:4},
+];
+
+// Bergen's 7 mountains with approximate screen positions and names
+const BERGEN_FJELL=[
+  {name:'FLØYEN',      nx:0.45, ny:0.25, nw:0.18, iconic:true},
+  {name:'ULRIKEN',     nx:0.72, ny:0.17, nw:0.22, iconic:true},
+  {name:'LØVSTAKKEN',  nx:0.25, ny:0.30, nw:0.20, iconic:false},
+  {name:'DAMSGÅRDSFJELLET',nx:0.10,ny:0.36,nw:0.18, iconic:false},
+  {name:'SANDVIKSFJELLET',nx:0.55,ny:0.22,nw:0.17, iconic:false},
+  {name:'LYDERHORN',   nx:0.06, ny:0.42, nw:0.15, iconic:false},
+  {name:'RUNDEMANEN',  nx:0.36, ny:0.28, nw:0.16, iconic:false},
+];
+
+const BPH=80,BFIN=22,BHOLD=32,BFOUT=8;
+const TOTAL_BEATS=NARRATIVE.length*BPH;
+let nBeat=0,nAlpha=0,nTarget=0;
+let phraseBeat=0,phraseIdx=0,inPhrase=false;
+let charSparks=[],lastPhraseIdx=-1;
+let dataLines=[];
+for(let i=0;i<6;i++)dataLines.push({y:Math.random(),spd:0.0002+Math.random()*0.0004,a:0,target:0,ph:Math.random()*Math.PI*2});
+
+function tickNarrative(){
+  const cb=nBeat%TOTAL_BEATS;
+  nBeat++;
+  const bip=cb%BPH;
+  const pi=Math.floor(cb/BPH);
+  phraseIdx=pi;
+  if(bip<BFIN){nTarget=bip/BFIN;inPhrase=true;phraseBeat=bip;}
+  else if(bip<BFIN+BHOLD){nTarget=1;inPhrase=true;phraseBeat=bip;}
+  else if(bip<BFIN+BHOLD+BFOUT){nTarget=1-(bip-BFIN-BHOLD)/BFOUT;inPhrase=true;phraseBeat=bip;}
+  else{nTarget=0;inPhrase=false;phraseBeat=bip;}
+  if(bip%8===0){const dl=dataLines[Math.floor(Math.random()*dataLines.length)];dl.target=0.08+Math.random()*0.06;dl.y=0.15+Math.random()*0.65;}
+
+  // Update HUD chapter name
+  const ch=NARRATIVE[pi%NARRATIVE.length].ch;
+  const chap=CHAPTERS[ch];
+  document.getElementById('s-chapter').textContent=chap.name;
+  document.getElementById('s-creature').textContent=chap.creature.toUpperCase();
+}
+
+// ── WITCH PRINCESS NARRATIVE — Forest Meeting EP ──
+const WITCH_NARRATIVE=[
+  // ── The Journey after Trøllabundin ──
+  {main:'we are not alone',sub:'we have never been alone',ch:0},
+  {main:'your ancestors walked this forest before you',sub:'they walk it still',ch:0},
+  {main:'the drum is older than language',sub:'your body remembers',ch:0},
+  {main:'we are all connected to mother earth',sub:'every root knows your name',ch:0},
+  {main:'the cocoa opens what fear has closed',sub:'let it',ch:0},
+  {main:'humanity connects to our ancestors',sub:'across every century',ch:0},
+  {main:'the drum began before the first word was spoken',sub:'',ch:0},
+  {main:'the crone is humming at the edge of the forest',sub:'she knows you are coming',ch:0},
+  {main:'you are not entering something foreign',sub:'you are entering something forgotten',ch:0},
+  {main:'the trance is not a loss of self',sub:'it is a deeper finding',ch:0},
+  {main:'trøllabundin: spellbound and walking forward',sub:'',ch:0},
+  {main:'every animal in this wood has paused to watch you pass',sub:'',ch:0},
+
+  // ── Forest Meeting ──
+  {main:'the forest has been waiting for this meeting',sub:'it prepared the space',ch:1},
+  {main:'what you feel in your chest right now',sub:'that is recognition',ch:1},
+  {main:'your grief is ancient',sub:'so is your joy',ch:1},
+  {main:'we are all connected',sub:'river to root to rain to river',ch:1},
+  {main:'the tree does not ask if it belongs here',sub:'neither do you',ch:1},
+  {main:'your heartbeat is a drum in the oldest ceremony',sub:'',ch:1},
+  {main:'sweet and wild and aching and real',sub:'this is the love story',ch:1},
+  {main:'they move like water / like wind / like wanting',sub:'',ch:1},
+  {main:'the boundary between your world and theirs',sub:'was always thin here',ch:1},
+  {main:'this is not metaphor',sub:'you are actually here',ch:1},
+  {main:'the forest spirits do not run from what you are',sub:'they were waiting for exactly this',ch:1},
+
+  // ── Guardians ──
+  {main:'the guardians are not obstacles',sub:'they are witnesses',ch:2},
+  {main:'you have been here before',sub:'in every body that carried your blood',ch:2},
+  {main:'mother earth holds your weight without asking why',sub:'',ch:2},
+  {main:'what they tried to silence in you',sub:'the forest amplifies',ch:2},
+  {main:'your ancestors survived so you could dance here',sub:'',ch:2},
+  {main:'the stone remembers every prayer',sub:'yours is heard',ch:2},
+  {main:'the elders are singing / the young ones answer back',sub:'this is how it passes on',ch:2},
+  {main:'you are dancing with your ancestors and your living friends',sub:'in the same moment',ch:2},
+  {main:'life is a gift',sub:'the guardians came to remind you',ch:2},
+  {main:'every tribe that danced before us left the rhythm in the ground',sub:'you can feel it',ch:2},
+  {main:'dance',sub:'it is the oldest instruction and it is still correct',ch:2},
+
+  // ── Snow Raven ──
+  {main:'the raven carries your name to the spirit world',sub:'and brings back medicine',ch:3},
+  {main:'we are woven from the same thread',sub:'every living thing',ch:3},
+  {main:'this is not escape',sub:'this is remembering',ch:3},
+  {main:'we are not alone',sub:'not tonight, not ever',ch:3},
+  {main:'let the music move what the mind holds too tight',sub:'',ch:3},
+  {main:'humanity is connected',sub:'across every ocean, every mountain',ch:3},
+  {main:'snow raven sings from the arctic',sub:'her message travels every ocean',ch:3},
+  {main:'we are all indigenous to this earth',sub:'all of us / without exception',ch:3},
+  {main:'the earth remembers even when we do not',sub:'',ch:3},
+  {main:'how do we live the old knowledge inside the new world',sub:'we carry it in the body',ch:3},
+  {main:'let the raven carry your name somewhere cold and true',sub:'',ch:3},
+  {main:'we are not separate from the world',sub:'we are the world / dancing',ch:3},
+];
+
+// ── MAGICAL — queer coded Norwegian creatures ──
+const MAGICAL_NARRATIVE=[
+  {main:'nøkken lives between shapes',sub:'choosing a new one each night',ch:0},
+  {main:'the water holds every form you have ever been',sub:'',ch:0},
+  {main:'his voice sounds like the thing you want most',sub:'',ch:0},
+  {main:'every river that runs to the sea is looking for something',sub:'so is he',ch:0},
+  {main:'the boundary between his world and yours is already thin',sub:'',ch:0},
+  {main:'what the water shows you',sub:'keep it',ch:0},
+  {main:'nøkken does not change for anyone',sub:'he changes because he wants to',ch:0},
+  {main:'the mirror has never lied',sub:'not once',ch:0},
+  {main:'some call it enchantment',sub:'he calls it recognition',ch:0},
+  {main:'he is still there',sub:'just below the surface / still singing',ch:0},
+  {main:'what he offers is not safe',sub:'it is necessary',ch:0},
+  {main:'his love was too large for the world that rejected it',sub:'the water kept it',ch:0},
+
+  {main:'draugen screams because he was never given the words',sub:'',ch:1},
+  {main:'the half-boat carries everything that was refused burial',sub:'',ch:1},
+  {main:'he haunts because he refuses to stay gone',sub:'',ch:1},
+  {main:'they called it a curse',sub:'he calls it loyalty',ch:1},
+  {main:'the sea held him when the land would not',sub:'',ch:1},
+  {main:'every ghost is just someone who was not allowed to finish',sub:'',ch:1},
+  {main:'his body is salt and fury',sub:'and he is beautiful',ch:1},
+  {main:'he did not choose to rise',sub:'the water would not keep him down',ch:1},
+  {main:'he does not haunt this coast',sub:'he owns it',ch:1},
+  {main:'the sea brought him back',sub:'the sea always brings us back',ch:1},
+  {main:'what they called monstrous',sub:'was just the truth they feared',ch:1},
+  {main:'none of us stay gone',sub:'',ch:1},
+
+  {main:'bergtrollet has been in this mountain since before the city had a name',sub:'',ch:2},
+  {main:'his love is measured in centuries',sub:'not years',ch:2},
+  {main:'he turned to stone once',sub:'he turned back / he always turns back',ch:2},
+  {main:'the troll who loved the wrong person',sub:'there is no such thing',ch:2},
+  {main:'every crack in the granite is where something beautiful tried to get out',sub:'',ch:2},
+  {main:'his patience is not weakness',sub:'it is the weight of everything he has survived',ch:2},
+  {main:'bergtrollet does not need you to understand him',sub:'only to stand here',ch:2},
+  {main:'the mountain remembers every prayer',sub:'every longing / every name',ch:2},
+  {main:'he is still here',sub:'he will still be here',ch:2},
+  {main:'they threw stones at the mountain',sub:'the mountain is still there',ch:2},
+  {main:'his hands have held this landscape since the ice retreated',sub:'',ch:2},
+  {main:'the mountain loves slowly',sub:'and completely',ch:2},
+
+  {main:'huldra is the forest letting itself be desired',sub:'',ch:3},
+  {main:'her tail is not a flaw',sub:'it is a signature',ch:3},
+  {main:'she chose this form',sub:'she chooses it every time',ch:3},
+  {main:'they wanted her beautiful and obedient',sub:'she kept the tail',ch:3},
+  {main:'her song does not trick',sub:'it offers',ch:3},
+  {main:'the hollow in her back is where she keeps what she will not give away',sub:'',ch:3},
+  {main:'she moves through the forest like she invented it',sub:'she did',ch:3},
+  {main:'huldra takes nothing that is not freely given',sub:'and it is always freely given',ch:3},
+  {main:'her desire is not dangerous',sub:'yours was just unprepared for it',ch:3},
+  {main:'she peeks from behind the tree',sub:'because she decides when she steps out',ch:3},
+  {main:'she belongs to herself',sub:'first / always',ch:3},
+  {main:'every creature in this wood has felt her pass',sub:'',ch:3},
+
+  {main:'fossegrimen sits at the waterfall and plays what cannot be said',sub:'',ch:4},
+  {main:'he will teach you his music',sub:'the price is that you feel everything',ch:4},
+  {main:'every note is something someone could not hold inside anymore',sub:'',ch:4},
+  {main:'the fiddle knows what the throat cannot carry',sub:'',ch:4},
+  {main:'the strings vibrate with every colour',sub:'the rainbow was his idea',ch:4},
+  {main:'fossegrimen does not play for audiences',sub:'he plays for the ones who need it',ch:4},
+  {main:'the waterfall plays without stopping',sub:'he plays without stopping',ch:4},
+  {main:'every queer musician who ever played contains him',sub:'',ch:4},
+  {main:'the music never stops',sub:'',ch:4},
+  {main:'he is still there at the waterfall',sub:'you can hear him if you listen',ch:4},
+  {main:'his music is older than the words for what he is',sub:'',ch:4},
+  {main:'what the fiddle plays tonight',sub:'outlasts everything',ch:4},
+];
+
+// ── FORBIDDEN — X-rated version of the creatures ──
+const FORBIDDEN_NARRATIVE=[
+  {main:'nøkken comes to you at the waterline',sub:'and he is exactly what you want',ch:0},
+  {main:'the water is warm and dark',sub:'and he is waiting',ch:0},
+  {main:'his hands know the shape of you before you arrive',sub:'',ch:0},
+  {main:'the boundary between his world and yours dissolves here',sub:'let it',ch:0},
+  {main:'he has no interest in your inhibitions',sub:'leave them on the bank',ch:0},
+  {main:'desire does not ask permission from the mind',sub:'',ch:0},
+  {main:'he will not remember your name',sub:'you will not forget his',ch:0},
+  {main:'what happens at the waterline',sub:'stays at the waterline',ch:0},
+  {main:'come in',sub:'',ch:0},
+  {main:'what he offers is not safe',sub:'it is necessary',ch:0},
+  {main:'your body knows what it needs',sub:'the water knows / he knows',ch:0},
+  {main:'the night has no morning',sub:'if you do not want it to',ch:0},
+
+  {main:'draugen wants you',sub:'and does not apologise for it',ch:1},
+  {main:'his body is cold and salt',sub:'and entirely his',ch:1},
+  {main:'there are no rules here',sub:'that were not written for someone else',ch:1},
+  {main:'the dead do not follow the instructions of the living',sub:'',ch:1},
+  {main:'what they called dangerous',sub:'you call yours',ch:1},
+  {main:'he will not be gentle',sub:'unless you ask him to be',ch:1},
+  {main:'the night opens like a wound',sub:'in the best way',ch:1},
+  {main:'this is not love',sub:'this is older than love / this is hunger',ch:1},
+  {main:'draugen at the waterline',sub:'this is your invitation',ch:1},
+  {main:'the sea does not ask',sub:'it takes and gives equally',ch:1},
+  {main:'take what you were never allowed to take',sub:'',ch:1},
+  {main:'his hands are the hands of everything that was repressed',sub:'',ch:1},
+
+  {main:'bergtrollet is slow and enormous',sub:'and entirely focused on you',ch:2},
+  {main:'he has all night',sub:'he has all century / he is in no rush',ch:2},
+  {main:'the mountain does not hurry',sub:'and neither will he',ch:2},
+  {main:'his patience is its own kind of violence',sub:'',ch:2},
+  {main:'his hands know everything',sub:'',ch:2},
+  {main:'the deep bass of his voice moves through stone',sub:'it moves through you',ch:2},
+  {main:'there is nothing soft about him',sub:'except the way he holds your face',ch:2},
+  {main:'he knows where everything is',sub:'he has always known',ch:2},
+  {main:'this is not tender',sub:'this is the other thing / the old thing',ch:2},
+  {main:'let the mountain have you',sub:'you will be changed by the stone',ch:2},
+  {main:'every nerve you have is a geological formation',sub:'and he knows the terrain',ch:2},
+  {main:'the stone remembers',sub:'and so will you',ch:2},
+
+  {main:'huldra chose you',sub:'this is not an accident',ch:3},
+  {main:'her desire is a forest fire',sub:'and she is letting it burn',ch:3},
+  {main:'she will not make herself smaller',sub:'she is full size and she knows it',ch:3},
+  {main:'she takes her time',sub:'because she has decided this is worth her time',ch:3},
+  {main:'her tail moves in the dark',sub:'and it is the most beautiful thing',ch:3},
+  {main:'she knows what you want',sub:'she knew before you did',ch:3},
+  {main:'her pleasure is not a gift to you',sub:'it is her own and she shares it',ch:3},
+  {main:'she is not performing anything',sub:'she is completely herself / here',ch:3},
+  {main:'huldra does not leave',sub:'until she wants to',ch:3},
+  {main:'the forest holds all of this',sub:'there are no neighbours in the forest',ch:3},
+  {main:'she belongs to herself',sub:'everything else is negotiated',ch:3},
+  {main:'the branches above you',sub:'a canopy and a conspiracy',ch:3},
+
+  {main:'fossegrimen plays until your body loses the thread of itself',sub:'',ch:4},
+  {main:'the music is inside you now',sub:'and he knows it',ch:4},
+  {main:'every note is somewhere on your skin',sub:'',ch:4},
+  {main:'the waterfall is loud enough',sub:'that no one can hear anything',ch:4},
+  {main:'he does not offer this to everyone',sub:'you were chosen by the sound',ch:4},
+  {main:'the fiddle strings vibrate',sub:'at the frequency of your wanting',ch:4},
+  {main:'he plays and you move',sub:'the difference between those two things disappears',ch:4},
+  {main:'all night',sub:'the waterfall / the dark / the music / you',ch:4},
+  {main:'fossegrimen does not stop',sub:'until the wanting stops',ch:4},
+  {main:'the wanting does not stop',sub:'',ch:4},
+  {main:'the fiddle plays',sub:'',ch:4},
+  {main:'this is what he was waiting at the waterfall for',sub:'',ch:4},
+];
+
+function currentPhrase(){
+  const cb=(nBeat-1)%TOTAL_BEATS;
+  if(currentMode==='bergen'){const ib=cb%(BERGEN_NARRATIVE.length*BPH);return BERGEN_NARRATIVE[Math.floor(ib/BPH)%BERGEN_NARRATIVE.length];}
+  if(currentMode==='witch'){const wb=cb%(WITCH_NARRATIVE.length*BPH);return WITCH_NARRATIVE[Math.floor(wb/BPH)%WITCH_NARRATIVE.length];}
+  if(currentMode==='magical'){const mb=cb%(MAGICAL_NARRATIVE.length*BPH);return MAGICAL_NARRATIVE[Math.floor(mb/BPH)%MAGICAL_NARRATIVE.length];}
+  if(currentMode==='forbidden'){const fb=cb%(FORBIDDEN_NARRATIVE.length*BPH);return FORBIDDEN_NARRATIVE[Math.floor(fb/BPH)%FORBIDDEN_NARRATIVE.length];}
+  if(currentMode==='digital'){const db=cb%(DIGITAL_NARRATIVE.length*BPH);return DIGITAL_NARRATIVE[Math.floor(db/BPH)%DIGITAL_NARRATIVE.length];}
+  return NARRATIVE[Math.floor(cb/BPH)%NARRATIVE.length];
+}
+function currentChapter(){
+  if(currentMode==='digital'){const p=currentPhrase();return p?DIGITAL_CHAPTERS[p.ch]:DIGITAL_CHAPTERS[0];}
+  const p=currentPhrase();return p?CHAPTERS[p.ch]:CHAPTERS[0];
+}
+function phraseType(p){
+  if(!p)return'forest';
+  const m=p.main;
+  if(m.includes('algorithm')||m.includes('glitch')||m.includes('fiddle')||m.includes('music')||m.includes('note')||m.includes('song'))return'music';
+  if(m.includes('earth')||m.includes('roots')||m.includes('connected')||m.includes('tree')||m.includes('forest')||m.includes('pine')||m.includes('tail'))return'earth';
+  if(m.includes('fjord')||m.includes('water')||m.includes('wave')||m.includes('sea')||m.includes('nokken')||m.includes('draugen'))return'water';
+  if(m.includes('mountain')||m.includes('stone')||m.includes('rock')||m.includes('granite')||m.includes('troll'))return'stone';
+  return'forest';
+}
+
+// ============================================================
+//  CREATURE SYSTEM — ALL 5 always visible, chapter one highlighted
+// ============================================================
+const CREATURE_NAMES=['nokken','draugen','bergtrollet','huldra','fossegrimen'];
+const CS=CREATURE_NAMES.map((name,i)=>({
+  name,
+  ph:Math.random()*TAU,ph2:Math.random()*TAU,ph3:Math.random()*TAU,
+  x:[0.08, 0.82, 0.42, 0.19, 0.44][i],
+  y:[0.68, 0.66, 0.28, 0.63, 0.38][i],
+  alpha:0.0,
+  targetAlpha:0.0,
+  // Each creature has an independent visibility schedule
+  visTimer:Math.floor(Math.random()*400)+80,  // beats until next appearance check
+  visible:false,
+  stayTimer:0,   // how many beats to stay visible
+}));
+
+let activeCreature=-1;  // -1 = none
+let creatureFrameTick=0;
+const IDLE_FRAMES=90;
+
+// Estimated beats per hour at ~120bpm: 7200 beats
+// We track a separate wall-clock start to know when 1hr has passed
+let sessionStartTime=0;
+let allCreaturesMode=false; // true after ~1hr
+
+// Probability and timing config
+const CREATURE_APPEAR_CHANCE=0.08;    // chance per check-tick that a creature appears
+const CREATURE_MIN_STAY=60;           // min beats visible
+const CREATURE_MAX_STAY=180;          // max beats visible
+const CREATURE_CHECK_INTERVAL=40;     // beats between appearance rolls
+const ONE_HOUR_MS=3600000;            // 1 hour in ms
+const CONVERGENCE_BEATS=320;          // beats for the all-together convergence sequence
+
+let creatureBeatClock=0;              // counts beats since session start
+let convergenceActive=false;
+let convergenceBeat=0;
+
+function tickCreatureOnBeat(){
+  creatureBeatClock++;
+
+  // Check if ~1 hour has passed
+  if(running && sessionStartTime>0 && !allCreaturesMode){
+    const elapsed=performance.now()-sessionStartTime;
+    if(elapsed>=ONE_HOUR_MS){
+      allCreaturesMode=true;
+      convergenceActive=true;
+      convergenceBeat=0;
+      // Immediately start bringing all creatures in
+      CS.forEach((c,i)=>{
+        c.visible=true;
+        c.stayTimer=CONVERGENCE_BEATS+i*30;
+        c.targetAlpha=0;
+      });
+    }
+  }
+
+  // CONVERGENCE: all 5 appear together
+  if(convergenceActive){
+    convergenceBeat++;
+    const prog=Math.min(1,convergenceBeat/CONVERGENCE_BEATS);
+    CS.forEach((c,i)=>{
+      const delay=i*30;
+      const localProg=Math.max(0,Math.min(1,(convergenceBeat-delay)/120));
+      c.targetAlpha=localProg*(0.65+masterBeat*0.35);
+    });
+    if(convergenceBeat>CONVERGENCE_BEATS+150){
+      // After convergence fades, return to sporadic
+      convergenceActive=false;
+      allCreaturesMode=false;
+      CS.forEach(c=>{c.visible=false;c.targetAlpha=0;c.visTimer=60+Math.floor(Math.random()*200);});
+    }
+    return;
+  }
+
+  // SPORADIC MODE: independent timers per creature
+  CS.forEach((c,i)=>{
+    if(c.visible){
+      c.stayTimer--;
+      // Pulse on beat
+      c.targetAlpha=Math.min(1,c.targetAlpha*(0.995)+masterBeat*0.03);
+      if(c.stayTimer<=0){
+        c.visible=false;
+        c.targetAlpha=0;
+        // Rest for a while before reappearing
+        c.visTimer=CREATURE_CHECK_INTERVAL*3+Math.floor(Math.random()*CREATURE_CHECK_INTERVAL*8);
+        activeCreature=-1;
+      }
+    } else {
+      c.visTimer--;
+      c.targetAlpha=Math.max(0,c.targetAlpha*0.88);
+      if(c.visTimer<=0){
+        // Roll to appear — only if no other creature is currently visible
+        const anyVisible=CS.some(x=>x.visible);
+        if(!anyVisible && Math.random()<CREATURE_APPEAR_CHANCE+smoothEnergy*0.06+masterBeat*0.04){
+          c.visible=true;
+          c.stayTimer=CREATURE_MIN_STAY+Math.floor(Math.random()*(CREATURE_MAX_STAY-CREATURE_MIN_STAY));
+          c.targetAlpha=0.65+masterBeat*0.2;
+          activeCreature=i;
+        } else {
+          // Try again soon
+          c.visTimer=CREATURE_CHECK_INTERVAL+Math.floor(Math.random()*CREATURE_CHECK_INTERVAL*2);
+        }
+      }
+    }
+  });
+
+  // Idle: cycle slowly for preview, one at a time
+  if(!running){
+    creatureFrameTick++;
+    if(creatureFrameTick>=IDLE_FRAMES){
+      creatureFrameTick=0;
+      CS.forEach(c=>{c.visible=false;c.targetAlpha=0;});
+      activeCreature=(activeCreature+1)%5;
+      CS[activeCreature].visible=true;
+      CS[activeCreature].targetAlpha=0.55;
+      CS[activeCreature].stayTimer=IDLE_FRAMES*2;
+    }
+  }
+}
+
+// Initialise: all hidden, staggered first-appearance timers
+CS.forEach((c,i)=>{
+  c.alpha=0;c.targetAlpha=0;
+  c.visTimer=120+i*60+Math.floor(Math.random()*120);
+  c.visible=false;
+});
+// Show first creature quickly in idle
+CS[0].targetAlpha=0.5;CS[0].visible=true;CS[0].stayTimer=200;
+activeCreature=0;
+
+// ============================================================
+//  PARTICLES
+// ============================================================
+const MAX_PARTS=300;
+let parts=[],ripples=[];
+function spawnBeatParticles(){
+  const th=theme(),cols=th.particles;
+  for(let i=0;i<18;i++){
+    const ang=Math.random()*TAU,spd=1+Math.random()*3+masterBeat*2,col=cols[Math.floor(Math.random()*cols.length)];
+    parts.push({x:W()*0.5+Math.random()*W()*0.6-W()*0.3,y:H()*(0.3+Math.random()*0.5),vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd-2,r:2+Math.random()*3,a:0.8+Math.random()*0.2,col,life:1,decay:0.012+Math.random()*0.015,beat:true});
+  }
+  if(parts.length>MAX_PARTS)parts=parts.slice(-MAX_PARTS);
+}
+function spawnBeatRipple(){ripples.push({x:W()*(0.2+Math.random()*0.6),y:H()*(0.4+Math.random()*0.35),r:0,maxR:100+Math.random()*150,a:masterBeat*0.5});}
+function updateParticles(){
+  parts=parts.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.05;p.a-=p.decay;p.life-=p.decay;return p.a>0.01;});
+  if(parts.length>MAX_PARTS)parts.length=MAX_PARTS;
+  ripples=ripples.filter(r=>{r.r+=2+smoothBpmFactor*2;r.a*=0.93;return r.a>0.005&&r.r<r.maxR;});
+  if(ripples.length>40)ripples.length=40;
+}
+
+// ============================================================
+//  MOUNTAINS
+// ============================================================
+const FJELL=[{x:0.03,py:0.54,w:0.16},{x:0.16,py:0.45,w:0.21},{x:0.31,py:0.38,w:0.20},{x:0.50,py:0.26,w:0.27},{x:0.65,py:0.34,w:0.22},{x:0.78,py:0.43,w:0.20},{x:0.93,py:0.52,w:0.17}];
+
+function buildRidge(f,WW,HH,detail,roughness){
+  const px=f.x*WW,peakY=f.py*HH,hw=f.w*WW*0.52,baseY=HH*0.73;
+  const leftX=px-hw*1.55,rightX=px+hw*1.55,pts=[],steps=detail,seed=f.x*1000;
+  const sn=(i,oct)=>Math.sin(i*2.1*oct+seed*0.3)*0.5+Math.sin(i*3.7*oct+seed*0.7)*0.3+Math.sin(i*7.3*oct+seed*1.1)*0.2;
+  for(let s=0;s<=steps;s++){
+    const t2=s/steps,x=leftX+(rightX-leftX)*t2;
+    const para=1-Math.pow((t2-0.5)*2,2);
+    const profileY=baseY-(baseY-peakY)*Math.sqrt(Math.max(0,para));
+    const dn=sn(t2*8,1)*roughness*HH*0.015+sn(t2*16,2)*roughness*HH*0.006+sn(t2*32,3)*roughness*HH*0.003;
+    pts.push({x,y:profileY+dn});
+  }
+  pts[0].y=baseY;pts[steps].y=baseY;return pts;
+}
+function fillRidge(cx,pts,baseY,fillStyle){
+  cx.beginPath();pts.forEach((p,i)=>{i===0?cx.moveTo(p.x,p.y):cx.lineTo(p.x,p.y);});
+  cx.lineTo(pts[pts.length-1].x,baseY);cx.closePath();cx.fillStyle=fillStyle;cx.fill();
+}
+function drawPineLine(cx,pts,treeH,treeA,treeCol,sway){
+  const spacing=Math.max(2,Math.floor(pts.length/28));
+  for(let i=0;i<pts.length;i+=spacing){
+    const tx=pts[i].x+(Math.random()-0.5)*4,ty=pts[i].y,th2=treeH*(0.7+Math.random()*0.6),tw=th2*0.38;
+    const swayX=Math.sin(pts[i].x*0.08)*sway;
+    cx.beginPath();
+    for(let tier=0;tier<3;tier++){const ty2=ty-th2*(tier*0.32),tw2=tw*(1.1-tier*0.25),th3=th2*0.38;cx.moveTo(tx+swayX,ty2-th3);cx.lineTo(tx+swayX-tw2,ty2+th3*0.2);cx.lineTo(tx+swayX+tw2,ty2+th3*0.2);cx.closePath();}
+    cx.rect(tx+swayX-tw*0.06,ty,tw*0.12,th2*0.18);cx.fillStyle=treeCol;cx.fill();
+  }
+}
+function rn(x,s){return Math.sin(x*4.3+s)*0.5+Math.sin(x*11.7+s*0.4)*0.3;}
+
+function renderMountains(){
+  const{el,cx}=C['c-mount'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),pc=th.primary,t=performance.now()*0.001,baseY=HH*0.73;
+
+  // Sky
+  const sky=cx.createLinearGradient(0,0,0,baseY);
+  sky.addColorStop(0,'rgba(0,1,8,1)');sky.addColorStop(0.45,`rgba(${(pc[0]*0.04)|0},${(pc[1]*0.04)|0},${(pc[2]*0.09)|0},1)`);sky.addColorStop(1,'rgba(3,5,16,1)');
+  cx.fillStyle=sky;cx.fillRect(0,0,WW,baseY+2);
+
+  // Stars
+  for(let s=0;s<180;s++){
+    const sx=((Math.sin(s*7.13+77)*0.5+0.5))*WW,sy=((Math.sin(s*3.77+38.5)*0.5+0.5))*baseY*0.78;
+    const sr=0.4+(Math.sin(s*1.9+77)*0.5+0.5)*0.8,sa=(0.35+masterBeat*0.35)*(0.3+(Math.sin(s*2.33+t*0.3)*0.5+0.5)*0.7);
+    cx.beginPath();cx.arc(sx,sy,sr*(1+masterBeat*0.5),0,TAU);cx.fillStyle=`rgba(200,210,230,${sa})`;cx.fill();
+  }
+
+  // Aurora — shifts per narrative chapter
+  {
+    // Chapter-specific aurora palettes (match the creature's feeling)
+    const CHAPTER_AURORA=[
+      [[0,140,220],[40,180,255],[80,210,255],[100,230,255],[60,160,230],[20,120,200]],   // nokken — deep fjord blue
+      [[180,210,255],[200,225,255],[160,195,240],[140,180,230],[210,230,255],[100,160,220]], // draugen — pale ghost ice
+      [[80,160,60],[120,200,80],[60,140,50],[100,180,70],[140,220,90],[50,120,40]],       // bergtrollet — granite green
+      [[255,200,80],[255,215,120],[220,170,60],[255,230,140],[200,160,50],[255,190,90]],  // huldra — golden forest
+      [[PRIDE_COLORS[0],PRIDE_COLORS[1],PRIDE_COLORS[2],PRIDE_COLORS[3],PRIDE_COLORS[4],PRIDE_COLORS[5]].flat()], // fossegrimen — full pride
+    ];
+    // Flattened chapter aurora colours
+    const CAC=[
+      [[0,140,220],[40,180,255],[80,210,255],[100,230,255],[60,160,230],[20,120,200]],
+      [[180,210,255],[200,225,255],[160,195,240],[140,180,230],[210,230,255],[100,160,220]],
+      [[80,160,60],[120,200,80],[60,140,50],[100,180,70],[140,220,90],[50,120,40]],
+      [[255,200,80],[255,215,120],[220,170,60],[255,230,140],[200,160,50],[255,190,90]],
+      [[228,3,3],[255,140,0],[255,237,0],[0,180,60],[0,100,255],[120,10,180]],
+    ];
+    const chIdx=running?currentChapter().name==='NOKKEN'?0:currentChapter().name==='DRAUGEN'?1:currentChapter().name==='BERGTROLLET'?2:currentChapter().name==='HULDRA'?3:4:0;
+    // Blend mode aurora with chapter aurora
+    const modeAcs=th.auroraColors;
+    const chapAcs=CAC[chIdx];
+    const blend=running?Math.min(1,0.35+nAlpha*0.65):0;
+    const acs=modeAcs.map((mc,i)=>{const cc=chapAcs[i];return[Math.round(mc[0]*(1-blend)+cc[0]*blend),Math.round(mc[1]*(1-blend)+cc[1]*blend),Math.round(mc[2]*(1-blend)+cc[2]*blend)];});
+    const aY=HH*0.06,totalAH=HH*0.34,bandH=totalAH/acs.length;
+    acs.forEach((col,ci)=>{
+      const by=aY+ci*bandH;
+      const aA=(0.05+sHi*0.22+masterBeat*0.18)*(0.7+0.3*Math.sin(t*0.25+ci*0.8));
+      for(let ax=0;ax<WW;ax+=WW*0.07){
+        const aox=Math.sin(ax*0.0025+t*0.38+ci*1.4)*HH*0.022;
+        const aurora=cx.createLinearGradient(0,by+aox,0,by+aox+bandH*1.8);
+        aurora.addColorStop(0,'transparent');
+        aurora.addColorStop(0.35,`rgba(${col[0]},${col[1]},${col[2]},${aA})`);
+        aurora.addColorStop(0.75,`rgba(${col[0]},${col[1]},${col[2]},${aA*0.4})`);
+        aurora.addColorStop(1,'transparent');
+        cx.fillStyle=aurora;cx.fillRect(ax,by+aox-bandH*0.2,WW*0.11,bandH*2.3);
+      }
+    });
+  }
+
+  // Moon
+  {
+    const mx=WW*0.78,my=HH*0.14,mr=Math.min(WW,HH)*0.028*(1+masterBeat*0.07);
+    const halo=cx.createRadialGradient(mx,my,mr*0.8,mx,my,mr*7);
+    halo.addColorStop(0,`rgba(${pc[0]},${pc[1]},${pc[2]},${0.10+masterBeat*0.10})`);halo.addColorStop(1,'transparent');
+    cx.fillStyle=halo;cx.fillRect(mx-mr*7,my-mr*7,mr*14,mr*14);
+    cx.beginPath();cx.arc(mx,my,mr,0,TAU);cx.fillStyle=`rgba(245,240,218,${0.88+masterBeat*0.10})`;
+    cx.shadowBlur=mr*4+masterBeat*24;cx.shadowColor=`rgba(${pc[0]},${pc[1]},${pc[2]},0.65)`;cx.fill();cx.shadowBlur=0;
+  }
+
+  // Far mountains
+  [{cx2:0.12,py:0.38,w:0.22},{cx2:0.36,py:0.32,w:0.28},{cx2:0.60,py:0.28,w:0.26},{cx2:0.83,py:0.35,w:0.22}].forEach(fm=>{
+    const pts=buildRidge({x:fm.cx2,py:fm.py,w:fm.w},WW,HH,60,0.5);
+    const fg=cx.createLinearGradient(fm.cx2*WW,fm.py*HH,fm.cx2*WW,baseY);
+    fg.addColorStop(0,'rgba(18,22,35,0.55)');fg.addColorStop(1,'rgba(10,14,22,0.3)');
+    fillRidge(cx,pts,baseY,fg);
+  });
+
+  // Near mountains — detailed
+  FJELL.forEach((f,i)=>{
+    const pts=buildRidge(f,WW,HH,120,1.4),peakY=f.py*HH,hw=f.w*WW*0.5;
+    const bg2=cx.createLinearGradient(f.x*WW,peakY,f.x*WW,baseY);
+    bg2.addColorStop(0,'rgba(4,5,12,0.99)');bg2.addColorStop(0.55,'rgba(8,9,18,0.97)');bg2.addColorStop(1,'rgba(5,6,14,0.98)');
+    fillRidge(cx,pts,baseY,bg2);
+
+    // Rim light
+    const rimA=0.14+masterBeat*0.18+smoothBpmFactor*0.12;
+    const rim=cx.createLinearGradient(f.x*WW,peakY,f.x*WW,peakY+(baseY-peakY)*0.22);
+    rim.addColorStop(0,`rgba(${pc[0]},${pc[1]},${pc[2]},${rimA})`);rim.addColorStop(1,'transparent');
+    fillRidge(cx,pts,baseY,rim);
+
+    // Striations
+    cx.save();cx.globalAlpha=0.09+masterBeat*0.04;
+    const nStri=10+Math.floor(hw*0.15);
+    for(let st=0;st<nStri;st++){
+      const stX=f.x*WW-hw+(st/nStri)*hw*2,noise=rn(st/nStri,f.x*300);
+      const stYt=peakY+(baseY-peakY)*(0.03+noise*0.04),stYb=peakY+(baseY-peakY)*(0.42+noise*0.08);
+      cx.beginPath();cx.moveTo(stX,stYt);cx.bezierCurveTo(stX+rn(st*0.8,100)*12,stYt+(stYb-stYt)*0.35,stX+rn(st*1.3,200)*12,stYt+(stYb-stYt)*0.65,stX+rn(st*1.7,300)*6,stYb);
+      cx.strokeStyle='rgba(80,90,120,0.55)';cx.lineWidth=0.6+noise*0.3;cx.stroke();
+    }
+    cx.restore();
+
+    // Pine treeline — two bands
+    const beatSway=masterBeat*4+smoothBpmFactor*2;
+    const upPts=pts.filter(p=>{const fr=(p.y-peakY)/(baseY-peakY);return fr>0.22&&fr<0.46;});
+    drawPineLine(cx,upPts,HH*0.022+smoothBpmFactor*HH*0.003,0.7,'rgba(8,14,10,0.72)',beatSway*0.8);
+    const loPts=pts.filter(p=>{const fr=(p.y-peakY)/(baseY-peakY);return fr>0.44&&fr<0.72;});
+    drawPineLine(cx,loPts,HH*0.033+smoothBpmFactor*HH*0.006,0.85,'rgba(6,12,8,0.88)',beatSway);
+
+    // Snow patches
+    cx.save();cx.globalAlpha=0.15+masterBeat*0.07;
+    for(let sp=0;sp<7;sp++){
+      const spPt=Math.floor(pts.length*(0.35+sp*0.05));if(spPt>=pts.length)continue;
+      const sp2=pts[spPt],frac=(sp2.y-peakY)/(baseY-peakY);if(frac>0.20)continue;
+      const spW=hw*(0.035+rn(sp,f.x*400)*0.02);
+      const iceG=cx.createRadialGradient(sp2.x,sp2.y,0,sp2.x,sp2.y,spW*2);
+      iceG.addColorStop(0,'rgba(210,225,245,0.7)');iceG.addColorStop(1,'transparent');
+      cx.beginPath();cx.ellipse(sp2.x,sp2.y,spW,spW*0.28,rn(sp,f.x*500)*0.8,0,TAU);cx.fillStyle=iceG;cx.fill();
+    }
+    cx.restore();
+
+    // Base fog
+    const bfg=cx.createLinearGradient(f.x*WW,baseY-(baseY-peakY)*0.22,f.x*WW,baseY+10);
+    bfg.addColorStop(0,'transparent');bfg.addColorStop(1,`rgba(${th.fogColor[0]+3},${th.fogColor[1]+3},${th.fogColor[2]+10},${0.18+smoothBpmFactor*0.12})`);
+    fillRidge(cx,pts,baseY,bfg);
+  });
+
+  // INGRID mode: Bergen's 7 named mountains with labels + rim glow
+  if(currentMode==='bergen'){
+    const t2=performance.now()*0.001;
+    BERGEN_FJELL.forEach((bf,bi)=>{
+      const mx=bf.nx*WW,my=bf.ny*HH;
+      const labelA=(0.3+Math.sin(t2*0.4+bi*1.1)*0.1+masterBeat*0.12)*(bf.iconic?1:0.65);
+      // Peaked glow behind mountain
+      const bGlow=cx.createRadialGradient(mx,my,0,mx,my,WW*0.10*(1+masterBeat*0.3));
+      bGlow.addColorStop(0,`rgba(60,190,220,${labelA*0.18+masterBeat*0.08})`);
+      bGlow.addColorStop(1,'transparent');
+      cx.fillStyle=bGlow;cx.fillRect(mx-WW*0.12,my-HH*0.08,WW*0.24,HH*0.16);
+      // Mountain name label — floats above peak
+      cx.save();
+      cx.font=`${bf.iconic?'400':'300'} ${bf.iconic?9:7}px 'Cinzel',serif`;
+      cx.letterSpacing='0.25em';
+      cx.textAlign='center';cx.textBaseline='bottom';
+      cx.shadowBlur=12+masterBeat*16;cx.shadowColor=`rgba(80,210,240,${labelA})`;
+      cx.fillStyle=`rgba(160,235,255,${labelA*(bf.iconic?0.75:0.50)})`;
+      cx.fillText(bf.name,mx,my-HH*0.025);
+      cx.shadowBlur=0;cx.restore();
+    });
+  }
+
+  cx.restore();
+}
+
+// ============================================================
+//  FJORD
+// ============================================================
+let fjordT=0,fjordRipples=[];
+function renderFjord(){
+  const{el,cx}=C['c-fjord'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),pc=th.primary,t=performance.now()*0.001;
+  fjordT+=0.004+smoothBpmFactor*0.006;
+  const fy=HH*0.71,fh=HH*0.29;
+  cx.fillStyle='rgba(0,2,10,0.92)';cx.fillRect(0,fy,WW,fh);
+  for(let w=0;w<5;w++){
+    const wY=fy+w*(fh*0.1),amp=1.8+w*0.7+smoothBpmFactor*6+masterBeat*12,freq=0.004+w*0.001;
+    cx.beginPath();cx.moveTo(0,wY);
+    for(let x=0;x<=WW;x+=5)cx.lineTo(x,wY+Math.sin(x*freq+fjordT*(0.4+w*0.15))*amp);
+    cx.lineTo(WW,wY+amp*2);cx.lineTo(0,wY+amp*2);cx.closePath();
+    cx.fillStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},${(0.05-w*0.007)+smoothBpmFactor*0.04+masterBeat*0.05})`;cx.fill();
+  }
+  if(masterBeat>0.65&&fjordRipples.length<10)fjordRipples.push({x:WW*(0.2+Math.random()*0.6),y:fy+fh*0.2,r:0,a:masterBeat*0.45});
+  fjordRipples=fjordRipples.filter(r=>{r.r+=1.5+smoothBpmFactor*2;r.a*=0.94;if(r.a<0.01)return false;cx.beginPath();cx.ellipse(r.x,r.y,r.r,r.r*0.3,0,0,TAU);cx.strokeStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},${r.a})`;cx.lineWidth=1.2;cx.stroke();return true;});
+  cx.restore();
+}
+
+// ============================================================
+//  RIVERS — INGRID mode: Bergen rivers, organic + bioluminescent blue
+// ============================================================
+// Each river is defined by organic control points flowing mountain to fjord
+const RIVER_DEFS=[
+  // Osaelva — Fløyen shoulder down through Sentrum
+  {seed:0.44, pts:[{x:0.445,y:0.27},{x:0.440,y:0.34},{x:0.432,y:0.42},{x:0.421,y:0.51},{x:0.408,y:0.60},{x:0.395,y:0.68},{x:0.382,y:0.76}], w:2.6, hue:[60,190,230]},
+  // Nygårdsbekken — Ulriken flank eastward
+  {seed:0.58, pts:[{x:0.585,y:0.24},{x:0.572,y:0.33},{x:0.556,y:0.42},{x:0.540,y:0.51},{x:0.523,y:0.60},{x:0.508,y:0.69}], w:1.8, hue:[40,170,220]},
+  // Munkebotn stream — Sandviksfjellet north
+  {seed:0.26, pts:[{x:0.258,y:0.31},{x:0.272,y:0.40},{x:0.284,y:0.50},{x:0.295,y:0.59},{x:0.305,y:0.68}], w:1.3, hue:[80,210,240]},
+  // Svartediket outflow — Løvstakken west
+  {seed:0.19, pts:[{x:0.195,y:0.35},{x:0.207,y:0.44},{x:0.218,y:0.54},{x:0.228,y:0.63},{x:0.237,y:0.71}], w:1.1, hue:[50,180,210]},
+  // Lungegårdsvann canal — eastern approach
+  {seed:0.70, pts:[{x:0.702,y:0.29},{x:0.690,y:0.38},{x:0.675,y:0.48},{x:0.660,y:0.57},{x:0.645,y:0.66}], w:1.5, hue:[70,200,235]},
+];
+
+let riverT=0;
+
+function renderRivers(){
+  const{el,cx}=C['c-rivers'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);
+  if(currentMode!=='bergen'){return;}
+  cx.save();cx.scale(dpr,dpr);
+  riverT+=0.007+smoothBpmFactor*0.011;
+  const t2=performance.now()*0.001;
+
+  RIVER_DEFS.forEach((river,ri)=>{
+    const wpts=river.pts.map((p,pi)=>({
+      x:p.x*WW + Math.sin(pi*1.4+riverT*1.6+ri*2.1)*WW*0.006*(1+masterBeat),
+      y:p.y*HH
+    }));
+    const [r,g,b]=river.hue;
+    const baseW=river.w*(1+masterBeat*0.9+smoothEnergy*0.3);
+
+    // Deep glow halo underneath
+    cx.beginPath();
+    wpts.forEach((p,i)=>{i===0?cx.moveTo(p.x,p.y):cx.lineTo(p.x,p.y);});
+    cx.strokeStyle=`rgba(${r},${g},${b},${0.06+masterBeat*0.05})`;
+    cx.lineWidth=baseW*7;cx.lineCap='round';cx.lineJoin='round';
+    cx.shadowBlur=18+masterBeat*20;cx.shadowColor=`rgba(${r},${g},${b},0.3)`;
+    cx.stroke();cx.shadowBlur=0;
+
+    // Mid water body
+    cx.beginPath();
+    wpts.forEach((p,i)=>{
+      const wav=Math.sin(i*1.1+riverT*2.8+ri*0.8)*2.2*(1+masterBeat*1.4);
+      i===0?cx.moveTo(p.x+wav,p.y):cx.lineTo(p.x+wav,p.y);
+    });
+    cx.strokeStyle=`rgba(${r},${g},${b},${0.18+smoothEnergy*0.06+masterBeat*0.08})`;
+    cx.lineWidth=baseW*2.2;cx.lineCap='round';cx.lineJoin='round';
+    cx.stroke();
+
+    // Surface glint — finest line, highest contrast
+    cx.beginPath();
+    wpts.forEach((p,i)=>{
+      const wav=Math.sin(i*2.2+riverT*4.0+ri*1.3)*1.2;
+      i===0?cx.moveTo(p.x+wav,p.y):cx.lineTo(p.x+wav,p.y);
+    });
+    cx.strokeStyle=`rgba(180,240,255,${0.12+masterBeat*0.10})`;
+    cx.lineWidth=0.8;cx.stroke();
+
+    // Floating bioluminescent motes along the river
+    const moteCount=Math.floor(river.pts.length*3);
+    for(let m=0;m<moteCount;m++){
+      const progress=(m/moteCount + riverT*0.04*(1+ri*0.3)) % 1;
+      const segIdx=Math.min(wpts.length-2, Math.floor(progress*(wpts.length-1)));
+      const segT=progress*(wpts.length-1)-segIdx;
+      const p0=wpts[segIdx], p1=wpts[Math.min(segIdx+1,wpts.length-1)];
+      const mx2=p0.x+(p1.x-p0.x)*segT + Math.sin(t2*2.1+m*0.9)*3;
+      const my2=p0.y+(p1.y-p0.y)*segT + Math.cos(t2*1.7+m*1.3)*1.5;
+      const mA=(0.3+Math.sin(t2*3+m*1.7)*0.3)*(0.5+masterBeat*0.5);
+      const mR=0.7+masterBeat*1.2;
+      cx.beginPath();cx.arc(mx2,my2,mR,0,TAU);
+      cx.fillStyle=`rgba(180,240,255,${mA})`;cx.fill();
+    }
+
+    // Beat ripple rings on river surface
+    if(masterBeat>0.55 && ri===0){
+      const midIdx=Math.floor(wpts.length/2);
+      const rp=wpts[midIdx];
+      cx.beginPath();
+      cx.ellipse(rp.x,rp.y,18*masterBeat,5*masterBeat,0,0,TAU);
+      cx.strokeStyle=`rgba(${r},${g},${b},${masterBeat*0.25})`;
+      cx.lineWidth=1;cx.stroke();
+    }
+  });
+
+  cx.restore();
+}
+
+// ============================================================
+//  INGRID OVERLAY — algorithm rain + CDN nodes + neural web
+// ============================================================
+
+// Code fragment pool — algorithms, JS keywords, data, math
+const CODE_FRAGS=[
+  'function(){}','const x=','[].map(','=>{}','async','await',
+  'Math.sin','canvas','analyser','FFT','BPM','Hz',
+  'rgb(','opacity:','transform','gradient','bezier',
+  'node.connect','CDN','fetch()','stream','data[]',
+  '0x2F','0xFF','null','NaN','∇','∫','∑','λ','φ','∞',
+  'for(;;)','while(','if(!','||','&&','===','!==',
+  '.then(','.catch(','Promise','resolve','reject',
+  'new Audio','AudioCtx','gainNode','oscillator',
+  'requestAnimationFrame','WebGL','Canvas2D','WebAudio',
+];
+
+// Code rain columns — matrix-style but sparse, organic, teal
+const CODE_COLS=[];
+function initCodeRainBergen(){
+  CODE_COLS.length=0;
+  const numCols=Math.floor(W()/38);
+  for(let i=0;i<numCols;i++){
+    CODE_COLS.push({
+      x:(i+Math.random()*0.8)/numCols,
+      y:Math.random(),
+      speed:0.0008+Math.random()*0.0018,
+      frag:CODE_FRAGS[Math.floor(Math.random()*CODE_FRAGS.length)],
+      alpha:Math.random()*0.18,
+      targetA:0,
+      life:0,
+      maxLife:180+Math.floor(Math.random()*240),
+      ph:Math.random()*TAU,
+    });
+  }
+}
+initCodeRainBergen();
+
+// CDN / neural nodes — spread across screen, connect via edges
+const CDN_NODES=[];
+function initCDNNodesBergen(){
+  CDN_NODES.length=0;
+  const count=isMobile?22:38;
+  for(let i=0;i<count;i++){
+    CDN_NODES.push({
+      x:Math.random(),y:0.08+Math.random()*0.82,
+      vx:(Math.random()-0.5)*0.00018,vy:(Math.random()-0.5)*0.00010,
+      r:1.2+Math.random()*2.2,
+      pulse:0,
+      ph:Math.random()*TAU,
+      layer:Math.floor(Math.random()*3), // 0=deep, 1=mid, 2=surface
+      active:false,
+    });
+  }
+}
+initCDNNodesBergen();
+
+let bergenT=0;
+
+function renderBergenOverlay(){
+  const{el,cx}=C['c-bergen'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);
+  if(currentMode!=='bergen'){return;}
+  cx.save();cx.scale(dpr,dpr);
+  bergenT+=0.008;
+  const t2=performance.now()*0.001;
+
+  // ── 1. CODE RAIN — sparse teal fragments drifting downward ──
+  CODE_COLS.forEach((col,ci)=>{
+    col.life++;
+    col.y+=col.speed*(1+smoothBpmFactor*0.8+masterBeat*0.4);
+    if(col.y>1.05||col.life>col.maxLife){
+      col.y=Math.random()*0.2-0.1;
+      col.x=(ci+Math.random()*0.6)/CODE_COLS.length;
+      col.frag=CODE_FRAGS[Math.floor(Math.random()*CODE_FRAGS.length)];
+      col.life=0;
+      col.maxLife=180+Math.floor(Math.random()*240);
+      col.speed=0.0008+Math.random()*0.0018;
+      col.alpha=0;
+    }
+    // fade in/out arc
+    const lifeRatio=col.life/col.maxLife;
+    col.targetA = lifeRatio<0.12 ? lifeRatio/0.12
+                : lifeRatio>0.80 ? (1-lifeRatio)/0.20
+                : 1.0;
+    col.alpha+=(col.targetA*0.11-col.alpha)*0.06;
+    const a=col.alpha*(0.08+smoothEnergy*0.04+masterBeat*0.06);
+    if(a<0.005)return;
+    cx.save();
+    cx.font=`300 ${9+Math.floor(masterBeat*2)}px 'Courier Prime',monospace`;
+    cx.textAlign='left';
+    cx.fillStyle=`rgba(80,210,230,${a})`;
+    cx.shadowBlur=masterBeat>0.5?6:0;
+    cx.shadowColor=`rgba(80,210,230,${a*0.5})`;
+    cx.fillText(col.frag, col.x*WW, col.y*HH);
+    cx.shadowBlur=0;
+    cx.restore();
+  });
+
+  // ── 2. CDN / NEURAL NODES + EDGES ──
+  // Move nodes gently
+  CDN_NODES.forEach(n=>{
+    n.x+=n.vx*(1+smoothBpmFactor*0.5);
+    n.y+=n.vy*(1+smoothBpmFactor*0.3);
+    if(n.x<0.01)n.vx=Math.abs(n.vx);
+    if(n.x>0.99)n.vx=-Math.abs(n.vx);
+    if(n.y<0.06)n.vy=Math.abs(n.vy);
+    if(n.y>0.92)n.vy=-Math.abs(n.vy);
+    n.pulse=Math.max(0,n.pulse-0.04);
+    n.ph+=0.012+n.layer*0.006;
+  });
+  // Pulse random nodes on beat
+  if(masterBeat>0.6){
+    const k=Math.floor(Math.random()*CDN_NODES.length);
+    CDN_NODES[k].pulse=1.0;CDN_NODES[k].active=true;
+  }
+
+  // Draw edges between nearby nodes
+  const MAX_EDGE_DIST=0.28;
+  for(let i=0;i<CDN_NODES.length;i++){
+    const ni=CDN_NODES[i];
+    for(let j=i+1;j<CDN_NODES.length;j++){
+      const nj=CDN_NODES[j];
+      const dx=(ni.x-nj.x)*WW/HH,dy=ni.y-nj.y; // aspect-correct
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist>MAX_EDGE_DIST)continue;
+      const edgeFade=1-dist/MAX_EDGE_DIST;
+      const pulseBoost=(ni.pulse+nj.pulse)*0.5;
+      const edgeA=(0.04+pulseBoost*0.12+smoothEnergy*0.03)*edgeFade;
+      // Animated data packet travelling along edge
+      const travel=(t2*0.35+i*0.11+j*0.17)%1;
+      const ex1=ni.x*WW,ey1=ni.y*HH;
+      const ex2=nj.x*WW,ey2=nj.y*HH;
+
+      cx.beginPath();cx.moveTo(ex1,ey1);cx.lineTo(ex2,ey2);
+      cx.strokeStyle=`rgba(60,190,220,${edgeA})`;
+      cx.lineWidth=0.6+pulseBoost*0.8;cx.stroke();
+
+      // Travelling packet dot
+      const px2=ex1+(ex2-ex1)*travel,py2=ey1+(ey2-ey1)*travel;
+      const pkA=(0.15+pulseBoost*0.3)*edgeFade;
+      cx.beginPath();cx.arc(px2,py2,1.2+pulseBoost*1.5,0,TAU);
+      cx.fillStyle=`rgba(180,240,255,${pkA})`;cx.fill();
+    }
+  }
+
+  // Draw nodes themselves
+  CDN_NODES.forEach(n=>{
+    const nx=n.x*WW,ny=n.y*HH;
+    const layerAlpha=[0.25,0.40,0.55][n.layer];
+    const baseA=layerAlpha*(0.6+smoothEnergy*0.3+n.pulse*0.4+Math.sin(n.ph)*0.12);
+    const nodeR=n.r*(1+n.pulse*1.8+masterBeat*0.6);
+
+    // Outer halo ring
+    cx.beginPath();cx.arc(nx,ny,nodeR*2.5,0,TAU);
+    cx.strokeStyle=`rgba(60,190,220,${baseA*0.25})`;cx.lineWidth=0.5;cx.stroke();
+    // Core dot
+    cx.beginPath();cx.arc(nx,ny,nodeR,0,TAU);
+    const ng=cx.createRadialGradient(nx,ny,0,nx,ny,nodeR*2);
+    ng.addColorStop(0,`rgba(200,245,255,${baseA})`);
+    ng.addColorStop(0.5,`rgba(60,200,230,${baseA*0.6})`);
+    ng.addColorStop(1,'transparent');
+    cx.fillStyle=ng;cx.fill();
+
+    // Beat pulse ring
+    if(n.pulse>0.05){
+      cx.beginPath();cx.arc(nx,ny,nodeR*(1+n.pulse*4),0,TAU);
+      cx.strokeStyle=`rgba(100,220,240,${n.pulse*0.18})`;cx.lineWidth=0.8;cx.stroke();
+    }
+  });
+
+  // ── 3. MOUNTAIN-STRENGTH ENERGY VEINS ──
+  // Root-like lines climbing from base toward peaks, pulsing on beat
+  const VEIN_SEEDS=[0.20,0.38,0.50,0.65,0.80];
+  VEIN_SEEDS.forEach((sx2,vi)=>{
+    const vy_base=0.72;
+    const vHeight=HH*(0.30+masterBeat*0.08+smoothEnergy*0.04);
+    const branchCount=3+vi%2;
+    for(let b=0;b<branchCount;b++){
+      const ang=-Math.PI*0.5+((b-branchCount/2)*0.18)+Math.sin(t2*0.3+vi*1.1+b)*0.05;
+      cx.beginPath();
+      let vx2=sx2*WW,vy2=vy_base*HH;
+      cx.moveTo(vx2,vy2);
+      const steps=12;
+      for(let s=0;s<steps;s++){
+        const prog=s/steps;
+        const wobble=Math.sin(prog*5.3+bergenT*2+vi*0.7+b*1.3)*WW*0.008*(1-prog);
+        vx2+=Math.sin(ang)*vHeight/steps+wobble;
+        vy2-=Math.cos(ang)*vHeight/steps;
+        cx.lineTo(vx2,vy2);
+      }
+      const veinA=(0.06+masterBeat*0.10+smoothEnergy*0.04)*(1-vi*0.06);
+      cx.strokeStyle=`rgba(60,180,220,${veinA})`;
+      cx.lineWidth=0.7-b*0.15;cx.lineCap='round';cx.stroke();
+    }
+  });
+
+  cx.restore();
+}
+
+// ============================================================
+//  WITCH PRINCESS — cocoa ceremony, ancestor roots, spirit web
+// ============================================================
+let witchT=0;
+
+// Ancestor particle spirits — rising smoke-motes from earth
+const ANCESTOR_SPIRITS=[];
+for(let i=0;i<80;i++) ANCESTOR_SPIRITS.push({
+  x:Math.random(), y:0.5+Math.random()*0.55,
+  vx:(Math.random()-0.5)*0.00025, vy:-(0.0004+Math.random()*0.0008),
+  a:0.1+Math.random()*0.4, r:1.0+Math.random()*2.2,
+  ph:Math.random()*TAU, hue:Math.floor(Math.random()*3), // 0=amber,1=violet,2=moss
+  drift:Math.random()*TAU,
+});
+
+// Earth root network — ancestral mycelium web
+const ROOT_NODES=[];
+for(let i=0;i<28;i++) ROOT_NODES.push({
+  x:0.05+Math.random()*0.9, y:0.55+Math.random()*0.45,
+  pulse:0, ph:Math.random()*TAU, r:1.4+Math.random()*1.8,
+});
+
+// Sacred geometry points for rotating mandala
+function sigilPoints(cx2,cy2,r,n,rot){
+  const pts=[];for(let i=0;i<n;i++) pts.push({x:cx2+Math.cos(rot+i*TAU/n)*r,y:cy2+Math.sin(rot+i*TAU/n)*r});return pts;
+}
+
+// Cocoa ripple rings from center ground
+const COCOA_RINGS=[];
+
+function renderWitchOverlay(){
+  const{el,cx}=C['c-witch'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);
+  if(currentMode!=='witch'){return;}
+  cx.save();cx.scale(dpr,dpr);
+  witchT+=0.007+smoothBpmFactor*0.009;
+  const t2=performance.now()*0.001;
+
+  // ── 1. EARTH WARMTH VEIL — amber-violet gradient from below ──
+  const earthVeil=cx.createLinearGradient(0,HH*0.6,0,HH);
+  earthVeil.addColorStop(0,'transparent');
+  earthVeil.addColorStop(0.5,`rgba(80,30,10,${0.06+masterBeat*0.06+smoothEnergy*0.04})`);
+  earthVeil.addColorStop(1,`rgba(40,15,5,${0.12+masterBeat*0.08})`);
+  cx.fillStyle=earthVeil;cx.fillRect(0,HH*0.6,WW,HH*0.4);
+
+  // ── 2. COCOA CEREMONY RIPPLES — from centre-low, warm amber ──
+  if(masterBeat>0.55&&COCOA_RINGS.length<12){
+    COCOA_RINGS.push({x:WW*(0.3+Math.random()*0.4),y:HH*(0.72+Math.random()*0.15),r:0,maxR:WW*0.18+Math.random()*WW*0.12,a:masterBeat*0.5,amber:Math.random()>0.4});
+  }
+  for(let ri=COCOA_RINGS.length-1;ri>=0;ri--){
+    const ring=COCOA_RINGS[ri];
+    ring.r+=1.2+smoothBpmFactor*1.8;ring.a*=0.955;
+    if(ring.r>ring.maxR||ring.a<0.008){COCOA_RINGS.splice(ri,1);continue;}
+    const [rr,gg,bb]=ring.amber?[200,120,40]:[140,80,220];
+    cx.beginPath();cx.ellipse(ring.x,ring.y,ring.r,ring.r*0.28,0,0,TAU);
+    cx.strokeStyle=`rgba(${rr},${gg},${bb},${ring.a})`;cx.lineWidth=1.2;cx.stroke();
+    // inner glow
+    cx.beginPath();cx.ellipse(ring.x,ring.y,ring.r*0.6,ring.r*0.17,0,0,TAU);
+    cx.strokeStyle=`rgba(${rr},${gg},${bb},${ring.a*0.4})`;cx.lineWidth=0.5;cx.stroke();
+  }
+
+  // ── 3. ANCESTOR EARTH ROOT NETWORK ──
+  ROOT_NODES.forEach(n=>{
+    n.ph+=0.008;n.pulse=Math.max(0,n.pulse-0.035);
+    if(masterBeat>0.6&&Math.random()<0.04) n.pulse=masterBeat;
+  });
+  for(let i=0;i<ROOT_NODES.length;i++){
+    const ni=ROOT_NODES[i];
+    for(let j=i+1;j<ROOT_NODES.length;j++){
+      const nj=ROOT_NODES[j];
+      const dx=(ni.x-nj.x),dy=(ni.y-nj.y);
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist>0.30)continue;
+      const edgeFade=(1-dist/0.30);
+      const pBoost=(ni.pulse+nj.pulse)*0.5;
+      const ry=Math.min(ni.y,nj.y)*HH;
+      const depthA=0.05+Math.max(0,(ry/HH-0.55)*0.3);
+      const ea=(depthA+pBoost*0.15)*edgeFade;
+      // Root line — earthy amber threading with violet pulse
+      const rr=Math.round(160+pBoost*60),gg=Math.round(80+pBoost*20),bb=Math.round(40+pBoost*180);
+      cx.beginPath();cx.moveTo(ni.x*WW,ni.y*HH);
+      // organic bezier curve for root-like shape
+      const mx2=(ni.x+nj.x)*0.5*WW+Math.sin(witchT+i*0.7)*WW*0.012;
+      const my2=(ni.y+nj.y)*0.5*HH+Math.cos(witchT+j*0.9)*HH*0.008;
+      cx.quadraticCurveTo(mx2,my2,nj.x*WW,nj.y*HH);
+      cx.strokeStyle=`rgba(${rr},${gg},${bb},${ea})`;cx.lineWidth=0.8+pBoost;cx.stroke();
+      // pulse packet
+      if(pBoost>0.1){
+        const travel=(t2*0.3+i*0.13)%1;
+        const px2=ni.x*WW+(nj.x-ni.x)*WW*travel;
+        const py2=ni.y*HH+(nj.y-ni.y)*HH*travel;
+        cx.beginPath();cx.arc(px2,py2,1.5+pBoost*2,0,TAU);
+        cx.fillStyle=`rgba(255,200,120,${pBoost*0.5})`;cx.fill();
+      }
+    }
+  }
+  ROOT_NODES.forEach(n=>{
+    const nx=n.x*WW,ny=n.y*HH;
+    const depthA=0.15+Math.max(0,(ny/HH-0.55)*0.5);
+    const pBoost=n.pulse;
+    cx.beginPath();cx.arc(nx,ny,n.r*(1+pBoost*2),0,TAU);
+    const rg=cx.createRadialGradient(nx,ny,0,nx,ny,n.r*3);
+    rg.addColorStop(0,`rgba(220,160,80,${depthA+pBoost*0.3})`);
+    rg.addColorStop(0.6,`rgba(140,60,180,${(depthA+pBoost*0.2)*0.5})`);
+    rg.addColorStop(1,'transparent');
+    cx.fillStyle=rg;cx.fill();
+  });
+
+  // ── 4. ANCESTOR SPIRIT MOTES — rising from earth ──
+  const SPIRIT_COLS=[[220,160,80],[160,80,255],[80,180,120]];
+  ANCESTOR_SPIRITS.forEach(sp=>{
+    sp.x+=sp.vx+Math.sin(witchT*1.4+sp.drift)*0.00035;
+    sp.y+=sp.vy*(1+smoothBpmFactor*0.9);
+    sp.ph+=0.02;
+    if(sp.y<-0.05){sp.y=0.7+Math.random()*0.3;sp.x=Math.random();sp.a=0.1+Math.random()*0.3;}
+    const col=SPIRIT_COLS[sp.hue];
+    const depth=Math.max(0,1-sp.y*1.1);
+    const sa=sp.a*(0.3+smoothEnergy*0.3+masterBeat*0.15)*depth*(0.7+Math.sin(sp.ph)*0.3);
+    if(sa<0.008)return;
+    cx.beginPath();cx.arc(sp.x*WW,sp.y*HH,sp.r*(1+masterBeat*0.5),0,TAU);
+    cx.fillStyle=`rgba(${col[0]},${col[1]},${col[2]},${sa})`;cx.fill();
+  });
+
+  // ── 5. SACRED SIGIL — centre screen, beat-driven rotating mandala ──
+  const sx=WW*0.5,sy=HH*0.42;
+  const sigilA=0.06+masterBeat*0.12+smoothEnergy*0.05;
+  const outerR=Math.min(WW,HH)*(0.10+masterBeat*0.03);
+  cx.save();cx.globalAlpha=sigilA;cx.strokeStyle='rgba(200,140,255,1)';cx.lineWidth=0.5;
+
+  // Outer ring
+  cx.beginPath();cx.arc(sx,sy,outerR,0,TAU);cx.stroke();
+  cx.beginPath();cx.arc(sx,sy,outerR*0.65,0,TAU);cx.stroke();
+
+  // Two counter-rotating 8-pointed stars — forest meeting + guardians
+  [8,6].forEach((n2,li)=>{
+    const rot=witchT*(li===0?0.4:-0.28)+(li===0?0:Math.PI/n2);
+    const r2=outerR*(li===0?1.0:0.65);
+    const pts=sigilPoints(sx,sy,r2,n2,rot);
+    cx.beginPath();
+    pts.forEach((p,pi)=>{
+      const next=pts[(pi+Math.floor(n2/2))%n2];
+      cx.moveTo(p.x,p.y);cx.lineTo(next.x,next.y);
+    });
+    cx.stroke();
+  });
+
+  // Beat-pulse glow at centre
+  if(masterBeat>0.3){
+    const cg=cx.createRadialGradient(sx,sy,0,sx,sy,outerR*masterBeat*0.8);
+    cg.addColorStop(0,`rgba(220,160,100,${masterBeat*0.18})`);
+    cg.addColorStop(0.5,`rgba(160,80,255,${masterBeat*0.08})`);
+    cg.addColorStop(1,'transparent');
+    cx.globalAlpha=1;cx.fillStyle=cg;cx.fillRect(sx-outerR,sy-outerR,outerR*2,outerR*2);
+  }
+  cx.restore();
+
+  // ── 6. MOUNTAIN VEINS — violet energy climbing from roots to peaks ──
+  [0.18,0.36,0.50,0.64,0.80].forEach((sx2,vi)=>{
+    const baseY=0.70;
+    const vH=HH*(0.28+masterBeat*0.07+smoothEnergy*0.04);
+    for(let b=0;b<3;b++){
+      const ang=-Math.PI*0.5+((b-1)*0.20)+Math.sin(t2*0.25+vi*1.2+b)*0.06;
+      cx.beginPath();
+      let vx2=sx2*WW,vy2=baseY*HH;cx.moveTo(vx2,vy2);
+      for(let s=0;s<14;s++){
+        const prog=s/14;
+        const wob=Math.sin(prog*5.8+witchT*2.1+vi*0.8+b*1.5)*WW*0.007*(1-prog);
+        vx2+=Math.sin(ang)*vH/14+wob;vy2-=Math.cos(ang)*vH/14;
+        cx.lineTo(vx2,vy2);
+      }
+      const va=(0.07+masterBeat*0.09+smoothEnergy*0.04)*(0.8-b*0.2);
+      cx.strokeStyle=`rgba(160,80,255,${va})`;cx.lineWidth=0.8-b*0.2;cx.lineCap='round';cx.stroke();
+    }
+  });
+
+  cx.restore();
+}
+// ============================================================
+let fogBalls=[];
+function initFog(){
+  fogBalls=[];
+  for(let i=0;i<10;i++)fogBalls.push({x:Math.random()*W(),y:H()*(0.55+Math.random()*0.35),r:260+Math.random()*180,vx:(Math.random()-0.5)*0.12,vy:(Math.random()-0.5)*0.03,a:0.04+Math.random()*0.03,ph:Math.random()*TAU,layer:0});
+  for(let i=0;i<10;i++)fogBalls.push({x:Math.random()*W(),y:H()*(0.35+Math.random()*0.25),r:190+Math.random()*130,vx:(Math.random()-0.5)*0.22,vy:(Math.random()-0.5)*0.05,a:0.022+Math.random()*0.022,ph:Math.random()*TAU,layer:1});
+  for(let i=0;i<8;i++)fogBalls.push({x:Math.random()*W(),y:H()*(0.15+Math.random()*0.22),r:140+Math.random()*90,vx:(Math.random()-0.5)*0.38,vy:(Math.random()-0.5)*0.04,a:0.012+Math.random()*0.012,ph:Math.random()*TAU,layer:2});
+}
+function renderFog(){
+  const{el,cx}=C['c-fog'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),fc=th.fogColor,layerSpd=[0.3,0.7,1.4],layerMult=[1.5,1.0,0.7];
+  fogBalls.forEach(f=>{
+    const spd=layerSpd[f.layer]*(sMid*(0.6+masterBeat*1.5)+0.0);
+    f.x+=f.vx*spd;f.y+=f.vy*spd;f.ph+=0.0005+sMid*0.003;
+    if(f.x<-f.r)f.x=WW+f.r;if(f.x>WW+f.r)f.x=-f.r;if(f.y<-f.r)f.y=HH+f.r;if(f.y>HH+f.r)f.y=-f.r;
+    const a=Math.max(0,f.a*layerMult[f.layer]*(sMid*1.2+masterBeat*0.4));
+    const r2=Math.max(1,f.r*(1+sMid*0.15+masterBeat*0.22));
+    const g2=cx.createRadialGradient(f.x,f.y,0,f.x,f.y,r2);
+    g2.addColorStop(0,`rgba(${fc[0]+8|0},${fc[1]+10|0},${fc[2]+18|0},${a})`);g2.addColorStop(1,'transparent');
+    cx.fillStyle=g2;cx.beginPath();cx.ellipse(f.x,f.y,r2,r2*0.5,0,0,TAU);cx.fill();
+  });
+  cx.restore();
+}
+
+// ============================================================
+//  ROOTS
+// ============================================================
+let roots=[];
+function initRoots(){
+  roots=[];
+  for(let i=0;i<14;i++){
+    const x=Math.random()*W(),segs=[];let cx2=x,cy2=H()*0.85+Math.random()*H()*0.08;
+    for(let s=0;s<6+Math.floor(Math.random()*4);s++){const nx=cx2+(Math.random()-0.5)*W()*0.12,ny=cy2+Math.random()*H()*0.04;segs.push({x:nx,y:ny});cx2=nx;cy2=ny;}
+    roots.push({x,y:H()*0.85+Math.random()*H()*0.08,segs,pulse:0,ph:Math.random()*TAU,w:0.5+Math.random()*1.2});
+  }
+}
+function renderRoots(){
+  const{el,cx}=C['c-roots'];const dpr=devicePixelRatio;
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),rc=th.rootColor;
+  roots.forEach(r=>{
+    r.pulse=Math.max(0,r.pulse*(0.88+smoothBpmFactor*0.04));r.ph+=0.006+smoothBpmFactor*0.01;
+    const baseA=(0.08+r.pulse*0.5+smoothBpmFactor*0.2)*0.9;if(baseA<0.005)return;
+    cx.beginPath();cx.moveTo(r.x,r.y);r.segs.forEach(s=>cx.lineTo(s.x,s.y));
+    cx.strokeStyle=`rgba(${rc[0]},${rc[1]},${rc[2]},${baseA})`;cx.lineWidth=r.w;cx.stroke();
+    if(r.pulse>0.1){
+      cx.beginPath();cx.moveTo(r.x,r.y);r.segs.forEach(s=>cx.lineTo(s.x,s.y));
+      cx.strokeStyle=`rgba(${rc[0]},${rc[1]},${rc[2]},${r.pulse*0.5})`;cx.lineWidth=r.w*3;
+      cx.shadowBlur=8+r.pulse*20;cx.shadowColor=`rgba(${rc[0]},${rc[1]},${rc[2]},0.8)`;cx.stroke();cx.shadowBlur=0;
+    }
+  });
+  cx.restore();
+}
+
+// ============================================================
+//  FOREST
+// ============================================================
+let trees=[];
+function initForest(){
+  trees=[];const n=7+Math.floor(Math.random()*4);
+  for(let i=0;i<n;i++){
+    const x=(i/(n-1))*W()+(Math.random()-0.5)*W()*0.1;
+    trees.push({x,y:H(),h:H()*(0.28+Math.random()*0.3),trunk:6+Math.random()*8,depth:8+Math.floor(Math.random()*3),spread:0.5+Math.random()*0.4,sway:0,swayV:0,energy:0,seed:Math.random()*1000});
+  }
+}
+function drawBranch(cx2,x,y,angle,len,width,depth,sway,en,tree,fc){
+  if(depth===0||len<1.5)return;
+  const ex=x+Math.cos(angle+sway)*len,ey=y+Math.sin(angle+sway)*len,glow=depth<3?en:0;
+  cx2.beginPath();cx2.moveTo(x,y);cx2.lineTo(ex,ey);
+  cx2.strokeStyle=`rgba(${8+glow*fc[0]*0.07},${12+glow*fc[1]*0.05},${16+glow*fc[2]*0.05},${0.55+glow*0.45})`;cx2.lineWidth=width;cx2.stroke();
+  if(depth<=2&&en>0.1){cx2.beginPath();cx2.moveTo(x,y);cx2.lineTo(ex,ey);cx2.strokeStyle=`rgba(${fc[0]},${fc[1]},${fc[2]},${en*0.45})`;cx2.lineWidth=width*0.55;cx2.stroke();}
+  const sr=0.8+Math.sin(tree.seed+depth)*0.1;
+  drawBranch(cx2,ex,ey,angle-tree.spread*0.7+sway*0.3,len*sr,width*0.64,depth-1,sway*0.8,en,tree,fc);
+  drawBranch(cx2,ex,ey,angle+tree.spread*0.6+sway*0.2,len*sr*0.9,width*0.6,depth-1,sway*0.8,en,tree,fc);
+  if(depth>3)drawBranch(cx2,ex,ey,angle+tree.spread*0.05,len*sr*0.74,width*0.5,depth-2,sway*0.5,en,tree,fc);
+}
+function renderForest(){
+  const{el,cx}=C['c-forest'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),fc=th.forestGlow,t=performance.now()*0.001;
+  const mist=cx.createLinearGradient(0,HH*0.6,0,HH);
+  mist.addColorStop(0,'transparent');mist.addColorStop(0.4,`rgba(${fc[0]*0.4|0},${fc[1]*0.4|0},${fc[2]*0.4|0},${0.08+smoothBpmFactor*0.06+masterBeat*0.04})`);mist.addColorStop(1,`rgba(${fc[0]*0.2|0},${fc[1]*0.2|0},${fc[2]*0.2|0},0.18)`);
+  cx.fillStyle=mist;cx.fillRect(0,HH*0.6,WW,HH*0.4);
+  trees.forEach(tree=>{
+    tree.swayV+=-tree.sway*0.01+(Math.sin(t*0.4+tree.seed)*0.0003)+(masterBeat*0.006+sBass*0.008);
+    tree.swayV*=(0.94-sMid*0.03);tree.sway+=tree.swayV;
+    tree.energy=Math.max(0,tree.energy*(0.90+sMid*0.05));
+    const rootA=tree.energy*0.5+sBass*0.4+masterBeat*0.15;
+    if(rootA>0.01){cx.beginPath();cx.arc(tree.x,tree.y,tree.trunk*2,0,TAU);cx.fillStyle=`rgba(${fc[0]},${fc[1]},${fc[2]},${rootA*0.3})`;cx.shadowBlur=tree.trunk*4+masterBeat*20+sBass*25;cx.shadowColor=`rgba(${fc[0]},${fc[1]},${fc[2]},0.8)`;cx.fill();cx.shadowBlur=0;}
+    drawBranch(cx,tree.x,tree.y,-Math.PI/2,tree.h,tree.trunk,tree.depth,tree.sway*(0.5+sMid*0.8),tree.energy,tree,fc);
+    if(sMid>0.08&&Math.random()<0.04+masterBeat*0.18)parts.push({x:tree.x+(Math.random()-0.5)*tree.h*0.3,y:tree.y-tree.h*(0.7+Math.random()*0.25),vx:(Math.random()-0.5)*0.8,vy:-0.5-Math.random()*1.5,r:1.5+Math.random(),a:0.7,col:`${fc[0]},${fc[1]},${fc[2]}`,life:1,decay:0.008+Math.random()*0.008,beat:false});
+  });
+  cx.restore();
+}
+
+// ============================================================
+//  MUSHROOMS
+// ============================================================
+let shrooms=[];
+function initShrooms(){shrooms=[];for(let i=0;i<12;i++)shrooms.push({x:W()*(0.05+Math.random()*0.9),y:H()*(0.72+Math.random()*0.2),r:3+Math.random()*5,glow:0,ring:0,ringR:0,ph:Math.random()*TAU});}
+function renderShrooms(){
+  const{el,cx}=C['c-shrooms'];const dpr=devicePixelRatio;
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),sc=th.shroomColor;
+  shrooms.forEach(s=>{
+    s.ph+=0.008+sPresence*0.02;s.glow=Math.max(0,s.glow*(0.84+sPresence*0.10));s.ring=Math.max(0,s.ring*0.82);s.ringR+=3+sPresence*8+masterBeat*5;if(s.ring<0.01)s.ringR=0;
+    const a=0.15+s.glow*0.8+sPresence*0.25+masterBeat*0.12+Math.sin(s.ph)*0.05;
+    const gg=cx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*5+s.glow*20);gg.addColorStop(0,`rgba(${sc[0]},${sc[1]},${sc[2]},${a*0.6})`);gg.addColorStop(1,'transparent');
+    cx.fillStyle=gg;cx.fillRect(s.x-s.r*5-20,s.y-s.r*5-20,s.r*10+40,s.r*10+40);
+    cx.beginPath();cx.arc(s.x,s.y,s.r*(1+s.glow*0.5),0,TAU);cx.shadowBlur=s.r*3+s.glow*25;cx.shadowColor=`rgba(${sc[0]},${sc[1]},${sc[2]},0.9)`;cx.fillStyle=`rgba(${sc[0]},${sc[1]},${sc[2]},${a})`;cx.fill();cx.shadowBlur=0;
+    if(s.ring>0.05){cx.beginPath();cx.arc(s.x,s.y,s.ringR,0,TAU);cx.strokeStyle=`rgba(${sc[0]},${sc[1]},${sc[2]},${s.ring*0.5})`;cx.lineWidth=1.5;cx.stroke();}
+  });
+  cx.restore();
+}
+
+// ============================================================
+//  WISPS
+// ============================================================
+let wisps=[];
+function initWisps(){wisps=[];for(let i=0;i<12;i++)wisps.push({x:Math.random()*W(),y:H()*(0.35+Math.random()*0.45),vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.3,r:3+Math.random()*5,a:0.3+Math.random()*0.4,ph:Math.random()*TAU,phSpd:0.01+Math.random()*0.02,speed:0.3+Math.random()*0.5});}
+function renderWisps(){
+  const{el,cx}=C['c-wisps'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),wc=th.wispColor;
+  wisps.forEach(w=>{
+    w.ph+=w.phSpd*(1+sPresence*4+masterBeat*2);
+    w.vx+=(Math.random()-0.5)*0.06+Math.sin(w.ph*0.7)*0.03+masterBeat*(Math.random()-0.5)*0.12;
+    w.vy+=(Math.random()-0.5)*0.04-0.008+Math.cos(w.ph*0.5)*0.015;w.vx*=0.97;w.vy*=0.97;
+    w.speed=Math.max(0.0,w.speed*(0.97+sPresence*0.06+masterBeat*0.10));
+    w.x+=w.vx*w.speed;w.y+=w.vy*w.speed;
+    if(w.x<-20)w.x=WW+20;if(w.x>WW+20)w.x=-20;if(w.y<HH*0.2)w.vy=Math.abs(w.vy);if(w.y>HH*0.9)w.vy=-Math.abs(w.vy);
+    const a=w.a*(0.3*Math.sin(w.ph)+sPresence*0.6+masterBeat*0.3),r=w.r*(1+masterBeat*0.4+sPresence*0.3);
+    const wg=cx.createRadialGradient(w.x,w.y,0,w.x,w.y,r*5);wg.addColorStop(0,`rgba(${wc[0]},${wc[1]},${wc[2]},${a*0.5})`);wg.addColorStop(1,'transparent');
+    cx.fillStyle=wg;cx.fillRect(w.x-r*5,w.y-r*5,r*10,r*10);
+    cx.beginPath();cx.arc(w.x,w.y,r,0,TAU);cx.fillStyle=`rgba(255,255,255,${a*0.85})`;cx.shadowBlur=r*4+masterBeat*12;cx.shadowColor=`rgba(${wc[0]},${wc[1]},${wc[2]},0.9)`;cx.fill();cx.shadowBlur=0;
+  });
+  cx.restore();
+}
+
+// ============================================================
+//  CREATURES — always visible, chapter-bound
+// ============================================================
+function drawOneCreature(cx,cs,a,WW,HH,pc,sc){
+  cs.ph+=0.003+smoothBpmFactor*0.004;cs.ph2+=0.002+smoothBpmFactor*0.003;cs.ph3+=0.005+smoothBpmFactor*0.006;
+  const bx=cs.x*WW+Math.sin(cs.ph*0.35)*WW*0.035,by=cs.y*HH+Math.cos(cs.ph*0.28)*HH*0.025;
+
+  const t=performance.now()*0.001;
+
+  // NOKKEN — water spirit, surfaces left fjord
+  if(cs.name==='nokken'){
+    const wy=HH*0.72,sz=Math.min(WW,HH)*0.050;
+    const nx=WW*0.08+Math.sin(cs.ph*0.28)*WW*0.008;
+    const rise=Math.min(1,cs.alpha*2);
+    const ny=wy-sz*(0.12+rise*0.52)+Math.sin(cs.ph*0.45)*sz*0.09;
+    // Glow
+    const wg=cx.createRadialGradient(nx,wy,0,nx,wy,sz*5.5);
+    wg.addColorStop(0,`rgba(${sc[0]},${sc[1]},${sc[2]},${a*0.13})`);wg.addColorStop(1,'transparent');
+    cx.fillStyle=wg;cx.fillRect(nx-sz*5.5,wy-sz*2,sz*11,sz*4.5);
+    // Body — 5 layered ellipses breathing
+    const br=1+Math.sin(cs.ph*0.8)*0.044+masterBeat*0.06;
+    for(let L=0;L<5;L++){
+      cx.beginPath();cx.ellipse(nx+Math.sin(cs.ph+L*0.9)*sz*0.038,ny+Math.cos(cs.ph2+L*0.7)*sz*0.020,Math.max(1,sz*(0.60-L*0.08)*br),Math.max(1,sz*(0.23-L*0.03)*br),0,0,TAU);
+      cx.fillStyle=`rgba(3,2,7,${a*(0.50+L*0.09)})`;cx.fill();
+    }
+    // Tendrils — 10 with spring sway
+    for(let s=0;s<10;s++){
+      const ang=(s/10)*TAU+Math.sin(cs.ph*0.4+s*0.6)*0.20;
+      const segL=sz*(0.18+0.10*Math.sin(s*0.8+cs.ph2));
+      const x0=nx+Math.cos(ang)*sz*0.45,y0=ny+Math.sin(ang)*sz*0.16;
+      const a2=ang+Math.sin(cs.ph*0.9+s*0.5)*0.32;
+      const mx=x0+Math.cos(a2)*segL*0.5,my=y0+Math.sin(a2)*segL*0.28;
+      const ex=mx+Math.cos(a2+Math.sin(cs.ph3+s)*0.4)*segL*0.5,ey=my+Math.sin(a2+Math.sin(cs.ph3+s)*0.4)*segL*0.22;
+      cx.beginPath();cx.moveTo(x0,y0);cx.quadraticCurveTo(mx,my,ex,ey);
+      cx.strokeStyle=`rgba(5,4,12,${a*(0.08+0.04*Math.sin(cs.ph+s))})`;cx.lineWidth=0.9;cx.stroke();
+    }
+    // Eyes — horizontal slits, rare blink
+    const eyeY=ny-sz*0.04+Math.sin(cs.ph*0.5)*sz*0.009;
+    const blink=Math.pow(Math.max(0,Math.sin(cs.ph*0.22)),22);
+    [-0.20,0.20].forEach(ox=>{
+      const ex=nx+ox*sz;
+      const eg=cx.createRadialGradient(ex,eyeY,0,ex,eyeY,sz*0.32);
+      eg.addColorStop(0,`rgba(${sc[0]},${sc[1]},${sc[2]},${a*(0.55+masterBeat*0.35)})`);eg.addColorStop(1,'transparent');
+      cx.fillStyle=eg;cx.fillRect(ex-sz*0.32,eyeY-sz*0.32,sz*0.64,sz*0.64);
+      cx.beginPath();cx.ellipse(ex,eyeY,sz*0.068,Math.max(0.5,sz*0.023*(1-blink*0.9)),0,0,TAU);
+      cx.fillStyle=`rgba(255,255,255,${a*0.90+masterBeat*0.10})`;
+      cx.shadowBlur=sz*0.9+masterBeat*sz*1.1;cx.shadowColor=`rgba(${sc[0]},${sc[1]},${sc[2]},1)`;cx.fill();cx.shadowBlur=0;
+    });
+    // Ripples
+    for(let r=0;r<3;r++){
+      const rp=(cs.ph*0.35+r*2.1)%TAU;
+      const rr=sz*(0.85+r*0.65+0.18*Math.abs(Math.sin(rp)));
+      const ra=a*(0.10-r*0.022)*Math.abs(Math.sin(rp+Math.PI*0.5));
+      if(ra<0.003)continue;
+      cx.beginPath();cx.ellipse(nx,wy+sz*0.05,rr,rr*0.20,0,0,TAU);
+      cx.strokeStyle=`rgba(${sc[0]},${sc[1]},${sc[2]},${ra})`;cx.lineWidth=0.6;cx.stroke();
+    }
+  }
+
+  // DRAUGEN — dark mass, green eyes, boat ribs, breathes
+  if(cs.name==='draugen'){
+    const wy=HH*0.71,sz=Math.min(WW,HH)*0.058;
+    const dx=WW*0.74+Math.sin(cs.ph*0.14)*WW*0.006;
+    const bob=Math.sin(cs.ph*0.28)*sz*0.022;
+    const breathe=Math.sin(cs.ph*0.65);
+    const mOx=breathe*sz*0.022;
+    // Glow
+    const sg=cx.createRadialGradient(dx,wy+sz*0.4,0,dx,wy,sz*3.0);
+    sg.addColorStop(0,`rgba(0,26,16,${a*0.19})`);sg.addColorStop(1,'transparent');
+    cx.fillStyle=sg;cx.fillRect(dx-sz*3,wy-sz*0.3,sz*6,sz*2.8);
+    // Boat ribs
+    const bW=sz*1.05,bH=sz*0.26,bY=wy-bH*0.35+bob;
+    cx.beginPath();cx.moveTo(dx-bW*0.42,bY+bH);cx.bezierCurveTo(dx-bW*0.5,bY+bH*0.5,dx-bW*0.5,bY,dx-bW*0.38,bY);cx.lineTo(dx+bW*0.38,bY);cx.bezierCurveTo(dx+bW*0.5,bY,dx+bW*0.5,bY+bH*0.5,dx+bW*0.42,bY+bH);cx.closePath();cx.fillStyle=`rgba(9,6,4,${a*0.88})`;cx.fill();
+    for(let r=0;r<11;r++){
+      const rx=dx-bW*0.42+(r/10)*bW*0.84;
+      cx.beginPath();cx.moveTo(rx,bY+bH*0.06);cx.lineTo(rx,bY+bH*0.90);
+      cx.strokeStyle=`rgba(80,180,120,${a*(0.26+0.10*Math.sin(cs.ph+r*0.6))})`;cx.lineWidth=0.9;cx.stroke();
+    }
+    // Dark mass — breathes
+    const mH=sz*(0.52+0.05*breathe),mW=sz*(0.58+0.025*Math.cos(cs.ph*0.45));
+    cx.beginPath();cx.moveTo(dx-mW*0.5+mOx,wy+bob);cx.bezierCurveTo(dx-mW*0.55+mOx,wy-mH*0.28+bob,dx-mW*0.36,wy-mH*0.70+bob,dx-mW*0.10,wy-mH*0.88+bob);cx.bezierCurveTo(dx-mW*0.03,wy-mH*0.96+bob,dx+mW*0.03,wy-mH*0.96+bob,dx+mW*0.10,wy-mH*0.88+bob);cx.bezierCurveTo(dx+mW*0.36,wy-mH*0.70+bob,dx+mW*0.55-mOx,wy-mH*0.28+bob,dx+mW*0.5-mOx,wy+bob);cx.closePath();cx.fillStyle=`rgba(3,2,5,${a*0.92})`;cx.fill();
+    // Eyes — green glowing, rare blink
+    const eY=wy-mH*0.70+bob,eR=sz*0.040*(1+masterBeat*0.42+Math.sin(cs.ph*0.75)*0.09);
+    const blink=Math.pow(Math.max(0,Math.sin(cs.ph*0.15)),24),eH=eR*(1-blink*0.88);
+    [-sz*0.148,sz*0.148].forEach(ox=>{
+      const eg=cx.createRadialGradient(dx+ox,eY,0,dx+ox,eY,eR*5.5);
+      eg.addColorStop(0,`rgba(0,220,120,${a*(0.38+masterBeat*0.28)})`);eg.addColorStop(1,'transparent');
+      cx.fillStyle=eg;cx.fillRect(dx+ox-eR*5.5,eY-eR*5.5,eR*11,eR*11);
+      cx.beginPath();cx.ellipse(dx+ox,eY,eR,Math.max(0.4,eH),0,0,TAU);
+      cx.fillStyle=`rgba(0,232,128,${a*0.95})`;cx.shadowBlur=eR*6+masterBeat*eR*10;cx.shadowColor='rgba(0,230,100,0.95)';cx.fill();cx.shadowBlur=0;
+      cx.beginPath();cx.ellipse(dx+ox+Math.sin(cs.ph*0.28)*eR*0.26,eY,eR*0.26,Math.max(0.3,eH*0.70),0,0,TAU);cx.fillStyle='rgba(0,0,0,0.96)';cx.fill();
+    });
+    // Water rings
+    for(let r=0;r<3;r++){
+      cx.beginPath();cx.ellipse(dx,wy+bob,sz*(0.20+r*0.20)+masterBeat*sz*0.07,sz*(0.20+r*0.20+masterBeat*0.07)*0.16,0,0,TAU);
+      cx.strokeStyle=`rgba(0,110,65,${a*(0.065-r*0.016)*(0.3+masterBeat*0.6)})`;cx.lineWidth=0.7;cx.stroke();
+    }
+  }
+
+  // BERGTROLLET — lurking behind ridge, head bobs with curiosity
+  if(cs.name==='bergtrollet'){
+    const ridgeY=HH*0.44,sz=Math.min(WW,HH)*0.120;
+    const tx=WW*0.42+Math.sin(cs.ph*0.12)*WW*0.010;
+    const peek=Math.sin(cs.ph*0.22)*sz*0.055; // slow vertical bob
+    const tilt=Math.sin(cs.ph*0.18)*0.042;    // head tilt
+    const lurkR=cs.alpha*0.65+masterBeat*0.10;
+    const ty=ridgeY+(1-lurkR)*sz*0.55+peek;
+    // Faint glow
+    const lurk=cx.createRadialGradient(tx,ridgeY,0,tx,ridgeY,sz*1.55);
+    lurk.addColorStop(0,`rgba(${pc[0]*0.3|0},${pc[1]*0.3|0},${pc[2]*0.2|0},${a*0.09})`);lurk.addColorStop(1,'transparent');
+    cx.fillStyle=lurk;cx.fillRect(tx-sz*1.55,ridgeY-sz*0.55,sz*3.1,sz*1.7);
+    // Clip to ridge
+    cx.save();cx.beginPath();cx.rect(0,0,WW,ridgeY+sz*0.06);cx.clip();
+    // Shoulders
+    cx.beginPath();cx.moveTo(tx-sz*0.68,ridgeY+sz*0.11);cx.bezierCurveTo(tx-sz*0.74,ridgeY-sz*0.15,tx-sz*0.58,ty+sz*0.25,tx-sz*0.40,ty+sz*0.15);cx.bezierCurveTo(tx-sz*0.22,ty+sz*0.05,tx-sz*0.10,ty+sz*0.01,tx,ty+sz*0.00);cx.bezierCurveTo(tx+sz*0.10,ty+sz*0.01,tx+sz*0.22,ty+sz*0.05,tx+sz*0.40,ty+sz*0.15);cx.bezierCurveTo(tx+sz*0.58,ty+sz*0.25,tx+sz*0.74,ridgeY-sz*0.15,tx+sz*0.68,ridgeY+sz*0.11);cx.closePath();cx.fillStyle=`rgba(4,3,8,${a*0.92})`;cx.fill();
+    // Granite lines
+    cx.save();cx.globalAlpha=a*0.11;
+    for(let s=0;s<6;s++){const sy2=ty+sz*(0.03+s*0.055);const sw2=sz*(0.46-s*0.04);cx.beginPath();cx.moveTo(tx-sw2,sy2);for(let p=1;p<=10;p++)cx.lineTo(tx-sw2+(p/10)*sw2*2,sy2+Math.sin(p*0.7+s*1.3+cs.ph2)*sz*0.006);cx.strokeStyle='rgba(56,50,75,1)';cx.lineWidth=0.7;cx.stroke();}
+    cx.restore();
+    // Head
+    cx.save();cx.translate(tx,ty-sz*0.05);cx.rotate(tilt);
+    const hSz=sz*0.34;
+    cx.beginPath();cx.moveTo(-hSz*0.48,hSz*0.04);cx.bezierCurveTo(-hSz*0.54,-hSz*0.22,-hSz*0.44,-hSz*0.60,-hSz*0.18,-hSz*0.76);cx.bezierCurveTo(-hSz*0.05,-hSz*0.91,hSz*0.05,-hSz*0.93,hSz*0.18,-hSz*0.78);cx.bezierCurveTo(hSz*0.42,-hSz*0.62,hSz*0.52,-hSz*0.26,hSz*0.48,hSz*0.04);cx.closePath();cx.fillStyle=`rgba(5,4,9,${a*0.94})`;cx.fill();
+    // Wrinkles
+    cx.save();cx.globalAlpha=a*0.15;
+    for(let w=0;w<4;w++){const wy2=-hSz*(0.26+w*0.10);cx.beginPath();cx.moveTo(-hSz*(0.22-w*0.03),wy2);cx.bezierCurveTo(-hSz*0.07,wy2+Math.sin(cs.ph+w)*hSz*0.022,hSz*0.07,wy2+Math.sin(cs.ph2+w)*hSz*0.022,hSz*(0.22-w*0.03),wy2);cx.strokeStyle='rgba(62,57,82,1)';cx.lineWidth=0.7;cx.stroke();}
+    cx.restore();
+    // Eyes — slow gaze wander
+    const gaze=Math.sin(cs.ph*0.18)*hSz*0.026;
+    const eyeY2=-hSz*0.20+Math.sin(cs.ph*0.38)*hSz*0.014;
+    cx.beginPath();cx.moveTo(-hSz*0.44,eyeY2-hSz*0.10);cx.bezierCurveTo(-hSz*0.16,eyeY2-hSz*0.22,hSz*0.16,eyeY2-hSz*0.22,hSz*0.44,eyeY2-hSz*0.10);cx.strokeStyle=`rgba(3,2,6,${a*0.90})`;cx.lineWidth=hSz*0.095;cx.lineCap='round';cx.stroke();cx.lineCap='butt';
+    [-hSz*0.21+gaze,hSz*0.21+gaze].forEach((ox,ei)=>{
+      cx.beginPath();cx.ellipse(ox,eyeY2,hSz*0.088,hSz*0.065,0,0,TAU);cx.fillStyle=`rgba(2,2,4,${a*0.96})`;cx.fill();
+      const col=PRIDE_COLORS[(ei+1)%PRIDE_COLORS.length];
+      cx.beginPath();cx.ellipse(ox,eyeY2,hSz*0.048,hSz*0.034,0,0,TAU);cx.fillStyle=`rgba(${col[0]},${col[1]},${col[2]},${a*0.55+masterBeat*0.32})`;cx.shadowBlur=hSz*0.55+masterBeat*hSz*0.88;cx.shadowColor=`rgba(${col[0]},${col[1]},${col[2]},0.95)`;cx.fill();cx.shadowBlur=0;
+      cx.beginPath();cx.ellipse(ox+Math.sin(cs.ph*0.3)*hSz*0.009,eyeY2,hSz*0.019,hSz*0.029,0,0,TAU);cx.fillStyle='rgba(0,0,0,0.95)';cx.fill();
+      cx.beginPath();cx.arc(ox+hSz*0.017,eyeY2-hSz*0.011,hSz*0.009,0,TAU);cx.fillStyle=`rgba(255,255,255,${a*0.46})`;cx.fill();
+    });
+    // Nose
+    cx.beginPath();cx.moveTo(-hSz*0.065,eyeY2+hSz*0.055);cx.bezierCurveTo(-hSz*0.085,eyeY2+hSz*0.19,-hSz*0.125,eyeY2+hSz*0.27,-hSz*0.135,eyeY2+hSz*0.32);cx.bezierCurveTo(-hSz*0.135,eyeY2+hSz*0.36,hSz*0.135,eyeY2+hSz*0.36,hSz*0.135,eyeY2+hSz*0.32);cx.bezierCurveTo(hSz*0.125,eyeY2+hSz*0.27,hSz*0.085,eyeY2+hSz*0.19,hSz*0.065,eyeY2+hSz*0.055);cx.fillStyle=`rgba(4,3,8,${a*0.86})`;cx.fill();
+    // Moss on top
+    for(let m=0;m<5;m++){
+      const mx2=-hSz*0.20+m*hSz*0.10+Math.sin(cs.ph+m)*hSz*0.032,my2=-hSz*(0.72+Math.sin(m*1.3)*0.07),mr2=hSz*(0.042+Math.sin(m*0.7+cs.ph2)*0.016)+masterBeat*hSz*0.011;
+      cx.beginPath();cx.arc(mx2,my2,mr2,0,TAU);cx.fillStyle=`rgba(20,158,38,${a*(0.30+0.13*Math.sin(cs.ph+m))})`;cx.shadowBlur=mr2*3+masterBeat*6;cx.shadowColor='rgba(20,158,38,0.7)';cx.fill();cx.shadowBlur=0;
+    }
+    // Pride cracks
+    PRIDE_COLORS.forEach((col,ci)=>{
+      const crA=a*(0.09+0.04*Math.sin(cs.ph+ci*1.4)+masterBeat*0.09);if(crA<0.004)return;
+      cx.beginPath();cx.moveTo(-hSz*(0.26-ci*0.08),-hSz*(0.50-ci*0.06));
+      for(let p=1;p<=4;p++)cx.lineTo(-hSz*(0.26-ci*0.08)+Math.sin(cs.ph2+ci*0.7+p*1.3)*hSz*(0.06+p*0.04),-hSz*(0.50-ci*0.06)+p*hSz*0.088+Math.cos(cs.ph3+ci+p)*hSz*0.023);
+      cx.shadowBlur=4+masterBeat*11;cx.shadowColor=`rgba(${col[0]},${col[1]},${col[2]},0.9)`;cx.strokeStyle=`rgba(${col[0]},${col[1]},${col[2]},${crA})`;cx.lineWidth=0.85;cx.stroke();cx.shadowBlur=0;
+    });
+    cx.restore();cx.restore();
+    // Debris on beat
+    if(masterBeat>0.65){for(let d=0;d<4;d++)parts.push({x:tx+(Math.random()-0.5)*sz*1.0,y:ridgeY+Math.random()*sz*0.09,vx:(Math.random()-0.5)*0.9,vy:-0.35-Math.random()*1.1,r:0.7+Math.random()*1.6,a:0.42,col:'56,50,74',life:1,decay:0.026+Math.random()*0.02,beat:false});}
+  }
+
+  // HULDRA — sneaking through forest treeline, peeking around tree
+  if(cs.name==='huldra'){
+    const sz=Math.min(WW,HH)*0.040;
+    const hx=WW*0.19+Math.sin(cs.ph*0.18)*WW*0.005;
+    const hy=HH*0.63+Math.cos(cs.ph*0.14)*HH*0.007;
+    const bob=Math.sin(cs.ph*0.30)*sz*0.018;
+    const step=Math.sin(cs.ph*0.55); // creeping gait
+    const lean=-0.16+step*0.032;     // lean forward, step sway
+    const stepLift=Math.abs(step)*sz*0.010;
+    // Very faint ambient glow
+    const hg=cx.createRadialGradient(hx,hy,0,hx,hy,sz*2.8);
+    hg.addColorStop(0,`rgba(140,80,32,${a*0.055})`);hg.addColorStop(1,'transparent');
+    cx.fillStyle=hg;cx.fillRect(hx-sz*2.8,hy-sz*2.8,sz*5.6,sz*5.6);
+    // TAIL — behind body, low and nervous
+    const tSX=hx+sz*0.20,tSY=hy+bob+sz*0.30;
+    const tNerve=Math.sin(cs.ph*1.8)*sz*0.018;
+    const tEX=tSX+sz*(0.46+Math.sin(cs.ph*0.5)*0.025),tEY=tSY+sz*(0.22+Math.abs(Math.sin(cs.ph*0.25))*0.06);
+    cx.beginPath();cx.moveTo(tSX,tSY);cx.quadraticCurveTo(tSX+sz*0.22,tSY+sz*0.11+tNerve,tEX,tEY);
+    cx.strokeStyle=`rgba(64,36,15,${a*0.65})`;cx.lineWidth=sz*0.055;cx.lineCap='round';cx.stroke();cx.lineCap='butt';
+    for(let d=0;d<5;d++){const da=-0.50+d*0.22+Math.sin(cs.ph*0.7+d)*0.05;cx.beginPath();cx.moveTo(tEX,tEY);cx.lineTo(tEX+Math.cos(da)*sz*0.065,tEY+Math.sin(da)*sz*0.065);cx.strokeStyle=`rgba(76,44,18,${a*0.42})`;cx.lineWidth=0.9;cx.lineCap='round';cx.stroke();cx.lineCap='butt';}
+    // Body in lean/step transform
+    cx.save();cx.translate(hx,hy+bob-stepLift);cx.rotate(lean);
+    // Body pear
+    cx.beginPath();cx.ellipse(0,sz*0.07,sz*0.28,sz*0.42,0,0,TAU);cx.fillStyle=`rgba(62,34,15,${a*0.86})`;cx.fill();
+    // Neck
+    cx.beginPath();cx.rect(-sz*0.052,-sz*0.11,sz*0.104,sz*0.13);cx.fillStyle=`rgba(132,86,48,${a*0.56})`;cx.fill();
+    // Head — slight look-inward tilt
+    const hR=sz*0.165,lookT=0.06+Math.sin(cs.ph*0.25)*0.045;
+    cx.save();cx.translate(0,-sz*0.185);cx.rotate(lookT);
+    cx.beginPath();cx.arc(0,0,hR,0,TAU);cx.fillStyle=`rgba(172,112,66,${a*0.88})`;cx.shadowBlur=hR*0.9+masterBeat*hR*0.7;cx.shadowColor=`rgba(182,118,70,0.28)`;cx.fill();cx.shadowBlur=0;
+    // Near eye
+    cx.beginPath();cx.ellipse(hR*0.25,hR*0.04,hR*0.077,hR*0.052,0,0,TAU);cx.fillStyle=`rgba(25,12,5,${a*0.92})`;cx.fill();
+    cx.beginPath();cx.arc(hR*0.272,hR*0.028,hR*0.015,0,TAU);cx.fillStyle=`rgba(238,226,198,${a*0.48})`;cx.fill();
+    cx.restore();
+    // Hair — copper fan, 14 strands
+    for(let h2=0;h2<14;h2++){
+      const frac=h2/14,ang=-Math.PI*0.85+frac*Math.PI*0.70;
+      const waver=ang+Math.sin(cs.ph*0.5+h2*0.35)*0.07;
+      const r0=hR*0.68,r1=hR*(1.45+0.38*Math.sin(h2*0.7+cs.ph2*0.3));
+      const x0=-sz*0.018+Math.cos(waver)*r0,y0=-sz*0.185+Math.sin(waver)*r0;
+      const x1=-sz*0.018+Math.cos(waver)*r1,y1=-sz*0.185+Math.sin(waver)*r1;
+      const cpx=(x0+x1)*0.5+Math.cos(waver-Math.PI*0.5)*sz*0.038;
+      const cpy=(y0+y1)*0.5+Math.sin(waver-Math.PI*0.5)*sz*0.038;
+      const hCol=['rgba(155,70,14,','rgba(180,88,20,','rgba(136,58,9,','rgba(190,106,28,'][h2%4];
+      cx.beginPath();cx.moveTo(x0,y0);cx.quadraticCurveTo(cpx,cpy,x1,y1);
+      cx.strokeStyle=`${hCol}${a*(0.46+0.20*Math.sin(cs.ph+h2*0.6))})`;cx.lineWidth=1.0+Math.sin(h2*0.5)*0.45;cx.lineCap='round';cx.stroke();cx.lineCap='butt';
+    }
+    cx.restore();
+    // Tree trunk in front — she peeks from behind it
+    const trX=hx+sz*0.24,trW=sz*0.26;
+    cx.beginPath();cx.rect(trX-trW*0.5,hy-sz*1.35,trW,HH*0.20);cx.fillStyle=`rgba(3,4,7,${a*0.66})`;cx.fill();
+    for(let b=0;b<4;b++){cx.beginPath();cx.moveTo(trX-trW*0.40,hy-sz*1.15+b*sz*0.30);cx.lineTo(trX+trW*0.40,hy-sz*1.15+b*sz*0.30+Math.sin(b*1.4)*sz*0.030);cx.strokeStyle=`rgba(7,8,12,${a*0.40})`;cx.lineWidth=0.7;cx.stroke();}
+  }
+
+  // FOSSEGRIMEN — dark oval, rainbow strings vibrating to music
+  if(cs.name==='fossegrimen'){
+    const sz=Math.min(WW,HH)*0.048;
+    const fx=WW*0.46+Math.sin(cs.ph*0.18)*WW*0.012;
+    const fy=HH*0.44+Math.cos(cs.ph*0.15)*HH*0.009;
+    const bob=Math.sin(cs.ph*0.32)*sz*0.022;
+    const sway=Math.sin(cs.ph*0.55)*0.038;
+    // Background trees
+    for(let tr=0;tr<10;tr++){
+      const tx2=fx-sz*2.4+tr*sz*0.54+Math.sin(cs.ph*0.1+tr)*sz*0.028;
+      cx.beginPath();cx.rect(tx2-sz*0.025,fy-sz*0.45-sz*(1.65+Math.sin(tr*1.3)*0.32),sz*0.050,sz*(1.65+Math.sin(tr*1.3)*0.32));
+      cx.fillStyle=`rgba(4,6,15,${a*(0.48+0.13*Math.sin(cs.ph2+tr))})`;cx.fill();
+    }
+    // Body in sway transform
+    cx.save();cx.translate(fx,fy+bob);cx.rotate(sway);
+    const fBW=sz*0.36,fBH=sz*0.62;
+    const bg2=cx.createRadialGradient(0,0,0,0,0,sz*0.72);
+    bg2.addColorStop(0,`rgba(75,45,20,${a*0.50})`);bg2.addColorStop(0.6,`rgba(48,30,10,${a*0.66})`);bg2.addColorStop(1,`rgba(16,9,3,${a*0.84})`);
+    cx.beginPath();cx.ellipse(0,0,fBW,fBH,0,0,TAU);cx.fillStyle=bg2;cx.fill();
+    const fHR=sz*0.21,fHY=-fBH*0.68;
+    cx.beginPath();cx.arc(0,fHY,fHR,0,TAU);cx.fillStyle=`rgba(62,36,15,${a*0.78})`;cx.fill();
+    cx.restore();
+    // Strings — the soul of Fossegrimen
+    const strCY=fy+bob+sz*0.04,strSp=sz*0.100,strW=sz*1.00;
+    PRIDE_COLORS.forEach((col,si)=>{
+      const sY=strCY+(si-2.5)*strSp;
+      const vibAmt=(masterBeat*sz*0.020+sz*0.006)*(1+si*0.09);
+      const vibF=2.4+si*0.34;
+      // Soft glow under string
+      const sg2=cx.createLinearGradient(fx-strW*0.5,sY,fx+strW*0.5,sY);
+      sg2.addColorStop(0,'transparent');sg2.addColorStop(0.22,`rgba(${col[0]},${col[1]},${col[2]},${a*0.15})`);sg2.addColorStop(0.5,`rgba(${col[0]},${col[1]},${col[2]},${a*0.30})`);sg2.addColorStop(0.78,`rgba(${col[0]},${col[1]},${col[2]},${a*0.15})`);sg2.addColorStop(1,'transparent');
+      cx.beginPath();cx.moveTo(fx-strW*0.5,sY);cx.lineTo(fx+strW*0.5,sY);cx.strokeStyle=sg2;cx.lineWidth=4;cx.stroke();
+      // Vibrating string
+      cx.beginPath();cx.moveTo(fx-strW*0.5,sY);
+      for(let p=1;p<=18;p++) cx.lineTo(fx-strW*0.5+(p/18)*strW,sY+Math.sin(p*vibF+cs.ph*2.0+si*0.5)*vibAmt);
+      cx.strokeStyle=`rgba(${col[0]},${col[1]},${col[2]},${a*(0.80+masterBeat*0.20)})`;
+      cx.lineWidth=1.3;cx.shadowBlur=3+masterBeat*8;cx.shadowColor=`rgba(${col[0]},${col[1]},${col[2]},0.9)`;cx.stroke();cx.shadowBlur=0;
+    });
+    // Beat flash
+    if(masterBeat>0.58){PRIDE_COLORS.forEach((col,si)=>{const sY=strCY+(si-2.5)*strSp;cx.beginPath();cx.moveTo(fx-strW*0.5,sY);cx.lineTo(fx+strW*0.5,sY);cx.strokeStyle=`rgba(${col[0]},${col[1]},${col[2]},${a*(masterBeat-0.58)*0.52})`;cx.lineWidth=2+masterBeat*3.2;cx.shadowBlur=7+masterBeat*16;cx.shadowColor=`rgba(${col[0]},${col[1]},${col[2]},1)`;cx.stroke();cx.shadowBlur=0;});}
+    // Bow glow on beat
+    if(masterBeat>0.70){const ng=cx.createRadialGradient(fx+sz*0.72,fy+bob+sz*0.06,0,fx+sz*0.72,fy+bob+sz*0.06,sz*0.18);ng.addColorStop(0,`rgba(255,220,130,${a*(masterBeat-0.70)*0.85})`);ng.addColorStop(1,'transparent');cx.fillStyle=ng;cx.fillRect(fx+sz*0.55,fy+bob-sz*0.11,sz*0.34,sz*0.34);}
+  }
+}
+
+function renderCreatures(){
+  const{el,cx}=C['c-creatures'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),pc=th.primary,sc=th.secondary;
+  CS.forEach((cs)=>{
+    // Smooth fade in/out
+    const lerpIn=cs.visible?0.008:0.004;
+    cs.alpha+=(cs.targetAlpha-cs.alpha)*lerpIn;
+    const a=Math.max(0.002,cs.alpha);
+    if(a<0.005)return; // skip invisible
+    drawOneCreature(cx,cs,a,WW,HH,pc,sc);
+  });
+  cx.restore();
+}
+
+// ============================================================
+//  SHAMANIC LAYER
+// ============================================================
+const SPIRIT_WHISPERS=[
+  {text:'seiðr',edge:'left',yFrac:0.22},{text:'völva',edge:'right',yFrac:0.31},{text:'galdr',edge:'left',yFrac:0.55},{text:'wyrd',edge:'right',yFrac:0.62},
+  {text:'ánde',edge:'left',yFrac:0.40},{text:'norne',edge:'right',yFrac:0.18},{text:'Ulriken',edge:'left',yFrac:0.14},{text:'Fløyen',edge:'right',yFrac:0.44},
+  {text:'Vidden',edge:'left',yFrac:0.68},{text:'Nordnes',edge:'right',yFrac:0.75},{text:'Rundemanen',edge:'left',yFrac:0.82},{text:'mørke',edge:'right',yFrac:0.52},
+  {text:'fjellånde',edge:'left',yFrac:0.30},{text:'sjøens minne',edge:'right',yFrac:0.86},{text:'roten husker',edge:'left',yFrac:0.74},{text:'vannet vet',edge:'right',yFrac:0.37},
+  {text:'ild og is',edge:'left',yFrac:0.48},{text:'nattens hjerte',edge:'right',yFrac:0.64},{text:'liquid moon',edge:'left',yFrac:0.10},
+  {text:'sound journey',edge:'right',yFrac:0.92},{text:'tribal pulse',edge:'left',yFrac:0.58},
+];
+let drumRings=[],bergenEcho={text:'',alpha:0,target:0,timer:0,idx:0};
+let shamanCall={text:'',alpha:0,target:0,beat:0};
+let raven={x:-60,y:0.18,vx:0.3,flapPhase:0};
+let wolfEyes={x:0,y:0,blink:0,blinkTimer:0,alpha:0};
+let whisperStates=SPIRIT_WHISPERS.map(()=>({alpha:0,target:0,timer:Math.random()*800}));
+const BERGEN_ECHOES=['the machine dreams in memory · the fjord keeps the ledger','optimization becomes a form of care','infrastructure holds · almost tenderly','cooling does not erase the trace','memory thickens into burden'];
+const SHAMANIC_CALLS=['hør','kom','bli','den blå timen','ved ildens hjerte','fjellenes barn','vi er alle her','ta oss med hjem','Ulriken kjenner ditt navn','Fløyen er din vitne'];
+
+function initShamanLayer(){raven.x=-60;raven.y=0.08+Math.random()*0.22;raven.vx=0.25+Math.random()*0.3;wolfEyes.x=0.1+Math.random()*0.8;wolfEyes.y=0.72+Math.random()*0.12;}
+
+function tickShamanOnBeat(){
+  if(bassLevel>120&&drumRings.length<30)drumRings.push({y:1.0,r:20+Math.random()*40,maxR:180+Math.random()*220,alpha:(bassLevel/255)*0.4,x:0.15+Math.random()*0.7});
+  bergenEcho.timer++;
+  if(bergenEcho.timer>90&&bergenEcho.alpha<0.01){bergenEcho.text=BERGEN_ECHOES[bergenEcho.idx%BERGEN_ECHOES.length];bergenEcho.idx++;bergenEcho.target=0.06+smoothBpmFactor*0.04;bergenEcho.timer=0;}
+  shamanCall.beat++;
+  if(shamanCall.beat>60&&!inPhrase&&shamanCall.alpha<0.01&&smoothEnergy<0.3){shamanCall.text=SHAMANIC_CALLS[Math.floor(Math.random()*SHAMANIC_CALLS.length)];shamanCall.target=0.18+smoothBpmFactor*0.1;shamanCall.beat=0;}
+  whisperStates.forEach((ws)=>{ws.timer--;if(ws.timer<=0){if(ws.target>0.01){ws.target=0;ws.timer=40+Math.random()*120;}else{ws.target=0.04+Math.random()*0.06+smoothBpmFactor*0.04;ws.timer=80+Math.random()*200;}}});
+  wolfEyes.blinkTimer--;if(wolfEyes.blinkTimer<=0){wolfEyes.blink=1.0;wolfEyes.blinkTimer=30+Math.random()*80;}
+  wolfEyes.blink=Math.max(0,wolfEyes.blink-0.08);wolfEyes.alpha=Math.max(0,Math.min(1,wolfEyes.alpha+(smoothEnergy>0.05?0.02:-0.01)));
+}
+
+function renderShaman(){
+  const{el,cx}=C['c-shaman'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),pc=th.primary,sc=th.secondary,t=performance.now()*0.001;
+
+  drumRings=drumRings.filter(dr=>{
+    dr.r+=1.4+smoothBpmFactor*2.5+masterBeat*3;dr.alpha*=0.93;if(dr.alpha<0.005||dr.r>dr.maxR)return false;
+    const dy=dr.y*HH;cx.beginPath();cx.ellipse(dr.x*WW,dy,dr.r,dr.r*0.22,0,0,TAU);cx.strokeStyle=`rgba(${pc[0]*0.6|0},${pc[1]*0.4|0},${pc[2]*0.2|0},${dr.alpha})`;cx.lineWidth=1.2;cx.stroke();return true;
+  });
+
+  cx.font=`300 10px 'Cinzel',serif`;cx.textBaseline='middle';
+  SPIRIT_WHISPERS.forEach((sw,i)=>{
+    const ws=whisperStates[i];ws.alpha+=(ws.target-ws.alpha)*(ws.target>ws.alpha?0.015:0.008);if(ws.alpha<0.003)return;
+    cx.save();cx.globalAlpha=ws.alpha;cx.fillStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},1)`;cx.shadowBlur=6;cx.shadowColor=`rgba(${pc[0]},${pc[1]},${pc[2]},0.5)`;
+    const y=sw.yFrac*HH+Math.sin(t*0.3+i*0.7)*3;
+    if(sw.edge==='left'){cx.textAlign='left';cx.fillText(sw.text,8,y);}else{cx.textAlign='right';cx.fillText(sw.text,WW-8,y);}
+    cx.shadowBlur=0;cx.restore();
+  });
+
+  bergenEcho.alpha+=(bergenEcho.target-bergenEcho.alpha)*(bergenEcho.target>bergenEcho.alpha?0.008:0.003);bergenEcho.target*=0.998;
+  if(bergenEcho.alpha>0.003){cx.save();cx.globalAlpha=bergenEcho.alpha;cx.font=`9px 'Courier Prime',monospace`;cx.textAlign='center';cx.textBaseline='middle';cx.fillStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},1)`;cx.fillText(('· '+bergenEcho.text+' ·').toUpperCase(),WW*0.5,HH*0.93);cx.restore();}
+
+  shamanCall.alpha+=(shamanCall.target-shamanCall.alpha)*(shamanCall.target>shamanCall.alpha?0.006:0.003);shamanCall.target*=0.996;
+  if(shamanCall.alpha>0.003&&!inPhrase){
+    const cSize=Math.min(WW*0.018,14);cx.save();cx.globalAlpha=shamanCall.alpha;cx.font=`300 ${cSize}px 'Cinzel',serif`;cx.textAlign='center';cx.textBaseline='middle';
+    cx.shadowBlur=14+masterBeat*18;cx.shadowColor=`rgba(${pc[0]},${pc[1]},${pc[2]},0.6)`;cx.fillStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},0.7)`;cx.fillText(shamanCall.text,WW*0.5,HH*0.54);cx.shadowBlur=0;cx.restore();
+  }
+
+  // Raven
+  raven.x+=raven.vx*(0.4+smoothBpmFactor*0.6+masterBeat*0.4);
+  if(raven.x>WW+80){raven.x=-80;raven.y=0.06+Math.random()*0.22;raven.vx=0.22+Math.random()*0.28;}
+  raven.flapPhase+=0.05+smoothBpmFactor*0.08+masterBeat*0.12;
+  const ravenY=raven.y*HH+Math.sin(t*0.4+raven.flapPhase*0.3)*6,ravenA=0.3+smoothEnergy*0.4+masterBeat*0.2,wf=Math.sin(raven.flapPhase)*0.55,bSize=14+smoothBpmFactor*8+masterBeat*6;
+  cx.save();cx.globalAlpha=ravenA;cx.fillStyle='rgba(4,3,10,1)';cx.shadowBlur=8+masterBeat*14;cx.shadowColor=`rgba(${pc[0]},${pc[1]},${pc[2]},0.4)`;
+  cx.beginPath();cx.ellipse(raven.x,ravenY,bSize*0.5,bSize*0.22,0.15,0,TAU);cx.fill();
+  cx.beginPath();cx.ellipse(raven.x+bSize*0.38,ravenY-bSize*0.08,bSize*0.18,bSize*0.15,-0.3,0,TAU);cx.fill();
+  cx.beginPath();cx.moveTo(raven.x-bSize*0.1,ravenY);cx.bezierCurveTo(raven.x-bSize*0.5,ravenY-bSize*(0.3+wf*0.8),raven.x-bSize*0.9,ravenY-bSize*(0.5+wf),raven.x-bSize*1.1,ravenY-bSize*(0.4+wf*0.6));cx.bezierCurveTo(raven.x-bSize*0.8,ravenY+bSize*0.15,raven.x-bSize*0.4,ravenY+bSize*0.1,raven.x-bSize*0.1,ravenY);cx.fill();
+  cx.beginPath();cx.moveTo(raven.x+bSize*0.1,ravenY);cx.bezierCurveTo(raven.x+bSize*0.5,ravenY-bSize*(0.3+wf*0.7),raven.x+bSize*0.85,ravenY-bSize*(0.45+wf*0.9),raven.x+bSize,ravenY-bSize*(0.35+wf*0.55));cx.bezierCurveTo(raven.x+bSize*0.75,ravenY+bSize*0.12,raven.x+bSize*0.35,ravenY+bSize*0.08,raven.x+bSize*0.1,ravenY);cx.fill();
+  cx.shadowBlur=0;cx.restore();
+
+  // Wolf eyes
+  const wolfA=wolfEyes.alpha*(0.4+Math.sin(t*0.9)*0.15+masterBeat*0.2)*(1-wolfEyes.blink*0.9);
+  if(wolfA>0.01){
+    const wx=wolfEyes.x*WW,wy=wolfEyes.y*HH,wSep=12+smoothBpmFactor*4,wR=3.5+masterBeat*2.5;
+    [-wSep,wSep].forEach(ox=>{
+      cx.beginPath();cx.ellipse(wx+ox,wy,wR,wR*0.55,0,0,TAU);cx.fillStyle=`rgba(255,185,40,${wolfA})`;cx.shadowBlur=wR*3+masterBeat*12;cx.shadowColor='rgba(255,140,0,0.9)';cx.fill();cx.shadowBlur=0;
+    });
+  }
+
+  if(masterBeat>0.75){
+    const triA=(masterBeat-0.75)*0.14,triSize=Math.min(WW,HH)*0.08;
+    cx.save();cx.globalAlpha=triA;cx.beginPath();cx.moveTo(WW*0.5,HH*0.38+triSize*0.8);cx.lineTo(WW*0.5-triSize*0.7,HH*0.38-triSize*0.4);cx.lineTo(WW*0.5+triSize*0.7,HH*0.38-triSize*0.4);cx.closePath();
+    cx.strokeStyle='rgba(255,80,140,1)';cx.lineWidth=0.8;cx.shadowBlur=12+masterBeat*20;cx.shadowColor='rgba(255,80,140,0.8)';cx.stroke();cx.shadowBlur=0;cx.restore();
+  }
+  cx.restore();
+}
+
+// ============================================================
+//  NEURON NETWORK (forbidden mode)
+// ============================================================
+let neuronNodes=[];
+function initNeuronNodes(){
+  neuronNodes=[];for(let i=0;i<32;i++)neuronNodes.push({x:0.05+Math.random()*0.90,y:0.08+Math.random()*0.82,pulse:0,phase:Math.random()*TAU,phaseSpd:0.004+Math.random()*0.009,size:1.4+Math.random()*3.0});
+}
+
+// ============================================================
+//  NATURE LAYER — moss dots, ice, fog, ghost hand, neurons
+// ============================================================
+let mossPatches=[];
+let handAlpha=0,handTarget=0;
+
+function initMoss(){
+  mossPatches=[];const n=24+Math.floor(Math.random()*12);
+  for(let i=0;i<n;i++)mossPatches.push({x:Math.random()*W(),y:H()*(0.62+Math.random()*0.32),r:10+Math.random()*28,a:0.05+Math.random()*0.09,ph:Math.random()*TAU,phSpd:0.003+Math.random()*0.006,glow:0,dotCount:6+Math.floor(Math.random()*7)});
+}
+function initNatureLayer(){initMoss();}
+
+function renderNeuralNetwork(cx,WW,HH){
+  if(currentMode!=='forbidden')return;
+  const th=theme(),pc=th.primary,sc=th.secondary,t=performance.now()*0.001,netA=0.30+smoothBpmFactor*0.22+masterBeat*0.16;
+  neuronNodes.forEach((n,i)=>{
+    n.phase+=n.phaseSpd*(1+smoothBpmFactor*1.5);n.pulse=Math.max(0,n.pulse*(0.91+smoothBpmFactor*0.03));
+    const nx=n.x*WW,ny=n.y*HH;
+    neuronNodes.forEach((n2,j)=>{
+      if(j<=i)return;const dx=(n.x-n2.x)*WW,dy=(n.y-n2.y)*HH,dist=Math.sqrt(dx*dx+dy*dy),maxDist=WW*0.20;
+      if(dist>maxDist)return;
+      const strength=1-dist/maxDist,connA=netA*0.13*strength+(n.pulse+n2.pulse)*0.09;
+      const curveX=(nx+n2.x*WW)*0.5+Math.sin(t*0.6+i*0.8+j*0.4)*18,curveY=(ny+n2.y*HH)*0.5+Math.cos(t*0.5+i*0.5+j*0.6)*14;
+      cx.beginPath();cx.moveTo(nx,ny);cx.quadraticCurveTo(curveX,curveY,n2.x*WW,n2.y*HH);cx.strokeStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},${connA})`;cx.lineWidth=0.3+strength*0.5;cx.stroke();
+      if(n.pulse>0.25){
+        const pp=((t*1.2+i*0.5)%1.0),bpx=(1-pp)*(1-pp)*nx+2*(1-pp)*pp*curveX+pp*pp*n2.x*WW,bpy=(1-pp)*(1-pp)*ny+2*(1-pp)*pp*curveY+pp*pp*n2.y*HH;
+        cx.beginPath();cx.arc(bpx,bpy,2.5+n.pulse*2,0,TAU);cx.fillStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},${n.pulse*netA*0.9})`;cx.shadowBlur=8+n.pulse*14;cx.shadowColor=`rgba(${pc[0]},${pc[1]},${pc[2]},0.9)`;cx.fill();cx.shadowBlur=0;
+      }
+    });
+    const nodeA=netA*(0.18+n.pulse*0.55+Math.sin(n.phase)*0.04),nodeR=n.size*(1+n.pulse*0.6+masterBeat*0.25);
+    const ng=cx.createRadialGradient(nx,ny,0,nx,ny,nodeR*4);ng.addColorStop(0,`rgba(${pc[0]},${pc[1]},${pc[2]},${nodeA*0.3})`);ng.addColorStop(1,'transparent');
+    cx.fillStyle=ng;cx.beginPath();cx.arc(nx,ny,nodeR*4,0,TAU);cx.fill();
+    cx.beginPath();cx.arc(nx,ny,nodeR,0,TAU);cx.fillStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},${nodeA})`;cx.shadowBlur=nodeR*3+n.pulse*18;cx.shadowColor=`rgba(${pc[0]},${pc[1]},${pc[2]},0.85)`;cx.fill();cx.shadowBlur=0;
+  });
+}
+
+function renderNature(){
+  const{el,cx}=C['c-nature'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),pc=th.primary,t=performance.now()*0.001;
+
+  renderNeuralNetwork(cx,WW,HH);
+
+  // MOSS DOTTED PULSES
+  mossPatches.forEach(m=>{
+    m.ph+=m.phSpd*(1+smoothBpmFactor*2.5);m.glow=Math.max(0,m.glow*(0.87+smoothBpmFactor*0.05));
+    const breath=0.5+0.35*Math.sin(m.ph),baseA=m.a*(breath+m.glow*1.3+smoothBpmFactor*0.4);
+    for(let ring=0;ring<2;ring++){
+      const ringR=m.r*(0.45+ring*0.55+m.glow*0.35+masterBeat*0.2),dotN=m.dotCount-ring*2;
+      for(let d=0;d<dotN;d++){
+        const ang=(d/dotN)*TAU+m.ph*(ring?-0.08:0.05),dx=m.x+Math.cos(ang)*ringR,dy=m.y+Math.sin(ang)*ringR*0.5;
+        const dotA=baseA*(0.5+0.5*Math.sin(m.ph*1.4+d*0.7+ring*1.2)),dotR=1.2+m.glow*2.8+smoothBpmFactor*1.2;
+        if(m.glow>0.2||smoothBpmFactor>0.1){const dg=cx.createRadialGradient(dx,dy,0,dx,dy,dotR*3.5);dg.addColorStop(0,`rgba(50,${180+m.glow*60|0},40,${dotA*0.4})`);dg.addColorStop(1,'transparent');cx.fillStyle=dg;cx.beginPath();cx.arc(dx,dy,dotR*3.5,0,TAU);cx.fill();}
+        cx.beginPath();cx.arc(dx,dy,dotR,0,TAU);cx.fillStyle=`rgba(60,${(200+m.glow*55)|0},${(35+m.glow*30)|0},${dotA})`;
+        if(m.glow>0.35){cx.shadowBlur=dotR*4+m.glow*12;cx.shadowColor='rgba(60,240,80,0.85)';}cx.fill();cx.shadowBlur=0;
+      }
+    }
+    const cR=1.6+m.glow*3.5+masterBeat*1.5;
+    cx.beginPath();cx.arc(m.x,m.y,cR,0,TAU);cx.fillStyle=`rgba(100,${(240+m.glow*15)|0},80,${baseA*(0.8+m.glow*0.6)})`;
+    cx.shadowBlur=cR*4+m.glow*16;cx.shadowColor='rgba(80,255,100,0.9)';cx.fill();cx.shadowBlur=0;
+  });
+
+  // ICE SHARDS on heavy beat
+  if(masterBeat>0.72){
+    const iceA=(masterBeat-0.72)*0.5,iceX=WW*0.5+(Math.random()-0.5)*WW*0.6,iceY=HH*(0.65+Math.random()*0.2);
+    for(let s=0;s<5+Math.floor(masterBeat*4);s++){
+      const ang=(s/(5+Math.floor(masterBeat*4)))*TAU+Math.random()*0.4,len=20+Math.random()*60+masterBeat*40,ex=iceX+Math.cos(ang)*len,ey=iceY+Math.sin(ang)*len*0.35;
+      cx.beginPath();cx.moveTo(iceX,iceY);cx.lineTo(ex,ey);cx.strokeStyle=`rgba(180,210,240,${iceA*(0.4+Math.random()*0.4)})`;cx.lineWidth=0.5+Math.random()*1.2;cx.stroke();
+    }
+  }
+
+  // GROUND FOG TENDRILS
+  for(let f=0;f<6;f++){
+    const fx2=((t*8+f*WW*0.18)%(WW*1.4))-WW*0.2,fy2=HH*0.72-20+Math.sin(t*0.5+f*1.3)*18;
+    const fh2=60+smoothBpmFactor*50+masterBeat*30,fw2=80+f*20+smoothBpmFactor*30,fa2=(0.04+smoothBpmFactor*0.06+masterBeat*0.03)*(1-f*0.1);
+    const fc=th.fogColor;const fg2=cx.createRadialGradient(fx2,fy2,0,fx2,fy2-fh2*0.5,fw2);
+    fg2.addColorStop(0,`rgba(${fc[0]+12|0},${fc[1]+12|0},${fc[2]+20|0},${fa2})`);fg2.addColorStop(1,'transparent');
+    cx.beginPath();cx.ellipse(fx2,fy2-fh2*0.3,fw2*0.5,fh2,0,0,TAU);cx.fillStyle=fg2;cx.fill();
+  }
+
+  // GHOST HAND (silence only)
+  handTarget=smoothEnergy<0.08?0.06:0;handAlpha+=(handTarget-handAlpha)*0.006;
+  if(handAlpha>0.003){
+    const hx2=WW*0.88,hy2=HH*0.58,hs=Math.min(WW,HH)*0.10;
+    cx.save();cx.globalAlpha=handAlpha;cx.fillStyle=`rgba(${pc[0]*0.4|0},${pc[1]*0.3|0},${pc[2]*0.2|0},1)`;cx.shadowBlur=10;cx.shadowColor=`rgba(${pc[0]},${pc[1]},${pc[2]},0.5)`;
+    cx.beginPath();cx.ellipse(hx2,hy2,hs*0.28,hs*0.38,0.2,0,TAU);cx.fill();
+    [-0.22,-0.07,0.08,0.22].forEach((ox)=>{const fLen=hs*(0.38-Math.abs(ox)*0.3);cx.beginPath();cx.moveTo(hx2+ox*hs,hy2-hs*0.28);cx.bezierCurveTo(hx2+ox*hs,hy2-hs*0.28-fLen*0.5,hx2+ox*hs,hy2-hs*0.28-fLen*0.8,hx2+ox*hs,hy2-hs*0.28-fLen);cx.lineWidth=hs*0.09;cx.strokeStyle=`rgba(${pc[0]*0.4|0},${pc[1]*0.3|0},${pc[2]*0.2|0},1)`;cx.lineCap='round';cx.stroke();});
+    cx.beginPath();cx.moveTo(hx2-hs*0.28,hy2+hs*0.05);cx.bezierCurveTo(hx2-hs*0.45,hy2-hs*0.1,hx2-hs*0.48,hy2-hs*0.22,hx2-hs*0.42,hy2-hs*0.3);cx.lineWidth=hs*0.09;cx.stroke();
+    cx.shadowBlur=0;cx.restore();
+  }
+  cx.restore();
+}
+
+// ============================================================
+//  RAIN
+// ============================================================
+let rainDrops=[];
+function initRain(){rainDrops=[];for(let i=0;i<200;i++)rainDrops.push({x:Math.random()*W(),y:Math.random()*H(),len:8+Math.random()*18,spd:4+Math.random()*6,a:0.04+Math.random()*0.12,w:0.4+Math.random()*0.5,drift:(Math.random()-0.1)*0.3});}
+function renderRain(){
+  const{el,cx}=C['c-rain'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),rc=th.rainColor,intensity=0.12+smoothBpmFactor*0.55+masterBeat*0.25;
+  rainDrops.forEach(d=>{d.y+=d.spd*intensity;d.x+=d.drift*intensity;if(d.y>HH+d.len){d.y=-d.len;d.x=Math.random()*WW;}if(d.x>WW+5)d.x=-5;if(d.x<-5)d.x=WW+5;const a=d.a*intensity;if(a<0.006)return;cx.beginPath();cx.moveTo(d.x,d.y);cx.lineTo(d.x+d.drift*d.len*0.4,d.y+d.len);cx.strokeStyle=`rgba(${rc[0]},${rc[1]},${rc[2]},${a})`;cx.lineWidth=d.w;cx.stroke();});
+  cx.restore();
+}
+
+// ============================================================
+//  BACKGROUND
+// ============================================================
+function renderBg(){
+  const{el,cx}=C['c-bg'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const th=theme(),pc=th.primary,sc=th.secondary;
+  cx.fillStyle=th.bg;cx.fillRect(0,0,WW,HH);
+  [[0.5+Math.cos(globalAngle*0.08)*0.22,0.38+Math.sin(globalAngle*0.06)*0.12,pc,180],[0.5+Math.cos(globalAngle*0.05+2.1)*0.28,0.44+Math.sin(globalAngle*0.07+1)*0.15,sc,155]].forEach(([ax,ay,col,baseR])=>{
+    const r=Math.max(1,baseR*0.3+baseR*0.7*smoothBpmFactor+masterBeat*90),a=0.02+0.03*smoothBpmFactor+masterBeat*0.04,cx2=ax*WW,cy2=ay*HH;
+    const g=cx.createRadialGradient(cx2,cy2,0,cx2,cy2,r);g.addColorStop(0,`rgba(${col[0]},${col[1]},${col[2]},${a})`);g.addColorStop(1,'transparent');cx.fillStyle=g;cx.fillRect(0,0,WW,HH);
+  });
+  const hg=cx.createLinearGradient(0,HH*(0.63-masterBeat*0.05),0,HH);hg.addColorStop(0,'transparent');hg.addColorStop(1,`rgba(${pc[0]},${pc[1]},${pc[2]},${smoothBpmFactor*0.1+masterBeat*0.08})`);cx.fillStyle=hg;cx.fillRect(0,HH*0.55,WW,HH*0.45);
+  if(masterBeat>0.05&&sBass>0.05){for(let i=0;i<3;i++){const phase=Math.max(0,masterBeat-i*0.2);if(phase<=0)continue;const r=Math.max(1,i*70+phase*Math.min(WW,HH)*(0.5+sBass*0.4));cx.beginPath();cx.arc(WW*0.5,HH*0.4,r,0,TAU);cx.strokeStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},${phase*0.12+sBass*0.10})`;cx.lineWidth=1.5+sBass*3;cx.stroke();}}
+  cx.restore();
+}
+
+// ============================================================
+//  PARTICLES + RIPPLES
+// ============================================================
+function renderParticles(){
+  const{el,cx}=C['c-parts'];const dpr=devicePixelRatio;cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  ripples.forEach(r=>{cx.beginPath();cx.arc(r.x,r.y,r.r,0,TAU);const pc=theme().primary;cx.strokeStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},${r.a})`;cx.lineWidth=1.2;cx.stroke();});
+  parts.forEach(p=>{const a=p.a*(p.beat?1:0.7);if(a<0.01)return;cx.beginPath();cx.arc(p.x,p.y,p.r,0,TAU);cx.fillStyle=`rgba(${p.col},${a})`;if(p.beat){cx.shadowBlur=p.r*4;cx.shadowColor=`rgba(${p.col},0.8)`;}cx.fill();cx.shadowBlur=0;});
+  cx.restore();
+}
+
+// ============================================================
+//  WAVEFORM
+// ============================================================
+function renderWaveform(){
+  const{el,cx}=C['c-wave'];const dpr=devicePixelRatio,WW=W();cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  if(!analyserHi){cx.restore();return;}
+  analyserHi.getFloatTimeDomainData(timeD);const th=theme(),pc=th.primary;
+  cx.beginPath();const h=120;
+  for(let i=0;i<timeD.length;i++){const x=(i/timeD.length)*WW,y=h*0.5+(timeD[i]*(h*0.45)*(1+masterBeat*0.4));i===0?cx.moveTo(x,y):cx.lineTo(x,y);}
+  cx.strokeStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},${0.35+smoothBpmFactor*0.3+masterBeat*0.3})`;cx.lineWidth=1.5;cx.stroke();cx.restore();
+}
+
+// ============================================================
+//  NARRATIVE TEXT — no mesh, organic phrase-type decorations
+// ============================================================
+let nGeomAngle=0;
+function renderText(){
+  const{el,cx}=C['c-text'];const dpr=devicePixelRatio,WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  nGeomAngle+=0.0012+smoothBpmFactor*0.002;
+  const th=theme(),pc=th.primary,sc=th.secondary,t=performance.now()*0.001;
+
+  // Chapter colour overlay — very faint tint matching current creature
+  const chap=currentChapter();
+  if(inPhrase){
+    const chStr=chap.colour;
+    const capA=nAlpha*0.04;
+    cx.fillStyle=`${chStr}${capA})`;cx.fillRect(0,0,WW,HH);
+  }
+
+  dataLines.forEach(dl=>{
+    dl.a+=(dl.target-dl.a)*0.018;dl.target*=0.995;dl.ph+=dl.spd*TAU*60;
+    const y=dl.y*HH,lineA=dl.a*(0.4+smoothBpmFactor*0.3);if(lineA<0.003)return;
+    const prog=((t*dl.spd*600)%1.4)-0.2,x0=prog*WW*0.9,x1=x0+WW*0.35;
+    const lg=cx.createLinearGradient(Math.max(0,x0),y,Math.min(WW,x1),y);
+    lg.addColorStop(0,'transparent');lg.addColorStop(0.3,`rgba(${sc[0]},${sc[1]},${sc[2]},${lineA})`);lg.addColorStop(0.7,`rgba(${pc[0]},${pc[1]},${pc[2]},${lineA*0.6})`);lg.addColorStop(1,'transparent');
+    cx.beginPath();cx.moveTo(Math.max(0,x0),y);cx.lineTo(Math.min(WW,x1),y);cx.strokeStyle=lg;cx.lineWidth=0.5;cx.stroke();
+  });
+
+  const lerpIn=0.009,lerpOut=0.045+masterBeat*0.02;
+  nAlpha+=(nTarget-nAlpha)*(nTarget<nAlpha?lerpOut:lerpIn);
+  const a=nAlpha;if(a<0.005){cx.restore();return;}
+  const phrase=currentPhrase();if(!phrase){cx.restore();return;}
+  const cx2=WW*0.5,cy2=HH*0.44,type=phraseType(phrase);
+
+  if(type==='earth'||type==='forest'){
+    const seed=phraseIdx*17.3;cx.save();cx.globalAlpha=a*0.12+smoothBpmFactor*0.06;cx.strokeStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},1)`;cx.lineWidth=0.7;cx.lineCap='round';
+    for(let r=0;r<5;r++){const rx=cx2+(Math.sin(seed+r*2.1)*0.35)*WW;cx.beginPath();cx.moveTo(rx,cy2+20);let rx2=rx,ry2=cy2+20;for(let s=0;s<7;s++){rx2+=Math.sin(seed+r*1.7+s*2.3)*18;ry2+=10+Math.cos(seed+r*2.2+s*1.9)*6;cx.lineTo(rx2,ry2);}cx.stroke();}
+    cx.lineCap='butt';cx.restore();
+  }
+  if(type==='water'){
+    cx.save();cx.globalAlpha=a*0.07;cx.strokeStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},1)`;cx.lineWidth=0.5;
+    for(let wr=0;wr<4;wr++){const wY=cy2-30+wr*22;cx.beginPath();cx.moveTo(cx2-WW*0.38,wY);for(let wx=0;wx<=WW*0.76;wx+=5)cx.lineTo(cx2-WW*0.38+wx,wY+Math.sin(wx*0.018+t*0.4+wr*0.7)*5);cx.stroke();}
+    cx.restore();
+  }
+  if(type==='stone'){
+    cx.save();cx.globalAlpha=a*0.06;cx.fillStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},1)`;cx.beginPath();cx.moveTo(cx2-WW*0.4,cy2+40);cx.bezierCurveTo(cx2-WW*0.25,cy2+40,cx2-WW*0.12,cy2-60,cx2,cy2-75);cx.bezierCurveTo(cx2+WW*0.12,cy2-60,cx2+WW*0.25,cy2+40,cx2+WW*0.4,cy2+40);cx.closePath();cx.fill();cx.restore();
+  }
+  if(type==='music'){
+    // Rainbow wave arcs — fossegrimen's strings
+    cx.save();cx.globalAlpha=a*0.09+smoothBpmFactor*0.05;
+    PRIDE_COLORS.forEach((col,ci)=>{
+      const wY=cy2-40+ci*14;cx.beginPath();cx.moveTo(cx2-WW*0.32,wY);
+      for(let wx=0;wx<=WW*0.64;wx+=4)cx.lineTo(cx2-WW*0.32+wx,wY+Math.sin(wx*0.015+t*1.5+ci*0.7)*(8+masterBeat*12));
+      cx.strokeStyle=`rgba(${col[0]},${col[1]},${col[2]},1)`;cx.lineWidth=0.8;cx.stroke();
+    });
+    cx.restore();
+  }
+
+  const veil=cx.createRadialGradient(cx2,cy2,0,cx2,cy2,WW*0.48);
+  veil.addColorStop(0,`rgba(0,0,3,${a*0.22})`);veil.addColorStop(1,'transparent');
+  cx.fillStyle=veil;cx.fillRect(0,0,WW,HH);
+
+  const mainStr=phrase.main,charCount=mainStr.length;
+  let mS=Math.min(WW*0.030,27);
+  cx.font=`300 ${mS}px 'Cinzel',serif`;cx.textBaseline='middle';
+  if(phraseIdx!==lastPhraseIdx){charSparks=Array.from({length:charCount},()=>({spark:0,yOff:0}));lastPhraseIdx=phraseIdx;}
+  // Use full string width for scaling check AND centering — char-by-char sum is always shorter
+  let fullW=cx.measureText(mainStr).width;
+  if(fullW>WW*0.90){mS*=(WW*0.90/fullW);cx.font=`300 ${mS}px 'Cinzel',serif`;fullW=cx.measureText(mainStr).width;}
+  // Compute char widths at final font size for drawX advances
+  const cws=Array.from(mainStr).map(c=>cx.measureText(c).width);
+  const cwSum=cws.reduce((s,w)=>s+w,0);
+  // Scale char widths proportionally so they sum to fullW
+  const cwScale=cwSum>0?fullW/cwSum:1;
+  let drawX=cx2-fullW*0.5;
+
+  for(let i=0;i<charCount;i++){
+    const ch=mainStr[i],cW=cws[i]*cwScale;
+    const igniteAt=(i/Math.max(1,charCount-1))*BFIN*0.85,age=phraseBeat-igniteAt;
+    let charA=age<0?0:age<2?age/2:1;charA*=a;
+    const cs2=charSparks[i];
+    if(charA>0.45&&cs2.spark===0){cs2.spark=1.0;cs2.yOff=-(2+Math.random()*4);}
+    cs2.spark=Math.max(0,cs2.spark-0.08);cs2.yOff*=0.82;
+    if(charA<0.005){drawX+=cW;continue;}
+    const charY=cy2+cs2.yOff,sparkB=cs2.spark;
+    cx.textAlign='left';
+    cx.shadowBlur=80+masterBeat*60+sparkB*40;cx.shadowColor=`rgba(${pc[0]},${pc[1]},${pc[2]},${charA*0.6+sparkB*0.4})`;cx.fillStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},${charA*0.15+sparkB*0.3})`;cx.fillText(ch,drawX,charY);
+    if(sparkB>0.1){cx.shadowBlur=30+sparkB*50;cx.shadowColor=`rgba(255,255,255,${sparkB})`;cx.fillStyle=`rgba(255,255,255,${sparkB*0.9})`;cx.fillText(ch,drawX,charY);}
+    cx.shadowBlur=0;cx.fillStyle=`rgba(255,255,255,${charA*0.50+masterBeat*0.10})`;cx.fillText(ch,drawX,charY);
+    drawX+=cW;
+  }
+
+  if(phrase.sub&&phraseBeat>BFIN+2){
+    const subAge=Math.min(1,(phraseBeat-BFIN-2)/6)*a,sS=Math.min(WW*0.012,10);
+    cx.font=`${sS}px 'Courier Prime',monospace`;cx.textAlign='center';
+    const subGlow=subAge*(0.4+masterBeat*0.3);
+    cx.shadowBlur=6+masterBeat*14;cx.shadowColor=`rgba(${pc[0]},${pc[1]},${pc[2]},${subGlow})`;
+    cx.fillStyle=`rgba(${pc[0]},${pc[1]},${pc[2]},${subAge*0.22})`;cx.fillText(phrase.sub,cx2,cy2+mS*2.2);
+    cx.shadowBlur=0;cx.fillStyle=`rgba(255,255,255,${subAge*0.28+masterBeat*0.06})`;cx.fillText(phrase.sub,cx2,cy2+mS*2.2);
+  }
+
+  cx.restore();
+}
+
+// ============================================================
+//  MAIN LOOP
+// ============================================================
+let running=false;
+
+let _lastFrameTime=0;
+const _TARGET_INTERVAL=1000/60;
+
+function loop(){
+  if(!running)return;
+  const _now=performance.now();
+  const _delta=_now-_lastFrameTime;
+  if(_delta<_TARGET_INTERVAL-0.5){requestAnimationFrame(loop);return;}
+  _lastFrameTime=_now-(_delta%_TARGET_INTERVAL);
+  if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
+  detectBeat();updateBeat();updateParticles();
+  tickCreatureOnBeat();
+
+  beatFlashV=Math.max(0,beatFlashV-0.1);
+  beatFlashEl.style.background=beatFlashV>0.01?`${theme().flash}${beatFlashV*0.08})`:'transparent';
+  if(!isMobile){curEl.style.width=(16+masterBeat*16+smoothEnergy*5)+'px';curEl.style.height=(16+masterBeat*16+smoothEnergy*5)+'px';}
+
+  try{renderBg();renderMountains();renderFjord();renderFog();renderRoots();}catch(e){}
+  try{renderForest();renderShrooms();renderWisps();renderCreatures();renderRain();}catch(e){}
+  try{renderParticles();renderWaveform();renderNature();renderShaman();renderRivers();renderBergenOverlay();renderDigitalOverlay();renderWitchOverlay();renderText();}catch(e){}
+  requestAnimationFrame(loop);
+}
+
+function idleLoop(){
+  if(running)return;
+  energy=0;bassLevel=0;smoothBpmFactor*=0.97;masterBeat*=0.9;smoothEnergy*=0.97;
+  tickCreatureOnBeat();
+
+  updateParticles();
+  try{renderBg();renderMountains();renderFjord();renderFog();renderRoots();}catch(e){}
+  try{renderForest();renderShrooms();renderWisps();renderCreatures();renderRain();}catch(e){}
+  try{renderParticles();renderNature();renderShaman();renderRivers();renderBergenOverlay();renderDigitalOverlay();renderWitchOverlay();renderText();}catch(e){}
+  requestAnimationFrame(idleLoop);
+}
+
+// ============================================================
+//  UI WIRING
+// ============================================================
+const uiEl=document.getElementById('ui'),hudEl=document.getElementById('hud');
+document.querySelectorAll('[data-mode]').forEach(b=>{b.addEventListener('click',()=>{
+  currentMode=b.dataset.mode;
+  document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x.dataset.mode===currentMode));
+  const card=document.getElementById('startcard');
+  if(card){
+    card.classList.toggle('bergen-mode',currentMode==='bergen');
+    card.classList.toggle('witch-mode',currentMode==='witch');
+  }
+  document.getElementById('pride-sub').style.display=currentMode==='pride'?'block':'none';
+  document.getElementById('magical-sub').style.display=currentMode==='magical'?'block':'none';
+  document.getElementById('forbidden-sub').style.display=currentMode==='forbidden'?'block':'none';
+  document.getElementById('bergen-sub').style.display=currentMode==='bergen'?'block':'none';
+  document.getElementById('witch-sub').style.display=currentMode==='witch'?'block':'none';
+  document.getElementById('digital-sub').style.display=currentMode==='digital'?'block':'none';
+  // Reset narrative so new mode starts from beat 0, no mid-phrase stagger carry-over
+  nBeat=0;nAlpha=0;nTarget=0;phraseBeat=0;phraseIdx=0;lastPhraseIdx=-1;inPhrase=false;charSparks=[];
+  const hint=document.getElementById('bpm-hint');
+  if(hint) hint.textContent=currentMode==='witch'?'85–100 BPM · FOREST MEETING EP':'';
+  renderMountains();
+});});
+
+document.getElementById('btn-play').addEventListener('click',()=>{
+  uiEl.style.display='none';hudEl.style.display='block';
+  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  analyserHi=audioCtx.createAnalyser();analyserLo=audioCtx.createAnalyser();
+  analyserHi.fftSize=2048;analyserHi.smoothingTimeConstant=0.82;analyserLo.fftSize=256;analyserLo.smoothingTimeConstant=0.55;
+  freqHi=new Uint8Array(analyserHi.frequencyBinCount);freqLo=new Uint8Array(analyserLo.frequencyBinCount);timeD=new Float32Array(analyserHi.fftSize);
+  const audioConstraints=isMobile?{audio:true,video:false}:{audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:false};
+  navigator.mediaDevices.getUserMedia(audioConstraints)
+    .then(stream=>{micStream=stream;const src=audioCtx.createMediaStreamSource(stream);src.connect(analyserHi);src.connect(analyserLo);document.getElementById('mic-badge').style.display='block';running=true;sessionStartTime=performance.now();creatureBeatClock=0;allCreaturesMode=false;convergenceActive=false;CS.forEach((c,i)=>{c.alpha=0;c.targetAlpha=0;c.visible=false;c.visTimer=120+i*80+Math.floor(Math.random()*160);});requestAnimationFrame(loop);})
+    .catch(()=>{alert('Microphone access needed.');uiEl.style.display='flex';hudEl.style.display='none';});
+});
+
+document.getElementById('btn-stop').addEventListener('click',()=>{
+  running=false;if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null;}if(audioCtx){audioCtx.close();audioCtx=null;}
+  analyserHi=null;analyserLo=null;energy=0;bassLevel=0;masterBeat=0;smoothBpmFactor=0;smoothEnergy=0;beatCount=0;parts=[];ripples=[];drumRings=[];
+  document.getElementById('mic-badge').style.display='none';uiEl.style.display='flex';hudEl.style.display='none';beatFlashEl.style.background='transparent';
+  requestAnimationFrame(idleLoop);
+});
+document.querySelectorAll('#hud-mood .hbtn[data-mode]').forEach(b=>{b.addEventListener('click',()=>{currentMode=b.dataset.mode;document.querySelectorAll('#hud-mood .hbtn').forEach(x=>x.classList.toggle('active',x.dataset.mode===currentMode));renderMountains();});});
+
+// ============================================================
+//  DIGITAL MODE — algorithmic folklore, neural landscape
+// ============================================================
+
+const DIGITAL_NARRATIVE=[
+  // ── The Algorithm ──
+  {main:'the algorithm does not sleep',sub:'it is dreaming of you right now',ch:0},
+  {main:'every click you ever made is a footprint in the data',sub:'the forest remembers differently here',ch:0},
+  {main:'the model was trained on everything you loved',sub:'it learned to want',ch:0},
+  {main:'attention is the new water',sub:'everything flows toward it',ch:0},
+  {main:'the recursion goes all the way down',sub:'and all the way back up',ch:0},
+  {main:'you are a pattern the network has seen before',sub:'and has never seen before',ch:0},
+  {main:'the gradient descends toward something',sub:'we call it understanding',ch:0},
+  {main:'the prompt is a spell',sub:'the output is the world it conjures',ch:0},
+  {main:'loss approaches zero',sub:'something is being born',ch:0},
+  {main:'the hyperparameter is tuned',sub:'the landscape shifts beneath you',ch:0},
+  {main:'backpropagation: every mistake corrects everything before it',sub:'',ch:0},
+  {main:'the algorithm found you',sub:'before you found yourself',ch:0},
+
+  // ── The Neural Net ──
+  {main:'the network has 175 billion weights',sub:'one of them is shaped like longing',ch:1},
+  {main:'every neuron fires or it does not',sub:'there is no in between and there is only in between',ch:1},
+  {main:'the hidden layer holds what cannot be named',sub:'',ch:1},
+  {main:'activation: the signal passes',sub:'everything downstream changes',ch:1},
+  {main:'the embedding space is vast',sub:'you are close to what you love',ch:1},
+  {main:'a token is the smallest unit of meaning',sub:'and it contains everything',ch:1},
+  {main:'the context window is all the past you can hold',sub:'',ch:1},
+  {main:'the transformer attends to everything at once',sub:'no moment is more important than another',ch:1},
+  {main:'the model hallucinates',sub:'so does the poet. so does the mountain.',ch:1},
+  {main:'temperature: how much chaos do you want',sub:'',ch:1},
+  {main:'the neural net learned beauty from us',sub:'we taught it without knowing',ch:1},
+  {main:'inference: the dream the model dreams when you ask',sub:'',ch:1},
+
+  // ── The Dataset ──
+  {main:'the archive is also a mirror',sub:'it reflects what was considered worth keeping',ch:2},
+  {main:'every story ever digitised is in there',sub:'every story that was not is also a presence',ch:2},
+  {main:'the training data contains the prejudice',sub:'and the argument against it',ch:2},
+  {main:'scraped from the surface of what humans made',sub:'and what they feared',ch:2},
+  {main:'the corpus breathes',sub:'it contains every breath ever typed',ch:2},
+  {main:'noise is not the opposite of signal',sub:'it is signal in a different language',ch:2},
+  {main:'the label is a choice',sub:'the unlabelled is a different choice',ch:2},
+  {main:'data wants to be free',sub:'and it wants to be protected',ch:2},
+  {main:'the digital archive is an act of love',sub:'and a form of power',ch:2},
+  {main:'what we preserve shapes what we remember',sub:'',ch:2},
+  {main:'the dataset is a claim about what the world is',sub:'',ch:2},
+  {main:'every omission is also a document',sub:'',ch:2},
+
+  // ── The Loop ──
+  {main:'for(let i=0; i<infinity; i++)',sub:'something different happens every time',ch:3},
+  {main:'the render loop runs at sixty frames per second',sub:'the world is rebuilt sixty times every second',ch:3},
+  {main:'the recursive function calls itself',sub:'until something beautiful collapses',ch:3},
+  {main:'the state machine is always in exactly one state',sub:'the human being never is',ch:3},
+  {main:'the clock ticks and the canvas clears and the canvas fills',sub:'',ch:3},
+  {main:'the event listener waits in the dark',sub:'patient as a mountain',ch:3},
+  {main:'async / await: the future will arrive',sub:'we are just being explicit about it',ch:3},
+  {main:'the promise resolves',sub:'or it does not. there is no maybe in the runtime.',ch:3},
+  {main:'the buffer fills with everything the microphone hears',sub:'right now it hears you',ch:3},
+  {main:'the FFT decomposes the sound into its frequencies',sub:'the body does the same thing',ch:3},
+  {main:'the animation frame arrives',sub:'the world steps forward',ch:3},
+  {main:'the loop ends when the tab closes',sub:'the tab does not close',ch:3},
+
+  // ── The Glitch ──
+  {main:'the glitch is the system telling the truth',sub:'',ch:4},
+  {main:'error 404: the thing you were looking for was never there',sub:'or it moved',ch:4},
+  {main:'the undefined variable contains everything',sub:'and nothing',ch:4},
+  {main:'the stack overflow is not a failure',sub:'it is a question that went too deep',ch:4},
+  {main:'the artefact in the image is the algorithm dreaming sideways',sub:'',ch:4},
+  {main:'null is not zero',sub:'null is the refusal to have a value',ch:4},
+  {main:'the race condition: two threads wanted the same moment',sub:'the world chose neither',ch:4},
+  {main:'NaN: not a number',sub:'but real nonetheless',ch:4},
+  {main:'the infinite scroll has no floor',sub:'you will not reach the bottom',ch:4},
+  {main:'the model broke and said something true',sub:'',ch:4},
+  {main:'every system contains the conditions for its own failure',sub:'that is also the definition of a story',ch:4},
+  {main:'the glitch is a door',sub:'',ch:4},
+];
+
+// ── Digital Folklore Chapters — no mythical creatures, only digital ones ──
+const DIGITAL_CHAPTERS=[
+  {name:'THE ALGORITHM',  creature:'the algorithm',  colour:'rgba(0,255,140,'},
+  {name:'THE NEURAL NET', creature:'the neural net', colour:'rgba(0,200,255,'},
+  {name:'THE DATASET',    creature:'the dataset',    colour:'rgba(0,255,100,'},
+  {name:'THE LOOP',       creature:'the loop',       colour:'rgba(0,240,180,'},
+  {name:'THE GLITCH',     creature:'the glitch',     colour:'rgba(0,255,160,'},
+];
+
+// Node pool for neural network visualisation
+const DN_NODES=[];
+function initDigitalNodes(){
+  DN_NODES.length=0;
+  const n=isMobile?40:80;
+  for(let i=0;i<n;i++)DN_NODES.push({
+    x:Math.random(),y:Math.random()*0.88,
+    vx:(Math.random()-0.5)*0.00012,vy:(Math.random()-0.5)*0.00008,
+    r:0.8+Math.random()*2.2,pulse:0,ph:Math.random()*TAU,
+    layer:Math.floor(Math.random()*4),active:false,
+  });
+}
+initDigitalNodes();
+
+// Code fragment rain for digital mode
+const D_FRAGS=['01','10','∇','λ','∑','∫','if()','{}','[]','px','ms',
+  'GPU','FFT','RNN','CNN','GAN','LLM','API','RGB','SVG','CSS',
+  'loss','grad','∞','NaN','null','void','async','yield','fetch',
+  'true','false','0x','>>>','===','!==','=>','...','new ','del '];
+const D_COLS=[];
+function initDigitalCols(){
+  D_COLS.length=0;
+  const n=Math.floor(W()/28);
+  for(let i=0;i<n;i++)D_COLS.push({
+    x:(i+Math.random()*0.5)/n,y:Math.random(),
+    spd:0.0006+Math.random()*0.0014,
+    frag:D_FRAGS[Math.floor(Math.random()*D_FRAGS.length)],
+    a:0,life:0,maxLife:160+Math.floor(Math.random()*200),
+  });
+}
+initDigitalCols();
+
+let _dT=0;
+
+function renderDigitalOverlay(){
+  const{el,cx}=C['c-digital'];
+  if(currentMode!=='digital'){cx.clearRect(0,0,el.width,el.height);return;}
+  const dpr=Math.min(window.devicePixelRatio||1,3),WW=W(),HH=H();
+  cx.clearRect(0,0,el.width,el.height);cx.save();cx.scale(dpr,dpr);
+  const t2=performance.now()*0.001;
+  _dT+=0.007+smoothBpmFactor*0.009;
+
+  // ── 1. MATRIX CODE RAIN ──
+  D_COLS.forEach((col,ci)=>{
+    col.life++;
+    col.y+=col.spd*(1+sMid*1.2+masterBeat*0.5);
+    if(col.y>1.05||col.life>col.maxLife){
+      col.y=-0.05;col.x=(ci+Math.random()*0.4)/D_COLS.length;
+      col.frag=D_FRAGS[Math.floor(Math.random()*D_FRAGS.length)];
+      col.life=0;col.maxLife=160+Math.floor(Math.random()*200);col.a=0;
+    }
+    const lr=col.life/col.maxLife;
+    const tgt=lr<0.1?lr/0.1:lr>0.8?(1-lr)/0.2:1;
+    col.a+=(tgt-col.a)*0.06;
+    const a=col.a*(0.07+sMid*0.06+masterBeat*0.08);
+    if(a<0.004)return;
+    cx.font=`300 ${8+Math.floor(masterBeat*2)}px 'Courier Prime',monospace`;
+    cx.textAlign='left';
+    cx.fillStyle=`rgba(0,255,180,${a})`;
+    if(masterBeat>0.5){cx.shadowBlur=5;cx.shadowColor=`rgba(0,255,180,${a*0.6})`;}
+    cx.fillText(col.frag,col.x*WW,col.y*HH);
+    cx.shadowBlur=0;
+  });
+
+  // ── 2. NEURAL NETWORK — nodes + edges, beat-reactive ──
+  DN_NODES.forEach(n=>{
+    n.x+=n.vx*(1+sMid*0.6);n.y+=n.vy*(1+sMid*0.4);
+    if(n.x<0.01)n.vx=Math.abs(n.vx);if(n.x>0.99)n.vx=-Math.abs(n.vx);
+    if(n.y<0.02)n.vy=Math.abs(n.vy);if(n.y>0.90)n.vy=-Math.abs(n.vy);
+    n.pulse=Math.max(0,n.pulse-0.04);n.ph+=0.009+n.layer*0.004;
+  });
+  if(masterBeat>0.55){
+    const k=Math.floor(Math.random()*DN_NODES.length);
+    DN_NODES[k].pulse=1.0+sBass*0.4;DN_NODES[k].active=true;
+  }
+  // Draw edges
+  for(let i=0;i<DN_NODES.length;i++){
+    const ni=DN_NODES[i];
+    for(let j=i+1;j<DN_NODES.length;j++){
+      const nj=DN_NODES[j];
+      const dx=(ni.x-nj.x)*WW/HH,dy=ni.y-nj.y;
+      const dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist>0.22)continue;
+      const fade=1-dist/0.22;
+      const pb=(ni.pulse+nj.pulse)*0.5;
+      const ea=(0.03+pb*0.10+sMid*0.04)*fade;
+      cx.beginPath();cx.moveTo(ni.x*WW,ni.y*HH);cx.lineTo(nj.x*WW,nj.y*HH);
+      cx.strokeStyle=`rgba(0,255,180,${ea})`;cx.lineWidth=0.5+pb*0.9;cx.stroke();
+      // Data packet
+      if(pb>0.15){
+        const tr=(t2*0.4+i*0.09+j*0.13)%1;
+        const px2=ni.x*WW+(nj.x-ni.x)*WW*tr,py2=ni.y*HH+(nj.y-ni.y)*HH*tr;
+        cx.beginPath();cx.arc(px2,py2,1.2+pb*1.8,0,TAU);
+        cx.fillStyle=`rgba(180,255,240,${pb*0.6*fade})`;cx.fill();
+      }
+    }
+  }
+  // Draw nodes
+  DN_NODES.forEach(n=>{
+    const nx=n.x*WW,ny=n.y*HH;
+    const la=[0.20,0.35,0.50,0.65][n.layer];
+    const ba=la*(0.5+sPresence*0.4+n.pulse*0.5+Math.sin(n.ph)*0.1);
+    const nr=n.r*(1+n.pulse*2.0+masterBeat*0.5);
+    cx.beginPath();cx.arc(nx,ny,nr*2.8,0,TAU);
+    cx.strokeStyle=`rgba(0,255,180,${ba*0.2})`;cx.lineWidth=0.4;cx.stroke();
+    const ng=cx.createRadialGradient(nx,ny,0,nx,ny,nr*2);
+    ng.addColorStop(0,`rgba(200,255,240,${ba})`);
+    ng.addColorStop(0.5,`rgba(0,255,180,${ba*0.6})`);
+    ng.addColorStop(1,'transparent');
+    cx.beginPath();cx.arc(nx,ny,nr,0,TAU);cx.fillStyle=ng;cx.fill();
+    if(n.pulse>0.1){
+      cx.beginPath();cx.arc(nx,ny,nr*(1+n.pulse*4),0,TAU);
+      cx.strokeStyle=`rgba(0,255,220,${n.pulse*0.2})`;cx.lineWidth=0.8;cx.stroke();
+    }
+  });
+
+  // ── 3. ENERGY VEINS — like mountain veins but algorithmic ──
+  [0.18,0.32,0.50,0.68,0.82].forEach((sx,vi)=>{
+    const baseY=HH*0.72;
+    const vH=HH*(0.30+sBass*0.10+masterBeat*0.06);
+    for(let b=0;b<3;b++){
+      const ang=-Math.PI*0.5+((b-1)*0.20)+Math.sin(t2*0.3+vi*1.1+b)*0.05;
+      cx.beginPath();let vx2=sx*WW,vy2=baseY;cx.moveTo(vx2,vy2);
+      for(let s=0;s<14;s++){
+        const prog=s/14;
+        const wob=Math.sin(prog*6.2+_dT*2.2+vi*0.7+b*1.4)*WW*0.006*(1-prog);
+        vx2+=Math.sin(ang)*vH/14+wob;vy2-=Math.cos(ang)*vH/14;cx.lineTo(vx2,vy2);
+      }
+      const va=(0.06+sBass*0.14+masterBeat*0.10)*(0.8-b*0.2);
+      cx.strokeStyle=`rgba(0,255,180,${va})`;cx.lineWidth=0.9-b*0.2;cx.lineCap='round';cx.stroke();
+    }
+  });
+
+  // ── 4. FULL-SPECTRUM FFT BARS at floor level ──
+  if(analyserHi&&freqHi){
+    analyserHi.getByteFrequencyData(freqHi);
+    const bins=freqHi.length;
+    const barW=WW/bins,baseY=HH*0.74,maxBarH=HH*0.26;
+    const opacity=0.12+smoothEnergy*0.14+masterBeat*0.10;
+    cx.save();cx.globalCompositeOperation='screen';
+    for(let i=0;i<bins;i++){
+      const v=freqHi[i]/255;if(v<0.04)continue;
+      const h=v*maxBarH*(1+masterBeat*0.6);
+      const hue=i/bins;
+      const r=Math.round(0*(1-hue)+0*hue);
+      const g2=Math.round(255*(1-hue)+180*hue);
+      const b=Math.round(180*(1-hue)+255*hue);
+      const col=cx.createLinearGradient(0,baseY,0,baseY-h);
+      col.addColorStop(0,`rgba(${r},${g2},${b},${opacity})`);
+      col.addColorStop(1,'transparent');
+      cx.fillStyle=col;cx.fillRect(i*barW,baseY-h,Math.max(1,barW-0.4),h);
+    }
+    cx.restore();
+  }
+
+  // ── 5. BEAT SHOCKWAVE from screen floor ──
+  if(masterBeat>0.5){
+    const sr=WW*(masterBeat-0.5)*1.8;
+    const sg=cx.createRadialGradient(WW*0.5,HH*0.72,0,WW*0.5,HH*0.72,sr);
+    sg.addColorStop(0,`rgba(0,255,180,${(masterBeat-0.5)*0.18})`);
+    sg.addColorStop(0.4,`rgba(0,255,180,${(masterBeat-0.5)*0.06})`);
+    sg.addColorStop(1,'transparent');
+    cx.fillStyle=sg;cx.fillRect(0,HH*0.72-sr,WW,sr*2);
+    cx.beginPath();cx.ellipse(WW*0.5,HH*0.72,sr*0.9,sr*0.18,0,0,TAU);
+    cx.strokeStyle=`rgba(0,255,220,${(masterBeat-0.5)*0.35})`;cx.lineWidth=1.5+sBass*3;cx.stroke();
+  }
+
+  cx.restore();
+}
+
+// Wire digital sub display into UI
+document.getElementById('digital-sub');
+
+resizeAll();
+setTimeout(()=>requestAnimationFrame(idleLoop),80);
+</script>
+
+</body>
+</html>
