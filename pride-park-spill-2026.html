@@ -141,7 +141,7 @@ margin-bottom:10px;
 font-family:‘Cinzel’,serif;
 font-size:clamp(10px,1.5vw,12px);
 letter-spacing:0.3em;
-color:var(–ink-dim);
+color:var(–ink-dim) !important;
 -webkit-appearance:none;
 appearance:none;
 cursor:pointer;
@@ -216,7 +216,6 @@ overflow:visible;
 #map-canvas-wrap{margin:12px -22px;}
 }
 /* MAP ACTIVE — mobile canvas fix */
-@media(max-width:700px){
 body.map-active #game {
 padding: 0 !important;
 }
@@ -229,11 +228,13 @@ backdrop-filter: none !important;
 }
 body.map-active #map-canvas-wrap {
 overflow: visible !important;
+margin-left: 0 !important;
+margin-right: 0 !important;
+width: 100% !important;
 }
 body.map-active #map-canvas {
 display: block !important;
 width: 100% !important;
-}
 }
 #map-fs-close{
 display:none;
@@ -251,7 +252,6 @@ backdrop-filter:blur(8px);
 -webkit-backdrop-filter:blur(8px);
 }
 #map-fs-close.visible{display:flex;}
-#map-canvas{display:block;width:100%;cursor:crosshair;}
 #map-canvas{display:block;width:100%;cursor:crosshair;}
 #map-tooltip{
 position:absolute;
@@ -992,16 +992,14 @@ function initMap() {
   const ttD = document.getElementById('map-tt-desc');
 
   function resize() {
-    const isMob = window.innerWidth < 700;
+    const isMob = window.innerWidth < 700 || screen.width < 700;
     if (isMob) {
-      // Set buffer first — CSS width:100% controls display width
       canvas.width  = 800;
       canvas.height = 552;
       canvas.style.width  = '';
       canvas.style.height = '';
-      // After buffer set, read actual CSS display width and set matching height
       requestAnimationFrame(() => {
-        const dispW = canvas.offsetWidth || 240;
+        const dispW = canvas.offsetWidth || 350;
         canvas.style.height = Math.round(dispW * 0.69) + 'px';
       });
     } else {
@@ -1018,7 +1016,9 @@ function initMap() {
   resize();
 
   // ── MOBILE: CSS class + fixed buffer handles layout ─────────
-  if (window.innerWidth < 700) {
+  // Use screen.width as it's reliable in all browsers including in-app browsers
+  const isMobileDevice = window.innerWidth < 700 || screen.width < 700;
+  if (isMobileDevice) {
     document.body.classList.add('map-active');
     const restoreMapStyles = (e) => {
       if (!e.detail || e.detail.passage === 'map') return;
