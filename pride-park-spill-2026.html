@@ -1041,14 +1041,13 @@ function initMap() {
 
     function waitForLayoutThenResize() {
       const dpr = window.devicePixelRatio || 1;
-      const W = window.innerWidth;
-      const H = window.innerHeight;
-      canvas.width  = W * dpr;
-      canvas.height = H * dpr;
-      // No canvas.style — CSS 100vw/100vh controls display
+      canvas.width  = window.innerWidth  * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       setTimeout(() => {
         canvas.width  = window.innerWidth  * dpr;
         canvas.height = window.innerHeight * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }, 100);
     }
 
