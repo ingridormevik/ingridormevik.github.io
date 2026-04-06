@@ -215,26 +215,26 @@ overflow:visible;
 @media(max-width:500px){
 #map-canvas-wrap{margin:12px -22px;}
 }
-/* MAP ACTIVE — mobile canvas fix */
+/* MAP ACTIVE — wrap goes position:fixed, bypasses all scroll/overflow issues */
 body.map-active #game {
-padding: 0 !important;
-}
-body.map-active #scroll {
-max-width: 100% !important;
-width: 100% !important;
-overflow-x: visible !important;
-backdrop-filter: none !important;
--webkit-backdrop-filter: none !important;
+position: static !important;
 }
 body.map-active #map-canvas-wrap {
-overflow: visible !important;
-margin-left: 0 !important;
-margin-right: 0 !important;
-width: 100% !important;
+position: fixed !important;
+inset: 0 !important;
+width: 100vw !important;
+height: 100vh !important;
+margin: 0 !important;
+z-index: 8000 !important;
+background: #00000a !important;
+overflow: hidden !important;
+border: none !important;
 }
 body.map-active #map-canvas {
 display: block !important;
-width: 100% !important;
+width: 100vw !important;
+height: 100vh !important;
+touch-action: none !important;
 }
 #map-fs-close{
 display:none;
@@ -991,18 +991,30 @@ function initMap() {
   const ttN = document.getElementById('map-tt-name');
   const ttD = document.getElementById('map-tt-desc');
 
+  function resizeCanvas() {
+    const dpr = devicePixelRatio || 1;
+    let W, H;
+    if (document.body.classList.contains('map-active')) {
+      // Wrap is position:fixed; inset:0 — use window dimensions directly
+      W = window.innerWidth;
+      H = window.innerHeight;
+    } else {
+      const rect = canvas.getBoundingClientRect();
+      W = rect.width  || wrap.clientWidth;
+      H = rect.height || Math.round(W * 0.69);
+    }
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+  }
+
   function resize() {
     const isMob = window.innerWidth < 700 || screen.width < 700;
-    if (isMob) {
-      canvas.width  = 800;
-      canvas.height = 552;
-      canvas.style.width  = '';
-      canvas.style.height = '';
-      requestAnimationFrame(() => {
-        const dispW = canvas.offsetWidth || 350;
-        canvas.style.height = Math.round(dispW * 0.69) + 'px';
-      });
-    } else {
+    if (isMob && document.body.classList.contains('map-active')) {
+      // In fullscreen mode: canvas fills viewport via CSS, just set buffer
+      setTimeout(resizeCanvas, 50);
+    } else if (!isMob) {
       const W = wrap.clientWidth;
       const maxH = Math.round(window.innerHeight * 0.78);
       const H = Math.min(Math.round(W * 0.69), maxH);
@@ -1015,14 +1027,66 @@ function initMap() {
   }
   resize();
 
-  // ── MOBILE: CSS class + fixed buffer handles layout ─────────
-  // Use screen.width as it's reliable in all browsers including in-app browsers
+  // ── MOBILE: fixed wrap approach ─────────────────────────────
   const isMobileDevice = window.innerWidth < 700 || screen.width < 700;
   if (isMobileDevice) {
-    document.body.classList.add('map-active');
+    // Create close button if not exists
+    let fsClose = document.getElementById('map-fs-close');
+    if (!fsClose) {
+      fsClose = document.createElement('button');
+      fsClose.id = 'map-fs-close';
+      fsClose.innerHTML = '✕';
+      document.body.appendChild(fsClose);
+    }
+
+    function waitForLayoutThenResize() {
+      let tries = 0;
+      function check() {
+        const rect = canvas.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          const dpr = devicePixelRatio || 1;
+          canvas.width  = rect.width  * dpr;
+          canvas.height = rect.height * dpr;
+          canvas.style.width  = rect.width  + 'px';
+          canvas.style.height = rect.height + 'px';
+        } else if (tries < 10) {
+          tries++;
+          requestAnimationFrame(check);
+        }
+      }
+      check();
+    }
+
+    function openMap() {
+      document.body.classList.add('map-active');
+      fsClose.classList.add('visible');
+      waitForLayoutThenResize();
+    }
+
+    function closeMap() {
+      document.body.classList.remove('map-active');
+      fsClose.classList.remove('visible');
+      resize();
+    }
+
+    fsClose.addEventListener('click', closeMap);
+    fsClose.addEventListener('touchend', e => { e.preventDefault(); closeMap(); });
+
+    // Add "open fullscreen" button below canvas wrap in scroll
+    const openBtn = document.createElement('button');
+    openBtn.className = 'choice gold-choice open-map-btn';
+    openBtn.style.cssText = 'margin:8px 22px 0;width:calc(100% - 44px);';
+    openBtn.innerHTML = '<span class="arr">⛶</span> UTFORSK KARTET I FULLSKJERM';
+    openBtn.addEventListener('click', openMap);
+    openBtn.addEventListener('touchend', e => { e.preventDefault(); openMap(); });
+    wrap.after(openBtn);
+
+    // Auto-open on mobile for better UX
+    setTimeout(openMap, 300);
+
     const restoreMapStyles = (e) => {
       if (!e.detail || e.detail.passage === 'map') return;
-      document.body.classList.remove('map-active');
+      closeMap();
       document.removeEventListener('passage-change', restoreMapStyles);
     };
     document.addEventListener('passage-change', restoreMapStyles);
