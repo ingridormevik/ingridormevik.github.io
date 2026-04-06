@@ -225,15 +225,15 @@ inset: 0 !important;
 width: 100vw !important;
 height: 100vh !important;
 margin: 0 !important;
-z-index: 8000 !important;
+z-index: 9999 !important;
 background: #00000a !important;
 overflow: hidden !important;
 border: none !important;
 }
 body.map-active #map-canvas {
-display: block !important;
 width: 100vw !important;
 height: 100vh !important;
+display: block !important;
 touch-action: none !important;
 }
 #map-fs-close{
@@ -1040,27 +1040,36 @@ function initMap() {
     }
 
     function waitForLayoutThenResize() {
-      let tries = 0;
-      function check() {
-        const rect = canvas.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-          const dpr = devicePixelRatio || 1;
-          canvas.width  = rect.width  * dpr;
-          canvas.height = rect.height * dpr;
-          canvas.style.width  = rect.width  + 'px';
-          canvas.style.height = rect.height + 'px';
-        } else if (tries < 10) {
-          tries++;
-          requestAnimationFrame(check);
-        }
-      }
-      check();
+      const dpr = window.devicePixelRatio || 1;
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+      canvas.width  = W * dpr;
+      canvas.height = H * dpr;
+      // No canvas.style — CSS 100vw/100vh controls display
+      setTimeout(() => {
+        canvas.width  = window.innerWidth  * dpr;
+        canvas.height = window.innerHeight * dpr;
+      }, 100);
     }
 
     function openMap() {
+      // Move wrap to body so position:fixed escapes #game stacking context
+      wrap._origParent = wrap.parentNode;
+      wrap._origNextSibling = wrap.nextSibling;
+      document.body.appendChild(wrap);
       document.body.classList.add('map-active');
       fsClose.classList.add('visible');
       waitForLayoutThenResize();
+    }
+
+    function closeMap() {
+      document.body.classList.remove('map-active');
+      fsClose.classList.remove('visible');
+      // Move wrap back to original position
+      if (wrap._origParent) {
+        wrap._origParent.insertBefore(wrap, wrap._origNextSibling || null);
+      }
+      resize();
     }
 
     function closeMap() {
