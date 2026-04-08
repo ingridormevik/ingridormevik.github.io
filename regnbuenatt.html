@@ -733,6 +733,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
 <div class="template active" id="t-artist">
   <div class="artist-card" id="artist-card">
 
+```
 <div class="ac-bg"></div>
 
 <!-- Kittelsen forest silhouette bottom row -->
@@ -914,6 +915,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
       </g>
     </svg>
 
+```
 <div class="tl-header">
   <div class="forest-line" style="margin-bottom:10px;"></div>
   <div class="tl-top-row">
@@ -959,6 +961,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="tl-venue">MARINEHAGEN · BERGEN · 6 JUNI 2026</div>
   <div style="font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.25em;color:rgba(255,255,255,0.12);">bergenpride.no</div>
 </div>
+```
 
   </div>
 
@@ -1090,6 +1093,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
 <div class="corner-dot tr"></div>
 <div class="corner-dot bl" style="background:#c44472;"></div>
 <div class="corner-dot br" style="background:#c44472;"></div>
+```
 
   </div>
   </div>
@@ -1111,6 +1115,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div style="width:100%;max-width:480px;margin:0 auto;">
   <div class="post-card" id="post-card">
 
+```
 <div class="post-bg"></div>
 <svg class="post-trees" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true">
   <g fill="#0a1a0c" opacity="0.9">
@@ -1195,6 +1200,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="post-role" contenteditable="true" data-ph="ROLLE" spellcheck="false"></div>
   <div class="post-pronouns" contenteditable="true" data-ph="pronouns" spellcheck="false"></div>
 </div>
+```
 
   </div>
   </div>
@@ -1217,6 +1223,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="overlay-card" id="overlay-card">
     <div class="ov-checker"></div>
 
+```
 <!-- Pride edge lines -->
 <div class="ov-edge-top"></div>
 <div class="ov-edge-bottom"></div>
@@ -1300,6 +1307,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="ov-info" contenteditable="true" data-ph="NOW PLAYING" spellcheck="false"></div>
   <div class="ov-info" contenteditable="true" data-ph="bergenpride.no" spellcheck="false">bergenpride.no</div>
 </div>
+```
 
   </div>
 
@@ -1492,53 +1500,102 @@ function loadPost(e){
   reader.readAsDataURL(file);
 }
 
-/* ── DOWNLOAD PNG TO DEVICE ── */
-async function downloadCard(id, btn){
+/* ── DETECT IOS ── */
+const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+const isMobile=/Mobi|Android/i.test(navigator.userAgent)||isIOS;
+
+/* ── RENDER CARD TO CANVAS ── */
+async function renderCard(id){
   const card=document.getElementById(id);
+  return await html2canvas(card,{
+    backgroundColor:null,
+    scale:2,
+    useCORS:true,
+    allowTaint:true,
+    logging:false,
+    imageTimeout:0
+  });
+}
+
+/* ── DOWNLOAD / SAVE ── */
+async function downloadCard(id,btn){
   const orig=btn.textContent;
-  btn.textContent='Laster ned...';btn.disabled=true;
+  btn.textContent='Behandler...';btn.disabled=true;
   try{
-    const canvas=await html2canvas(card,{
-      backgroundColor:null,scale:3,useCORS:true,logging:false
-    });
-    const link=document.createElement('a');
-    link.download=`regnbuenatt_${id}_${Date.now()}.png`;
-    link.href=canvas.toDataURL('image/png');
-    link.click();
+    const canvas=await renderCard(id);
+    if(isMobile){
+      // iOS: open in new tab — langt-trykk for å lagre
+      const win=window.open('','_blank');
+      win.document.write(`<html><body style="margin:0;background:#000">
+        <img src="${canvas.toDataURL('image/png')}" style="max-width:100%;display:block">
+        <p style="color:#aaa;font-family:monospace;font-size:11px;padding:10px;text-align:center">
+          LANGT-TRYKK PÅ BILDET → LAGRE TIL BILDEBIBLIOTEK
+        </p></body></html>`);
+      win.document.close();
+    } else {
+      const link=document.createElement('a');
+      link.download=`regnbuenatt_${id}_${Date.now()}.png`;
+      link.href=canvas.toDataURL('image/png');
+      link.click();
+    }
   }catch(e){
-    alert('Nedlasting feilet. Prøv skjermbilde manuelt.');
+    // Fallback: vis fullskjerm og be om skjermbilde
+    fullscreenCard(id);
   }finally{
     btn.textContent=orig;btn.disabled=false;
   }
 }
 
 /* ── COPY TO CLIPBOARD ── */
-async function copyCard(id, btn){
-  const card=document.getElementById(id);
+async function copyCard(id,btn){
   const orig=btn.textContent;
-  btn.textContent='Kopierer...';btn.disabled=true;
+  btn.textContent='Behandler...';btn.disabled=true;
   try{
-    const canvas=await html2canvas(card,{
-      backgroundColor:null,scale:3,useCORS:true,logging:false
-    });
-    canvas.toBlob(async blob=>{
-      try{
-        await navigator.clipboard.write([
-          new ClipboardItem({'image/png':blob})
-        ]);
-        btn.textContent='Kopiert!';
-        setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},2000);
-      }catch{
-        // fallback: open in new tab for manual save
-        const url=URL.createObjectURL(blob);
-        window.open(url,'_blank');
-        btn.textContent=orig;btn.disabled=false;
-      }
-    },'image/png');
+    const canvas=await renderCard(id);
+    if(isIOS){
+      // iOS clipboard API støtter ikke image/png ennå — åpne i ny fane
+      const win=window.open('','_blank');
+      win.document.write(`<html><body style="margin:0;background:#000">
+        <img src="${canvas.toDataURL('image/png')}" style="max-width:100%;display:block">
+        <p style="color:#aaa;font-family:monospace;font-size:11px;padding:10px;text-align:center">
+          LANGT-TRYKK → KOPIER BILDE — deretter lim inn i Stories
+        </p></body></html>`);
+      win.document.close();
+      btn.textContent=orig;btn.disabled=false;
+    } else {
+      canvas.toBlob(async blob=>{
+        try{
+          await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+          btn.textContent='Kopiert!';
+          setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},2000);
+        }catch{
+          const win=window.open('','_blank');
+          win.document.write(`<html><body style="margin:0;background:#000">
+            <img src="${canvas.toDataURL('image/png')}" style="max-width:100%;display:block">
+          </body></html>`);
+          btn.textContent=orig;btn.disabled=false;
+        }
+      },'image/png');
+    }
   }catch(e){
-    alert('Kopiering feilet. Bruk Last ned i stedet.');
+    fullscreenCard(id);
     btn.textContent=orig;btn.disabled=false;
   }
+}
+
+/* ── FULLSCREEN FALLBACK ── */
+function fullscreenCard(id){
+  const card=document.getElementById(id);
+  const overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;';
+  const clone=card.cloneNode(true);
+  clone.style.cssText='max-height:80vh;max-width:90vw;width:auto;';
+  const hint=document.createElement('p');
+  hint.style.cssText='color:rgba(255,255,255,0.5);font-family:monospace;font-size:11px;letter-spacing:0.2em;text-align:center;';
+  hint.textContent='TA SKJERMBILDE — trykk utenfor for å lukke';
+  overlay.appendChild(clone);overlay.appendChild(hint);
+  overlay.addEventListener('click',()=>overlay.remove());
+  document.body.appendChild(overlay);
 }
 
 /* ── OVERLAY MODE ── */
