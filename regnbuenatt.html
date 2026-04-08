@@ -143,7 +143,8 @@ text-shadow:0 0 50px rgba(100,220,160,0.25);
 font-family:‘Courier Prime’,monospace;
 font-size:clamp(7px,1.3vw,11px);
 letter-spacing:0.35em;
-color:rgba(255,255,255,0.22);
+color:rgba(255,255,255,0.52);
+text-shadow:0 0 12px rgba(80,185,120,0.35), 0 1px 8px rgba(0,0,0,0.95);
 }
 .ac-pride-line{width:60%;margin-top:7px;}
 
@@ -329,17 +330,19 @@ padding:10px 14px 10px 18px;
 font-family:‘Cinzel’,serif;
 font-size:clamp(8px,1.8vw,13px);
 letter-spacing:0.22em;
-color:rgba(255,255,255,0.68);
+color:rgba(255,255,255,0.88);
 flex:1;text-transform:uppercase;
 outline:none;cursor:text;
+text-shadow:0 0 10px rgba(80,185,120,0.22), 0 1px 6px rgba(0,0,0,0.95);
 }
 .tl-row-label:empty::before{content:attr(data-ph);opacity:0.4;}
 .tl-row-date{
 font-family:‘Courier Prime’,monospace;
 font-size:clamp(8px,1.5vw,11px);
 letter-spacing:0.2em;
-color:rgba(255,255,255,0.38);
+color:rgba(255,255,255,0.55);
 outline:none;cursor:text;min-width:20px;
+text-shadow:0 1px 6px rgba(0,0,0,0.95);
 }
 .tl-row-date:empty::before{content:attr(data-ph);opacity:0.4;}
 
@@ -353,14 +356,15 @@ margin-top:12px;
 font-family:‘Courier Prime’,monospace;
 font-size:clamp(7px,1.1vw,9px);
 letter-spacing:0.3em;
-color:rgba(255,255,255,0.15);
+color:rgba(255,255,255,0.38);
+text-shadow:0 0 8px rgba(80,185,120,0.25), 0 1px 5px rgba(0,0,0,0.95);
 }
 
 /* ═══════════════════════════════
 OVERLAY FRAME  (transparent bg)
 ═══════════════════════════════ */
 .overlay-card{
-width:100%;aspect-ratio:1/1;
+width:100%;aspect-ratio:9/16;
 background:rgba(0,0,0,0.0);
 position:relative;overflow:hidden;
 }
@@ -397,7 +401,7 @@ rgba(195,70,110,0.9) 55%,
 rgba(80,185,120,0.6) 75%,
 transparent
 );}
-.ov-edge-bottom{position:absolute;bottom:0;left:8%;right:8%;height:1px;
+.ov-edge-bottom{position:absolute;bottom:44px;left:8%;right:8%;height:1px;
 background:linear-gradient(to right,
 transparent,
 rgba(195,70,110,0.6) 20%,
@@ -459,15 +463,19 @@ flex-wrap:wrap;
 .ctrl-btn{
 font-family:‘Courier Prime’,monospace;
 font-size:8px;letter-spacing:0.3em;
-padding:7px 14px;
+padding:9px 16px;
 border:1px solid rgba(255,255,255,0.15);
 background:transparent;color:rgba(255,255,255,0.35);
 cursor:pointer;transition:all 0.2s;
 text-transform:uppercase;
+flex:1;min-width:120px;text-align:center;
 }
 .ctrl-btn:hover{border-color:rgba(255,255,255,0.45);color:rgba(255,255,255,0.75);}
-.ctrl-btn.green{border-color:rgba(100,220,160,0.3);color:rgba(100,220,160,0.5);}
-.ctrl-btn.green:hover{border-color:rgba(100,220,160,0.7);color:rgba(100,220,160,0.9);}
+.ctrl-btn:disabled{opacity:0.4;cursor:wait;}
+.ctrl-btn.green{border-color:rgba(80,185,120,0.4);color:rgba(80,185,120,0.7);}
+.ctrl-btn.green:hover{border-color:rgba(80,185,120,0.9);color:rgba(80,185,120,1);}
+.ctrl-btn.rose{border-color:rgba(195,70,110,0.35);color:rgba(195,70,110,0.65);}
+.ctrl-btn.rose:hover{border-color:rgba(195,70,110,0.8);color:rgba(195,70,110,1);}
 
 .hint{
 font-family:‘Courier Prime’,monospace;
@@ -535,8 +543,9 @@ text-align:center;
 font-family:‘Courier Prime’,monospace;
 font-size:clamp(7px,1.8vw,10px);
 letter-spacing:0.3em;
-color:rgba(255,255,255,0.22);
+color:rgba(255,255,255,0.55);
 text-align:center;
+text-shadow:0 0 12px rgba(80,185,120,0.4), 0 1px 8px rgba(0,0,0,0.9);
 }
 
 .st-emblem{
@@ -568,17 +577,19 @@ box-shadow:0 0 6px currentColor;
 font-family:‘Cinzel’,serif;
 font-size:clamp(10px,2.8vw,15px);
 letter-spacing:0.2em;
-color:rgba(255,255,255,0.72);
+color:rgba(255,255,255,0.88);
 flex:1;text-transform:uppercase;
 outline:none;cursor:text;
+text-shadow:0 0 10px rgba(80,185,120,0.25), 0 1px 6px rgba(0,0,0,0.95);
 }
 .st-row-date{
 font-family:‘Courier Prime’,monospace;
 font-size:clamp(9px,2.2vw,13px);
 letter-spacing:0.2em;
-color:rgba(255,255,255,0.38);
+color:rgba(255,255,255,0.58);
 outline:none;cursor:text;min-width:28px;
 text-align:right;
+text-shadow:0 0 8px rgba(195,70,110,0.2), 0 1px 6px rgba(0,0,0,0.95);
 }
 
 .st-bottom{
@@ -590,12 +601,106 @@ gap:0;
 font-family:‘Courier Prime’,monospace;
 font-size:clamp(7px,1.8vw,10px);
 letter-spacing:0.25em;
-color:rgba(255,255,255,0.28);
+color:rgba(255,255,255,0.48);
+text-align:center;
+text-shadow:0 0 10px rgba(80,185,120,0.3), 0 1px 6px rgba(0,0,0,0.95);
+}
+
+/* ═══════════════════════════════
+4:5 POST CARD
+═══════════════════════════════ */
+.post-card{
+width:100%;aspect-ratio:4/5;
+background:#000408;
+position:relative;overflow:hidden;
+display:flex;flex-direction:column;
+align-items:center;justify-content:space-between;
+padding:5.5% 6%;
+}
+.post-bg{
+position:absolute;inset:0;z-index:0;
+background:
+radial-gradient(ellipse 90% 50% at 50% 110%, rgba(15,35,18,0.7) 0%, transparent 55%),
+radial-gradient(ellipse 60% 35% at 20% 0%, rgba(12,0,22,0.65) 0%, transparent 50%),
+radial-gradient(ellipse 60% 35% at 80% 0%, rgba(0,8,18,0.5) 0%, transparent 50%);
+}
+.post-trees{
+position:absolute;bottom:0;left:0;right:0;height:22%;
+z-index:1;opacity:0.18;
+}
+.post-top{
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;gap:3px;width:100%;
+}
+.post-logo{
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(18px,5.5vw,38px);
+letter-spacing:0.52em;padding-right:0.52em;
+color:#fff;
+text-shadow:0 0 60px rgba(80,185,120,0.28), 0 0 20px rgba(255,255,255,0.1);
+text-align:center;
+width:100%;
+}
+.post-sub{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(6px,1.2vw,10px);letter-spacing:0.32em;
+color:rgba(255,255,255,0.52);
+text-shadow:0 0 12px rgba(80,185,120,0.35), 0 1px 8px rgba(0,0,0,0.95);
 text-align:center;
 }
+.post-frame{
+position:relative;z-index:3;
+width:58%;aspect-ratio:1/1;
+display:flex;align-items:center;justify-content:center;
+}
+.post-img{
+width:76%;aspect-ratio:1/1;
+border-radius:50%;
+background:radial-gradient(ellipse 80% 80% at 50% 60%,rgba(15,40,20,0.95),rgba(4,8,6,1));
+overflow:hidden;display:flex;align-items:center;justify-content:center;
+position:relative;z-index:2;
+border:1px solid rgba(80,185,120,0.12);
+font-family:‘Courier Prime’,monospace;font-size:9px;letter-spacing:0.15em;
+color:rgba(255,255,255,0.18);text-align:center;
+}
+.post-img img{
+position:absolute;top:0;left:0;
+width:100%;height:100%;object-fit:cover;
+display:none;cursor:grab;user-select:none;-webkit-user-drag:none;
+transform-origin:center center;will-change:transform;
+}
+.post-img img.loaded{display:block;}
+.post-img img:active{cursor:grabbing;}
+.post-bottom{
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;
+}
+.post-name{
+font-family:‘Cinzel’,serif;
+font-size:clamp(18px,5.5vw,40px);font-weight:400;
+letter-spacing:0.12em;color:#fff;text-align:center;
+text-shadow:0 0 60px rgba(80,185,120,0.3), 0 0 20px rgba(195,70,110,0.15), 0 1px 10px rgba(0,0,0,0.95);
+outline:none;cursor:text;min-width:80px;line-height:1.05;
+}
+.post-name:empty::before{content:attr(data-ph);opacity:0.15;}
+.post-role{
+font-family:‘Courier Prime’,monospace;font-size:clamp(8px,1.5vw,11px);
+letter-spacing:0.4em;color:rgba(255,255,255,0.58);text-transform:uppercase;
+outline:none;cursor:text;min-width:40px;text-align:center;
+text-shadow:0 0 10px rgba(80,185,120,0.25), 0 1px 6px rgba(0,0,0,0.95);
+}
+.post-role:empty::before{content:attr(data-ph);opacity:0.4;}
+.post-pronouns{
+font-family:‘Courier Prime’,monospace;font-size:clamp(7px,1.1vw,9px);
+letter-spacing:0.3em;color:rgba(255,255,255,0.4);
+outline:none;cursor:text;min-width:30px;text-align:center;
+text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
+}
+.post-pronouns:empty::before{content:attr(data-ph);opacity:0.4;}
 
 /* file input hidden */
 #img-input{display:none;}
+#img-input2{display:none;}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -609,6 +714,7 @@ text-align:center;
     <button class="tab active" onclick="switchTab('artist',this)">Artist</button>
     <button class="tab" onclick="switchTab('timeline',this)">Timeline</button>
     <button class="tab" onclick="switchTab('story',this)">Story</button>
+    <button class="tab" onclick="switchTab('post',this)">4:5</button>
     <button class="tab" onclick="switchTab('overlay',this)">Overlay</button>
   </div>
 </div>
@@ -760,15 +866,14 @@ text-align:center;
   </div><!-- /artist-card -->
 
   <div class="card-controls">
-    <button class="ctrl-btn" onclick="document.getElementById('img-input').click()">Last opp bilde</button>
+    <button class="ctrl-btn" onclick="document.getElementById('img-input').click()">↑ Last opp bilde</button>
     <button class="ctrl-btn" onclick="resetPortrait()">Nullstill zoom</button>
-    <button class="ctrl-btn green" onclick="printCard('artist-card',this)">Lagre som PNG</button>
-    <button class="ctrl-btn" onclick="toggleOverlayMode('artist-card')">Overlay-modus</button>
+    <button class="ctrl-btn green" onclick="downloadCard('artist-card',this)">↓ Last ned</button>
+    <button class="ctrl-btn rose" onclick="copyCard('artist-card',this)">Kopier bilde</button>
   </div>
   <p class="hint">
-    Klikk sirkelen for å laste opp foto. Dra bildet for å panorere. Scroll for å zoome (pinch på mobil).<br>
-    <span>PNG:</span> DevTools i Chrome, høyreklikk element > "Capture node screenshot".<br>
-    <span>OBS overlay:</span> Browser Source, aktiver "Allow transparency".
+    Klikk sirkelen for å laste opp foto. Dra for å panorere, scroll/pinch for å zoome.<br>
+    <span>Last ned:</span> lagrer PNG til enheten. <span>Kopier:</span> klar til å lime inn i Stories.
   </p>
 </div>
 
@@ -852,13 +957,13 @@ text-align:center;
   </div>
 
   <div class="card-controls">
-    <button class="ctrl-btn green" onclick="printCard('timeline-card',this)">Lagre som PNG</button>
+    <button class="ctrl-btn green" onclick="downloadCard('timeline-card',this)">↓ Last ned</button>
+    <button class="ctrl-btn rose" onclick="copyCard('timeline-card',this)">Kopier bilde</button>
     <button class="ctrl-btn" onclick="addTlRow()">+ Legg til rad</button>
   </div>
   <p class="hint">
     Klikk tekst for å redigere.<br>
-    <span>Farger:</span> Skoggrønn → rose, forteller buen fra Forest til Forbidden.<br>
-    <span>PNG:</span> DevTools i Chrome, høyreklikk element > "Capture node screenshot".
+    <span>Last ned:</span> lagrer PNG til enheten. <span>Kopier:</span> klar til å lime inn.
   </p>
 </div>
 
@@ -985,12 +1090,121 @@ text-align:center;
   </div>
 
   <div class="card-controls">
-    <button class="ctrl-btn green" onclick="printCard('story-card',this)">Lagre som PNG</button>
+    <button class="ctrl-btn green" onclick="downloadCard('story-card',this)">↓ Last ned</button>
+    <button class="ctrl-btn rose" onclick="copyCard('story-card',this)">Kopier bilde</button>
     <button class="ctrl-btn" onclick="addStRow()">+ Legg til rad</button>
   </div>
   <p class="hint">
-    9:16 story-format. Klikk tekst for å redigere.<br>
-    <span>PNG:</span> DevTools i Chrome > høyreklikk element > "Capture node screenshot".
+    9:16 story-format for Instagram/TikTok/Facebook Stories.<br>
+    <span>Last ned:</span> lagrer PNG til enheten. <span>Kopier:</span> lim direkte inn i Stories-appen.
+  </p>
+</div>
+
+<!-- ═══════════════ 4:5 POST ═══════════════ -->
+
+<div class="template" id="t-post">
+  <div style="width:100%;max-width:480px;margin:0 auto;">
+  <div class="post-card" id="post-card">
+
+```
+<div class="post-bg"></div>
+<svg class="post-trees" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true">
+  <g fill="#0a1a0c" opacity="0.9">
+    <polygon points="0,220 18,110 36,220"/><polygon points="30,220 55,80 80,220"/>
+    <polygon points="70,220 95,100 120,220"/><polygon points="110,220 140,60 170,220"/>
+    <polygon points="155,220 180,85 205,220"/><polygon points="200,220 222,105 244,220"/>
+    <polygon points="240,220 268,58 295,220"/><polygon points="285,220 308,80 330,220"/>
+    <polygon points="325,220 350,100 375,220"/><polygon points="370,220 400,52 430,220"/>
+    <polygon points="420,220 445,78 470,220"/><polygon points="465,220 488,98 510,220"/>
+    <polygon points="505,220 535,55 560,220"/><polygon points="552,220 575,82 598,220"/>
+    <polygon points="592,220 615,102 638,220"/><polygon points="632,220 660,58 688,220"/>
+    <polygon points="678,220 700,80 722,220"/><polygon points="715,220 738,100 760,220"/>
+    <polygon points="755,220 782,62 808,220"/><polygon points="800,220 822,84 844,220"/>
+    <polygon points="838,220 865,55 892,220"/><polygon points="882,220 905,78 928,220"/>
+    <polygon points="920,220 945,98 970,220"/><polygon points="960,220 982,68 1000,220"/>
+    <rect x="0" y="178" width="1000" height="42"/>
+  </g>
+</svg>
+
+<div class="corner-dot tl"></div>
+<div class="corner-dot tr"></div>
+<div class="corner-dot bl" style="background:#c44472;"></div>
+<div class="corner-dot br" style="background:#c44472;"></div>
+
+<!-- TOP -->
+<div class="post-top">
+  <div class="post-logo">REGNBUENATT</div>
+  <div class="post-sub">MARINEHAGEN · 6 JUNI 2026 · BERGEN</div>
+  <div class="forest-line" style="width:55%;margin-top:8px;"></div>
+</div>
+
+<!-- PORTRAIT -->
+<div class="post-frame">
+  <svg class="portrait-svg" viewBox="0 0 200 200" aria-hidden="true">
+    <circle cx="100" cy="100" r="96" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+    <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+    <g fill="none" stroke="#0d1a0e" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+      <path d="M 68,34 Q 100,18 132,34" stroke-width="4"/>
+      <path d="M 75,30 Q 100,12 125,30" stroke-width="2.5"/>
+      <path d="M 75,30 Q 68,18 62,10" stroke-width="1.8"/>
+      <path d="M 125,30 Q 132,18 138,10" stroke-width="1.8"/>
+      <path d="M 34,68 Q 18,100 34,132" stroke-width="4"/>
+      <path d="M 30,75 Q 12,100 30,125" stroke-width="2.5"/>
+      <path d="M 28,85 Q 14,90 6,82" stroke-width="1.5"/>
+      <path d="M 26,105 Q 12,110 5,120" stroke-width="1.5"/>
+      <path d="M 166,68 Q 182,100 166,132" stroke-width="4"/>
+      <path d="M 170,75 Q 188,100 170,125" stroke-width="2.5"/>
+      <path d="M 172,85 Q 186,90 194,82" stroke-width="1.5"/>
+      <path d="M 174,105 Q 188,110 195,120" stroke-width="1.5"/>
+      <path d="M 68,166 Q 100,182 132,166" stroke-width="4"/>
+      <path d="M 75,170 Q 100,188 125,170" stroke-width="2.5"/>
+    </g>
+    <g transform="translate(54,15) scale(0.45)" fill="#030c04" opacity="0.9">
+      <path d="M0,10 C2,6 8,4 12,6 C14,7 16,5 18,6 C20,7 18,10 16,10 C14,10 12,8 10,10 C8,12 6,12 4,11 Z"/>
+      <path d="M4,11 L2,14 L6,13 Z"/>
+      <circle cx="14" cy="5.5" r="0.8"/>
+    </g>
+    <circle cx="100" cy="100" r="73" fill="none" stroke="url(#forestRing2)" stroke-width="1.4" stroke-dasharray="22 9" opacity="0.5"/>
+    <defs>
+      <linearGradient id="forestRing2" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#2d7a50"/>
+        <stop offset="35%" stop-color="#50c87a"/>
+        <stop offset="55%" stop-color="#c44472"/>
+        <stop offset="75%" stop-color="#50c87a"/>
+        <stop offset="100%" stop-color="#2d7a50"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  <div class="post-img" id="post-container">
+    <div class="upload-hint" id="post-upload-hint" onclick="document.getElementById('img-input2').click()">
+      <span style="font-size:clamp(8px,1.5vw,11px);letter-spacing:0.3em;">LAST OPP</span>
+      <span style="font-size:clamp(7px,1.2vw,9px);letter-spacing:0.2em;opacity:0.5;">BILDE</span>
+    </div>
+    <img id="post-preview" src="" alt="">
+  </div>
+</div>
+
+<!-- BOTTOM -->
+<div class="post-bottom">
+  <div class="post-name" contenteditable="true" data-ph="ARTISTNAVN" spellcheck="false"></div>
+  <div class="forest-line" style="width:70%;margin:6px 0;"></div>
+  <div class="post-role" contenteditable="true" data-ph="ROLLE" spellcheck="false"></div>
+  <div class="post-pronouns" contenteditable="true" data-ph="pronouns" spellcheck="false"></div>
+</div>
+```
+
+  </div>
+  </div>
+
+  <div class="card-controls">
+    <button class="ctrl-btn" onclick="document.getElementById('img-input2').click()">↑ Last opp bilde</button>
+    <button class="ctrl-btn" onclick="resetPost()">Nullstill zoom</button>
+    <button class="ctrl-btn green" onclick="downloadCard('post-card',this)">↓ Last ned</button>
+    <button class="ctrl-btn rose" onclick="copyCard('post-card',this)">Kopier bilde</button>
+  </div>
+  <p class="hint">
+    4:5 Instagram feed-format. Dra for å panorere, scroll/pinch for å zoome.<br>
+    <span>Last ned:</span> lagrer PNG til enheten. <span>Kopier:</span> lim direkte inn i appen.
   </p>
 </div>
 
@@ -1090,18 +1304,19 @@ text-align:center;
 
   <div class="card-controls">
     <button class="ctrl-btn" onclick="toggleChecker()">Vis/skjul bakgrunn</button>
-    <button class="ctrl-btn green" onclick="printCard('overlay-card',this)">Lagre PNG</button>
+    <button class="ctrl-btn green" onclick="downloadCard('overlay-card',this)">↓ Last ned</button>
+    <button class="ctrl-btn rose" onclick="copyCard('overlay-card',this)">Kopier bilde</button>
   </div>
   <p class="hint">
-    <span>OBS Studio:</span> Add Browser Source, sett URL til denne filen. Bredde/høyde 1080×1080.<br>
-    <span>Transparent:</span> Sjekk "Allow transparency" i OBS Browser Source-innstillingene.<br>
-    <span>Rutemønsteret</span> viser gjennomsiktig område, det forsvinner i OBS.
+    9:16 story-overlay med transparens. Rutemønster = gjennomsiktig, vises ikke i eksport.<br>
+    <span>Last ned:</span> PNG til enhet. <span>Kopier:</span> lim inn i Stories/TikTok.
   </p>
 </div>
 
-<!-- Hidden file input for portrait -->
+<!-- Hidden file inputs -->
 
 <input type="file" id="img-input" accept="image/*" onchange="loadPortrait(event)">
+<input type="file" id="img-input2" accept="image/*" onchange="loadPost(event)">
 
 <script>
 /* ── TAB SWITCHING ── */
@@ -1211,27 +1426,117 @@ function loadPortrait(e){
   reader.readAsDataURL(file);
 }
 
-/* ── EXPORT PNG ── */
-async function printCard(id, btn){
+/* ── POST (4:5) DRAG/ZOOM ── */
+let pIsDrag=false,pStartX=0,pStartY=0,pImgX=0,pImgY=0,pScale=1;
+let pLastDist=0,pTouchX=0,pTouchY=0;
+
+function updatePostTransform(){
+  const img=document.getElementById('post-preview');
+  img.style.transform=`translate(${pImgX}px,${pImgY}px) scale(${pScale})`;
+}
+function resetPost(){pImgX=0;pImgY=0;pScale=1;updatePostTransform();}
+
+function initPostDrag(){
+  const container=document.getElementById('post-container');
+  const img=document.getElementById('post-preview');
+  container.addEventListener('mousedown',e=>{
+    if(!img.classList.contains('loaded'))return;
+    pIsDrag=true;pStartX=e.clientX-pImgX;pStartY=e.clientY-pImgY;e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!pIsDrag)return;
+    pImgX=e.clientX-pStartX;pImgY=e.clientY-pStartY;updatePostTransform();
+  });
+  document.addEventListener('mouseup',()=>pIsDrag=false);
+  container.addEventListener('wheel',e=>{
+    if(!img.classList.contains('loaded'))return;
+    pScale=Math.max(0.4,Math.min(5,pScale-e.deltaY*0.003));
+    updatePostTransform();e.preventDefault();
+  },{passive:false});
+  container.addEventListener('touchstart',e=>{
+    if(!img.classList.contains('loaded'))return;
+    if(e.touches.length===1){
+      pIsDrag=true;pTouchX=e.touches[0].clientX-pImgX;pTouchY=e.touches[0].clientY-pImgY;
+    }else if(e.touches.length===2){
+      pIsDrag=false;
+      pLastDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    }
+    e.preventDefault();
+  },{passive:false});
+  container.addEventListener('touchmove',e=>{
+    if(e.touches.length===1&&pIsDrag){
+      pImgX=e.touches[0].clientX-pTouchX;pImgY=e.touches[0].clientY-pTouchY;updatePostTransform();
+    }else if(e.touches.length===2){
+      const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+      if(pLastDist>0)pScale=Math.max(0.4,Math.min(5,pScale*(d/pLastDist)));
+      pLastDist=d;updatePostTransform();
+    }
+    e.preventDefault();
+  },{passive:false});
+  container.addEventListener('touchend',()=>{pIsDrag=false;pLastDist=0;});
+}
+initPostDrag();
+
+function loadPost(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=document.getElementById('post-preview');
+    const hint=document.getElementById('post-upload-hint');
+    img.src=ev.target.result;img.classList.add('loaded');
+    hint.style.display='none';
+    pImgX=0;pImgY=0;pScale=1;updatePostTransform();
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ── DOWNLOAD PNG TO DEVICE ── */
+async function downloadCard(id, btn){
   const card=document.getElementById(id);
-  btn.textContent='Laster ned...';
-  btn.disabled=true;
+  const orig=btn.textContent;
+  btn.textContent='Laster ned...';btn.disabled=true;
   try{
     const canvas=await html2canvas(card,{
-      backgroundColor:null,
-      scale:3,
-      useCORS:true,
-      logging:false
+      backgroundColor:null,scale:3,useCORS:true,logging:false
     });
     const link=document.createElement('a');
     link.download=`regnbuenatt_${id}_${Date.now()}.png`;
     link.href=canvas.toDataURL('image/png');
     link.click();
   }catch(e){
-    alert('Nedlasting feilet. Prøv skjermbilde manuelt (cmd+shift+4).');
+    alert('Nedlasting feilet. Prøv skjermbilde manuelt.');
   }finally{
-    btn.textContent='Lagre som PNG';
-    btn.disabled=false;
+    btn.textContent=orig;btn.disabled=false;
+  }
+}
+
+/* ── COPY TO CLIPBOARD ── */
+async function copyCard(id, btn){
+  const card=document.getElementById(id);
+  const orig=btn.textContent;
+  btn.textContent='Kopierer...';btn.disabled=true;
+  try{
+    const canvas=await html2canvas(card,{
+      backgroundColor:null,scale:3,useCORS:true,logging:false
+    });
+    canvas.toBlob(async blob=>{
+      try{
+        await navigator.clipboard.write([
+          new ClipboardItem({'image/png':blob})
+        ]);
+        btn.textContent='Kopiert!';
+        setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},2000);
+      }catch{
+        // fallback: open in new tab for manual save
+        const url=URL.createObjectURL(blob);
+        window.open(url,'_blank');
+        btn.textContent=orig;btn.disabled=false;
+      }
+    },'image/png');
+  }catch(e){
+    alert('Kopiering feilet. Bruk Last ned i stedet.');
+    btn.textContent=orig;btn.disabled=false;
   }
 }
 
