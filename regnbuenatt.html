@@ -25,26 +25,29 @@ body{
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding:28px 16px 60px;
+  padding:16px 6px 60px;
+  overflow-x:hidden;
 }
 
 /* ── STUDIO CHROME ── */
 .studio-top{
-width:100%;max-width:580px;
+width:100%;max-width:100%;
 display:flex;align-items:center;justify-content:space-between;
-margin-bottom:24px;
+margin-bottom:16px;
+padding:0 4px;
+flex-wrap:wrap;gap:8px;
 }
 .studio-id{
 font-family:‘Courier Prime’,monospace;
-font-size:8px;letter-spacing:0.5em;
+font-size:7px;letter-spacing:0.35em;
 color:rgba(255,255,255,0.18);
 text-transform:uppercase;
 }
-.tabs{display:flex;gap:2px;}
+.tabs{display:flex;gap:2px;flex-wrap:wrap;}
 .tab{
 font-family:‘Courier Prime’,monospace;
-font-size:8px;letter-spacing:0.3em;
-padding:8px 16px;
+font-size:7px;letter-spacing:0.2em;
+padding:7px 10px;
 border:1px solid rgba(255,255,255,0.12);
 background:transparent;
 color:rgba(255,255,255,0.3);
@@ -58,7 +61,7 @@ border-color:rgba(255,255,255,0.55);
 color:#fff;background:rgba(255,255,255,0.04);
 }
 
-.template{display:none;width:100%;max-width:560px;}
+.template{display:none;width:100%;max-width:100%;}
 .template.active{display:block;}
 
 /* ── PRIDE LINE UTILITY ── */
@@ -463,19 +466,20 @@ opacity:0.22;
 
 /* ─── CONTROLS below card ─── */
 .card-controls{
-display:flex;gap:8px;
-margin-top:14px;
+display:flex;gap:6px;
+margin-top:12px;
 flex-wrap:wrap;
+width:100%;
 }
 .ctrl-btn{
 font-family:‘Courier Prime’,monospace;
-font-size:8px;letter-spacing:0.3em;
-padding:9px 16px;
+font-size:7px;letter-spacing:0.22em;
+padding:9px 8px;
 border:1px solid rgba(255,255,255,0.15);
 background:transparent;color:rgba(255,255,255,0.35);
 cursor:pointer;transition:all 0.2s;
 text-transform:uppercase;
-flex:1;min-width:120px;text-align:center;
+flex:1;min-width:70px;text-align:center;
 }
 .ctrl-btn:hover{border-color:rgba(255,255,255,0.45);color:rgba(255,255,255,0.75);}
 .ctrl-btn:disabled{opacity:0.4;cursor:wait;}
@@ -490,7 +494,7 @@ font-size:8px;letter-spacing:0.2em;
 color:rgba(255,255,255,0.18);
 margin-top:10px;
 line-height:1.9;
-width:100%;max-width:560px;
+width:100%;
 }
 .hint span{color:rgba(100,220,160,0.45);}
 
@@ -958,6 +962,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="tl-venue">MARINEHAGEN · BERGEN · 6 JUNI 2026</div>
   <div style="font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.25em;color:rgba(255,255,255,0.12);">bergenpride.no</div>
 </div>
+```
 
   </div>
 
@@ -976,9 +981,10 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
 <!-- ═══════════════ STORY 9:16 ═══════════════ -->
 
 <div class="template" id="t-story">
-  <div style="width:100%;max-width:380px;margin:0 auto;">
+  <div style="width:100%;max-width:min(380px,100%);margin:0 auto;overflow:hidden;">
   <div class="story-card" id="story-card">
 
+```
 <!-- bg layers -->
 <div class="st-bg"></div>
 <svg class="st-trees" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
@@ -1089,6 +1095,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
 <div class="corner-dot tr"></div>
 <div class="corner-dot bl" style="background:#c44472;"></div>
 <div class="corner-dot br" style="background:#c44472;"></div>
+```
 
   </div>
   </div>
@@ -1108,9 +1115,10 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
 <!-- ═══════════════ 4:5 POST ═══════════════ -->
 
 <div class="template" id="t-post">
-  <div style="width:100%;max-width:480px;margin:0 auto;">
+  <div style="width:100%;max-width:min(480px,100%);margin:0 auto;overflow:hidden;">
   <div class="post-card" id="post-card">
 
+```
 <div class="post-bg"></div>
 <svg class="post-trees" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true">
   <g fill="#0a1a0c" opacity="0.9">
@@ -1300,6 +1308,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="ov-info" contenteditable="true" data-ph="NOW PLAYING" spellcheck="false"></div>
   <div class="ov-info" contenteditable="true" data-ph="bergenpride.no" spellcheck="false">bergenpride.no</div>
 </div>
+```
 
   </div>
 
@@ -1497,102 +1506,146 @@ const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)
   ||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
 const isMobile=isIOS||/Mobi|Android/i.test(navigator.userAgent);
 
-/* ── FULLSCREEN FOR SCREENSHOT (iOS / mobile) ── */
-function fullscreenForScreenshot(id){
-  const card=document.getElementById(id);
-  const old=document.getElementById('img-export-overlay');
-  if(old)old.remove();
-  const wrap=document.createElement('div');
-  wrap.id='img-export-overlay';
-  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:#000408;display:flex;flex-direction:column;align-items:center;justify-content:center;';
-  const clone=card.cloneNode(true);
-  // Make clone fill screen at correct ratio
-  const ratio=card.offsetHeight/card.offsetWidth;
-  clone.style.cssText=`width:100vw;height:${100*ratio}vw;max-height:92vh;max-width:${92/ratio}vh;flex-shrink:0;`;
-  const hint=document.createElement('div');
-  hint.style.cssText='position:fixed;bottom:0;left:0;right:0;padding:12px;background:rgba(0,0,0,0.8);font-family:monospace;font-size:9px;letter-spacing:0.22em;color:rgba(255,255,255,0.4);text-align:center;';
-  hint.innerHTML='TA SKJERMBILDE &nbsp;·&nbsp; trykk for å lukke';
-  wrap.appendChild(clone);wrap.appendChild(hint);
-  wrap.addEventListener('click',()=>wrap.remove());
-  document.body.appendChild(wrap);
+/* ── FONT PRELOADER ── */
+let fontsReady=false;
+async function ensureFonts(){
+  if(fontsReady)return;
+  try{
+    const FONT_URL='https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400;700&family=Courier+Prime:wght@400;700&family=Bebas+Neue&display=swap';
+    const css=await fetch(FONT_URL).then(r=>r.text());
+    const urls=[...css.matchAll(/url\(([^)]+)\)/g)].map(m=>m[1].replace(/['"]/g,''));
+    let patched=css;
+    await Promise.all(urls.map(async url=>{
+      try{
+        const blob=await fetch(url).then(r=>r.blob());
+        const b64=await new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.readAsDataURL(blob);});
+        patched=patched.replace(url,b64);
+      }catch{}
+    }));
+    const s=document.createElement('style');s.id='inlined-fonts';s.textContent=patched;
+    document.head.appendChild(s);
+    await document.fonts.ready;
+  }catch{}
+  fontsReady=true;
 }
 
-/* ── SHOW RENDERED IMAGE (desktop fallback) ── */
-function showImageOverlay(dataURL,hint){
-  const old=document.getElementById('img-export-overlay');if(old)old.remove();
-  const wrap=document.createElement('div');
-  wrap.id='img-export-overlay';
-  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;overflow-y:auto;';
-  const p=document.createElement('p');
-  p.style.cssText='color:rgba(255,255,255,0.5);font-family:monospace;font-size:10px;letter-spacing:0.2em;text-align:center;line-height:1.9;';
-  p.innerHTML=hint;
-  const closeBtn=document.createElement('button');
-  closeBtn.textContent='LUKK';
-  closeBtn.style.cssText='font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:10px 24px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;';
-  closeBtn.onclick=()=>wrap.remove();
-  if(dataURL){
-    const img=document.createElement('img');
-    img.src=dataURL;img.style.cssText='max-width:100%;max-height:70vh;border:1px solid rgba(255,255,255,0.08);';
-    const dl=document.createElement('a');
-    dl.href=dataURL;dl.download=`regnbuenatt_${Date.now()}.png`;dl.textContent='↓ Last ned fil';
-    dl.style.cssText='color:rgba(80,185,120,0.8);font-family:monospace;font-size:9px;letter-spacing:0.25em;';
-    wrap.appendChild(p);wrap.appendChild(img);wrap.appendChild(dl);
-  } else {
-    wrap.appendChild(p);
-  }
-  wrap.appendChild(closeBtn);
-  document.body.appendChild(wrap);
-}
-
-/* ── RENDER CARD (desktop only) ── */
+/* ── RENDER CARD ── */
 async function renderCard(id){
+  await ensureFonts();
   const card=document.getElementById(id);
   const isOverlay=(id==='overlay-card');
   let prevBg='';let checker=null;
-  if(isOverlay){prevBg=card.style.background;card.style.background='#000408';checker=card.querySelector('.ov-checker');if(checker)checker.style.display='none';}
+  if(isOverlay){
+    prevBg=card.style.background;card.style.background='#000408';
+    checker=card.querySelector('.ov-checker');if(checker)checker.style.display='none';
+  }
+
+  // Remove original Google Fonts link to force html2canvas to use our base64 version
+  const gfLink=document.querySelector('link[href*="fonts.googleapis"]');
+  if(gfLink)gfLink.disabled=true;
+
   let canvas;
   try{
-    canvas=await html2canvas(card,{backgroundColor:isOverlay?'#000408':null,scale:2,useCORS:true,allowTaint:true,logging:false,imageTimeout:3000,removeContainer:true});
+    canvas=await html2canvas(card,{
+      backgroundColor:isOverlay?'#000408':null,
+      scale:isMobile?1.5:2,
+      useCORS:true,
+      allowTaint:true,
+      logging:false,
+      imageTimeout:10000,
+      removeContainer:true,
+      onclone:(clonedDoc)=>{
+        // Strip complex SVGs that crash iOS renderer
+        clonedDoc.querySelectorAll('.portrait-svg').forEach(el=>{
+          // Keep just the dashed ring, remove branch paths
+          const paths=el.querySelectorAll('path');
+          paths.forEach(p=>p.remove());
+        });
+        // Make all SVG tree layers simpler
+        clonedDoc.querySelectorAll('.ac-trees,.tl-trees,.st-trees,.post-trees,.st-side-trees').forEach(el=>{
+          el.style.opacity='0.12';
+        });
+      }
+    });
   }finally{
+    if(gfLink)gfLink.disabled=false;
     if(isOverlay){card.style.background=prevBg;if(checker)checker.style.display='';}
   }
   return canvas;
 }
 
-/* ── DOWNLOAD ── */
-async function downloadCard(id,btn){
-  if(isMobile){fullscreenForScreenshot(id);return;}
-  const orig=btn.textContent;btn.textContent='Behandler...';btn.disabled=true;
-  try{
-    const canvas=await renderCard(id);
-    const link=document.createElement('a');
-    link.download=`regnbuenatt_${id}_${Date.now()}.png`;
-    link.href=canvas.toDataURL('image/png');link.click();
-  }catch(e){showImageOverlay('','Rendering feilet. Ta skjermbilde manuelt.');}
-  finally{btn.textContent=orig;btn.disabled=false;}
+/* ── SHOW IMAGE OVERLAY ── */
+function showResult(dataURL){
+  const old=document.getElementById('img-export-overlay');if(old)old.remove();
+  const wrap=document.createElement('div');wrap.id='img-export-overlay';
+  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;overflow-y:auto;-webkit-overflow-scrolling:touch;';
+
+  const hint=document.createElement('p');
+  hint.style.cssText='color:rgba(255,255,255,0.45);font-family:monospace;font-size:9px;letter-spacing:0.25em;text-align:center;line-height:2;';
+  hint.innerHTML=isMobile
+    ?'LANGT-TRYKK PÅ BILDET<br>→ LAGRE BILDE / KOPIER BILDE'
+    :'HØYREKLIKK → LAGRE BILDE &nbsp;·&nbsp; Eller trykk nedlasting';
+
+  const img=document.createElement('img');img.src=dataURL;
+  img.style.cssText='max-width:100%;max-height:68vh;display:block;border:1px solid rgba(255,255,255,0.07);';
+
+  const row=document.createElement('div');row.style.cssText='display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;';
+
+  const dl=document.createElement('a');dl.href=dataURL;dl.download=`regnbuenatt_${Date.now()}.png`;
+  dl.textContent='↓ Last ned';
+  dl.style.cssText='color:rgba(80,185,120,0.85);font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:9px 18px;border:1px solid rgba(80,185,120,0.35);text-decoration:none;';
+
+  const closeBtn=document.createElement('button');closeBtn.textContent='LUKK';
+  closeBtn.style.cssText='font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:9px 18px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;';
+  closeBtn.onclick=()=>wrap.remove();
+
+  row.append(dl,closeBtn);
+  wrap.append(hint,img,row);
+  document.body.appendChild(wrap);
+
+  // Desktop: auto-trigger download immediately
+  if(!isMobile){dl.click();}
 }
 
-/* ── COPY ── */
-async function copyCard(id,btn){
-  if(isIOS){fullscreenForScreenshot(id);return;}
-  const orig=btn.textContent;btn.textContent='Behandler...';btn.disabled=true;
+/* ── DOWNLOAD ── */
+async function downloadCard(id,btn){
+  const orig=btn.textContent;btn.textContent='Laster...';btn.disabled=true;
   try{
     const canvas=await renderCard(id);
-    canvas.toBlob(async blob=>{
+    showResult(canvas.toDataURL('image/png'));
+  }catch(e){
+    const err=document.createElement('div');err.style.cssText='position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:9999;background:rgba(180,40,60,0.9);color:#fff;font-family:monospace;font-size:9px;letter-spacing:0.2em;padding:10px 20px;';
+    err.textContent='Rendering feilet';document.body.appendChild(err);setTimeout(()=>err.remove(),3000);
+  }finally{btn.textContent=orig;btn.disabled=false;}
+}
+
+/* ── COPY (same flow on all platforms) ── */
+async function copyCard(id,btn){
+  const orig=btn.textContent;btn.textContent='Laster...';btn.disabled=true;
+  try{
+    const canvas=await renderCard(id);
+    const dataURL=canvas.toDataURL('image/png');
+    // Try clipboard first on desktop
+    if(!isMobile){
       try{
+        const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));
         await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
         btn.textContent='✓ Kopiert!';
         setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},2200);
-      }catch{
-        showImageOverlay(canvas.toDataURL('image/png'),'Høyreklikk → Kopier bilde');
-        btn.textContent=orig;btn.disabled=false;
-      }
-    },'image/png');
+        return;
+      }catch{}
+    }
+    // Show in-page for all mobile and desktop fallback
+    showResult(dataURL);
   }catch(e){
-    showImageOverlay('','Rendering feilet.');
-    btn.textContent=orig;btn.disabled=false;
+    showResult(null);
+  }finally{
+    if(btn.textContent==='Laster...'){btn.textContent=orig;btn.disabled=false;}
   }
 }
+
+/* ── PRELOAD FONTS ON PAGE LOAD ── */
+window.addEventListener('load',()=>ensureFonts());
 
 /* ── OVERLAY CHECKER ── */
 function toggleChecker(){
