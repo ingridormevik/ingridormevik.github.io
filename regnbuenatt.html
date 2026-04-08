@@ -965,6 +965,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
     <button class="ctrl-btn green" onclick="downloadCard('timeline-card',this)">↓ Last ned</button>
     <button class="ctrl-btn rose" onclick="copyCard('timeline-card',this)">Kopier bilde</button>
     <button class="ctrl-btn" onclick="addTlRow()">+ Legg til rad</button>
+    <button class="ctrl-btn" onclick="removeTlRow()">− Fjern rad</button>
   </div>
   <p class="hint">
     Klikk tekst for å redigere.<br>
@@ -1096,6 +1097,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
     <button class="ctrl-btn green" onclick="downloadCard('story-card',this)">↓ Last ned</button>
     <button class="ctrl-btn rose" onclick="copyCard('story-card',this)">Kopier bilde</button>
     <button class="ctrl-btn" onclick="addStRow()">+ Legg til rad</button>
+    <button class="ctrl-btn" onclick="removeStRow()">− Fjern rad</button>
   </div>
   <p class="hint">
     9:16 story-format for Instagram/TikTok/Facebook Stories.<br>
@@ -1215,7 +1217,6 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="overlay-card" id="overlay-card">
     <div class="ov-checker"></div>
 
-```
 <!-- Pride edge lines -->
 <div class="ov-edge-top"></div>
 <div class="ov-edge-bottom"></div>
@@ -1491,113 +1492,106 @@ function loadPost(e){
   reader.readAsDataURL(file);
 }
 
-/* ── DETECT IOS ── */
-const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
-const isMobile=/Mobi|Android/i.test(navigator.userAgent)||isIOS;
+/* ── DETECT IOS / MOBILE ── */
+const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)
+  ||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
+const isMobile=isIOS||/Mobi|Android/i.test(navigator.userAgent);
 
-/* ── RENDER CARD TO CANVAS ── */
+/* ── FULLSCREEN FOR SCREENSHOT (iOS / mobile) ── */
+function fullscreenForScreenshot(id){
+  const card=document.getElementById(id);
+  const old=document.getElementById('img-export-overlay');
+  if(old)old.remove();
+  const wrap=document.createElement('div');
+  wrap.id='img-export-overlay';
+  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:#000408;display:flex;flex-direction:column;align-items:center;justify-content:center;';
+  const clone=card.cloneNode(true);
+  // Make clone fill screen at correct ratio
+  const ratio=card.offsetHeight/card.offsetWidth;
+  clone.style.cssText=`width:100vw;height:${100*ratio}vw;max-height:92vh;max-width:${92/ratio}vh;flex-shrink:0;`;
+  const hint=document.createElement('div');
+  hint.style.cssText='position:fixed;bottom:0;left:0;right:0;padding:12px;background:rgba(0,0,0,0.8);font-family:monospace;font-size:9px;letter-spacing:0.22em;color:rgba(255,255,255,0.4);text-align:center;';
+  hint.innerHTML='TA SKJERMBILDE &nbsp;·&nbsp; trykk for å lukke';
+  wrap.appendChild(clone);wrap.appendChild(hint);
+  wrap.addEventListener('click',()=>wrap.remove());
+  document.body.appendChild(wrap);
+}
+
+/* ── SHOW RENDERED IMAGE (desktop fallback) ── */
+function showImageOverlay(dataURL,hint){
+  const old=document.getElementById('img-export-overlay');if(old)old.remove();
+  const wrap=document.createElement('div');
+  wrap.id='img-export-overlay';
+  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;overflow-y:auto;';
+  const p=document.createElement('p');
+  p.style.cssText='color:rgba(255,255,255,0.5);font-family:monospace;font-size:10px;letter-spacing:0.2em;text-align:center;line-height:1.9;';
+  p.innerHTML=hint;
+  const closeBtn=document.createElement('button');
+  closeBtn.textContent='LUKK';
+  closeBtn.style.cssText='font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:10px 24px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;';
+  closeBtn.onclick=()=>wrap.remove();
+  if(dataURL){
+    const img=document.createElement('img');
+    img.src=dataURL;img.style.cssText='max-width:100%;max-height:70vh;border:1px solid rgba(255,255,255,0.08);';
+    const dl=document.createElement('a');
+    dl.href=dataURL;dl.download=`regnbuenatt_${Date.now()}.png`;dl.textContent='↓ Last ned fil';
+    dl.style.cssText='color:rgba(80,185,120,0.8);font-family:monospace;font-size:9px;letter-spacing:0.25em;';
+    wrap.appendChild(p);wrap.appendChild(img);wrap.appendChild(dl);
+  } else {
+    wrap.appendChild(p);
+  }
+  wrap.appendChild(closeBtn);
+  document.body.appendChild(wrap);
+}
+
+/* ── RENDER CARD (desktop only) ── */
 async function renderCard(id){
   const card=document.getElementById(id);
-  return await html2canvas(card,{
-    backgroundColor:null,
-    scale:2,
-    useCORS:true,
-    allowTaint:true,
-    logging:false,
-    imageTimeout:0
-  });
-}
-
-/* ── DOWNLOAD / SAVE ── */
-async function downloadCard(id,btn){
-  const orig=btn.textContent;
-  btn.textContent='Behandler...';btn.disabled=true;
+  const isOverlay=(id==='overlay-card');
+  let prevBg='';let checker=null;
+  if(isOverlay){prevBg=card.style.background;card.style.background='#000408';checker=card.querySelector('.ov-checker');if(checker)checker.style.display='none';}
+  let canvas;
   try{
-    const canvas=await renderCard(id);
-    if(isMobile){
-      // iOS: open in new tab — langt-trykk for å lagre
-      const win=window.open('','_blank');
-      win.document.write(`<html><body style="margin:0;background:#000">
-        <img src="${canvas.toDataURL('image/png')}" style="max-width:100%;display:block">
-        <p style="color:#aaa;font-family:monospace;font-size:11px;padding:10px;text-align:center">
-          LANGT-TRYKK PÅ BILDET → LAGRE TIL BILDEBIBLIOTEK
-        </p></body></html>`);
-      win.document.close();
-    } else {
-      const link=document.createElement('a');
-      link.download=`regnbuenatt_${id}_${Date.now()}.png`;
-      link.href=canvas.toDataURL('image/png');
-      link.click();
-    }
-  }catch(e){
-    // Fallback: vis fullskjerm og be om skjermbilde
-    fullscreenCard(id);
+    canvas=await html2canvas(card,{backgroundColor:isOverlay?'#000408':null,scale:2,useCORS:true,allowTaint:true,logging:false,imageTimeout:3000,removeContainer:true});
   }finally{
-    btn.textContent=orig;btn.disabled=false;
+    if(isOverlay){card.style.background=prevBg;if(checker)checker.style.display='';}
   }
+  return canvas;
 }
 
-/* ── COPY TO CLIPBOARD ── */
-async function copyCard(id,btn){
-  const orig=btn.textContent;
-  btn.textContent='Behandler...';btn.disabled=true;
+/* ── DOWNLOAD ── */
+async function downloadCard(id,btn){
+  if(isMobile){fullscreenForScreenshot(id);return;}
+  const orig=btn.textContent;btn.textContent='Behandler...';btn.disabled=true;
   try{
     const canvas=await renderCard(id);
-    if(isIOS){
-      // iOS clipboard API støtter ikke image/png ennå — åpne i ny fane
-      const win=window.open('','_blank');
-      win.document.write(`<html><body style="margin:0;background:#000">
-        <img src="${canvas.toDataURL('image/png')}" style="max-width:100%;display:block">
-        <p style="color:#aaa;font-family:monospace;font-size:11px;padding:10px;text-align:center">
-          LANGT-TRYKK → KOPIER BILDE — deretter lim inn i Stories
-        </p></body></html>`);
-      win.document.close();
-      btn.textContent=orig;btn.disabled=false;
-    } else {
-      canvas.toBlob(async blob=>{
-        try{
-          await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
-          btn.textContent='Kopiert!';
-          setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},2000);
-        }catch{
-          const win=window.open('','_blank');
-          win.document.write(`<html><body style="margin:0;background:#000">
-            <img src="${canvas.toDataURL('image/png')}" style="max-width:100%;display:block">
-          </body></html>`);
-          btn.textContent=orig;btn.disabled=false;
-        }
-      },'image/png');
-    }
+    const link=document.createElement('a');
+    link.download=`regnbuenatt_${id}_${Date.now()}.png`;
+    link.href=canvas.toDataURL('image/png');link.click();
+  }catch(e){showImageOverlay('','Rendering feilet. Ta skjermbilde manuelt.');}
+  finally{btn.textContent=orig;btn.disabled=false;}
+}
+
+/* ── COPY ── */
+async function copyCard(id,btn){
+  if(isIOS){fullscreenForScreenshot(id);return;}
+  const orig=btn.textContent;btn.textContent='Behandler...';btn.disabled=true;
+  try{
+    const canvas=await renderCard(id);
+    canvas.toBlob(async blob=>{
+      try{
+        await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+        btn.textContent='✓ Kopiert!';
+        setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},2200);
+      }catch{
+        showImageOverlay(canvas.toDataURL('image/png'),'Høyreklikk → Kopier bilde');
+        btn.textContent=orig;btn.disabled=false;
+      }
+    },'image/png');
   }catch(e){
-    fullscreenCard(id);
+    showImageOverlay('','Rendering feilet.');
     btn.textContent=orig;btn.disabled=false;
   }
-}
-
-/* ── FULLSCREEN FALLBACK ── */
-function fullscreenCard(id){
-  const card=document.getElementById(id);
-  const overlay=document.createElement('div');
-  overlay.style.cssText='position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;';
-  const clone=card.cloneNode(true);
-  clone.style.cssText='max-height:80vh;max-width:90vw;width:auto;';
-  const hint=document.createElement('p');
-  hint.style.cssText='color:rgba(255,255,255,0.5);font-family:monospace;font-size:11px;letter-spacing:0.2em;text-align:center;';
-  hint.textContent='TA SKJERMBILDE — trykk utenfor for å lukke';
-  overlay.appendChild(clone);overlay.appendChild(hint);
-  overlay.addEventListener('click',()=>overlay.remove());
-  document.body.appendChild(overlay);
-}
-
-/* ── OVERLAY MODE ── */
-function toggleOverlayMode(id){
-  const card=document.getElementById(id);
-  const bg=card.querySelector('.ac-bg');
-  const trees=card.querySelector('.ac-trees');
-  const on=card.style.background==='transparent';
-  card.style.background=on?'#000408':'transparent';
-  if(bg)bg.style.display=on?'':'none';
-  if(trees)trees.style.display=on?'':'none';
 }
 
 /* ── OVERLAY CHECKER ── */
@@ -1606,34 +1600,38 @@ function toggleChecker(){
   c.style.display=c.style.display==='none'?'':'none';
 }
 
-/* ── ADD TIMELINE ROW ── */
+/* ── ADD / REMOVE TIMELINE ROW ── */
 function addTlRow(){
   const rows=document.querySelector('.tl-rows');
-  if(rows.children.length>=8){alert('Maks 8 rader for god layout.');return;}
-  const row=document.createElement('div');
-  row.className='tl-row';
-  row.innerHTML=`
-    <div class="pride-v"></div>
+  if(rows.children.length>=8){alert('Maks 8 rader.');return;}
+  const row=document.createElement('div');row.className='tl-row';
+  row.innerHTML=`<div class="pride-v"></div>
     <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false"></div>
-    <div class="tl-row-date" contenteditable="true" data-ph="DD/MM" spellcheck="false"></div>
-  `;
+    <div class="tl-row-date" contenteditable="true" data-ph="DD/MM" spellcheck="false"></div>`;
   rows.appendChild(row);
 }
+function removeTlRow(){
+  const rows=document.querySelector('.tl-rows');
+  if(rows.children.length<=1)return;
+  rows.removeChild(rows.lastElementChild);
+}
 
-/* ── ADD STORY ROW ── */
+/* ── ADD / REMOVE STORY ROW ── */
 const stColors=['#3d9966','#50c87a','#7db896','#b05888','#c44472','#8b2252'];
 function addStRow(){
   const rows=document.getElementById('story-rows');
   if(rows.children.length>=8){alert('Maks 8 rader.');return;}
   const c=stColors[rows.children.length%stColors.length];
-  const row=document.createElement('div');
-  row.className='st-row';
-  row.innerHTML=`
-    <div class="st-dot" style="background:${c};"></div>
+  const row=document.createElement('div');row.className='st-row';
+  row.innerHTML=`<div class="st-dot" style="background:${c};"></div>
     <div class="st-row-label" contenteditable="true" spellcheck="false"></div>
-    <div class="st-row-date" contenteditable="true" spellcheck="false"></div>
-  `;
+    <div class="st-row-date" contenteditable="true" spellcheck="false"></div>`;
   rows.appendChild(row);
+}
+function removeStRow(){
+  const rows=document.getElementById('story-rows');
+  if(rows.children.length<=1)return;
+  rows.removeChild(rows.lastElementChild);
 }
 </script>
 
