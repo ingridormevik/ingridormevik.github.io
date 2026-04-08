@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REGNBUENATT · Template Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400;700&family=Courier+Prime:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000408;
+  --card-bg:rgba(0,3,8,0.93);
+  --border:rgba(255,255,255,0.1);
+  --p1:#e40303;--p2:#ff8c00;--p3:#ffed00;--p4:#008026;--p5:#004dff;--p6:#750787;
+  --green:rgba(100,220,160,1);
+  --text:rgba(255,255,255,0.9);
+  --dim:rgba(255,255,255,0.3);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Cinzel',serif;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:28px 16px 60px;
+}
+
+/* ── STUDIO CHROME ── */
+.studio-top{
+width:100%;max-width:580px;
+display:flex;align-items:center;justify-content:space-between;
+margin-bottom:24px;
+}
+.studio-id{
+font-family:‘Courier Prime’,monospace;
+font-size:8px;letter-spacing:0.5em;
+color:rgba(255,255,255,0.18);
+text-transform:uppercase;
+}
+.tabs{display:flex;gap:2px;}
+.tab{
+font-family:‘Courier Prime’,monospace;
+font-size:8px;letter-spacing:0.3em;
+padding:8px 16px;
+border:1px solid rgba(255,255,255,0.12);
+background:transparent;
+color:rgba(255,255,255,0.3);
+cursor:pointer;
+transition:all 0.2s;
+text-transform:uppercase;
+}
+.tab:hover{color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.3);}
+.tab.active{
+border-color:rgba(255,255,255,0.55);
+color:#fff;background:rgba(255,255,255,0.04);
+}
+
+.template{display:none;width:100%;max-width:560px;}
+.template.active{display:block;}
+
+/* ── PRIDE LINE UTILITY ── */
+.pride-h{
+width:100%;height:1px;
+background:linear-gradient(to right,var(–p1),var(–p2),var(–p3),var(–p4),var(–p5),var(–p6));
+}
+.pride-v{
+width:2px;height:100%;
+background:linear-gradient(to bottom,var(–p1),var(–p2),var(–p3),var(–p4),var(–p5),var(–p6));
+position:absolute;left:0;top:0;
+}
+
+/* ── FORBIDDEN FOREST LINE — nature green + rose ── */
+.forest-line{
+width:100%;height:1px;
+background:linear-gradient(to right,
+transparent 0%,
+rgba(28,75,42,0) 4%,
+rgba(55,140,85,0.7) 20%,
+rgba(80,185,120,0.95) 38%,
+rgba(195,70,110,0.95) 52%,
+rgba(155,45,80,0.75) 65%,
+rgba(55,140,85,0.55) 80%,
+rgba(28,75,42,0) 96%,
+transparent 100%
+);
+position:relative;
+}
+.forest-line::after{
+content:’’;position:absolute;
+inset:0;
+background:inherit;
+filter:blur(3px);
+opacity:0.55;
+pointer-events:none;
+}
+
+/* ═══════════════════════════════
+ARTIST CARD  (1:1)
+═══════════════════════════════ */
+.artist-card{
+width:100%;aspect-ratio:1/1;
+background:#000408;
+position:relative;overflow:hidden;
+display:flex;flex-direction:column;
+align-items:center;justify-content:space-between;
+padding:5.5%;
+}
+
+/* atmospheric bg */
+.ac-bg{
+position:absolute;inset:0;z-index:0;
+background:
+radial-gradient(ellipse 90% 55% at 50% 105%, rgba(15,35,18,0.7) 0%, transparent 55%),
+radial-gradient(ellipse 60% 35% at 20% 0%, rgba(12,0,22,0.65) 0%, transparent 50%),
+radial-gradient(ellipse 60% 35% at 80% 0%, rgba(0,8,18,0.5) 0%, transparent 50%);
+}
+
+/* forest silhouette row at bottom */
+.ac-trees{
+position:absolute;
+bottom:0;left:0;right:0;
+height:30%;
+z-index:1;
+opacity:0.18;
+}
+
+.ac-top{
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;gap:3px;
+width:100%;
+}
+.ac-event-name{
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(20px,6vw,42px);
+letter-spacing:0.55em;
+color:#fff;
+text-shadow:0 0 50px rgba(100,220,160,0.25);
+}
+.ac-event-sub{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.3vw,11px);
+letter-spacing:0.35em;
+color:rgba(255,255,255,0.22);
+}
+.ac-pride-line{width:60%;margin-top:7px;}
+
+/* Portrait frame */
+.portrait-frame{
+position:relative;z-index:3;
+width:62%;aspect-ratio:1/1;
+display:flex;align-items:center;justify-content:center;
+}
+.portrait-svg{
+position:absolute;inset:0;width:100%;height:100%;
+pointer-events:none;
+}
+.portrait-img{
+width:76%;aspect-ratio:1/1;
+border-radius:50%;
+background:radial-gradient(ellipse 80% 80% at 50% 60%, rgba(15,40,20,0.95), rgba(4,8,6,1));
+overflow:hidden;
+display:flex;align-items:center;justify-content:center;
+position:relative;z-index:2;
+border:1px solid rgba(80,185,120,0.12);
+box-shadow:0 0 40px rgba(55,140,85,0.06);
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.2vw,9px);
+letter-spacing:0.15em;
+color:rgba(255,255,255,0.18);
+text-align:center;
+transition:border-color 0.2s;
+}
+.portrait-img .upload-hint{
+display:flex;flex-direction:column;align-items:center;gap:5px;
+cursor:pointer;
+user-select:none;
+}
+.portrait-img .upload-hint:hover{color:rgba(255,255,255,0.35);}
+.portrait-img img{
+position:absolute;
+top:0;left:0;
+width:100%;height:100%;
+object-fit:cover;
+display:none;
+cursor:grab;
+user-select:none;
+-webkit-user-drag:none;
+pointer-events:all;
+transform-origin:center center;
+will-change:transform;
+}
+.portrait-img img.loaded{display:block;}
+.portrait-img img:active{cursor:grabbing;}
+
+.ac-bottom{
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;
+gap:5px;width:100%;
+}
+
+/* Name field */
+.ac-name{
+font-family:‘Cinzel’,serif;
+font-size:clamp(22px,6.5vw,52px);
+font-weight:400;
+letter-spacing:0.12em;
+color:#fff;
+text-align:center;
+text-shadow:0 0 60px rgba(80,185,120,0.25), 0 0 20px rgba(255,255,255,0.12);
+outline:none;
+cursor:text;
+min-width:80px;
+line-height:1.05;
+}
+.ac-name:focus{text-shadow:0 0 60px rgba(80,185,120,0.45), 0 0 25px rgba(195,70,110,0.2);}
+.ac-name:empty::before{content:attr(data-ph);opacity:0.15;}
+
+.ac-dividers{
+display:flex;align-items:center;gap:10px;width:75%;
+margin:2px 0;
+}
+.ac-dividers .pride-h{flex:1;}
+
+.ac-role{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(8px,1.5vw,11px);
+letter-spacing:0.4em;
+color:rgba(255,255,255,0.4);
+text-transform:uppercase;
+outline:none;cursor:text;min-width:40px;text-align:center;
+}
+.ac-role:empty::before{content:attr(data-ph);opacity:0.4;}
+
+.ac-pronouns{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.1vw,9px);
+letter-spacing:0.3em;
+color:rgba(255,255,255,0.18);
+outline:none;cursor:text;min-width:30px;text-align:center;
+}
+.ac-pronouns:empty::before{content:attr(data-ph);opacity:0.4;}
+
+/* corner pride dots */
+.corner-dot{
+position:absolute;z-index:2;
+width:3px;height:3px;border-radius:50%;
+background:var(–green);
+opacity:0.5;
+}
+.corner-dot.tl{top:22px;left:22px;}
+.corner-dot.tr{top:22px;right:22px;}
+.corner-dot.bl{bottom:22px;left:22px;}
+.corner-dot.br{bottom:22px;right:22px;}
+
+/* ═══════════════════════════════
+TIMELINE CARD  (1:1)
+═══════════════════════════════ */
+.timeline-card{
+width:100%;aspect-ratio:1/1;
+background:#000408;
+position:relative;overflow:hidden;
+display:flex;flex-direction:column;
+padding:6%;
+gap:0;
+}
+.tl-bg{
+position:absolute;inset:0;z-index:0;
+background:
+radial-gradient(ellipse 80% 50% at 50% 115%, rgba(10,30,12,0.65) 0%, transparent 55%),
+radial-gradient(ellipse 40% 25% at 85% -5%, rgba(80,0,120,0.07) 0%, transparent 50%);
+}
+.tl-trees{
+position:absolute;bottom:0;left:0;right:0;height:22%;
+z-index:1;opacity:0.12;
+}
+
+.tl-header{
+position:relative;z-index:2;
+display:flex;flex-direction:column;
+margin-bottom:4%;
+}
+.tl-top-row{
+display:flex;align-items:baseline;
+justify-content:space-between;
+margin-bottom:8px;
+}
+.tl-logo{
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(22px,6.5vw,52px);
+letter-spacing:0.42em;
+color:#fff;
+text-shadow:0 0 50px rgba(100,220,160,0.22);
+}
+.tl-section{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.2vw,9px);
+letter-spacing:0.4em;
+color:rgba(255,255,255,0.2);
+text-align:right;
+outline:none;cursor:text;
+}
+.tl-section:empty::before{content:attr(data-ph);opacity:0.5;}
+
+.tl-rows{
+position:relative;z-index:2;
+display:flex;flex-direction:column;
+gap:5px;flex:1;
+}
+
+/* forest→forbidden color arc per row */
+.tl-row{
+display:flex;align-items:center;
+background:rgba(255,255,255,0.026);
+border:1px solid rgba(255,255,255,0.055);
+position:relative;overflow:hidden;
+padding:10px 14px 10px 18px;
+}
+.tl-row:nth-child(1) .pride-v{background:#3d9966;}
+.tl-row:nth-child(2) .pride-v{background:#50c87a;}
+.tl-row:nth-child(3) .pride-v{background:#7db896;}
+.tl-row:nth-child(4) .pride-v{background:#b05888;}
+.tl-row:nth-child(5) .pride-v{background:#c44472;}
+.tl-row:nth-child(6) .pride-v{background:#8b2252;}
+
+.tl-row-label{
+font-family:‘Cinzel’,serif;
+font-size:clamp(8px,1.8vw,13px);
+letter-spacing:0.22em;
+color:rgba(255,255,255,0.68);
+flex:1;text-transform:uppercase;
+outline:none;cursor:text;
+}
+.tl-row-label:empty::before{content:attr(data-ph);opacity:0.4;}
+.tl-row-date{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(8px,1.5vw,11px);
+letter-spacing:0.2em;
+color:rgba(255,255,255,0.38);
+outline:none;cursor:text;min-width:20px;
+}
+.tl-row-date:empty::before{content:attr(data-ph);opacity:0.4;}
+
+.tl-footer{
+position:relative;z-index:2;
+display:flex;align-items:center;
+justify-content:space-between;
+margin-top:12px;
+}
+.tl-venue{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.1vw,9px);
+letter-spacing:0.3em;
+color:rgba(255,255,255,0.15);
+}
+
+/* ═══════════════════════════════
+OVERLAY FRAME  (transparent bg)
+═══════════════════════════════ */
+.overlay-card{
+width:100%;aspect-ratio:1/1;
+background:rgba(0,0,0,0.0);
+position:relative;overflow:hidden;
+}
+.ov-checker{
+/* checkerboard to show transparency */
+position:absolute;inset:0;z-index:-1;
+background-image:
+linear-gradient(45deg, #1a1a1a 25%, transparent 25%),
+linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
+linear-gradient(45deg, transparent 75%, #1a1a1a 75%),
+linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+background-size:12px 12px;
+background-position:0 0, 0 6px, 6px -6px, -6px 0px;
+opacity:0.3;
+}
+
+/* Corner brackets */
+.ov-corner{
+position:absolute;width:12%;height:12%;
+}
+.ov-corner svg{width:100%;height:100%;}
+.ov-tl{top:0;left:0;}
+.ov-tr{top:0;right:0;transform:scaleX(-1);}
+.ov-bl{bottom:0;left:0;transform:scaleY(-1);}
+.ov-br{bottom:0;right:0;transform:scale(-1,-1);}
+
+/* Pride edge lines */
+.ov-edge-top{position:absolute;top:0;left:8%;right:8%;height:1px;
+background:linear-gradient(to right,
+transparent,
+rgba(55,140,85,0.6) 20%,
+rgba(80,185,120,0.9) 38%,
+rgba(195,70,110,0.9) 55%,
+rgba(80,185,120,0.6) 75%,
+transparent
+);}
+.ov-edge-bottom{position:absolute;bottom:0;left:8%;right:8%;height:1px;
+background:linear-gradient(to right,
+transparent,
+rgba(195,70,110,0.6) 20%,
+rgba(80,185,120,0.9) 40%,
+rgba(195,70,110,0.9) 58%,
+rgba(55,140,85,0.5) 78%,
+transparent
+);}
+
+.ov-top-bar{
+position:absolute;top:16px;left:0;right:0;
+display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.ov-logo{
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(13px,3vw,22px);
+letter-spacing:0.55em;
+color:rgba(255,255,255,0.8);
+text-shadow:0 0 30px rgba(80,185,120,0.55), 0 0 60px rgba(195,70,110,0.2);
+}
+.ov-sub{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(6px,1vw,8px);
+letter-spacing:0.4em;
+color:rgba(255,255,255,0.2);
+}
+
+.ov-bottom-bar{
+position:absolute;bottom:14px;left:0;right:0;
+display:flex;align-items:center;justify-content:space-between;
+padding:0 4%;
+}
+.ov-info{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(6px,1.1vw,8px);
+letter-spacing:0.3em;
+color:rgba(255,255,255,0.22);
+outline:none;cursor:text;
+}
+.ov-info:empty::before{content:attr(data-ph);opacity:0.5;}
+
+/* Creature silhouettes in overlay corners */
+.ov-creature{
+position:absolute;
+opacity:0.22;
+}
+.ov-creature.huldra{bottom:11%;left:5%;width:8%;}
+.ov-creature.nokken{bottom:11%;right:5%;width:8%;transform:scaleX(-1);}
+
+/* ─── Forest tree SVG utility ─── */
+.tree-svg{width:100%;height:100%;}
+
+/* ─── CONTROLS below card ─── */
+.card-controls{
+display:flex;gap:8px;
+margin-top:14px;
+flex-wrap:wrap;
+}
+.ctrl-btn{
+font-family:‘Courier Prime’,monospace;
+font-size:8px;letter-spacing:0.3em;
+padding:7px 14px;
+border:1px solid rgba(255,255,255,0.15);
+background:transparent;color:rgba(255,255,255,0.35);
+cursor:pointer;transition:all 0.2s;
+text-transform:uppercase;
+}
+.ctrl-btn:hover{border-color:rgba(255,255,255,0.45);color:rgba(255,255,255,0.75);}
+.ctrl-btn.green{border-color:rgba(100,220,160,0.3);color:rgba(100,220,160,0.5);}
+.ctrl-btn.green:hover{border-color:rgba(100,220,160,0.7);color:rgba(100,220,160,0.9);}
+
+.hint{
+font-family:‘Courier Prime’,monospace;
+font-size:8px;letter-spacing:0.2em;
+color:rgba(255,255,255,0.18);
+margin-top:10px;
+line-height:1.9;
+width:100%;max-width:560px;
+}
+.hint span{color:rgba(100,220,160,0.45);}
+
+@keyframes shimmer{
+0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}
+}
+@keyframes breathe{
+0%,100%{opacity:0.22;}50%{opacity:0.35;}
+}
+.ov-creature{animation:breathe 7s ease infinite;}
+
+/* ═══════════════════════════════
+STORY CARD  (9:16)
+═══════════════════════════════ */
+.story-card{
+width:100%;aspect-ratio:9/16;
+background:#000408;
+position:relative;overflow:hidden;
+display:flex;flex-direction:column;
+align-items:center;
+justify-content:space-between;
+padding:7% 8%;
+}
+.st-bg{
+position:absolute;inset:0;z-index:0;
+background:
+radial-gradient(ellipse 100% 45% at 50% 110%, rgba(15,40,18,0.75) 0%, transparent 50%),
+radial-gradient(ellipse 80% 35% at 50% 0%, rgba(8,0,16,0.7) 0%, transparent 45%),
+radial-gradient(ellipse 60% 50% at 15% 50%, rgba(10,28,14,0.3) 0%, transparent 50%),
+radial-gradient(ellipse 60% 50% at 85% 50%, rgba(10,28,14,0.3) 0%, transparent 50%);
+}
+.st-trees{
+position:absolute;bottom:0;left:0;right:0;
+height:20%;z-index:1;opacity:0.18;
+}
+.st-side-trees{
+position:absolute;top:0;bottom:0;left:0;
+width:14%;z-index:1;opacity:1;
+}
+.st-side-trees.right{left:auto;right:0;transform:scaleX(-1);}
+
+.st-top{
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;
+gap:4px;width:100%;
+}
+.st-logo{
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(20px,6.5vw,38px);
+letter-spacing:0.5em;
+padding-right:0.5em;
+color:#fff;
+text-shadow:0 0 60px rgba(80,185,120,0.28);
+text-align:center;
+}
+.st-sub{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.8vw,10px);
+letter-spacing:0.3em;
+color:rgba(255,255,255,0.22);
+text-align:center;
+}
+
+.st-emblem{
+position:relative;z-index:3;
+display:flex;align-items:center;justify-content:center;
+opacity:0.8;
+}
+
+.st-rows{
+position:relative;z-index:3;
+display:flex;flex-direction:column;
+gap:7px;width:100%;
+}
+.st-row{
+display:flex;align-items:center;
+gap:12px;
+padding:10px 14px;
+background:rgba(255,255,255,0.028);
+border:1px solid rgba(255,255,255,0.055);
+position:relative;
+}
+.st-dot{
+width:6px;height:6px;
+border-radius:50%;
+flex-shrink:0;
+box-shadow:0 0 6px currentColor;
+}
+.st-row-label{
+font-family:‘Cinzel’,serif;
+font-size:clamp(10px,2.8vw,15px);
+letter-spacing:0.2em;
+color:rgba(255,255,255,0.72);
+flex:1;text-transform:uppercase;
+outline:none;cursor:text;
+}
+.st-row-date{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(9px,2.2vw,13px);
+letter-spacing:0.2em;
+color:rgba(255,255,255,0.38);
+outline:none;cursor:text;min-width:28px;
+text-align:right;
+}
+
+.st-bottom{
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;
+gap:0;
+}
+.st-ticket{
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.8vw,10px);
+letter-spacing:0.25em;
+color:rgba(255,255,255,0.28);
+text-align:center;
+}
+
+/* file input hidden */
+#img-input{display:none;}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+</style>
+</head>
+<body>
+
+<div class="studio-top">
+  <div class="studio-id">REGNBUENATT · Template Studio · 2026</div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('artist',this)">Artist</button>
+    <button class="tab" onclick="switchTab('timeline',this)">Timeline</button>
+    <button class="tab" onclick="switchTab('story',this)">Story</button>
+    <button class="tab" onclick="switchTab('overlay',this)">Overlay</button>
+  </div>
+</div>
+
+<!-- ═══════════════ ARTIST CARD ═══════════════ -->
+
+<div class="template active" id="t-artist">
+  <div class="artist-card" id="artist-card">
+
+```
+<div class="ac-bg"></div>
+
+<!-- Kittelsen forest silhouette bottom row -->
+<svg class="ac-trees" viewBox="0 0 1000 200" preserveAspectRatio="none" aria-hidden="true">
+  <!-- dense pine silhouette row -->
+  <g fill="#0a1a0c" opacity="0.9">
+    <!-- left cluster -->
+    <polygon points="60,200 80,80 100,200"/>
+    <polygon points="90,200 115,55 140,200"/>
+    <polygon points="120,200 145,75 170,200"/>
+    <polygon points="5,200 20,120 35,200"/>
+    <polygon points="150,200 170,90 190,200"/>
+    <polygon points="175,200 195,105 215,200"/>
+    <!-- mid-left -->
+    <polygon points="220,200 245,60 270,200"/>
+    <polygon points="250,200 270,85 290,200"/>
+    <polygon points="280,200 298,110 315,200"/>
+    <!-- centre -->
+    <polygon points="360,200 385,45 410,200"/>
+    <polygon points="395,200 415,70 435,200"/>
+    <polygon points="430,200 448,95 465,200"/>
+    <!-- mid-right -->
+    <polygon points="490,200 515,65 540,200"/>
+    <polygon points="530,200 550,88 570,200"/>
+    <polygon points="570,200 585,115 600,200"/>
+    <!-- right cluster -->
+    <polygon points="640,200 665,58 690,200"/>
+    <polygon points="680,200 700,78 720,200"/>
+    <polygon points="715,200 732,100 750,200"/>
+    <polygon points="755,200 778,62 800,200"/>
+    <polygon points="790,200 808,82 825,200"/>
+    <polygon points="840,200 865,52 890,200"/>
+    <polygon points="875,200 895,72 915,200"/>
+    <polygon points="910,200 928,98 945,200"/>
+    <polygon points="945,200 965,68 985,200"/>
+    <rect x="0" y="160" width="1000" height="40"/>
+  </g>
+</svg>
+
+<!-- Corner pride dots -->
+<div class="corner-dot tl"></div>
+<div class="corner-dot tr"></div>
+<div class="corner-dot bl"></div>
+<div class="corner-dot br"></div>
+
+<!-- TOP -->
+<div class="ac-top">
+  <div class="ac-event-name">REGNBUENATT</div>
+  <div class="ac-event-sub">MARINEHAGEN · 6 JUNI 2026 · BERGEN</div>
+  <div class="ac-pride-line forest-line" style="width:55%;"></div>
+</div>
+
+<!-- PORTRAIT -->
+<div class="portrait-frame">
+  <!-- SVG decorative creature ring -->
+  <svg class="portrait-svg" viewBox="0 0 200 200" aria-hidden="true">
+    <!-- Outer dark halo -->
+    <circle cx="100" cy="100" r="96" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+    <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
+    <!-- Organic root/branch ring around portrait -->
+    <g fill="none" stroke="#0d1a0e" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+      <!-- top arc branch -->
+      <path d="M 68,34 Q 100,18 132,34" stroke-width="4"/>
+      <path d="M 75,30 Q 100,12 125,30" stroke-width="2.5"/>
+      <!-- small twig up-left -->
+      <path d="M 75,30 Q 68,18 62,10" stroke-width="1.8"/>
+      <path d="M 72,24 Q 66,16 70,8" stroke-width="1.2"/>
+      <!-- small twig up-right -->
+      <path d="M 125,30 Q 132,18 138,10" stroke-width="1.8"/>
+      <path d="M 128,24 Q 134,16 130,8" stroke-width="1.2"/>
+      <!-- left arc branch -->
+      <path d="M 34,68 Q 18,100 34,132" stroke-width="4"/>
+      <path d="M 30,75 Q 12,100 30,125" stroke-width="2.5"/>
+      <path d="M 28,85 Q 14,90 6,82" stroke-width="1.5"/>
+      <path d="M 26,105 Q 12,110 5,120" stroke-width="1.5"/>
+      <!-- right arc branch -->
+      <path d="M 166,68 Q 182,100 166,132" stroke-width="4"/>
+      <path d="M 170,75 Q 188,100 170,125" stroke-width="2.5"/>
+      <path d="M 172,85 Q 186,90 194,82" stroke-width="1.5"/>
+      <path d="M 174,105 Q 188,110 195,120" stroke-width="1.5"/>
+      <!-- bottom arc branch -->
+      <path d="M 68,166 Q 100,182 132,166" stroke-width="4"/>
+      <path d="M 75,170 Q 100,188 125,170" stroke-width="2.5"/>
+      <path d="M 78,172 Q 72,184 68,192" stroke-width="1.5"/>
+      <path d="M 122,172 Q 128,184 132,192" stroke-width="1.5"/>
+    </g>
+    <!-- Root knot details -->
+    <g fill="rgba(0,8,2,0.7)" opacity="0.6">
+      <ellipse cx="100" cy="18" rx="4" ry="2.5" transform="rotate(-5,100,18)"/>
+      <ellipse cx="18" cy="100" rx="2.5" ry="4" transform="rotate(-5,18,100)"/>
+      <ellipse cx="182" cy="100" rx="2.5" ry="4" transform="rotate(5,182,100)"/>
+      <ellipse cx="100" cy="182" rx="4" ry="2.5" transform="rotate(3,100,182)"/>
+    </g>
+    <!-- Small raven silhouette top-left branch -->
+    <g transform="translate(54,15) scale(0.45)" fill="#030c04" opacity="0.9">
+      <path d="M0,10 C2,6 8,4 12,6 C14,7 16,5 18,6 C20,7 18,10 16,10 C14,10 12,8 10,10 C8,12 6,12 4,11 Z"/>
+      <path d="M4,11 L2,14 L6,13 Z"/><!-- tail -->
+      <circle cx="14" cy="5.5" r="0.8"/><!-- eye -->
+    </g>
+    <!-- Forest/rose arc ring (thin) -->
+    <circle cx="100" cy="100" r="73"
+      fill="none"
+      stroke="url(#forestRing)"
+      stroke-width="1.4"
+      stroke-dasharray="22 9"
+      opacity="0.5"/>
+    <defs>
+      <linearGradient id="forestRing" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#2d7a50"/>
+        <stop offset="35%" stop-color="#50c87a"/>
+        <stop offset="55%" stop-color="#c44472"/>
+        <stop offset="75%" stop-color="#50c87a"/>
+        <stop offset="100%" stop-color="#2d7a50"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- Photo circle: click hint or button to upload, then drag/zoom -->
+  <div class="portrait-img" id="portrait-container">
+    <div class="upload-hint" id="upload-hint" onclick="document.getElementById('img-input').click()">
+      <span style="font-size:clamp(8px,1.5vw,11px);letter-spacing:0.3em;">LAST OPP</span>
+      <span style="font-size:clamp(7px,1.2vw,9px);letter-spacing:0.2em;opacity:0.5;">BILDE</span>
+    </div>
+    <img id="portrait-preview" src="" alt="">
+  </div>
+</div>
+
+<!-- BOTTOM INFO -->
+<div class="ac-bottom">
+  <div class="ac-name" contenteditable="true" data-ph="ARTISTNAVN" spellcheck="false"></div>
+  <div class="ac-dividers">
+    <div class="forest-line" style="flex:1;"></div>
+  </div>
+  <div class="ac-role" contenteditable="true" data-ph="ROLLE" spellcheck="false"></div>
+  <div class="ac-pronouns" contenteditable="true" data-ph="pronouns" spellcheck="false"></div>
+</div>
+```
+
+  </div><!-- /artist-card -->
+
+  <div class="card-controls">
+    <button class="ctrl-btn" onclick="document.getElementById('img-input').click()">Last opp bilde</button>
+    <button class="ctrl-btn" onclick="resetPortrait()">Nullstill zoom</button>
+    <button class="ctrl-btn green" onclick="printCard('artist-card',this)">Lagre som PNG</button>
+    <button class="ctrl-btn" onclick="toggleOverlayMode('artist-card')">Overlay-modus</button>
+  </div>
+  <p class="hint">
+    Klikk sirkelen for å laste opp foto. Dra bildet for å panorere. Scroll for å zoome (pinch på mobil).<br>
+    <span>PNG:</span> DevTools i Chrome, høyreklikk element > "Capture node screenshot".<br>
+    <span>OBS overlay:</span> Browser Source, aktiver "Allow transparency".
+  </p>
+</div>
+
+<!-- ═══════════════ TIMELINE CARD ═══════════════ -->
+
+<div class="template" id="t-timeline">
+  <div class="timeline-card" id="timeline-card">
+    <div class="tl-bg"></div>
+    <svg class="tl-trees" viewBox="0 0 1000 180" preserveAspectRatio="none" aria-hidden="true">
+      <g fill="#0a1a0c" opacity="0.9">
+        <polygon points="0,180 15,110 30,180"/>
+        <polygon points="25,180 45,80 65,180"/>
+        <polygon points="55,180 75,100 95,180"/>
+        <polygon points="100,180 125,65 150,180"/>
+        <polygon points="140,180 162,88 184,180"/>
+        <polygon points="195,180 218,72 240,180"/>
+        <polygon points="248,180 268,95 288,180"/>
+        <polygon points="310,180 335,60 360,180"/>
+        <polygon points="355,180 378,82 400,180"/>
+        <polygon points="440,180 465,55 490,180"/>
+        <polygon points="500,180 520,78 540,180"/>
+        <polygon points="570,180 595,62 620,180"/>
+        <polygon points="635,180 655,88 675,180"/>
+        <polygon points="700,180 725,58 750,180"/>
+        <polygon points="760,180 782,80 804,180"/>
+        <polygon points="840,180 865,50 890,180"/>
+        <polygon points="895,180 915,75 935,180"/>
+        <polygon points="950,180 972,68 994,180"/>
+        <rect x="0" y="145" width="1000" height="35"/>
+      </g>
+    </svg>
+
+```
+<div class="tl-header">
+  <div class="forest-line" style="margin-bottom:10px;"></div>
+  <div class="tl-top-row">
+    <div class="tl-logo">REGNBUENATT</div>
+    <div class="tl-section" contenteditable="true" data-ph="TIMELINE" spellcheck="false">TIMELINE</div>
+  </div>
+</div>
+
+<div class="tl-rows">
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Billetter slippes</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">02/05/2026</div>
+  </div>
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Artist annonsering</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">09/05/2026</div>
+  </div>
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Earlybird slutter</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">23/05/2026</div>
+  </div>
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Dørene åpner</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">06/06/2026</div>
+  </div>
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">The Enchanted Forest</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="tid" spellcheck="false">22:00</div>
+  </div>
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">The Forbidden</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="tid" spellcheck="false">00:00</div>
+  </div>
+</div>
+
+<div class="tl-footer">
+  <div class="tl-venue">MARINEHAGEN · BERGEN · 6 JUNI 2026</div>
+  <div style="font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.25em;color:rgba(255,255,255,0.12);">bergenpride.no</div>
+</div>
+```
+
+  </div>
+
+  <div class="card-controls">
+    <button class="ctrl-btn green" onclick="printCard('timeline-card',this)">Lagre som PNG</button>
+    <button class="ctrl-btn" onclick="addTlRow()">+ Legg til rad</button>
+  </div>
+  <p class="hint">
+    Klikk tekst for å redigere.<br>
+    <span>Farger:</span> Skoggrønn → rose, forteller buen fra Forest til Forbidden.<br>
+    <span>PNG:</span> DevTools i Chrome, høyreklikk element > "Capture node screenshot".
+  </p>
+</div>
+
+<!-- ═══════════════ STORY 9:16 ═══════════════ -->
+
+<div class="template" id="t-story">
+  <div style="width:100%;max-width:380px;margin:0 auto;">
+  <div class="story-card" id="story-card">
+
+```
+<!-- bg layers -->
+<div class="st-bg"></div>
+<svg class="st-trees" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
+  <g fill="#0a1a0c" opacity="0.9">
+    <polygon points="0,300 18,200 36,300"/>
+    <polygon points="28,300 50,160 72,300"/>
+    <polygon points="60,300 82,185 104,300"/>
+    <polygon points="95,300 120,145 145,300"/>
+    <polygon points="135,300 158,170 180,300"/>
+    <polygon points="165,300 185,190 205,300"/>
+    <polygon points="195,300 220,148 244,300"/>
+    <polygon points="235,300 255,168 275,300"/>
+    <polygon points="265,300 285,188 305,300"/>
+    <polygon points="295,300 320,142 344,300"/>
+    <polygon points="335,300 358,165 380,300"/>
+    <polygon points="365,300 385,185 400,300"/>
+    <rect x="0" y="252" width="400" height="48"/>
+  </g>
+</svg>
+
+<!-- Tall tree silhouettes left + right -->
+<svg class="st-side-trees" viewBox="0 0 100 600" preserveAspectRatio="none" aria-hidden="true">
+  <g fill="#060e06" opacity="0.55">
+    <polygon points="0,600 12,300 22,600"/>
+    <polygon points="15,600 28,260 40,600"/>
+    <polygon points="35,600 45,320 55,600"/>
+    <polygon points="55,600 68,280 80,600"/>
+    <polygon points="75,600 88,310 100,600"/>
+    <rect x="0" y="480" width="100" height="120"/>
+  </g>
+</svg>
+<svg class="st-side-trees right" viewBox="0 0 100 600" preserveAspectRatio="none" aria-hidden="true">
+  <g fill="#060e06" opacity="0.55">
+    <polygon points="0,600 12,300 22,600"/>
+    <polygon points="15,600 28,260 40,600"/>
+    <polygon points="35,600 45,320 55,600"/>
+    <polygon points="55,600 68,280 80,600"/>
+    <polygon points="75,600 88,310 100,600"/>
+    <rect x="0" y="480" width="100" height="120"/>
+  </g>
+</svg>
+
+<!-- TOP identity block -->
+<div class="st-top">
+  <div class="st-logo">REGNBUENATT</div>
+  <div class="st-sub">MARINEHAGEN · 6 JUNI 2026 · BERGEN</div>
+  <div class="forest-line" style="width:70%;margin-top:10px;"></div>
+</div>
+
+<!-- center creature motif -->
+<div class="st-emblem">
+  <svg viewBox="0 0 120 120" width="80" height="80" aria-hidden="true" opacity="0.18">
+    <!-- Nøkken water rings -->
+    <ellipse cx="60" cy="80" rx="50" ry="12" fill="none" stroke="#50c87a" stroke-width="0.8"/>
+    <ellipse cx="60" cy="80" rx="38" ry="9" fill="none" stroke="#50c87a" stroke-width="0.6"/>
+    <ellipse cx="60" cy="80" rx="26" ry="6" fill="none" stroke="#c44472" stroke-width="0.6"/>
+    <!-- emerging figure -->
+    <ellipse cx="60" cy="55" rx="10" ry="18" fill="#0d1a0e"/>
+    <circle cx="60" cy="32" r="11" fill="#0d1a0e"/>
+    <path d="M50,32 Q38,48 40,65" fill="none" stroke="#0d1a0e" stroke-width="3" stroke-linecap="round"/>
+    <path d="M70,32 Q82,48 80,65" fill="none" stroke="#0d1a0e" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- ROWS -->
+<div class="st-rows" id="story-rows">
+  <div class="st-row">
+    <div class="st-dot" style="background:#3d9966;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">Billetter slippes</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">02/05</div>
+  </div>
+  <div class="st-row">
+    <div class="st-dot" style="background:#50c87a;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">Artist annonsering</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">09/05</div>
+  </div>
+  <div class="st-row">
+    <div class="st-dot" style="background:#7db896;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">Earlybird slutter</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">23/05</div>
+  </div>
+  <div class="st-row">
+    <div class="st-dot" style="background:#b05888;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">Dørene åpner</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">06/06</div>
+  </div>
+  <div class="st-row">
+    <div class="st-dot" style="background:#c44472;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">The Enchanted Forest</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">22:00</div>
+  </div>
+  <div class="st-row">
+    <div class="st-dot" style="background:#8b2252;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">The Forbidden</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">00:00</div>
+  </div>
+</div>
+
+<!-- BOTTOM -->
+<div class="st-bottom">
+  <div class="forest-line" style="width:55%;margin-bottom:10px;"></div>
+  <div class="st-ticket">Billetter: bergenpride.no · Earlybird 295,-</div>
+  <div class="st-ticket" style="margin-top:3px;opacity:0.5;">I DØRA 395,- · TICKETCO</div>
+</div>
+
+<!-- corner dots -->
+<div class="corner-dot tl"></div>
+<div class="corner-dot tr"></div>
+<div class="corner-dot bl" style="background:#c44472;"></div>
+<div class="corner-dot br" style="background:#c44472;"></div>
+```
+
+  </div>
+  </div>
+
+  <div class="card-controls">
+    <button class="ctrl-btn green" onclick="printCard('story-card',this)">Lagre som PNG</button>
+    <button class="ctrl-btn" onclick="addStRow()">+ Legg til rad</button>
+  </div>
+  <p class="hint">
+    9:16 story-format. Klikk tekst for å redigere.<br>
+    <span>PNG:</span> DevTools i Chrome > høyreklikk element > "Capture node screenshot".
+  </p>
+</div>
+
+<!-- ═══════════════ OVERLAY ═══════════════ -->
+
+<div class="template" id="t-overlay">
+  <div class="overlay-card" id="overlay-card">
+    <div class="ov-checker"></div>
+
+```
+<!-- Pride edge lines -->
+<div class="ov-edge-top"></div>
+<div class="ov-edge-bottom"></div>
+
+<!-- Corner brackets (Kittelsen-style organic) -->
+<div class="ov-corner ov-tl">
+  <svg viewBox="0 0 80 80" aria-hidden="true">
+    <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <!-- organic branch from corner -->
+    <path d="M2,40 Q-5,35 -8,28" fill="none" stroke="rgba(100,220,160,0.3)" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M2,55 Q-4,52 -7,46" fill="none" stroke="rgba(100,220,160,0.2)" stroke-width="0.8" stroke-linecap="round"/>
+    <path d="M40,2 Q36,-4 28,-8" fill="none" stroke="rgba(100,220,160,0.25)" stroke-width="1.0" stroke-linecap="round"/>
+    <!-- corner pride dot -->
+    <circle cx="2" cy="2" r="2.5" fill="rgba(80,185,120,0.55)"/>
+  </svg>
+</div>
+<div class="ov-corner ov-tr">
+  <svg viewBox="0 0 80 80" aria-hidden="true">
+    <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <circle cx="2" cy="2" r="2.5" fill="rgba(195,70,110,0.55)"/>
+  </svg>
+</div>
+<div class="ov-corner ov-bl">
+  <svg viewBox="0 0 80 80" aria-hidden="true">
+    <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <circle cx="2" cy="2" r="2.5" fill="rgba(195,70,110,0.55)"/>
+  </svg>
+</div>
+<div class="ov-corner ov-br">
+  <svg viewBox="0 0 80 80" aria-hidden="true">
+    <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <circle cx="2" cy="2" r="2.5" fill="rgba(80,185,120,0.55)"/>
+  </svg>
+</div>
+
+<!-- Huldra silhouette left -->
+<svg class="ov-creature huldra" viewBox="0 0 60 120" aria-hidden="true">
+  <g fill="#0d1a0e">
+    <!-- body -->
+    <ellipse cx="30" cy="55" rx="10" ry="20"/>
+    <!-- head -->
+    <circle cx="30" cy="30" r="10"/>
+    <!-- hair flowing -->
+    <path d="M22,30 Q10,45 15,65 Q18,75 12,90" fill="none" stroke="#0d1a0e" stroke-width="4" stroke-linecap="round"/>
+    <path d="M20,28 Q8,40 10,55 Q12,65 8,80" fill="none" stroke="#0d1a0e" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- tail curling -->
+    <path d="M30,75 Q35,90 25,105 Q15,118 20,120" fill="none" stroke="#0d1a0e" stroke-width="3" stroke-linecap="round"/>
+    <path d="M28,74 Q22,88 18,102" fill="none" stroke="#0d1a0e" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- arm -->
+    <path d="M22,55 Q10,62 8,72" fill="none" stroke="#0d1a0e" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
+
+<!-- Nøkken water ripple right -->
+<svg class="ov-creature nokken" viewBox="0 0 60 120" aria-hidden="true">
+  <g fill="#0d1a0e">
+    <!-- emerging from water -->
+    <ellipse cx="30" cy="65" rx="9" ry="18"/>
+    <circle cx="30" cy="42" r="9"/>
+    <!-- hair dripping -->
+    <path d="M38,42 Q50,55 48,70 Q46,82 50,95" fill="none" stroke="#0d1a0e" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M22,42 Q12,52 14,65" fill="none" stroke="#0d1a0e" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- water surface -->
+    <path d="M5,83 Q15,78 25,83 Q35,88 45,83 Q55,78 60,83" fill="none" stroke="#0d1a0e" stroke-width="2" stroke-linecap="round"/>
+    <path d="M0,90 Q12,85 22,90 Q32,95 44,90 Q55,85 60,90" fill="none" stroke="#0d1a0e" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- hand reaching -->
+    <path d="M38,62 Q50,58 54,50" fill="none" stroke="#0d1a0e" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M54,50 Q56,45 54,42" fill="none" stroke="#0d1a0e" stroke-width="2" stroke-linecap="round"/>
+    <path d="M54,50 Q58,47 58,44" fill="none" stroke="#0d1a0e" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
+
+<!-- Top logo bar -->
+<div class="ov-top-bar">
+  <div class="ov-logo">REGNBUENATT</div>
+  <div class="ov-sub">MARINEHAGEN · 6 JUNI 2026</div>
+</div>
+
+<!-- Bottom info bar -->
+<div class="ov-bottom-bar">
+  <div class="ov-info" contenteditable="true" data-ph="NOW PLAYING" spellcheck="false"></div>
+  <div class="ov-info" contenteditable="true" data-ph="bergenpride.no" spellcheck="false">bergenpride.no</div>
+</div>
+```
+
+  </div>
+
+  <div class="card-controls">
+    <button class="ctrl-btn" onclick="toggleChecker()">Vis/skjul bakgrunn</button>
+    <button class="ctrl-btn green" onclick="printCard('overlay-card',this)">Lagre PNG</button>
+  </div>
+  <p class="hint">
+    <span>OBS Studio:</span> Add Browser Source, sett URL til denne filen. Bredde/høyde 1080×1080.<br>
+    <span>Transparent:</span> Sjekk "Allow transparency" i OBS Browser Source-innstillingene.<br>
+    <span>Rutemønsteret</span> viser gjennomsiktig område, det forsvinner i OBS.
+  </p>
+</div>
+
+<!-- Hidden file input for portrait -->
+
+<input type="file" id="img-input" accept="image/*" onchange="loadPortrait(event)">
+
+<script>
+/* ── TAB SWITCHING ── */
+function switchTab(name, el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.template').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('t-'+name).classList.add('active');
+}
+
+/* ── PORTRAIT DRAG/ZOOM ── */
+let isDrag=false,startX=0,startY=0,imgX=0,imgY=0,imgScale=1;
+let lastTouchDist=0,touchStartX=0,touchStartY=0;
+
+function updatePortraitTransform(){
+  const img=document.getElementById('portrait-preview');
+  img.style.transform=`translate(${imgX}px,${imgY}px) scale(${imgScale})`;
+}
+
+function resetPortrait(){
+  imgX=0;imgY=0;imgScale=1;
+  updatePortraitTransform();
+}
+
+function initPortraitDrag(){
+  const container=document.getElementById('portrait-container');
+  const img=document.getElementById('portrait-preview');
+
+  /* mouse */
+  container.addEventListener('mousedown',e=>{
+    if(!img.classList.contains('loaded'))return;
+    isDrag=true;
+    startX=e.clientX-imgX;
+    startY=e.clientY-imgY;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!isDrag)return;
+    imgX=e.clientX-startX;
+    imgY=e.clientY-startY;
+    updatePortraitTransform();
+  });
+  document.addEventListener('mouseup',()=>isDrag=false);
+
+  /* scroll zoom */
+  container.addEventListener('wheel',e=>{
+    if(!img.classList.contains('loaded'))return;
+    imgScale=Math.max(0.4,Math.min(5,imgScale-e.deltaY*0.003));
+    updatePortraitTransform();
+    e.preventDefault();
+  },{passive:false});
+
+  /* touch pan */
+  container.addEventListener('touchstart',e=>{
+    if(!img.classList.contains('loaded'))return;
+    if(e.touches.length===1){
+      isDrag=true;
+      touchStartX=e.touches[0].clientX-imgX;
+      touchStartY=e.touches[0].clientY-imgY;
+    } else if(e.touches.length===2){
+      isDrag=false;
+      lastTouchDist=Math.hypot(
+        e.touches[0].clientX-e.touches[1].clientX,
+        e.touches[0].clientY-e.touches[1].clientY
+      );
+    }
+    e.preventDefault();
+  },{passive:false});
+
+  container.addEventListener('touchmove',e=>{
+    if(e.touches.length===1&&isDrag){
+      imgX=e.touches[0].clientX-touchStartX;
+      imgY=e.touches[0].clientY-touchStartY;
+      updatePortraitTransform();
+    } else if(e.touches.length===2){
+      const dist=Math.hypot(
+        e.touches[0].clientX-e.touches[1].clientX,
+        e.touches[0].clientY-e.touches[1].clientY
+      );
+      if(lastTouchDist>0)
+        imgScale=Math.max(0.4,Math.min(5,imgScale*(dist/lastTouchDist)));
+      lastTouchDist=dist;
+      updatePortraitTransform();
+    }
+    e.preventDefault();
+  },{passive:false});
+
+  container.addEventListener('touchend',()=>{isDrag=false;lastTouchDist=0;});
+}
+
+initPortraitDrag();
+
+/* ── LOAD PORTRAIT ── */
+function loadPortrait(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=document.getElementById('portrait-preview');
+    const hint=document.getElementById('upload-hint');
+    img.src=ev.target.result;
+    img.classList.add('loaded');
+    hint.style.display='none';
+    imgX=0;imgY=0;imgScale=1;
+    updatePortraitTransform();
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ── EXPORT PNG ── */
+async function printCard(id, btn){
+  const card=document.getElementById(id);
+  btn.textContent='Laster ned...';
+  btn.disabled=true;
+  try{
+    const canvas=await html2canvas(card,{
+      backgroundColor:null,
+      scale:3,
+      useCORS:true,
+      logging:false
+    });
+    const link=document.createElement('a');
+    link.download=`regnbuenatt_${id}_${Date.now()}.png`;
+    link.href=canvas.toDataURL('image/png');
+    link.click();
+  }catch(e){
+    alert('Nedlasting feilet. Prøv skjermbilde manuelt (cmd+shift+4).');
+  }finally{
+    btn.textContent='Lagre som PNG';
+    btn.disabled=false;
+  }
+}
+
+/* ── OVERLAY MODE ── */
+function toggleOverlayMode(id){
+  const card=document.getElementById(id);
+  const bg=card.querySelector('.ac-bg');
+  const trees=card.querySelector('.ac-trees');
+  const on=card.style.background==='transparent';
+  card.style.background=on?'#000408':'transparent';
+  if(bg)bg.style.display=on?'':'none';
+  if(trees)trees.style.display=on?'':'none';
+}
+
+/* ── OVERLAY CHECKER ── */
+function toggleChecker(){
+  const c=document.querySelector('.ov-checker');
+  c.style.display=c.style.display==='none'?'':'none';
+}
+
+/* ── ADD TIMELINE ROW ── */
+function addTlRow(){
+  const rows=document.querySelector('.tl-rows');
+  if(rows.children.length>=8){alert('Maks 8 rader for god layout.');return;}
+  const row=document.createElement('div');
+  row.className='tl-row';
+  row.innerHTML=`
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false"></div>
+    <div class="tl-row-date" contenteditable="true" data-ph="DD/MM" spellcheck="false"></div>
+  `;
+  rows.appendChild(row);
+}
+
+/* ── ADD STORY ROW ── */
+const stColors=['#3d9966','#50c87a','#7db896','#b05888','#c44472','#8b2252'];
+function addStRow(){
+  const rows=document.getElementById('story-rows');
+  if(rows.children.length>=8){alert('Maks 8 rader.');return;}
+  const c=stColors[rows.children.length%stColors.length];
+  const row=document.createElement('div');
+  row.className='st-row';
+  row.innerHTML=`
+    <div class="st-dot" style="background:${c};"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false"></div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false"></div>
+  `;
+  rows.appendChild(row);
+}
+</script>
+
+</body>
+</html>
