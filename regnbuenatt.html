@@ -543,7 +543,7 @@ gap:4px;width:100%;
 }
 .st-logo{
 font-family:‘Bebas Neue’,sans-serif;
-font-size:clamp(20px,6.5vw,38px);
+font-size:clamp(15px,4.2vw,26px);
 letter-spacing:0.5em;
 padding-left:0.5em;
 color:#fff;
@@ -962,7 +962,6 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="tl-venue">MARINEHAGEN · BERGEN · 6 JUNI 2026</div>
   <div style="font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.25em;color:rgba(255,255,255,0.12);">bergenpride.no</div>
 </div>
-```
 
   </div>
 
@@ -983,8 +982,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
 <div class="template" id="t-story">
   <div style="width:100%;max-width:min(380px,100%);margin:0 auto;overflow:hidden;">
   <div class="story-card" id="story-card">
-
-```
+    
 <!-- bg layers -->
 <div class="st-bg"></div>
 <svg class="st-trees" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
@@ -1034,21 +1032,6 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="forest-line" style="width:70%;margin-top:10px;"></div>
 </div>
 
-<!-- center creature motif -->
-<div class="st-emblem">
-  <svg viewBox="0 0 120 120" width="80" height="80" aria-hidden="true" opacity="0.18">
-    <!-- Nøkken water rings -->
-    <ellipse cx="60" cy="80" rx="50" ry="12" fill="none" stroke="#50c87a" stroke-width="0.8"/>
-    <ellipse cx="60" cy="80" rx="38" ry="9" fill="none" stroke="#50c87a" stroke-width="0.6"/>
-    <ellipse cx="60" cy="80" rx="26" ry="6" fill="none" stroke="#c44472" stroke-width="0.6"/>
-    <!-- emerging figure -->
-    <ellipse cx="60" cy="55" rx="10" ry="18" fill="#0d1a0e"/>
-    <circle cx="60" cy="32" r="11" fill="#0d1a0e"/>
-    <path d="M50,32 Q38,48 40,65" fill="none" stroke="#0d1a0e" stroke-width="3" stroke-linecap="round"/>
-    <path d="M70,32 Q82,48 80,65" fill="none" stroke="#0d1a0e" stroke-width="3" stroke-linecap="round"/>
-  </svg>
-</div>
-
 <!-- ROWS -->
 <div class="st-rows" id="story-rows">
   <div class="st-row">
@@ -1090,12 +1073,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="st-ticket" style="margin-top:3px;opacity:0.5;">I DØRA 395,- · TICKETCO</div>
 </div>
 
-<!-- corner dots -->
-<div class="corner-dot tl"></div>
-<div class="corner-dot tr"></div>
-<div class="corner-dot bl" style="background:#c44472;"></div>
-<div class="corner-dot br" style="background:#c44472;"></div>
-```
+<!-- no corner dots on story - too visible on tall card -->
 
   </div>
   </div>
@@ -1118,7 +1096,6 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div style="width:100%;max-width:min(480px,100%);margin:0 auto;overflow:hidden;">
   <div class="post-card" id="post-card">
 
-```
 <div class="post-bg"></div>
 <svg class="post-trees" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true">
   <g fill="#0a1a0c" opacity="0.9">
@@ -1138,10 +1115,6 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   </g>
 </svg>
 
-<div class="corner-dot tl"></div>
-<div class="corner-dot tr"></div>
-<div class="corner-dot bl" style="background:#c44472;"></div>
-<div class="corner-dot br" style="background:#c44472;"></div>
 
 <!-- TOP -->
 <div class="post-top">
@@ -1308,7 +1281,6 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="ov-info" contenteditable="true" data-ph="NOW PLAYING" spellcheck="false"></div>
   <div class="ov-info" contenteditable="true" data-ph="bergenpride.no" spellcheck="false">bergenpride.no</div>
 </div>
-```
 
   </div>
 
@@ -1533,6 +1505,7 @@ async function ensureFonts(){
 async function renderCard(id){
   await ensureFonts();
   const card=document.getElementById(id);
+  // Overlay: give dark background + hide checker
   const isOverlay=(id==='overlay-card');
   let prevBg='';let checker=null;
   if(isOverlay){
@@ -1555,15 +1528,18 @@ async function renderCard(id){
       imageTimeout:10000,
       removeContainer:true,
       onclone:(clonedDoc)=>{
-        // Strip complex SVGs that crash iOS renderer
-        clonedDoc.querySelectorAll('.portrait-svg').forEach(el=>{
-          // Keep just the dashed ring, remove branch paths
-          const paths=el.querySelectorAll('path');
-          paths.forEach(p=>p.remove());
-        });
-        // Make all SVG tree layers simpler
+        // Strip branch paths in portrait ring (crash on iOS)
+        clonedDoc.querySelectorAll('.portrait-svg path').forEach(el=>el.remove());
+
+        // Strip complex creature silhouettes in overlay (crash on iOS)
+        clonedDoc.querySelectorAll('.ov-creature').forEach(el=>el.remove());
+
+        // Strip corner bracket SVG paths (keep only the outer border line)
+        clonedDoc.querySelectorAll('.ov-corner svg path:not(:first-child)').forEach(el=>el.remove());
+
+        // Simplify tree layers
         clonedDoc.querySelectorAll('.ac-trees,.tl-trees,.st-trees,.post-trees,.st-side-trees').forEach(el=>{
-          el.style.opacity='0.12';
+          el.style.opacity='0.1';
         });
       }
     });
