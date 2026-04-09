@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mount Media — Living System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:#0d1117;
+  --panel:#161b22;
+  --border:#30363d;
+  --text:#c9d1d9;
+  --muted:#8b949e;
+  --gold:#d4af37;
+}
+
+body{
+  margin:0;
+  background:radial-gradient(circle at 50% 0%, #161b22,#0d1117 60%);
+  color:var(--text);
+  font-family:'Cormorant Garamond', serif;
+  overflow-x:hidden;
+}
+
+/* 🌌 AURORA */
+
+.aurora{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:0.6;
+  filter:blur(40px);
+  background:
+    radial-gradient(circle at 30% 40%, rgba(0,255,200,0.15), transparent 60%),
+    radial-gradient(circle at 70% 50%, rgba(200,100,255,0.15), transparent 60%);
+  transition: all 0.4s ease;
+}
+
+/* HEADER */
+
+header{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  padding:80px 20px;
+}
+
+h1{
+  color:var(--gold);
+  font-size:48px;
+}
+
+/* MAIN */
+
+main{
+  position:relative;
+  z-index:2;
+  max-width:750px;
+  margin:auto;
+  padding:40px 20px 120px;
+}
+
+p{font-size:20px}
+
+/* TRACK */
+
+.track{
+  padding:16px;
+  border:1px solid var(--border);
+  margin-bottom:10px;
+  cursor:pointer;
+  background:var(--panel);
+  transition:0.3s;
+}
+
+.track.active{
+  box-shadow:0 0 40px rgba(212,175,55,0.25);
+}
+
+.track-title{color:var(--gold)}
+
+/* PLAYER */
+
+.player{
+  position:fixed;
+  bottom:-300px;
+  width:100%;
+  transition:0.4s;
+}
+
+.player.active{bottom:0;}
+
+iframe{width:100%; height:220px; border:none;}
+</style>
+</head>
+
+<body>
+
+<div class="aurora" id="aurora"></div>
+
+<header>
+<h1>We Built Something That Learns</h1>
+</header>
+
+<main>
+
+<p>I describe the world. The system responds.</p>
+
+<div class="track" onclick="play(this,'https://www.youtube.com/embed/mm9Gb7Ljyms')">
+When AI Decides Who Matters
+</div>
+
+<div class="track" onclick="play(this,'https://www.youtube.com/embed/h4XLnhIjbTM')">
+Aurora Floor
+</div>
+
+<div class="track" onclick="play(this,'https://www.youtube.com/embed/nn2tPDRTo9I')">
+Grått Spaserskjørt
+</div>
+
+<div class="track" onclick="play(this,'https://www.youtube.com/embed/aLg1PXEx-eg')">
+Knepphalling
+</div>
+
+</main>
+
+<div class="player" id="player">
+<iframe id="iframe" allow="autoplay"></iframe>
+</div>
+
+<script>
+
+const aurora = document.getElementById("aurora");
+
+function play(el,url){
+
+document.querySelectorAll('.track').forEach(t=>t.classList.remove('active'));
+el.classList.add('active');
+
+document.getElementById("iframe").src = url+"?autoplay=1";
+document.getElementById("player").classList.add("active");
+
+/* 🎧 FAKE AUDIO REACTIVITY LOOP */
+
+if(window.reactiveLoop) cancelAnimationFrame(window.reactiveLoop);
+
+function react(){
+  let intensity = Math.random();
+
+  aurora.style.transform = `scale(${1 + intensity*0.08})`;
+  aurora.style.opacity = 0.4 + intensity*0.5;
+
+  window.reactiveLoop = requestAnimationFrame(react);
+}
+
+react();
+}
+
+</script>
+
+</body>
+</html>
