@@ -783,6 +783,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
 <div class="template active" id="t-artist">
   <div class="artist-card" id="artist-card">
 
+```
 <div class="ac-bg"></div>
 
 <!-- Kittelsen forest silhouette bottom row -->
@@ -919,6 +920,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="ac-role" contenteditable="true" data-ph="ROLLE" spellcheck="false"></div>
   <div class="ac-pronouns" contenteditable="true" data-ph="pronouns" spellcheck="false"></div>
 </div>
+```
 
   </div><!-- /artist-card -->
 
@@ -964,6 +966,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
       </g>
     </svg>
 
+```
 <div class="tl-header">
   <div class="forest-line" style="margin-bottom:10px;"></div>
   <div class="tl-top-row">
@@ -1009,6 +1012,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="tl-venue">MARINEHAGEN · BERGEN · 6 JUNI 2026</div>
   <div style="font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.25em;color:rgba(255,255,255,0.12);">bergenpride.no</div>
 </div>
+```
 
   </div>
 
@@ -1030,6 +1034,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div style="width:100%;max-width:min(380px,100%);margin:0 auto;overflow:hidden;">
   <div class="story-card" id="story-card">
 
+```
 <!-- bg layers -->
 <div class="st-bg"></div>
 <svg class="st-trees" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
@@ -1119,6 +1124,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="st-ticket">Billetter: bergenpride.no · Earlybird 295,-</div>
   <div class="st-ticket" style="margin-top:3px;opacity:0.5;">I DØRA 395,- · TICKETCO</div>
 </div>
+```
 
   </div>
   </div>
@@ -1141,6 +1147,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div style="width:100%;max-width:min(480px,100%);margin:0 auto;overflow:hidden;">
   <div class="post-card" id="post-card">
 
+```
 <div class="post-bg"></div>
 <svg class="post-trees" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true">
   <g fill="#0a1a0c" opacity="0.9">
@@ -1221,6 +1228,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="post-role" contenteditable="true" data-ph="ROLLE" spellcheck="false"></div>
   <div class="post-pronouns" contenteditable="true" data-ph="pronouns" spellcheck="false"></div>
 </div>
+```
 
   </div>
   </div>
@@ -1243,6 +1251,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="overlay-card" id="overlay-card">
     <div class="ov-checker"></div>
 
+```
 <!-- Pride edge lines -->
 <div class="ov-edge-top"></div>
 <div class="ov-edge-bottom"></div>
@@ -1326,6 +1335,7 @@ text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
   <div class="ov-info" contenteditable="true" data-ph="NOW PLAYING" spellcheck="false"></div>
   <div class="ov-info" contenteditable="true" data-ph="bergenpride.no" spellcheck="false">bergenpride.no</div>
 </div>
+```
 
   </div>
 
@@ -1555,75 +1565,145 @@ async function renderCard(id){
 /* ── FULLSCREEN FOR SCREENSHOT (iOS) ── */
 function fullscreenForScreenshot(id){
   const card=document.getElementById(id);
-  const old=document.getElementById('img-export-overlay');if(old)old.remove();
-
-  const wrap=document.createElement('div');wrap.id='img-export-overlay';
-  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;';
-
-  // For overlay card: give it a dark background for screenshot
   const isOverlay=(id==='overlay-card');
 
+  // Overlay: use canvas-based transparent PNG export instead
+  if(isOverlay){renderOverlayToCanvas();return;}
+
+  const old=document.getElementById('img-export-overlay');if(old)old.remove();
+  const wrap=document.createElement('div');wrap.id='img-export-overlay';
+  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;overflow:hidden;';
+
   const ratio=card.offsetHeight/Math.max(card.offsetWidth,1);
+  // Leave 70px for bottom bar
+  const maxH=window.innerHeight-70;
+  const maxW=window.innerWidth;
+  // Scale card to fit both width and height
+  const scaleByW=maxW;
+  const scaleByH=maxH/ratio;
+  const finalW=Math.min(scaleByW,scaleByH);
+  const finalH=finalW*ratio;
+
   const clone=card.cloneNode(true);
-
-  // Card fills available width, constrained by height
   clone.style.cssText=`
-    width:calc(100vw - 0px);
-    max-width:100vw;
-    height:${100*ratio}vw;
-    max-height:82vh;
-    max-width:${82/ratio}vh;
-    flex-shrink:0;
-    pointer-events:none;
-    position:relative;
-    ${isOverlay ? 'background:#000408 !important;' : ''}
+    width:${finalW}px;height:${finalH}px;
+    flex-shrink:0;pointer-events:none;overflow:hidden;
   `;
-  if(isOverlay){
-    const checker=clone.querySelector('.ov-checker');
-    if(checker)checker.style.display='none';
-  }
 
-  // Wrapper with crop guide lines
+  // Wrapper with crop guides
   const cardWrap=document.createElement('div');
-  cardWrap.style.cssText='position:relative;display:inline-flex;';
+  cardWrap.style.cssText='position:relative;display:inline-flex;flex-shrink:0;';
 
-  // Bright corner crop marks — placed OUTSIDE the card
-  const corners=[
-    {top:'-14px',left:'-14px',borderTop:'2px solid #50c87a',borderLeft:'2px solid #50c87a'},
-    {top:'-14px',right:'-14px',borderTop:'2px solid #50c87a',borderRight:'2px solid #50c87a'},
-    {bottom:'-14px',left:'-14px',borderBottom:'2px solid #50c87a',borderLeft:'2px solid #50c87a'},
-    {bottom:'-14px',right:'-14px',borderBottom:'2px solid #50c87a',borderRight:'2px solid #50c87a'},
-  ];
-  corners.forEach(c=>{
+  // Green corner L-brackets
+  [
+    {top:'-12px',left:'-12px',borderTop:'2px solid #50c87a',borderLeft:'2px solid #50c87a'},
+    {top:'-12px',right:'-12px',borderTop:'2px solid #50c87a',borderRight:'2px solid #50c87a'},
+    {bottom:'-12px',left:'-12px',borderBottom:'2px solid #50c87a',borderLeft:'2px solid #50c87a'},
+    {bottom:'-12px',right:'-12px',borderBottom:'2px solid #50c87a',borderRight:'2px solid #50c87a'},
+  ].forEach(c=>{
     const el=document.createElement('div');
-    const pos=Object.entries(c).map(([k,v])=>`${k}:${v}`).join(';');
-    el.style.cssText=`position:absolute;width:22px;height:22px;${pos};pointer-events:none;`;
+    el.style.cssText='position:absolute;width:20px;height:20px;pointer-events:none;'
+      +Object.entries(c).map(([k,v])=>`${k}:${v}`).join(';');
     cardWrap.appendChild(el);
   });
 
-  // Thin red cut-line around entire card (1px, dashed)
+  // Rose dashed outline
   const outline=document.createElement('div');
-  outline.style.cssText='position:absolute;inset:-1px;border:1px dashed rgba(195,70,110,0.6);pointer-events:none;z-index:1;';
+  outline.style.cssText='position:absolute;inset:-1px;border:1px dashed rgba(195,70,110,0.55);pointer-events:none;z-index:1;';
   cardWrap.appendChild(outline);
-
   cardWrap.appendChild(clone);
   wrap.appendChild(cardWrap);
 
   // Bottom bar
   const bar=document.createElement('div');
-  bar.style.cssText='position:fixed;bottom:0;left:0;right:0;padding:12px 16px;background:rgba(0,0,0,0.9);display:flex;align-items:center;justify-content:space-between;gap:12px;';
+  bar.style.cssText='width:100%;height:70px;padding:0 16px;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;';
   const hint=document.createElement('span');
-  hint.style.cssText='color:rgba(255,255,255,0.45);font-family:monospace;font-size:8px;letter-spacing:0.28em;line-height:1.8;';
+  hint.style.cssText='color:rgba(255,255,255,0.4);font-family:monospace;font-size:8px;letter-spacing:0.3em;line-height:1.9;';
   hint.innerHTML='TA SKJERMBILDE<br>CROP TIL GRØNN RAMME';
   const closeBtn=document.createElement('button');
   closeBtn.textContent='LUKK';
-  closeBtn.style.cssText='font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:9px 18px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.5);cursor:pointer;flex-shrink:0;';
+  closeBtn.style.cssText='font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:9px 18px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.5);cursor:pointer;';
   closeBtn.onclick=()=>wrap.remove();
   bar.append(hint,closeBtn);
   wrap.appendChild(bar);
-
   wrap.addEventListener('click',e=>{if(e.target===wrap)wrap.remove();});
   document.body.appendChild(wrap);
+}
+
+/* ── OVERLAY → TRANSPARENT PNG via Canvas ── */
+async function renderOverlayToCanvas(){
+  const old=document.getElementById('img-export-overlay');if(old)old.remove();
+
+  // Show loading
+  const loading=document.createElement('div');loading.id='img-export-overlay';
+  loading.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;';
+  loading.innerHTML='<span style="font-family:monospace;font-size:10px;letter-spacing:0.3em;color:rgba(255,255,255,0.4);">BYGGER OVERLAY...</span>';
+  document.body.appendChild(loading);
+  await document.fonts.ready;
+
+  const W=1080,H=1920;
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;
+  const ctx=cv.getContext('2d');
+  // transparent background
+
+  // Helper: gradient line
+  function drawGradLine(y,stops){
+    const g=ctx.createLinearGradient(0,y,W,y);
+    stops.forEach(([t,c])=>g.addColorStop(t,c));
+    ctx.fillStyle=g;ctx.fillRect(0,y,W,2);
+  }
+
+  // Top forest line
+  drawGradLine(0,[
+    [0,'transparent'],[0.08,'rgba(28,75,42,0)'],
+    [0.2,'rgba(55,140,85,0.7)'],[0.38,'rgba(80,185,120,0.95)'],
+    [0.52,'rgba(195,70,110,0.95)'],[0.65,'rgba(155,45,80,0.75)'],
+    [0.8,'rgba(55,140,85,0.55)'],[0.96,'rgba(28,75,42,0)'],[1,'transparent']
+  ]);
+  // Bottom forest line (reversed)
+  drawGradLine(H-2,[
+    [0,'transparent'],[0.2,'rgba(195,70,110,0.6)'],
+    [0.4,'rgba(80,185,120,0.9)'],[0.58,'rgba(195,70,110,0.9)'],
+    [0.78,'rgba(55,140,85,0.5)'],[1,'transparent']
+  ]);
+
+  // Corner brackets
+  ctx.strokeStyle='rgba(255,255,255,0.35)';ctx.lineWidth=2;
+  const bSize=0.12*W;const bR=8;
+  function bracket(x,y,xDir,yDir){
+    ctx.beginPath();
+    ctx.moveTo(x,y+yDir*bSize);ctx.lineTo(x,y+yDir*bR);
+    ctx.arcTo(x,y,x+xDir*bR,y,bR);
+    ctx.lineTo(x+xDir*bSize,y);ctx.stroke();
+    // Green dot at corner
+    ctx.fillStyle='rgba(80,185,120,0.55)';
+    ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fill();
+  }
+  bracket(0,0,1,1);bracket(W,0,-1,1);bracket(0,H,1,-1);bracket(W,H,-1,-1);
+
+  // Logo
+  ctx.fillStyle='rgba(255,255,255,0.82)';
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.shadowColor='rgba(80,185,120,0.55)';ctx.shadowBlur=30;
+  ctx.font=`${Math.round(W*0.042)}px 'Bebas Neue'`;
+  ctx.fillText('REGNBUENATT',W/2,H*0.058);
+
+  ctx.shadowBlur=0;
+  ctx.font=`${Math.round(W*0.02)}px 'Courier Prime'`;
+  ctx.fillStyle='rgba(255,255,255,0.52)';
+  ctx.fillText('MARINEHAGEN · 6 JUNI 2026',W/2,H*0.082);
+
+  // Bottom info
+  ctx.font=`${Math.round(W*0.018)}px 'Courier Prime'`;
+  ctx.fillStyle='rgba(255,255,255,0.22)';
+  ctx.textAlign='left';
+  ctx.fillText('NOW PLAYING',W*0.04,H-H*0.022);
+  ctx.textAlign='right';
+  ctx.fillText('bergenpride.no',W*0.96,H-H*0.022);
+
+  const dataURL=cv.toDataURL('image/png');
+  loading.remove();
+  showResult(dataURL);
 }
 
 /* ── SHOW IMAGE (desktop) ── */
