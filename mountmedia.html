@@ -3,163 +3,214 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mount Media — Living System</title>
+<title>We Built Something That Learns — Mount Media</title>
 
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg:#0d1117;
-  --panel:#161b22;
-  --border:#30363d;
-  --text:#c9d1d9;
-  --muted:#8b949e;
-  --gold:#d4af37;
+  --gold: #c9a84c;
+  --gold-faint: rgba(185,148,60,0.18);
+  --navy: #06050f;
+  --white: #e8e4d8;
+  --white-dim: rgba(232,228,216,0.65);
 }
 
-body{
-  margin:0;
-  background:radial-gradient(circle at 50% 0%, #161b22,#0d1117 60%);
-  color:var(--text);
-  font-family:'Cormorant Garamond', serif;
-  overflow-x:hidden;
-}
+* { margin:0; padding:0; box-sizing:border-box; }
 
-/* 🌌 AURORA */
-
-.aurora{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  opacity:0.6;
-  filter:blur(40px);
-  background:
-    radial-gradient(circle at 30% 40%, rgba(0,255,200,0.15), transparent 60%),
-    radial-gradient(circle at 70% 50%, rgba(200,100,255,0.15), transparent 60%);
-  transition: all 0.4s ease;
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: 'Cormorant Garamond', serif;
+  line-height:1.8;
 }
 
 /* HEADER */
 
-header{
-  position:relative;
-  z-index:2;
+header {
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   text-align:center;
-  padding:80px 20px;
+  padding:40px 20px;
 }
 
-h1{
-  color:var(--gold);
-  font-size:48px;
+h1 {
+  font-size: clamp(42px, 8vw, 90px);
+  color: var(--gold);
 }
 
 /* MAIN */
 
-main{
-  position:relative;
-  z-index:2;
-  max-width:750px;
+main {
+  max-width:800px;
   margin:auto;
-  padding:40px 20px 120px;
+  padding:40px 20px 160px;
 }
 
-p{font-size:20px}
+p {
+  font-size:18px;
+  color: var(--white-dim);
+  margin-bottom:20px;
+}
 
-/* TRACK */
+/* TRACK LIST */
 
-.track{
-  padding:16px;
-  border:1px solid var(--border);
-  margin-bottom:10px;
+.track-list {
+  list-style:none;
+  margin-top:40px;
+}
+
+.track {
+  padding:18px;
+  border-bottom:1px solid var(--gold-faint);
   cursor:pointer;
-  background:var(--panel);
   transition:0.3s;
 }
 
-.track.active{
-  box-shadow:0 0 40px rgba(212,175,55,0.25);
+.track:hover {
+  background: rgba(255,255,255,0.03);
 }
 
-.track-title{color:var(--gold)}
+.track.active {
+  background: rgba(201,168,76,0.08);
+}
+
+/* subtle playing pulse */
+.track.active::after{
+  content:'';
+  display:block;
+  height:2px;
+  margin-top:8px;
+  background: var(--gold);
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0%{opacity:0.2}
+  50%{opacity:1}
+  100%{opacity:0.2}
+}
+
+.track-title {
+  color: var(--gold);
+  font-size:20px;
+}
 
 /* PLAYER */
 
-.player{
+.player {
   position:fixed;
-  bottom:-300px;
+  bottom:0;
+  left:0;
   width:100%;
-  transition:0.4s;
+  background:#000;
+  border-top:1px solid var(--gold-faint);
+  transform: translateY(100%);
+  transition: transform 0.4s ease;
 }
 
-.player.active{bottom:0;}
+.player.active {
+  transform: translateY(0);
+}
 
-iframe{width:100%; height:220px; border:none;}
+.player iframe {
+  width:100%;
+  height:200px;
+  border:none;
+}
+
+/* MINI PLAYER */
+
+.mini-player {
+  position:fixed;
+  bottom:200px;
+  left:0;
+  width:100%;
+  background:rgba(0,0,0,0.9);
+  color:var(--gold);
+  font-family:'Courier Prime', monospace;
+  font-size:12px;
+  padding:10px 16px;
+  letter-spacing:2px;
+  display:none;
+}
+
+/* MOBILE */
+
+@media (max-width:600px){
+  h1 { font-size:42px; }
+  p { font-size:16px; }
+}
 </style>
 </head>
 
 <body>
 
-<div class="aurora" id="aurora"></div>
-
 <header>
-<h1>We Built Something That Learns</h1>
+  <h1>We Built Something That Learns</h1>
 </header>
 
 <main>
 
-<p>I describe the world. The system responds.</p>
+<p>I did not set out to create a genre. I set out to make something that felt true.</p>
 
-<div class="track" onclick="play(this,'https://www.youtube.com/embed/mm9Gb7Ljyms')">
-When AI Decides Who Matters
-</div>
+<p>Bergen gave me mountains and rain. Norwegian folk music gave me memory. Artificial intelligence gave me a collaborator.</p>
 
-<div class="track" onclick="play(this,'https://www.youtube.com/embed/h4XLnhIjbTM')">
-Aurora Floor
-</div>
+<p>From those three things something emerged.</p>
 
-<div class="track" onclick="play(this,'https://www.youtube.com/embed/nn2tPDRTo9I')">
-Grått Spaserskjørt
-</div>
+<ul class="track-list">
 
-<div class="track" onclick="play(this,'https://www.youtube.com/embed/aLg1PXEx-eg')">
-Knepphalling
-</div>
+  <li class="track" onclick="play(this,'https://www.youtube.com/embed/mm9Gb7Ljyms','When AI Decides Who Matters')">
+    <div class="track-title">When AI Decides Who Matters</div>
+  </li>
+
+  <li class="track" onclick="play(this,'https://www.youtube.com/embed/h4XLnhIjbTM','Aurora Floor')">
+    <div class="track-title">Aurora Floor</div>
+  </li>
+
+  <li class="track" onclick="play(this,'https://www.youtube.com/embed/nn2tPDRTo9I','Grått Spaserskjørt')">
+    <div class="track-title">Grått Spaserskjørt</div>
+  </li>
+
+  <li class="track" onclick="play(this,'https://www.youtube.com/embed/aLg1PXEx-eg','Knepphalling')">
+    <div class="track-title">Knepphalling</div>
+  </li>
+
+</ul>
 
 </main>
 
+<div class="mini-player" id="miniPlayer"></div>
+
 <div class="player" id="player">
-<iframe id="iframe" allow="autoplay"></iframe>
+  <iframe id="iframe" allow="autoplay"></iframe>
 </div>
 
 <script>
+function play(el,url,title){
 
-const aurora = document.getElementById("aurora");
+  document.querySelectorAll('.track').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
 
-function play(el,url){
+  const iframe=document.getElementById('iframe');
+  const player=document.getElementById('player');
+  const mini=document.getElementById('miniPlayer');
 
-document.querySelectorAll('.track').forEach(t=>t.classList.remove('active'));
-el.classList.add('active');
+  // fade effect
+  iframe.style.opacity = 0;
+  setTimeout(()=>{
+    iframe.src = url+"?autoplay=1";
+    iframe.style.opacity = 1;
+  },200);
 
-document.getElementById("iframe").src = url+"?autoplay=1";
-document.getElementById("player").classList.add("active");
+  player.classList.add("active");
 
-/* 🎧 FAKE AUDIO REACTIVITY LOOP */
-
-if(window.reactiveLoop) cancelAnimationFrame(window.reactiveLoop);
-
-function react(){
-  let intensity = Math.random();
-
-  aurora.style.transform = `scale(${1 + intensity*0.08})`;
-  aurora.style.opacity = 0.4 + intensity*0.5;
-
-  window.reactiveLoop = requestAnimationFrame(react);
+  // mini player
+  mini.style.display="block";
+  mini.innerText = "PLAYING · " + title;
 }
-
-react();
-}
-
 </script>
 
 </body>
