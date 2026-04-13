@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="no">
 <head>
 <meta charset="UTF-8">
@@ -71,34 +72,34 @@ body{
 
 /* ── STUDIO CHROME ── */
 .studio-top{
-  width:100%;max-width:100%;
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:16px;
-  padding:0 4px;
-  flex-wrap:wrap;gap:8px;
+width:100%;max-width:100%;
+display:flex;align-items:center;justify-content:space-between;
+margin-bottom:16px;
+padding:0 4px;
+flex-wrap:wrap;gap:8px;
 }
 .studio-id{
-  font-family:'Courier Prime',monospace;
-  font-size:7px;letter-spacing:0.35em;
-  color:rgba(255,255,255,0.18);
-  text-transform:uppercase;
+font-family:‘Courier Prime’,monospace;
+font-size:7px;letter-spacing:0.35em;
+color:rgba(255,255,255,0.18);
+text-transform:uppercase;
 }
 .tabs{display:flex;gap:2px;flex-wrap:wrap;}
 .tab{
-  font-family:'Courier Prime',monospace;
-  font-size:7px;letter-spacing:0.2em;
-  padding:7px 10px;
-  border:1px solid rgba(255,255,255,0.12);
-  background:transparent;
-  color:rgba(255,255,255,0.3);
-  cursor:pointer;
-  transition:all 0.2s;
-  text-transform:uppercase;
+font-family:‘Courier Prime’,monospace;
+font-size:7px;letter-spacing:0.2em;
+padding:7px 10px;
+border:1px solid rgba(255,255,255,0.12);
+background:transparent;
+color:rgba(255,255,255,0.3);
+cursor:pointer;
+transition:all 0.2s;
+text-transform:uppercase;
 }
 .tab:hover{color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.3);}
 .tab.active{
-  border-color:rgba(255,255,255,0.55);
-  color:#fff;background:rgba(255,255,255,0.04);
+border-color:rgba(255,255,255,0.55);
+color:#fff;background:rgba(255,255,255,0.04);
 }
 
 .template{display:none;width:100%;max-width:100%;}
@@ -106,196 +107,196 @@ body{
 
 /* ── PRIDE LINE UTILITY ── */
 .pride-h{
-  width:100%;height:1px;
-  background:linear-gradient(to right,var(--p1),var(--p2),var(--p3),var(--p4),var(--p5),var(--p6));
+width:100%;height:1px;
+background:linear-gradient(to right,var(–p1),var(–p2),var(–p3),var(–p4),var(–p5),var(–p6));
 }
 .pride-v{
-  width:2px;height:100%;
-  background:linear-gradient(to bottom,var(--p1),var(--p2),var(--p3),var(--p4),var(--p5),var(--p6));
-  position:absolute;left:0;top:0;
+width:2px;height:100%;
+background:linear-gradient(to bottom,var(–p1),var(–p2),var(–p3),var(–p4),var(–p5),var(–p6));
+position:absolute;left:0;top:0;
 }
 
 /* ── FORBIDDEN FOREST LINE — nature green + rose ── */
 .forest-line{
-  width:100%;height:1px;
-  background:linear-gradient(to right,
-    transparent 0%,
-    rgba(28,75,42,0) 4%,
-    rgba(55,140,85,0.7) 20%,
-    rgba(80,185,120,0.95) 38%,
-    rgba(195,70,110,0.95) 52%,
-    rgba(155,45,80,0.75) 65%,
-    rgba(55,140,85,0.55) 80%,
-    rgba(28,75,42,0) 96%,
-    transparent 100%
-  );
-  position:relative;
+width:100%;height:1px;
+background:linear-gradient(to right,
+transparent 0%,
+rgba(28,75,42,0) 4%,
+rgba(55,140,85,0.7) 20%,
+rgba(80,185,120,0.95) 38%,
+rgba(195,70,110,0.95) 52%,
+rgba(155,45,80,0.75) 65%,
+rgba(55,140,85,0.55) 80%,
+rgba(28,75,42,0) 96%,
+transparent 100%
+);
+position:relative;
 }
 .forest-line::after{
-  content:'';position:absolute;
-  inset:0;
-  background:inherit;
-  filter:blur(3px);
-  opacity:0.55;
-  pointer-events:none;
+content:’’;position:absolute;
+inset:0;
+background:inherit;
+filter:blur(3px);
+opacity:0.55;
+pointer-events:none;
 }
 
 /* ═══════════════════════════════
-   ARTIST CARD  (1:1)
+ARTIST CARD  (1:1)
 ═══════════════════════════════ */
 .artist-card{
-  width:100%;aspect-ratio:1/1;
-  background:#000408;
-  position:relative;overflow:hidden;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:space-between;
-  padding:5.5%;
+width:100%;aspect-ratio:1/1;
+background:#000408;
+position:relative;overflow:hidden;
+display:flex;flex-direction:column;
+align-items:center;justify-content:space-between;
+padding:5.5%;
 }
 
 /* atmospheric bg */
 .ac-bg{
-  position:absolute;inset:0;z-index:0;
-  background:
-    radial-gradient(ellipse 90% 55% at 50% 105%, rgba(15,35,18,0.7) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 35% at 20% 0%, rgba(12,0,22,0.65) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 35% at 80% 0%, rgba(0,8,18,0.5) 0%, transparent 50%);
+position:absolute;inset:0;z-index:0;
+background:
+radial-gradient(ellipse 90% 55% at 50% 105%, rgba(15,35,18,0.7) 0%, transparent 55%),
+radial-gradient(ellipse 60% 35% at 20% 0%, rgba(12,0,22,0.65) 0%, transparent 50%),
+radial-gradient(ellipse 60% 35% at 80% 0%, rgba(0,8,18,0.5) 0%, transparent 50%);
 }
 
 /* forest silhouette row at bottom */
 .ac-trees{
-  position:absolute;
-  bottom:0;left:0;right:0;
-  height:30%;
-  z-index:1;
-  opacity:0.18;
+position:absolute;
+bottom:0;left:0;right:0;
+height:30%;
+z-index:1;
+opacity:0.18;
 }
 
 .ac-top{
-  position:relative;z-index:3;
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  width:100%;
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;gap:3px;
+width:100%;
 }
 .ac-event-name{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(20px,6vw,42px);
-  letter-spacing:0.55em;
-  padding-left:0.55em;
-  color:#fff;
-  text-align:center;
-  width:100%;
-  text-shadow:0 0 50px rgba(100,220,160,0.25);
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(20px,6vw,42px);
+letter-spacing:0.55em;
+padding-left:0.55em;
+color:#fff;
+text-align:center;
+width:100%;
+text-shadow:0 0 50px rgba(100,220,160,0.25);
 }
 .ac-event-sub{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(7px,1.3vw,11px);
-  letter-spacing:0.35em;
-  color:rgba(255,255,255,0.52);
-  text-shadow:0 0 12px rgba(80,185,120,0.35), 0 1px 8px rgba(0,0,0,0.95);
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.3vw,11px);
+letter-spacing:0.35em;
+color:rgba(255,255,255,0.52);
+text-shadow:0 0 12px rgba(80,185,120,0.35), 0 1px 8px rgba(0,0,0,0.95);
 }
 .ac-pride-line{width:60%;margin-top:7px;}
 
 /* Portrait frame */
 .portrait-frame{
-  position:relative;z-index:3;
-  width:62%;aspect-ratio:1/1;
-  display:flex;align-items:center;justify-content:center;
+position:relative;z-index:3;
+width:62%;aspect-ratio:1/1;
+display:flex;align-items:center;justify-content:center;
 }
 .portrait-svg{
-  position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;
+position:absolute;inset:0;width:100%;height:100%;
+pointer-events:none;
 }
 .portrait-img{
-  width:76%;aspect-ratio:1/1;
-  border-radius:50%;
-  background:radial-gradient(ellipse 80% 80% at 50% 60%, rgba(15,40,20,0.95), rgba(4,8,6,1));
-  overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;z-index:2;
-  border:1px solid rgba(80,185,120,0.12);
-  box-shadow:0 0 40px rgba(55,140,85,0.06);
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(7px,1.2vw,9px);
-  letter-spacing:0.15em;
-  color:rgba(255,255,255,0.18);
-  text-align:center;
-  transition:border-color 0.2s;
+width:76%;aspect-ratio:1/1;
+border-radius:50%;
+background:radial-gradient(ellipse 80% 80% at 50% 60%, rgba(15,40,20,0.95), rgba(4,8,6,1));
+overflow:hidden;
+display:flex;align-items:center;justify-content:center;
+position:relative;z-index:2;
+border:1px solid rgba(80,185,120,0.12);
+box-shadow:0 0 40px rgba(55,140,85,0.06);
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.2vw,9px);
+letter-spacing:0.15em;
+color:rgba(255,255,255,0.18);
+text-align:center;
+transition:border-color 0.2s;
 }
 .portrait-img .upload-hint{
-  display:flex;flex-direction:column;align-items:center;gap:5px;
-  cursor:pointer;
-  user-select:none;
+display:flex;flex-direction:column;align-items:center;gap:5px;
+cursor:pointer;
+user-select:none;
 }
 .portrait-img .upload-hint:hover{color:rgba(255,255,255,0.35);}
 .portrait-img img{
-  position:absolute;
-  top:0;left:0;
-  width:100%;height:100%;
-  object-fit:cover;
-  display:none;
-  cursor:grab;
-  user-select:none;
-  -webkit-user-drag:none;
-  pointer-events:all;
-  transform-origin:center center;
-  will-change:transform;
+position:absolute;
+top:0;left:0;
+width:100%;height:100%;
+object-fit:cover;
+display:none;
+cursor:grab;
+user-select:none;
+-webkit-user-drag:none;
+pointer-events:all;
+transform-origin:center center;
+will-change:transform;
 }
 .portrait-img img.loaded{display:block;}
 .portrait-img img:active{cursor:grabbing;}
 
 .ac-bottom{
-  position:relative;z-index:3;
-  display:flex;flex-direction:column;align-items:center;
-  gap:5px;width:100%;
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;
+gap:5px;width:100%;
 }
 
 /* Name field */
 .ac-name{
-  font-family:'Cinzel',serif;
-  font-size:clamp(22px,6.5vw,52px);
-  font-weight:400;
-  letter-spacing:0.12em;
-  color:#fff;
-  text-align:center;
-  text-shadow:0 0 60px rgba(80,185,120,0.25), 0 0 20px rgba(255,255,255,0.12);
-  outline:none;
-  cursor:text;
-  min-width:80px;
-  line-height:1.05;
+font-family:‘Cinzel’,serif;
+font-size:clamp(22px,6.5vw,52px);
+font-weight:400;
+letter-spacing:0.12em;
+color:#fff;
+text-align:center;
+text-shadow:0 0 60px rgba(80,185,120,0.25), 0 0 20px rgba(255,255,255,0.12);
+outline:none;
+cursor:text;
+min-width:80px;
+line-height:1.05;
 }
 .ac-name:focus{text-shadow:0 0 60px rgba(80,185,120,0.45), 0 0 25px rgba(195,70,110,0.2);}
 .ac-name:empty::before{content:attr(data-ph);opacity:0.15;}
 
 .ac-dividers{
-  display:flex;align-items:center;gap:10px;width:75%;
-  margin:2px 0;
+display:flex;align-items:center;gap:10px;width:75%;
+margin:2px 0;
 }
 .ac-dividers .pride-h{flex:1;}
 
 .ac-role{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(8px,1.5vw,11px);
-  letter-spacing:0.4em;
-  color:rgba(255,255,255,0.4);
-  text-transform:uppercase;
-  outline:none;cursor:text;min-width:40px;text-align:center;
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(8px,1.5vw,11px);
+letter-spacing:0.4em;
+color:rgba(255,255,255,0.4);
+text-transform:uppercase;
+outline:none;cursor:text;min-width:40px;text-align:center;
 }
 .ac-role:empty::before{content:attr(data-ph);opacity:0.4;}
 
 .ac-pronouns{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(7px,1.1vw,9px);
-  letter-spacing:0.3em;
-  color:rgba(255,255,255,0.18);
-  outline:none;cursor:text;min-width:30px;text-align:center;
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.1vw,9px);
+letter-spacing:0.3em;
+color:rgba(255,255,255,0.18);
+outline:none;cursor:text;min-width:30px;text-align:center;
 }
 .ac-pronouns:empty::before{content:attr(data-ph);opacity:0.4;}
 
 /* corner pride dots */
 .corner-dot{
-  position:absolute;z-index:2;
-  width:3px;height:3px;border-radius:50%;
-  background:var(--green);
-  opacity:0.5;
+position:absolute;z-index:2;
+width:3px;height:3px;border-radius:50%;
+background:var(–green);
+opacity:0.5;
 }
 .corner-dot.tl{top:22px;left:22px;}
 .corner-dot.tr{top:22px;right:22px;}
@@ -303,68 +304,68 @@ body{
 .corner-dot.br{bottom:22px;right:22px;}
 
 /* ═══════════════════════════════
-   TIMELINE CARD  (1:1)
+TIMELINE CARD  (1:1)
 ═══════════════════════════════ */
 .timeline-card{
-  width:100%;aspect-ratio:1/1;
-  background:#000408;
-  position:relative;overflow:hidden;
-  display:flex;flex-direction:column;
-  padding:6%;
-  gap:0;
+width:100%;aspect-ratio:1/1;
+background:#000408;
+position:relative;overflow:hidden;
+display:flex;flex-direction:column;
+padding:6%;
+gap:0;
 }
 .tl-bg{
-  position:absolute;inset:0;z-index:0;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 115%, rgba(10,30,12,0.65) 0%, transparent 55%),
-    radial-gradient(ellipse 40% 25% at 85% -5%, rgba(80,0,120,0.07) 0%, transparent 50%);
+position:absolute;inset:0;z-index:0;
+background:
+radial-gradient(ellipse 80% 50% at 50% 115%, rgba(10,30,12,0.65) 0%, transparent 55%),
+radial-gradient(ellipse 40% 25% at 85% -5%, rgba(80,0,120,0.07) 0%, transparent 50%);
 }
 .tl-trees{
-  position:absolute;bottom:0;left:0;right:0;height:22%;
-  z-index:1;opacity:0.12;
+position:absolute;bottom:0;left:0;right:0;height:22%;
+z-index:1;opacity:0.12;
 }
 
 .tl-header{
-  position:relative;z-index:2;
-  display:flex;flex-direction:column;
-  margin-bottom:4%;
+position:relative;z-index:2;
+display:flex;flex-direction:column;
+margin-bottom:4%;
 }
 .tl-top-row{
-  display:flex;align-items:baseline;
-  justify-content:space-between;
-  margin-bottom:8px;
+display:flex;align-items:baseline;
+justify-content:space-between;
+margin-bottom:8px;
 }
 .tl-logo{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(22px,6.5vw,52px);
-  letter-spacing:0.42em;
-  padding-left:0.42em;
-  color:#fff;
-  text-shadow:0 0 50px rgba(100,220,160,0.22);
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(22px,6.5vw,52px);
+letter-spacing:0.42em;
+padding-left:0.42em;
+color:#fff;
+text-shadow:0 0 50px rgba(100,220,160,0.22);
 }
 .tl-section{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(7px,1.2vw,9px);
-  letter-spacing:0.4em;
-  color:rgba(255,255,255,0.2);
-  text-align:right;
-  outline:none;cursor:text;
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.2vw,9px);
+letter-spacing:0.4em;
+color:rgba(255,255,255,0.2);
+text-align:right;
+outline:none;cursor:text;
 }
 .tl-section:empty::before{content:attr(data-ph);opacity:0.5;}
 
 .tl-rows{
-  position:relative;z-index:2;
-  display:flex;flex-direction:column;
-  gap:5px;flex:1;
+position:relative;z-index:2;
+display:flex;flex-direction:column;
+gap:5px;flex:1;
 }
 
 /* forest→forbidden color arc per row */
 .tl-row{
-  display:flex;align-items:center;
-  background:rgba(255,255,255,0.026);
-  border:1px solid rgba(255,255,255,0.055);
-  position:relative;overflow:hidden;
-  padding:10px 14px 10px 18px;
+display:flex;align-items:center;
+background:rgba(255,255,255,0.026);
+border:1px solid rgba(255,255,255,0.055);
+position:relative;overflow:hidden;
+padding:10px 14px 10px 18px;
 }
 .tl-row:nth-child(1) .pride-v{background:#3d9966;}
 .tl-row:nth-child(2) .pride-v{background:#50c87a;}
@@ -374,63 +375,63 @@ body{
 .tl-row:nth-child(6) .pride-v{background:#8b2252;}
 
 .tl-row-label{
-  font-family:'Cinzel',serif;
-  font-size:clamp(8px,1.8vw,13px);
-  letter-spacing:0.22em;
-  color:rgba(255,255,255,0.88);
-  flex:1;text-transform:uppercase;
-  outline:none;cursor:text;
-  text-shadow:0 0 10px rgba(80,185,120,0.22), 0 1px 6px rgba(0,0,0,0.95);
+font-family:‘Cinzel’,serif;
+font-size:clamp(8px,1.8vw,13px);
+letter-spacing:0.22em;
+color:rgba(255,255,255,0.88);
+flex:1;text-transform:uppercase;
+outline:none;cursor:text;
+text-shadow:0 0 10px rgba(80,185,120,0.22), 0 1px 6px rgba(0,0,0,0.95);
 }
 .tl-row-label:empty::before{content:attr(data-ph);opacity:0.4;}
 .tl-row-date{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(8px,1.5vw,11px);
-  letter-spacing:0.2em;
-  color:rgba(255,255,255,0.55);
-  outline:none;cursor:text;min-width:20px;
-  text-shadow:0 1px 6px rgba(0,0,0,0.95);
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(8px,1.5vw,11px);
+letter-spacing:0.2em;
+color:rgba(255,255,255,0.55);
+outline:none;cursor:text;min-width:20px;
+text-shadow:0 1px 6px rgba(0,0,0,0.95);
 }
 .tl-row-date:empty::before{content:attr(data-ph);opacity:0.4;}
 
 .tl-footer{
-  position:relative;z-index:2;
-  display:flex;align-items:center;
-  justify-content:space-between;
-  margin-top:12px;
+position:relative;z-index:2;
+display:flex;align-items:center;
+justify-content:space-between;
+margin-top:12px;
 }
 .tl-venue{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(7px,1.1vw,9px);
-  letter-spacing:0.3em;
-  color:rgba(255,255,255,0.38);
-  text-shadow:0 0 8px rgba(80,185,120,0.25), 0 1px 5px rgba(0,0,0,0.95);
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.1vw,9px);
+letter-spacing:0.3em;
+color:rgba(255,255,255,0.38);
+text-shadow:0 0 8px rgba(80,185,120,0.25), 0 1px 5px rgba(0,0,0,0.95);
 }
 
 /* ═══════════════════════════════
-   OVERLAY FRAME  (transparent bg)
+OVERLAY FRAME  (transparent bg)
 ═══════════════════════════════ */
 .overlay-card{
-  width:100%;aspect-ratio:9/16;
-  background:rgba(0,0,0,0.0);
-  position:relative;overflow:hidden;
+width:100%;aspect-ratio:9/16;
+background:rgba(0,0,0,0.0);
+position:relative;overflow:hidden;
 }
 .ov-checker{
-  /* checkerboard to show transparency */
-  position:absolute;inset:0;z-index:-1;
-  background-image:
-    linear-gradient(45deg, #1a1a1a 25%, transparent 25%),
-    linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #1a1a1a 75%),
-    linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
-  background-size:12px 12px;
-  background-position:0 0, 0 6px, 6px -6px, -6px 0px;
-  opacity:0.3;
+/* checkerboard to show transparency */
+position:absolute;inset:0;z-index:-1;
+background-image:
+linear-gradient(45deg, #1a1a1a 25%, transparent 25%),
+linear-gradient(-45deg, #1a1a1a 25%, transparent 25%),
+linear-gradient(45deg, transparent 75%, #1a1a1a 75%),
+linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+background-size:12px 12px;
+background-position:0 0, 0 6px, 6px -6px, -6px 0px;
+opacity:0.3;
 }
 
 /* Corner brackets */
 .ov-corner{
-  position:absolute;width:12%;height:12%;
+position:absolute;width:12%;height:12%;
 }
 .ov-corner svg{width:100%;height:100%;}
 .ov-tl{top:0;left:0;}
@@ -440,63 +441,63 @@ body{
 
 /* Pride edge lines */
 .ov-edge-top{position:absolute;top:0;left:8%;right:8%;height:1px;
-  background:linear-gradient(to right,
-    transparent,
-    rgba(55,140,85,0.6) 20%,
-    rgba(80,185,120,0.9) 38%,
-    rgba(195,70,110,0.9) 55%,
-    rgba(80,185,120,0.6) 75%,
-    transparent
-  );}
+background:linear-gradient(to right,
+transparent,
+rgba(55,140,85,0.6) 20%,
+rgba(80,185,120,0.9) 38%,
+rgba(195,70,110,0.9) 55%,
+rgba(80,185,120,0.6) 75%,
+transparent
+);}
 .ov-edge-bottom{position:absolute;bottom:44px;left:8%;right:8%;height:1px;
-  background:linear-gradient(to right,
-    transparent,
-    rgba(195,70,110,0.6) 20%,
-    rgba(80,185,120,0.9) 40%,
-    rgba(195,70,110,0.9) 58%,
-    rgba(55,140,85,0.5) 78%,
-    transparent
-  );}
+background:linear-gradient(to right,
+transparent,
+rgba(195,70,110,0.6) 20%,
+rgba(80,185,120,0.9) 40%,
+rgba(195,70,110,0.9) 58%,
+rgba(55,140,85,0.5) 78%,
+transparent
+);}
 
 .ov-top-bar{
-  position:absolute;top:16px;left:0;right:0;
-  display:flex;flex-direction:column;align-items:center;gap:3px;
+position:absolute;top:16px;left:0;right:0;
+display:flex;flex-direction:column;align-items:center;gap:3px;
 }
 .ov-logo{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(13px,3vw,22px);
-  letter-spacing:0.55em;
-  padding-left:0.55em;
-  color:rgba(255,255,255,0.8);
-  text-align:center;
-  width:100%;
-  text-shadow:0 0 30px rgba(80,185,120,0.55), 0 0 60px rgba(195,70,110,0.2);
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(13px,3vw,22px);
+letter-spacing:0.55em;
+padding-left:0.55em;
+color:rgba(255,255,255,0.8);
+text-align:center;
+width:100%;
+text-shadow:0 0 30px rgba(80,185,120,0.55), 0 0 60px rgba(195,70,110,0.2);
 }
 .ov-sub{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(6px,1vw,8px);
-  letter-spacing:0.4em;
-  color:rgba(255,255,255,0.2);
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(6px,1vw,8px);
+letter-spacing:0.4em;
+color:rgba(255,255,255,0.2);
 }
 
 .ov-bottom-bar{
-  position:absolute;bottom:14px;left:0;right:0;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 4%;
+position:absolute;bottom:14px;left:0;right:0;
+display:flex;align-items:center;justify-content:space-between;
+padding:0 4%;
 }
 .ov-info{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(6px,1.1vw,8px);
-  letter-spacing:0.3em;
-  color:rgba(255,255,255,0.22);
-  outline:none;cursor:text;
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(6px,1.1vw,8px);
+letter-spacing:0.3em;
+color:rgba(255,255,255,0.22);
+outline:none;cursor:text;
 }
 .ov-info:empty::before{content:attr(data-ph);opacity:0.5;}
 
 /* Creature silhouettes in overlay corners */
 .ov-creature{
-  position:absolute;
-  opacity:0.22;
+position:absolute;
+opacity:0.22;
 }
 .ov-creature.huldra{bottom:11%;left:5%;width:8%;}
 .ov-creature.nokken{bottom:11%;right:5%;width:8%;transform:scaleX(-1);}
@@ -506,20 +507,20 @@ body{
 
 /* ─── CONTROLS below card ─── */
 .card-controls{
-  display:flex;gap:6px;
-  margin-top:12px;
-  flex-wrap:wrap;
-  width:100%;
+display:flex;gap:6px;
+margin-top:12px;
+flex-wrap:wrap;
+width:100%;
 }
 .ctrl-btn{
-  font-family:'Courier Prime',monospace;
-  font-size:7px;letter-spacing:0.22em;
-  padding:9px 8px;
-  border:1px solid rgba(255,255,255,0.15);
-  background:transparent;color:rgba(255,255,255,0.35);
-  cursor:pointer;transition:all 0.2s;
-  text-transform:uppercase;
-  flex:1;min-width:70px;text-align:center;
+font-family:‘Courier Prime’,monospace;
+font-size:7px;letter-spacing:0.22em;
+padding:9px 8px;
+border:1px solid rgba(255,255,255,0.15);
+background:transparent;color:rgba(255,255,255,0.35);
+cursor:pointer;transition:all 0.2s;
+text-transform:uppercase;
+flex:1;min-width:70px;text-align:center;
 }
 .ctrl-btn:hover{border-color:rgba(255,255,255,0.45);color:rgba(255,255,255,0.75);}
 .ctrl-btn:disabled{opacity:0.4;cursor:wait;}
@@ -529,225 +530,225 @@ body{
 .ctrl-btn.rose:hover{border-color:rgba(195,70,110,0.8);color:rgba(195,70,110,1);}
 
 .hint{
-  font-family:'Courier Prime',monospace;
-  font-size:8px;letter-spacing:0.2em;
-  color:rgba(255,255,255,0.18);
-  margin-top:10px;
-  line-height:1.9;
-  width:100%;
+font-family:‘Courier Prime’,monospace;
+font-size:8px;letter-spacing:0.2em;
+color:rgba(255,255,255,0.18);
+margin-top:10px;
+line-height:1.9;
+width:100%;
 }
 .hint span{color:rgba(100,220,160,0.45);}
 
 @keyframes shimmer{
-  0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}
+0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}
 }
 @keyframes breathe{
-  0%,100%{opacity:0.22;}50%{opacity:0.35;}
+0%,100%{opacity:0.22;}50%{opacity:0.35;}
 }
 .ov-creature{animation:breathe 7s ease infinite;}
 
 /* ═══════════════════════════════
-   STORY CARD  (9:16)
+STORY CARD  (9:16)
 ═══════════════════════════════ */
 .story-card{
-  width:100%;aspect-ratio:9/16;
-  background:#000408;
-  position:relative;overflow:hidden;
-  display:flex;flex-direction:column;
-  align-items:center;
-  justify-content:space-between;
-  padding:7% 8%;
+width:100%;aspect-ratio:9/16;
+background:#000408;
+position:relative;overflow:hidden;
+display:flex;flex-direction:column;
+align-items:center;
+justify-content:space-between;
+padding:7% 8%;
 }
 .st-bg{
-  position:absolute;inset:0;z-index:0;
-  background:
-    radial-gradient(ellipse 100% 45% at 50% 110%, rgba(15,40,18,0.75) 0%, transparent 50%),
-    radial-gradient(ellipse 80% 35% at 50% 0%, rgba(8,0,16,0.7) 0%, transparent 45%),
-    radial-gradient(ellipse 60% 50% at 15% 50%, rgba(10,28,14,0.3) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 50% at 85% 50%, rgba(10,28,14,0.3) 0%, transparent 50%);
+position:absolute;inset:0;z-index:0;
+background:
+radial-gradient(ellipse 100% 45% at 50% 110%, rgba(15,40,18,0.75) 0%, transparent 50%),
+radial-gradient(ellipse 80% 35% at 50% 0%, rgba(8,0,16,0.7) 0%, transparent 45%),
+radial-gradient(ellipse 60% 50% at 15% 50%, rgba(10,28,14,0.3) 0%, transparent 50%),
+radial-gradient(ellipse 60% 50% at 85% 50%, rgba(10,28,14,0.3) 0%, transparent 50%);
 }
 .st-trees{
-  position:absolute;bottom:0;left:0;right:0;
-  height:20%;z-index:1;opacity:0.18;
+position:absolute;bottom:0;left:0;right:0;
+height:20%;z-index:1;opacity:0.18;
 }
 .st-side-trees{
-  position:absolute;top:0;bottom:0;left:0;
-  width:14%;z-index:1;opacity:1;
+position:absolute;top:0;bottom:0;left:0;
+width:14%;z-index:1;opacity:1;
 }
 .st-side-trees.right{left:auto;right:0;transform:scaleX(-1);}
 
 .st-top{
-  position:relative;z-index:3;
-  display:flex;flex-direction:column;align-items:center;
-  gap:4px;width:100%;
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;
+gap:4px;width:100%;
 }
 .st-logo{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(15px,4.2vw,26px);
-  letter-spacing:0.5em;
-  padding-left:0.5em;
-  color:#fff;
-  text-shadow:0 0 60px rgba(80,185,120,0.28);
-  text-align:center;
-  width:100%;
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(15px,4.2vw,26px);
+letter-spacing:0.5em;
+padding-left:0.5em;
+color:#fff;
+text-shadow:0 0 60px rgba(80,185,120,0.28);
+text-align:center;
+width:100%;
 }
 .st-sub{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(7px,1.8vw,10px);
-  letter-spacing:0.3em;
-  color:rgba(255,255,255,0.55);
-  text-align:center;
-  text-shadow:0 0 12px rgba(80,185,120,0.4), 0 1px 8px rgba(0,0,0,0.9);
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.8vw,10px);
+letter-spacing:0.3em;
+color:rgba(255,255,255,0.55);
+text-align:center;
+text-shadow:0 0 12px rgba(80,185,120,0.4), 0 1px 8px rgba(0,0,0,0.9);
 }
 
 .st-emblem{
-  position:relative;z-index:3;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0.8;
+position:relative;z-index:3;
+display:flex;align-items:center;justify-content:center;
+opacity:0.8;
 }
 
 .st-rows{
-  position:relative;z-index:3;
-  display:flex;flex-direction:column;
-  gap:7px;width:100%;
+position:relative;z-index:3;
+display:flex;flex-direction:column;
+gap:7px;width:100%;
 }
 .st-row{
-  display:flex;align-items:center;
-  gap:12px;
-  padding:10px 14px;
-  background:rgba(255,255,255,0.028);
-  border:1px solid rgba(255,255,255,0.055);
-  position:relative;
+display:flex;align-items:center;
+gap:12px;
+padding:10px 14px;
+background:rgba(255,255,255,0.028);
+border:1px solid rgba(255,255,255,0.055);
+position:relative;
 }
 .st-dot{
-  width:6px;height:6px;
-  border-radius:50%;
-  flex-shrink:0;
-  box-shadow:0 0 6px currentColor;
+width:6px;height:6px;
+border-radius:50%;
+flex-shrink:0;
+box-shadow:0 0 6px currentColor;
 }
 .st-row-label{
-  font-family:'Cinzel',serif;
-  font-size:clamp(10px,2.8vw,15px);
-  letter-spacing:0.2em;
-  color:rgba(255,255,255,0.88);
-  flex:1;text-transform:uppercase;
-  outline:none;cursor:text;
-  text-shadow:0 0 10px rgba(80,185,120,0.25), 0 1px 6px rgba(0,0,0,0.95);
+font-family:‘Cinzel’,serif;
+font-size:clamp(10px,2.8vw,15px);
+letter-spacing:0.2em;
+color:rgba(255,255,255,0.88);
+flex:1;text-transform:uppercase;
+outline:none;cursor:text;
+text-shadow:0 0 10px rgba(80,185,120,0.25), 0 1px 6px rgba(0,0,0,0.95);
 }
 .st-row-date{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(9px,2.2vw,13px);
-  letter-spacing:0.2em;
-  color:rgba(255,255,255,0.58);
-  outline:none;cursor:text;min-width:28px;
-  text-align:right;
-  text-shadow:0 0 8px rgba(195,70,110,0.2), 0 1px 6px rgba(0,0,0,0.95);
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(9px,2.2vw,13px);
+letter-spacing:0.2em;
+color:rgba(255,255,255,0.58);
+outline:none;cursor:text;min-width:28px;
+text-align:right;
+text-shadow:0 0 8px rgba(195,70,110,0.2), 0 1px 6px rgba(0,0,0,0.95);
 }
 
 .st-bottom{
-  position:relative;z-index:3;
-  display:flex;flex-direction:column;align-items:center;
-  gap:0;
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;
+gap:0;
 }
 .st-ticket{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(7px,1.8vw,10px);
-  letter-spacing:0.25em;
-  color:rgba(255,255,255,0.48);
-  text-align:center;
-  text-shadow:0 0 10px rgba(80,185,120,0.3), 0 1px 6px rgba(0,0,0,0.95);
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(7px,1.8vw,10px);
+letter-spacing:0.25em;
+color:rgba(255,255,255,0.48);
+text-align:center;
+text-shadow:0 0 10px rgba(80,185,120,0.3), 0 1px 6px rgba(0,0,0,0.95);
 }
 
 /* ═══════════════════════════════
-   4:5 POST CARD
+4:5 POST CARD
 ═══════════════════════════════ */
 .post-card{
-  width:100%;aspect-ratio:4/5;
-  background:#000408;
-  position:relative;overflow:hidden;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:space-between;
-  padding:5.5% 6%;
+width:100%;aspect-ratio:4/5;
+background:#000408;
+position:relative;overflow:hidden;
+display:flex;flex-direction:column;
+align-items:center;justify-content:space-between;
+padding:5.5% 6%;
 }
 .post-bg{
-  position:absolute;inset:0;z-index:0;
-  background:
-    radial-gradient(ellipse 90% 50% at 50% 110%, rgba(15,35,18,0.7) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 35% at 20% 0%, rgba(12,0,22,0.65) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 35% at 80% 0%, rgba(0,8,18,0.5) 0%, transparent 50%);
+position:absolute;inset:0;z-index:0;
+background:
+radial-gradient(ellipse 90% 50% at 50% 110%, rgba(15,35,18,0.7) 0%, transparent 55%),
+radial-gradient(ellipse 60% 35% at 20% 0%, rgba(12,0,22,0.65) 0%, transparent 50%),
+radial-gradient(ellipse 60% 35% at 80% 0%, rgba(0,8,18,0.5) 0%, transparent 50%);
 }
 .post-trees{
-  position:absolute;bottom:0;left:0;right:0;height:22%;
-  z-index:1;opacity:0.18;
+position:absolute;bottom:0;left:0;right:0;height:22%;
+z-index:1;opacity:0.18;
 }
 .post-top{
-  position:relative;z-index:3;
-  display:flex;flex-direction:column;align-items:center;gap:3px;width:100%;
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;gap:3px;width:100%;
 }
 .post-logo{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(14px,3.8vw,26px);
-  letter-spacing:0.52em;
-  padding-left:0.52em;
-  color:#fff;
-  text-shadow:0 0 60px rgba(80,185,120,0.28), 0 0 20px rgba(255,255,255,0.1);
-  text-align:center;
-  width:100%;
+font-family:‘Bebas Neue’,sans-serif;
+font-size:clamp(14px,3.8vw,26px);
+letter-spacing:0.52em;
+padding-left:0.52em;
+color:#fff;
+text-shadow:0 0 60px rgba(80,185,120,0.28), 0 0 20px rgba(255,255,255,0.1);
+text-align:center;
+width:100%;
 }
 .post-sub{
-  font-family:'Courier Prime',monospace;
-  font-size:clamp(6px,1.2vw,10px);letter-spacing:0.32em;
-  color:rgba(255,255,255,0.52);
-  text-shadow:0 0 12px rgba(80,185,120,0.35), 0 1px 8px rgba(0,0,0,0.95);
-  text-align:center;
+font-family:‘Courier Prime’,monospace;
+font-size:clamp(6px,1.2vw,10px);letter-spacing:0.32em;
+color:rgba(255,255,255,0.52);
+text-shadow:0 0 12px rgba(80,185,120,0.35), 0 1px 8px rgba(0,0,0,0.95);
+text-align:center;
 }
 .post-frame{
-  position:relative;z-index:3;
-  width:58%;aspect-ratio:1/1;
-  display:flex;align-items:center;justify-content:center;
+position:relative;z-index:3;
+width:58%;aspect-ratio:1/1;
+display:flex;align-items:center;justify-content:center;
 }
 .post-img{
-  width:76%;aspect-ratio:1/1;
-  border-radius:50%;
-  background:radial-gradient(ellipse 80% 80% at 50% 60%,rgba(15,40,20,0.95),rgba(4,8,6,1));
-  overflow:hidden;display:flex;align-items:center;justify-content:center;
-  position:relative;z-index:2;
-  border:1px solid rgba(80,185,120,0.12);
-  font-family:'Courier Prime',monospace;font-size:9px;letter-spacing:0.15em;
-  color:rgba(255,255,255,0.18);text-align:center;
+width:76%;aspect-ratio:1/1;
+border-radius:50%;
+background:radial-gradient(ellipse 80% 80% at 50% 60%,rgba(15,40,20,0.95),rgba(4,8,6,1));
+overflow:hidden;display:flex;align-items:center;justify-content:center;
+position:relative;z-index:2;
+border:1px solid rgba(80,185,120,0.12);
+font-family:‘Courier Prime’,monospace;font-size:9px;letter-spacing:0.15em;
+color:rgba(255,255,255,0.18);text-align:center;
 }
 .post-img img{
-  position:absolute;top:0;left:0;
-  width:100%;height:100%;object-fit:cover;
-  display:none;cursor:grab;user-select:none;-webkit-user-drag:none;
-  transform-origin:center center;will-change:transform;
+position:absolute;top:0;left:0;
+width:100%;height:100%;object-fit:cover;
+display:none;cursor:grab;user-select:none;-webkit-user-drag:none;
+transform-origin:center center;will-change:transform;
 }
 .post-img img.loaded{display:block;}
 .post-img img:active{cursor:grabbing;}
 .post-bottom{
-  position:relative;z-index:3;
-  display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;
+position:relative;z-index:3;
+display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;
 }
 .post-name{
-  font-family:'Cinzel',serif;
-  font-size:clamp(18px,5.5vw,40px);font-weight:400;
-  letter-spacing:0.12em;color:#fff;text-align:center;
-  text-shadow:0 0 60px rgba(80,185,120,0.3), 0 0 20px rgba(195,70,110,0.15), 0 1px 10px rgba(0,0,0,0.95);
-  outline:none;cursor:text;min-width:80px;line-height:1.05;
+font-family:‘Cinzel’,serif;
+font-size:clamp(18px,5.5vw,40px);font-weight:400;
+letter-spacing:0.12em;color:#fff;text-align:center;
+text-shadow:0 0 60px rgba(80,185,120,0.3), 0 0 20px rgba(195,70,110,0.15), 0 1px 10px rgba(0,0,0,0.95);
+outline:none;cursor:text;min-width:80px;line-height:1.05;
 }
 .post-name:empty::before{content:attr(data-ph);opacity:0.15;}
 .post-role{
-  font-family:'Courier Prime',monospace;font-size:clamp(8px,1.5vw,11px);
-  letter-spacing:0.4em;color:rgba(255,255,255,0.58);text-transform:uppercase;
-  outline:none;cursor:text;min-width:40px;text-align:center;
-  text-shadow:0 0 10px rgba(80,185,120,0.25), 0 1px 6px rgba(0,0,0,0.95);
+font-family:‘Courier Prime’,monospace;font-size:clamp(8px,1.5vw,11px);
+letter-spacing:0.4em;color:rgba(255,255,255,0.58);text-transform:uppercase;
+outline:none;cursor:text;min-width:40px;text-align:center;
+text-shadow:0 0 10px rgba(80,185,120,0.25), 0 1px 6px rgba(0,0,0,0.95);
 }
 .post-role:empty::before{content:attr(data-ph);opacity:0.4;}
 .post-pronouns{
-  font-family:'Courier Prime',monospace;font-size:clamp(7px,1.1vw,9px);
-  letter-spacing:0.3em;color:rgba(255,255,255,0.4);
-  outline:none;cursor:text;min-width:30px;text-align:center;
-  text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
+font-family:‘Courier Prime’,monospace;font-size:clamp(7px,1.1vw,9px);
+letter-spacing:0.3em;color:rgba(255,255,255,0.4);
+outline:none;cursor:text;min-width:30px;text-align:center;
+text-shadow:0 0 8px rgba(80,185,120,0.2), 0 1px 5px rgba(0,0,0,0.95);
 }
 .post-pronouns:empty::before{content:attr(data-ph);opacity:0.4;}
 
@@ -755,12 +756,14 @@ body{
 #img-input{display:none;}
 #img-input2{display:none;}
 </style>
+
 <script>
 /* html-to-image v1 embedded */
 !function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e((t="undefined"!=typeof globalThis?globalThis:t||self).htmlToImage={})}(this,(function(t){"use strict";function e(t,e,n,r){return new(n||(n=Promise))((function(i,o){function u(t){try{a(r.next(t))}catch(t){o(t)}}function c(t){try{a(r.throw(t))}catch(t){o(t)}}function a(t){var e;t.done?i(t.value):(e=t.value,e instanceof n?e:new n((function(t){t(e)}))).then(u,c)}a((r=r.apply(t,e||[])).next())}))}function n(t,e){var n,r,i,o,u={label:0,sent:function(){if(1&i[0])throw i[1];return i[1]},trys:[],ops:[]};return o={next:c(0),throw:c(1),return:c(2)},"function"==typeof Symbol&&(o[Symbol.iterator]=function(){return this}),o;function c(c){return function(a){return function(c){if(n)throw new TypeError("Generator is already executing.");for(;o&&(o=0,c[0]&&(u=0)),u;)try{if(n=1,r&&(i=2&c[0]?r.return:c[0]?r.throw||((i=r.return)&&i.call(r),0):r.next)&&!(i=i.call(r,c[1])).done)return i;switch(r=0,i&&(c=[2&c[0],i.value]),c[0]){case 0:case 1:i=c;break;case 4:return u.label++,{value:c[1],done:!1};case 5:u.label++,r=c[1],c=[0];continue;case 7:c=u.ops.pop(),u.trys.pop();continue;default:if(!(i=u.trys,(i=i.length>0&&i[i.length-1])||6!==c[0]&&2!==c[0])){u=0;continue}if(3===c[0]&&(!i||c[1]>i[0]&&c[1]<i[3])){u.label=c[1];break}if(6===c[0]&&u.label<i[1]){u.label=i[1],i=c;break}if(i&&u.label<i[2]){u.label=i[2],u.ops.push(c);break}i[2]&&u.ops.pop(),u.trys.pop();continue}c=e.call(t,u)}catch(t){c=[6,t],r=0}finally{n=i=0}if(5&c[0])throw c[1];return{value:c[0]?c[1]:void 0,done:!0}}([c,a])}}}var r,i=(r=0,function(){return r+=1,"u".concat("0000".concat((Math.random()*Math.pow(36,4)<<0).toString(36)).slice(-4)).concat(r)});function o(t){for(var e=[],n=0,r=t.length;n<r;n++)e.push(t[n]);return e}var u=null;function c(t){return void 0===t&&(t={}),u||(u=t.includeStyleProperties?t.includeStyleProperties:o(window.getComputedStyle(document.documentElement)))}function a(t,e){var n=(t.ownerDocument.defaultView||window).getComputedStyle(t).getPropertyValue(e);return n?parseFloat(n.replace("px","")):0}function s(t,e){void 0===e&&(e={});var n,r,i,o=e.width||(r=a(n=t,"border-left-width"),i=a(n,"border-right-width"),n.clientWidth+r+i),u=e.height||function(t){var e=a(t,"border-top-width"),n=a(t,"border-bottom-width");return t.clientHeight+e+n}(t);return{width:o,height:u}}var l=16384;function f(t,e){return void 0===e&&(e={}),t.toBlob?new Promise((function(n){t.toBlob(n,e.type?e.type:"image/png",e.quality?e.quality:1)})):new Promise((function(n){for(var r=window.atob(t.toDataURL(e.type?e.type:void 0,e.quality?e.quality:void 0).split(",")[1]),i=r.length,o=new Uint8Array(i),u=0;u<i;u+=1)o[u]=r.charCodeAt(u);n(new Blob([o],{type:e.type?e.type:"image/png"}))}))}function h(t){return new Promise((function(e,n){var r=new Image;r.onload=function(){r.decode().then((function(){requestAnimationFrame((function(){return e(r)}))}))},r.onerror=n,r.crossOrigin="anonymous",r.decoding="async",r.src=t}))}function d(t){return e(this,void 0,void 0,(function(){return n(this,(function(e){return[2,Promise.resolve().then((function(){return(new XMLSerializer).serializeToString(t)})).then(encodeURIComponent).then((function(t){return"data:image/svg+xml;charset=utf-8,".concat(t)}))]}))}))}function v(t,r,i){return e(this,void 0,void 0,(function(){var e,o,u;return n(this,(function(n){return e="http://www.w3.org/2000/svg",o=document.createElementNS(e,"svg"),u=document.createElementNS(e,"foreignObject"),o.setAttribute("width","".concat(r)),o.setAttribute("height","".concat(i)),o.setAttribute("viewBox","0 0 ".concat(r," ").concat(i)),u.setAttribute("width","100%"),u.setAttribute("height","100%"),u.setAttribute("x","0"),u.setAttribute("y","0"),u.setAttribute("externalResourcesRequired","true"),o.appendChild(u),u.appendChild(t),[2,d(o)]}))}))}var p=function(t,e){if(t instanceof e)return!0;var n=Object.getPrototypeOf(t);return null!==n&&(n.constructor.name===e.name||p(n,e))};function g(t,e,n,r){var i=".".concat(t,":").concat(e),o=n.cssText?function(t){var e=t.getPropertyValue("content");return"".concat(t.cssText," content: '").concat(e.replace(/'|"/g,""),"';")}(n):function(t,e){return c(e).map((function(e){var n=t.getPropertyValue(e),r=t.getPropertyPriority(e);return"".concat(e,": ").concat(n).concat(r?" !important":"",";")})).join(" ")}(n,r);return document.createTextNode("".concat(i,"{").concat(o,"}"))}function m(t,e,n,r){var o=window.getComputedStyle(t,n),u=o.getPropertyValue("content");if(""!==u&&"none"!==u){var c=i();try{e.className="".concat(e.className," ").concat(c)}catch(t){return}var a=document.createElement("style");a.appendChild(g(c,n,o,r)),e.appendChild(a)}}var w="application/font-woff",y="image/jpeg",b={woff:w,woff2:w,ttf:"application/font-truetype",eot:"application/vnd.ms-fontobject",png:"image/png",jpg:y,jpeg:y,gif:"image/gif",tiff:"image/tiff",svg:"image/svg+xml",webp:"image/webp"};function S(t){var e=function(t){var e=/\.([^./]*?)$/g.exec(t);return e?e[1]:""}(t).toLowerCase();return b[e]||""}function E(t){return-1!==t.search(/^(data:)/)}function x(t,e){return"data:".concat(e,";base64,").concat(t)}function C(t,r,i){return e(this,void 0,void 0,(function(){var e,o;return n(this,(function(n){switch(n.label){case 0:return[4,fetch(t,r)];case 1:if(404===(e=n.sent()).status)throw new Error('Resource "'.concat(e.url,'" not found'));return[4,e.blob()];case 2:return o=n.sent(),[2,new Promise((function(t,n){var r=new FileReader;r.onerror=n,r.onloadend=function(){try{t(i({res:e,result:r.result}))}catch(t){n(t)}},r.readAsDataURL(o)}))]}}))}))}var P={};function R(t,r,i){return e(this,void 0,void 0,(function(){var e,o,u,c,a;return n(this,(function(n){switch(n.label){case 0:if(e=function(t,e,n){var r=t.replace(/\?.*/,"");return n&&(r=t),/ttf|otf|eot|woff2?/i.test(r)&&(r=r.replace(/.*\//,"")),e?"[".concat(e,"]").concat(r):r}(t,r,i.includeQueryParams),null!=P[e])return[2,P[e]];i.cacheBust&&(t+=(/\?/.test(t)?"&":"?")+(new Date).getTime()),n.label=1;case 1:return n.trys.push([1,3,,4]),[4,C(t,i.fetchRequestInit,(function(t){var e=t.res,n=t.result;return r||(r=e.headers.get("Content-Type")||""),function(t){return t.split(/,/)[1]}(n)}))];case 2:return u=n.sent(),o=x(u,r),[3,4];case 3:return c=n.sent(),o=i.imagePlaceholder||"",a="Failed to fetch resource: ".concat(t),c&&(a="string"==typeof c?c:c.message),a&&console.warn(a),[3,4];case 4:return P[e]=o,[2,o]}}))}))}function T(t){return e(this,void 0,void 0,(function(){var e;return n(this,(function(n){return"data:,"===(e=t.toDataURL())?[2,t.cloneNode(!1)]:[2,h(e)]}))}))}function A(t,r){return e(this,void 0,void 0,(function(){var e,i,o,u;return n(this,(function(n){switch(n.label){case 0:return t.currentSrc?(e=document.createElement("canvas"),i=e.getContext("2d"),e.width=t.clientWidth,e.height=t.clientHeight,null==i||i.drawImage(t,0,0,e.width,e.height),[2,h(e.toDataURL())]):(o=t.poster,u=S(o),[4,R(o,u,r)]);case 1:return[2,h(n.sent())]}}))}))}function k(t,r){var i;return e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return e.trys.push([0,3,,4]),(null===(i=null==t?void 0:t.contentDocument)||void 0===i?void 0:i.body)?[4,I(t.contentDocument.body,r,!0)]:[3,2];case 1:return[2,e.sent()];case 2:return[3,4];case 3:return e.sent(),[3,4];case 4:return[2,t.cloneNode(!1)]}}))}))}var L=function(t){return null!=t.tagName&&"SVG"===t.tagName.toUpperCase()};function N(t,e,n){return p(e,Element)&&(function(t,e,n){var r=e.style;if(r){var i=window.getComputedStyle(t);i.cssText?(r.cssText=i.cssText,r.transformOrigin=i.transformOrigin):c(n).forEach((function(n){var o=i.getPropertyValue(n);if("font-size"===n&&o.endsWith("px")){var u=Math.floor(parseFloat(o.substring(0,o.length-2)))-.1;o="".concat(u,"px")}p(t,HTMLIFrameElement)&&"display"===n&&"inline"===o&&(o="block"),"d"===n&&e.getAttribute("d")&&(o="path(".concat(e.getAttribute("d"),")")),r.setProperty(n,o,i.getPropertyPriority(n))}))}}(t,e,n),function(t,e,n){m(t,e,":before",n),m(t,e,":after",n)}(t,e,n),function(t,e){p(t,HTMLTextAreaElement)&&(e.innerHTML=t.value),p(t,HTMLInputElement)&&e.setAttribute("value",t.value)}(t,e),function(t,e){if(p(t,HTMLSelectElement)){var n=e,r=Array.from(n.children).find((function(e){return t.value===e.getAttribute("value")}));r&&r.setAttribute("selected","")}}(t,e)),e}function I(t,r,i){return e(this,void 0,void 0,(function(){return n(this,(function(u){return i||!r.filter||r.filter(t)?[2,Promise.resolve(t).then((function(t){return function(t,r){return e(this,void 0,void 0,(function(){return n(this,(function(e){return p(t,HTMLCanvasElement)?[2,T(t)]:p(t,HTMLVideoElement)?[2,A(t,r)]:p(t,HTMLIFrameElement)?[2,k(t,r)]:[2,t.cloneNode(L(t))]}))}))}(t,r)})).then((function(i){return function(t,r,i){var u,c;return e(this,void 0,void 0,(function(){var e;return n(this,(function(n){switch(n.label){case 0:return L(r)?[2,r]:(e=[],0===(e=null!=(a=t).tagName&&"SLOT"===a.tagName.toUpperCase()&&t.assignedNodes?o(t.assignedNodes()):p(t,HTMLIFrameElement)&&(null===(u=t.contentDocument)||void 0===u?void 0:u.body)?o(t.contentDocument.body.childNodes):o((null!==(c=t.shadowRoot)&&void 0!==c?c:t).childNodes)).length||p(t,HTMLVideoElement)?[2,r]:[4,e.reduce((function(t,e){return t.then((function(){return I(e,i)})).then((function(t){t&&r.appendChild(t)}))}),Promise.resolve())]);case 1:return n.sent(),[2,r]}var a}))}))}(t,i,r)})).then((function(e){return N(t,e,r)})).then((function(t){return function(t,r){return e(this,void 0,void 0,(function(){var e,i,o,u,c,a,s,l,f,h,d,v,p;return n(this,(function(n){switch(n.label){case 0:if(0===(e=t.querySelectorAll?t.querySelectorAll("use"):[]).length)return[2,t];i={},p=0,n.label=1;case 1:return p<e.length?(o=e[p],(u=o.getAttribute("xlink:href"))?(c=t.querySelector(u),a=document.querySelector(u),c||!a||i[u]?[3,3]:(s=i,l=u,[4,I(a,r,!0)])):[3,3]):[3,4];case 2:s[l]=n.sent(),n.label=3;case 3:return p++,[3,1];case 4:if((f=Object.values(i)).length){for(h="http://www.w3.org/1999/xhtml",(d=document.createElementNS(h,"svg")).setAttribute("xmlns",h),d.style.position="absolute",d.style.width="0",d.style.height="0",d.style.overflow="hidden",d.style.display="none",v=document.createElementNS(h,"defs"),d.appendChild(v),p=0;p<f.length;p++)v.appendChild(f[p]);t.appendChild(d)}return[2,t]}}))}))}(t,r)}))]:[2,null]}))}))}var D=/url\((['"]?)([^'"]+?)\1\)/g,H=/url\([^)]+\)\s*format\((["']?)([^"']+)\1\)/g,M=/src:\s*(?:url\([^)]+\)\s*format\([^)]+\)[,;]\s*)+/g;function F(t,r,i,o,u){return e(this,void 0,void 0,(function(){var e,c,a,s;return n(this,(function(n){switch(n.label){case 0:return n.trys.push([0,5,,6]),e=i?function(t,e){if(t.match(/^[a-z]+:\/\//i))return t;if(t.match(/^\/\//))return window.location.protocol+t;if(t.match(/^[a-z]+:/i))return t;var n=document.implementation.createHTMLDocument(),r=n.createElement("base"),i=n.createElement("a");return n.head.appendChild(r),n.body.appendChild(i),e&&(r.href=e),i.href=t,i.href}(r,i):r,c=S(r),a=void 0,u?[4,u(e)]:[3,2];case 1:return s=n.sent(),a=x(s,c),[3,4];case 2:return[4,R(e,c,o)];case 3:a=n.sent(),n.label=4;case 4:return[2,t.replace((l=r,f=l.replace(/([.*+?^${}()|\[\]\/\\])/g,"\\$1"),new RegExp("(url\\(['\"]?)(".concat(f,")(['\"]?\\))"),"g")),"$1".concat(a,"$3"))];case 5:return n.sent(),[3,6];case 6:return[2,t]}var l,f}))}))}function V(t){return-1!==t.search(D)}function q(t,r,i){return e(this,void 0,void 0,(function(){var e,o;return n(this,(function(n){return V(t)?(e=function(t,e){var n=e.preferredFontFormat;return n?t.replace(M,(function(t){for(;;){var e=H.exec(t)||[],r=e[0],i=e[2];if(!i)return"";if(i===n)return"src: ".concat(r,";")}})):t}(t,i),o=function(t){var e=[];return t.replace(D,(function(t,n,r){return e.push(r),t})),e.filter((function(t){return!E(t)}))}(e),[2,o.reduce((function(t,e){return t.then((function(t){return F(t,e,r,i)}))}),Promise.resolve(e))]):[2,t]}))}))}function U(t,r,i){var o;return e(this,void 0,void 0,(function(){var e,u;return n(this,(function(n){switch(n.label){case 0:return(e=null===(o=r.style)||void 0===o?void 0:o.getPropertyValue(t))?[4,q(e,null,i)]:[3,2];case 1:return u=n.sent(),r.style.setProperty(t,u,r.style.getPropertyPriority(t)),[2,!0];case 2:return[2,!1]}}))}))}function j(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){switch(n.label){case 0:return[4,U("background",t,r)];case 1:return n.sent()?[3,3]:[4,U("background-image",t,r)];case 2:n.sent(),n.label=3;case 3:return[4,U("mask",t,r)];case 4:return(i=n.sent())?[3,6]:[4,U("-webkit-mask",t,r)];case 5:i=n.sent(),n.label=6;case 6:return(e=i)?[3,8]:[4,U("mask-image",t,r)];case 7:e=n.sent(),n.label=8;case 8:return e?[3,10]:[4,U("-webkit-mask-image",t,r)];case 9:n.sent(),n.label=10;case 10:return[2]}}))}))}function O(t,r){return e(this,void 0,void 0,(function(){var e,i,o;return n(this,(function(n){switch(n.label){case 0:return(e=p(t,HTMLImageElement))&&!E(t.src)||p(t,SVGImageElement)&&!E(t.href.baseVal)?[4,R(i=e?t.src:t.href.baseVal,S(i),r)]:[2];case 1:return o=n.sent(),[4,new Promise((function(n,i){t.onload=n,t.onerror=r.onImageErrorHandler?function(){for(var t=[],e=0;e<arguments.length;e++)t[e]=arguments[e];try{n(r.onImageErrorHandler.apply(r,t))}catch(t){i(t)}}:i;var u=t;u.decode&&(u.decode=n),"lazy"===u.loading&&(u.loading="eager"),e?(t.srcset="",t.src=o):t.href.baseVal=o}))];case 2:return n.sent(),[2]}}))}))}function B(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){switch(n.label){case 0:return e=o(t.childNodes),i=e.map((function(t){return z(t,r)})),[4,Promise.all(i).then((function(){return t}))];case 1:return n.sent(),[2]}}))}))}function z(t,r){return e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return p(t,Element)?[4,j(t,r)]:[3,4];case 1:return e.sent(),[4,O(t,r)];case 2:return e.sent(),[4,B(t,r)];case 3:e.sent(),e.label=4;case 4:return[2]}}))}))}var W={};function $(t){return e(this,void 0,void 0,(function(){var e,r;return n(this,(function(n){switch(n.label){case 0:return null!=(e=W[t])?[2,e]:[4,fetch(t)];case 1:return[4,n.sent().text()];case 2:return r=n.sent(),e={url:t,cssText:r},W[t]=e,[2,e]}}))}))}function G(t,r){return e(this,void 0,void 0,(function(){var i,o,u,c,a=this;return n(this,(function(s){return i=t.cssText,o=/url\(["']?([^"')]+)["']?\)/g,u=i.match(/url\([^)]+\)/g)||[],c=u.map((function(u){return e(a,void 0,void 0,(function(){var e;return n(this,(function(n){return(e=u.replace(o,"$1")).startsWith("https://")||(e=new URL(e,t.url).href),[2,C(e,r.fetchRequestInit,(function(t){var e=t.result;return i=i.replace(u,"url(".concat(e,")")),[u,e]}))]}))}))})),[2,Promise.all(c).then((function(){return i}))]}))}))}function _(t){if(null==t)return[];for(var e=[],n=t.replace(/(\/\*[\s\S]*?\*\/)/gi,""),r=new RegExp("((@.*?keyframes [\\s\\S]*?){([\\s\\S]*?}\\s*?)})","gi");;){if(null===(u=r.exec(n)))break;e.push(u[0])}n=n.replace(r,"");for(var i=/@import[\s\S]*?url\([^)]*\)[\s\S]*?;/gi,o=new RegExp("((\\s*?(?:\\/\\*[\\s\\S]*?\\*\\/)?\\s*?@media[\\s\\S]*?){([\\s\\S]*?)}\\s*?})|(([\\s\\S]*?){([\\s\\S]*?)})","gi");;){var u;if(null===(u=i.exec(n))){if(null===(u=o.exec(n)))break;i.lastIndex=o.lastIndex}else o.lastIndex=i.lastIndex;e.push(u[0])}return e}function J(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){return e=[],i=[],t.forEach((function(e){if("cssRules"in e)try{o(e.cssRules||[]).forEach((function(t,n){if(t.type===CSSRule.IMPORT_RULE){var o=n+1,u=$(t.href).then((function(t){return G(t,r)})).then((function(t){return _(t).forEach((function(t){try{e.insertRule(t,t.startsWith("@import")?o+=1:e.cssRules.length)}catch(e){console.error("Error inserting rule from remote css",{rule:t,error:e})}}))})).catch((function(t){console.error("Error loading remote css",t.toString())}));i.push(u)}}))}catch(o){var n=t.find((function(t){return null==t.href}))||document.styleSheets[0];null!=e.href&&i.push($(e.href).then((function(t){return G(t,r)})).then((function(t){return _(t).forEach((function(t){n.insertRule(t,n.cssRules.length)}))})).catch((function(t){console.error("Error loading remote stylesheet",t)}))),console.error("Error inlining remote css file",o)}})),[2,Promise.all(i).then((function(){return t.forEach((function(t){if("cssRules"in t)try{o(t.cssRules||[]).forEach((function(t){e.push(t)}))}catch(e){console.error("Error while reading CSS rules from ".concat(t.href),e)}})),e}))]}))}))}function Q(t){return t.filter((function(t){return t.type===CSSRule.FONT_FACE_RULE})).filter((function(t){return V(t.style.getPropertyValue("src"))}))}function X(t,r){return e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:if(null==t.ownerDocument)throw new Error("Provided element is not within a Document");return[4,J(o(t.ownerDocument.styleSheets),r)];case 1:return[2,Q(e.sent())]}}))}))}function K(t){return t.trim().replace(/["']/g,"")}function Y(t,r){return e(this,void 0,void 0,(function(){var e,i;return n(this,(function(n){switch(n.label){case 0:return[4,X(t,r)];case 1:return e=n.sent(),i=function(t){var e=new Set;return function t(n){(n.style.fontFamily||getComputedStyle(n).fontFamily).split(",").forEach((function(t){e.add(K(t))})),Array.from(n.children).forEach((function(e){e instanceof HTMLElement&&t(e)}))}(t),e}(t),[4,Promise.all(e.filter((function(t){return i.has(K(t.style.fontFamily))})).map((function(t){var e=t.parentStyleSheet?t.parentStyleSheet.href:null;return q(t.cssText,e,r)})))];case 2:return[2,n.sent().join("\n")]}}))}))}function Z(t,r){return e(this,void 0,void 0,(function(){var e,i,o,u,c;return n(this,(function(n){switch(n.label){case 0:return null==r.fontEmbedCSS?[3,1]:(i=r.fontEmbedCSS,[3,5]);case 1:return r.skipFonts?(o=null,[3,4]):[3,2];case 2:return[4,Y(t,r)];case 3:o=n.sent(),n.label=4;case 4:i=o,n.label=5;case 5:return(e=i)&&(u=document.createElement("style"),c=document.createTextNode(e),u.appendChild(c),t.firstChild?t.insertBefore(u,t.firstChild):t.appendChild(u)),[2]}}))}))}function tt(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){var e,i,o,u;return n(this,(function(n){switch(n.label){case 0:return e=s(t,r),i=e.width,o=e.height,[4,I(t,r,!0)];case 1:return[4,Z(u=n.sent(),r)];case 2:return n.sent(),[4,z(u,r)];case 3:return n.sent(),function(t,e){var n=t.style;e.backgroundColor&&(n.backgroundColor=e.backgroundColor),e.width&&(n.width="".concat(e.width,"px")),e.height&&(n.height="".concat(e.height,"px"));var r=e.style;null!=r&&Object.keys(r).forEach((function(t){n[t]=r[t]}))}(u,r),[4,v(u,i,o)];case 4:return[2,n.sent()]}}))}))}function et(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){var e,i,o,u,c,a,f,d,v;return n(this,(function(n){switch(n.label){case 0:return e=s(t,r),i=e.width,o=e.height,[4,tt(t,r)];case 1:return[4,h(n.sent())];case 2:return u=n.sent(),c=document.createElement("canvas"),a=c.getContext("2d"),f=r.pixelRatio||function(){var t,e;try{e=process}catch(t){}var n=e&&e.env?e.env.devicePixelRatio:null;return n&&(t=parseInt(n,10),Number.isNaN(t)&&(t=1)),t||window.devicePixelRatio||1}(),d=r.canvasWidth||i,v=r.canvasHeight||o,c.width=d*f,c.height=v*f,r.skipAutoScale||function(t){(t.width>l||t.height>l)&&(t.width>l&&t.height>l?t.width>t.height?(t.height*=l/t.width,t.width=l):(t.width*=l/t.height,t.height=l):t.width>l?(t.height*=l/t.width,t.width=l):(t.width*=l/t.height,t.height=l))}(c),c.style.width="".concat(d),c.style.height="".concat(v),r.backgroundColor&&(a.fillStyle=r.backgroundColor,a.fillRect(0,0,c.width,c.height)),a.drawImage(u,0,0,c.width,c.height),[2,c]}}))}))}t.getFontEmbedCSS=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){return[2,Y(t,r)]}))}))},t.toBlob=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return[4,et(t,r)];case 1:return[4,f(e.sent())];case 2:return[2,e.sent()]}}))}))},t.toCanvas=et,t.toJpeg=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return[4,et(t,r)];case 1:return[2,e.sent().toDataURL("image/jpeg",r.quality||1)]}}))}))},t.toPixelData=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){var e,i,o,u;return n(this,(function(n){switch(n.label){case 0:return e=s(t,r),i=e.width,o=e.height,[4,et(t,r)];case 1:return u=n.sent(),[2,u.getContext("2d").getImageData(0,0,i,o).data]}}))}))},t.toPng=function(t,r){return void 0===r&&(r={}),e(this,void 0,void 0,(function(){return n(this,(function(e){switch(e.label){case 0:return[4,et(t,r)];case 1:return[2,e.sent().toDataURL()]}}))}))},t.toSvg=tt}));
 //# sourceMappingURL=html-to-image.js.map
 
 </script>
+
 </head>
 <body>
 
@@ -776,145 +779,146 @@ body{
 </div>
 
 <!-- ═══════════════ ARTIST CARD ═══════════════ -->
+
 <div class="template active" id="t-artist">
   <div class="artist-card" id="artist-card">
 
-    <div class="ac-bg"></div>
+<div class="ac-bg"></div>
 
-    <!-- Kittelsen forest silhouette bottom row -->
-    <svg class="ac-trees" viewBox="0 0 1000 200" preserveAspectRatio="none" aria-hidden="true">
-      <!-- dense pine silhouette row -->
-      <g fill="#0a1a0c" opacity="0.9">
-        <!-- left cluster -->
-        <polygon points="60,200 80,80 100,200"/>
-        <polygon points="90,200 115,55 140,200"/>
-        <polygon points="120,200 145,75 170,200"/>
-        <polygon points="5,200 20,120 35,200"/>
-        <polygon points="150,200 170,90 190,200"/>
-        <polygon points="175,200 195,105 215,200"/>
-        <!-- mid-left -->
-        <polygon points="220,200 245,60 270,200"/>
-        <polygon points="250,200 270,85 290,200"/>
-        <polygon points="280,200 298,110 315,200"/>
-        <!-- centre -->
-        <polygon points="360,200 385,45 410,200"/>
-        <polygon points="395,200 415,70 435,200"/>
-        <polygon points="430,200 448,95 465,200"/>
-        <!-- mid-right -->
-        <polygon points="490,200 515,65 540,200"/>
-        <polygon points="530,200 550,88 570,200"/>
-        <polygon points="570,200 585,115 600,200"/>
-        <!-- right cluster -->
-        <polygon points="640,200 665,58 690,200"/>
-        <polygon points="680,200 700,78 720,200"/>
-        <polygon points="715,200 732,100 750,200"/>
-        <polygon points="755,200 778,62 800,200"/>
-        <polygon points="790,200 808,82 825,200"/>
-        <polygon points="840,200 865,52 890,200"/>
-        <polygon points="875,200 895,72 915,200"/>
-        <polygon points="910,200 928,98 945,200"/>
-        <polygon points="945,200 965,68 985,200"/>
-        <rect x="0" y="160" width="1000" height="40"/>
-      </g>
-    </svg>
+<!-- Kittelsen forest silhouette bottom row -->
+<svg class="ac-trees" viewBox="0 0 1000 200" preserveAspectRatio="none" aria-hidden="true">
+  <!-- dense pine silhouette row -->
+  <g fill="#0a1a0c" opacity="0.9">
+    <!-- left cluster -->
+    <polygon points="60,200 80,80 100,200"/>
+    <polygon points="90,200 115,55 140,200"/>
+    <polygon points="120,200 145,75 170,200"/>
+    <polygon points="5,200 20,120 35,200"/>
+    <polygon points="150,200 170,90 190,200"/>
+    <polygon points="175,200 195,105 215,200"/>
+    <!-- mid-left -->
+    <polygon points="220,200 245,60 270,200"/>
+    <polygon points="250,200 270,85 290,200"/>
+    <polygon points="280,200 298,110 315,200"/>
+    <!-- centre -->
+    <polygon points="360,200 385,45 410,200"/>
+    <polygon points="395,200 415,70 435,200"/>
+    <polygon points="430,200 448,95 465,200"/>
+    <!-- mid-right -->
+    <polygon points="490,200 515,65 540,200"/>
+    <polygon points="530,200 550,88 570,200"/>
+    <polygon points="570,200 585,115 600,200"/>
+    <!-- right cluster -->
+    <polygon points="640,200 665,58 690,200"/>
+    <polygon points="680,200 700,78 720,200"/>
+    <polygon points="715,200 732,100 750,200"/>
+    <polygon points="755,200 778,62 800,200"/>
+    <polygon points="790,200 808,82 825,200"/>
+    <polygon points="840,200 865,52 890,200"/>
+    <polygon points="875,200 895,72 915,200"/>
+    <polygon points="910,200 928,98 945,200"/>
+    <polygon points="945,200 965,68 985,200"/>
+    <rect x="0" y="160" width="1000" height="40"/>
+  </g>
+</svg>
 
-    <!-- Corner pride dots -->
-    <div class="corner-dot tl"></div>
-    <div class="corner-dot tr"></div>
-    <div class="corner-dot bl"></div>
-    <div class="corner-dot br"></div>
+<!-- Corner pride dots -->
+<div class="corner-dot tl"></div>
+<div class="corner-dot tr"></div>
+<div class="corner-dot bl"></div>
+<div class="corner-dot br"></div>
 
-    <!-- TOP -->
-    <div class="ac-top">
-      <div class="ac-event-name">REGNBUENATT</div>
-      <div class="ac-event-sub">MARINEHAGEN · 6 JUNI 2026 · BERGEN</div>
-      <div class="ac-pride-line forest-line" style="width:55%;"></div>
+<!-- TOP -->
+<div class="ac-top">
+  <div class="ac-event-name">REGNBUENATT</div>
+  <div class="ac-event-sub">MARINEHAGEN · 6 JUNI 2026 · BERGEN</div>
+  <div class="ac-pride-line forest-line" style="width:55%;"></div>
+</div>
+
+<!-- PORTRAIT -->
+<div class="portrait-frame">
+  <!-- SVG decorative creature ring -->
+  <svg class="portrait-svg" viewBox="0 0 200 200" aria-hidden="true">
+    <!-- Outer dark halo -->
+    <circle cx="100" cy="100" r="96" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+    <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
+    <!-- Organic root/branch ring around portrait -->
+    <g fill="none" stroke="#0d1a0e" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+      <!-- top arc branch -->
+      <path d="M 68,34 Q 100,18 132,34" stroke-width="4"/>
+      <path d="M 75,30 Q 100,12 125,30" stroke-width="2.5"/>
+      <!-- small twig up-left -->
+      <path d="M 75,30 Q 68,18 62,10" stroke-width="1.8"/>
+      <path d="M 72,24 Q 66,16 70,8" stroke-width="1.2"/>
+      <!-- small twig up-right -->
+      <path d="M 125,30 Q 132,18 138,10" stroke-width="1.8"/>
+      <path d="M 128,24 Q 134,16 130,8" stroke-width="1.2"/>
+      <!-- left arc branch -->
+      <path d="M 34,68 Q 18,100 34,132" stroke-width="4"/>
+      <path d="M 30,75 Q 12,100 30,125" stroke-width="2.5"/>
+      <path d="M 28,85 Q 14,90 6,82" stroke-width="1.5"/>
+      <path d="M 26,105 Q 12,110 5,120" stroke-width="1.5"/>
+      <!-- right arc branch -->
+      <path d="M 166,68 Q 182,100 166,132" stroke-width="4"/>
+      <path d="M 170,75 Q 188,100 170,125" stroke-width="2.5"/>
+      <path d="M 172,85 Q 186,90 194,82" stroke-width="1.5"/>
+      <path d="M 174,105 Q 188,110 195,120" stroke-width="1.5"/>
+      <!-- bottom arc branch -->
+      <path d="M 68,166 Q 100,182 132,166" stroke-width="4"/>
+      <path d="M 75,170 Q 100,188 125,170" stroke-width="2.5"/>
+      <path d="M 78,172 Q 72,184 68,192" stroke-width="1.5"/>
+      <path d="M 122,172 Q 128,184 132,192" stroke-width="1.5"/>
+    </g>
+    <!-- Root knot details -->
+    <g fill="rgba(0,8,2,0.7)" opacity="0.6">
+      <ellipse cx="100" cy="18" rx="4" ry="2.5" transform="rotate(-5,100,18)"/>
+      <ellipse cx="18" cy="100" rx="2.5" ry="4" transform="rotate(-5,18,100)"/>
+      <ellipse cx="182" cy="100" rx="2.5" ry="4" transform="rotate(5,182,100)"/>
+      <ellipse cx="100" cy="182" rx="4" ry="2.5" transform="rotate(3,100,182)"/>
+    </g>
+    <!-- Small raven silhouette top-left branch -->
+    <g transform="translate(54,15) scale(0.45)" fill="#030c04" opacity="0.9">
+      <path d="M0,10 C2,6 8,4 12,6 C14,7 16,5 18,6 C20,7 18,10 16,10 C14,10 12,8 10,10 C8,12 6,12 4,11 Z"/>
+      <path d="M4,11 L2,14 L6,13 Z"/><!-- tail -->
+      <circle cx="14" cy="5.5" r="0.8"/><!-- eye -->
+    </g>
+    <!-- Forest/rose arc ring (thin) -->
+    <circle cx="100" cy="100" r="73"
+      fill="none"
+      stroke="url(#forestRing)"
+      stroke-width="1.4"
+      stroke-dasharray="22 9"
+      opacity="0.5"/>
+    <defs>
+      <linearGradient id="forestRing" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#2d7a50"/>
+        <stop offset="35%" stop-color="#50c87a"/>
+        <stop offset="55%" stop-color="#c44472"/>
+        <stop offset="75%" stop-color="#50c87a"/>
+        <stop offset="100%" stop-color="#2d7a50"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- Photo circle: click hint or button to upload, then drag/zoom -->
+  <div class="portrait-img" id="portrait-container">
+    <div class="upload-hint" id="upload-hint" onclick="document.getElementById('img-input').click()">
+      <span style="font-size:clamp(8px,1.5vw,11px);letter-spacing:0.3em;">LAST OPP</span>
+      <span style="font-size:clamp(7px,1.2vw,9px);letter-spacing:0.2em;opacity:0.5;">BILDE</span>
     </div>
+    <img id="portrait-preview" src="" alt="">
+  </div>
+</div>
 
-    <!-- PORTRAIT -->
-    <div class="portrait-frame">
-      <!-- SVG decorative creature ring -->
-      <svg class="portrait-svg" viewBox="0 0 200 200" aria-hidden="true">
-        <!-- Outer dark halo -->
-        <circle cx="100" cy="100" r="96" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-        <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
-        <!-- Organic root/branch ring around portrait -->
-        <g fill="none" stroke="#0d1a0e" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
-          <!-- top arc branch -->
-          <path d="M 68,34 Q 100,18 132,34" stroke-width="4"/>
-          <path d="M 75,30 Q 100,12 125,30" stroke-width="2.5"/>
-          <!-- small twig up-left -->
-          <path d="M 75,30 Q 68,18 62,10" stroke-width="1.8"/>
-          <path d="M 72,24 Q 66,16 70,8" stroke-width="1.2"/>
-          <!-- small twig up-right -->
-          <path d="M 125,30 Q 132,18 138,10" stroke-width="1.8"/>
-          <path d="M 128,24 Q 134,16 130,8" stroke-width="1.2"/>
-          <!-- left arc branch -->
-          <path d="M 34,68 Q 18,100 34,132" stroke-width="4"/>
-          <path d="M 30,75 Q 12,100 30,125" stroke-width="2.5"/>
-          <path d="M 28,85 Q 14,90 6,82" stroke-width="1.5"/>
-          <path d="M 26,105 Q 12,110 5,120" stroke-width="1.5"/>
-          <!-- right arc branch -->
-          <path d="M 166,68 Q 182,100 166,132" stroke-width="4"/>
-          <path d="M 170,75 Q 188,100 170,125" stroke-width="2.5"/>
-          <path d="M 172,85 Q 186,90 194,82" stroke-width="1.5"/>
-          <path d="M 174,105 Q 188,110 195,120" stroke-width="1.5"/>
-          <!-- bottom arc branch -->
-          <path d="M 68,166 Q 100,182 132,166" stroke-width="4"/>
-          <path d="M 75,170 Q 100,188 125,170" stroke-width="2.5"/>
-          <path d="M 78,172 Q 72,184 68,192" stroke-width="1.5"/>
-          <path d="M 122,172 Q 128,184 132,192" stroke-width="1.5"/>
-        </g>
-        <!-- Root knot details -->
-        <g fill="rgba(0,8,2,0.7)" opacity="0.6">
-          <ellipse cx="100" cy="18" rx="4" ry="2.5" transform="rotate(-5,100,18)"/>
-          <ellipse cx="18" cy="100" rx="2.5" ry="4" transform="rotate(-5,18,100)"/>
-          <ellipse cx="182" cy="100" rx="2.5" ry="4" transform="rotate(5,182,100)"/>
-          <ellipse cx="100" cy="182" rx="4" ry="2.5" transform="rotate(3,100,182)"/>
-        </g>
-        <!-- Small raven silhouette top-left branch -->
-        <g transform="translate(54,15) scale(0.45)" fill="#030c04" opacity="0.9">
-          <path d="M0,10 C2,6 8,4 12,6 C14,7 16,5 18,6 C20,7 18,10 16,10 C14,10 12,8 10,10 C8,12 6,12 4,11 Z"/>
-          <path d="M4,11 L2,14 L6,13 Z"/><!-- tail -->
-          <circle cx="14" cy="5.5" r="0.8"/><!-- eye -->
-        </g>
-        <!-- Forest/rose arc ring (thin) -->
-        <circle cx="100" cy="100" r="73"
-          fill="none"
-          stroke="url(#forestRing)"
-          stroke-width="1.4"
-          stroke-dasharray="22 9"
-          opacity="0.5"/>
-        <defs>
-          <linearGradient id="forestRing" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#2d7a50"/>
-            <stop offset="35%" stop-color="#50c87a"/>
-            <stop offset="55%" stop-color="#c44472"/>
-            <stop offset="75%" stop-color="#50c87a"/>
-            <stop offset="100%" stop-color="#2d7a50"/>
-          </linearGradient>
-        </defs>
-      </svg>
-
-      <!-- Photo circle: click hint or button to upload, then drag/zoom -->
-      <div class="portrait-img" id="portrait-container">
-        <div class="upload-hint" id="upload-hint" onclick="document.getElementById('img-input').click()">
-          <span style="font-size:clamp(8px,1.5vw,11px);letter-spacing:0.3em;">LAST OPP</span>
-          <span style="font-size:clamp(7px,1.2vw,9px);letter-spacing:0.2em;opacity:0.5;">BILDE</span>
-        </div>
-        <img id="portrait-preview" src="" alt="">
-      </div>
-    </div>
-
-    <!-- BOTTOM INFO -->
-    <div class="ac-bottom">
-      <div class="ac-name" contenteditable="true" data-ph="ARTISTNAVN" spellcheck="false"></div>
-      <div class="ac-dividers">
-        <div class="forest-line" style="flex:1;"></div>
-      </div>
-      <div class="ac-role" contenteditable="true" data-ph="ROLLE" spellcheck="false"></div>
-      <div class="ac-pronouns" contenteditable="true" data-ph="pronouns" spellcheck="false"></div>
-    </div>
+<!-- BOTTOM INFO -->
+<div class="ac-bottom">
+  <div class="ac-name" contenteditable="true" data-ph="ARTISTNAVN" spellcheck="false"></div>
+  <div class="ac-dividers">
+    <div class="forest-line" style="flex:1;"></div>
+  </div>
+  <div class="ac-role" contenteditable="true" data-ph="ROLLE" spellcheck="false"></div>
+  <div class="ac-pronouns" contenteditable="true" data-ph="pronouns" spellcheck="false"></div>
+</div>
 
   </div><!-- /artist-card -->
 
@@ -932,6 +936,7 @@ body{
 </div>
 
 <!-- ═══════════════ TIMELINE CARD ═══════════════ -->
+
 <div class="template" id="t-timeline">
   <div class="timeline-card" id="timeline-card">
     <div class="tl-bg"></div>
@@ -959,51 +964,52 @@ body{
       </g>
     </svg>
 
-    <div class="tl-header">
-      <div class="forest-line" style="margin-bottom:10px;"></div>
-      <div class="tl-top-row">
-        <div class="tl-logo">REGNBUENATT</div>
-        <div class="tl-section" contenteditable="true" data-ph="TIMELINE" spellcheck="false">TIMELINE</div>
-      </div>
-    </div>
+<div class="tl-header">
+  <div class="forest-line" style="margin-bottom:10px;"></div>
+  <div class="tl-top-row">
+    <div class="tl-logo">REGNBUENATT</div>
+    <div class="tl-section" contenteditable="true" data-ph="TIMELINE" spellcheck="false">TIMELINE</div>
+  </div>
+</div>
 
-    <div class="tl-rows">
-      <div class="tl-row">
-        <div class="pride-v"></div>
-        <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Billetter slippes</div>
-        <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">02/05/2026</div>
-      </div>
-      <div class="tl-row">
-        <div class="pride-v"></div>
-        <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Artist annonsering</div>
-        <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">09/05/2026</div>
-      </div>
-      <div class="tl-row">
-        <div class="pride-v"></div>
-        <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Earlybird slutter</div>
-        <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">23/05/2026</div>
-      </div>
-      <div class="tl-row">
-        <div class="pride-v"></div>
-        <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Dørene åpner</div>
-        <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">06/06/2026</div>
-      </div>
-      <div class="tl-row">
-        <div class="pride-v"></div>
-        <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">The Enchanted Forest</div>
-        <div class="tl-row-date" contenteditable="true" data-ph="tid" spellcheck="false">22:00</div>
-      </div>
-      <div class="tl-row">
-        <div class="pride-v"></div>
-        <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">The Forbidden</div>
-        <div class="tl-row-date" contenteditable="true" data-ph="tid" spellcheck="false">00:00</div>
-      </div>
-    </div>
+<div class="tl-rows">
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Billetter slippes</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">02/05/2026</div>
+  </div>
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Artist annonsering</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">09/05/2026</div>
+  </div>
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Earlybird slutter</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">23/05/2026</div>
+  </div>
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">Dørene åpner</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="DD/MM/YYYY" spellcheck="false">06/06/2026</div>
+  </div>
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">The Enchanted Forest</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="tid" spellcheck="false">22:00</div>
+  </div>
+  <div class="tl-row">
+    <div class="pride-v"></div>
+    <div class="tl-row-label" contenteditable="true" data-ph="Milestone" spellcheck="false">The Forbidden</div>
+    <div class="tl-row-date" contenteditable="true" data-ph="tid" spellcheck="false">00:00</div>
+  </div>
+</div>
 
-    <div class="tl-footer">
-      <div class="tl-venue">MARINEHAGEN · BERGEN · 6 JUNI 2026</div>
-      <div style="font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.25em;color:rgba(255,255,255,0.12);">bergenpride.no</div>
-    </div>
+<div class="tl-footer">
+  <div class="tl-venue">MARINEHAGEN · BERGEN · 6 JUNI 2026</div>
+  <div style="font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.25em;color:rgba(255,255,255,0.12);">bergenpride.no</div>
+</div>
+
   </div>
 
   <div class="card-controls">
@@ -1019,100 +1025,100 @@ body{
 </div>
 
 <!-- ═══════════════ STORY 9:16 ═══════════════ -->
+
 <div class="template" id="t-story">
   <div style="width:100%;max-width:min(380px,100%);margin:0 auto;overflow:hidden;">
   <div class="story-card" id="story-card">
 
-    <!-- bg layers -->
-    <div class="st-bg"></div>
-    <svg class="st-trees" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
-      <g fill="#0a1a0c" opacity="0.9">
-        <polygon points="0,300 18,200 36,300"/>
-        <polygon points="28,300 50,160 72,300"/>
-        <polygon points="60,300 82,185 104,300"/>
-        <polygon points="95,300 120,145 145,300"/>
-        <polygon points="135,300 158,170 180,300"/>
-        <polygon points="165,300 185,190 205,300"/>
-        <polygon points="195,300 220,148 244,300"/>
-        <polygon points="235,300 255,168 275,300"/>
-        <polygon points="265,300 285,188 305,300"/>
-        <polygon points="295,300 320,142 344,300"/>
-        <polygon points="335,300 358,165 380,300"/>
-        <polygon points="365,300 385,185 400,300"/>
-        <rect x="0" y="252" width="400" height="48"/>
-      </g>
-    </svg>
+<!-- bg layers -->
+<div class="st-bg"></div>
+<svg class="st-trees" viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
+  <g fill="#0a1a0c" opacity="0.9">
+    <polygon points="0,300 18,200 36,300"/>
+    <polygon points="28,300 50,160 72,300"/>
+    <polygon points="60,300 82,185 104,300"/>
+    <polygon points="95,300 120,145 145,300"/>
+    <polygon points="135,300 158,170 180,300"/>
+    <polygon points="165,300 185,190 205,300"/>
+    <polygon points="195,300 220,148 244,300"/>
+    <polygon points="235,300 255,168 275,300"/>
+    <polygon points="265,300 285,188 305,300"/>
+    <polygon points="295,300 320,142 344,300"/>
+    <polygon points="335,300 358,165 380,300"/>
+    <polygon points="365,300 385,185 400,300"/>
+    <rect x="0" y="252" width="400" height="48"/>
+  </g>
+</svg>
 
-    <!-- Tall tree silhouettes left + right -->
-    <svg class="st-side-trees" viewBox="0 0 100 600" preserveAspectRatio="none" aria-hidden="true">
-      <g fill="#060e06" opacity="0.55">
-        <polygon points="0,600 12,300 22,600"/>
-        <polygon points="15,600 28,260 40,600"/>
-        <polygon points="35,600 45,320 55,600"/>
-        <polygon points="55,600 68,280 80,600"/>
-        <polygon points="75,600 88,310 100,600"/>
-        <rect x="0" y="480" width="100" height="120"/>
-      </g>
-    </svg>
-    <svg class="st-side-trees right" viewBox="0 0 100 600" preserveAspectRatio="none" aria-hidden="true">
-      <g fill="#060e06" opacity="0.55">
-        <polygon points="0,600 12,300 22,600"/>
-        <polygon points="15,600 28,260 40,600"/>
-        <polygon points="35,600 45,320 55,600"/>
-        <polygon points="55,600 68,280 80,600"/>
-        <polygon points="75,600 88,310 100,600"/>
-        <rect x="0" y="480" width="100" height="120"/>
-      </g>
-    </svg>
+<!-- Tall tree silhouettes left + right -->
+<svg class="st-side-trees" viewBox="0 0 100 600" preserveAspectRatio="none" aria-hidden="true">
+  <g fill="#060e06" opacity="0.55">
+    <polygon points="0,600 12,300 22,600"/>
+    <polygon points="15,600 28,260 40,600"/>
+    <polygon points="35,600 45,320 55,600"/>
+    <polygon points="55,600 68,280 80,600"/>
+    <polygon points="75,600 88,310 100,600"/>
+    <rect x="0" y="480" width="100" height="120"/>
+  </g>
+</svg>
+<svg class="st-side-trees right" viewBox="0 0 100 600" preserveAspectRatio="none" aria-hidden="true">
+  <g fill="#060e06" opacity="0.55">
+    <polygon points="0,600 12,300 22,600"/>
+    <polygon points="15,600 28,260 40,600"/>
+    <polygon points="35,600 45,320 55,600"/>
+    <polygon points="55,600 68,280 80,600"/>
+    <polygon points="75,600 88,310 100,600"/>
+    <rect x="0" y="480" width="100" height="120"/>
+  </g>
+</svg>
 
-    <!-- TOP identity block -->
-    <div class="st-top">
-      <div class="st-logo">REGNBUENATT</div>
-      <div class="st-sub">MARINEHAGEN · 6 JUNI 2026 · BERGEN</div>
-      <div class="forest-line" style="width:70%;margin-top:10px;"></div>
-    </div>
+<!-- TOP identity block -->
+<div class="st-top">
+  <div class="st-logo">REGNBUENATT</div>
+  <div class="st-sub">MARINEHAGEN · 6 JUNI 2026 · BERGEN</div>
+  <div class="forest-line" style="width:70%;margin-top:10px;"></div>
+</div>
 
-    <!-- ROWS -->
-    <div class="st-rows" id="story-rows">
-      <div class="st-row">
-        <div class="st-dot" style="background:#3d9966;"></div>
-        <div class="st-row-label" contenteditable="true" spellcheck="false">Billetter slippes</div>
-        <div class="st-row-date" contenteditable="true" spellcheck="false">02/05</div>
-      </div>
-      <div class="st-row">
-        <div class="st-dot" style="background:#50c87a;"></div>
-        <div class="st-row-label" contenteditable="true" spellcheck="false">Artist annonsering</div>
-        <div class="st-row-date" contenteditable="true" spellcheck="false">09/05</div>
-      </div>
-      <div class="st-row">
-        <div class="st-dot" style="background:#7db896;"></div>
-        <div class="st-row-label" contenteditable="true" spellcheck="false">Earlybird slutter</div>
-        <div class="st-row-date" contenteditable="true" spellcheck="false">23/05</div>
-      </div>
-      <div class="st-row">
-        <div class="st-dot" style="background:#b05888;"></div>
-        <div class="st-row-label" contenteditable="true" spellcheck="false">Dørene åpner</div>
-        <div class="st-row-date" contenteditable="true" spellcheck="false">06/06</div>
-      </div>
-      <div class="st-row">
-        <div class="st-dot" style="background:#c44472;"></div>
-        <div class="st-row-label" contenteditable="true" spellcheck="false">The Enchanted Forest</div>
-        <div class="st-row-date" contenteditable="true" spellcheck="false">22:00</div>
-      </div>
-      <div class="st-row">
-        <div class="st-dot" style="background:#8b2252;"></div>
-        <div class="st-row-label" contenteditable="true" spellcheck="false">The Forbidden</div>
-        <div class="st-row-date" contenteditable="true" spellcheck="false">00:00</div>
-      </div>
-    </div>
+<!-- ROWS -->
+<div class="st-rows" id="story-rows">
+  <div class="st-row">
+    <div class="st-dot" style="background:#3d9966;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">Billetter slippes</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">02/05</div>
+  </div>
+  <div class="st-row">
+    <div class="st-dot" style="background:#50c87a;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">Artist annonsering</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">09/05</div>
+  </div>
+  <div class="st-row">
+    <div class="st-dot" style="background:#7db896;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">Earlybird slutter</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">23/05</div>
+  </div>
+  <div class="st-row">
+    <div class="st-dot" style="background:#b05888;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">Dørene åpner</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">06/06</div>
+  </div>
+  <div class="st-row">
+    <div class="st-dot" style="background:#c44472;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">The Enchanted Forest</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">22:00</div>
+  </div>
+  <div class="st-row">
+    <div class="st-dot" style="background:#8b2252;"></div>
+    <div class="st-row-label" contenteditable="true" spellcheck="false">The Forbidden</div>
+    <div class="st-row-date" contenteditable="true" spellcheck="false">00:00</div>
+  </div>
+</div>
 
-    <!-- BOTTOM -->
-    <div class="st-bottom">
-      <div class="forest-line" style="width:55%;margin-bottom:10px;"></div>
-      <div class="st-ticket">Billetter: bergenpride.no · Earlybird 295,-</div>
-      <div class="st-ticket" style="margin-top:3px;opacity:0.5;">I DØRA 395,- · TICKETCO</div>
-    </div>
-
+<!-- BOTTOM -->
+<div class="st-bottom">
+  <div class="forest-line" style="width:55%;margin-bottom:10px;"></div>
+  <div class="st-ticket">Billetter: bergenpride.no · Earlybird 295,-</div>
+  <div class="st-ticket" style="margin-top:3px;opacity:0.5;">I DØRA 395,- · TICKETCO</div>
+</div>
 
   </div>
   </div>
@@ -1130,90 +1136,91 @@ body{
 </div>
 
 <!-- ═══════════════ 4:5 POST ═══════════════ -->
+
 <div class="template" id="t-post">
   <div style="width:100%;max-width:min(480px,100%);margin:0 auto;overflow:hidden;">
   <div class="post-card" id="post-card">
 
-    <div class="post-bg"></div>
-    <svg class="post-trees" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true">
-      <g fill="#0a1a0c" opacity="0.9">
-        <polygon points="0,220 18,110 36,220"/><polygon points="30,220 55,80 80,220"/>
-        <polygon points="70,220 95,100 120,220"/><polygon points="110,220 140,60 170,220"/>
-        <polygon points="155,220 180,85 205,220"/><polygon points="200,220 222,105 244,220"/>
-        <polygon points="240,220 268,58 295,220"/><polygon points="285,220 308,80 330,220"/>
-        <polygon points="325,220 350,100 375,220"/><polygon points="370,220 400,52 430,220"/>
-        <polygon points="420,220 445,78 470,220"/><polygon points="465,220 488,98 510,220"/>
-        <polygon points="505,220 535,55 560,220"/><polygon points="552,220 575,82 598,220"/>
-        <polygon points="592,220 615,102 638,220"/><polygon points="632,220 660,58 688,220"/>
-        <polygon points="678,220 700,80 722,220"/><polygon points="715,220 738,100 760,220"/>
-        <polygon points="755,220 782,62 808,220"/><polygon points="800,220 822,84 844,220"/>
-        <polygon points="838,220 865,55 892,220"/><polygon points="882,220 905,78 928,220"/>
-        <polygon points="920,220 945,98 970,220"/><polygon points="960,220 982,68 1000,220"/>
-        <rect x="0" y="178" width="1000" height="42"/>
-      </g>
-    </svg>
+<div class="post-bg"></div>
+<svg class="post-trees" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true">
+  <g fill="#0a1a0c" opacity="0.9">
+    <polygon points="0,220 18,110 36,220"/><polygon points="30,220 55,80 80,220"/>
+    <polygon points="70,220 95,100 120,220"/><polygon points="110,220 140,60 170,220"/>
+    <polygon points="155,220 180,85 205,220"/><polygon points="200,220 222,105 244,220"/>
+    <polygon points="240,220 268,58 295,220"/><polygon points="285,220 308,80 330,220"/>
+    <polygon points="325,220 350,100 375,220"/><polygon points="370,220 400,52 430,220"/>
+    <polygon points="420,220 445,78 470,220"/><polygon points="465,220 488,98 510,220"/>
+    <polygon points="505,220 535,55 560,220"/><polygon points="552,220 575,82 598,220"/>
+    <polygon points="592,220 615,102 638,220"/><polygon points="632,220 660,58 688,220"/>
+    <polygon points="678,220 700,80 722,220"/><polygon points="715,220 738,100 760,220"/>
+    <polygon points="755,220 782,62 808,220"/><polygon points="800,220 822,84 844,220"/>
+    <polygon points="838,220 865,55 892,220"/><polygon points="882,220 905,78 928,220"/>
+    <polygon points="920,220 945,98 970,220"/><polygon points="960,220 982,68 1000,220"/>
+    <rect x="0" y="178" width="1000" height="42"/>
+  </g>
+</svg>
 
 
-    <!-- TOP -->
-    <div class="post-top">
-      <div class="post-logo">REGNBUENATT</div>
-      <div class="post-sub">MARINEHAGEN · 6 JUNI 2026 · BERGEN</div>
-      <div class="forest-line" style="width:55%;margin-top:8px;"></div>
+<!-- TOP -->
+<div class="post-top">
+  <div class="post-logo">REGNBUENATT</div>
+  <div class="post-sub">MARINEHAGEN · 6 JUNI 2026 · BERGEN</div>
+  <div class="forest-line" style="width:55%;margin-top:8px;"></div>
+</div>
+
+<!-- PORTRAIT -->
+<div class="post-frame">
+  <svg class="portrait-svg" viewBox="0 0 200 200" aria-hidden="true">
+    <circle cx="100" cy="100" r="96" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+    <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+    <g fill="none" stroke="#0d1a0e" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+      <path d="M 68,34 Q 100,18 132,34" stroke-width="4"/>
+      <path d="M 75,30 Q 100,12 125,30" stroke-width="2.5"/>
+      <path d="M 75,30 Q 68,18 62,10" stroke-width="1.8"/>
+      <path d="M 125,30 Q 132,18 138,10" stroke-width="1.8"/>
+      <path d="M 34,68 Q 18,100 34,132" stroke-width="4"/>
+      <path d="M 30,75 Q 12,100 30,125" stroke-width="2.5"/>
+      <path d="M 28,85 Q 14,90 6,82" stroke-width="1.5"/>
+      <path d="M 26,105 Q 12,110 5,120" stroke-width="1.5"/>
+      <path d="M 166,68 Q 182,100 166,132" stroke-width="4"/>
+      <path d="M 170,75 Q 188,100 170,125" stroke-width="2.5"/>
+      <path d="M 172,85 Q 186,90 194,82" stroke-width="1.5"/>
+      <path d="M 174,105 Q 188,110 195,120" stroke-width="1.5"/>
+      <path d="M 68,166 Q 100,182 132,166" stroke-width="4"/>
+      <path d="M 75,170 Q 100,188 125,170" stroke-width="2.5"/>
+    </g>
+    <g transform="translate(54,15) scale(0.45)" fill="#030c04" opacity="0.9">
+      <path d="M0,10 C2,6 8,4 12,6 C14,7 16,5 18,6 C20,7 18,10 16,10 C14,10 12,8 10,10 C8,12 6,12 4,11 Z"/>
+      <path d="M4,11 L2,14 L6,13 Z"/>
+      <circle cx="14" cy="5.5" r="0.8"/>
+    </g>
+    <circle cx="100" cy="100" r="73" fill="none" stroke="url(#forestRing2)" stroke-width="1.4" stroke-dasharray="22 9" opacity="0.5"/>
+    <defs>
+      <linearGradient id="forestRing2" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#2d7a50"/>
+        <stop offset="35%" stop-color="#50c87a"/>
+        <stop offset="55%" stop-color="#c44472"/>
+        <stop offset="75%" stop-color="#50c87a"/>
+        <stop offset="100%" stop-color="#2d7a50"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  <div class="post-img" id="post-container">
+    <div class="upload-hint" id="post-upload-hint" onclick="document.getElementById('img-input2').click()">
+      <span style="font-size:clamp(8px,1.5vw,11px);letter-spacing:0.3em;">LAST OPP</span>
+      <span style="font-size:clamp(7px,1.2vw,9px);letter-spacing:0.2em;opacity:0.5;">BILDE</span>
     </div>
+    <img id="post-preview" src="" alt="">
+  </div>
+</div>
 
-    <!-- PORTRAIT -->
-    <div class="post-frame">
-      <svg class="portrait-svg" viewBox="0 0 200 200" aria-hidden="true">
-        <circle cx="100" cy="100" r="96" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-        <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
-        <g fill="none" stroke="#0d1a0e" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
-          <path d="M 68,34 Q 100,18 132,34" stroke-width="4"/>
-          <path d="M 75,30 Q 100,12 125,30" stroke-width="2.5"/>
-          <path d="M 75,30 Q 68,18 62,10" stroke-width="1.8"/>
-          <path d="M 125,30 Q 132,18 138,10" stroke-width="1.8"/>
-          <path d="M 34,68 Q 18,100 34,132" stroke-width="4"/>
-          <path d="M 30,75 Q 12,100 30,125" stroke-width="2.5"/>
-          <path d="M 28,85 Q 14,90 6,82" stroke-width="1.5"/>
-          <path d="M 26,105 Q 12,110 5,120" stroke-width="1.5"/>
-          <path d="M 166,68 Q 182,100 166,132" stroke-width="4"/>
-          <path d="M 170,75 Q 188,100 170,125" stroke-width="2.5"/>
-          <path d="M 172,85 Q 186,90 194,82" stroke-width="1.5"/>
-          <path d="M 174,105 Q 188,110 195,120" stroke-width="1.5"/>
-          <path d="M 68,166 Q 100,182 132,166" stroke-width="4"/>
-          <path d="M 75,170 Q 100,188 125,170" stroke-width="2.5"/>
-        </g>
-        <g transform="translate(54,15) scale(0.45)" fill="#030c04" opacity="0.9">
-          <path d="M0,10 C2,6 8,4 12,6 C14,7 16,5 18,6 C20,7 18,10 16,10 C14,10 12,8 10,10 C8,12 6,12 4,11 Z"/>
-          <path d="M4,11 L2,14 L6,13 Z"/>
-          <circle cx="14" cy="5.5" r="0.8"/>
-        </g>
-        <circle cx="100" cy="100" r="73" fill="none" stroke="url(#forestRing2)" stroke-width="1.4" stroke-dasharray="22 9" opacity="0.5"/>
-        <defs>
-          <linearGradient id="forestRing2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#2d7a50"/>
-            <stop offset="35%" stop-color="#50c87a"/>
-            <stop offset="55%" stop-color="#c44472"/>
-            <stop offset="75%" stop-color="#50c87a"/>
-            <stop offset="100%" stop-color="#2d7a50"/>
-          </linearGradient>
-        </defs>
-      </svg>
-      <div class="post-img" id="post-container">
-        <div class="upload-hint" id="post-upload-hint" onclick="document.getElementById('img-input2').click()">
-          <span style="font-size:clamp(8px,1.5vw,11px);letter-spacing:0.3em;">LAST OPP</span>
-          <span style="font-size:clamp(7px,1.2vw,9px);letter-spacing:0.2em;opacity:0.5;">BILDE</span>
-        </div>
-        <img id="post-preview" src="" alt="">
-      </div>
-    </div>
-
-    <!-- BOTTOM -->
-    <div class="post-bottom">
-      <div class="post-name" contenteditable="true" data-ph="ARTISTNAVN" spellcheck="false"></div>
-      <div class="forest-line" style="width:70%;margin:6px 0;"></div>
-      <div class="post-role" contenteditable="true" data-ph="ROLLE" spellcheck="false"></div>
-      <div class="post-pronouns" contenteditable="true" data-ph="pronouns" spellcheck="false"></div>
-    </div>
+<!-- BOTTOM -->
+<div class="post-bottom">
+  <div class="post-name" contenteditable="true" data-ph="ARTISTNAVN" spellcheck="false"></div>
+  <div class="forest-line" style="width:70%;margin:6px 0;"></div>
+  <div class="post-role" contenteditable="true" data-ph="ROLLE" spellcheck="false"></div>
+  <div class="post-pronouns" contenteditable="true" data-ph="pronouns" spellcheck="false"></div>
+</div>
 
   </div>
   </div>
@@ -1231,93 +1238,95 @@ body{
 </div>
 
 <!-- ═══════════════ OVERLAY ═══════════════ -->
+
 <div class="template" id="t-overlay">
   <div class="overlay-card" id="overlay-card">
     <div class="ov-checker"></div>
 
-    <!-- Pride edge lines -->
-    <div class="ov-edge-top"></div>
-    <div class="ov-edge-bottom"></div>
+<!-- Pride edge lines -->
+<div class="ov-edge-top"></div>
+<div class="ov-edge-bottom"></div>
 
-    <!-- Corner brackets (Kittelsen-style organic) -->
-    <div class="ov-corner ov-tl">
-      <svg viewBox="0 0 80 80" aria-hidden="true">
-        <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
-        <!-- organic branch from corner -->
-        <path d="M2,40 Q-5,35 -8,28" fill="none" stroke="rgba(100,220,160,0.3)" stroke-width="1.2" stroke-linecap="round"/>
-        <path d="M2,55 Q-4,52 -7,46" fill="none" stroke="rgba(100,220,160,0.2)" stroke-width="0.8" stroke-linecap="round"/>
-        <path d="M40,2 Q36,-4 28,-8" fill="none" stroke="rgba(100,220,160,0.25)" stroke-width="1.0" stroke-linecap="round"/>
-        <!-- corner pride dot -->
-        <circle cx="2" cy="2" r="2.5" fill="rgba(80,185,120,0.55)"/>
-      </svg>
-    </div>
-    <div class="ov-corner ov-tr">
-      <svg viewBox="0 0 80 80" aria-hidden="true">
-        <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
-        <circle cx="2" cy="2" r="2.5" fill="rgba(195,70,110,0.55)"/>
-      </svg>
-    </div>
-    <div class="ov-corner ov-bl">
-      <svg viewBox="0 0 80 80" aria-hidden="true">
-        <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
-        <circle cx="2" cy="2" r="2.5" fill="rgba(195,70,110,0.55)"/>
-      </svg>
-    </div>
-    <div class="ov-corner ov-br">
-      <svg viewBox="0 0 80 80" aria-hidden="true">
-        <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
-        <circle cx="2" cy="2" r="2.5" fill="rgba(80,185,120,0.55)"/>
-      </svg>
-    </div>
+<!-- Corner brackets (Kittelsen-style organic) -->
+<div class="ov-corner ov-tl">
+  <svg viewBox="0 0 80 80" aria-hidden="true">
+    <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <!-- organic branch from corner -->
+    <path d="M2,40 Q-5,35 -8,28" fill="none" stroke="rgba(100,220,160,0.3)" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M2,55 Q-4,52 -7,46" fill="none" stroke="rgba(100,220,160,0.2)" stroke-width="0.8" stroke-linecap="round"/>
+    <path d="M40,2 Q36,-4 28,-8" fill="none" stroke="rgba(100,220,160,0.25)" stroke-width="1.0" stroke-linecap="round"/>
+    <!-- corner pride dot -->
+    <circle cx="2" cy="2" r="2.5" fill="rgba(80,185,120,0.55)"/>
+  </svg>
+</div>
+<div class="ov-corner ov-tr">
+  <svg viewBox="0 0 80 80" aria-hidden="true">
+    <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <circle cx="2" cy="2" r="2.5" fill="rgba(195,70,110,0.55)"/>
+  </svg>
+</div>
+<div class="ov-corner ov-bl">
+  <svg viewBox="0 0 80 80" aria-hidden="true">
+    <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <circle cx="2" cy="2" r="2.5" fill="rgba(195,70,110,0.55)"/>
+  </svg>
+</div>
+<div class="ov-corner ov-br">
+  <svg viewBox="0 0 80 80" aria-hidden="true">
+    <path d="M2,78 L2,8 Q2,2 8,2 L78,2" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+    <circle cx="2" cy="2" r="2.5" fill="rgba(80,185,120,0.55)"/>
+  </svg>
+</div>
 
-    <!-- Huldra silhouette left -->
-    <svg class="ov-creature huldra" viewBox="0 0 60 120" aria-hidden="true">
-      <g fill="#0d1a0e">
-        <!-- body -->
-        <ellipse cx="30" cy="55" rx="10" ry="20"/>
-        <!-- head -->
-        <circle cx="30" cy="30" r="10"/>
-        <!-- hair flowing -->
-        <path d="M22,30 Q10,45 15,65 Q18,75 12,90" fill="none" stroke="#0d1a0e" stroke-width="4" stroke-linecap="round"/>
-        <path d="M20,28 Q8,40 10,55 Q12,65 8,80" fill="none" stroke="#0d1a0e" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- tail curling -->
-        <path d="M30,75 Q35,90 25,105 Q15,118 20,120" fill="none" stroke="#0d1a0e" stroke-width="3" stroke-linecap="round"/>
-        <path d="M28,74 Q22,88 18,102" fill="none" stroke="#0d1a0e" stroke-width="1.5" stroke-linecap="round"/>
-        <!-- arm -->
-        <path d="M22,55 Q10,62 8,72" fill="none" stroke="#0d1a0e" stroke-width="4" stroke-linecap="round"/>
-      </g>
-    </svg>
+<!-- Huldra silhouette left -->
+<svg class="ov-creature huldra" viewBox="0 0 60 120" aria-hidden="true">
+  <g fill="#0d1a0e">
+    <!-- body -->
+    <ellipse cx="30" cy="55" rx="10" ry="20"/>
+    <!-- head -->
+    <circle cx="30" cy="30" r="10"/>
+    <!-- hair flowing -->
+    <path d="M22,30 Q10,45 15,65 Q18,75 12,90" fill="none" stroke="#0d1a0e" stroke-width="4" stroke-linecap="round"/>
+    <path d="M20,28 Q8,40 10,55 Q12,65 8,80" fill="none" stroke="#0d1a0e" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- tail curling -->
+    <path d="M30,75 Q35,90 25,105 Q15,118 20,120" fill="none" stroke="#0d1a0e" stroke-width="3" stroke-linecap="round"/>
+    <path d="M28,74 Q22,88 18,102" fill="none" stroke="#0d1a0e" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- arm -->
+    <path d="M22,55 Q10,62 8,72" fill="none" stroke="#0d1a0e" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
 
-    <!-- Nøkken water ripple right -->
-    <svg class="ov-creature nokken" viewBox="0 0 60 120" aria-hidden="true">
-      <g fill="#0d1a0e">
-        <!-- emerging from water -->
-        <ellipse cx="30" cy="65" rx="9" ry="18"/>
-        <circle cx="30" cy="42" r="9"/>
-        <!-- hair dripping -->
-        <path d="M38,42 Q50,55 48,70 Q46,82 50,95" fill="none" stroke="#0d1a0e" stroke-width="3.5" stroke-linecap="round"/>
-        <path d="M22,42 Q12,52 14,65" fill="none" stroke="#0d1a0e" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- water surface -->
-        <path d="M5,83 Q15,78 25,83 Q35,88 45,83 Q55,78 60,83" fill="none" stroke="#0d1a0e" stroke-width="2" stroke-linecap="round"/>
-        <path d="M0,90 Q12,85 22,90 Q32,95 44,90 Q55,85 60,90" fill="none" stroke="#0d1a0e" stroke-width="1.5" stroke-linecap="round"/>
-        <!-- hand reaching -->
-        <path d="M38,62 Q50,58 54,50" fill="none" stroke="#0d1a0e" stroke-width="3.5" stroke-linecap="round"/>
-        <path d="M54,50 Q56,45 54,42" fill="none" stroke="#0d1a0e" stroke-width="2" stroke-linecap="round"/>
-        <path d="M54,50 Q58,47 58,44" fill="none" stroke="#0d1a0e" stroke-width="2" stroke-linecap="round"/>
-      </g>
-    </svg>
+<!-- Nøkken water ripple right -->
+<svg class="ov-creature nokken" viewBox="0 0 60 120" aria-hidden="true">
+  <g fill="#0d1a0e">
+    <!-- emerging from water -->
+    <ellipse cx="30" cy="65" rx="9" ry="18"/>
+    <circle cx="30" cy="42" r="9"/>
+    <!-- hair dripping -->
+    <path d="M38,42 Q50,55 48,70 Q46,82 50,95" fill="none" stroke="#0d1a0e" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M22,42 Q12,52 14,65" fill="none" stroke="#0d1a0e" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- water surface -->
+    <path d="M5,83 Q15,78 25,83 Q35,88 45,83 Q55,78 60,83" fill="none" stroke="#0d1a0e" stroke-width="2" stroke-linecap="round"/>
+    <path d="M0,90 Q12,85 22,90 Q32,95 44,90 Q55,85 60,90" fill="none" stroke="#0d1a0e" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- hand reaching -->
+    <path d="M38,62 Q50,58 54,50" fill="none" stroke="#0d1a0e" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M54,50 Q56,45 54,42" fill="none" stroke="#0d1a0e" stroke-width="2" stroke-linecap="round"/>
+    <path d="M54,50 Q58,47 58,44" fill="none" stroke="#0d1a0e" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
 
-    <!-- Top logo bar -->
-    <div class="ov-top-bar">
-      <div class="ov-logo">REGNBUENATT</div>
-      <div class="ov-sub">MARINEHAGEN · 6 JUNI 2026</div>
-    </div>
+<!-- Top logo bar -->
+<div class="ov-top-bar">
+  <div class="ov-logo">REGNBUENATT</div>
+  <div class="ov-sub">MARINEHAGEN · 6 JUNI 2026</div>
+</div>
 
-    <!-- Bottom info bar -->
-    <div class="ov-bottom-bar">
-      <div class="ov-info" contenteditable="true" data-ph="NOW PLAYING" spellcheck="false"></div>
-      <div class="ov-info" contenteditable="true" data-ph="bergenpride.no" spellcheck="false">bergenpride.no</div>
-    </div>
+<!-- Bottom info bar -->
+<div class="ov-bottom-bar">
+  <div class="ov-info" contenteditable="true" data-ph="NOW PLAYING" spellcheck="false"></div>
+  <div class="ov-info" contenteditable="true" data-ph="bergenpride.no" spellcheck="false">bergenpride.no</div>
+</div>
+
   </div>
 
   <div class="card-controls">
@@ -1333,6 +1342,7 @@ body{
 </div>
 
 <!-- Hidden file inputs -->
+
 <input type="file" id="img-input" accept="image/*" onchange="loadPortrait(event)">
 <input type="file" id="img-input2" accept="image/*" onchange="loadPost(event)">
 
@@ -1514,7 +1524,7 @@ const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)
   ||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
 const isMobile=isIOS||/Mobi|Android/i.test(navigator.userAgent);
 
-/* ── RENDER CARD ── */
+/* ── RENDER (desktop only – html-to-image) ── */
 async function renderCard(id){
   const card=document.getElementById(id);
   const isOverlay=(id==='overlay-card');
@@ -1523,238 +1533,161 @@ async function renderCard(id){
     prevBg=card.style.background;card.style.background='#000408';
     checker=card.querySelector('.ov-checker');if(checker)checker.style.display='none';
   }
-  const opts={quality:1,pixelRatio:isIOS?1:2,cacheBust:false,skipFonts:false};
   try{
-    // iOS WebKit needs multiple passes to fill canvas correctly
-    const passes=isIOS?3:1;
+    // Run 3 passes – WebKit sometimes needs warm-up
     let dataUrl;
-    for(let i=0;i<passes;i++){
-      dataUrl=await window.htmlToImage.toPng(card,opts);
+    for(let i=0;i<3;i++){
+      dataUrl=await window.htmlToImage.toPng(card,{
+        quality:1,pixelRatio:2,cacheBust:false,skipFonts:false
+      });
     }
-    // Check for blank result (all black / < 5KB)
-    if(dataUrl && dataUrl.length < 8000 && isIOS){
-      // Truly blank — fall back to fullscreen screenshot
-      return null;
-    }
-    return {toDataURL:()=>dataUrl};
+    return dataUrl;
   }finally{
     if(isOverlay){card.style.background=prevBg;if(checker)checker.style.display='';}
   }
 }
 
-/* ── FULLSCREEN FOR SCREENSHOT (iOS) ── */
-function fullscreenForScreenshot(id){
-  const card=document.getElementById(id);
-  const isOverlay=(id==='overlay-card');
-
-  // Overlay: use canvas-based transparent PNG export instead
-  if(isOverlay){renderOverlayToCanvas();return;}
-
+/* ── SHOW RESULT OVERLAY ── */
+function showResult(dataURL,id){
   const old=document.getElementById('img-export-overlay');if(old)old.remove();
   const wrap=document.createElement('div');wrap.id='img-export-overlay';
-  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;overflow:hidden;';
+  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;overflow-y:auto;-webkit-overflow-scrolling:touch;';
+  const hint=document.createElement('p');
+  hint.style.cssText='color:rgba(255,255,255,0.45);font-family:monospace;font-size:9px;letter-spacing:0.28em;text-align:center;line-height:2;margin:0;';
+  hint.innerHTML=isMobile?'LANGT-TRYKK PÅ BILDET → LAGRE BILDE':'HØYREKLIKK → LAGRE BILDE';
+  const img=document.createElement('img');img.src=dataURL;
+  img.style.cssText='max-width:100%;max-height:70vh;display:block;';
+  const row=document.createElement('div');row.style.cssText='display:flex;gap:10px;flex-wrap:wrap;justify-content:center;';
+  const dl=document.createElement('a');
+  dl.href=dataURL;dl.download=`regnbuenatt_${id||'card'}_${Date.now()}.png`;
+  dl.textContent='↓ Last ned fil';
+  dl.style.cssText='color:rgba(80,185,120,0.85);font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:10px 20px;border:1px solid rgba(80,185,120,0.35);text-decoration:none;';
+  const closeBtn=document.createElement('button');closeBtn.textContent='LUKK';
+  closeBtn.style.cssText='font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:10px 20px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;';
+  closeBtn.onclick=()=>wrap.remove();
+  row.append(dl,closeBtn);wrap.append(hint,img,row);
+  document.body.appendChild(wrap);
+  if(!isMobile)dl.click();
+}
 
-  const ratio=card.offsetHeight/Math.max(card.offsetWidth,1);
-  // Leave 70px for bottom bar
-  const maxH=window.innerHeight-70;
-  const maxW=window.innerWidth;
-  // Scale card to fit both width and height
-  const scaleByW=maxW;
-  const scaleByH=maxH/ratio;
-  const finalW=Math.min(scaleByW,scaleByH);
-  const finalH=finalW*ratio;
+/* ── FULLSCREEN SCREENSHOT (iOS – teleport card, no clone) ── */
+function fullscreenForScreenshot(id){
+  const isOverlay=(id==='overlay-card');
+  if(isOverlay){renderOverlayToCanvas();return;}
 
-  const clone=card.cloneNode(true);
-  clone.style.cssText=`
-    width:${finalW}px;height:${finalH}px;
-    flex-shrink:0;pointer-events:none;overflow:hidden;
-  `;
+  const card=document.getElementById(id);
+  const old=document.getElementById('img-export-overlay');if(old)old.remove();
 
-  // Wrapper with crop guides
+  // Save original parent + next sibling so we can return card
+  const origParent=card.parentNode;
+  const origNext=card.nextSibling;
+  const origStyle=card.getAttribute('style')||'';
+
+  const wrap=document.createElement('div');wrap.id='img-export-overlay';
+  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;';
+
+  // Calculate card dimensions to fill screen perfectly
+  const vw=window.innerWidth;
+  const vh=window.innerHeight-64; // 64px for bar
+  const naturalRatio=card.offsetHeight/Math.max(card.offsetWidth,1);
+  const byW=vw;
+  const byH=vh/naturalRatio;
+  const w=Math.floor(Math.min(byW,byH));
+  const h=Math.floor(w*naturalRatio);
+
+  // Move actual card into overlay (not a clone – no scaling/font issues)
+  card.style.cssText=`width:${w}px!important;height:${h}px!important;flex-shrink:0;`;
+
+  // Crop marks wrapper
   const cardWrap=document.createElement('div');
   cardWrap.style.cssText='position:relative;display:inline-flex;flex-shrink:0;';
-
-  // Green corner L-brackets
-  [
-    {top:'-12px',left:'-12px',borderTop:'2px solid #50c87a',borderLeft:'2px solid #50c87a'},
-    {top:'-12px',right:'-12px',borderTop:'2px solid #50c87a',borderRight:'2px solid #50c87a'},
-    {bottom:'-12px',left:'-12px',borderBottom:'2px solid #50c87a',borderLeft:'2px solid #50c87a'},
-    {bottom:'-12px',right:'-12px',borderBottom:'2px solid #50c87a',borderRight:'2px solid #50c87a'},
-  ].forEach(c=>{
-    const el=document.createElement('div');
-    el.style.cssText='position:absolute;width:20px;height:20px;pointer-events:none;'
-      +Object.entries(c).map(([k,v])=>`${k}:${v}`).join(';');
-    cardWrap.appendChild(el);
-  });
-
-  // Rose dashed outline
   const outline=document.createElement('div');
-  outline.style.cssText='position:absolute;inset:-1px;border:1px dashed rgba(195,70,110,0.55);pointer-events:none;z-index:1;';
+  outline.style.cssText='position:absolute;inset:0;border:2px solid rgba(80,185,120,0.8);pointer-events:none;z-index:99;box-shadow:0 0 0 1px rgba(195,70,110,0.4);';
+  // Corner ticks
+  ['tl','tr','bl','br'].forEach(pos=>{
+    const t=document.createElement('div');
+    const isT=pos.startsWith('t'),isL=pos.endsWith('l');
+    t.style.cssText=`position:absolute;width:16px;height:16px;${isT?'top:-2px':'bottom:-2px'};${isL?'left:-2px':'right:-2px'};border-${isT?'top':'bottom'}:3px solid #50c87a;border-${isL?'left':'right'}:3px solid #50c87a;z-index:100;pointer-events:none;`;
+    outline.appendChild(t);
+  });
   cardWrap.appendChild(outline);
-  cardWrap.appendChild(clone);
+  cardWrap.appendChild(card);
   wrap.appendChild(cardWrap);
 
-  // Bottom bar
+  // Bar
   const bar=document.createElement('div');
-  bar.style.cssText='width:100%;height:70px;padding:0 16px;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;';
+  bar.style.cssText='width:100%;height:64px;padding:0 16px;background:#000;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;';
   const hint=document.createElement('span');
-  hint.style.cssText='color:rgba(255,255,255,0.4);font-family:monospace;font-size:8px;letter-spacing:0.3em;line-height:1.9;';
+  hint.style.cssText='color:rgba(255,255,255,0.4);font-family:monospace;font-size:8px;letter-spacing:0.28em;line-height:1.9;';
   hint.innerHTML='TA SKJERMBILDE<br>CROP TIL GRØNN RAMME';
-  const closeBtn=document.createElement('button');
-  closeBtn.textContent='LUKK';
+  const closeBtn=document.createElement('button');closeBtn.textContent='LUKK';
   closeBtn.style.cssText='font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:9px 18px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.5);cursor:pointer;';
-  closeBtn.onclick=()=>wrap.remove();
+  closeBtn.onclick=()=>{
+    // Return card to original position
+    card.setAttribute('style',origStyle);
+    if(origNext)origParent.insertBefore(card,origNext);
+    else origParent.appendChild(card);
+    wrap.remove();
+  };
   bar.append(hint,closeBtn);
   wrap.appendChild(bar);
-  wrap.addEventListener('click',e=>{if(e.target===wrap)wrap.remove();});
   document.body.appendChild(wrap);
 }
 
-/* ── OVERLAY → TRANSPARENT PNG via Canvas ── */
+/* ── OVERLAY TRANSPARENT PNG ── */
 async function renderOverlayToCanvas(){
   const old=document.getElementById('img-export-overlay');if(old)old.remove();
-
-  // Show loading
   const loading=document.createElement('div');loading.id='img-export-overlay';
   loading.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;';
   loading.innerHTML='<span style="font-family:monospace;font-size:10px;letter-spacing:0.3em;color:rgba(255,255,255,0.4);">BYGGER OVERLAY...</span>';
   document.body.appendChild(loading);
   await document.fonts.ready;
-
   const W=1080,H=1920;
   const cv=document.createElement('canvas');cv.width=W;cv.height=H;
   const ctx=cv.getContext('2d');
-  // transparent background
-
-  // Helper: gradient line
-  function drawGradLine(y,stops){
-    const g=ctx.createLinearGradient(0,y,W,y);
+  function gradLine(y,stops){
+    const g=ctx.createLinearGradient(0,0,W,0);
     stops.forEach(([t,c])=>g.addColorStop(t,c));
     ctx.fillStyle=g;ctx.fillRect(0,y,W,2);
   }
-
-  // Top forest line
-  drawGradLine(0,[
-    [0,'transparent'],[0.08,'rgba(28,75,42,0)'],
-    [0.2,'rgba(55,140,85,0.7)'],[0.38,'rgba(80,185,120,0.95)'],
-    [0.52,'rgba(195,70,110,0.95)'],[0.65,'rgba(155,45,80,0.75)'],
-    [0.8,'rgba(55,140,85,0.55)'],[0.96,'rgba(28,75,42,0)'],[1,'transparent']
-  ]);
-  // Bottom forest line (reversed)
-  drawGradLine(H-2,[
-    [0,'transparent'],[0.2,'rgba(195,70,110,0.6)'],
-    [0.4,'rgba(80,185,120,0.9)'],[0.58,'rgba(195,70,110,0.9)'],
-    [0.78,'rgba(55,140,85,0.5)'],[1,'transparent']
-  ]);
-
-  // Corner brackets
+  gradLine(0,[[0,'transparent'],[0.2,'rgba(55,140,85,0.7)'],[0.38,'rgba(80,185,120,0.95)'],[0.52,'rgba(195,70,110,0.95)'],[0.8,'rgba(55,140,85,0.55)'],[1,'transparent']]);
+  gradLine(H-2,[[0,'transparent'],[0.2,'rgba(195,70,110,0.6)'],[0.5,'rgba(80,185,120,0.9)'],[0.8,'rgba(55,140,85,0.5)'],[1,'transparent']]);
   ctx.strokeStyle='rgba(255,255,255,0.35)';ctx.lineWidth=2;
-  const bSize=0.12*W;const bR=8;
-  function bracket(x,y,xDir,yDir){
-    ctx.beginPath();
-    ctx.moveTo(x,y+yDir*bSize);ctx.lineTo(x,y+yDir*bR);
-    ctx.arcTo(x,y,x+xDir*bR,y,bR);
-    ctx.lineTo(x+xDir*bSize,y);ctx.stroke();
-    // Green dot at corner
-    ctx.fillStyle='rgba(80,185,120,0.55)';
-    ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fill();
+  function bracket(x,y,dx,dy){
+    const s=W*0.1;ctx.beginPath();
+    ctx.moveTo(x,y+dy*s);ctx.lineTo(x,y+dy*8);ctx.arcTo(x,y,x+dx*8,y,8);ctx.lineTo(x+dx*s,y);ctx.stroke();
+    ctx.fillStyle='rgba(80,185,120,0.55)';ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fill();
   }
   bracket(0,0,1,1);bracket(W,0,-1,1);bracket(0,H,1,-1);bracket(W,H,-1,-1);
-
-  // Logo
-  ctx.fillStyle='rgba(255,255,255,0.82)';
-  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillStyle='rgba(255,255,255,0.82)';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.shadowColor='rgba(80,185,120,0.55)';ctx.shadowBlur=30;
-  ctx.font=`${Math.round(W*0.042)}px 'Bebas Neue'`;
+  ctx.font=`${Math.round(W*0.042)}px Bebas Neue`;
   ctx.fillText('REGNBUENATT',W/2,H*0.058);
-
-  ctx.shadowBlur=0;
-  ctx.font=`${Math.round(W*0.02)}px 'Courier Prime'`;
+  ctx.shadowBlur=0;ctx.font=`${Math.round(W*0.018)}px Courier Prime`;
   ctx.fillStyle='rgba(255,255,255,0.52)';
-  ctx.fillText('MARINEHAGEN · 6 JUNI 2026',W/2,H*0.082);
-
-  // Bottom info
-  ctx.font=`${Math.round(W*0.018)}px 'Courier Prime'`;
-  ctx.fillStyle='rgba(255,255,255,0.22)';
-  ctx.textAlign='left';
-  ctx.fillText('NOW PLAYING',W*0.04,H-H*0.022);
-  ctx.textAlign='right';
-  ctx.fillText('bergenpride.no',W*0.96,H-H*0.022);
-
+  ctx.fillText('MARINEHAGEN · 6 JUNI 2026',W/2,H*0.08);
+  ctx.font=`${Math.round(W*0.016)}px Courier Prime`;
+  ctx.fillStyle='rgba(255,255,255,0.22)';ctx.textAlign='left';
+  ctx.fillText('NOW PLAYING',W*0.04,H-H*0.025);ctx.textAlign='right';
+  ctx.fillText('bergenpride.no',W*0.96,H-H*0.025);
   const dataURL=cv.toDataURL('image/png');
   loading.remove();
-  showResult(dataURL);
-}
-
-/* ── SHOW IMAGE IN PAGE ── */
-function showResult(dataURL,id){
-  const old=document.getElementById('img-export-overlay');if(old)old.remove();
-  const wrap=document.createElement('div');wrap.id='img-export-overlay';
-  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;overflow-y:auto;-webkit-overflow-scrolling:touch;';
-
-  const hint=document.createElement('p');
-  hint.style.cssText='color:rgba(255,255,255,0.45);font-family:monospace;font-size:9px;letter-spacing:0.28em;text-align:center;line-height:2;margin:0;';
-  hint.innerHTML=isMobile
-    ?'LANGT-TRYKK PÅ BILDET<br>→ LAGRE BILDE'
-    :'HØYREKLIKK → LAGRE BILDE';
-
-  const img=document.createElement('img');img.src=dataURL;
-  img.style.cssText='max-width:100%;max-height:72vh;display:block;';
-
-  const row=document.createElement('div');row.style.cssText='display:flex;gap:10px;flex-wrap:wrap;justify-content:center;';
-  const dl=document.createElement('a');
-  dl.href=dataURL;dl.download=`regnbuenatt_${id||'card'}_${Date.now()}.png`;
-  dl.textContent='↓ Last ned';
-  dl.style.cssText='color:rgba(80,185,120,0.85);font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:10px 20px;border:1px solid rgba(80,185,120,0.35);text-decoration:none;';
-  const closeBtn=document.createElement('button');closeBtn.textContent='LUKK';
-  closeBtn.style.cssText='font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:10px 20px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;';
-  closeBtn.onclick=()=>wrap.remove();
-  row.append(dl,closeBtn);
-  wrap.append(hint,img,row);
-  document.body.appendChild(wrap);
-  if(!isMobile)dl.click();
-}
-
-/* ── SHOW IMAGE OVERLAY ── */
-function showResult(dataURL){
-  const old=document.getElementById('img-export-overlay');if(old)old.remove();
-  const wrap=document.createElement('div');wrap.id='img-export-overlay';
-  wrap.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;overflow-y:auto;-webkit-overflow-scrolling:touch;';
-
-  const hint=document.createElement('p');
-  hint.style.cssText='color:rgba(255,255,255,0.45);font-family:monospace;font-size:9px;letter-spacing:0.25em;text-align:center;line-height:2;';
-  hint.innerHTML=isMobile
-    ?'LANGT-TRYKK PÅ BILDET<br>→ LAGRE BILDE / KOPIER BILDE'
-    :'HØYREKLIKK → LAGRE BILDE &nbsp;·&nbsp; Eller trykk nedlasting';
-
-  const img=document.createElement('img');img.src=dataURL;
-  img.style.cssText='max-width:100%;max-height:68vh;display:block;border:1px solid rgba(255,255,255,0.07);';
-
-  const row=document.createElement('div');row.style.cssText='display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;';
-
-  const dl=document.createElement('a');dl.href=dataURL;dl.download=`regnbuenatt_${Date.now()}.png`;
-  dl.textContent='↓ Last ned';
-  dl.style.cssText='color:rgba(80,185,120,0.85);font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:9px 18px;border:1px solid rgba(80,185,120,0.35);text-decoration:none;';
-
-  const closeBtn=document.createElement('button');closeBtn.textContent='LUKK';
-  closeBtn.style.cssText='font-family:monospace;font-size:9px;letter-spacing:0.3em;padding:9px 18px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:rgba(255,255,255,0.4);cursor:pointer;';
-  closeBtn.onclick=()=>wrap.remove();
-
-  row.append(dl,closeBtn);
-  wrap.append(hint,img,row);
-  document.body.appendChild(wrap);
-
-  // Desktop: auto-trigger download immediately
-  if(!isMobile){dl.click();}
+  showResult(dataURL,'overlay');
 }
 
 /* ── DOWNLOAD ── */
 async function downloadCard(id,btn){
   const orig=btn.textContent;btn.textContent='Laster...';btn.disabled=true;
   try{
-    const result=await renderCard(id);
-    if(!result){fullscreenForScreenshot(id);return;}
-    const dataURL=result.toDataURL();
+    if(isMobile&&id!=='overlay-card'){
+      fullscreenForScreenshot(id);
+      return;
+    }
+    if(id==='overlay-card'){
+      await renderOverlayToCanvas();
+      return;
+    }
+    const dataURL=await renderCard(id);
     showResult(dataURL,id);
   }catch(e){
     fullscreenForScreenshot(id);
@@ -1765,24 +1698,27 @@ async function downloadCard(id,btn){
 async function copyCard(id,btn){
   const orig=btn.textContent;btn.textContent='Laster...';btn.disabled=true;
   try{
-    const result=await renderCard(id);
-    if(!result){fullscreenForScreenshot(id);return;}
-    const dataURL=result.toDataURL();
-    if(!isMobile){
-      try{
-        const res=await fetch(dataURL);const blob=await res.blob();
-        await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
-        btn.textContent='✓ Kopiert!';
-        setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},2200);
-        return;
-      }catch{}
+    if(isMobile){
+      if(id==='overlay-card')await renderOverlayToCanvas();
+      else fullscreenForScreenshot(id);
+      return;
     }
+    // Desktop
+    const dataURL=await renderCard(id);
+    try{
+      const res=await fetch(dataURL);const blob=await res.blob();
+      await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+      btn.textContent='✓ Kopiert!';
+      setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},2200);
+      return;
+    }catch{}
     showResult(dataURL,id);
   }catch(e){
     fullscreenForScreenshot(id);
   }finally{
     if(btn.textContent==='Laster...'){btn.textContent=orig;btn.disabled=false;}
-  }}
+  }
+}
 
 /* ── OVERLAY CHECKER ── */
 function toggleChecker(){
@@ -1824,5 +1760,6 @@ function removeStRow(){
   rows.removeChild(rows.lastElementChild);
 }
 </script>
+
 </body>
 </html>
