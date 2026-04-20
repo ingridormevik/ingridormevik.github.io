@@ -879,7 +879,338 @@ const NARRATIVE=[
   {main:'your body remembers every time it was free',sub:'',ch:4},
 ];
 
-// [content truncated intentionally in this upload attempt]
-</script>
-</body>
-</html>
+// ── BERGEN NARRATIVE — mountains, magic, belonging ──
+const BERGEN_NARRATIVE=[
+  // ── Mountains and geography ──
+  {main:'munkebotn knows your name at midnight',sub:'the mountain has always known',ch:0},
+  {main:'stoltzekleiven is not a climb',sub:'it is a return',ch:0},
+  {main:'sandviksbatteriet: the fortress was never theirs',sub:'it was always yours',ch:0},
+  {main:'seven mountains hold seven secrets',sub:'you know every single one',ch:0},
+  {main:'fløyen sees you every morning',sub:'and says: yes, still you',ch:0},
+  {main:'ulriken is the tallest',sub:'and it bends toward you',ch:0},
+  {main:"bergen's rain is not sad",sub:'it is intimate',ch:0},
+  {main:'this city is small enough to know you',sub:'large enough to hold you',ch:0},
+  {main:'the fjord stretches toward the horizon',sub:'carrying everything it knows about you',ch:0},
+
+  // ── Bergen and belonging ──
+  {main:'bryggen has seen everything',sub:'it keeps quiet about all of it',ch:1},
+  {main:'bergen survived the plague and everything after',sub:'and you',ch:1},
+  {main:'the rain falls on queer and non-queer alike',sub:'it is democratic',ch:1},
+  {main:'we marched in these streets when the law said we should not',sub:'the mountains watched',ch:1},
+  {main:'bergen is not kind to everyone',sub:'it is kind to us',ch:1},
+  {main:'this city received you',sub:'that is not an accident',ch:1},
+
+  // ── Mysticism and westland energy ──
+  {main:'the seven mountains are not just geography',sub:'they are character',ch:2},
+  {main:"bergen's magic is grey and green and wet",sub:'and absolutely real',ch:2},
+  {main:'you can walk from city centre to forest in fifteen minutes',sub:'that is not normal. it is beautiful.',ch:2},
+  {main:'the mountain above the city reminds you that you are small',sub:'and that this is a relief',ch:2},
+  {main:'the mystical energy of the west coast is not metaphor',sub:'it is in the ground',ch:2},
+  {main:'bergen was built in a landscape that was already magical',sub:'we simply joined it',ch:2},
+
+  // ── Queerness and nature ──
+  {main:'the west norwegian nature is not innocent',sub:'it is ancient and it knows things',ch:3},
+  {main:'bergen is a city for those who want mountain and sea and darkness at once',sub:'',ch:3},
+  {main:'the rain makes everything intimate',sub:'that is very queer of the rain',ch:3},
+  {main:'those of us who grew up here knew early',sub:'nature held us even when people did not',ch:3},
+  {main:'fløyen remembers you as a child',sub:'and as the one you became',ch:3},
+  {main:"the west coast's wildness is our wildness",sub:'we belong to this landscape',ch:3},
+
+  // ── Digital and closing ──
+  {main:'the Turing test: fragments of a life saved by pixels',sub:'first place. always.',ch:4},
+  {main:'twine holds what words alone cannot',sub:'',ch:4},
+  {main:'the dragonborn within is always queer',sub:'skyrim knew before you did',ch:4},
+  {main:'every path you choose is the right one',sub:'',ch:4},
+  {main:'den forbudte skogen was never forbidden',sub:'just waiting',ch:4},
+  {main:'we are bergensers and we are queer',sub:'that is the same sentence',ch:4},
+  {main:'bergen is a city where music is played near water',sub:'that is not coincidental',ch:4},
+  {main:'tonight this entire mountain belongs to us',sub:'',ch:4},
+  {main:'regnbuenatt 2026: this is the closing song',sub:'Bergen Pride · Marinehagen · June 6',ch:4},
+];
+
+// Bergen's 7 mountains with approximate screen positions and names
+const BERGEN_FJELL=[
+  {name:'FLØYEN',      nx:0.45, ny:0.25, nw:0.18, iconic:true},
+  {name:'ULRIKEN',     nx:0.72, ny:0.17, nw:0.22, iconic:true},
+  {name:'LØVSTAKKEN',  nx:0.25, ny:0.30, nw:0.20, iconic:false},
+  {name:'DAMSGÅRDSFJELLET',nx:0.10,ny:0.36,nw:0.18, iconic:false},
+  {name:'SANDVIKSFJELLET',nx:0.55,ny:0.22,nw:0.17, iconic:false},
+  {name:'LYDERHORN',   nx:0.06, ny:0.42, nw:0.15, iconic:false},
+  {name:'RUNDEMANEN',  nx:0.36, ny:0.28, nw:0.16, iconic:false},
+];
+
+const BPH=80,BFIN=22,BHOLD=32,BFOUT=8;
+const TOTAL_BEATS=NARRATIVE.length*BPH;
+let nBeat=0,nAlpha=0,nTarget=0;
+let phraseBeat=0,phraseIdx=0,inPhrase=false;
+let charSparks=[],lastPhraseIdx=-1;
+let dataLines=[];
+for(let i=0;i<6;i++)dataLines.push({y:Math.random(),spd:0.0002+Math.random()*0.0004,a:0,target:0,ph:Math.random()*Math.PI*2});
+
+function tickNarrative(){
+  const cb=nBeat%TOTAL_BEATS;
+  nBeat++;
+  const bip=cb%BPH;
+  const pi=Math.floor(cb/BPH);
+  phraseIdx=pi;
+  if(bip<BFIN){nTarget=bip/BFIN;inPhrase=true;phraseBeat=bip;}
+  else if(bip<BFIN+BHOLD){nTarget=1;inPhrase=true;phraseBeat=bip;}
+  else if(bip<BFIN+BHOLD+BFOUT){nTarget=1-(bip-BFIN-BHOLD)/BFOUT;inPhrase=true;phraseBeat=bip;}
+  else{nTarget=0;inPhrase=false;phraseBeat=bip;}
+  if(bip%8===0){const dl=dataLines[Math.floor(Math.random()*dataLines.length)];dl.target=0.08+Math.random()*0.06;dl.y=0.15+Math.random()*0.65;}
+
+  // Update HUD chapter name
+  const ch=NARRATIVE[pi%NARRATIVE.length].ch;
+  const chap=CHAPTERS[ch];
+  document.getElementById('s-chapter').textContent=chap.name;
+  document.getElementById('s-creature').textContent=chap.creature.toUpperCase();
+}
+
+// ── WITCH PRINCESS NARRATIVE — Forest Meeting EP ──
+const WITCH_NARRATIVE=[
+  // ── The Journey after Trøllabundin ──
+  {main:'we are not alone',sub:'we have never been alone',ch:0},
+  {main:'your ancestors walked this forest before you',sub:'they walk it still',ch:0},
+  {main:'the drum is older than language',sub:'your body remembers',ch:0},
+  {main:'we are all connected to mother earth',sub:'every root knows your name',ch:0},
+  {main:'the cocoa opens what fear has closed',sub:'let it',ch:0},
+  {main:'humanity connects to our ancestors',sub:'across every century',ch:0},
+  {main:'the drum began before the first word was spoken',sub:'',ch:0},
+  {main:'the crone is humming at the edge of the forest',sub:'she knows you are coming',ch:0},
+  {main:'you are not entering something foreign',sub:'you are entering something forgotten',ch:0},
+  {main:'the trance is not a loss of self',sub:'it is a deeper finding',ch:0},
+  {main:'trøllabundin: spellbound and walking forward',sub:'',ch:0},
+  {main:'every animal in this wood has paused to watch you pass',sub:'',ch:0},
+
+  // ── Forest Meeting ──
+  {main:'the forest has been waiting for this meeting',sub:'it prepared the space',ch:1},
+  {main:'what you feel in your chest right now',sub:'that is recognition',ch:1},
+  {main:'your grief is ancient',sub:'so is your joy',ch:1},
+  {main:'we are all connected',sub:'river to root to rain to river',ch:1},
+  {main:'the tree does not ask if it belongs here',sub:'neither do you',ch:1},
+  {main:'your heartbeat is a drum in the oldest ceremony',sub:'',ch:1},
+  {main:'sweet and wild and aching and real',sub:'this is the love story',ch:1},
+  {main:'they move like water / like wind / like wanting',sub:'',ch:1},
+  {main:'the boundary between your world and theirs',sub:'was always thin here',ch:1},
+  {main:'this is not metaphor',sub:'you are actually here',ch:1},
+  {main:'the forest spirits do not run from what you are',sub:'they were waiting for exactly this',ch:1},
+
+  // ── Guardians ──
+  {main:'the guardians are not obstacles',sub:'they are witnesses',ch:2},
+  {main:'you have been here before',sub:'in every body that carried your blood',ch:2},
+  {main:'mother earth holds your weight without asking why',sub:'',ch:2},
+  {main:'what they tried to silence in you',sub:'the forest amplifies',ch:2},
+  {main:'your ancestors survived so you could dance here',sub:'',ch:2},
+  {main:'the stone remembers every prayer',sub:'yours is heard',ch:2},
+  {main:'the elders are singing / the young ones answer back',sub:'this is how it passes on',ch:2},
+  {main:'you are dancing with your ancestors and your living friends',sub:'in the same moment',ch:2},
+  {main:'life is a gift',sub:'the guardians came to remind you',ch:2},
+  {main:'every tribe that danced before us left the rhythm in the ground',sub:'you can feel it',ch:2},
+  {main:'dance',sub:'it is the oldest instruction and it is still correct',ch:2},
+
+  // ── Snow Raven ──
+  {main:'the raven carries your name to the spirit world',sub:'and brings back medicine',ch:3},
+  {main:'we are woven from the same thread',sub:'every living thing',ch:3},
+  {main:'this is not escape',sub:'this is remembering',ch:3},
+  {main:'we are not alone',sub:'not tonight, not ever',ch:3},
+  {main:'let the music move what the mind holds too tight',sub:'',ch:3},
+  {main:'humanity is connected',sub:'across every ocean, every mountain',ch:3},
+  {main:'snow raven sings from the arctic',sub:'her message travels every ocean',ch:3},
+  {main:'we are all indigenous to this earth',sub:'all of us / without exception',ch:3},
+  {main:'the earth remembers even when we do not',sub:'',ch:3},
+  {main:'how do we live the old knowledge inside the new world',sub:'we carry it in the body',ch:3},
+  {main:'let the raven carry your name somewhere cold and true',sub:'',ch:3},
+  {main:'we are not separate from the world',sub:'we are the world / dancing',ch:3},
+];
+
+// ── MAGICAL — queer coded Norwegian creatures ──
+const MAGICAL_NARRATIVE=[
+  {main:'nøkken lives between shapes',sub:'choosing a new one each night',ch:0},
+  {main:'the water holds every form you have ever been',sub:'',ch:0},
+  {main:'his voice sounds like the thing you want most',sub:'',ch:0},
+  {main:'every river that runs to the sea is looking for something',sub:'so is he',ch:0},
+  {main:'the boundary between his world and yours is already thin',sub:'',ch:0},
+  {main:'what the water shows you',sub:'keep it',ch:0},
+  {main:'nøkken does not change for anyone',sub:'he changes because he wants to',ch:0},
+  {main:'the mirror has never lied',sub:'not once',ch:0},
+  {main:'some call it enchantment',sub:'he calls it recognition',ch:0},
+  {main:'he is still there',sub:'just below the surface / still singing',ch:0},
+  {main:'what he offers is not safe',sub:'it is necessary',ch:0},
+  {main:'his love was too large for the world that rejected it',sub:'the water kept it',ch:0},
+
+  {main:'draugen screams because he was never given the words',sub:'',ch:1},
+  {main:'the half-boat carries everything that was refused burial',sub:'',ch:1},
+  {main:'he haunts because he refuses to stay gone',sub:'',ch:1},
+  {main:'they called it a curse',sub:'he calls it loyalty',ch:1},
+  {main:'the sea held him when the land would not',sub:'',ch:1},
+  {main:'every ghost is just someone who was not allowed to finish',sub:'',ch:1},
+  {main:'his body is salt and fury',sub:'and he is beautiful',ch:1},
+  {main:'he did not choose to rise',sub:'the water would not keep him down',ch:1},
+  {main:'he does not haunt this coast',sub:'he owns it',ch:1},
+  {main:'the sea brought him back',sub:'the sea always brings us back',ch:1},
+  {main:'what they called monstrous',sub:'was just the truth they feared',ch:1},
+  {main:'none of us stay gone',sub:'',ch:1},
+
+  {main:'bergtrollet has been in this mountain since before the city had a name',sub:'',ch:2},
+  {main:'his love is measured in centuries',sub:'not years',ch:2},
+  {main:'he turned to stone once',sub:'he turned back / he always turns back',ch:2},
+  {main:'the troll who loved the wrong person',sub:'there is no such thing',ch:2},
+  {main:'every crack in the granite is where something beautiful tried to get out',sub:'',ch:2},
+  {main:'his patience is not weakness',sub:'it is the weight of everything he has survived',ch:2},
+  {main:'bergtrollet does not need you to understand him',sub:'only to stand here',ch:2},
+  {main:'the mountain remembers every prayer',sub:'every longing / every name',ch:2},
+  {main:'he is still here',sub:'he will still be here',ch:2},
+  {main:'they threw stones at the mountain',sub:'the mountain is still there',ch:2},
+  {main:'his hands have held this landscape since the ice retreated',sub:'',ch:2},
+  {main:'the mountain loves slowly',sub:'and completely',ch:2},
+
+  {main:'huldra is the forest letting itself be desired',sub:'',ch:3},
+  {main:'her tail is not a flaw',sub:'it is a signature',ch:3},
+  {main:'she chose this form',sub:'she chooses it every time',ch:3},
+  {main:'they wanted her beautiful and obedient',sub:'she kept the tail',ch:3},
+  {main:'her song does not trick',sub:'it offers',ch:3},
+  {main:'the hollow in her back is where she keeps what she will not give away',sub:'',ch:3},
+  {main:'she moves through the forest like she invented it',sub:'she did',ch:3},
+  {main:'huldra takes nothing that is not freely given',sub:'and it is always freely given',ch:3},
+  {main:'her desire is not dangerous',sub:'yours was just unprepared for it',ch:3},
+  {main:'she peeks from behind the tree',sub:'because she decides when she steps out',ch:3},
+  {main:'she belongs to herself',sub:'first / always',ch:3},
+  {main:'every creature in this wood has felt her pass',sub:'',ch:3},
+
+  {main:'fossegrimen sits at the waterfall and plays what cannot be said',sub:'',ch:4},
+  {main:'he will teach you his music',sub:'the price is that you feel everything',ch:4},
+  {main:'every note is something someone could not hold inside anymore',sub:'',ch:4},
+  {main:'the fiddle knows what the throat cannot carry',sub:'',ch:4},
+  {main:'the strings vibrate with every colour',sub:'the rainbow was his idea',ch:4},
+  {main:'fossegrimen does not play for audiences',sub:'he plays for the ones who need it',ch:4},
+  {main:'the waterfall plays without stopping',sub:'he plays without stopping',ch:4},
+  {main:'every queer musician who ever played contains him',sub:'',ch:4},
+  {main:'the music never stops',sub:'',ch:4},
+  {main:'he is still there at the waterfall',sub:'you can hear him if you listen',ch:4},
+  {main:'his music is older than the words for what he is',sub:'',ch:4},
+  {main:'what the fiddle plays tonight',sub:'outlasts everything',ch:4},
+];
+
+// ── FORBIDDEN — X-rated version of the creatures ──
+const FORBIDDEN_NARRATIVE=[
+  {main:'nøkken comes to you at the waterline',sub:'and he is exactly what you want',ch:0},
+  {main:'the water is warm and dark',sub:'and he is waiting',ch:0},
+  {main:'his hands know the shape of you before you arrive',sub:'',ch:0},
+  {main:'the boundary between his world and yours dissolves here',sub:'let it',ch:0},
+  {main:'he has no interest in your inhibitions',sub:'leave them on the bank',ch:0},
+  {main:'desire does not ask permission from the mind',sub:'',ch:0},
+  {main:'he will not remember your name',sub:'you will not forget his',ch:0},
+  {main:'what happens at the waterline',sub:'stays at the waterline',ch:0},
+  {main:'come in',sub:'',ch:0},
+  {main:'what he offers is not safe',sub:'it is necessary',ch:0},
+  {main:'your body knows what it needs',sub:'the water knows / he knows',ch:0},
+  {main:'the night has no morning',sub:'if you do not want it to',ch:0},
+
+  {main:'draugen wants you',sub:'and does not apologise for it',ch:1},
+  {main:'his body is cold and salt',sub:'and entirely his',ch:1},
+  {main:'there are no rules here',sub:'that were not written for someone else',ch:1},
+  {main:'the dead do not follow the instructions of the living',sub:'',ch:1},
+  {main:'what they called dangerous',sub:'you call yours',ch:1},
+  {main:'he will not be gentle',sub:'unless you ask him to be',ch:1},
+  {main:'the night opens like a wound',sub:'in the best way',ch:1},
+  {main:'this is not love',sub:'this is older than love / this is hunger',ch:1},
+  {main:'draugen at the waterline',sub:'this is your invitation',ch:1},
+  {main:'the sea does not ask',sub:'it takes and gives equally',ch:1},
+  {main:'take what you were never allowed to take',sub:'',ch:1},
+  {main:'his hands are the hands of everything that was repressed',sub:'',ch:1},
+
+  {main:'bergtrollet is slow and enormous',sub:'and entirely focused on you',ch:2},
+  {main:'he has all night',sub:'he has all century / he is in no rush',ch:2},
+  {main:'the mountain does not hurry',sub:'and neither will he',ch:2},
+  {main:'his patience is its own kind of violence',sub:'',ch:2},
+  {main:'his hands know everything',sub:'',ch:2},
+  {main:'the deep bass of his voice moves through stone',sub:'it moves through you',ch:2},
+  {main:'there is nothing soft about him',sub:'except the way he holds your face',ch:2},
+  {main:'he knows where everything is',sub:'he has always known',ch:2},
+  {main:'this is not tender',sub:'this is the other thing / the old thing',ch:2},
+  {main:'let the mountain have you',sub:'you will be changed by the stone',ch:2},
+  {main:'every nerve you have is a geological formation',sub:'and he knows the terrain',ch:2},
+  {main:'the stone remembers',sub:'and so will you',ch:2},
+
+  {main:'huldra chose you',sub:'this is not an accident',ch:3},
+  {main:'her desire is a forest fire',sub:'and she is letting it burn',ch:3},
+  {main:'she will not make herself smaller',sub:'she is full size and she knows it',ch:3},
+  {main:'she takes her time',sub:'because she has decided this is worth her time',ch:3},
+  {main:'her tail moves in the dark',sub:'and it is the most beautiful thing',ch:3},
+  {main:'she knows what you want',sub:'she knew before you did',ch:3},
+  {main:'her pleasure is not a gift to you',sub:'it is her own and she shares it',ch:3},
+  {main:'she is not performing anything',sub:'she is completely herself / here',ch:3},
+  {main:'huldra does not leave',sub:'until she wants to',ch:3},
+  {main:'the forest holds all of this',sub:'there are no neighbours in the forest',ch:3},
+  {main:'she belongs to herself',sub:'everything else is negotiated',ch:3},
+  {main:'the branches above you',sub:'a canopy and a conspiracy',ch:3},
+
+  {main:'fossegrimen plays until your body loses the thread of itself',sub:'',ch:4},
+  {main:'the music is inside you now',sub:'and he knows it',ch:4},
+  {main:'every note is somewhere on your skin',sub:'',ch:4},
+  {main:'the waterfall is loud enough',sub:'that no one can hear anything',ch:4},
+  {main:'he does not offer this to everyone',sub:'you were chosen by the sound',ch:4},
+  {main:'the fiddle strings vibrate',sub:'at the frequency of your wanting',ch:4},
+  {main:'he plays and you move',sub:'the difference between those two things disappears',ch:4},
+  {main:'all night',sub:'the waterfall / the dark / the music / you',ch:4},
+  {main:'fossegrimen does not stop',sub:'until the wanting stops',ch:4},
+  {main:'the wanting does not stop',sub:'',ch:4},
+  {main:'the fiddle plays',sub:'',ch:4},
+  {main:'this is what he was waiting at the waterfall for',sub:'',ch:4},
+];
+
+function currentPhrase(){
+  const cb=(nBeat-1)%TOTAL_BEATS;
+  if(currentMode==='bergen'){const ib=cb%(BERGEN_NARRATIVE.length*BPH);return BERGEN_NARRATIVE[Math.floor(ib/BPH)%BERGEN_NARRATIVE.length];}
+  if(currentMode==='witch'){const wb=cb%(WITCH_NARRATIVE.length*BPH);return WITCH_NARRATIVE[Math.floor(wb/BPH)%WITCH_NARRATIVE.length];}
+  if(currentMode==='magical'){const mb=cb%(MAGICAL_NARRATIVE.length*BPH);return MAGICAL_NARRATIVE[Math.floor(mb/BPH)%MAGICAL_NARRATIVE.length];}
+  if(currentMode==='forbidden'){const fb=cb%(FORBIDDEN_NARRATIVE.length*BPH);return FORBIDDEN_NARRATIVE[Math.floor(fb/BPH)%FORBIDDEN_NARRATIVE.length];}
+  if(currentMode==='digital'){const db=cb%(DIGITAL_NARRATIVE.length*BPH);return DIGITAL_NARRATIVE[Math.floor(db/BPH)%DIGITAL_NARRATIVE.length];}
+  return NARRATIVE[Math.floor(cb/BPH)%NARRATIVE.length];
+}
+function currentChapter(){
+  if(currentMode==='digital'){const p=currentPhrase();return p?DIGITAL_CHAPTERS[p.ch]:DIGITAL_CHAPTERS[0];}
+  const p=currentPhrase();return p?CHAPTERS[p.ch]:CHAPTERS[0];
+}
+function phraseType(p){
+  if(!p)return'forest';
+  const m=p.main;
+  if(m.includes('algorithm')||m.includes('glitch')||m.includes('fiddle')||m.includes('music')||m.includes('note')||m.includes('song'))return'music';
+  if(m.includes('earth')||m.includes('roots')||m.includes('connected')||m.includes('tree')||m.includes('forest')||m.includes('pine')||m.includes('tail'))return'earth';
+  if(m.includes('fjord')||m.includes('water')||m.includes('wave')||m.includes('sea')||m.includes('nokken')||m.includes('draugen'))return'water';
+  if(m.includes('mountain')||m.includes('stone')||m.includes('rock')||m.includes('granite')||m.includes('troll'))return'stone';
+  return'forest';
+}
+
+// ============================================================
+//  CREATURE SYSTEM — ALL 5 always visible, chapter one highlighted
+// ============================================================
+const CREATURE_NAMES=['nokken','draugen','bergtrollet','huldra','fossegrimen'];
+// Natural habitat spawn zones [xMin,xMax,yMin,yMax]
+const CREATURE_ZONES=[
+  [0.04,0.38, 0.62,0.82],  // nokken — sea/water, lower screen
+  [0.55,0.92, 0.58,0.82],  // draugen — sea, right side lower
+  [0.18,0.72, 0.10,0.36],  // bergtrollet — mountain ridge, top
+  [0.04,0.26, 0.40,0.68],  // huldra — forest treeline, left
+  [0.28,0.66, 0.48,0.75],  // fossegrimen — river/waterfall, center-low
+];
+const CREATURE_MICRO_ZONES={
+  nokken:[[0.06,0.14,0.68,0.80],[0.12,0.22,0.66,0.78],[0.20,0.32,0.64,0.76]],
+  draugen:[[0.60,0.70,0.62,0.78],[0.70,0.80,0.60,0.76],[0.80,0.90,0.60,0.74]],
+  bergtrollet:[[0.22,0.34,0.12,0.24],[0.36,0.50,0.14,0.28],[0.52,0.68,0.12,0.26]],
+  huldra:[[0.06,0.14,0.44,0.62],[0.12,0.20,0.48,0.66],[0.16,0.24,0.42,0.60]],
+  fossegrimen:[[0.30,0.40,0.52,0.70],[0.40,0.52,0.50,0.68],[0.52,0.64,0.54,0.72]],
+};
+function randomCreaturePos(i){
+  const z=CREATURE_ZONES[i];
+  const name=CREATURE_NAMES[i],mz=CREATURE_MICRO_ZONES[name];
+  if(mz&&mz.length){
+    const m=mz[(Math.random()*mz.length)|0];
+    const x=Math.max(z[0],Math.min(z[1],m[0]+Math.random()*(m[1]-m[0])));
+    const y=Math.max(z[2],Math.min(z[3],m[2]+Math.random()*(m[3]-m[2])));
+    return{x,y};
+  }
+  return{x:z[0]+Math.random()*(z[1]-z[0]),y:z[2]+Math.random()*(z[3]-z[2])};
+}
+const CS=CREATURE_NAMES.map((name,i)=>(
+...TRUNCATED_BY_TOOL...
