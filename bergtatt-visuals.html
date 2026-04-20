@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<title>BERGTATT — Ingrid Ormevik</title>
+<meta name="description" content="A generative audiovisual system by Ingrid Ormevik. Activation: Regnbuenatt 2026 · Marinehagen · 6 June.">
+<meta name="author" content="Ingrid Ormevik">
+
+<!-- Open Graph -->
+<meta property="og:title" content="BERGTATT — Ingrid Ormevik">
+<meta property="og:description" content="A generative audiovisual system. Activation: Regnbuenatt 2026 · Marinehagen · 6 June.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingridormevik.github.io/bergtatt-visuals.html">
+<meta property="og:image" content="https://ingridormevik.github.io/regnbuenatt_preview.jpg">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="Bergtatt · Ingrid Ormevik">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BERGTATT — Ingrid Ormevik">
+<meta name="twitter:description" content="A generative audiovisual system. Activation: Regnbuenatt 2026 · Marinehagen · 6 June.">
+<meta name="twitter:image" content="https://ingridormevik.github.io/regnbuenatt_preview.jpg">
+
+<!-- Theme color -->
+<meta name="theme-color" content="#000408">
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400;700&family=Courier+Prime&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;overflow:hidden;width:100vw;height:100vh;cursor:none;}
+canvas{position:fixed;inset:0;pointer-events:none;}
+#c-bg{z-index:0;}
+#c-mount{z-index:1;}
+#c-fjord{z-index:2;}
+#c-fog{z-index:3;}
+#c-roots{z-index:4;}
+#c-forest{z-index:5;}
+#c-shrooms{z-index:6;}
+#c-wisps{z-index:7;}
+#c-creatures{z-index:8;}
+#c-rain{z-index:9;opacity:0.24;}
+#c-parts{z-index:9;}
+#c-wave{z-index:10;bottom:-30px;top:auto;height:120px;}
+#c-shaman{z-index:13;}
+#c-nature{z-index:11;}
+#c-rivers{z-index:12;}
+#c-bergen{z-index:14;}
+#c-digital{z-index:15;}
+#c-witch{z-index:16;}
+#c-text{z-index:20;}
+
+@keyframes flicker{0%,100%{opacity:0.85}50%{opacity:1}60%{opacity:0.9}80%{opacity:0.95}}
+@keyframes roseGlow{0%,100%{text-shadow:0 0 24px rgba(255,120,90,0.34),0 0 48px rgba(255,80,60,0.12)}50%{text-shadow:0 0 36px rgba(255,160,100,0.46),0 0 72px rgba(255,100,70,0.20)}}
+@keyframes goldPulse{0%,100%{box-shadow:0 0 18px rgba(60,190,220,0.06),inset 0 0 12px rgba(60,190,220,0.02)}50%{box-shadow:0 0 34px rgba(60,190,220,0.10),inset 0 0 22px rgba(60,190,220,0.04)}}
+@keyframes witchPulse{0%,100%{box-shadow:0 0 22px rgba(140,60,200,0.08),inset 0 0 16px rgba(100,40,160,0.03)}50%{box-shadow:0 0 42px rgba(180,80,255,0.12),inset 0 0 28px rgba(140,60,200,0.05)}}
+@keyframes witchGlow{0%,100%{text-shadow:0 0 24px rgba(180,100,255,0.34),0 0 48px rgba(120,40,200,0.12)}50%{text-shadow:0 0 42px rgba(220,140,255,0.48),0 0 84px rgba(160,60,240,0.20)}}
+
+#startcard.witch-mode{
+  border-color:rgba(140,60,200,0.25);
+  background:rgba(4,0,10,0.92);
+  animation:witchPulse 5s ease infinite;
+}
+#startcard.witch-mode .sc-title{animation:witchGlow 4s ease infinite;color:#f0e4ff;letter-spacing:0.55em;}
+.btn.witch{border-color:rgba(140,60,200,0.5);color:rgba(200,140,255,0.9);}
+.btn.witch:hover,.btn.witch.active{border-color:rgba(180,100,255,0.9);color:#f0e4ff;background:rgba(140,60,200,0.08);box-shadow:0 0 22px rgba(140,60,200,0.18);}
+.witch-sub{font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.24em;color:rgba(180,120,255,0.48);margin-top:4px;}
+#bpm-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.22em;color:rgba(180,120,255,0.4);pointer-events:none;}
+
+#startcard.bergen-mode{
+  border-color:rgba(60,190,220,0.2);
+  background:rgba(0,4,10,0.90);
+  animation:goldPulse 4s ease infinite;
+}
+#startcard.bergen-mode .sc-title{
+  font-size:clamp(16px,3.8vw,28px);
+  letter-spacing:0.6em;
+  animation:roseGlow 3s ease infinite;
+  color:#e0f8ff;
+}
+.btn.bergen{border-color:rgba(60,190,220,0.5);color:rgba(140,220,240,0.9);}
+.btn.bergen:hover,.btn.bergen.active{border-color:rgba(100,220,240,0.9);color:#e0f8ff;background:rgba(60,190,220,0.08);box-shadow:0 0 20px rgba(60,190,220,0.15);}
+.bergen-sub{font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.24em;color:rgba(100,210,230,0.48);margin-top:4px;}
+
+#beat-flash{position:fixed;inset:0;z-index:15;pointer-events:none;background:transparent;transition:background 0.04s;}
+#rotate-nudge{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.92);display:none;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.3em;text-align:center;gap:16px;}
+#rotate-nudge svg{opacity:0.5;}
+#cursor{position:fixed;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,rgba(255,45,109,0.9),transparent 70%);box-shadow:0 0 20px rgba(255,45,109,0.5);pointer-events:none;z-index:999;transform:translate(-50%,-50%);mix-blend-mode:screen;}
+
+@keyframes auroraShift {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+#ui{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;}
+#startcard{
+  border:1px solid rgba(255,255,255,0.14);
+  padding:38px 36px 36px;
+  text-align:center;
+  background:rgba(0,3,6,0.90);
+  backdrop-filter:blur(8px);
+  max-width:440px;
+  width:90%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+#startcard::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,
+    rgba(228,3,3,0.025) 0%,
+    rgba(255,140,0,0.025) 16%,
+    rgba(255,237,0,0.025) 33%,
+    rgba(0,160,60,0.03) 50%,
+    rgba(0,100,220,0.03) 66%,
+    rgba(120,10,180,0.025) 83%,
+    rgba(228,3,3,0.025) 100%
+  );
+  background-size:300% 300%;
+  animation:auroraShift 8s ease infinite;
+  pointer-events:none;
+}
+.sc-title{
+  font-family:'Cinzel',serif;
+  font-size:clamp(16px,3.8vw,28px);
+  letter-spacing:0.6em;
+  color:#fff;
+  margin-bottom:8px;
+  position:relative;
+  text-shadow:0 0 16px rgba(100,220,160,0.22);
+}
+.sc-sub{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:0.24em;color:rgba(255,255,255,0.46);margin-bottom:28px;position:relative;}
+.sc-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:0.35em;color:rgba(255,255,255,0.28);margin-bottom:9px;margin-top:16px;position:relative;}
+.row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:4px;position:relative;}
+.btn{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;padding:0;width:120px;height:38px;text-align:center;border:1px solid rgba(255,255,255,0.22);background:transparent;color:rgba(255,255,255,0.65);cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;justify-content:center;}
+.btn:hover,.btn.active{border-color:rgba(255,255,255,0.75);color:#fff;background:rgba(255,255,255,0.05);}
+.btn-play{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.28em;padding:13px 36px;border:1px solid rgba(100,220,160,0.36);background:transparent;color:rgba(200,255,220,0.94);cursor:pointer;margin-top:22px;transition:all 0.2s;position:relative;text-shadow:0 0 8px rgba(100,220,160,0.22);}
+.btn-play:hover{background:rgba(100,220,160,0.05);box-shadow:0 0 18px rgba(100,220,160,0.08);}
+
+#hud{position:fixed;z-index:50;width:100%;height:100%;display:none;pointer-events:none;}
+#hud-stats{position:absolute;top:20px;left:24px;font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:0.16em;color:rgba(255,255,255,0.28);line-height:1.8;}
+#chapter-name{position:absolute;top:20px;right:24px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.28em;color:rgba(255,255,255,0.30);text-align:right;line-height:1.9;}
+#hud-ctrl{position:absolute;bottom:130px;right:24px;display:flex;flex-direction:column;gap:8px;align-items:flex-end;pointer-events:all;transition:opacity 0.35s ease,transform 0.35s ease,filter 0.35s ease;}
+#hud-ctrl.auto-hidden{opacity:0;transform:translateX(8px);filter:blur(1px);pointer-events:none;}
+.hbtn{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;padding:7px 14px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;}
+.hbtn:hover,.hbtn.active{border-color:rgba(255,255,255,0.7);color:#fff;}
+#mic-badge{font-family:'Cinzel',serif;font-size:8px;letter-spacing:0.3em;color:rgba(255,80,120,0.8);display:none;padding:4px 10px;border:1px solid rgba(255,80,120,0.3);}
+body.preview-mode{cursor:default;}
+body.preview-mode #ui,
+body.preview-mode #hud,
+body.preview-mode #cursor,
+body.preview-mode #beat-flash{display:none!important;}
+.preview-fade{opacity:0;transition:opacity 2s ease;}
+.preview-end{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  height:100vh;
+  background:#000;
+  color:#fff;
+  font-family:'Cinzel',serif;
+  text-align:center;
+}
+.preview-end h2{
+  font-size:clamp(22px,5vw,42px);
+  letter-spacing:0.24em;
+  font-weight:400;
+}
+.preview-end a{
+  margin-top:18px;
+  color:rgba(200,140,255,0.95);
+  text-decoration:none;
+  border:1px solid rgba(200,140,255,0.35);
+  padding:12px 20px;
+  letter-spacing:0.18em;
+}
+
+@media (max-width: 900px){
+  body{cursor:default;}
+  #ui{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  #startcard{padding:28px 20px 28px;max-height:90vh;overflow-y:auto;width:92%;}
+  .sc-sub{font-size:10px;letter-spacing:0.28em;}
+  .witch-sub,.bergen-sub{font-size:9px;letter-spacing:0.3em;}
+  #hud-stats{top:12px;left:12px;font-size:9px;letter-spacing:0.15em;line-height:1.8;}
+  #chapter-name{top:12px;right:12px;font-size:8px;letter-spacing:0.25em;line-height:1.9;max-width:40vw;word-break:break-word;}
+  #hud-ctrl{position:fixed;bottom:0;left:0;right:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:6px;padding:8px 10px;pointer-events:all;background:rgba(0,0,0,0.45);backdrop-filter:blur(8px);flex-wrap:nowrap;overflow-x:auto;transform:none;filter:none;opacity:1;}
+  #hud-ctrl.auto-hidden{opacity:0;transform:translateY(8px);filter:blur(1px);pointer-events:none;}
+  #hud-mood{display:flex;flex-direction:row;gap:6px;margin:0;flex-wrap:nowrap;}
+  .hbtn{font-size:9px;letter-spacing:0.12em;padding:5px 10px;white-space:nowrap;flex-shrink:0;}
+  #mic-badge{font-size:7px;letter-spacing:0.2em;padding:4px 8px;white-space:nowrap;flex-shrink:0;}
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="rotate-nudge">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22h6"/><path d="M2 9l3-3 3 3"/><path d="M5 6v6"/></svg>
+  ROTATE FOR BEST EXPERIENCE
+</div>
+<div id="beat-flash"></div>
+<canvas id="c-bg"></canvas>
+<canvas id="c-mount"></canvas>
+<canvas id="c-fjord"></canvas>
+<canvas id="c-fog"></canvas>
+<canvas id="c-roots"></canvas>
+<canvas id="c-forest"></canvas>
+<canvas id="c-shrooms"></canvas>
+<canvas id="c-wisps"></canvas>
+<canvas id="c-creatures"></canvas>
+<canvas id="c-rain"></canvas>
+<canvas id="c-parts"></canvas>
+<canvas id="c-wave" style="position:fixed;bottom:-30px;left:0;width:100%;height:120px;z-index:10;"></canvas>
+<canvas id="c-shaman"></canvas>
+<canvas id="c-nature"></canvas>
+<canvas id="c-rivers"></canvas>
+<canvas id="c-bergen"></canvas>
+<canvas id="c-digital"></canvas>
+<canvas id="c-witch"></canvas>
+<canvas id="c-text"></canvas>
+
+<div id="ui">
+  <div id="startcard">
+    <div class="sc-title">BERGTATT</div>
+    <div class="sc-sub">ACTIVATION: REGNBUENATT 2026 · MARINEHAGEN · 6 JUNE</div>
+    <div class="witch-sub" id="pride-sub" style="display:none;">BERGEN PRIDE 2026 · 30 MAY — 6 JUNE · Det Akademiske Kvarter &amp; Nygårdsparken</div>
+    <div class="witch-sub" id="magical-sub" style="display:none;">WHERE THE OLD CREATURES STILL WALK · Nøkken · Draugen · Huldra · Bergtrollet · Fossegrimen</div>
+    <div class="witch-sub" id="forbidden-sub" style="display:none;">THE FORBIDDEN FOREST OPENS AT MIDNIGHT · Club Seduction · Marinehagen · 6 June</div>
+    <div class="bergen-sub" id="bergen-sub" style="display:none;">DEDICATED TO OUR CITY · SEVEN MOUNTAINS · ONE FJORD · Bergen, du er oss</div>
+    <div class="witch-sub" id="witch-sub" style="display:none;">WITCH PRINCESS · LIQUID MOON · FOREST MEETING</div>
+    <div class="witch-sub" id="digital-sub" style="display:none;">WHERE THE FOREST MEETS THE NETWORK · roots · nodes · signal · memory</div>
+    <div class="sc-label">MOOD</div>
+    <div class="row" id="mood-row">
+      <button class="btn active" data-mode="pride">PRIDE</button>
+      <button class="btn" data-mode="magical">MAGICAL</button>
+      <button class="btn" data-mode="forbidden">FORBIDDEN</button>
+      <button class="btn bergen" data-mode="bergen">BERGEN</button>
+      <button class="btn witch" data-mode="witch">WITCH</button>
+      <button class="btn" data-mode="digital" style="border-color:rgba(0,255,180,0.5);color:rgba(0,255,180,0.9);">DIGITAL</button>
+    </div>
+    <button class="btn-play" id="btn-play">&#127897; ENTER THE FOREST</button>
+    <div id="bpm-hint"></div>
+  </div>
+</div>
+
+<div id="hud">
+  <div id="hud-stats">
+    BPM <b id="s-bpm">—</b><br>
+    BASS <b id="s-bass">—</b><br>
+    ENERGY <b id="s-energy">—</b>
+  </div>
+  <div id="chapter-name">
+    <span id="s-chapter"></span><br>
+    <span id="s-creature" style="opacity:0.5;font-size:8px;letter-spacing:0.2em;"></span>
+  </div>
+  <div id="hud-ctrl">
+    <div class="row" id="hud-mood">
+      <button class="hbtn active" data-mode="pride">PRIDE</button>
+      <button class="hbtn" data-mode="magical">MAGICAL</button>
+      <button class="hbtn" data-mode="forbidden">FORBIDDEN</button>
+      <button class="hbtn" data-mode="bergen" style="border-color:rgba(60,190,220,0.4);color:rgba(140,220,240,0.7);">BERGEN</button>
+      <button class="hbtn" data-mode="witch" style="border-color:rgba(140,60,200,0.5);color:rgba(200,140,255,0.8);">WITCH</button>
+      <button class="hbtn" data-mode="digital" style="border-color:rgba(0,255,180,0.4);color:rgba(0,255,180,0.8);">DIGITAL</button>
+    </div>
+    <button class="hbtn" id="btn-stop">STOP</button>
+    <div id="mic-badge">&#127897; LIVE MIC</div>
+  </div>
+</div>
+
+<script>
+const W=()=>window.innerWidth, H=()=>window.innerHeight, TAU=Math.PI*2;
+const isMobile=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+// Cap DPR on mobile so canvas sizing and rendering stay in sync
+if(isMobile){Object.defineProperty(window,'devicePixelRatio',{get:()=>1});}
+
+// Rotate nudge for portrait mode on mobile
+const rotateNudge=document.getElementById('rotate-nudge');
+function checkOrientation(){
+  if(isMobile&&window.innerHeight>window.innerWidth){rotateNudge.style.display='flex';}
+  else{rotateNudge.style.display='none';}
+}
+checkOrientation();
+window.addEventListener('resize',checkOrientation);
+window.addEventListener('orientationchange',()=>setTimeout(checkOrientation,200));
+
+// iOS Safari: resume AudioContext on any touch
+document.addEventListener('touchstart',()=>{if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();},{passive:true});
+const urlParams=new URLSearchParams(window.location.search);
+const PREVIEW=urlParams.get('preview')==='true';
+const PARTICLE_MULTIPLIER=PREVIEW?0.3:1;
+const ENABLE_CREATURES=!PREVIEW;
+const ENABLE_FULL_SYSTEM=!PREVIEW;
+let previewEnded=false;
+if(PREVIEW)document.body.classList.add('preview-mode');
+
+const CID=['c-bg','c-mount','c-fjord','c-fog','c-roots','c-forest','c-shrooms','c-wisps','c-creatures','c-rain','c-parts','c-wave','c-shaman','c-nature','c-rivers','c-bergen','c-digital','c-witch','c-text'];
+const C={};
+CID.forEach(id=>{const el=document.getElementById(id);C[id]={el,cx:el.getContext('2d',{alpha:true,desynchronized:true,willReadFrequently:false}),dpr:1};});
+
+const LAYER_QUALITY={
+  'c-text':1.0,
+  'c-creatures':1.0,
+  'c-wave':1.0,
+  'c-mount':0.95,
+  'c-bg':0.92,
+  'c-fjord':0.9,
+  'c-forest':0.9,
+  'c-witch':0.9,
+  'c-bergen':0.9,
+  'c-digital':0.9,
+  'c-shaman':0.86,
+  'c-rivers':0.84,
+  'c-wisps':0.82,
+  'c-shrooms':0.82,
+  'c-roots':0.8,
+  'c-nature':0.8,
+  'c-parts':0.78,
+  'c-fog':0.76,
+  'c-rain':0.72,
+};
+
+const CRITICAL_LAYERS=new Set(['c-text','c-creatures','c-wave']);
+const PERF_GUARD={
+  enabled:true,
+  scale:1,
+  minScale:0.72,
+  maxScale:1,
+  downThreshold:24,
+  upThreshold:17.4,
+  downStep:0.03,
+  upStep:0.02,
+  slowFrames:0,
+  fastFrames:0,
+  slowTrigger:22,
+  fastTrigger:160,
+  adjustCooldownMs:1200,
+  lastAdjustTs:0,
+};
+
+function getGlobalRenderDpr(w,h){
+  const baseDpr=window.devicePixelRatio||1;
+  const cap=isMobile?1.6:2.25;
+  const capped=Math.min(baseDpr,cap);
+  const pixelBudget=PREVIEW?5000000:9500000;
+  const fitDpr=Math.sqrt(pixelBudget/Math.max(1,w*h));
+  return Math.max(0.9,Math.min(capped,fitDpr));
+}
+
+function getLayerRenderDpr(id,globalDpr){
+  const baseQuality=LAYER_QUALITY[id]??1;
+  const quality=CRITICAL_LAYERS.has(id)?baseQuality:(baseQuality*PERF_GUARD.scale);
+  const minForCritical=(id==='c-text'||id==='c-creatures'||id==='c-wave')?1:0.7;
+  return Math.max(minForCritical,globalDpr*quality);
+}
+
+function setSize(id,w,h,globalDpr){
+  const dpr=getLayerRenderDpr(id,globalDpr);
+  const {el,cx}=C[id];
+  C[id].dpr=dpr;
+  el.width=Math.round(w*dpr);
+  el.height=Math.round(h*dpr);
+  el.style.width=w+'px';
+  el.style.height=h+'px';
+  cx.imageSmoothingEnabled=true;
+  cx.imageSmoothingQuality='high';
+}
+
+function resizeCanvases(globalDpr=getGlobalRenderDpr(W(),H())){
+  const w=W(),h=H();
+  CID.forEach(id=>{if(id==='c-wave')setSize(id,w,120,globalDpr);else setSize(id,w,h,globalDpr);});
+}
+
+function resizeAll(){
+  const w=W(),h=H(),globalDpr=getGlobalRenderDpr(w,h);
+  resizeCanvases(globalDpr);
+  initForest();initFog();initRain();initRoots();initShrooms();initWisps();initShamanLayer();initMoss();initNeuronNodes();renderMountains();
+}
+
+function updatePerfGuard(frameMs){
+  if(!PERF_GUARD.enabled)return;
+  const now=performance.now();
+  if(frameMs>PERF_GUARD.downThreshold){PERF_GUARD.slowFrames++;PERF_GUARD.fastFrames=0;}
+  else if(frameMs<PERF_GUARD.upThreshold){PERF_GUARD.fastFrames++;PERF_GUARD.slowFrames=0;}
+  else{PERF_GUARD.slowFrames=0;PERF_GUARD.fastFrames=0;}
+
+  if(now-PERF_GUARD.lastAdjustTs<PERF_GUARD.adjustCooldownMs)return;
+
+  let adjusted=false;
+  if(PERF_GUARD.slowFrames>=PERF_GUARD.slowTrigger&&PERF_GUARD.scale>PERF_GUARD.minScale){
+    PERF_GUARD.scale=Math.max(PERF_GUARD.minScale,PERF_GUARD.scale-PERF_GUARD.downStep);
+    PERF_GUARD.slowFrames=0;
+    adjusted=true;
+  } else if(PERF_GUARD.fastFrames>=PERF_GUARD.fastTrigger&&PERF_GUARD.scale<PERF_GUARD.maxScale){
+    PERF_GUARD.scale=Math.min(PERF_GUARD.maxScale,PERF_GUARD.scale+PERF_GUARD.upStep);
+    PERF_GUARD.fastFrames=0;
+    adjusted=true;
+  }
+
+  if(adjusted){
+    PERF_GUARD.lastAdjustTs=now;
+    resizeCanvases();
+  }
+}
+
+let _resizeRAF=0;
+window.addEventListener('resize',()=>{
+  if(_resizeRAF)cancelAnimationFrame(_resizeRAF);
+  _resizeRAF=requestAnimationFrame(()=>{_resizeRAF=0;resizeAll();});
+});
+
+const curEl=document.getElementById('cursor');
+if(!isMobile){document.addEventListener('mousemove',e=>{curEl.style.left=e.clientX+'px';curEl.style.top=e.clientY+'px';});}else{curEl.style.display='none';}
+
+// ============================================================
+//  COLOR MODES
+// ============================================================
+const PRIDE_COLORS=[[228,3,3],[255,140,0],[255,237,0],[0,128,38],[0,77,255],[117,7,135]];
+
+const MODES={
+  pride:{
+    // Cool aurora teal — northern lights, fjord, cosmic
+    primary:[0,220,210],secondary:[120,80,255],
+    forestGlow:[0,200,190],fogColor:[0,12,22],
+    wispColor:[140,255,250],rootColor:[0,140,130],
+    shroomColor:[0,230,210],rainColor:[60,200,220],
+    flash:'rgba(0,220,210,',bg:'rgba(0,2,12,1)',
+    particles:['228,3,3','255,140,0','255,237,0','0,200,83','30,136,229','142,36,170'],
+    auroraColors:[[228,3,3],[255,140,0],[255,237,0],[0,180,60],[0,100,255],[120,10,180]],
+  },
+  magical:{
+    // Deep bioluminescent Norwegian summer forest — mossy, wet, alive
+    primary:[60,255,120],secondary:[20,200,80],
+    forestGlow:[30,200,70],fogColor:[2,14,4],
+    wispColor:[120,255,160],rootColor:[20,120,45],
+    shroomColor:[40,230,90],rainColor:[50,180,80],
+    flash:'rgba(60,255,120,',bg:'rgba(0,6,1,1)',
+    particles:['0,255,80','40,230,100','100,255,60','20,200,90','160,255,100','0,180,60'],
+    auroraColors:[[0,180,50],[20,230,80],[60,255,110],[10,160,40],[80,240,100],[0,200,60]],
+  },
+  forbidden:{
+    primary:[255,20,147],secondary:[255,0,80],
+    forestGlow:[255,20,147],fogColor:[60,0,40],
+    wispColor:[255,80,200],rootColor:[120,0,60],
+    shroomColor:[255,20,147],rainColor:[200,80,160],
+    flash:'rgba(255,20,147,',bg:'rgba(10,0,6,1)',
+    particles:['255,20,147','255,0,80','255,100,200'],
+    auroraColors:[[180,0,120],[255,0,80],[200,0,150],[120,0,80],[255,20,147],[100,0,60]],
+  },
+  bergen:{
+    // Bergen deep nature: bioluminescent blue-green, river teal, neural frost
+    primary:[80,200,220],secondary:[120,240,180],
+    forestGlow:[40,160,180],fogColor:[0,8,14],
+    wispColor:[100,220,240],rootColor:[30,100,120],
+    shroomColor:[60,200,210],rainColor:[80,180,220],
+    flash:'rgba(80,200,220,',bg:'rgba(0,4,10,1)',
+    particles:['80,200,220','120,240,180','60,180,255','180,240,255','100,255,200','40,160,200'],
+    auroraColors:[[20,120,180],[40,160,220],[80,210,240],[60,180,200],[30,140,180],[100,220,240]],
+  },
+  witch:{
+    // Mallika / Witch Princess: deep violet earth, amber ritual fire, forest dark
+    primary:[160,80,255],secondary:[220,140,100],
+    forestGlow:[100,40,180],fogColor:[6,2,10],
+    wispColor:[200,140,255],rootColor:[80,30,120],
+    shroomColor:[180,100,255],rainColor:[140,80,200],
+    flash:'rgba(160,80,255,',bg:'rgba(4,0,10,1)',
+    particles:['160,80,255','220,140,100','100,200,180','200,120,255','255,180,100','80,160,200'],
+    auroraColors:[[100,30,160],[140,60,200],[180,100,255],[80,20,140],[200,120,255],[60,20,120]],
+  },
+  digital:{
+    // Academic dark: deep indigo aurora, cold phosphor green, electric blue, pale gold
+    primary:[80,140,255],secondary:[0,255,180],
+    forestGlow:[40,80,200],fogColor:[2,2,12],
+    wispColor:[140,160,255],rootColor:[40,60,160],
+    shroomColor:[80,120,255],rainColor:[60,100,220],
+    flash:'rgba(80,140,255,',bg:'rgba(1,1,8,1)',
+    particles:['80,140,255','0,255,180','180,160,255','60,200,255','200,180,255','0,180,140'],
+    auroraColors:[[20,20,80],[40,40,140],[80,60,200],[120,80,255],[180,140,255],[220,200,255]],
+  }
+};
+let currentMode=PREVIEW?'witch':'pride';
+const theme=()=>MODES[currentMode];
+
+// BPM fine-tuning per mode — Witch Princess tracks: 85 BPM (Trøllabundin/Forest Meeting), 100 BPM (Guardians/Snow Raven)
+// BEAT_COOL adapts: at 85bpm interval=0.706s → cool=0.34; at 100bpm interval=0.6s → cool=0.28
+// We expose a live BEAT_COOL that the witch mode can adjust
+let BEAT_COOL_LIVE=0.38;
+let BEAT_THRESH_LIVE=130;
+
+function getBeatCool(){
+  if(currentMode==='witch') return 0.32; // tuned between 85 and 100 BPM
+  return 0.38;
+}
+function getBeatThresh(){
+  if(currentMode==='witch') return 118; // slightly more sensitive for organic tribal drums
+  return 130;
+}
+
+// ============================================================
+//  BEAT STATE
+// ============================================================
+let masterBeat=PREVIEW?0.8:0,smoothBpmFactor=PREVIEW?0.32:0,smoothEnergy=PREVIEW?0.6:0,energy=0,bassLevel=0;
+let beatCount=0,bpmEst=50,lastBeatTime=0,globalAngle=0,beatFlashV=0;
+const beatFlashEl=document.getElementById('beat-flash');
+
+let audioCtx=null,analyserHi=null,analyserLo=null,freqHi=null,freqLo=null,timeD=null,micStream=null;
+const BEAT_COOL=0.38,BEAT_THRESH=130;
+// Per-band smooth energy — computed every frame from analyserHi, never touches beat detection
+let sBass=0,sMid=0,sHi=0,sPresence=0;
+
+// ============================================================
+//  AUDIO DIRECTOR (music-type + hysteresis + overload guard)
+// ============================================================
+let bpmNorm=0,onsetDensity=0,transientRate=0,spectralFlux=0,dynamicRange=0,lowMidStability=0;
+let _prevEnergyNorm=0,_prevSBass=0,_prevSMid=0,_prevSPres=0,_prevSHi=0;
+let _lastClassifyMs=0;
+const _rangeBuf=[];
+const _RANGE_BUF_MAX=48;
+
+const TYPE_CLASSIFY_INTERVAL_MS=500;
+const TYPE_EWMA_ALPHA=0.06; // ~8s smoothing at 500ms updates
+const TYPE_ENTER=0.62;
+const TYPE_EXIT=0.50;
+const TYPE_MIN_HOLD_MS=16000;
+const TYPE_CROSSFADE_MS=2500;
+
+let musicType='forest_mystic';
+let musicTypePrev='forest_mystic';
+let musicTypeBlend=1;
+let musicTypeHoldUntil=0;
+let musicTypeSwitchMs=0;
+const TYPE_EWMA={ritual_dark:0,forest_mystic:0,peak_rave:0,ocean_trance:0};
+
+const VISUAL_BUDGET_THRESH={t1:1.00,t2:1.25,t3:1.45,t4:1.60,recover:1.10};
+let visualBudgetScore=1.0;
+let visualBudgetState=0;
+let visualGateUntil=0;
+
+const EVENT_MATRIX={
+  ritual_dark:{
+    raven:{chance:0.18,coolMs:55000,alphaMax:0.16,priority:4},
+    forestEyes:{chance:0.22,coolMs:18000,alphaMax:0.20,priority:3},
+    myth:{chance:0.14,coolMs:30000,alphaMax:0.14,priority:5},
+    riverArcs:{chance:0.08,coolMs:8000,alphaMax:0.18,priority:4},
+  },
+  forest_mystic:{
+    raven:{chance:0.24,coolMs:48000,alphaMax:0.20,priority:4},
+    forestEyes:{chance:0.28,coolMs:14000,alphaMax:0.24,priority:3},
+    groundBiolum:{chance:0.30,coolMs:5000,alphaMax:0.16,priority:2},
+    myth:{chance:0.12,coolMs:28000,alphaMax:0.12,priority:5},
+  },
+  peak_rave:{
+    raven:{chance:0.06,coolMs:80000,alphaMax:0.10,priority:4},
+    forestEyes:{chance:0.08,coolMs:22000,alphaMax:0.14,priority:3},
+    riverArcs:{chance:0.26,coolMs:4000,alphaMax:0.22,priority:4},
+    waterRipples:{chance:0.34,coolMs:2000,alphaMax:0.24,priority:4},
+  },
+  ocean_trance:{
+    raven:{chance:0.10,coolMs:70000,alphaMax:0.12,priority:4},
+    waterRipples:{chance:0.36,coolMs:2500,alphaMax:0.22,priority:4},
+    fjordMist:{chance:0.40,coolMs:2500,alphaMax:0.14,priority:4},
+    riverArcs:{chance:0.20,coolMs:6000,alphaMax:0.18,priority:4},
+  },
+  witch_override:{
+    raven:{chance:0.20,coolMs:52000,alphaMax:0.18,priority:4},
+    ancestorMotes:{chance:0.30,coolMs:6000,alphaMax:0.20,priority:3},
+    sacredSigil:{chance:0.18,coolMs:10000,alphaMax:0.18,priority:5},
+    rootPulse:{chance:0.24,coolMs:7000,alphaMax:0.16,priority:3},
+  }
+};
+
+const eventCooldownUntil={};
+let eventPulse={raven:0,forestEyes:0,myth:0,riverArcs:0,waterRipples:0,fjordMist:0,groundBiolum:0,ancestorMotes:0,sacredSigil:0,rootPulse:0};
+let riverArcBoost=0,waterRippleBoost=0,fjordMistBoost=0,sacredSigilBoost=0;
+
+function getActiveProfileKey(){return currentMode==='witch'?'witch_override':musicType;}
+function getEventCfg(name){const m=EVENT_MATRIX[getActiveProfileKey()]||{};return m[name]||null;}
+function getEventAlphaMax(name){const cfg=getEventCfg(name);return cfg?cfg.alphaMax:1;}
+
+function getPriorityMul(priority){
+  if(visualBudgetState>=3)return priority>=4?1:0;
+  if(visualBudgetState>=2)return priority<=2?0:1;
+  if(visualBudgetState>=1)return priority<=3?0.8:1;
+  return 1;
+}
+
+function _canFireEvent(name,cfg,nowMs){
+  if(!cfg)return false;
+  if(getPriorityMul(cfg.priority)<=0)return false;
+  if(visualBudgetState>=2 && cfg.priority<=2 && nowMs<visualGateUntil)return false;
+  return nowMs>=(eventCooldownUntil[name]||0);
+}
+
+function _fireEvent(name,cfg,nowMs){
+  eventCooldownUntil[name]=nowMs+(cfg.coolMs||0);
+  eventPulse[name]=1;
+}
+
+function updateMusicType(nowMs){
+  if(currentMode==='witch'){musicTypePrev=musicType;musicType='forest_mystic';musicTypeBlend=1;return;}
+  if(nowMs-_lastClassifyMs<TYPE_CLASSIFY_INTERVAL_MS)return;
+  _lastClassifyMs=nowMs;
+
+  const ritualDark=Math.max(0,Math.min(1,
+    0.30*sBass + 0.20*sMid + 0.15*dynamicRange + 0.10*spectralFlux + 0.10*(1-sHi) + 0.15*(1-transientRate)
+  ));
+  const forestMystic=Math.max(0,Math.min(1,
+    0.22*sMid + 0.20*sPresence + 0.16*sBass + 0.12*sHi + 0.15*(1-transientRate) + 0.15*(1-onsetDensity)
+  ));
+  const peakRave=Math.max(0,Math.min(1,
+    0.25*bpmNorm + 0.22*transientRate + 0.18*onsetDensity + 0.15*sHi + 0.10*spectralFlux + 0.10*sBass
+  ));
+  const oceanTrance=Math.max(0,Math.min(1,
+    0.24*sBass + 0.20*lowMidStability + 0.18*(1-transientRate) + 0.14*sHi + 0.12*smoothEnergy + 0.12*(1-dynamicRange)
+  ));
+
+  TYPE_EWMA.ritual_dark += (ritualDark-TYPE_EWMA.ritual_dark)*TYPE_EWMA_ALPHA;
+  TYPE_EWMA.forest_mystic += (forestMystic-TYPE_EWMA.forest_mystic)*TYPE_EWMA_ALPHA;
+  TYPE_EWMA.peak_rave += (peakRave-TYPE_EWMA.peak_rave)*TYPE_EWMA_ALPHA;
+  TYPE_EWMA.ocean_trance += (oceanTrance-TYPE_EWMA.ocean_trance)*TYPE_EWMA_ALPHA;
+
+  let cand='forest_mystic',candScore=-1;
+  for(const k of ['ritual_dark','forest_mystic','peak_rave','ocean_trance']){if(TYPE_EWMA[k]>candScore){candScore=TYPE_EWMA[k];cand=k;}}
+  const curScore=TYPE_EWMA[musicType]||0;
+  if(nowMs>=musicTypeHoldUntil && cand!==musicType && candScore>=TYPE_ENTER && curScore<=TYPE_EXIT){
+    musicTypePrev=musicType;
+    musicType=cand;
+    musicTypeSwitchMs=nowMs;
+    musicTypeHoldUntil=nowMs+TYPE_MIN_HOLD_MS;
+  }
+  musicTypeBlend=Math.max(0,Math.min(1,(nowMs-musicTypeSwitchMs)/TYPE_CROSSFADE_MS));
+}
+
+function updateVisualBudget(nowMs){
+  const pulseLoad=(eventPulse.raven+eventPulse.forestEyes+eventPulse.myth+eventPulse.riverArcs+eventPulse.waterRipples+eventPulse.fjordMist+eventPulse.groundBiolum+eventPulse.ancestorMotes+eventPulse.sacredSigil+eventPulse.rootPulse)*0.03;
+  visualBudgetScore=Math.max(0,Math.min(2.2,0.45+masterBeat*0.35+smoothEnergy*0.25+onsetDensity*0.20+transientRate*0.18+pulseLoad));
+  const prev=visualBudgetState;
+  if(visualBudgetScore>=VISUAL_BUDGET_THRESH.t4)visualBudgetState=3;
+  else if(visualBudgetScore>=VISUAL_BUDGET_THRESH.t3)visualBudgetState=2;
+  else if(visualBudgetScore>=VISUAL_BUDGET_THRESH.t2)visualBudgetState=1;
+  else if(visualBudgetScore<VISUAL_BUDGET_THRESH.recover)visualBudgetState=0;
+  if(visualBudgetState>=2 && prev<2)visualGateUntil=nowMs+4000;
+}
+
+function tickAudioNarrativeEvents(){
+  const nowMs=performance.now();
+  const p=EVENT_MATRIX[getActiveProfileKey()]||{};
+  const tryEvent=(name,cb)=>{
+    const cfg=p[name]; if(!cfg)return;
+    if(!_canFireEvent(name,cfg,nowMs))return;
+    if(Math.random()<(cfg.chance||0)){_fireEvent(name,cfg,nowMs);if(cb)cb(cfg);}
+  };
+
+  tryEvent('raven',()=>{raven.x=-80;raven.y=0.06+Math.random()*0.22;raven.vx=0.24+Math.random()*0.36;});
+  tryEvent('forestEyes',()=>{wolfEyes.alpha=Math.max(wolfEyes.alpha,0.65);wolfEyes.blink=0;wolfEyes.blinkTimer=16+Math.random()*30;});
+  tryEvent('myth',(cfg)=>{shamanCall.text=SHAMANIC_CALLS[Math.floor(Math.random()*SHAMANIC_CALLS.length)];shamanCall.target=Math.max(shamanCall.target,cfg.alphaMax||0.12);shamanCall.beat=0;});
+  tryEvent('riverArcs',()=>{riverArcBoost=1;});
+  tryEvent('waterRipples',()=>{waterRippleBoost=1;});
+  tryEvent('fjordMist',()=>{fjordMistBoost=1;});
+  tryEvent('groundBiolum',()=>{mossPatches.forEach(m=>{m.glow=Math.min(1,m.glow+0.45);});});
+  tryEvent('ancestorMotes',()=>{if(drumRings.length<30)drumRings.push({y:1.0,r:20+Math.random()*40,maxR:180+Math.random()*220,alpha:0.22+smoothBpmFactor*0.2,x:0.15+Math.random()*0.7});});
+  tryEvent('sacredSigil',()=>{sacredSigilBoost=1;});
+  tryEvent('rootPulse',()=>{roots.forEach(r=>{r.pulse=Math.max(r.pulse,0.85);});});
+}
+
+function detectBeat(){
+  if(!analyserLo)return;
+  analyserLo.getByteFrequencyData(freqLo);
+  let bass=0;for(let i=0;i<6;i++)bass+=freqLo[i];bass/=6;
+  bassLevel=bass;
+  let tot=0;for(const v of freqLo)tot+=v;energy=tot/freqLo.length;
+  if(!audioCtx)return;
+  const now=audioCtx.currentTime;
+  const cool=getBeatCool(), thresh=getBeatThresh();
+  if(bass>thresh&&(now-lastBeatTime)>cool){
+    onBeat();
+    const dt=now-lastBeatTime;
+    if(dt>0.3&&dt<2)bpmEst=Math.round(0.85*bpmEst+0.15*(60/dt));
+    lastBeatTime=now;beatCount++;
+  }
+  // Silence gate: no beat for 3s → kill text and HUD
+  const since=lastBeatTime>0?(now-lastBeatTime):999;
+  if(since>3.0){
+    nTarget=0;nAlpha*=0.85;inPhrase=false;
+    masterBeat*=0.85;smoothBpmFactor*=0.90;smoothEnergy*=0.90;
+    document.getElementById('s-bpm').textContent='—';
+    document.getElementById('s-bass').textContent='—';
+    document.getElementById('s-energy').textContent='—';
+  } else {
+    document.getElementById('s-bass').textContent=Math.round(bass);
+    document.getElementById('s-energy').textContent=Math.round(energy);
+    document.getElementById('s-bpm').textContent=bpmEst;
+  }
+}
+
+function updateBeat(){
+  const nowMs=performance.now();
+  const t=(energy||0)/255;
+  smoothEnergy+=(t-smoothEnergy)*(t>smoothEnergy?0.18:0.04);
+  smoothEnergy=Math.max(0,Math.min(1,smoothEnergy));
+  bpmNorm=Math.max(0,Math.min(1,(bpmEst-70)/70));
+  const bpmT=smoothEnergy>0.02?Math.min(2,bpmEst/120)*smoothEnergy:0;
+  smoothBpmFactor+=(bpmT-smoothBpmFactor)*(bpmT>smoothBpmFactor?0.008:0.06);
+  smoothBpmFactor=Math.max(0,smoothBpmFactor);
+  const decR=smoothEnergy>0.02?Math.max(0.05,1-(bpmEst/60)*(1/60)*1.6):0.88;
+  masterBeat=Math.max(0,masterBeat*decR);
+  if(audioCtx&&lastBeatTime>0){const spb=60/Math.max(20,bpmEst);globalAngle=((globalAngle+(TAU/(spb*60))*smoothBpmFactor)%(TAU*1000));}
+  // Frequency bands from full-spectrum analyser — each drives different visuals
+  if(analyserHi&&freqHi){
+    analyserHi.getByteFrequencyData(freqHi);
+    const bins=freqHi.length;
+    // Sub-bass + kick: bins 1-8 (~20-350Hz) — ground, mountains, shockwave
+    let rB=0;for(let i=1;i<=8;i++)rB+=freqHi[i];rB/=8;rB=Math.min(1,rB/200);
+    // Mid 250Hz-2kHz: bins 6-45 — forest sway, fog, roots
+    let rM=0;for(let i=6;i<=45;i++)rM+=freqHi[i];rM/=40;rM=Math.min(1,rM/140);
+    // Upper mid 2-6kHz: bins 46-136 — wisps, shrooms, creatures
+    let rP=0;for(let i=46;i<=136;i++)rP+=freqHi[i];rP/=91;rP=Math.min(1,rP/110);
+    // Air / hi-freq 6-16kHz: bins 137-362 — aurora, rain, particles
+    let rH=0;for(let i=137;i<=Math.min(362,bins-1);i++)rH+=freqHi[i];rH/=226;rH=Math.min(1,rH/80);
+    // Silence gate — all bands hard zero below noise floor
+    const gate=energy>12?1:0;
+    sBass+=(rB*gate-sBass)*(rB*gate>sBass?0.6:0.12);
+    sMid+=(rM*gate-sMid)*(rM*gate>sMid?0.4:0.08);
+    sPresence+=(rP*gate-sPresence)*(rP*gate>sPresence?0.5:0.10);
+    sHi+=(rH*gate-sHi)*(rH*gate>sHi?0.55:0.07);
+    sBass=Math.max(0,sBass);sMid=Math.max(0,sMid);sPresence=Math.max(0,sPresence);sHi=Math.max(0,sHi);
+
+    // Derived audio descriptors for music-type director.
+    const eNorm=Math.max(0,Math.min(1,(energy||0)/255));
+    const flux=Math.abs(sBass-_prevSBass)+Math.abs(sMid-_prevSMid)+Math.abs(sPresence-_prevSPres)+Math.abs(sHi-_prevSHi);
+    spectralFlux+=(Math.max(0,Math.min(1,flux*0.6))-spectralFlux)*0.16;
+    const onsetRaw=(eNorm-_prevEnergyNorm>0.08 && sPresence>0.12)?1:0;
+    onsetDensity+=(onsetRaw-onsetDensity)*0.20;
+    const transientRaw=masterBeat>0.72?1:0;
+    transientRate+=(transientRaw-transientRate)*0.24;
+    _rangeBuf.push(eNorm);if(_rangeBuf.length>_RANGE_BUF_MAX)_rangeBuf.shift();
+    let mn=1,mx=0;for(let i=0;i<_rangeBuf.length;i++){const v=_rangeBuf[i];if(v<mn)mn=v;if(v>mx)mx=v;}
+    dynamicRange+=(Math.max(0,Math.min(1,mx-mn))-dynamicRange)*0.12;
+    lowMidStability=1-Math.min(1,Math.abs(sBass-sMid)*1.8);
+
+    _prevEnergyNorm=eNorm;_prevSBass=sBass;_prevSMid=sMid;_prevSPres=sPresence;_prevSHi=sHi;
+  } else {
+    sBass*=0.85;sMid*=0.85;sPresence*=0.85;sHi*=0.85;
+    onsetDensity*=0.92;transientRate*=0.9;spectralFlux*=0.9;dynamicRange*=0.94;
+  }
+
+  // Director updates
+  updateMusicType(nowMs);
+  updateVisualBudget(nowMs);
+
+  // Decay event boosts
+  riverArcBoost*=0.92;waterRippleBoost*=0.90;fjordMistBoost*=0.93;sacredSigilBoost*=0.90;
+  for(const k in eventPulse)eventPulse[k]*=0.90;
+}
+
+function onBeat(){
+  masterBeat=1.0;beatFlashV=1.0;
+  spawnBeatParticles();tickNarrative();
+  tickCreatureOnBeat();spawnBeatRipple();tickShamanOnBeat();
+  tickAudioNarrativeEvents();
+  trees.forEach(t=>{t.swayV+=(Math.random()-0.5)*0.3*0.8;});
+  shrooms.forEach(s=>{s.glow=1.0;s.ring=1.0;});
+  wisps.forEach(w=>{w.speed*=1+(masterBeat*0.5);});
+  roots.forEach(r=>{r.pulse=1.0;});
+  mossPatches.forEach(m=>{m.glow=Math.min(1,m.glow+masterBeat*0.9);});
+  neuronNodes.forEach(n=>{if(Math.random()<0.35+bassLevel/500)n.pulse=masterBeat;});
+}
+
+// ============================================================
+//  NARRATIVE ARC — 5 chapters — 12 phrases = 60 phrases
+//  Tied to the 5 creatures. Each chapter ~1 minute at 128 BPM.
+//  Full arc = 60 minutes. Loop for a 2-hour set.
+// ============================================================
+const CHAPTERS=[
+  { name:'NOKKEN',    creature:'nokken',     colour:'rgba(80,160,255,' },
+  { name:'DRAUGEN',   creature:'draugen',    colour:'rgba(180,230,255,' },
+  { name:'BERGTROLLET',creature:'bergtrollet',colour:'rgba(120,180,80,' },
+  { name:'HULDRA',    creature:'huldra',     colour:'rgba(255,215,150,' },
+  { name:'FOSSEGRIMEN',creature:'fossegrimen',colour:'rgba(120,220,160,' },
+];
+
+const NARRATIVE=[
+  // ── CHAPTER 1: NØKKEN — the water calls ──
+  {main:'the fjord is calling you',sub:'before you knew its name',ch:0},
+  {main:'the water knows the shape of longing',sub:'it has always known you',ch:0},
+  {main:'you have been shapeshifting your whole life',sub:'this is not new',ch:0},
+  {main:'what you thought was drowning',sub:'was transformation',ch:0},
+  {main:'every mirror is a question',sub:'you are the answer',ch:0},
+  {main:'nøkken plays at the edge of becoming',sub:'listen',ch:0},
+  {main:'the water does not ask permission to be deep',sub:'',ch:0},
+  {main:'come to the waterline',sub:'let it show you your real face',ch:0},
+  {main:'the fjord holds your reflection like a love letter',sub:'',ch:0},
+  {main:'you are not lost',sub:'you are finding the path that was always yours',ch:0},
+  {main:'your name echoes off the water',sub:'hear it',ch:0},
+  {main:'nøkken is not the monster they warned you about',sub:'they lied',ch:0},
+  {main:'the water has always known your name',sub:'',ch:0},
+  {main:'pride is not performance',sub:'it is remembering',ch:0},
+  {main:'your body is the flag',sub:'',ch:0},
+  {main:'you did not survive to be quiet about it',sub:'',ch:0},
+  {main:'look at what we built',sub:'look at what we are',ch:0},
+
+  // ── CHAPTER 2: DRAUGEN — rise from the deep ──
+  {main:'they thought they could keep you under',sub:'the sea disagrees',ch:1},
+  {main:'every silenced voice rises eventually',sub:'the fjord proves this',ch:1},
+  {main:'draugen screams because silence was the violence',sub:'',ch:1},
+  {main:'your emergence does not have to be gentle',sub:'',ch:1},
+  {main:'they tried to drown your history',sub:'it floated back',ch:1},
+  {main:'the sea does not forget what it carries',sub:'',ch:1},
+  {main:'grief and rage and beauty',sub:'are not opposites',ch:1},
+  {main:'you rose from the water before',sub:'you will rise again',ch:1},
+  {main:'every wave that breaks is a refusal to stay contained',sub:'',ch:1},
+  {main:'your body is not a shipwreck',sub:'it is a lighthouse',ch:1},
+  {main:'what they called monstrous',sub:'was just the truth they feared',ch:1},
+  {main:'you are not haunting this place',sub:'you are claiming it',ch:1},
+  {main:'we rose from everything they tried to bury us in',sub:'',ch:1},
+  {main:'every generation danced before us',sub:'the door was already open',ch:1},
+  {main:'we are not a phase',sub:'we are a frequency',ch:1},
+  {main:'the sea gave us back everything they threw in',sub:'',ch:1},
+
+  // ── CHAPTER 3: BERGTROLLET — the stone cracks open ──
+  {main:'the mountain does not argue with those who deny it',sub:'it simply exists',ch:2},
+  {main:'you have been here longer than their names for you',sub:'',ch:2},
+  {main:'the stone does not rush to crack',sub:'but it always does',ch:2},
+  {main:'your roots go deeper than their memory',sub:'',ch:2},
+  {main:'they built their rules on stone that was already yours',sub:'',ch:2},
+  {main:'every generation of stone holds the record of pressure',sub:'',ch:2},
+  {main:'patience is a form of power',sub:'you have had centuries of it',ch:2},
+  {main:'the pride cracks through you like light through granite',sub:'',ch:2},
+  {main:'you are not a phase',sub:'you are a geological formation',ch:2},
+  {main:'the mountain is not silent',sub:'it speaks in deep time',ch:2},
+  {main:'Bergen knew you before the city had a name',sub:'',ch:2},
+  {main:'when the stone opens',sub:'what comes out is light',ch:2},
+  {main:'you are not new',sub:'you are ancient',ch:2},
+  {main:'every stone thrown at us',sub:'we are still standing',ch:2},
+  {main:'we cracked through every law that tried to contain us',sub:'',ch:2},
+  {main:'we built this',sub:'',ch:2},
+
+  // ── CHAPTER 4: HULDRA — the hidden becomes visible ──
+  {main:'huldra kept her tail hidden because they made her',sub:'she will no longer',ch:3},
+  {main:'the forest has always known what you are',sub:'it never judged',ch:3},
+  {main:'your wildness is not a flaw',sub:'it is the oldest thing about you',ch:3},
+  {main:'they wanted you beautiful and domesticated',sub:'the tail disagrees',ch:3},
+  {main:'what you hide in daylight',sub:'comes out dancing at night',ch:3},
+  {main:'the pine knows how to be itself in every season',sub:'',ch:3},
+  {main:"huldra's song draws people in",sub:'because truth is magnetic',ch:3},
+  {main:'you owe no one a version of yourself that fits their comfort',sub:'',ch:3},
+  {main:'the forest does not apologize for its darkness',sub:'',ch:3},
+  {main:'every creature here knows your scent',sub:'they are not afraid',ch:3},
+  {main:'you belong to this forest',sub:'not to their expectations',ch:3},
+  {main:'let your tail show',sub:'it is gorgeous',ch:3},
+  {main:'your strangeness is not a burden',sub:'it is your gift',ch:3},
+  {main:'show all of it',sub:'',ch:3},
+  {main:'desire is not shameful',sub:'it is sacred',ch:3},
+
+  // ── CHAPTER 5: FOSSEGRIMEN — the music that survives ──
+  {main:'fossegrimen plays and the water follows',sub:'play yourself into existence',ch:4},
+  {main:'every note is a refusal to be silent',sub:'',ch:4},
+  {main:'the fiddle strings are every colour at once',sub:'',ch:4},
+  {main:"you don't need their permission to make music of your life",sub:'',ch:4},
+  {main:'the waterfall plays without stopping',sub:'be that',ch:4},
+  {main:'queer hands have always held the bow',sub:'we taught the first musicians',ch:4},
+  {main:'your joy is not frivolous',sub:'it is radical',ch:4},
+  {main:'we have been dancing in every century',sub:'this one is ours',ch:4},
+  {main:'the music is older than the law',sub:'it will outlast it',ch:4},
+  {main:'every heartbeat is a rhythm in the oldest song',sub:'',ch:4},
+  {main:'Bergen is ours tonight',sub:'this mountain knows our names',ch:4},
+  {main:'we are the ones who survive',sub:'we are the ones who sing',ch:4},
+  {main:'every queer person who ever danced is in this room with you',sub:'',ch:4},
+  {main:'your joy is a political act',sub:'never forget that',ch:4},
+  {main:'this is what we fought for',sub:'this floor. this night.',ch:4},
+  {main:'the music outlasts everything they threw at it',sub:'',ch:4},
+  {main:'your body remembers every time it was free',sub:'',ch:4},
+];
+
+// [content truncated intentionally in this upload attempt]
+</script>
+</body>
+</html>
