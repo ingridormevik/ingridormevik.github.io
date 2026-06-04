@@ -270,6 +270,7 @@ body.preview-mode #beat-flash{display:none!important;}
       <button class="hbtn" data-mode="witch" style="border-color:rgba(140,60,200,0.5);color:rgba(200,140,255,0.8);">WITCH</button>
       <button class="hbtn" data-mode="digital" style="border-color:rgba(0,255,180,0.4);color:rgba(0,255,180,0.8);">DIGITAL</button>
     </div>
+    <button class="hbtn" id="btn-shuffle" title="skip to another chapter">&#x21BB;</button>
     <button class="hbtn" id="btn-stop">STOP</button>
     <button class="hbtn" id="btn-fs" title="F key = fullscreen">&#x26F6;</button>
     <div id="mic-badge">&#127897; LIVE MIC</div>
@@ -974,6 +975,35 @@ const TOTAL_BEATS=NARRATIVE.length*BPH;
 let nBeat=0,nAlpha=0,nTarget=0;
 let phraseBeat=0,phraseIdx=0,inPhrase=false;
 let charSparks=[],lastPhraseIdx=-1;
+let shufflePending=false;
+
+function doShuffle(){
+  let arr=NARRATIVE;
+  if(currentMode==='bergen')arr=BERGEN_NARRATIVE;
+  else if(currentMode==='witch')arr=WITCH_NARRATIVE;
+  else if(currentMode==='magical')arr=MAGICAL_NARRATIVE;
+  else if(currentMode==='forbidden')arr=FORBIDDEN_NARRATIVE;
+  else if(currentMode==='digital')arr=DIGITAL_NARRATIVE;
+  if(!arr||!arr.length){shufflePending=false;return;}
+  const arrLen=arr.length;
+  const curIdx=phraseIdx%arrLen;
+  const currentCh=arr[curIdx].ch;
+  // Prefer a different chapter for variety
+  const chapters=[...new Set(arr.map(p=>p.ch))];
+  const otherChs=chapters.filter(c=>c!==currentCh);
+  let candidates;
+  if(otherChs.length){
+    const tCh=otherChs[(Math.random()*otherChs.length)|0];
+    candidates=arr.map((_,i)=>i).filter(i=>arr[i].ch===tCh);
+  }else{
+    candidates=arr.map((_,i)=>i).filter(i=>i!==curIdx);
+  }
+  if(!candidates.length){shufflePending=false;return;}
+  const target=candidates[(Math.random()*candidates.length)|0];
+  nBeat=target*BPH;
+  phraseIdx=target;nAlpha=0;nTarget=0;phraseBeat=0;inPhrase=false;lastPhraseIdx=-1;charSparks=[];
+  shufflePending=false;
+}
 let dataLines=[];
 for(let i=0;i<6;i++)dataLines.push({y:Math.random(),spd:0.0002+Math.random()*0.0004,a:0,target:0,ph:Math.random()*Math.PI*2});
 
@@ -986,7 +1016,7 @@ function tickNarrative(){
   if(bip<BFIN){nTarget=bip/BFIN;inPhrase=true;phraseBeat=bip;}
   else if(bip<BFIN+BHOLD){nTarget=1;inPhrase=true;phraseBeat=bip;}
   else if(bip<BFIN+BHOLD+BFOUT){nTarget=1-(bip-BFIN-BHOLD)/BFOUT;inPhrase=true;phraseBeat=bip;}
-  else{nTarget=0;inPhrase=false;phraseBeat=bip;}
+  else{nTarget=0;inPhrase=false;phraseBeat=bip;if(shufflePending&&bip===BFIN+BHOLD+BFOUT)doShuffle();}
   if(bip%8===0){const dl=dataLines[Math.floor(Math.random()*dataLines.length)];dl.target=0.08+Math.random()*0.06;dl.y=0.15+Math.random()*0.65;}
 
   // Update HUD chapter name
@@ -3044,6 +3074,12 @@ document.getElementById('btn-stop').addEventListener('click',()=>{
   requestAnimationFrame(idleLoop);
 });
 document.querySelectorAll('#hud-mood .hbtn[data-mode]').forEach(b=>{b.addEventListener('click',()=>{currentMode=b.dataset.mode;document.querySelectorAll('#hud-mood .hbtn').forEach(x=>x.classList.toggle('active',x.dataset.mode===currentMode));renderMountains();revealHudMood();});});
+
+// ── Shuffle ──
+document.getElementById('btn-shuffle').addEventListener('click',()=>{
+  if(!running||lastBeatTime===0){doShuffle();}  // no audio yet — jump immediately
+  else{shufflePending=true;}                     // with audio — glide in at phrase end
+});
 
 // ── Fullscreen ──
 function toggleFullscreen(){
