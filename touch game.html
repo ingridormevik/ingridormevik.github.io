@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Turing Test: Fragments of a Life Saved by Pixels - Ingrid Ormevik</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Additional styles for game page only */
+        .game-meta {
+            font-size: 0.7em;
+            color: var(--text-lighter);
+            margin-bottom: 3em;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        .game-player {
+            background: var(--bg-alt);
+            padding: 50px;
+            margin: 5em 0;
+            border-left: 2px solid var(--primary);
+            transition: background 0.4s ease;
+        }
+
+        .game-player h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+            font-weight: 500;
+            margin-bottom: 1.5em;
+        }
+
+        .iframe-container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .iframe-container iframe {
+            display: block;
+            width: 100%;
+            max-width: 900px;
+            height: 650px;
+            border: none;
+        }
+
+        .play-link {
+            text-align: center;
+            margin-top: 1.5em;
+            font-size: 0.8em;
+        }
+
+        .play-link a {
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.05em;
+        }
+
+        .play-link a:hover {
+            color: var(--primary);
+        }
+
+        .research-context {
+            margin-top: 5em;
+        }
+
+        .research-context h3 {
+            font-size: 1.8em;
+            margin-top: 2.5em;
+            margin-bottom: 1.2em;
+            font-weight: 500;
+        }
+
+        .research-context h3::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: var(--primary);
+            margin-top: 0.8em;
+        }
+
+        .research-context h4 {
+            font-size: 1.3em;
+            margin-top: 2em;
+            margin-bottom: 1em;
+            font-weight: 600;
+        }
+
+        .research-context ul {
+            margin-left: 2em;
+            margin-bottom: 2em;
+        }
+
+        .research-context li {
+            margin-bottom: 1em;
+            line-height: 1.75;
+            color: var(--text-light);
+        }
+
+        .research-context li::marker {
+            color: var(--text-lighter);
+        }
+
+        @media (max-width: 768px) {
+            .game-player {
+                padding: 35px;
+            }
+
+            .iframe-container iframe {
+                height: 550px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-player {
+                padding: 25px;
+            }
+
+            .iframe-container iframe {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="index.html">Ingrid Ormevik</a></h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="blog.html">Writing</a>
+            <a href="about.html">About</a>
+            <a href="touch game.html" class="active">Projects</a>
+        </nav>
+    </header>
+    
+    <main>
+        <article>
+            <h2>The Turing Test: Fragments of a Life Saved by Pixels</h2>
+            <span class="game-meta">Interactive Fiction | DIKULT105 Final Project | 2025</span>
+            
+            <p>The Turing Test: Fragments of a Life Saved by Pixels is an interactive fiction that documents what happens when you systematically test AI systems for their knowledge of marginalized communities.</p>
+
+            <p>Created for DIKULT105 (2nd year Digital Culture) at the University of Bergen, this work combines empirical research with interactive narrative. During my digital ethics research, I tested large language models on their ability to provide accurate information about Norwegian LGBTQ+ organizations and crisis resources. The results revealed dangerous patterns: hallucinated organizations, invented contact information, and misinformation that could harm vulnerable people seeking help.</p>
+
+            <p>Rather than writing a traditional research paper, I embedded these findings into a playable narrative that uses glitch aesthetics to visualize algorithmic instability. As you navigate the story, the interface itself becomes unstable—screen shake, visual corruption, and system errors mirror the epistemic breakdown that occurs when digital systems fail.</p>
+
+            <p>The work draws from computing history, glitch theory, affordance analysis, and autoethnographic methodology. It concludes with a proposal for The Turing Network, a community-owned alternative designed to provide verified, accessible information for communities that existing systems consistently fail.</p>
+
+            <p><em>This is research you can experience. This is what it feels like when systems break down.</em></p>
+
+            <div class="game-player">
+                <h3>Experience Now</h3>
+                <div class="iframe-container">
+                    <iframe 
+                        frameborder="0" 
+                        src="https://itch.io/embed-upload/15885079?color=000000" 
+                        allowfullscreen 
+                        width="100%" 
+                        height="650">
+                        <a href="https://ingridormevik.itch.io/the-turing-test-a-life-saved-by-pixels">Play The Turing Test: Fragments of a Life Saved by Pixels on itch.io</a>
+                    </iframe>
+                </div>
+                <p class="play-link">
+                    <a href="https://ingridormevik.itch.io/the-turing-test-a-life-saved-by-pixels" target="_blank">
+                        Open in full window →
+                    </a>
+                </p>
+            </div>
+
+            <div class="research-context">
+                <h3>Methodology & Framework</h3>
+                
+                <p>This project employs autoethnographic methodology, positioning the researcher's lived experience as both subject and method. By testing AI systems from the perspective of a digital activist working with Norwegian LGBTQ+ organizations, the research reveals how algorithmic failures manifest in material harm.</p>
+
+                <h4>Theoretical Foundations</h4>
+                <ul>
+                    <li><strong>Glitch Theory:</strong> Visual and interface corruption as critical commentary on system failure</li>
+                    <li><strong>Affordance Analysis:</strong> How platform design enables or constrains community survival</li>
+                    <li><strong>Computing History:</strong> The Turing Test reimagined for contemporary AI ethics</li>
+                    <li><strong>Platform Studies:</strong> Examining how technological architecture encodes structural violence</li>
+                </ul>
+
+                <h4>The Turing Network Proposal</h4>
+                
+                <p>The narrative concludes with a speculative design intervention: The Turing Network, a community-owned information infrastructure that prioritizes accuracy, accessibility, and accountability for marginalized communities systematically failed by existing AI systems.</p>
+
+                <p>This proposal challenges the assumption that centralized, profit-driven AI can ever adequately serve communities it does not recognize or value.</p>
+            </div>
+        </article>
+    </main>
+    
+    <footer>
+        <p>&copy; 2026 Ingrid Ormevik | Digital Culture Student, University of Bergen</p>
+        <p>Digital Media Strategist, Bergen Pride | Board Member, FRI Vestland | Research Intern, Centre for Digital Narrative</p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,578 @@
+/* ========================================
+   INGRID ORMEVIK - ACADEMIC JOURNAL
+   Ultra-sophisticated digital publication
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+/* === RESET & BASE === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Sophisticated monochrome palette with subtle warmth */
+    --primary: #0a0a0a;
+    --secondary: #1a1a1a;
+    --accent: #2d2d2d;
+    --text-color: #1a1a1a;
+    --text-light: #666666;
+    --text-lighter: #999999;
+    --link-color: #1a1a1a;
+    --link-hover: #000000;
+    --border-color: #e5e5e5;
+    --bg-main: #fafaf9;
+    --bg-white: #ffffff;
+    --bg-alt: #f5f5f4;
+    --shadow-sm: rgba(0, 0, 0, 0.03);
+    --shadow-md: rgba(0, 0, 0, 0.06);
+    --shadow-lg: rgba(0, 0, 0, 0.12);
+}
+
+/* Dark mode - warm, sophisticated tones */
+[data-theme="dark"] {
+    --primary: #fafaf9;
+    --secondary: #e7e5e4;
+    --accent: #d6d3d1;
+    --text-color: #e7e5e4;
+    --text-light: #a8a29e;
+    --text-lighter: #78716c;
+    --link-color: #fafaf9;
+    --link-hover: #ffffff;
+    --border-color: #292524;
+    --bg-main: #0a0a0a;
+    --bg-white: #1c1917;
+    --bg-alt: #1c1917;
+    --shadow-sm: rgba(0, 0, 0, 0.2);
+    --shadow-md: rgba(0, 0, 0, 0.3);
+    --shadow-lg: rgba(0, 0, 0, 0.5);
+}
+
+body {
+    font-family: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+    font-size: 21px;
+    line-height: 1.75;
+    color: var(--text-color);
+    background: var(--bg-main);
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 80px 40px;
+    transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* === TYPOGRAPHY === */
+h1, h2, h3, h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 0.8em;
+    color: var(--primary);
+    letter-spacing: -0.03em;
+}
+
+h1 {
+    font-size: 3.5em;
+    font-weight: 300;
+    margin-bottom: 0.4em;
+    letter-spacing: -0.04em;
+}
+
+h2 {
+    font-size: 2.5em;
+    margin-top: 2.5em;
+    margin-bottom: 1em;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+}
+
+h2::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--primary);
+    margin-top: 0.8em;
+}
+
+h3 {
+    font-size: 1.8em;
+    margin-top: 2em;
+    font-weight: 500;
+}
+
+h4 {
+    font-size: 1.3em;
+    margin-top: 1.8em;
+    font-weight: 600;
+}
+
+p {
+    margin-bottom: 1.5em;
+    font-weight: 400;
+}
+
+em {
+    font-style: italic;
+}
+
+strong {
+    font-weight: 600;
+}
+
+/* === LINKS === */
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--primary);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+a:hover::after {
+    width: 100%;
+}
+
+/* === HEADER & NAVIGATION === */
+header {
+    margin-bottom: 100px;
+    padding-bottom: 40px;
+}
+
+header h1 {
+    font-size: 2.2em;
+    margin-bottom: 0.5em;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+}
+
+header h1 a {
+    color: var(--primary);
+}
+
+header h1 a::after {
+    display: none;
+}
+
+nav {
+    margin-top: 25px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+nav a {
+    margin-right: 40px;
+    font-weight: 400;
+    color: var(--text-lighter);
+}
+
+nav a::after {
+    display: none;
+}
+
+nav a:hover,
+nav a.active {
+    color: var(--primary);
+}
+
+/* === MAIN CONTENT === */
+main {
+    margin-bottom: 120px;
+}
+
+.intro {
+    font-size: 1.15em;
+    line-height: 1.85;
+    margin-bottom: 4em;
+    padding: 0;
+    background: none;
+    border-left: none;
+    color: var(--text-light);
+    font-weight: 400;
+}
+
+/* === BLOG POST PREVIEW === */
+.recent-posts h3 {
+    font-size: 1.5em;
+    margin-bottom: 2em;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.post-preview {
+    margin-bottom: 5em;
+    padding: 0;
+    border-bottom: none;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.post-preview:hover {
+    transform: translateX(5px);
+}
+
+.post-preview h3,
+.post-preview h4 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-size: 2em;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+}
+
+.post-preview h3 a,
+.post-preview h4 a {
+    color: var(--primary);
+}
+
+.post-preview h3 a::after,
+.post-preview h4 a::after {
+    height: 2px;
+    bottom: 0;
+}
+
+.meta {
+    font-size: 0.7em;
+    color: var(--text-lighter);
+    margin-bottom: 1.2em;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+.meta time {
+    font-style: normal;
+}
+
+.separator {
+    margin: 0 12px;
+    color: var(--text-lighter);
+}
+
+.category {
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--text-lighter);
+}
+
+.tags {
+    color: var(--text-lighter);
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.excerpt {
+    color: var(--text-light);
+    line-height: 1.75;
+    font-size: 0.95em;
+}
+
+/* === INDIVIDUAL POST STYLES === */
+article {
+    margin-bottom: 4em;
+}
+
+article h2 {
+    font-size: 3em;
+    margin-bottom: 0.3em;
+    font-weight: 400;
+}
+
+article .date {
+    font-size: 0.7em;
+    color: var(--text-lighter);
+    font-style: normal;
+    margin-bottom: 3em;
+    display: block;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+article p {
+    margin-bottom: 1.5em;
+}
+
+article hr {
+    border: none;
+    height: 1px;
+    background: var(--border-color);
+    margin: 4em 0;
+}
+
+article strong {
+    font-weight: 600;
+}
+
+/* Commentary section */
+.commentary {
+    background: var(--bg-alt);
+    padding: 50px;
+    margin-top: 5em;
+    border-left: 2px solid var(--primary);
+}
+
+.commentary h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+.commentary p {
+    font-size: 0.9em;
+    line-height: 1.8;
+    color: var(--text-light);
+}
+
+/* === ABOUT PAGE === */
+.bio, .current-work, .interests, .contact {
+    margin-bottom: 4em;
+}
+
+section h3 {
+    font-size: 1.8em;
+    margin-bottom: 1.2em;
+    font-weight: 500;
+}
+
+section p {
+    color: var(--text-light);
+}
+
+section ul {
+    margin-left: 2em;
+    margin-bottom: 2em;
+}
+
+section li {
+    margin-bottom: 1em;
+    line-height: 1.75;
+    color: var(--text-light);
+}
+
+section li::marker {
+    color: var(--text-lighter);
+}
+
+/* === FOOTER === */
+footer {
+    border-top: 1px solid var(--border-color);
+    padding-top: 50px;
+    margin-top: 120px;
+    text-align: center;
+    font-size: 0.65em;
+    color: var(--text-lighter);
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+footer p {
+    margin-bottom: 0.8em;
+}
+
+/* === THEME TOGGLE === */
+.theme-toggle {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    box-shadow: 0 2px 8px var(--shadow-sm);
+}
+
+.theme-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-md);
+}
+
+.theme-toggle:active {
+    transform: translateY(0);
+}
+
+.theme-toggle .icon {
+    width: 18px;
+    height: 18px;
+    color: var(--primary);
+    transition: opacity 0.3s ease;
+}
+
+.sun-icon {
+    display: none;
+}
+
+[data-theme="dark"] .sun-icon {
+    display: block;
+}
+
+[data-theme="dark"] .moon-icon {
+    display: none;
+}
+
+/* === READING PROGRESS BAR === */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--primary);
+    width: 0%;
+    z-index: 9999;
+    transition: width 0.1s ease;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    body {
+        font-size: 19px;
+        padding: 60px 30px;
+    }
+    
+    h1 {
+        font-size: 2.8em;
+    }
+    
+    h2 {
+        font-size: 2em;
+    }
+    
+    article h2 {
+        font-size: 2.5em;
+    }
+    
+    nav a {
+        margin-right: 25px;
+        font-size: 0.7em;
+    }
+    
+    .theme-toggle {
+        bottom: 30px;
+        right: 30px;
+        width: 44px;
+        height: 44px;
+    }
+    
+    .commentary {
+        padding: 35px;
+    }
+    
+    header {
+        margin-bottom: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 18px;
+        padding: 40px 20px;
+    }
+    
+    h1 {
+        font-size: 2.2em;
+    }
+    
+    nav a {
+        margin-right: 20px;
+    }
+}
+
+/* === ACCESSIBILITY === */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* === PRINT STYLES === */
+@media print {
+    body {
+        max-width: 100%;
+        font-size: 12pt;
+        padding: 0;
+        background: white;
+        color: black;
+    }
+    
+    header, footer, nav, .theme-toggle, .progress-bar {
+        display: none;
+    }
+    
+    a {
+        color: black;
+        text-decoration: underline;
+    }
+    
+    a::after {
+        display: none;
+    }
+}
+
+/* === TEXT SELECTION === */
+::selection {
+    background: var(--primary);
+    color: var(--bg-white);
+}
+
+::-moz-selection {
+    background: var(--primary);
+    color: var(--bg-white);
+}
+
+/* === SMOOTH ANIMATIONS === */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.post-preview {
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+.post-preview:nth-child(1) { animation-delay: 0.1s; }
+.post-preview:nth-child(2) { animation-delay: 0.2s; }
+.post-preview:nth-child(3) { animation-delay: 0.3s; }

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="no" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inngang C eksisterer ikke — For Freddie</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600&family=Bebas+Neue&family=IBM+Plex+Mono:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --black: #080808;
+  --white: #f8f3ec;
+  --red: #b52a1c;
+  --gold: #c9963a;
+  --gold-light: #e8c06a;
+  --cream: #ede8df;
+}
+
+[data-theme="dark"] {
+  --bg: #080808;
+  --bg2: #0e0810;
+  --bg3: #120a0a;
+  --fg: #f8f3ec;
+  --fg2: #c8c0b4;
+  --fg3: #555;
+  --border: #1a1a1a;
+  --border2: #2a2a2a;
+  --card-bg: #111;
+  --freddie-bg: #110808;
+  --freddie-fg: #f8f3ec;
+  --facade-op: 0.04;
+  --scan-col: rgba(192,57,43,0.12);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Cormorant Garamond', serif;
+  overflow-x: hidden;
+  transition: background 0.4s, color 0.4s;
+}
+
+.stage-lights {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.light {
+  position: absolute;
+  top: -100px;
+  width: 1px;
+  height: 100vh;
+  transform-origin: top center;
+  animation: lightSweep var(--dur) var(--delay) ease-in-out infinite alternate;
+}
+
+.light::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: var(--spread) solid transparent;
+  border-right: var(--spread) solid transparent;
+  border-top: 100vh solid var(--col);
+  opacity: 0.08;
+}
+
+.l1 { left: 15%; --dur: 8s; --delay: 0s; --spread: 60px; --col: rgba(201,150,58,1); transform: rotate(-8deg); }
+.l2 { left: 35%; --dur: 11s; --delay: 2s; --spread: 80px; --col: rgba(255,255,255,1); transform: rotate(-3deg); }
+.l3 { left: 50%; --dur: 9s; --delay: 1s; --spread: 100px; --col: rgba(255,255,255,1); transform: rotate(0deg); }
+.l4 { left: 65%; --dur: 12s; --delay: 3s; --spread: 80px; --col: rgba(255,255,255,1); transform: rotate(3deg); }
+.l5 { left: 82%; --dur: 7s; --delay: 0.5s; --spread: 60px; --col: rgba(201,150,58,1); transform: rotate(8deg); }
+
+@keyframes lightSweep {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+.facade {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  display: flex;
+  gap: 14px;
+  padding: 0 30px;
+  opacity: var(--facade-op);
+  transition: opacity 0.4s;
+}
+.bar { flex: 1; background: var(--fg); }
+
+.scanline {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--scan-col);
+  animation: scan 6s linear infinite;
+  pointer-events: none;
+  z-index: 100;
+}
+
+@keyframes scan {
+  from { transform: translateY(-3px); }
+  to { transform: translateY(100vh); }
+}
+
+@keyframes glitch {
+  0%,89%,100% { text-shadow: none; transform: none; }
+  90% { text-shadow: -3px 0 var(--red), 3px 0 var(--gold); transform: skewX(-1deg); }
+  91% { text-shadow: 3px 0 var(--red), -3px 0 var(--gold); transform: skewX(1deg); }
+  92% { text-shadow: none; transform: none; }
+  97% { text-shadow: -2px 0 var(--gold); transform: skewX(-0.5deg); }
+  98% { text-shadow: none; transform: none; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(40px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+.hero {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;   /* NY */
+  text-align: center;    /* NY */
+  padding: 0 60px 80px;
+}
+
+.hero-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp 1s 0.5s both;
+  pointer-events: none;
+  cursor: default;
+}
+
+.hero-label::before { content: '▶ '; color: var(--red); }
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 14vw, 180px);
+  line-height: 0.88;
+  letter-spacing: 3px;
+  color: var(--fg);
+  animation: glitch 10s infinite, fadeUp 1s 0.7s both;
+  opacity: 0;
+  transition: color 0.4s;
+}
+
+h1 .red { color: var(--red); }
+
+h1 .gold {
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+.hero-sub {
+  color: #bbb;
+  font-size: clamp(17px, 2vw, 22px);
+  font-style: italic;
+  margin-top: 24px;
+  opacity: 0;
+  animation: fadeUp 1s 1s both;
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.hero-meta {
+  margin-top: 48px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  opacity: 0;
+  animation: fadeUp 1s 1.2s both;
+}
+
+.hero-meta .name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--fg);
+  border-left: 3px solid var(--gold);
+  padding-left: 14px;
+}
+
+.hero-meta .role {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+.gold-bar {
+  height: 6px;
+  background: linear-gradient(90deg, var(--red), var(--gold), var(--gold-light), var(--gold), var(--red));
+  background-size: 200% auto;
+  animation: shimmer 4s linear infinite;
+  position: relative;
+  z-index: 10;
+}
+
+article {
+  position: relative;
+  z-index: 10;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 100px 40px 140px;
+}
+
+.section-mark {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 64px 0 40px;
+}
+
+.section-mark::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+p {
+  font-size: 20px;
+  line-height: 1.9;
+  color: var(--fg2);
+  margin-bottom: 28px;
+  font-weight: 300;
+}
+
+p em { color: var(--gold-light); font-style: italic; }
+p strong { color: var(--fg); font-weight: 600; }
+p .sting { color: var(--red); font-style: italic; }
+
+.mono-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border2);
+  padding: 3px 10px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  display: inline;
+}
+
+.rad26 {
+  display: inline-block;
+  background: var(--red);
+  color: white;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  padding: 3px 8px;
+  text-transform: uppercase;
+  position: relative;
+  top: -2px;
+}
+
+.pull-quote {
+  margin: 72px -40px;
+  padding: 64px 56px;
+  background: var(--bg2);
+  border-left: 5px solid var(--gold);
+  position: relative;
+  overflow: hidden;
+}
+
+.pull-quote::before {
+  content: '"';
+  position: absolute;
+  top: -20px; left: 30px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 200px;
+  color: var(--gold);
+  opacity: 0.06;
+  line-height: 1;
+}
+
+.pull-quote::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 4px; height: 100%;
+  background: linear-gradient(180deg, var(--gold), var(--red));
+}
+
+.pull-quote p {
+  font-size: clamp(22px, 3vw, 34px);
+  font-style: italic;
+  color: var(--fg);
+  line-height: 1.55;
+  font-weight: 300;
+  margin: 0;
+}
+
+.pull-quote cite {
+  display: block;
+  margin-top: 24px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-style: normal;
+}
+
+.freddie-block {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+
+  padding: 80px 0;
+  background: var(--freddie-bg);
+  color: var(--freddie-fg);
+}
+
+.freddie-block::before {
+  content: 'FREDDIE';
+  position: absolute;
+  right: -20px; top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 180px;
+  color: var(--freddie-fg);
+  opacity: 0.04;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.freddie-block .dates {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--red);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+.freddie-block p {
+  color: var(--freddie-fg);
+  font-size: 18px;
+  opacity: 0.85;
+}
+
+.freddie-block p em { color: var(--red); }
+.freddie-block p strong { color: var(--freddie-fg); opacity: 1; }
+
+.freddie-block blockquote {
+  margin: 28px 0;
+  padding: 24px 32px;
+  border-left: 4px solid var(--red);
+  background: rgba(0,0,0,0.06);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.8;
+  color: var(--freddie-fg);
+  opacity: 0.85;
+}
+
+.freddie-block .quote-attr {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-top: -16px;
+  margin-bottom: 28px;
+}
+  .freddie-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.source-links {
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.source-links .sources-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 16px;
+  font-style: normal;
+}
+
+.source-links a {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--freddie-fg);
+  opacity: 0.6;
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: opacity 0.2s;
+  padding-left: 12px;
+  border-left: 2px solid transparent;
+}
+
+.source-links a:hover {
+  opacity: 1;
+  border-left-color: var(--red);
+}
+
+.ending {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.ending .big {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 8vw, 96px);
+  letter-spacing: 4px;
+  line-height: 1;
+  color: var(--fg);
+  display: block;
+}
+
+.ending .big em { color: var(--red); font-style: normal; }
+
+.ending .small {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: #aaa;
+  display: block;
+  margin-top: 16px;
+}
+
+footer {
+  position: relative;
+  z-index: 10;
+  border-top: 1px solid var(--border);
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;   /* midt horisontalt */
+  align-items: center;
+  text-align: center;
+}
+
+.footer-left {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+.rainbow-line {
+  height: 3px;
+  background: linear-gradient(90deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787);
+  position: relative;
+  z-index: 10;
+}
+</style>
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<div class="facade">
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+</div>
+
+<div class="stage-lights">
+  <div class="light l1"></div>
+  <div class="light l2"></div>
+  <div class="light l3"></div>
+  <div class="light l4"></div>
+  <div class="light l5"></div>
+</div>
+
+<section class="hero">
+  <div class="hero-label">Skeiv utslettelse · Grieghallen · Bergen · 2026</div>
+  <h1>INNGANG C<br><span class="red">EKSISTERER</span><br><span class="gold">IKKE.</span></h1>
+  <p class="hero-sub">En rapport fra en konsert jeg forlot. For Freddie. For oss.</p>
+  <div class="hero-meta">
+    <div class="name">Ingrid</div>
+    <div class="role">Skeiv aktivist</div>
+  </div>
+</section>
+
+<div class="gold-bar"></div>
+
+<article>
+
+  <p>Vi kom for sent. Vi er skeive. Vi måtte røyke først. Dette er ikke en unnskyldning, det er en identitet.</p>
+
+  <p>Billetten nevnte ikke inngang C. Vi spurte ansatte. De svarte som om de kom fra en annen planet. Vi gikk opp trapper. Ned trapper. Opp igjen. Til slutt fant vi bokstavssystemet, gjemt ved takbjelkene, fordi det er jo der man naturlig leter.</p>
+
+  <p>Styret vinket. Vi fant raden. Hele raden måtte reise seg. <em>Ingen var grådig fornøyd med det.</em></p>
+
+  <div class="section-mark">§ 01 — rommet</div>
+
+  <p>Formatet var sittende. Stoler. Rader. Jakker brettet pent over seterygger. Kvelden sveipet konstant mellom to energier: <span class="mono-tag">hysj-vi-er-på-kino</span> og <span class="mono-tag">full-likar-no-dde-vibes</span>. Ingen av dem vant. Begge tapte.</p>
+
+  <p>Den store projeksjonsskjermen bak scenen viste et statisk event-bilde. Antageligvis hentet rett fra Facebook-arrangementet. <em>Killer Queen. A Tribute to Queen. Ferdig.</em> Hadde de vist et eneste bilde av Freddie som den han faktisk var, et pride-flagg, et HIV-bånd, noe, hadde jeg blitt. Det koster ingenting. Det betyr alt. Men nei. Facebook-headeren holdt.</p>
+
+  <p>Og så slo det meg: <strong>er Freddie Mercury i rommet med oss?</strong></p>
+  <p><span class="sting">Nei. Han var ikke det.</span></p>
+
+  <p>Pride-flaggene fant jeg på <span class="rad26">rad 26</span>. De største. Satt der stille i mørket. Kjære sjeler, alle sammen. Aktivister på papiret, pride-flagget tatovert øynene og hjertet på rett sted. De samme som sitter i Kim Frieles stol i Bergen og mener det oppriktig. Jeg er glad de var der. Jeg skulle bare ønske noen av dem satt på scenen.</p>
+
+  <div class="section-mark">§ 02 — mannen foran oss</div>
+<p>Kompisen min hvisket at denne sangen sang Freddie da han visste han skulle dø av AIDS. Kompisen min er homofil. Født på 70-tallet. Det er derfor jeg tok ham med.</p>
+
+<div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; margin: 48px 0;">
+  <iframe style="position:absolute; top:0; left:0; width:100%; height:100%;"
+    src="https://www.youtube.com/embed/t99KH0TR-J4?si=bu_eZbSt4HhEVaNG&start=64"
+    title="YouTube video player" frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+  </iframe>
+</div>
+
+  <p>Foran oss satt et ektepar på 60-pluss. Han: bred rygg, grått hår, hendene i fanget. Hun: ansiktsuttrykket som bare norske koner som har ventet i 35 år på at mannen sin skal kjenne noe som helst, har. Og så skjedde det. Tårene kom. Stille, kontrollerte, typisk norsk, som om følelsene hadde søkt om byggetillatelse og endelig fått svar.</p>
+
+  <p>Hun la hånden på armen hans. Han lot den ligge der. Det var sannsynligvis den mest fysiske kontakten de hadde hatt siden jul.</p>
+
+  <p>Godt hjerte, begge to. Det mener jeg. Men det var noe rørende absurd med det hele. Baby boomer-generasjonen som tok Queen til sitt bryst i 1975 og har brukt "Bohemian Rhapsody" som sin personlige følelsesventil i 50 år. Musikken som fikk dem til å gråte på bryllup, begravelser, bilferger til Danmark og nå altså Grieghallen på en lørdag. Freddie Mercury som terapeut for en hel generasjon som aldri gikk til terapeut.</p>
+
+  <p>Det er nesten vakkert. Det hadde vært vakkert. Hvis ikke Freddie hadde levd og dødd i en verden der en generasjon lærte å elske musikken før den lærte å tåle mannen.</p>
+
+  <p>Freddie ga ham disse tårene. Han vet bare ikke hvem som ga dem til ham.</p>
+
+  <div class="pull-quote">
+    <p>Et annet sted, på et annet tidspunkt, gråt Freddie Mercury denne sangen inn i et mikrofon mens han visste han skulle dø. Og ingen i rommet gråt for ham.</p>
+    <cite>Grieghallen · Bergen · 2026</cite>
+  </div>
+
+  <div class="section-mark">§ 03 — julegavepapir</div>
+
+  <p>Jeg googlet vokalisten midt under showet. <em>Gift med en dame.</em></p>
+
+  <p>Ikke problemet i seg selv. Men det understreket alt: estetikken var der, sekvensene, sveisen, sjarmen. <em>Mannen</em> bak alt dette, den homofile mannen som gjemte seg i årevis, som døde av AIDS, som kom ut offentlig dagen før han døde fordi han endelig ikke hadde noe mer å tape, han var ikke der.</p>
+
+  <p>Vi, som skeiv organisasjon, hadde fått billettene i julegave. Vi satt i et rom fullt av mennesker som vokste opp med Queen mens AIDS-krisen herjet og homofile menn døde mens verden tittet bort.</p>
+
+  <p><strong>Freddie Mercury var pakket inn i julegavepapir og satt under treet. Trygg. Desinfisert. Uten den homofile mannen som skapte ham.</strong></p>
+
+  <p>De sang med på alle sangene. De kjente alle ordene. Hvert eneste ett. De bare visste ikke hvem som hadde skrevet dem. Eller kanskje de visste. Kanskje det er lettere for oss å ikke tenke på det. For det er bedre sånn. Musikken er jo så fin. Og billetten var jo en så hyggelig julegave. <span class="sting">Og Freddie er jo så underholdende når han ikke er homofil og syk og redd og død.</span></p>
+
+<div class="section-mark">§ 04 — et mønster, ikke et unntak</div>
+
+<p>Det finnes et begrep for det som skjedde i Grieghallen den kvelden. Medieforskeren Richard Dyer skrev allerede i 1986 om hvordan underholdningsindustrien konsekvent <em>avpolitiserer</em> skeive ikoner ved å løfte frem det estetiske mens den menneskelige og politiske konteksten fjernes. Musikken blir igjen. Mannen forsvinner.</p>
+
+<p>Bohemian Rhapsody-filmen fra 2018 er det mest dokumenterte eksempelet i nyere tid. Queer-akademikere og aktivister kritiserte filmen for å skyve AIDS-diagnosen mot slutten, fremstilt som en konsekvens av et liv han selv hadde forlatt, ikke som en politisk og medisinsk katastrofe som rammet en hel generasjon. Filmen tjente over 900 millioner dollar globalt. Den homofile mannen som skapte musikken ble gjort trygg nok for alle.</p>
+
+<p>Kulturkritiker José Esteban Muñoz kalte denne prosessen <em>disidentification</em>: majoritetskulturenpå tar skeive verk og omskriver dem innenfra, beholder formen men tømmer dem for politisk innhold. Queen på Grieghallen er ikke et unntak. Det er industristandard.</p>
+
+<div class="freddie-block">
+  <div class="freddie-inner">
+
+    <div class="dates">05.09.1946 og 24.11.1991</div>
+
+    <p>Han kom ut offentlig <em>dagen før han døde</em>. Ikke fordi han endelig var trygg. Men fordi han ikke hadde noe mer å tape.</p>
+
+    <p>Den 23. november 1991 ga han ut denne uttalelsen, mens han lå på dødsleiet:</p>
+
+    <blockquote>
+     "Following the enormous conjecture in the press over the last two weeks, I wish to confirm that I have been tested HIV positive and have AIDS. I felt it correct to keep this information private to date to protect the privacy of those around me. However, the time has come now for my friends and fans around the world to know the truth and I hope that everyone will join with me, my doctors and all those worldwide in the fight against this terrible disease."
+    </blockquote>
+
+    <p class="quote-attr">Freddie Mercury · 23. november 1991 · 24 timer før han døde</p>
+
+    <p>Han døde dagen etter. Han var 45 år gammel. Han levde et helt liv i skyggen av den mannen han egentlig var, og ga verden <strong>alt</strong> likevel. Det er ikke en detalj i historien hans. Det er hele historien.</p>
+
+    <div class="source-links">
+      <p class="sources-label">Kilder og videre lesing</p>
+      <a href="https://www.history.com/this-day-in-history/November-24/freddie-mercury-death-aids" target="_blank">History.com: Freddie Mercury succumbs to AIDS, 24. november 1991</a>
+      <a href="https://www.smithsonianmag.com/smart-news/read-freddie-mercurys-heartbreaking-announcement-of-his-diagnosis-with-hivaids-released-on-this-date-in-1991-just-a-day-before-the-queen-frontman-died-180985325/" target="_blank">Smithsonian Magazine: Hans siste uttalelse</a>
+      <a href="https://www.euronews.com/culture/2023/11/24/culture-re-view-how-freddie-mercurys-death-changed-aids-perceptions" target="_blank">Euronews: Hvordan hans død endret AIDS-forståelsen</a>
+      <a href="https://www.mercuryphoenixtrust.com/" target="_blank">Mercury Phoenix Trust: Hans AIDS-stiftelse</a>
+      <a href="https://doi.org/10.1080/15295036.2019.1667485" target="_blank">Eve Ng: Queer erasure and representation in popular media (2019)</a>
+      <a href="https://www.upress.umn.edu/book-division/books/disidentifications" target="_blank">José Esteban Muñoz: Disidentifications (1999) — University of Minnesota Press</a>
+<a href="https://www.jstor.org/stable/j.ctt46nrd2" target="_blank">Richard Dyer: Heavenly Bodies: Film Stars and Society (1986)</a>
+    </div>
+
+  </div>
+</div>
+
+  <div class="ending">
+    <span class="big">JEG FANT ALDRI<br>INNGANG <em>C.</em></span>
+    <span class="small">Men utgangen var enkel å finne.</span>
+  </div>
+
+</article>
+
+<div class="rainbow-line"></div>
+
+<footer>
+  <div class="footer-left">Bergen · 🏳️‍🌈 · For Freddie</div>
+</footer>
+
+</body>
+</html>

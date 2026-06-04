@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Vision Entity Live</title>
+<style>
+:root{--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:#000;color:#fff;font-family:Arial,sans-serif}
+body{position:fixed;inset:0}
+.app{position:absolute;inset:0;background:#000;overflow:hidden}
+video,canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.aurora,.scan,.vignette{position:absolute;inset:0;pointer-events:none}
+.aurora{
+ mix-blend-mode:screen;opacity:.42;
+ background:
+ radial-gradient(45vw 35vh at 12% 18%, rgba(255,45,122,.28), transparent 60%),
+ radial-gradient(55vw 40vh at 82% 18%, rgba(126,247,255,.24), transparent 60%),
+ radial-gradient(55vw 38vh at 52% 82%, rgba(214,255,107,.18), transparent 60%);
+ filter:blur(18px) saturate(130%);
+ animation:auroraMove 10s ease-in-out infinite alternate;
+}
+.scan{opacity:.15;background:repeating-linear-gradient(180deg, rgba(255,255,255,.08) 0 1px, transparent 1px 4px)}
+.vignette{background:radial-gradient(circle at center, transparent 42%, rgba(0,0,0,.15) 70%, rgba(0,0,0,.54) 100%),linear-gradient(180deg, rgba(0,0,0,.42), transparent 24%, transparent 74%, rgba(0,0,0,.7))}
+@keyframes auroraMove{0%{transform:translate3d(-2%,0,0) scale(1)}50%{transform:translate3d(2%,-2%,0) scale(1.05)}100%{transform:translate3d(0,2%,0) scale(1.08)}}
+/* cinema bars */
+.lb{position:absolute;left:0;right:0;background:#000;z-index:18;pointer-events:none;height:0;transition:height .8s ease}
+#lb-top{top:0} #lb-bot{bottom:0}
+.cinema #lb-top,.cinema #lb-bot{height:9vh}
+/* scan beam */
+#beam{position:absolute;left:0;right:0;height:2px;z-index:16;pointer-events:none;background:linear-gradient(90deg,transparent,#ff2d7a,transparent);box-shadow:0 0 20px #ff2d7a;opacity:0;top:0}
+#beam.on{opacity:1;animation:beamAnim 1.6s ease-in-out infinite}
+@keyframes beamAnim{0%{top:5%}50%{top:90%}100%{top:5%}}
+.hud{position:absolute;left:0;right:0;top:0;z-index:20;padding:calc(12px + var(--safe-top)) 14px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;background:linear-gradient(180deg, rgba(0,0,0,.68), transparent)}
+.tag,.status{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.28);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.dot{width:7px;height:7px;border-radius:50%;background:#ff2d7a;box-shadow:0 0 12px #ff2d7a}
+.status{letter-spacing:.04em;text-transform:none;max-width:58vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.layer{position:absolute;inset:0;z-index:12;pointer-events:none}
+.obj{position:absolute;left:0;top:0;transform:translate(-50%,-50%);will-change:transform,left,top}
+.bbox{position:absolute;inset:0;border:2px solid currentColor;border-radius:18px;box-shadow:0 0 0 1px rgba(255,255,255,.06) inset,0 0 22px currentColor;opacity:.78}
+.label{position:absolute;left:0;top:-18px;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.42);backdrop-filter:blur(8px);font-size:10px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.poem{position:absolute;left:0;max-width:42vw;font-weight:900;line-height:.92;letter-spacing:-.05em;text-shadow:0 3px 16px rgba(0,0,0,.85),0 0 28px rgba(0,0,0,.55);text-transform:lowercase}
+.poem span{display:block;animation:floaty 2.8s ease-in-out infinite}
+.poem span:nth-child(2){animation-delay:.12s}
+@keyframes floaty{0%,100%{transform:translate(0,0)}50%{transform:translate(1px,-2px)}}
+.controls{position:absolute;left:0;right:0;bottom:0;z-index:22;padding:14px 14px calc(18px + var(--safe-bottom));background:linear-gradient(0deg, rgba(0,0,0,.82), transparent);display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+button,label.btn{appearance:none;border:none;color:#fff;cursor:pointer;padding:12px 14px;border-radius:999px;background:rgba(10,12,16,.62);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-weight:800;font-size:12px;letter-spacing:.11em;text-transform:uppercase}
+button.primary{background:linear-gradient(135deg, rgba(255,45,122,.85), rgba(126,247,255,.28))}
+button.active{border-color:#d6ff6b;color:#d6ff6b}
+input[type=file]{display:none}
+.centerCard{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at top, rgba(255,45,122,.16), transparent 32%),radial-gradient(circle at bottom, rgba(126,247,255,.12), transparent 36%),linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.48))}
+.card{width:min(92vw,560px);padding:22px;border-radius:28px;border:1px solid rgba(255,255,255,.14);background:rgba(8,10,14,.62);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+h1{margin:0 0 10px;font-size:34px;line-height:.92;letter-spacing:-.06em}
+h1 em{color:#ff2d7a;font-style:normal}
+p{margin:0 0 14px;color:rgba(255,255,255,.8);line-height:1.45}
+.tiny{font-size:12px;color:rgba(255,255,255,.62)}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="app cinema" id="app">
+  <video id="video" autoplay playsinline muted></video>
+  <canvas id="fx"></canvas>
+  <div class="aurora"></div>
+  <div class="scan"></div>
+  <div class="vignette"></div>
+  <div class="lb" id="lb-top"></div>
+  <div class="lb" id="lb-bot"></div>
+  <div id="beam"></div>
+  <div id="debug" style="display:none;position:absolute;top:80px;left:10px;right:10px;z-index:50;
+    background:rgba(0,0,0,.92);border:2px solid #ff2d7a;padding:14px;border-radius:12px;
+    font-size:13px;word-break:break-all;line-height:1.5;color:#fff;max-height:60vh;overflow:auto"></div>
+
+  <div class="hud">
+    <div class="tag"><span class="dot"></span><span>vision entity</span></div>
+    <div id="status" class="status">starting camera…</div>
+  </div>
+
+  <div id="layer" class="layer"></div>
+
+  <div id="keybar" style="position:absolute;bottom:110px;left:0;right:0;z-index:23;padding:0 14px">
+    <input id="apiKeyInput" type="password" placeholder="Paste API key (sk-ant-...) then tap Scan Now"
+      style="width:100%;padding:11px 16px;border-radius:999px;background:rgba(0,0,0,.7);
+      border:1px solid rgba(255,45,122,.6);color:#fff;font-size:13px;outline:none;font-family:Arial,sans-serif"/>
+  </div>
+  <div class="controls">
+    <button id="voiceBtn">voice on</button>
+    <button id="cinemaBtn" class="active">cinema</button>
+    <button id="spawnBtn" class="primary">scan now</button>
+    <button id="clearBtn">clear</button>
+    <label class="btn">upload<input id="fileInput" type="file" accept="image/*"></label>
+  </div>
+
+  <div id="intro" class="centerCard">
+    <div class="card">
+      <h1>live<br><em>vision</em><br>entity</h1>
+      <p>Real AI sees your camera. Objects get bounding boxes and poems. Text follows what Claude detects.</p>
+      <p>Aurora overlays, cinematic bars, voice synthesis — all live.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+        <button id="startBtn" class="primary">start camera</button>
+        <label class="btn">choose image<input id="fileInputIntro" type="file" accept="image/*"></label>
+      </div>
+
+```
+  <p class="tiny" style="margin-top:8px">Best in Safari on iPhone.</p>
+</div>
+```
+
+  </div>
+</div>
+
+<script>
+const MODEL      = 'claude-sonnet-4-6';
+const SCAN_EVERY = 5000;
+const COLORS     = ['#ff2d7a','#7ef7ff','#d6ff6b','#ffffff','#ff9ad1'];
+
+const video    = document.getElementById('video');
+const fx       = document.getElementById('fx');
+const fctx     = fx.getContext('2d');
+const layer    = document.getElementById('layer');
+const statusEl = document.getElementById('status');
+const intro    = document.getElementById('intro');
+const beam     = document.getElementById('beam');
+const appEl    = document.getElementById('app');
+
+let voiceOn    = true;
+let cinemaOn   = true;
+let stream     = null;
+let usingImage = false;
+let uploadedImage = null;
+let objects    = [];
+let lastSpawn  = 0;
+let lastScan   = 0;
+let lastUpdate = 0;
+let appActive  = false;
+let scanning   = false;
+let speaking   = false;
+
+// fallback poems for when AI hasn't scanned yet
+const fallbackPoems = [
+  ['i see you','becoming signal'],
+  ['this light','knows your shape'],
+  ['the room','keeps your outline'],
+  ['you arrive','before language'],
+  ['every surface','is listening'],
+  ['softness here','costs something'],
+  ['you are not hidden','only translated']
+];
+const fallbackLabels = ['face','window','light','body','shadow','hand','street','signal'];
+
+function setStatus(t){ statusEl.textContent = t; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+// ── VOICE ─────────────────────────────────────────────────
+function speak(text){
+  if(!voiceOn || !('speechSynthesis' in window)) return;
+  try{ window.speechSynthesis.cancel(); }catch(e){}
+  speaking = false;
+  try{
+    const u = new SpeechSynthesisUtterance(text.replace(/\n/g,' '));
+    u.rate=0.92; u.pitch=0.92; u.volume=0.9;
+    speaking=true;
+    u.onend=()=>{ speaking=false; };
+    u.onerror=()=>{ speaking=false; };
+    setTimeout(()=>{ speaking=false; },8000);
+    window.speechSynthesis.speak(u);
+  }catch(e){ speaking=false; }
+}
+
+// ── CINEMA ────────────────────────────────────────────────
+function setCinema(on){
+  cinemaOn = on;
+  appEl.classList.toggle('cinema', on);
+  document.getElementById('cinemaBtn').classList.toggle('active', on);
+}
+
+// ── CAMERA ───────────────────────────────────────────────
+async function startCamera(){
+  try{
+    if(stream) stream.getTracks().forEach(t=>t.stop());
+    stream = await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:'environment',width:{ideal:1280},height:{ideal:720}},audio:false
+    });
+    video.srcObject = stream;
+    usingImage = false; uploadedImage = null;
+    intro.classList.add('hidden');
+    appActive = true; lastSpawn = performance.now(); lastScan = 0;
+    setStatus('camera live');
+  }catch(err){
+    setStatus('camera blocked — use upload');
+  }
+}
+
+// ── UPLOAD ────────────────────────────────────────────────
+function handleUploadFile(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const img = new Image();
+    img.onload = function(){
+      uploadedImage = img; usingImage = true;
+      if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
+      intro.classList.add('hidden');
+      appActive = true; lastSpawn = performance.now(); lastScan = 0;
+      objects = [];
+      setStatus('image loaded');
+      doScan();
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── DRAW SOURCE ───────────────────────────────────────────
+function drawSource(){
+  const w = Math.max(video.videoWidth||(uploadedImage&&uploadedImage.naturalWidth)||innerWidth,1);
+  const h = Math.max(video.videoHeight||(uploadedImage&&uploadedImage.naturalHeight)||innerHeight,1);
+  if(fx.width!==w||fx.height!==h){fx.width=w;fx.height=h;}
+  fctx.clearRect(0,0,fx.width,fx.height);
+  if(usingImage && uploadedImage){
+    drawCover(fctx,uploadedImage,fx.width,fx.height);
+  } else if(video.readyState>=2){
+    drawCover(fctx,video,fx.width,fx.height);
+  }
+  const g = fctx.createRadialGradient(fx.width*.5,fx.height*.2,0,fx.width*.5,fx.height*.2,fx.width*.6);
+  g.addColorStop(0,'rgba(255,255,255,0.04)');
+  g.addColorStop(1,'rgba(255,255,255,0)');
+  fctx.fillStyle=g; fctx.fillRect(0,0,fx.width,fx.height);
+}
+
+function drawCover(ctx,source,tw,th){
+  const sw=source.videoWidth||source.naturalWidth||tw;
+  const sh=source.videoHeight||source.naturalHeight||th;
+  const scale=Math.max(tw/sw,th/sh);
+  const dw=sw*scale, dh=sh*scale;
+  ctx.drawImage(source,(tw-dw)/2,(th-dh)/2,dw,dh);
+}
+
+// ── CAPTURE FOR API ───────────────────────────────────────
+function captureFrame(){
+  const src=(usingImage&&uploadedImage)?uploadedImage:(video.readyState>=2?video:null);
+  if(!src) return null;
+  const sw=src.videoWidth||src.naturalWidth;
+  const sh=src.videoHeight||src.naturalHeight;
+  if(!sw||!sh) return null;
+  const c=document.createElement('canvas');
+  c.width=640; c.height=Math.round(640*sh/sw);
+  c.getContext('2d').drawImage(src,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg',0.75);
+}
+
+// ── API KEY ───────────────────────────────────────────────
+function getKey(){
+  const input = document.getElementById('apiKeyInput');
+  const val = (input ? input.value.trim() : '');
+  if(val){ localStorage.setItem('ve_api_key', val); return val; }
+  const stored = localStorage.getItem('ve_api_key')||'';
+  if(stored && input) input.value = stored; // show stored key
+  return stored;
+}
+
+function ensureKey(){
+  const k = getKey();
+  if(!k){ 
+    alert('Paste your Anthropic API key (sk-ant-...) into the pink field at the bottom of the screen, then tap Scan Now again.');
+    return false; 
+  }
+  return true;
+}
+
+// ── AI SCAN ───────────────────────────────────────────────
+function dbg(msg){
+  const el = document.getElementById('debug');
+  el.style.display = 'block';
+  el.innerHTML += msg + '<br>';
+  console.log(msg);
+}
+
+async function doScan(){
+  if(scanning) return;
+  document.getElementById('debug').innerHTML='';
+  const key=getKey();
+  dbg('key: '+(key?key.slice(0,12)+'...':'MISSING'));
+  if(!ensureKey()) return;
+  const frame = captureFrame();
+  dbg('frame: '+(frame?frame.length:'null'));
+  if(!frame){ setStatus('no frame yet'); return; }
+
+  scanning=true;
+  beam.classList.add('on');
+  setStatus('scanning…');
+
+  try{
+    const b64 = frame.split(',')[1];
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true',
+        'x-api-key': getKey()
+      },
+      body:JSON.stringify({
+        model:MODEL,
+        max_tokens:1024,
+        system:'You are a JSON API. Respond ONLY with a valid JSON object. No markdown. No explanation.',
+        messages:[{
+          role:'user',
+          content:[
+            {type:'image',source:{type:'base64',media_type:'image/jpeg',data:b64}},
+            {type:'text',text:'Detect 3-5 objects. Return ONLY: {"scene":"3 words","objects":[{"label":"name","x":0.1,"y":0.1,"w":0.2,"h":0.2,"confidence":0.9,"poem":["short line","short line"]}]} x,y=top-left fraction 0-1. w,h=size fraction. poem=2 lowercase fragments.'}
+          ]
+        }]
+      })
+    });
+
+    const txt = await resp.text();
+    dbg('status: '+resp.status);
+    dbg('response: '+txt.slice(0,300));
+    if(!resp.ok) throw new Error('API '+resp.status+': '+txt);
+    const data = JSON.parse(txt);
+    if(data.error) throw new Error(JSON.stringify(data.error));
+    const raw = data.content?.find(b=>b.type==='text')?.text||'';
+    const s=raw.indexOf('{'), e=raw.lastIndexOf('}');
+    if(s<0||e<0) throw new Error('no JSON found');
+    const parsed = JSON.parse(raw.slice(s,e+1));
+
+    if(parsed.objects?.length){
+      // convert AI coords to the same format as fake tracking
+      objects = parsed.objects.slice(0,5).map((o,i)=>({
+        label: o.label,
+        color: COLORS[i%COLORS.length],
+        x: o.x, y: o.y,
+        tx: o.x, ty: o.y,
+        w: o.w, h: o.h,
+        tw: o.w, th: o.h,
+        lines: o.poem||[o.label,''],
+        driftSeed: Math.random()*1000
+      }));
+      setStatus(parsed.scene||objects.length+' entities');
+      if(voiceOn && objects[0]) speak(objects[0].lines.join(' '));
+    } else {
+      setStatus('nothing detected');
+    }
+  }catch(err){
+    alert('ERROR: ' + err.message);
+    setStatus(err.message.slice(0,60));
+    console.error(err);
+  }
+
+  scanning=false;
+  beam.classList.remove('on');
+  lastScan=performance.now();
+}
+
+// ── FAKE DRIFT (keeps boxes alive between scans) ──────────
+function updateDrift(now){
+  if(!appActive) return;
+  if(now-lastUpdate>1800){
+    objects.forEach(o=>{
+      o.tx=Math.max(0.05,Math.min(0.9,o.tx+(Math.random()-.5)*.06));
+      o.ty=Math.max(0.05,Math.min(0.9,o.ty+(Math.random()-.5)*.06));
+    });
+    lastUpdate=now;
+  }
+  // auto scan
+  if(!scanning && lastScan>0 && now-lastScan>SCAN_EVERY) doScan();
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function renderObjects(now){
+  layer.innerHTML='';
+  const vw=innerWidth, vh=innerHeight;
+  objects.forEach((o,i)=>{
+    o.x+=(o.tx-o.x)*0.08;
+    o.y+=(o.ty-o.y)*0.08;
+    o.w+=(o.tw-o.w)*0.08;
+    o.h+=(o.th-o.h)*0.08;
+
+    const jx=Math.sin(now*.002+o.driftSeed)*2.2;
+    const jy=Math.cos(now*.0017+o.driftSeed)*1.8;
+    const px=(o.x*vw)+jx, py=(o.y*vh)+jy;
+    const pw=o.w*vw, ph=o.h*vh;
+
+    const el=document.createElement('div');
+    el.className='obj';
+    el.style.left=px+'px'; el.style.top=py+'px';
+    el.style.width=pw+'px'; el.style.height=ph+'px';
+    el.style.color=o.color;
+
+    const box=document.createElement('div'); box.className='bbox';
+    const lbl=document.createElement('div'); lbl.className='label'; lbl.textContent=o.label;
+    const poem=document.createElement('div');
+    poem.className='poem';
+    poem.style.fontSize='clamp(18px,'+(4+i*.8)+'vw,54px)';
+    const spaceBelow=vh-(py+ph/2);
+    poem.style.top=(spaceBelow>=90)?(ph+10)+'px':(-90)+'px';
+    poem.style.left=Math.max(0,pw*.1)+'px';
+    (o.lines||[]).forEach((line,idx)=>{
+      const s=document.createElement('span');
+      s.textContent=line;
+      if(idx===1) s.style.paddingLeft='12%';
+      poem.appendChild(s);
+    });
+
+    el.appendChild(box); el.appendChild(lbl); el.appendChild(poem);
+    layer.appendChild(el);
+  });
+}
+
+// ── MAIN LOOP ─────────────────────────────────────────────
+function loop(now){
+  drawSource();
+  updateDrift(now);
+  renderObjects(now);
+  requestAnimationFrame(loop);
+}
+
+// ── EVENTS ────────────────────────────────────────────────
+document.getElementById('startBtn').addEventListener('click', startCamera);
+document.getElementById('spawnBtn').addEventListener('click', ()=>{ lastScan=0; doScan(); });
+document.getElementById('clearBtn').addEventListener('click', ()=>{ objects=[]; layer.innerHTML=''; setStatus('cleared'); });
+document.getElementById('cinemaBtn').addEventListener('click', ()=>setCinema(!cinemaOn));
+document.getElementById('voiceBtn').addEventListener('click', function(){
+  voiceOn=!voiceOn;
+  this.textContent=voiceOn?'voice on':'voice off';
+  if(!voiceOn&&window.speechSynthesis) window.speechSynthesis.cancel();
+});
+document.getElementById('fileInput').addEventListener('change', e=>{ handleUploadFile(e.target.files[0]); e.target.value=''; });
+document.getElementById('fileInputIntro').addEventListener('change', e=>{ handleUploadFile(e.target.files[0]); e.target.value=''; });
+
+window.addEventListener('load', ()=>requestAnimationFrame(loop));
+</script>
+
+</body>
+</html>

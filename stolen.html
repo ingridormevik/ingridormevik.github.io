@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>NAV – nav.no</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --red: #C3021B;
+  --blue: #0067C5;
+  --blue-dark: #005AA4;
+  --blue-light: #DAE9F8;
+  --blue-bg: #EBF3FB;
+  --text: #1A1A1A;
+  --subtle: #6A6A6A;
+  --border: #D8D8D8;
+  --bg: #F2F2F2;
+  --white: #FFFFFF;
+  --yellow: #FFB703;
+  --yellow-bg: #FFF9E6;
+  --error: #C3021B;
+  --error-bg: #FFEAEA;
+  --success: #06893A;
+  --success-bg: #EAF7EF;
+}
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.nav-header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  height: 56px;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.nav-logo {
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--red);
+  font-style: italic;
+  letter-spacing: -1px;
+}
+.header-actions { display: flex; gap: 0; margin-left: auto; }
+.header-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 8px 14px; color: var(--blue); font-size: 13px; font-weight: 600;
+  cursor: pointer; background: none; border: none; font-family: inherit;
+}
+.health-widget {
+  background: var(--white); padding: 10px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--subtle);
+}
+.health-label { font-weight: 600; flex-shrink: 0; font-size: 13px; }
+.health-track { flex: 1; height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.health-bar-fill { height: 100%; border-radius: 4px; transition: width 0.8s ease, background 0.8s ease; }
+.health-pct { font-weight: 700; flex-shrink: 0; min-width: 32px; text-align: right; font-size: 13px; }
+.breadcrumb {
+  padding: 10px 16px; font-size: 14px; color: var(--subtle);
+  display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+  background: var(--white); border-bottom: 1px solid var(--border);
+}
+.bc-link { color: var(--blue); text-decoration: underline; cursor: pointer; }
+.page { display: none; animation: fadeIn 0.25s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.home-title { font-size: 26px; font-weight: 700; padding: 22px 16px 14px; background: var(--white); line-height: 1.3; }
+.category-list { padding: 0 16px 16px; background: var(--white); display: flex; flex-direction: column; gap: 8px; }
+.category-card {
+  background: var(--blue-bg); border-radius: 8px; padding: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; transition: background 0.15s; color: var(--text);
+  font-size: 19px; font-weight: 600; border: 2px solid transparent;
+  text-decoration: underline;
+}
+.category-card:hover { background: var(--blue-light); }
+.category-card.highlight { border-color: var(--blue); }
+.card-icon { width: 48px; height: 48px; flex-shrink: 0; }
+.link-list { background: var(--white); margin-top: 8px; }
+.link-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px; border-bottom: 1px solid var(--border); cursor: pointer;
+  color: var(--blue); font-size: 18px; font-weight: 600; text-decoration: underline; gap: 12px;
+}
+.link-item:hover { background: var(--blue-bg); }
+.link-item-inner { flex: 1; }
+.link-item-desc { font-size: 14px; color: var(--subtle); font-weight: 400; text-decoration: none; margin-top: 2px; }
+.alert {
+  border-radius: 4px; padding: 14px 16px; margin: 12px 16px;
+  font-size: 16px; line-height: 1.5; display: flex; gap: 12px; align-items: flex-start;
+}
+.alert-info { background: var(--blue-bg); border-left: 4px solid var(--blue); }
+.alert-warning { background: var(--yellow-bg); border-left: 4px solid var(--yellow); }
+.alert-error { background: var(--error-bg); border-left: 4px solid var(--error); }
+.alert-success { background: var(--success-bg); border-left: 4px solid var(--success); }
+.alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.form-stepper { padding: 14px 16px 0; border-bottom: 1px solid var(--border); background: var(--white); }
+.stepper-label { font-size: 13px; color: var(--subtle); margin-bottom: 6px; }
+.stepper-track { display: flex; gap: 4px; margin-bottom: 12px; }
+.stepper-step { height: 4px; flex: 1; background: var(--border); border-radius: 2px; transition: background 0.3s; }
+.stepper-step.done { background: var(--blue); }
+.stepper-step.current { background: var(--blue); }
+.form-title { font-size: 22px; font-weight: 700; padding: 20px 16px 4px; background: var(--white); }
+.form-intro { font-size: 16px; color: var(--subtle); padding: 0 16px 16px; line-height: 1.6; background: var(--white); }
+.form-section { padding: 0 16px 20px; background: var(--white); border-bottom: 1px solid var(--border); }
+.form-label { display: block; font-size: 16px; font-weight: 600; margin-bottom: 6px; margin-top: 16px; }
+.form-hint { font-size: 14px; color: var(--subtle); margin-bottom: 8px; }
+.form-input {
+  width: 100%; border: 2px solid var(--text); border-radius: 4px; padding: 10px 12px;
+  font-size: 18px; font-family: inherit; color: var(--text); background: var(--white);
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,103,197,0.2); }
+textarea.form-input { height: 90px; resize: vertical; }
+.char-count { font-size: 13px; color: var(--subtle); text-align: right; margin-top: 4px; }
+.form-note { background: var(--blue-bg); border-radius: 4px; padding: 12px 14px; font-size: 15px; line-height: 1.5; margin: 12px 0 0; }
+.btn-row {
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
+  background: var(--white); border-top: 1px solid var(--border);
+  position: sticky; bottom: 0;
+}
+.btn-primary {
+  background: var(--blue); color: var(--white); border: none; border-radius: 4px;
+  padding: 14px 20px; font-size: 18px; font-weight: 600; font-family: inherit;
+  cursor: pointer; width: 100%; transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--blue-dark); }
+.btn-secondary {
+  background: var(--white); color: var(--blue); border: 2px solid var(--blue);
+  border-radius: 4px; padding: 12px 20px; font-size: 18px; font-weight: 600;
+  font-family: inherit; cursor: pointer; width: 100%; transition: background 0.15s;
+}
+.btn-secondary:hover { background: var(--blue-bg); }
+.btn-danger {
+  background: var(--error); color: var(--white); border: none; border-radius: 4px;
+  padding: 14px 20px; font-size: 18px; font-weight: 600; font-family: inherit;
+  cursor: pointer; width: 100%;
+}
+.spinner-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 16px; gap: 16px; color: var(--subtle); font-size: 16px; }
+.spinner { width: 38px; height: 38px; border: 4px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.status-card { background: var(--white); margin: 8px 16px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.status-card-header { background: var(--blue-bg); padding: 10px 16px; font-size: 13px; font-weight: 700; color: var(--subtle); text-transform: uppercase; letter-spacing: 0.06em; }
+.status-card-body { padding: 0 16px; }
+.status-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 16px; }
+.status-row:last-child { border-bottom: none; }
+.status-label { color: var(--subtle); font-size: 14px; }
+.status-value { font-weight: 600; }
+.status-value.pending { color: #7A5200; }
+.status-value.error { color: var(--error); }
+.status-value.ok { color: var(--success); }
+.days-display { background: var(--white); padding: 28px 16px; text-align: center; border-bottom: 1px solid var(--border); }
+.days-number { font-size: 72px; font-weight: 700; color: var(--blue); line-height: 1; font-variant-numeric: tabular-nums; transition: color 0.5s; }
+.days-number.pain { color: var(--error); }
+.days-label { font-size: 13px; color: var(--subtle); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; }
+.pain-event {
+  background: var(--white); border-left: 4px solid var(--error);
+  margin: 0 16px 8px; padding: 12px 14px; font-size: 16px; line-height: 1.5;
+  border-radius: 0 4px 4px 0; animation: slideIn 0.4s ease;
+}
+@keyframes slideIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }
+.phone-screen {
+  background: #1C1C1E; margin: 16px; border-radius: 20px;
+  text-align: center; padding: 36px 16px 28px; color: white;
+}
+.phone-caller-type { font-size: 13px; color: #8E8E93; margin-bottom: 6px; }
+.phone-caller-name { font-size: 28px; font-weight: 600; margin-bottom: 4px; }
+.phone-caller-sub { font-size: 14px; color: #8E8E93; margin-bottom: 28px; }
+.phone-status { font-size: 16px; color: #8E8E93; margin-bottom: 20px; animation: pulse 1.4s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.phone-btns { display: flex; justify-content: center; gap: 48px; }
+.phone-btn { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; cursor: pointer; border: none; }
+.phone-btn.accept { background: #30D158; }
+.phone-btn.decline { background: #FF3B30; }
+.trap-box { background: var(--yellow-bg); border: 2px solid var(--yellow); border-radius: 8px; margin: 16px; padding: 16px; }
+.trap-title { font-size: 16px; font-weight: 700; color: #7A5200; margin-bottom: 12px; }
+.trap-step { display: flex; gap: 12px; margin: 10px 0; font-size: 16px; color: #5A3C00; align-items: flex-start; }
+.trap-num { background: var(--yellow); color: #5A3C00; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.trap-arrow { text-align: center; color: var(--yellow); font-size: 18px; padding: 2px 16px; }
+.narrative-block { background: var(--white); padding: 20px 16px; font-size: 18px; line-height: 1.7; font-style: italic; color: var(--subtle); border-bottom: 1px solid var(--border); }
+.narrative-block strong { color: var(--text); font-style: normal; }
+.truth-screen { background: #1A1A1A; color: white; padding: 32px 24px; }
+.truth-screen p { font-size: 20px; line-height: 1.9; font-style: italic; font-weight: 300; margin-bottom: 12px; }
+.truth-screen strong { color: var(--error); font-style: normal; font-weight: 700; }
+.month-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 0 16px 16px; background: var(--white); }
+.month-cell { background: var(--blue-bg); border-radius: 4px; padding: 10px 8px; text-align: center; font-size: 13px; border: 1px solid var(--border); }
+.month-cell.current { background: var(--error-bg); border-color: var(--error); color: var(--error); }
+.month-num { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+.month-status { font-size: 11px; color: var(--subtle); }
+.month-cell.current .month-status { color: var(--error); }
+.tag-chip { display: inline-block; background: var(--blue-bg); color: var(--blue); font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 100px; margin-bottom: 8px; }
+.ending-block { padding: 28px 16px; background: var(--white); }
+.ending-quote { font-size: 24px; font-weight: 700; line-height: 1.5; margin-bottom: 16px; }
+.ending-fact { background: var(--blue-bg); border-left: 4px solid var(--blue); padding: 14px 16px; font-size: 16px; line-height: 1.7; border-radius: 0 4px 4px 0; margin: 16px 0; }
+.ending-note { font-size: 14px; color: var(--subtle); margin-top: 20px; line-height: 1.8; padding-top: 16px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="nav-header">
+  <div class="nav-logo">NAV</div>
+  <div class="header-actions">
+    <button class="header-btn" onclick="goPage('page-home')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Logg inn
+    </button>
+    <button class="header-btn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      Meny
+    </button>
+  </div>
+</div>
+
+<div class="health-widget">
+  <span class="health-label">Munnhelse</span>
+  <div class="health-track"><div class="health-bar-fill" id="health-fill" style="width:90%; background:#06893A;"></div></div>
+  <span class="health-pct" id="health-pct">90%</span>
+  <span style="margin-left:8px; font-size:12px; color:var(--subtle);">Dag <span id="day-display">1</span></span>
+</div>
+
+<!-- HOME -->
+
+<div class="page active" id="page-home">
+  <div style="background:var(--white); padding:8px 16px 12px; border-bottom:1px solid var(--border);">
+    <div style="width:100%; border:2px solid var(--text); border-radius:4px; padding:10px 12px; font-size:16px; display:flex; align-items:center; gap:8px; color:var(--subtle);">
+      🌐 Språk/Language <span style="margin-left:auto; font-size:18px;">▾</span>
+    </div>
+  </div>
+  <div class="home-title">Hva kan vi hjelpe deg med?</div>
+  <div class="category-list">
+    <div class="category-card" onclick="goPage('page-arbeid')">
+      Arbeid
+      <svg class="card-icon" viewBox="0 0 64 64"><rect x="16" y="22" width="32" height="28" rx="3" fill="#C3021B"/><rect x="24" y="14" width="16" height="10" rx="2" fill="#8B0013"/><rect x="28" y="32" width="8" height="8" rx="1" fill="white" opacity="0.5"/></svg>
+    </div>
+    <div class="category-card highlight" onclick="goPage('page-helse')">
+      Helse og sykdom
+      <svg class="card-icon" viewBox="0 0 64 64"><circle cx="30" cy="26" r="13" stroke="#C3021B" stroke-width="3" fill="none"/><line x1="30" y1="39" x2="30" y2="50" stroke="#C3021B" stroke-width="3"/><circle cx="38" cy="49" r="5" fill="#C3021B"/></svg>
+    </div>
+    <div class="category-card" onclick="goPage('page-arbeid')">
+      Familie og barn
+      <svg class="card-icon" viewBox="0 0 64 64"><ellipse cx="26" cy="40" rx="10" ry="12" fill="#C3021B"/><line x1="26" y1="52" x2="26" y2="58" stroke="#C3021B" stroke-width="3"/><circle cx="36" cy="52" r="5" fill="#C3021B" opacity="0.6"/></svg>
+    </div>
+    <div class="category-card" onclick="goPage('page-arbeid')">
+      Pensjon
+      <svg class="card-icon" viewBox="0 0 64 64"><ellipse cx="32" cy="36" rx="16" ry="14" fill="#C3021B"/><rect x="28" y="44" width="8" height="10" rx="2" fill="#8B0013"/><circle cx="32" cy="20" r="6" fill="#C3021B" opacity="0.6"/></svg>
+    </div>
+    <div class="category-card" onclick="goPage('page-helse')">
+      Sosiale tjenester og veiledning
+      <svg class="card-icon" viewBox="0 0 64 64"><path d="M32 48 C20 40 12 30 12 22 C12 16 20 12 32 20 C44 12 52 16 52 22 C52 30 44 40 32 48Z" fill="#C3021B"/><ellipse cx="44" cy="47" rx="8" ry="6" fill="#C3021B" opacity="0.4"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ARBEID -->
+
+<div class="page" id="page-arbeid">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Arbeid</span></div>
+  <div style="background:var(--white); padding:20px 16px; border-bottom:1px solid var(--border);"><h1 style="font-size:24px; font-weight:700;">Arbeid</h1></div>
+  <div class="alert alert-info"><span class="alert-icon">ℹ️</span><div>Leter du etter tannhjelp? Finn det under <span class="bc-link" onclick="goPage('page-helse')">Helse og sykdom</span>.</div></div>
+  <div class="btn-row" style="position:relative; border:none;"><button class="btn-secondary" onclick="goPage('page-home')">← Tilbake</button></div>
+</div>
+
+<!-- HELSE -->
+
+<div class="page" id="page-helse">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Helse og sykdom</span></div>
+  <div style="background:var(--white); padding:20px 16px 0; border-bottom:1px solid var(--border);"><h1 style="font-size:24px; font-weight:700; margin-bottom:4px;">Helse og sykdom</h1><p style="font-size:16px; color:var(--subtle); padding-bottom:16px;">Sykepenger, tannhelse, arbeidsavklaringspenger og mer.</p></div>
+  <div class="link-list">
+    <div class="link-item" onclick="goPage('page-arbeid')"><div class="link-item-inner">Sykepenger<div class="link-item-desc">For deg som er syk og ikke kan jobbe</div></div><span>›</span></div>
+    <div class="link-item" onclick="goPage('page-tannhelse')"><div class="link-item-inner">Tannhelse<div class="link-item-desc">Stønad til tannbehandling hvis du ikke har råd</div></div><span>›</span></div>
+    <div class="link-item" onclick="goPage('page-arbeid')"><div class="link-item-inner">Arbeidsavklaringspenger<div class="link-item-desc">AAP for deg som trenger hjelp tilbake i arbeid</div></div><span>›</span></div>
+  </div>
+  <div class="btn-row" style="position:relative; border:none;"><button class="btn-secondary" onclick="goPage('page-home')">← Tilbake</button></div>
+</div>
+
+<!-- TANNHELSE INFO -->
+
+<div class="page" id="page-tannhelse">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span class="bc-link" onclick="goPage('page-helse')">Helse</span><span>›</span><span>Tannhelse</span></div>
+  <div style="background:var(--white); padding:20px 16px 16px; border-bottom:1px solid var(--border);">
+    <div class="tag-chip">Stønad</div>
+    <h1 style="font-size:26px; font-weight:700; margin-bottom:8px; line-height:1.3;">Stønad til tannbehandling</h1>
+    <p style="font-size:16px; color:var(--subtle); line-height:1.6;">NAV kan gi stønad til tannbehandling hvis du ikke har økonomi til å betale selv.</p>
+  </div>
+  <div style="padding:16px; background:var(--white); border-bottom:1px solid var(--border);">
+    <div class="alert alert-info" style="margin:0 0 12px 0;"><span class="alert-icon">ℹ️</span><div><strong>Hvem kan søke?</strong><br>Du som har svært lav inntekt og ikke kan dekke nødvendig tannbehandling selv.</div></div>
+    <p style="font-size:16px; line-height:1.7;">Du må dokumentere at du ikke har betalingsevne. NAV vil innhente uttalelse fra tannlege og vurdere søknaden.</p>
+  </div>
+  <div class="narrative-block">Det begynner her. En lenke på en nettside. Du har vondt. Du har ikke råd. Det virker enkelt.</div>
+  <div class="btn-row"><button class="btn-primary" onclick="goPage('page-soknad-1')">Søk om stønad →</button><button class="btn-secondary" onclick="goPage('page-helse')">← Tilbake</button></div>
+</div>
+
+<!-- SØKNAD 1 -->
+
+<div class="page" id="page-soknad-1">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-tannhelse')">Tannhelse</span><span>›</span><span>Søknad</span></div>
+  <div class="form-stepper"><div class="stepper-label">Steg 1 av 4</div><div class="stepper-track"><div class="stepper-step current"></div><div class="stepper-step"></div><div class="stepper-step"></div><div class="stepper-step"></div></div></div>
+  <div class="form-title">Din situasjon</div>
+  <div class="form-intro">Beskriv hvorfor du søker om stønad til tannbehandling.</div>
+  <div class="form-section">
+    <label class="form-label">Beskriv din situasjon *</label>
+    <div class="form-hint">Forklar hva slags behandling du trenger og hvorfor du ikke kan betale selv.</div>
+    <textarea class="form-input" placeholder="Skriv her..." oninput="updateChar(this,'c1')"></textarea>
+    <div class="char-count" id="c1">0 / 500 tegn</div>
+    <label class="form-label">Månedlig nettoinntekt *</label>
+    <input type="number" class="form-input" placeholder="0 kr">
+    <div class="form-note">⚠️ Ikke send bilder av tenner eller tannkjøtt. Disse behandles ikke.</div>
+  </div>
+  <div class="alert alert-warning" style="margin:0 16px 0;"><span class="alert-icon">⚠️</span><div style="font-size:15px;">Du deler nå sensitiv informasjon om din økonomi og helse med NAV.</div></div>
+  <div class="btn-row"><button class="btn-primary" onclick="goPage('page-soknad-2')">Neste →</button><button class="btn-secondary" onclick="goPage('page-tannhelse')">← Avbryt</button></div>
+</div>
+
+<!-- SØKNAD 2 -->
+
+<div class="page" id="page-soknad-2">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-tannhelse')">Tannhelse</span><span>›</span><span>Søknad</span></div>
+  <div class="form-stepper"><div class="stepper-label">Steg 2 av 4</div><div class="stepper-track"><div class="stepper-step done"></div><div class="stepper-step current"></div><div class="stepper-step"></div><div class="stepper-step"></div></div></div>
+  <div class="form-title">Helseopplysninger</div>
+  <div class="form-intro">NAV trenger informasjon om din diagnose.</div>
+  <div class="form-section">
+    <label class="form-label">Diagnose *</label>
+    <div class="form-hint">Hva har legen eller tannlegen sagt?</div>
+    <textarea class="form-input" placeholder="F.eks: arvelig periodontitt..." oninput="updateChar(this,'c2')"></textarea>
+    <div class="char-count" id="c2">0 / 500 tegn</div>
+    <label class="form-label">Tannlegens navn og kontor *</label>
+    <input type="text" class="form-input" placeholder="Navn på tannlege">
+    <div class="form-note">NAV vil kontakte din tannlege for å innhente prisoverslag og faglig vurdering.</div>
+  </div>
+  <div class="alert alert-info" style="margin:0 16px 0;"><span class="alert-icon">ℹ️</span><div style="font-size:15px;">For at NAVs over-tannlege skal vurdere saken, trenger vi et prisoverslag fra din tannlege.</div></div>
+  <div class="btn-row"><button class="btn-primary" onclick="goPage('page-soknad-3')">Neste →</button><button class="btn-secondary" onclick="goPage('page-soknad-1')">← Tilbake</button></div>
+</div>
+
+<!-- SØKNAD 3 - SIRKEL -->
+
+<div class="page" id="page-soknad-3">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-tannhelse')">Tannhelse</span><span>›</span><span>Søknad</span></div>
+  <div class="form-stepper"><div class="stepper-label">Steg 3 av 4</div><div class="stepper-track"><div class="stepper-step done"></div><div class="stepper-step done"></div><div class="stepper-step current"></div><div class="stepper-step"></div></div></div>
+  <div class="form-title">Prisoverslag kreves</div>
+  <div class="form-intro">NAV trenger et prisoverslag fra tannlegen før vi kan behandle søknaden.</div>
+  <div class="trap-box">
+    <div class="trap-title">⚠️ Slik fungerer prosessen</div>
+    <div class="trap-step"><div class="trap-num">1</div><div>NAV trenger <strong>prisoverslag</strong> fra tannlegen</div></div>
+    <div class="trap-arrow">↓</div>
+    <div class="trap-step"><div class="trap-num">2</div><div>Prisoverslag krever at du <strong>setter deg i stolen</strong></div></div>
+    <div class="trap-arrow">↓</div>
+    <div class="trap-step"><div class="trap-num">3</div><div>Tannlegen setter deg ikke i stolen uten <strong>godkjent vedtak</strong></div></div>
+    <div class="trap-arrow">↓</div>
+    <div class="trap-step"><div class="trap-num">4</div><div>Vedtak krever <strong>prisoverslag</strong></div></div>
+    <div class="trap-arrow" style="font-size:22px;">↺</div>
+  </div>
+  <div class="alert alert-warning" style="margin:0 16px 16px;"><span class="alert-icon">📞</span><div style="font-size:15px;">Ring NAV på <strong>55 55 33 33</strong> for veiledning.</div></div>
+  <div class="btn-row"><button class="btn-primary" onclick="goPage('page-soknad-send')">Send søknad likevel →</button><button class="btn-secondary" onclick="goPage('page-soknad-2')">← Tilbake</button></div>
+</div>
+
+<!-- SØKNAD SENDT -->
+
+<div class="page" id="page-soknad-send">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Søknad sendt</span></div>
+  <div style="background:var(--white); padding:24px 16px; border-bottom:1px solid var(--border);">
+    <div style="font-size:40px; margin-bottom:12px;">✅</div>
+    <h1 style="font-size:24px; font-weight:700; margin-bottom:8px;">Søknaden er mottatt</h1>
+    <p style="font-size:16px; color:var(--subtle); line-height:1.6;">Vi behandler søknaden din. Du vil motta vedtak på Min side eller i posten.</p>
+  </div>
+  <div class="status-card" style="margin-top:16px;">
+    <div class="status-card-header">Saksstatus</div>
+    <div class="status-card-body">
+      <div class="status-row"><span class="status-label">Søknad sendt</span><span class="status-value ok">✓ I dag</span></div>
+      <div class="status-row"><span class="status-label">Saksbehandling</span><span class="status-value pending">Pågår</span></div>
+      <div class="status-row"><span class="status-label">Vedtak</span><span class="status-value" style="color:var(--subtle);">Ikke fattet</span></div>
+      <div class="status-row"><span class="status-label">Referansenummer</span><span class="status-value" style="font-size:13px;">NAV-2025-274893</span></div>
+    </div>
+  </div>
+  <div class="narrative-block" style="margin-top:8px;">Du er ikke lenger bare deg selv. Du er en sak med et referansenummer.</div>
+  <div class="btn-row"><button class="btn-primary" onclick="startWaiting1()">Vent på telefon fra NAV...</button></div>
+</div>
+
+<!-- VENTER 1 -->
+
+<div class="page" id="page-venter1">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Min side</span></div>
+  <div class="days-display"><div class="days-number" id="days-big1">0</div><div class="days-label">dager siden søknad</div></div>
+  <div class="status-card" style="margin-top:8px;">
+    <div class="status-card-header">Vedtaksstatus</div>
+    <div class="status-card-body"><div class="status-row"><span class="status-label">Status</span><span class="status-value pending">Under behandling</span></div></div>
+  </div>
+  <div id="pain-log1" style="margin-top:8px;"></div>
+  <div class="spinner-wrap" id="spinner1"><div class="spinner"></div><span>Venter på svar fra NAV...</span></div>
+</div>
+
+<!-- TELEFON -->
+
+<div class="page" id="page-telefon">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Innkommende anrop</span></div>
+  <div class="phone-screen">
+    <div class="phone-caller-type">Innkommende anrop</div>
+    <div class="phone-caller-name">NAV</div>
+    <div class="phone-caller-sub">Saksbehandler — Tannhelse</div>
+    <div class="phone-status">ringer...</div>
+    <div class="phone-btns">
+      <button class="phone-btn decline" onclick="stopRinging(); goPage('page-venter2')">✕</button>
+      <button class="phone-btn accept" onclick="stopRinging(); goPage('page-etter-telefon')">✓</button>
+    </div>
+    <div style="font-size:13px; color:#636366; margin-top:24px; line-height:1.7;">Heldig er du om du ikke har telefonangst.<br>Mange har det. De ringer likevel.</div>
+  </div>
+</div>
+
+<!-- ETTER TELEFON -->
+
+<div class="page" id="page-etter-telefon">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Etter samtalen</span></div>
+  <div class="narrative-block">Saksbehandleren spør om akkurat de samme tingene du nettopp har skrevet.<br><br>Fordi dette er sårt, fordi det er angstfylt, <strong>deler du mer enn du hadde tenkt.</strong></div>
+  <div class="status-card" style="margin:16px;">
+    <div class="status-card-header">Samtalereferat</div>
+    <div class="status-card-body">
+      <div class="status-row"><span class="status-label">Varighet</span><span class="status-value">18 min</span></div>
+      <div class="status-row"><span class="status-label">Konklusjon</span><span class="status-value pending">Vedtak sendes</span></div>
+    </div>
+  </div>
+  <div class="alert alert-info" style="margin:0 16px 0;"><span class="alert-icon">ℹ️</span><div>Saksbehandleren sier vedtaket er <strong>sendt</strong>. Du bestiller time hos tannlegen.</div></div>
+  <div class="btn-row"><button class="btn-primary" onclick="startWaiting2()">Vent på vedtak...</button></div>
+</div>
+
+<!-- VENTER 2 -->
+
+<div class="page" id="page-venter2">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Min side</span></div>
+  <div class="days-display"><div class="days-number pain" id="days-big2">0</div><div class="days-label">dager ventet på vedtak</div></div>
+  <div class="status-card" style="margin-top:8px;">
+    <div class="status-card-header">Vedtaksstatus</div>
+    <div class="status-card-body">
+      <div class="status-row"><span class="status-label">Status</span><span class="status-value error">Ikke mottatt</span></div>
+      <div class="status-row"><span class="status-label">Saksbehandler sa</span><span class="status-value" style="font-size:14px; font-style:italic;">"Vedtaket er sendt"</span></div>
+      <div class="status-row"><span class="status-label">Antall innkommende anrop fra NAV</span><span class="status-value error" id="call-counter">0</span></div>
+    </div>
+  </div>
+  <div id="pain-log2" style="margin-top:8px;"></div>
+  <div class="spinner-wrap" id="spinner2"><div class="spinner"></div><span>Venter...</span></div>
+</div>
+
+<!-- NAV GJENTAGENDE TELEFON -->
+
+<div class="page" id="page-nav-ring">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Innkommende anrop</span></div>
+  <div class="phone-screen">
+    <div class="phone-caller-type">Innkommende anrop — igjen</div>
+    <div class="phone-caller-name">NAV</div>
+    <div class="phone-caller-sub" id="ring-sub">Saksbehandler — anrop 2 av 15</div>
+    <div class="phone-status">ringer...</div>
+    <div class="phone-btns">
+      <button class="phone-btn decline" onclick="navCallDecline()">✕</button>
+      <button class="phone-btn accept" onclick="navCallAccept()">✓</button>
+    </div>
+  </div>
+  <div style="background:var(--white); padding:16px; margin:16px; border:1px solid var(--border); border-radius:8px;" id="nav-sporsmal">
+    <p style="font-size:14px; color:var(--subtle); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.06em; font-weight:700;">Saksbehandler spør:</p>
+    <p style="font-size:18px; line-height:1.7;" id="nav-question-text">Laster...</p>
+  </div>
+  <div class="alert alert-warning" style="margin:0 16px 0;">
+    <span class="alert-icon">⚠️</span>
+    <div style="font-size:15px;">Dette er den <strong id="call-num-display">2.</strong> gangen NAV ringer og spør om det samme. Du har allerede svart på dette. Flere ganger.</div>
+  </div>
+</div>
+
+<!-- SVAR PÅ NAV-SPØRSMÅL -->
+
+<div class="page" id="page-nav-svar">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Samtale med NAV</span></div>
+  <div style="background:var(--white); padding:20px 16px; border-bottom:1px solid var(--border);">
+    <h1 style="font-size:22px; font-weight:700; margin-bottom:4px;">Du svarer. Igjen.</h1>
+    <p style="font-size:16px; color:var(--subtle);">Du forklarer situasjonen din. Igjen. De samme detaljene. Den samme smerten.</p>
+  </div>
+  <div class="form-section" style="padding-top:16px;">
+    <label class="form-label" id="svar-label">Beskriv hvorfor du enda ikke har råd</label>
+    <div class="form-hint">Samme som sist. Og sist. Og sist.</div>
+    <textarea class="form-input" placeholder="Jeg har fortsatt ikke råd fordi..." style="height:80px;"></textarea>
+  </div>
+  <div class="narrative-block" style="margin-top:0;">
+    Fordi dette er sårt, fordi det er angstfylt, deler du mer enn du hadde tenkt. <strong>Igjen.</strong>
+  </div>
+  <div class="btn-row"><button class="btn-primary" onclick="navCallDone()">Send svar og legg på →</button></div>
+</div>
+
+<!-- TIME -->
+
+<div class="page" id="page-time">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Tannlegekontoret</span></div>
+  <div style="background:var(--white); padding:20px 16px; border-bottom:1px solid var(--border);"><h1 style="font-size:22px; font-weight:700;">Du møter opp til timen</h1></div>
+  <div class="alert alert-error" style="margin:16px;"><span class="alert-icon">✗</span><div><strong>Vedtak ikke mottatt</strong><br>Tannlegen kan ikke behandle deg uten bekreftelse fra NAV.</div></div>
+  <div class="narrative-block">Du sitter i stolen. <strong>Endelig i stolen.</strong><br><br>Og hører på veilederen din som ringer tannlegekontoret på høytaler for å bekrefte at de betaler.</div>
+  <div class="alert alert-warning" style="margin:16px;"><span class="alert-icon">📢</span><div>Informasjonen om sykdommene dine deles over hodet på deg mens du sitter der.<br><br><strong>Du er saken det snakkes om.</strong></div></div>
+  <div class="status-card" style="margin:0 16px 16px;">
+    <div class="status-card-header">Journalinformasjon delt</div>
+    <div class="status-card-body">
+      <div class="status-row"><span class="status-label">Diagnose</span><span class="status-value">Arvelig periodontitt</span></div>
+      <div class="status-row"><span class="status-label">Økonomi</span><span class="status-value">Lav inntekt</span></div>
+      <div class="status-row"><span class="status-label">Alvorlighetsgrad</span><span class="status-value error">Alvorlig</span></div>
+    </div>
+  </div>
+  <div class="btn-row"><button class="btn-primary" onclick="goPage('page-behandling')">Behandlingen begynner →</button></div>
+</div>
+
+<!-- 13 MÅNEDER -->
+
+<div class="page" id="page-behandling">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Behandlingsforløp</span></div>
+  <div style="background:var(--white); padding:20px 16px 8px; border-bottom:1px solid var(--border);"><h1 style="font-size:22px; font-weight:700;">Tretten måneder</h1><p style="font-size:16px; color:var(--subtle); margin-top:4px; padding-bottom:12px;">Rens. Rens. Rens. Du gjør alt du får beskjed om.</p></div>
+  <div class="month-grid" style="padding-top:16px;">
+    <div class="month-cell"><div class="month-num">1</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell"><div class="month-num">2</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell"><div class="month-num">3</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell"><div class="month-num">4</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell"><div class="month-num">5</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell"><div class="month-num">6</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell"><div class="month-num">7</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell"><div class="month-num">8</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell"><div class="month-num">9</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell"><div class="month-num">10</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell"><div class="month-num">11</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell"><div class="month-num">12</div><div class="month-status">Rens ✓</div></div>
+    <div class="month-cell current"><div class="month-num">13</div><div class="month-status">???</div></div>
+  </div>
+  <div class="alert alert-success" style="margin:16px;"><span class="alert-icon">💬</span><div>Tannlegen sier: <em>"Alt ser kjempebra ut. Bare fortsett sånn."</em></div></div>
+  <div class="alert alert-error" style="margin:0 16px 0;"><span class="alert-icon">⚠️</span><div>Du blir verre. Du vet det. Ingen bekrefter det.</div></div>
+  <div class="btn-row"><button class="btn-primary" onclick="goPage('page-kropp')">Se hva som skjer med kroppen →</button></div>
+</div>
+
+<!-- KROPPEN -->
+
+<div class="page" id="page-kropp">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Symptomer</span></div>
+  <div style="background:var(--white); padding:20px 16px 12px; border-bottom:1px solid var(--border);"><h1 style="font-size:22px; font-weight:700; color:var(--error);">Kroppen holder regnskap</h1></div>
+  <div style="background:var(--white); padding-top:8px;">
+    <div class="pain-event" style="margin:8px 16px;">Det strammer når du biter i et eple.</div>
+    <div class="pain-event">Du tygger bare på venstre side. Høyre gjør for vondt.</div>
+    <div class="pain-event">Du slutter å spise varm mat. Varmen setter seg som en puls.</div>
+    <div class="pain-event" style="border-color:#888; color:var(--subtle);">Du holder igjen smilet i møter. Redd for hva folk ser.</div>
+    <div class="pain-event" style="border-color:#888; color:var(--subtle);">Du snakker lavere. Ler med lukket munn.</div>
+    <div class="pain-event" style="border-color:#ccc; color:var(--subtle); margin-bottom:16px;">Du er i rommet. Men ikke helt til stede.</div>
+  </div>
+  <div class="narrative-block">Det er hva dårlig tannhelse gjør med selvfølelsen.<br>Det er ikke overfladisk. Det er grunnleggende.<br><strong>Du blir mindre.</strong></div>
+  <div class="btn-row"><button class="btn-primary" onclick="goPage('page-dagene-for')">Dag 13 — Måned 13 →</button></div>
+</div>
+
+<!-- DAGENE FØR -->
+
+<div class="page" id="page-dagene-for">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Dagene før</span></div>
+  <div style="background:var(--white); padding:20px 16px 12px; border-bottom:1px solid var(--border);">
+    <div class="tag-chip" style="background:var(--error-bg); color:var(--error);">Dagene før tannlegevakten</div>
+    <h1 style="font-size:22px; font-weight:700; line-height:1.3;">Noe er veldig galt</h1>
+  </div>
+  <div style="background:var(--white); padding:8px 0 0;">
+    <div class="pain-event" style="margin:8px 16px;">Du får feber. Ikke høy, men der. Kroppen slåss mot noe.</div>
+    <div class="pain-event" style="margin:0 16px 8px;">Influensafølelsen setter seg. Vondt i ledd. Tung i hodet. Du tror du er forkjølet.</div>
+    <div class="pain-event" style="margin:0 16px 8px;">Du er utmattet på en måte som ikke ligner vanlig trøtthet. Du kan ikke forklare det til andre.</div>
+    <div class="pain-event" style="margin:0 16px 8px;">Du skjønner ikke at det er infeksjonen i munnen som gjør dette med hele kroppen.</div>
+    <div class="pain-event" style="margin:0 16px 16px; border-color:#ccc; color:var(--subtle);">Periodontitt er en systemisk infeksjon. Den sprer seg. Ingen har fortalt deg dette.</div>
+  </div>
+  <div class="alert alert-warning" style="margin:16px;">
+    <span class="alert-icon">⚠️</span>
+    <div style="font-size:15px;">Du tror du er syk av noe annet. Du er syk av det ingen har behandlet.</div>
+  </div>
+  <div class="narrative-block">Kroppen visste det lenge før systemet bekreftet det.</div>
+  <div class="btn-row"><button class="btn-primary" onclick="goPage('page-samling')">Dagen for samlingen →</button></div>
+</div>
+
+<!-- SAMLINGEN -->
+
+<div class="page" id="page-samling">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>I dag</span></div>
+  <div style="background:var(--white); padding:20px 16px; border-bottom:1px solid var(--border);">
+    <div class="tag-chip" style="background:var(--error-bg); color:var(--error);">I dag — 26. mars 2026</div>
+    <h1 style="font-size:22px; font-weight:700; margin-bottom:8px; line-height:1.3;">Noe du ikke ville gått glipp av</h1>
+    <p style="font-size:16px; color:var(--subtle); line-height:1.6;">Du er midt i noe som betyr noe for deg. Rundt mennesker som inspirerer deg, de du er best rundt når du er frisk. Men i dag er du ikke frisk. Og ingen vet det.</p>
+  </div>
+  <div style="background:var(--white); padding:8px 0 0;">
+    <div class="pain-event" style="margin:8px 16px;">Angsten har skiftet form. Den er ikke lenger stille. Den har blitt irritasjon.</div>
+    <div class="pain-event" style="margin:0 16px 8px; border-color:#888; color:var(--subtle);">Alt folk sier treffer feil. Du reagerer på ting du normalt ikke reagerer på. Du kjenner at du er vanskelig å være rundt, men klarer ikke stoppe det.</div>
+    <div class="pain-event" style="margin:0 16px 8px; border-color:#888; color:var(--subtle);">Noen spør om du vil ha pizza. Du er sulten. Skikkelig sulten. Men du kan ikke spise. Du sier bare nei. Forklarer ikke hvorfor.</div>
+    <div class="pain-event" style="margin:0 16px 16px; border-color:#ccc; color:var(--subtle);">Og under alt dette: en konkret, fysisk angst for at tennene skal falle ut. Ikke en tanke. En visshet som sitter i hele kroppen.</div>
+  </div>
+  <div class="alert alert-error" style="margin:0 16px 16px;">
+    <span class="alert-icon">🦷</span>
+    <div>Et nytt vedtak for samme sak har nettopp kommet. Tannlegen din har ikke time før <strong>20. april</strong>. Du forlater samlingen.</div>
+  </div>
+  <div style="padding:0 16px 16px;">
+    <button class="btn-danger" onclick="goPage('page-tannlegevakt')">Gå til tannlegevakten →</button>
+  </div>
+</div>
+
+<!-- TANNLEGEVAKT -->
+
+<div class="page" id="page-tannlegevakt">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Tannlegevakten Bergen</span></div>
+  <div style="background:var(--white); padding:20px 16px; border-bottom:1px solid var(--border);"><h1 style="font-size:22px; font-weight:700; margin-bottom:4px;">Tannlegevakten</h1><p style="font-size:16px; color:var(--subtle);">Rett fra samlingen. Tom i magen. Noen andre til å se på det.</p></div>
+  <div class="spinner-wrap" id="tannlege-spinner"><div class="spinner"></div><span>Undersøker...</span></div>
+  <div style="display:none;" id="tannlege-resultat">
+    <div class="alert alert-error" style="margin:16px;"><span class="alert-icon">🔍</span><div>Legen undersøker røntgen. Ser tannkjøttet.<br><br>Ser det du har prøvd å si i tretten måneder.</div></div>
+    <div class="btn-row"><button class="btn-primary" onclick="goPage('page-sannhet')">Hør hva de sier →</button></div>
+  </div>
+</div>
+
+<!-- SANNHETEN -->
+
+<div class="page" id="page-sannhet">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Diagnose</span></div>
+  <div class="truth-screen">
+    <p>Du skulle hatt en <strong>spesiell type antibiotika</strong> for lenge siden.</p>
+    <p><strong>Én kur.</strong></p>
+    <p>Tannkjøttet er <strong>kraftig betent.</strong></p>
+    <p>Ingenting du har gjort var feil.</p>
+    <p>Men behandlingen har ikke vært riktig.</p>
+    <p>Det fantes en løsning <strong>hele veien.</strong></p>
+  </div>
+  <div class="alert alert-info" style="margin:16px;"><span class="alert-icon">📊</span><div style="font-size:15px;"><strong>SSB 2021:</strong> Folk med lavest inntekt lar oftest være å gå til tannlegen til tross for behov. Ikke fordi de ikke bryr seg. Men fordi systemet ikke er bygget for dem.</div></div>
+  <div class="btn-row"><button class="btn-primary" onclick="goPage('page-slutt')">→</button></div>
+</div>
+
+<!-- SLUTT -->
+
+<div class="page" id="page-slutt">
+  <div class="breadcrumb"><span class="bc-link" onclick="goPage('page-home')">nav.no</span><span>›</span><span>Ferdig</span></div>
+  <div class="ending-block">
+    <div class="ending-quote">Du hadde rett.<br>Du visste det.<br>Du hadde bare ikke råd til å bli trodd.</div>
+    <div class="ending-fact"><strong>Velferdsstatens løfte er ikke bare penger når ting går galt.</strong><br>Det er verdighet mens du finner veien tilbake.<br>Og altfor mange av oss opplever at den verdigheten er det første som ryker.</div>
+    <div class="status-card" style="margin:16px 0;">
+      <div class="status-card-header">Ditt forløp</div>
+      <div class="status-card-body">
+        <div class="status-row"><span class="status-label">Dager ventet</span><span class="status-value" id="final-days">—</span></div>
+        <div class="status-row"><span class="status-label">Munnhelse ved slutt</span><span class="status-value error" id="final-health">—</span></div>
+        <div class="status-row"><span class="status-label">Måneder i feil behandling</span><span class="status-value error">13</span></div>
+        <div class="status-row"><span class="status-label">Antibiotikakur manglende</span><span class="status-value error">1</span></div>
+        <div class="status-row"><span class="status-label">Din tid brukt på dette</span><span class="status-value" id="time-spent">—</span></div>
+        <div class="status-row"><span class="status-label">NAV-timer brukt på saken din</span><span class="status-value error">37,5 timer</span></div>
+      </div>
+    </div>
+    <div class="ending-note">Dette er ikke et tilbakeblikk.<br>Det er et forløp på tretten måneder.<br>Den siste hendelsen skjedde i dag.<br><br>Et interaktivt verk basert på virkelige hendelser.</div>
+  </div>
+  <div class="btn-row"><button class="btn-primary" onclick="restartGame()">Søk igjen — for å bytte tannlege</button></div>
+</div>
+
+<script>
+let health = 90, days = 0, totalDays = 0, startTime = Date.now();
+
+function goPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'page-telefon' || id === 'page-nav-ring') { startRinging(); }
+  if (id !== 'page-telefon' && id !== 'page-nav-ring') { stopRinging(); }
+  if (id === 'page-tannlegevakt') {
+    setTimeout(() => {
+      document.getElementById('tannlege-spinner').style.display = 'none';
+      document.getElementById('tannlege-resultat').style.display = 'block';
+    }, 2200);
+  }
+  if (id === 'page-slutt') {
+    document.getElementById('final-days').textContent = totalDays + ' dager';
+    document.getElementById('final-health').textContent = health + '%';
+    const elapsed = Math.round((Date.now() - startTime) / 1000);
+    const mins = Math.floor(elapsed / 60);
+    const secs = elapsed % 60;
+    const timeStr = mins > 0 ? mins + ' min ' + secs + ' sek' : secs + ' sek';
+    document.getElementById('time-spent').textContent = timeStr;
+  }
+}
+
+function updateHealth(h) {
+  health = Math.max(5, h);
+  const fill = document.getElementById('health-fill');
+  fill.style.width = health + '%';
+  document.getElementById('health-pct').textContent = health + '%';
+  if (health > 60) fill.style.background = '#06893A';
+  else if (health > 35) fill.style.background = '#FFB703';
+  else fill.style.background = '#C3021B';
+}
+
+function updateDays(d) {
+  days = d; totalDays = Math.max(totalDays, d);
+  document.getElementById('day-display').textContent = d;
+}
+
+function updateChar(el, id) {
+  document.getElementById(id).textContent = el.value.length + ' / 500 tegn';
+}
+
+function startWaiting1() {
+  goPage('page-venter1');
+  let d = 0;
+  const iv = setInterval(() => {
+    d++;
+    updateDays(d);
+    updateHealth(health - 1.5);
+    document.getElementById('days-big1').textContent = d;
+    if (d >= 7) {
+      clearInterval(iv);
+      document.getElementById('spinner1').innerHTML = '';
+      setTimeout(() => goPage('page-telefon'), 600);
+    }
+  }, 260);
+}
+
+let callCount = 0;
+let waitInterval2 = null;
+let waitDays2 = 0;
+
+const navQuestions = [
+  'Kan du bekrefte at du fortsatt ikke har råd til tannbehandling?',
+  'Hva er din nåværende inntektssituasjon?',
+  'Har du fått noen endringer i din økonomi siden sist vi snakket?',
+  'Kan du forklare på nytt hvorfor du ikke kan betale selv?',
+  'Har du forsøkt å ta opp lån for å dekke utgiftene?',
+  'Har du spurt familie om hjelp til å betale?',
+  'Hva er grunnen til at du ikke kan betale egenandelen?',
+  'Kan du bekrefte diagnosen fra tannlegen på nytt?',
+  'Har situasjonen din endret seg siden forrige samtale?',
+  'Vi trenger en oppdatert beskrivelse av din situasjon.',
+  'Kan du forklare hvorfor dette er nødvendig behandling?',
+  'Har du fått noen ekstrainntekter den siste perioden?',
+  'Vi trenger å bekrefte at du fortsatt oppfyller vilkårene.',
+  'Kan du beskrive tannplagene dine på nytt for saksbehandler?',
+  'Er det noe nytt vi bør vite om din situasjon?'
+];
+
+function startWaiting2() {
+  goPage('page-venter2');
+  waitDays2 = 0;
+  callCount = 0;
+  const msgs = [
+    { day: 2, txt: 'NAV ringer. De trenger samme informasjon igjen.' },
+    { day: 4, txt: 'Det verker mer om natten.' },
+    { day: 5, txt: 'NAV ringer igjen. Tredje gang denne uken.' },
+    { day: 7, txt: 'Du spiser bare myk mat nå.' },
+    { day: 9, txt: 'NAV ringer. Du kjenner nummeret igjen.' },
+    { day: 11, txt: 'Du holder igjen smilet i samtaler.' },
+    { day: 14, txt: 'To uker. Ingenting har kommet.' }
+  ];
+  const navCallDays = [2, 5, 9];
+  const log = document.getElementById('pain-log2');
+  waitInterval2 = setInterval(() => {
+    waitDays2++;
+    updateDays(days + waitDays2);
+    updateHealth(health - 2);
+    document.getElementById('days-big2').textContent = waitDays2;
+    const m = msgs.find(x => x.day === waitDays2);
+    if (m) {
+      const div = document.createElement('div');
+      div.className = 'pain-event';
+      div.style.margin = '0 16px 8px';
+      div.textContent = m.txt;
+      log.appendChild(div);
+    }
+    if (navCallDays.includes(waitDays2)) {
+      clearInterval(waitInterval2);
+      callCount++;
+      document.getElementById('call-counter').textContent = callCount;
+      document.getElementById('ring-sub').textContent = 'Saksbehandler — anrop ' + callCount + ' av 15';
+      document.getElementById('call-num-display').textContent = callCount + '.';
+      document.getElementById('nav-question-text').textContent = navQuestions[callCount - 1] || navQuestions[0];
+      document.getElementById('nav-sporsmal').style.display = 'block';
+      setTimeout(() => goPage('page-nav-ring'), 500);
+    }
+    if (waitDays2 >= 14) {
+      clearInterval(waitInterval2);
+      document.getElementById('spinner2').innerHTML = '';
+      setTimeout(() => goPage('page-time'), 800);
+    }
+  }, 280);
+}
+
+function navCallAccept() { stopRinging();
+  goPage('page-nav-svar');
+  const ordinal = ['første', 'andre', 'tredje', 'fjerde', 'femte', 'sjette', 'syvende', 'åttende', 'niende', 'tiende', 'ellevte', 'tolvte', 'trettende', 'fjortende', 'femtende'];
+  document.getElementById('svar-label').textContent = 'Dette er ' + (ordinal[callCount-1] || callCount + '.') + ' gangen du forklarer dette';
+}
+
+function navCallDecline() { stopRinging();
+  const log = document.getElementById('pain-log2');
+  const div = document.createElement('div');
+  div.className = 'pain-event';
+  div.style.margin = '0 16px 8px';
+  div.style.borderColor = '#888';
+  div.style.color = 'var(--subtle)';
+  div.textContent = 'Du legger på. De ringer igjen om to dager.';
+  log.appendChild(div);
+  goPage('page-venter2');
+  waitInterval2 = setInterval(() => {
+    waitDays2++;
+    updateDays(days + waitDays2 - 1);
+    updateHealth(health - 2);
+    document.getElementById('days-big2').textContent = waitDays2;
+    if (waitDays2 >= 14) {
+      clearInterval(waitInterval2);
+      document.getElementById('spinner2').innerHTML = '';
+      setTimeout(() => goPage('page-time'), 800);
+    }
+  }, 280);
+}
+
+function navCallDone() {
+  goPage('page-venter2');
+  const log = document.getElementById('pain-log2');
+  const div = document.createElement('div');
+  div.className = 'pain-event';
+  div.style.margin = '0 16px 8px';
+  div.style.borderColor = '#888';
+  div.textContent = 'Du har svart. Igjen. Saksbehandleren sier de skal se på det.';
+  log.appendChild(div);
+  document.getElementById('call-counter').textContent = callCount;
+  waitInterval2 = setInterval(() => {
+    waitDays2++;
+    updateDays(days + waitDays2 - 1);
+    updateHealth(health - 2);
+    document.getElementById('days-big2').textContent = waitDays2;
+    const navCallDays = [2, 5, 9];
+    if (navCallDays.includes(waitDays2) && callCount < 3) {
+      clearInterval(waitInterval2);
+      callCount++;
+      document.getElementById('call-counter').textContent = callCount;
+      document.getElementById('ring-sub').textContent = 'Saksbehandler — anrop ' + callCount + ' av 15';
+      document.getElementById('call-num-display').textContent = callCount + '.';
+      document.getElementById('nav-question-text').textContent = navQuestions[callCount - 1] || navQuestions[0];
+      setTimeout(() => goPage('page-nav-ring'), 500);
+    }
+    if (waitDays2 >= 14) {
+      clearInterval(waitInterval2);
+      document.getElementById('spinner2').innerHTML = '';
+      setTimeout(() => goPage('page-time'), 800);
+    }
+  }, 280);
+}
+
+function bliISamlingen() {
+  const a = document.createElement('div');
+  a.className = 'alert alert-error';
+  a.style.margin = '0 16px 16px';
+  a.innerHTML = '<span class="alert-icon">💭</span><div>Du klarer det ikke. Angsten vinner. Du pakker sammen.</div>';
+  document.querySelector('#page-samling .btn-row').before(a);
+  setTimeout(() => goPage('page-tannlegevakt'), 1000);
+}
+
+function restartGame() {
+  health = 90; days = 0; totalDays = 0; startTime = Date.now(); callCount = 0; waitDays2 = 0;
+  updateHealth(90); updateDays(1);
+  document.getElementById('pain-log1').innerHTML = '';
+  document.getElementById('pain-log2').innerHTML = '';
+  document.getElementById('tannlege-spinner').style.display = 'flex';
+  document.getElementById('tannlege-resultat').style.display = 'none';
+  goPage('page-home');
+}
+
+// iPhone ringtone synthesizer
+function playIPhoneRing() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  
+  function beep(startTime, duration, freq1, freq2) {
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(ctx.destination);
+    
+    osc1.type = 'sine';
+    osc2.type = 'sine';
+    osc1.frequency.setValueAtTime(freq1, startTime);
+    osc2.frequency.setValueAtTime(freq2, startTime);
+    
+    gain.gain.setValueAtTime(0, startTime);
+    gain.gain.linearRampToValueAtTime(0.3, startTime + 0.02);
+    gain.gain.setValueAtTime(0.3, startTime + duration - 0.02);
+    gain.gain.linearRampToValueAtTime(0, startTime + duration);
+    
+    osc1.start(startTime);
+    osc2.start(startTime);
+    osc1.stop(startTime + duration);
+    osc2.stop(startTime + duration);
+  }
+  
+  // iPhone "Opening" ringtone pattern approximation
+  const t = ctx.currentTime;
+  beep(t + 0.0,  0.12, 1397, 1047);
+  beep(t + 0.14, 0.12, 1175, 880);
+  beep(t + 0.28, 0.12, 1397, 1047);
+  beep(t + 0.42, 0.12, 1175, 880);
+  beep(t + 0.65, 0.12, 1397, 1047);
+  beep(t + 0.79, 0.12, 1175, 880);
+  beep(t + 1.0,  0.12, 1047, 784);
+  beep(t + 1.14, 0.12, 1175, 880);
+  
+  return ctx;
+}
+
+let ringCtx = null;
+let ringInterval = null;
+
+function startRinging() {
+  ringCtx = playIPhoneRing();
+  ringInterval = setInterval(() => {
+    if (ringCtx) ringCtx.close();
+    ringCtx = playIPhoneRing();
+  }, 2200);
+}
+
+function stopRinging() {
+  if (ringInterval) clearInterval(ringInterval);
+  if (ringCtx) { ringCtx.close(); ringCtx = null; }
+}
+
+</script>
+
+</body>
+</html>
