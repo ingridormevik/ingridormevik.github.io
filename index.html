@@ -1,16 +1,664 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingrid Ormevik - Digital Culture & Activism</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Mount Media — an artistic research universe exploring AI, folklore, electronic literature and digital culture. By Ingrid Ormevik.">
+    <meta name="theme-color" content="#080e1a">
+    <title>Mount Media — Ingrid Ormevik</title>
+
+    <script>
+        (function(){
+            var t='dark';
+            try{t=localStorage.getItem('ingrid-theme')||'dark';}catch(e){}
+            document.documentElement.setAttribute('data-theme',t);
+            document.documentElement.classList.add('js');
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy:      #080e1a;
+            --navy2:     #0d1526;
+            --forest:    #091810;
+            --fjord:     #0a1830;
+            --gold:      #c4972a;
+            --gold-dim:  rgba(196,151,42,.18);
+            --bronze:    #8b6914;
+            --stone:     #3a3a3a;
+            --mist:      #f0eeeb;
+            --fog:       rgba(240,238,235,.055);
+            --text:      #e8e4dd;
+            --soft:      #a09898;
+            --dim:       #5a5550;
+            --line:      rgba(255,255,255,.08);
+            --line2:     rgba(255,255,255,.14);
+            --glow:      rgba(196,151,42,.22);
+            --serif:     'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+            --sans:      'Inter', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        [data-theme="light"] {
+            --navy:      #f5f3ef;
+            --navy2:     #ece9e3;
+            --text:      #1a1610;
+            --soft:      #5a5248;
+            --dim:       #8a8278;
+            --line:      rgba(0,0,0,.08);
+            --line2:     rgba(0,0,0,.13);
+            --fog:       rgba(10,15,30,.03);
+            --glow:      rgba(196,151,42,.15);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; background: var(--navy); }
+
+        body {
+            font-family: var(--sans);
+            color: var(--text);
+            background: var(--navy);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* ── CANVAS ── */
+        #mm-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: .55;
+        }
+
+        /* ── SHELL ── */
+        .shell { position: relative; z-index: 2; }
+
+        /* ── HEADER ── */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 28px min(5vw, 64px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background .4s ease, border-color .4s ease;
+        }
+
+        .site-header.scrolled {
+            background: rgba(8,14,26,.82);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .site-logo {
+            font-family: var(--serif);
+            font-size: 1.05rem;
+            font-weight: 400;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--mist);
+            opacity: .9;
+        }
+
+        .site-nav {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+
+        .site-nav a {
+            font-family: var(--sans);
+            font-size: .65rem;
+            font-weight: 500;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--soft);
+            transition: color .25s;
+            position: relative;
+        }
+
+        .site-nav a::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; bottom: -6px;
+            height: 1px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .3s ease;
+        }
+
+        .site-nav a:hover,
+        .site-nav a.active { color: var(--mist); }
+        .site-nav a:hover::after,
+        .site-nav a.active::after { transform: scaleX(1); }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100svh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 min(5vw, 64px) clamp(60px, 10vh, 120px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--sans);
+            font-size: .62rem;
+            font-weight: 500;
+            letter-spacing: .28em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 28px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero-title {
+            font-family: var(--serif);
+            font-size: clamp(4.5rem, 13vw, 11rem);
+            font-weight: 300;
+            line-height: .88;
+            letter-spacing: -.04em;
+            color: var(--mist);
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero-sub {
+            max-width: 560px;
+            font-family: var(--serif);
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--soft);
+            margin-bottom: 56px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .hero-scroll {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-family: var(--sans);
+            font-size: .6rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--dim);
+            opacity: 0;
+        }
+
+        .hero-scroll-line {
+            width: 48px;
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+        }
+
+        .hero-scroll-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--gold);
+            animation: pulse-dot 2.4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .3; transform: scale(.6); }
+        }
+
+        /* ── QUESTION ── */
+        .question-band {
+            padding: clamp(80px, 14vw, 160px) min(5vw, 64px);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .question-label {
+            font-family: var(--sans);
+            font-size: .6rem;
+            letter-spacing: .26em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 36px;
+        }
+
+        .question-text {
+            font-family: var(--serif);
+            font-size: clamp(1.8rem, 4.5vw, 3.8rem);
+            font-weight: 300;
+            line-height: 1.3;
+            letter-spacing: -.02em;
+            color: var(--mist);
+            max-width: 900px;
+        }
+
+        .question-text em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        /* ── UNIVERSE SECTION ── */
+        .universe {
+            padding: clamp(80px, 12vw, 140px) min(5vw, 64px);
+        }
+
+        .section-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--line2);
+            margin-bottom: 0;
+        }
+
+        .section-label {
+            font-family: var(--sans);
+            font-size: .6rem;
+            letter-spacing: .26em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .section-count {
+            font-family: var(--sans);
+            font-size: .6rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        /* ── PROJECT GRID ── */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+            gap: 1px;
+            background: var(--line);
+            margin-top: 0;
+        }
+
+        .project-card {
+            background: var(--navy);
+            padding: 48px 40px;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            transition: background .4s ease;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--gold-dim), transparent 60%);
+            opacity: 0;
+            transition: opacity .5s ease;
+        }
+
+        .project-card:hover { background: var(--navy2); }
+        .project-card:hover::before { opacity: 1; }
+
+        .card-number {
+            font-family: var(--sans);
+            font-size: .58rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-family: var(--sans);
+            font-size: .56rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--dim);
+            border: 1px solid var(--line2);
+            padding: 4px 10px;
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-family: var(--serif);
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -.025em;
+            color: var(--mist);
+            margin-bottom: 20px;
+            position: relative;
+            transition: color .3s;
+        }
+
+        .project-card:hover .card-title { color: var(--gold); }
+
+        .card-desc {
+            font-family: var(--serif);
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--soft);
+            position: relative;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 32px;
+            font-family: var(--sans);
+            font-size: .62rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            position: relative;
+            transition: gap .3s ease;
+        }
+
+        .card-link:hover { gap: 16px; }
+
+        /* ── SUBJECTS STRIP ── */
+        .subjects {
+            padding: clamp(60px, 8vw, 100px) min(5vw, 64px);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            overflow: hidden;
+        }
+
+        .subjects-label {
+            font-family: var(--sans);
+            font-size: .6rem;
+            letter-spacing: .26em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 44px;
+        }
+
+        .subjects-flow {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+        }
+
+        .subject-pill {
+            font-family: var(--serif);
+            font-size: clamp(.95rem, 2vw, 1.3rem);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--soft);
+            padding: 8px 20px;
+            border: 1px solid var(--line);
+            border-radius: 100px;
+            transition: color .3s, border-color .3s, background .3s;
+            cursor: default;
+        }
+
+        .subject-pill:hover {
+            color: var(--mist);
+            border-color: var(--gold);
+            background: var(--gold-dim);
+        }
+
+        /* ── WRITING SECTION ── */
+        .writing {
+            padding: clamp(80px, 12vw, 140px) min(5vw, 64px);
+        }
+
+        .writing-list {
+            list-style: none;
+        }
+
+        .writing-item {
+            border-bottom: 1px solid var(--line);
+        }
+
+        .writing-link {
+            display: grid;
+            grid-template-columns: 110px 1fr auto;
+            gap: 32px;
+            align-items: start;
+            padding: 40px 0 44px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .writing-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            transform: translateX(-103%);
+            background: linear-gradient(90deg, var(--gold-dim), transparent 70%);
+            transition: transform .55s cubic-bezier(.22,.61,.36,1);
+        }
+
+        .writing-link:hover::before { transform: translateX(0); }
+
+        .writing-date {
+            font-family: var(--sans);
+            font-size: .6rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--dim);
+            padding-top: 8px;
+            position: relative;
+        }
+
+        .writing-body { position: relative; }
+
+        .writing-title {
+            font-family: var(--serif);
+            font-size: clamp(1.5rem, 3vw, 2.6rem);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -.03em;
+            color: var(--mist);
+            margin-bottom: 14px;
+            transition: transform .3s ease;
+        }
+
+        .writing-link:hover .writing-title { transform: translateX(8px); }
+
+        .writing-excerpt {
+            font-family: var(--serif);
+            font-size: .95rem;
+            line-height: 1.65;
+            color: var(--soft);
+            max-width: 680px;
+        }
+
+        .writing-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 14px;
+            position: relative;
+        }
+
+        .writing-cat {
+            font-family: var(--sans);
+            font-size: .6rem;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        .writing-arrow {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--line2);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: .9rem;
+            color: var(--soft);
+            transition: transform .3s ease, border-color .3s;
+        }
+
+        .writing-link:hover .writing-arrow {
+            transform: translate(4px,-4px);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .view-all {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 56px;
+            font-family: var(--sans);
+            font-size: .65rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid var(--line2);
+            padding: 14px 28px;
+            transition: background .3s, border-color .3s, gap .3s;
+        }
+
+        .view-all:hover {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            gap: 18px;
+        }
+
+        /* ── FOOTER ── */
+        .site-footer {
+            padding: 48px min(5vw, 64px) 80px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .footer-left {
+            font-family: var(--serif);
+            font-size: .95rem;
+            font-style: italic;
+            color: var(--dim);
+            line-height: 1.9;
+        }
+
+        .footer-right {
+            font-family: var(--sans);
+            font-size: .6rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--dim);
+            line-height: 2.2;
+            text-align: right;
+        }
+
+        /* ── THEME TOGGLE ── */
+        .theme-toggle {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 200;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid var(--line2);
+            background: rgba(8,14,26,.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            color: var(--text);
+            transition: border-color .3s, transform .2s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--gold);
+            transform: scale(1.08);
+        }
+
+        .t-sun { display: none; }
+        [data-theme="light"] .t-moon { display: none; }
+        [data-theme="light"] .t-sun { display: block; }
+
+        /* ── REVEAL ANIMATIONS ── */
+        .reveal {
+            opacity: 1;
+            transform: none;
+        }
+
+        .js .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .75s ease, transform .75s ease;
+        }
+
+        .js .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 860px) {
+            .site-header { padding: 22px 24px; }
+            .site-nav { gap: 22px; }
+            .hero { padding: 0 24px clamp(50px,8vh,80px); }
+            .question-band,
+            .universe,
+            .subjects,
+            .writing { padding-left: 24px; padding-right: 24px; }
+            .site-footer { padding-left: 24px; padding-right: 24px; }
+            .project-card { padding: 36px 28px; }
+            .writing-link { grid-template-columns: 1fr; gap: 12px; padding: 32px 0 36px; }
+            .writing-date { padding-top: 0; }
+            .writing-meta { flex-direction: row; align-items: center; justify-content: space-between; }
+        }
+
+        @media (max-width: 560px) {
+            .site-nav { display: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
+            .js .reveal { opacity: 1; transform: none; }
+            #mm-canvas { display: none; }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Ingrid Ormevik</h1>
-        <nav>
-            <a href="index.html" class="active">Home</a>
+
+<canvas id="mm-canvas" aria-hidden="true"></canvas>
+
+<div class="shell">
+
+    <header class="site-header" id="siteHeader">
+        <a class="site-logo" href="index.html">Mount Media</a>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="index.html" class="active" aria-current="page">Archive</a>
             <a href="blog.html">Writing</a>
             <a href="about.html">About</a>
             <a href="touch%20game.html">Projects</a>
@@ -18,89 +666,235 @@
     </header>
 
     <main>
-        <h2>Digital Culture, Ethics & Activism</h2>
-        <p>Academic blog exploring the intersections of technology, identity, and queer activism.</p>
 
-        <section class="projects">
-            <h2>Featured Work</h2>
-
-            <div class="project-card">
-                <h3>The Turing Test: Fragments of a Life Saved by Pixels</h3>
-                <p>Interactive fiction exploring AI bias against Norwegian LGBTQ+ organizations. Research you can experience.</p>
-                <a href="touch%20game.html" class="cta-button">Play & Read More →</a>
+        <!-- ── HERO ── -->
+        <section class="hero" aria-label="Introduction">
+            <p class="hero-eyebrow" id="heroEyebrow">Artistic research universe · Bergen, Norway</p>
+            <h1 class="hero-title" id="heroTitle">
+                Mount<br><em>Media</em>
+            </h1>
+            <p class="hero-sub" id="heroSub">
+                An archive where artificial intelligence, folklore, electronic literature,
+                game studies and digital culture belong to one connected world.
+            </p>
+            <div class="hero-scroll" id="heroScroll">
+                <span class="hero-scroll-line"></span>
+                <span class="hero-scroll-dot"></span>
+                <span>Enter the archive</span>
             </div>
         </section>
 
-        <section class="recent-posts">
-            <h3>Recent Writing</h3>
-
-            <article>
-    <h4>
-        <a href="posts/2026-07-11-i-said-log-out.html">
-            I Said Log Out. It Said Come Back.
-        </a>
-    </h4>
-    <p class="date">10 July 2026</p>
-    <p>
-        Mount Media as an emotional chamber. I left part of my heart on an old Fortnite island.
-        The place vanished. The feeling did not. Notes toward a bachelor's thesis.
-    </p>
-</article>
-
-<article>
-    <h4>
-        <a href="posts/2026-04-09-mountmedia.html">
-            We Built Something That Learns
-        </a>
-    </h4>
-    <p class="date">20 June 2026</p>
-    <p>
-        Bergen gave me mountains and rain. Norwegian folk music gave me melodies that have lived
-        in this land for centuries. Artificial intelligence became a collaborator. From those three
-        things, something emerged.
-    </p>
-</article>
-
-<article>
-    <h4>
-        <a href="posts/2026-06-07-pride-park-2026-the-forest-remembers.html.html">
-            Pride Park 2026: The Forest Remembers
-        </a>
-    </h4>
-    <p class="date">7 June 2026</p>
-    <p>
-        A location-based digital folklore experience where queer belonging becomes playable
-        infrastructure through Norwegian folklore, ritual and game design.
-    </p>
-</article>
-
-            <article>
-                <h4><a href="posts/2026-04-09-me-myself-and-ai-part-2-thegirlfriend.html">Me, Myself and A.I — Part II: The Machine Made Me More Male</a></h4>
-                <p class="date">9 April 2026</p>
-                <p>I asked A.I to generate the ideal partner. Not as a joke. As research. On perfect alignment, parasocial intelligence, and the mirror that knows you better than you do.</p>
-            </article>
-
-            <article>
-                <h4><a href="posts/2026-03-13-me-myself-and-ai.html">Me, Myself and A.I.</a></h4>
-                <p class="date">13 March 2026</p>
-                <p>A personal essay on generative AI, queer presentation, and how a four prompt image experiment revealed the statistical logic of algorithmic misgendering.</p>
-            </article>
-
-            <article>
-                <h4><a href="posts/2026-02-22-inngang-c.html">Inngang C eksisterer ikke.</a></h4>
-                <p class="date">22 February 2026</p>
-                <p>Jeg forlot en Killer Queen-konsert tidlig. Ikke fordi musikken var dårlig. Men fordi Freddie Mercury ikke var i rommet med oss.</p>
-            </article>
-
-            <p><a href="blog.html" class="cta-button">View All Writing →</a></p>
+        <!-- ── CENTRAL QUESTION ── -->
+        <section class="question-band reveal" aria-label="Central research question">
+            <p class="question-label">Central question</p>
+            <p class="question-text">
+                What happens when machines become storytellers
+                <em>without replacing</em> human imagination?
+            </p>
         </section>
+
+        <!-- ── UNIVERSE CHAPTERS ── -->
+        <section class="universe" aria-label="Universe chapters">
+            <div class="section-head reveal">
+                <span class="section-label">The universe / chapters</span>
+                <span class="section-count">08 active projects</span>
+            </div>
+
+            <div class="projects-grid">
+
+                <article class="project-card reveal">
+                    <p class="card-number">01</p>
+                    <span class="card-tag">Music · AI · Landscape</span>
+                    <h2 class="card-title">Sounds of the Fjords</h2>
+                    <p class="card-desc">The sea remembers. The fjord is an archive. Music generated from landscapes — each chapter another place where folklore emerges from nature.</p>
+                </article>
+
+                <article class="project-card reveal">
+                    <p class="card-number">02</p>
+                    <span class="card-tag">Movement · Ritual · Body</span>
+                    <h2 class="card-title">Running in the Mountains</h2>
+                    <p class="card-desc">Movement as ritual. Running as meditation. The body remembers before language. The mountain is a living system.</p>
+                </article>
+
+                <article class="project-card reveal">
+                    <p class="card-number">03</p>
+                    <span class="card-tag">Mythology · Fusion</span>
+                    <h2 class="card-title">Fire Meets Water</h2>
+                    <p class="card-desc">Two mythologies meet. Neither replaces the other. Instead a completely new folklore appears between them.</p>
+                </article>
+
+                <article class="project-card reveal">
+                    <p class="card-number">04</p>
+                    <span class="card-tag">Folklore · Coastal · Spirit</span>
+                    <h2 class="card-title">The Siren Calling</h2>
+                    <p class="card-desc">A fictional ocean spirit emerging from the Bergen fjords. Norwegian coastal landscapes meet South Asian mythological aesthetics. Entirely original.</p>
+                </article>
+
+                <article class="project-card reveal">
+                    <p class="card-number">05</p>
+                    <span class="card-tag">Forest · Interactive · AV</span>
+                    <h2 class="card-title">Bergtatt</h2>
+                    <p class="card-desc">Norwegian forest folklore. Interactive audiovisual storytelling where the trees become a medium.</p>
+                    <a href="bergtatt-visuals.html" class="card-link">Explore →</a>
+                </article>
+
+                <article class="project-card reveal">
+                    <p class="card-number">06</p>
+                    <span class="card-tag">Sea · Urban · Mythology</span>
+                    <h2 class="card-title">Fjordtatt</h2>
+                    <p class="card-desc">The sea becomes the next mythology. The city becomes folklore. Where the tide meets concrete.</p>
+                    <a href="fjordtatt-visuals.html" class="card-link">Explore →</a>
+                </article>
+
+                <article class="project-card reveal">
+                    <p class="card-number">07</p>
+                    <span class="card-tag">Queer · Game · Public Space</span>
+                    <h2 class="card-title">Pride Park</h2>
+                    <p class="card-desc">Playable queer folklore. Games as public space. A location-based digital experience where belonging becomes playable infrastructure.</p>
+                    <a href="pride-park-spill-2026.html" class="card-link">Enter →</a>
+                </article>
+
+                <article class="project-card reveal">
+                    <p class="card-number">08</p>
+                    <span class="card-tag">Electronic Literature · AI</span>
+                    <h2 class="card-title">The Turing Test</h2>
+                    <p class="card-desc">Interactive electronic literature exploring machine perception, algorithmic misunderstanding and identity. Research you can experience.</p>
+                    <a href="touch%20game.html" class="card-link">Play →</a>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- ── SUBJECTS ── -->
+        <section class="subjects" aria-label="Research subjects">
+            <p class="subjects-label reveal">Subjects under investigation</p>
+            <div class="subjects-flow">
+                <span class="subject-pill reveal">memory</span>
+                <span class="subject-pill reveal">folklore</span>
+                <span class="subject-pill reveal">identity</span>
+                <span class="subject-pill reveal">queerness</span>
+                <span class="subject-pill reveal">landscape</span>
+                <span class="subject-pill reveal">migration</span>
+                <span class="subject-pill reveal">mythology</span>
+                <span class="subject-pill reveal">digital archives</span>
+                <span class="subject-pill reveal">artificial perception</span>
+            </div>
+        </section>
+
+        <!-- ── WRITING ── -->
+        <section class="writing" aria-label="Recent writing">
+            <div class="section-head reveal">
+                <span class="section-label">From the archive / writing</span>
+                <span class="section-count">Field notes &amp; essays</span>
+            </div>
+
+            <ul class="writing-list">
+
+                <li class="writing-item reveal">
+                    <a class="writing-link" href="posts/2026-07-11-i-said-log-out.html">
+                        <time class="writing-date">11 Jul 2026</time>
+                        <div class="writing-body">
+                            <h2 class="writing-title">I Said Log Out. It Said Come Back.</h2>
+                            <p class="writing-excerpt">Mount Media as an emotional chamber. I left part of my heart on an old Fortnite island. The place vanished. The feeling did not.</p>
+                        </div>
+                        <div class="writing-meta">
+                            <span class="writing-cat">Thesis Notes</span>
+                            <span class="writing-arrow">↗</span>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="writing-item reveal">
+                    <a class="writing-link" href="posts/2026-06-20-mountmedia.html">
+                        <time class="writing-date">20 Jun 2026</time>
+                        <div class="writing-body">
+                            <h2 class="writing-title">We Built Something That Learns</h2>
+                            <p class="writing-excerpt">Bergen gave me mountains and rain. Norwegian folk music gave me inherited memory. Artificial intelligence became a collaborator.</p>
+                        </div>
+                        <div class="writing-meta">
+                            <span class="writing-cat">Artistic Research</span>
+                            <span class="writing-arrow">↗</span>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="writing-item reveal">
+                    <a class="writing-link" href="posts/2026-06-07-pride-park-2026.html">
+                        <time class="writing-date">07 Jun 2026</time>
+                        <div class="writing-body">
+                            <h2 class="writing-title">Pride Park 2026: The Forest Remembers</h2>
+                            <p class="writing-excerpt">A location-based digital folklore experience where queer belonging becomes playable infrastructure through Norwegian folklore and ritual.</p>
+                        </div>
+                        <div class="writing-meta">
+                            <span class="writing-cat">Game Studies</span>
+                            <span class="writing-arrow">↗</span>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="writing-item reveal">
+                    <a class="writing-link" href="posts/2026-04-09-me-myself-and-ai-part-2-thegirlfriend.html">
+                        <time class="writing-date">09 Apr 2026</time>
+                        <div class="writing-body">
+                            <h2 class="writing-title">Me, Myself and A.I. — Part II</h2>
+                            <p class="writing-excerpt">I asked A.I. to generate the ideal partner. Not as a joke. As research. On perfect alignment, parasocial intelligence and the machine-made ideal.</p>
+                        </div>
+                        <div class="writing-meta">
+                            <span class="writing-cat">Essay</span>
+                            <span class="writing-arrow">↗</span>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="writing-item reveal">
+                    <a class="writing-link" href="posts/2026-03-13-me-myself-and-ai.html">
+                        <time class="writing-date">13 Mar 2026</time>
+                        <div class="writing-body">
+                            <h2 class="writing-title">Me, Myself and A.I.</h2>
+                            <p class="writing-excerpt">A personal essay on generative AI, queer presentation, and the statistical logic through which systems misgender.</p>
+                        </div>
+                        <div class="writing-meta">
+                            <span class="writing-cat">Essay</span>
+                            <span class="writing-arrow">↗</span>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+
+            <a href="blog.html" class="view-all reveal">
+                View all writing →
+            </a>
+        </section>
+
     </main>
 
-    <footer>
-        <p>&copy; 2026 Ingrid Ormevik | Digital Culture Student, University of Bergen</p>
-        <p>Digital Media Strategist, Bergen Pride | Board Member, FRI Vestland | Research Intern, Centre for Digital Narrative</p>
+    <footer class="site-footer">
+        <div class="footer-left">
+            The technology is the medium.<br>
+            The subjects are memory, folklore, identity.
+        </div>
+        <div class="footer-right">
+            © 2026 Ingrid Ormevik<br>
+            University of Bergen<br>
+            Bergen Pride · FRI Vestland<br>
+            Centre for Digital Narrative
+        </div>
     </footer>
 
-    <script src="script.js"></script>
+</div>
+
+<!-- Theme toggle -->
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle colour theme">
+    <svg class="t-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>
+    </svg>
+    <svg class="t-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="12" r="4.5"/>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+    </svg>
+</button>
+
+<script src="script.js"></script>
 </body>
 </html>
