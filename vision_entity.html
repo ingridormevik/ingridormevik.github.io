@@ -8,9 +8,9 @@
 <style>
 :root{--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;overflow:hidden;background:#000;color:#fff;font-family:Arial,sans-serif}
+html,body{margin:0;height:100%;height:100dvh;overflow:hidden;background:#000;color:#fff;font-family:Arial,sans-serif}
 body{position:fixed;inset:0}
-.app{position:absolute;inset:0;background:#000;overflow:hidden}
+.app{position:absolute;inset:0;height:100dvh;background:#000;overflow:hidden}
 video,canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .aurora,.scan,.vignette{position:absolute;inset:0;pointer-events:none}
 .aurora{
@@ -83,7 +83,7 @@ p{margin:0 0 14px;color:rgba(255,255,255,.8);line-height:1.45}
   <div id="keybar" style="position:absolute;bottom:110px;left:0;right:0;z-index:23;padding:0 14px">
     <input id="apiKeyInput" type="password" placeholder="Paste API key (sk-ant-...) then tap Scan Now"
       style="width:100%;padding:11px 16px;border-radius:999px;background:rgba(0,0,0,.7);
-      border:1px solid rgba(255,45,122,.6);color:#fff;font-size:13px;outline:none;font-family:Arial,sans-serif"/>
+      border:1px solid rgba(255,45,122,.6);color:#fff;font-size:16px;outline:none;font-family:Arial,sans-serif"/>
   </div>
   <div class="controls">
     <button id="voiceBtn">voice on</button>
@@ -102,12 +102,8 @@ p{margin:0 0 14px;color:rgba(255,255,255,.8);line-height:1.45}
         <button id="startBtn" class="primary">start camera</button>
         <label class="btn">choose image<input id="fileInputIntro" type="file" accept="image/*"></label>
       </div>
-
-```
-  <p class="tiny" style="margin-top:8px">Best in Safari on iPhone.</p>
-</div>
-```
-
+      <p class="tiny" style="margin-top:8px">Best in Safari on iPhone.</p>
+    </div>
   </div>
 </div>
 
@@ -263,9 +259,9 @@ function getKey(){
 
 function ensureKey(){
   const k = getKey();
-  if(!k){ 
-    alert('Paste your Anthropic API key (sk-ant-...) into the pink field at the bottom of the screen, then tap Scan Now again.');
-    return false; 
+  if(!k){
+    setStatus('paste API key below, then tap scan');
+    return false;
   }
   return true;
 }
@@ -282,7 +278,7 @@ async function doScan(){
   if(scanning) return;
   document.getElementById('debug').innerHTML='';
   const key=getKey();
-  dbg('key: '+(key?key.slice(0,12)+'...':'MISSING'));
+  dbg('key: '+(key?'present':'MISSING'));
   if(!ensureKey()) return;
   const frame = captureFrame();
   dbg('frame: '+(frame?frame.length:'null'));
@@ -345,8 +341,7 @@ async function doScan(){
       setStatus('nothing detected');
     }
   }catch(err){
-    alert('ERROR: ' + err.message);
-    setStatus(err.message.slice(0,60));
+    setStatus('error: ' + err.message.slice(0,60));
     console.error(err);
   }
 
@@ -420,7 +415,7 @@ function loop(now){
 
 // ── EVENTS ────────────────────────────────────────────────
 document.getElementById('startBtn').addEventListener('click', startCamera);
-document.getElementById('spawnBtn').addEventListener('click', ()=>{ lastScan=0; doScan(); });
+document.getElementById('spawnBtn').addEventListener('click', ()=>{ document.getElementById('apiKeyInput').blur(); lastScan=0; doScan(); });
 document.getElementById('clearBtn').addEventListener('click', ()=>{ objects=[]; layer.innerHTML=''; setStatus('cleared'); });
 document.getElementById('cinemaBtn').addEventListener('click', ()=>setCinema(!cinemaOn));
 document.getElementById('voiceBtn').addEventListener('click', function(){
