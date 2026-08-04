@@ -40,6 +40,8 @@ FRAME_W, FRAME_H = 128, 128
 FOOT_Y = 120                 # baseline inside the frame box
 LUMA_CUTOFF = 26             # background sums ~22, darkest clothing ~34
 MIN_FRAME_W = 22             # narrower runs are debris, not a pose
+MAX_CHAR_H = 100             # tallest real pose; anything above is row bleed
+PINCH_W = 6                  # a row this narrow high up is a weld, not anatomy
 
 # strip -> (animation name, fps). Order defines manifest order.
 SOURCES = {
@@ -128,6 +130,66 @@ def largest_blob(mask):
     return label == max(sizes, key=sizes.get)
 
 
+def blobs(mask):
+    """Yield (label_array, {label: size})."""
+    h, w = mask.shape
+    label = np.zeros((h, w), int)
+    sizes = {}
+    n = 0
+    for y in range(h):
+        for x in range(w):
+            if mask[y, x] and label[y, x] == 0:
+                n += 1
+                count = 0
+                q = collections.deque([(y, x)])
+                label[y, x] = n
+                while q:
+                    cy, cx = q.popleft()
+                    count += 1
+                    for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                        ny, nx = cy + dy, cx + dx
+                        if 0 <= ny < h and 0 <= nx < w and mask[ny, nx] and label[ny, nx] == 0:
+                            label[ny, nx] = n
+                            q.append((ny, nx))
+                sizes[n] = count
+    return label, sizes
+
+
+def clamp_height(alpha, max_h=MAX_CHAR_H):
+    """Keep only max_h rows measured up from the feet.
+
+    The pack's crops clip the bottom of the sheet row above, leaving stray
+    shoes floating over a character's head. The seal can weld those to the
+    silhouette, so largest-blob will not shift them and there is no clean
+    horizontal gap to cut on - but they always sit above the character's
+    own height, so a clamp from the baseline removes them reliably.
+    """
+    profile = alpha.sum(axis=1)
+    rows = np.where(profile > 0)[0]
+    if not len(rows):
+        return alpha
+    alpha = alpha.copy()
+
+    # backstop: nothing can be taller than a real pose
+    top = rows.max() + 1 - max_h
+    if top > 0:
+        alpha[:top] = False
+        profile = alpha.sum(axis=1)
+        rows = np.where(profile > 0)[0]
+        if not len(rows):
+            return alpha
+
+    # the bleed is usually welded to the head by a thin neck of pixels rather
+    # than floating free, so cut on the narrowest pinch in the upper third
+    total = alpha.sum()
+    limit = rows.min() + int((rows.max() - rows.min()) * 0.42)
+    for y in range(rows.min() + 2, limit):
+        if profile[y] <= PINCH_W and alpha[:y].sum() < total * 0.35:
+            alpha[:y + 1] = False
+            break
+    return alpha
+
+
 def rebuild_alpha(rgb):
     """rgb: HxWx3 int array -> boolean alpha mask."""
     fg = rgb.sum(axis=2) > LUMA_CUTOFF
@@ -177,7 +239,7 @@ def build_animation(who, strip_file, anim, fps):
         pad = 6
         cx0, cx1 = max(x0 - pad, 0), min(x1 + pad, src.shape[1])
         chunk = src[:, cx0:cx1, :3]
-        alpha = largest_blob(rebuild_alpha(chunk))
+        alpha = largest_blob(clamp_height(largest_blob(rebuild_alpha(chunk))))
         if alpha.sum() < 220:                      # nothing meaningful survived
             continue
 
