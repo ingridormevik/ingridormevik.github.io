@@ -284,7 +284,7 @@
 
         .rm-tag {
             position: absolute;
-            top: 38%;
+            top: 25cqw;
             transform: translateX(-50%);
             font-size: clamp(.42rem, 1.15vw, .6rem);
             letter-spacing: .14em;
@@ -311,7 +311,7 @@
         .rm-prompt {
             position: absolute;
             left: 50%;
-            bottom: 3%;
+            top: 48cqw;
             transform: translateX(-50%);
             font-size: clamp(.5rem, 1.4vw, .68rem);
             letter-spacing: .18em;
@@ -328,7 +328,7 @@
         /* Route progress */
         .rm-route {
             position: absolute;
-            top: 4%;
+            top: 2.4cqw;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -370,7 +370,7 @@
         }
 
         @media (max-width: 620px) {
-            .rm-stage { aspect-ratio: 4 / 5; }
+            .rm-stage.tall { aspect-ratio: 3 / 4; }
             .rm-title, .rm-chapcard { justify-content: flex-start; padding-top: 12%; }
             .rm-stat-lab { display: none; }
             .rm-cap { justify-content: center; text-align: center; }
@@ -424,13 +424,13 @@
 
             <div class="rm">
                 <div class="rm-stage">
-                    <canvas id="rmCanvas" width="320" height="180" role="img"
+                    <canvas id="rmCanvas" width="480" height="270" role="img"
                             aria-label="Pixel-art scene of two hikers walking a Bergen mountain trail at sunset, one carrying a DJ controller, one carrying a speaker backpack."></canvas>
 
                     <div class="rm-route rm-hide" id="rmRoute" aria-hidden="true"></div>
                     <div class="rm-tags rm-hide" id="rmTags" aria-hidden="true">
-                        <span class="rm-tag" style="left:38.75%">JACK<b></b></span>
-                        <span class="rm-tag" style="left:63.1%">INGRID<b></b></span>
+                        <span class="rm-tag" style="left:60.8%">JACK<b></b></span>
+                        <span class="rm-tag" style="left:40.8%">INGRID<b></b></span>
                     </div>
                     <div class="rm-prompt rm-hide" id="rmPrompt">HOLD → OR TAP TO WALK</div>
 
@@ -514,7 +514,7 @@
         var ctx = cv.getContext('2d');
         ctx.imageSmoothingEnabled = false;
 
-        var W = 320, H = 180, GROUND = 148;
+        var W = 480, H = 270, GROUND = 222;
         var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         /* ---------- helpers ---------- */
@@ -552,224 +552,69 @@
             gold: '#d4a758', cream: '#e8dcc0'
         };
 
-        /* ---------- character sprites ---------- */
-        var SW = 46, SH = 46, FEET = 42;
-
-        function px(g, x, y, w, h, c) { g.fillStyle = c; g.fillRect(x | 0, y | 0, w | 0, h | 0); }
-
-        // Draw a leg: hip at (hx,hy), swing = horizontal foot offset
-        // ---- limb primitives -------------------------------------------------
-        // hip at (hx,hy): thigh 3, shin 3, sock 1, shoe 2  => 9 tall total
-        function leg(g, hx, hy, swing, skin, skinS, sockC, shoeC, shoeSC) {
-            var kx = hx + Math.round(swing * 0.45);
-            var fx = hx + Math.round(swing);
-            var lift = swing > 2.5 ? 1 : 0;
-            px(g, hx, hy, 4, 3, skin);
-            px(g, hx, hy, 1, 3, skinS);
-            px(g, kx, hy + 3, 4, 3, skin);
-            px(g, kx, hy + 3, 1, 3, skinS);
-            px(g, kx + 1, hy + 3, 2, 1, skinS);
-            px(g, fx, hy + 6, 4, 1, sockC);
-            px(g, fx - 1, hy + 7 - lift, 6, 2, shoeC);
-            px(g, fx - 1, hy + 9 - lift, 6, 1, shoeSC);
-        }
-
-        // shoulder at (sx,sy): upper 5, forearm 4, hand 2 => 11 tall
-        function arm(g, sx, sy, swing, sleeve, sleeveS, skin) {
-            var ex = sx + Math.round(swing * 0.55);
-            px(g, sx, sy, 3, 5, sleeve);
-            px(g, sx, sy, 1, 5, sleeveS);
-            px(g, ex, sy + 5, 3, 4, skin);
-            px(g, ex, sy + 9, 3, 2, skin);
-        }
-
-        function speakerPack(g, x, y) {
-            px(g, x, y, 8, 16, P.gear);
-            px(g, x, y, 1, 16, P.gearHi);
-            px(g, x + 7, y, 1, 16, P.gearS);
-            for (var i = 0; i < 3; i++) {
-                var cy = y + 2 + i * 5;
-                px(g, x + 2, cy, 5, 4, P.gearS);
-                px(g, x + 3, cy + 1, 3, 2, '#0b0b10');
-                px(g, x + 3, cy + 1, 1, 1, '#4a4a58');
-            }
-        }
-
-        function djRig(g, x, y) {
-            px(g, x, y, 17, 6, P.gear);
-            px(g, x, y, 17, 1, P.gearHi);
-            px(g, x, y + 5, 17, 1, P.gearS);
-            px(g, x + 1, y + 1, 4, 4, '#484856');
-            px(g, x + 2, y + 2, 2, 2, '#14141a');
-            px(g, x + 12, y + 1, 4, 4, '#484856');
-            px(g, x + 13, y + 2, 2, 2, '#14141a');
-            px(g, x + 6, y + 1, 5, 1, P.jShirt);
-            px(g, x + 6, y + 3, 5, 1, '#6aa84a');
-        }
-
-        // ---- INGRID · sound carrier -----------------------------------------
-        // Anatomy (offsets from T = top of head, feet land at T+42):
-        //   cap 0-4 | face 3-13 | neck 12-14 | torso 14-27 | shorts 27-33 | legs 33-42
-        function drawIngrid(g, anim, f, tot) {
-            var ph = (f / tot) * Math.PI * 2;
-            var walking = anim === 'walk';
-            var sw = walking ? Math.sin(ph) * 4 : 0;
-            var bob = walking ? (Math.cos(ph) > 0 ? 0 : 1)
-                     : (anim === 'idle' && f % 4 >= 2 ? 1 : 0);
-            var cx = 24, T = FEET - 42 + bob;
-
-            // speaker worn high on her back, tucked against the torso
-            speakerPack(g, cx - 11, T + 14);
-            px(g, cx - 5, T + 15, 2, 2, '#3a3a46');
-            px(g, cx - 5, T + 22, 2, 2, '#3a3a46');
-
-            // back arm + back leg
-            arm(g, cx - 6, T + 15, -sw, P.dark, P.darkS, P.iSkin);
-            leg(g, cx - 4, T + 33, -sw, P.iSkin, P.iSkinS, P.sock, P.shoe, P.shoeS);
-
-            // long wavy hair down her back — narrow, tucked behind the shoulder
-            px(g, cx - 7, T + 5, 4, 17, P.iHairS);
-            px(g, cx - 6, T + 6, 3, 15, P.iHair);
-            px(g, cx - 7, T + 13, 2, 4, P.iHairH);
-            px(g, cx - 6, T + 20, 3, 4, P.iHairS);
-            px(g, cx - 5, T + 22, 2, 3, P.iHair);
-
-            // torso — loose black button-up
-            px(g, cx - 5, T + 14, 10, 13, P.dark2);
-            px(g, cx - 5, T + 14, 2, 13, P.dark);
-            px(g, cx + 3, T + 14, 2, 13, P.dark);
-            px(g, cx, T + 15, 1, 11, P.darkS);
-            px(g, cx - 1, T + 18, 1, 1, '#4a4658');
-            px(g, cx - 1, T + 22, 1, 1, '#4a4658');
-            // knee-length black shorts
-            px(g, cx - 5, T + 27, 10, 6, P.dark);
-            px(g, cx, T + 28, 1, 5, P.darkS);
-
-            // front leg
-            leg(g, cx + 1, T + 33, sw, P.iSkin, P.iSkinS, P.sock, P.shoe, P.shoeS);
-
-            // neck + bandana
-            px(g, cx - 1, T + 12, 3, 2, P.iSkinS);
-            px(g, cx - 3, T + 13, 7, 2, '#14141a');
-
-            // face
-            px(g, cx - 4, T + 3, 8, 10, P.iSkin);
-            px(g, cx - 4, T + 3, 2, 10, P.iSkinS);
-            px(g, cx + 3, T + 9, 1, 2, P.iSkinS);
-            // oversized black sunglasses
-            px(g, cx - 2, T + 6, 7, 3, '#08080d');
-            px(g, cx + 3, T + 6, 1, 1, '#50506a');
-            // septum + lips
-            px(g, cx + 2, T + 10, 1, 1, P.iSkinS);
-            px(g, cx, T + 11, 2, 1, '#a86a58');
-            // black cap
-            px(g, cx - 5, T, 10, 4, '#14141a');
-            px(g, cx - 5, T, 10, 1, '#26262f');
-            px(g, cx + 4, T + 3, 6, 2, '#14141a');
-            px(g, cx + 4, T + 3, 6, 1, '#1e1e28');
-            // fringe escaping the cap
-            px(g, cx - 5, T + 4, 2, 8, P.iHair);
-
-            // front arm
-            var fa = anim === 'look' ? -3 : sw;
-            arm(g, cx + 4, T + 15, fa, P.dark, P.darkS, P.iSkin);
-        }
-
-        // ---- JACK · trail DJ -------------------------------------------------
-        function drawJack(g, anim, f, tot) {
-            var ph = (f / tot) * Math.PI * 2;
-            var walking = anim === 'walk';
-            var sw = walking ? Math.sin(ph) * 4 : 0;
-            var bob = walking ? (Math.cos(ph) > 0 ? 0 : 1)
-                     : (anim === 'idle' && f % 4 >= 2 ? 1 : 0);
-            var cx = 24, T = FEET - 42 + bob;
-
-            // daypack on his back
-            px(g, cx - 10, T + 16, 6, 11, '#6b5438');
-            px(g, cx - 10, T + 16, 1, 11, '#8a6c48');
-            px(g, cx - 9, T + 19, 4, 3, '#4a3a26');
-
-            // back arm + back leg
-            arm(g, cx - 6, T + 15, -sw * 0.35, P.jShirt, P.jShirtS, P.jSkin);
-            leg(g, cx - 4, T + 33, -sw, P.jSkin, P.jSkinS, P.sock, P.shoe, P.shoeS);
-
-            // torso — mustard tee
-            px(g, cx - 5, T + 14, 10, 13, P.jShirt);
-            px(g, cx - 5, T + 14, 2, 13, P.jShirtS);
-            px(g, cx + 3, T + 14, 2, 13, P.jShirtS);
-            px(g, cx - 5, T + 14, 10, 1, '#e8b448');
-            // small crest badge
-            px(g, cx, T + 17, 3, 3, '#ded6c4');
-            px(g, cx + 1, T + 18, 1, 1, '#b8402f');
-            // harness straps for the rig
-            px(g, cx - 3, T + 14, 1, 13, '#38383f');
-            px(g, cx + 2, T + 14, 1, 13, '#38383f');
-            // tan shorts
-            px(g, cx - 5, T + 27, 10, 6, P.jShort);
-            px(g, cx, T + 28, 1, 5, P.jShortS);
-
-            // front leg
-            leg(g, cx + 1, T + 33, sw, P.jSkin, P.jSkinS, P.sock, P.shoe, P.shoeS);
-
-            // neck
-            px(g, cx - 1, T + 12, 3, 2, P.jSkinS);
-
-            // face
-            px(g, cx - 4, T + 3, 8, 10, P.jSkin);
-            px(g, cx - 4, T + 3, 2, 10, P.jSkinS);
-            px(g, cx + 3, T + 9, 1, 2, P.jSkinS);
-            // short grey hair — a cap of hair, not a hat
-            px(g, cx - 4, T + 1, 8, 2, P.jHair);
-            px(g, cx - 3, T, 6, 1, P.jHair);
-            px(g, cx - 4, T + 1, 3, 1, P.jHairH);
-            px(g, cx - 4, T + 3, 1, 3, P.jHairS);
-            px(g, cx + 3, T + 3, 1, 2, P.jHairS);
-            // rectangular glasses — frames, with lens showing through
-            px(g, cx - 3, T + 6, 3, 1, '#1a1a20');
-            px(g, cx - 3, T + 8, 3, 1, '#1a1a20');
-            px(g, cx - 3, T + 6, 1, 3, '#1a1a20');
-            px(g, cx - 1, T + 6, 1, 3, '#1a1a20');
-            px(g, cx + 1, T + 6, 3, 1, '#1a1a20');
-            px(g, cx + 1, T + 8, 3, 1, '#1a1a20');
-            px(g, cx + 1, T + 6, 1, 3, '#1a1a20');
-            px(g, cx + 3, T + 6, 1, 3, '#1a1a20');
-            px(g, cx, T + 7, 1, 1, '#1a1a20');
-            px(g, cx - 2, T + 7, 1, 1, '#9ec4e4');
-            px(g, cx + 2, T + 7, 1, 1, '#9ec4e4');
-            // mouth
-            px(g, cx, T + 11, 2, 1, '#a8705a');
-
-            // the rig, held at waist height, both hands on it
-            var jog = anim === 'mix' ? (f % 2) : 0;
-            var rigX = cx + 1, rigY = T + 21 + jog;
-            djRig(g, rigX, rigY);
-            // front arm reaching down onto the rig
-            px(g, cx + 4, T + 15, 3, 5, P.jShirt);
-            px(g, cx + 4, T + 15, 1, 5, P.jShirtS);
-            px(g, cx + 5, T + 19, 3, 3, P.jSkin);
-            var hx = anim === 'mix' ? rigX + 10 + (f % 3) : rigX + 11;
-            px(g, hx, rigY - 1, 3, 2, P.jSkin);
-            px(g, rigX + 1, rigY - 1, 3, 2, P.jSkin);
-        }
-
-        /* ---------- sprite bank ---------- */
+        /* ---------- character sprites ----------
+           Real pixel art, sliced from the Mount Media reference sheet and
+           served from assets/sprites/. Frame boxes are foot-aligned, so a
+           sprite can be swapped without touching the walk code.            */
+        var SPRW = 76, SPRH = 112;
+        var SHEET = {
+            ingrid: { idle: 4, walk: 6, look: 4 },
+            jack:   { idle: 4, walk: 6, mix: 3 }
+        };
         var SPR = { ingrid: {}, jack: {} };
-        var ANIMS = [['idle', 4], ['walk', 8], ['look', 4], ['mix', 4]];
 
-        function buildSprites() {
-            ANIMS.forEach(function (a) {
-                var name = a[0], n = a[1];
-                SPR.ingrid[name] = [];
-                SPR.jack[name] = [];
-                for (var f = 0; f < n; f++) {
-                    var i1 = make(SW, SH); drawIngrid(i1.g, name, f, n); SPR.ingrid[name].push(i1.c);
-                    var j1 = make(SW, SH); drawJack(j1.g, name, f, n); SPR.jack[name].push(j1.c);
-                }
+        function loadSprites(done) {
+            var jobs = [];
+            Object.keys(SHEET).forEach(function (who) {
+                Object.keys(SHEET[who]).forEach(function (anim) {
+                    SPR[who][anim] = [];
+                    for (var i = 0; i < SHEET[who][anim]; i++) {
+                        jobs.push([who, anim, i]);
+                    }
+                });
+            });
+
+            var left = jobs.length, failed = 0;
+            if (!left) { done(false); return; }
+
+            jobs.forEach(function (j) {
+                var who = j[0], anim = j[1], i = j[2];
+                var img = new Image();
+                img.onload = function () {
+                    SPR[who][anim][i] = img;
+                    if (--left === 0) done(failed > 0);
+                };
+                img.onerror = function () {
+                    failed++;
+                    if (--left === 0) done(true);
+                };
+                img.src = 'assets/sprites/' + who + '/' + anim + '_' +
+                          (i < 10 ? '0' + i : i) + '.png';
+            });
+        }
+
+        // Fallback silhouettes, only used if the PNGs cannot be fetched.
+        function stubSprites() {
+            Object.keys(SHEET).forEach(function (who) {
+                Object.keys(SHEET[who]).forEach(function (anim) {
+                    for (var i = 0; i < SHEET[who][anim]; i++) {
+                        if (SPR[who][anim][i]) continue;
+                        var m = make(SPRW, SPRH), g = m.g;
+                        var body = who === 'jack' ? '#d9a02c' : '#22222a';
+                        g.fillStyle = body;
+                        g.fillRect(28, 34, 20, 40);
+                        g.fillStyle = who === 'jack' ? '#d9a077' : '#e0a880';
+                        g.fillRect(30, 16, 16, 18);
+                        g.fillRect(30, 74, 6, 30);
+                        g.fillRect(40, 74, 6, 30);
+                        SPR[who][anim][i] = m.c;
+                    }
+                });
             });
         }
 
         /* ---------- scenery layers ---------- */
-        var LAYW = 640;
+        var LAYW = 960;
 
         function mountainLayer(seed, colr, baseY, amp, step) {
             var m = make(LAYW, H);
@@ -817,10 +662,10 @@
 
         var LAYERS = {};
         function buildLayers() {
-            LAYERS.far = mountainLayer(1337, '#000000', 96, 26, 40);
-            LAYERS.mid = mountainLayer(90210, '#000000', 112, 18, 28);
-            LAYERS.treeFar = treeLayer(555, '#000000', '#000000', 132, 16, 30, 13);
-            LAYERS.treeNear = treeLayer(777, '#000000', '#000000', 156, 26, 48, 22);
+            LAYERS.far = mountainLayer(1337, '#000000', 144, 39, 60);
+            LAYERS.mid = mountainLayer(90210, '#000000', 168, 27, 42);
+            LAYERS.treeFar = treeLayer(555, '#000000', '#000000', 198, 24, 45, 20);
+            LAYERS.treeNear = treeLayer(777, '#000000', '#000000', 234, 39, 72, 33);
         }
 
         function tinted(src, colr) {
@@ -837,7 +682,7 @@
             {
                 n: 'CHAPTER ONE', t: 'The Call',
                 sky: ['#38537d', '#7b8fb2', '#c0a898', '#e8bf8c'],
-                sun: '#ffe6b8', sunY: 112, fog: 0.06, stars: 0.08, city: 0.5, dist: 520,
+                sun: '#ffe6b8', sunY: 168, fog: 0.06, stars: 0.08, city: 0.5, dist: 520,
                 tag: 'CHAPTER ONE · THE CALL · 40M',
                 text: "The car park empties out onto gravel, then dirt, then nothing but trail. Jack has the controller out of the van before the doors are properly shut, testing a rhythm under his breath with no source for it yet. Ingrid swings the speaker onto her back and adjusts it until it stops arguing with her spine.",
                 choices: [
@@ -850,7 +695,7 @@
             {
                 n: 'CHAPTER TWO', t: 'Into the Woods',
                 sky: ['#3f74a0', '#7ba3c6', '#accbd0', '#d6d3ae'],
-                sun: '#fff4d0', sunY: 96, fog: 0.14, stars: 0, city: 0.25, dist: 560,
+                sun: '#fff4d0', sunY: 144, fog: 0.14, stars: 0, city: 0.25, dist: 560,
                 tag: 'CHAPTER TWO · INTO THE WOODS · 120M',
                 text: "The city noise thins out and then stops mattering. Trees close over the path. Somewhere behind them Bergen is still doing whatever Bergen does on a Saturday, and it has stopped being relevant. The walking has found its own tempo and neither of them set it.",
                 choices: [
@@ -863,7 +708,7 @@
             {
                 n: 'CHAPTER THREE', t: 'The Climb',
                 sky: ['#2e2a4a', '#6b4a63', '#b06a52', '#d99a5e'],
-                sun: '#f2b45e', sunY: 88, fog: 0.18, stars: 0.1, city: 0.2, dist: 600,
+                sun: '#f2b45e', sunY: 132, fog: 0.18, stars: 0.1, city: 0.2, dist: 600,
                 tag: 'CHAPTER THREE · THE CLIMB · 220M',
                 text: "The trail folds back on itself and stops pretending to be friendly. Conversation turns into breathing. Jack is still in front, setting a pace that is really a dare, and the speaker on Ingrid's back has started to feel like it is negotiating with gravity on its own terms.",
                 choices: [
@@ -876,7 +721,7 @@
             {
                 n: 'CHAPTER FOUR', t: 'The View',
                 sky: ['#241a3a', '#7a2f4a', '#d15a34', '#f09048'],
-                sun: '#ffd27a', sunY: 96, fog: 0.1, stars: 0.35, city: 1, dist: 560,
+                sun: '#ffd27a', sunY: 144, fog: 0.1, stars: 0.35, city: 1, dist: 560,
                 tag: 'CHAPTER FOUR · THE VIEW · 320M',
                 text: "The trees give up first. The path opens onto bare rock and suddenly there is a horizon where the branches were — the fjord going gold, the city laid out below in a grid of small lights, seven mountains holding all of it. It is the kind of view that makes people stop talking. Jack does not stop talking. He is already describing what the drop is going to sound like from up here.",
                 choices: [
@@ -889,7 +734,7 @@
             {
                 n: 'CHAPTER FIVE', t: 'The Flow',
                 sky: ['#150f2a', '#3a1f45', '#7a2f45', '#b04a3a'],
-                sun: '#e8703a', sunY: 116, fog: 0.14, stars: 0.6, city: 1, dist: 580, night: true,
+                sun: '#e8703a', sunY: 174, fog: 0.14, stars: 0.6, city: 1, dist: 580, night: true,
                 tag: 'CHAPTER FIVE · THE FLOW · 380M',
                 text: "Flat ground at the top, roughly the size of a dance floor, which nobody planned and everybody accepts. Jack unclips the controller before his pack is off. Ingrid sets the speaker on a rock, checks the charge, and counts him in. Whatever this is, it is happening now.",
                 choices: [
@@ -902,7 +747,7 @@
             {
                 n: 'CHAPTER SIX', t: "What's Next",
                 sky: ['#0a0818', '#141230', '#241f42', '#3a2f50'],
-                sun: '#8a9ac0', sunY: 130, fog: 0.2, stars: 1, city: 1, dist: 620, night: true,
+                sun: '#8a9ac0', sunY: 195, fog: 0.2, stars: 1, city: 1, dist: 620, night: true,
                 tag: 'CHAPTER SIX · WHAT\'S NEXT · DESCENT',
                 text: "The light goes and the trail changes character completely. Same path, different mountain. They walk down with one head-torch between them and the speaker running on whatever percentage is left, and the descent takes longer than the climb because neither of them is trying to be anywhere.",
                 choices: [
@@ -999,8 +844,8 @@
             if (ch.stars > 0) {
                 var r = rng(4242);
                 ctx.fillStyle = '#ffffff';
-                for (var i = 0; i < 70; i++) {
-                    var x = r() * W, y = r() * 78, tw = r();
+                for (var i = 0; i < 110; i++) {
+                    var x = r() * W, y = r() * 117, tw = r();
                     var a = ch.stars * (0.35 + tw * 0.65);
                     if (!reduceMotion) a *= 0.72 + 0.28 * Math.sin(S.t * 1.6 + i);
                     ctx.globalAlpha = clamp(a, 0, 1);
@@ -1012,12 +857,12 @@
             // sun / moon
             ctx.fillStyle = ch.sun;
             ctx.globalAlpha = 0.9;
-            var sx = 224, sy = ch.sunY;
-            ctx.fillRect(sx - 6, sy - 2, 13, 5);
-            ctx.fillRect(sx - 4, sy - 5, 9, 11);
-            ctx.fillRect(sx - 2, sy - 6, 5, 13);
+            var sx = 336, sy = ch.sunY;
+            ctx.fillRect(sx - 9, sy - 3, 19, 7);
+            ctx.fillRect(sx - 6, sy - 7, 13, 16);
+            ctx.fillRect(sx - 3, sy - 9, 7, 20);
             ctx.globalAlpha = 0.14;
-            ctx.fillRect(sx - 14, sy - 1, 29, 3);
+            ctx.fillRect(sx - 21, sy - 2, 43, 5);
             ctx.globalAlpha = 1;
         }
 
@@ -1030,26 +875,26 @@
         }
 
         function drawFjord(ch) {
-            var y = 118;
+            var y = 177;
             ctx.fillStyle = '#1b2340';
-            ctx.fillRect(0, y, W, 14);
+            ctx.fillRect(0, y, W, 21);
             ctx.fillStyle = '#243055';
-            ctx.fillRect(0, y, W, 4);
+            ctx.fillRect(0, y, W, 6);
             // golden reflection column under the sun
             ctx.globalAlpha = 0.3;
             ctx.fillStyle = ch.sun;
-            for (var i = 0; i < 7; i++) {
-                var w = 12 - i;
-                var yy = y + 1 + i * 2;
-                var wob = reduceMotion ? 0 : Math.round(Math.sin(S.t * 1.4 + i) * 2);
-                ctx.fillRect(224 - w / 2 + wob, yy, w, 1);
+            for (var i = 0; i < 10; i++) {
+                var w = 18 - i;
+                var yy = y + 2 + i * 2;
+                var wob = reduceMotion ? 0 : Math.round(Math.sin(S.t * 1.4 + i) * 3);
+                ctx.fillRect(336 - w / 2 + wob, yy, w, 2);
             }
             ctx.globalAlpha = 1;
             // city lights along the shore
             if (ch.city > 0) {
                 var r = rng(8899);
-                for (var j = 0; j < 90; j++) {
-                    var cxp = r() * W, cyp = y - 1 - r() * 3;
+                for (var j = 0; j < 140; j++) {
+                    var cxp = r() * W, cyp = y - 1 - r() * 5;
                     ctx.globalAlpha = ch.city * (0.45 + r() * 0.55);
                     ctx.fillStyle = r() > 0.75 ? '#fff0c0' : '#f0c060';
                     ctx.fillRect(cxp | 0, cyp | 0, 1, 1);
@@ -1062,52 +907,52 @@
             ctx.fillStyle = '#2a2119';
             ctx.fillRect(0, GROUND, W, H - GROUND);
             ctx.fillStyle = '#3a2f26';
-            ctx.fillRect(0, GROUND, W, 10);
+            ctx.fillRect(0, GROUND, W, 15);
             ctx.fillStyle = '#4a3d30';
-            ctx.fillRect(0, GROUND, W, 3);
+            ctx.fillRect(0, GROUND, W, 4);
 
             // trail texture — scrolls with camera
             var r = rng(31415);
-            for (var i = 0; i < 150; i++) {
+            for (var i = 0; i < 230; i++) {
                 var bx = r() * LAYW, by = GROUND + 2 + r() * (H - GROUND - 4);
                 var x = ((bx - S.cam * 1.25) % LAYW + LAYW) % LAYW;
                 if (x > W) continue;
                 var tone = r();
                 ctx.fillStyle = tone > 0.72 ? '#5a4a38' : tone > 0.4 ? '#241c15' : '#332a20';
-                ctx.fillRect(x | 0, by | 0, tone > 0.9 ? 3 : 2, tone > 0.9 ? 2 : 1);
+                ctx.fillRect(x | 0, by | 0, tone > 0.9 ? 4 : 3, tone > 0.9 ? 3 : 2);
             }
 
             // heather / flowers in the foreground
             var r2 = rng(2718);
-            for (var k = 0; k < 46; k++) {
-                var bx2 = r2() * LAYW, by2 = GROUND + 6 + r2() * 22;
+            for (var k = 0; k < 70; k++) {
+                var bx2 = r2() * LAYW, by2 = GROUND + 9 + r2() * 33;
                 var x2 = ((bx2 - S.cam * 1.35) % LAYW + LAYW) % LAYW;
                 if (x2 > W) continue;
                 ctx.fillStyle = '#1d2a1c';
-                ctx.fillRect(x2 | 0, by2 | 0, 2, 3);
+                ctx.fillRect(x2 | 0, by2 | 0, 3, 5);
                 if (r2() > 0.72) {
                     ctx.fillStyle = ch.stars > 0.5 ? '#6a5a8a' : '#b078b0';
-                    ctx.fillRect(x2 | 0, (by2 - 1) | 0, 2, 1);
+                    ctx.fillRect(x2 | 0, (by2 - 2) | 0, 3, 2);
                 }
             }
         }
 
         function drawSign() {
             // a trail sign appears once per chapter, drifting past
-            var sx = 300 - (S.dist % CH[S.chapter].dist) * 0.42;
-            if (sx < -30 || sx > W + 10) return;
-            var base = GROUND + 6;
+            var sx = 450 - (S.dist % CH[S.chapter].dist) * 0.62;
+            if (sx < -45 || sx > W + 15) return;
+            var base = GROUND + 9;
             ctx.fillStyle = '#4a3a26';
-            ctx.fillRect(sx | 0, base - 26, 2, 26);
+            ctx.fillRect(sx | 0, base - 39, 3, 39);
             var names = ['FLØYEN', 'ULRIKEN', 'NØKKEN'];
             for (var i = 0; i < 2; i++) {
-                var y = base - 24 + i * 7;
+                var y = base - 36 + i * 11;
                 ctx.fillStyle = '#6b5438';
-                ctx.fillRect((sx + 2) | 0, y, 20, 5);
+                ctx.fillRect((sx + 3) | 0, y, 30, 8);
                 ctx.fillStyle = '#8a6c48';
-                ctx.fillRect((sx + 2) | 0, y, 20, 1);
+                ctx.fillRect((sx + 3) | 0, y, 30, 2);
                 ctx.fillStyle = '#d4a758';
-                for (var c = 0; c < 6; c++) ctx.fillRect((sx + 4 + c * 3) | 0, y + 2, 2, 1);
+                for (var c = 0; c < 6; c++) ctx.fillRect((sx + 6 + c * 4) | 0, y + 3, 3, 2);
             }
             void names;
         }
@@ -1115,12 +960,12 @@
         function drawFog(ch) {
             if (ch.fog <= 0) return;
             for (var i = 0; i < 4; i++) {
-                var y = 104 + i * 9;
-                var off = reduceMotion ? 0 : (S.t * (5 + i * 3)) % (W + 120);
+                var y = 156 + i * 14;
+                var off = reduceMotion ? 0 : (S.t * (7 + i * 4)) % (W + 180);
                 ctx.globalAlpha = ch.fog * (1 - i * 0.16);
                 ctx.fillStyle = '#c8d4e0';
-                ctx.fillRect(-60 + off, y, 90, 2);
-                ctx.fillRect(-200 + off, y + 3, 130, 2);
+                ctx.fillRect(-90 + off, y, 135, 3);
+                ctx.fillRect(-300 + off, y + 5, 195, 3);
             }
             ctx.globalAlpha = 1;
         }
@@ -1129,7 +974,7 @@
             // music notes rising from the speaker when sound is high
             if (S.sound > 30 && !reduceMotion) {
                 if (S.notes.length < 14 && Math.random() < 0.06) {
-                    S.notes.push({ x: 190, y: GROUND - 26, vy: -0.28 - Math.random() * 0.2, a: 1, sw: Math.random() * 6 });
+                    S.notes.push({ x: 178, y: GROUND - 52, vy: -0.28 - Math.random() * 0.2, a: 1, sw: Math.random() * 6 });
                 }
             }
             S.notes.forEach(function (n) {
@@ -1137,29 +982,30 @@
                 var x = n.x + Math.sin(n.y * 0.09) * n.sw;
                 ctx.globalAlpha = clamp(n.a, 0, 1) * 0.85;
                 ctx.fillStyle = '#c9a6f0';
-                ctx.fillRect(x | 0, n.y | 0, 2, 2);
-                ctx.fillRect((x + 1) | 0, (n.y - 3) | 0, 1, 3);
+                ctx.fillRect(x | 0, n.y | 0, 3, 2);
+                ctx.fillRect((x + 2) | 0, (n.y - 4) | 0, 1, 5);
+                ctx.fillRect((x + 3) | 0, (n.y - 4) | 0, 2, 1);
             });
-            S.notes = S.notes.filter(function (n) { return n.a > 0 && n.y > 20; });
+            S.notes = S.notes.filter(function (n) { return n.a > 0 && n.y > 30; });
             ctx.globalAlpha = 1;
 
             // fireflies / embers at night
             if (ch.stars > 0.5 && !reduceMotion) {
                 var r = rng(6161);
-                for (var i = 0; i < 22; i++) {
+                for (var i = 0; i < 32; i++) {
                     var bx = r() * W;
-                    var by = 120 + r() * 50;
+                    var by = 180 + r() * 75;
                     var fl = 0.5 + 0.5 * Math.sin(S.t * 2 + i * 1.7);
                     ctx.globalAlpha = fl * 0.7;
                     ctx.fillStyle = '#f0d080';
-                    ctx.fillRect((bx + Math.sin(S.t * 0.6 + i) * 6) | 0, (by + Math.cos(S.t * 0.5 + i) * 3) | 0, 1, 1);
+                    ctx.fillRect((bx + Math.sin(S.t * 0.6 + i) * 9) | 0, (by + Math.cos(S.t * 0.5 + i) * 5) | 0, 2, 2);
                 }
                 ctx.globalAlpha = 1;
             }
         }
 
         function drawVignette() {
-            var g = ctx.createRadialGradient(W / 2, H / 2, 60, W / 2, H / 2, 190);
+            var g = ctx.createRadialGradient(W / 2, H / 2, 90, W / 2, H / 2, 285);
             g.addColorStop(0, 'rgba(0,0,0,0)');
             g.addColorStop(1, 'rgba(0,0,0,0.5)');
             ctx.fillStyle = g;
@@ -1172,49 +1018,49 @@
             return 'idle';
         }
 
-        var ACT = 1.6;                    // hero scale for the two characters
-        var ACT_W = SW * ACT, ACT_H = SH * ACT;
-        var ACT_CX = 24 * ACT;            // sprite's own centre, scaled
-        var ACT_FEET = FEET * ACT;
+        var ACT = 0.82;                       // sprites are ~96px tall natively
+        var ACT_W = SPRW * ACT, ACT_H = SPRH * ACT;
 
         function actor(img, centerX, footY) {
-            ctx.drawImage(img, 0, 0, SW, SH,
-                Math.round(centerX - ACT_CX), Math.round(footY - ACT_FEET),
-                ACT_W, ACT_H);
+            if (!img) return;
+            ctx.drawImage(img, 0, 0, SPRW, SPRH,
+                Math.round(centerX - ACT_W / 2), Math.round(footY - ACT_H),
+                Math.round(ACT_W), Math.round(ACT_H));
+        }
+
+        function frameOf(who, anim, offset) {
+            var set = SPR[who][anim] && SPR[who][anim].length ? SPR[who][anim] : SPR[who].idle;
+            var fps = S.walking ? 8 : 3.5;
+            return set[Math.floor(S.t * fps + offset) % set.length];
         }
 
         function drawActors() {
-            var jAnim = pickAnim('jack'), iAnim = pickAnim('ingrid');
-            var jFrames = SPR.jack[jAnim], iFrames = SPR.ingrid[iAnim];
-            var fps = S.walking ? 9 : 4;
-            var jf = Math.floor(S.t * fps) % jFrames.length;
-            var f2 = Math.floor(S.t * fps + 1.5) % iFrames.length;
-
-            var jcx = 124, icx = 202, footY = GROUND + 5;
+            // Jack leads the way, Ingrid follows with the speaker
+            var jcx = 292, icx = 196, footY = GROUND + 8;
 
             ctx.globalAlpha = 0.3;
             ctx.fillStyle = '#000000';
-            ctx.fillRect(jcx - 13, footY - 2, 26, 3);
-            ctx.fillRect(icx - 13, footY - 2, 26, 3);
+            ctx.fillRect(jcx - 16, footY - 3, 32, 4);
+            ctx.fillRect(icx - 16, footY - 3, 32, 4);
             ctx.globalAlpha = 1;
 
-            actor(jFrames[jf], jcx, footY);
-            actor(iFrames[f2], icx, footY);
+            actor(frameOf('ingrid', pickAnim('ingrid'), 1.5), icx, footY);
+            actor(frameOf('jack',   pickAnim('jack'),   0),   jcx, footY);
         }
 
         // Low scrub drawn in front of the hikers' feet for depth
         function drawForeground(ch) {
             var r = rng(9091);
-            for (var i = 0; i < 70; i++) {
+            for (var i = 0; i < 105; i++) {
                 var bx = r() * LAYW;
                 var x = ((bx - S.cam * 1.5) % LAYW + LAYW) % LAYW;
                 if (x > W) continue;
-                var h = 4 + r() * 7;
-                var y = H - h - r() * 6;
+                var h = 6 + r() * 11;
+                var y = H - h - r() * 9;
                 ctx.fillStyle = ch.stars > 0.5 ? '#0b120d' : '#111c12';
-                ctx.fillRect(x | 0, y | 0, 2, h | 0);
-                ctx.fillRect((x - 2) | 0, (y + 2) | 0, 2, h - 2);
-                ctx.fillRect((x + 2) | 0, (y + 3) | 0, 2, h - 3);
+                ctx.fillRect(x | 0, y | 0, 3, h | 0);
+                ctx.fillRect((x - 3) | 0, (y + 3) | 0, 3, h - 3);
+                ctx.fillRect((x + 3) | 0, (y + 4) | 0, 3, h - 4);
             }
         }
 
@@ -1288,6 +1134,7 @@
             el('rmChapN').textContent = ch.n;
             el('rmChapT').textContent = ch.t;
             el('rmTags').classList.add('rm-hide');
+            cv.parentNode.classList.remove('tall');
             show('rmChap');
             el('rmChap').style.opacity = '1';
             S.phase = 'card';
@@ -1321,6 +1168,7 @@
                 b.addEventListener('click', function () { resolve(c); });
                 box.appendChild(b);
             });
+            cv.parentNode.classList.add('tall');
             show('rmStory');
         }
 
@@ -1349,6 +1197,7 @@
             S.phase = 'end';
             hide('rmRoute');
             el('rmTags').classList.add('rm-hide');
+            cv.parentNode.classList.add('tall');
             var top = Math.max(S.sound, S.conn, S.energy);
             var title, body;
 
@@ -1430,7 +1279,7 @@
             S.t += dt;
 
             if (S.phase === 'walk' && S.walking) {
-                var speed = 42 * (0.78 + (S.energy / 100) * 0.44);
+                var speed = 76 * (0.82 + (S.energy / 100) * 0.36);
                 S.dist += speed * dt;
                 S.cam += speed * dt;
                 if (S.dist >= CH[S.chapter].dist && !S.fired) {
@@ -1446,7 +1295,6 @@
 
         /* ---------- boot ---------- */
         var steps = [
-            ['DRAWING SPRITES…', buildSprites],
             ['BUILDING THE MOUNTAINS…', buildLayers],
             ['LOADING THE TRAIL…', function () {
                 tintCache('far', '#3d3358'); tintCache('far', '#191634');
@@ -1458,7 +1306,7 @@
         ];
 
         var si = 0;
-        function boot() {
+        function runSteps() {
             if (si >= steps.length) {
                 el('rmLoadFill').style.width = '100%';
                 setTimeout(function () {
@@ -1474,8 +1322,17 @@
             setTimeout(function () {
                 try { steps[si][1](); } catch (err) { /* keep booting */ }
                 si++;
-                boot();
+                runSteps();
             }, 130);
+        }
+
+        function boot() {
+            el('rmLoadTxt').textContent = 'LOADING SPRITES…';
+            el('rmLoadFill').style.width = '12%';
+            loadSprites(function (anyFailed) {
+                if (anyFailed) stubSprites();
+                runSteps();
+            });
         }
 
         boot();
