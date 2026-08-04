@@ -1,0 +1,74 @@
+{
+  "project": "Trail Mix",
+  "status": "reference extraction pack",
+  "important_note": "These are crops extracted from one generated concept sheet. They are useful as Claude Code visual references and prototyping assets, but they are not guaranteed to be frame-perfect production sprites. Regenerate consistent transparent frames before final release.",
+  "characters": {
+    "ingrid": {
+      "role": "Sound Carrier",
+      "files": [
+        "ingrid/idle_strip.png",
+        "ingrid/walk_right_strip.png",
+        "ingrid/walk_left_strip.png",
+        "ingrid/uphill_right_strip.png",
+        "ingrid/uphill_left_strip.png",
+        "ingrid/listen_rest_strip.png",
+        "ingrid/looking_out_strip.png",
+        "ingrid/adjust_strap_strip.png",
+        "ingrid/check_speaker_strip.png",
+        "ingrid/feel_the_beat_strip.png",
+        "ingrid/portrait.png",
+        "ingrid/full_body_reference.png"
+      ],
+      "suggested_fps": {
+        "idle": 4,
+        "walk": 8,
+        "uphill": 7,
+        "interaction": 5
+      }
+    },
+    "jack": {
+      "role": "Trail DJ",
+      "files": [
+        "jack/idle_strip.png",
+        "jack/walk_right_strip.png",
+        "jack/walk_left_strip.png",
+        "jack/walk_mix_strip.png",
+        "jack/adjust_control_strip.png",
+        "jack/check_track_strip.png",
+        "jack/signal_lead_strip.png",
+        "jack/portrait.png",
+        "jack/full_body_reference.png"
+      ],
+      "suggested_fps": {
+        "idle": 4,
+        "walk": 8,
+        "mix": 7,
+        "interaction": 5
+      }
+    }
+  },
+  "props": [
+    "props/speaker_backpack.png",
+    "props/dj_controller.png",
+    "props/trail_items.png"
+  ],
+  "ui": [
+    "ui/icons.png",
+    "ui/palette.png"
+  ],
+  "environment": [
+    "environment/forest_trail.png",
+    "environment/rocky_path.png",
+    "environment/fjord_view.png",
+    "environment/city_lights.png",
+    "environment/sunset_sky.png",
+    "environment/night_sky.png",
+    "environment/fog_layer.png",
+    "environment/trees_signs_props.png"
+  ],
+  "rendering": {
+    "css": "image-rendering: pixelated;",
+    "recommended_canvas_scale": "integer scaling only",
+    "background": "transparent where possible"
+  }
+}
