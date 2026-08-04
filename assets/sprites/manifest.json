@@ -1,0 +1,8 @@
+{
+ "ingrid/idle": 4,
+ "ingrid/walk": 6,
+ "ingrid/look": 4,
+ "jack/idle": 4,
+ "jack/walk": 6,
+ "jack/mix": 3
+}
