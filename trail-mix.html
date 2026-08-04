@@ -3,349 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Trail Mix — a short interactive hiking story about carrying a DJ set up a mountain.">
-    <title>Trail Mix: A Hiking Story - Ingrid Ormevik</title>
+    <meta name="description" content="Running in the Mountains Pt. 2 — a pixel-art hiking game about carrying a DJ set up a Bergen mountain. Mount Media.">
+    <title>Running in the Mountains Pt. 2 — Ingrid Ormevik</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Additional styles for this page only */
-        .game-meta {
-            font-size: 0.7em;
-            color: var(--text-lighter);
-            margin-bottom: 3em;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            font-weight: 400;
-        }
+        /* ============================================
+           RUNNING IN THE MOUNTAINS PT.2
+           Self-contained pixel-art narrative hike
+           ============================================ */
 
-        .tagline {
-            font-size: 1.15em;
-            color: var(--text-light);
-            font-style: italic;
-            margin-top: -0.6em;
-            margin-bottom: 1.8em;
-        }
-
-        /* === GAME CARTRIDGE === */
-        .tm {
-            --tm-bg: #0b0b12;
-            --tm-panel: rgba(20, 18, 28, 0.78);
-            --tm-panel-strong: rgba(23, 20, 32, 0.95);
-            --tm-text: #f3efff;
-            --tm-muted: #a79fc2;
-            --tm-soft: #766f8a;
-            --tm-line: rgba(255, 255, 255, 0.12);
-            --tm-purple: #b39dfa;
-            --tm-pink: #f9a8d4;
-            --tm-cyan: #7ee8f9;
-            --tm-green: #4ade9a;
+        .rm {
+            --rm-ink: #0d0a12;
+            --rm-panel: #16121c;
+            --rm-panel-hi: #221a28;
+            --rm-edge: #4a3a2a;
+            --rm-edge-hi: #6b5438;
+            --rm-gold: #d4a758;
+            --rm-cream: #e8dcc0;
+            --rm-dim: #9a8a76;
+            --rm-red: #c74a3c;
+            --rm-green: #6aa84a;
+            --rm-blue: #4a8ac7;
+            --rm-purple: #9a6ac7;
 
             margin: 4em 0;
-            padding: 3px;
-            background: linear-gradient(135deg, var(--tm-purple), var(--tm-pink), var(--tm-cyan));
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+            font-family: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+            color: var(--rm-cream);
+            background: var(--rm-ink);
+            border: 3px solid var(--rm-edge);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, .5);
+            -webkit-user-select: none;
+            user-select: none;
         }
 
-        .tm-inner {
-            background:
-                radial-gradient(circle at 18% 0%, rgba(179, 157, 250, 0.16), transparent 45%),
-                radial-gradient(circle at 85% 100%, rgba(126, 232, 249, 0.1), transparent 45%),
-                var(--tm-bg);
-            color: var(--tm-text);
-            font-family: 'Inter', ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            padding: 46px 40px;
-            min-height: 480px;
-        }
+        .rm * { box-sizing: border-box; }
 
-        .tm h3, .tm h4 {
-            font-family: 'Inter', sans-serif;
-            color: var(--tm-text);
-            letter-spacing: -0.01em;
-        }
-
-        .tm p {
-            color: var(--tm-muted);
-            line-height: 1.7;
-            font-size: 0.95em;
-        }
-
-        .tm-eyebrow {
-            margin: 0 0 10px;
-            color: var(--tm-cyan);
-            font-size: 0.68rem;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-        }
-
-        .tm-screen { display: none; }
-        .tm-screen.active { display: block; }
-
-        /* Title screen */
-        .tm-title h3 {
-            font-size: 2.4em;
-            font-weight: 700;
-            margin-bottom: 0.2em;
-            background: linear-gradient(90deg, var(--tm-purple), var(--tm-pink), var(--tm-cyan));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .tm-title p {
-            max-width: 480px;
-        }
-
-        /* Buttons */
-        .tm-btn {
-            appearance: none;
-            border: 1px solid var(--tm-line);
-            background: var(--tm-panel);
-            color: var(--tm-text);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.78rem;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            padding: 14px 22px;
-            cursor: pointer;
-            transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
-        }
-
-        .tm-btn:hover {
-            border-color: var(--tm-purple);
-            transform: translateY(-2px);
-        }
-
-        .tm-btn.tm-primary {
-            background: linear-gradient(90deg, var(--tm-purple), var(--tm-pink));
-            border-color: transparent;
-            color: #14121c;
-            font-weight: 600;
-        }
-
-        .tm-actions {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-            margin-top: 2em;
-        }
-
-        /* Character select */
-        .tm-cast {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 2em 0;
-        }
-
-        .tm-card {
-            border: 1px solid var(--tm-line);
-            background: var(--tm-panel);
-            padding: 24px;
-        }
-
-        .tm-card-head {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 14px;
-        }
-
-        .hiker-icon {
-            width: 52px;
-            height: 78px;
-            flex-shrink: 0;
-        }
-
-        .hiker-icon .hiker-body { fill: var(--tm-text); }
-        .tm-card.jack .hiker-icon .hiker-gear { fill: var(--tm-cyan); }
-        .tm-card.ingrid .hiker-icon .hiker-gear { fill: var(--tm-pink); }
-        .hiker-icon .hiker-wave { stroke: var(--tm-pink); fill: none; stroke-width: 2; opacity: 0.8; }
-        .hiker-icon .hiker-headphone { stroke: var(--tm-cyan); fill: none; stroke-width: 2.5; }
-
-        .tm-card h4 {
-            margin: 0 0 2px;
-            font-size: 1.3em;
-            font-weight: 700;
-        }
-
-        .tm-card .tm-role {
-            margin: 0;
-            font-size: 0.66rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--tm-cyan);
-        }
-
-        .tm-card p.tm-desc {
-            font-size: 0.88em;
-            margin-bottom: 1.2em;
-        }
-
-        .tm-stat {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.7rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: var(--tm-soft);
-            margin-bottom: 6px;
-        }
-
-        .tm-dots span {
-            display: inline-block;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--tm-line);
-            margin-left: 3px;
-        }
-
-        .tm-dots span.filled { background: var(--tm-purple); }
-
-        /* Trail progress */
-        .tm-trail {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2.2em;
+        /* --- Stage --- */
+        .rm-stage {
             position: relative;
-        }
-
-        .tm-trail::before {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            height: 1px;
-            background: var(--tm-line);
-        }
-
-        .tm-stop {
-            position: relative;
-            text-align: center;
-            flex: 1;
-        }
-
-        .tm-stop .tm-dot {
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-            background: var(--tm-bg);
-            border: 2px solid var(--tm-soft);
-            margin: 0 auto 8px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .tm-stop.done .tm-dot { background: var(--tm-purple); border-color: var(--tm-purple); }
-        .tm-stop.current .tm-dot { background: var(--tm-pink); border-color: var(--tm-pink); box-shadow: 0 0 0 4px rgba(249, 168, 212, 0.2); }
-
-        .tm-stop-label {
-            font-size: 0.58rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--tm-soft);
-        }
-
-        .tm-stop.current .tm-stop-label { color: var(--tm-text); }
-
-        /* Meters */
-        .tm-meters {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 2em 0;
-        }
-
-        .tm-meter-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.66rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--tm-soft);
-            margin-bottom: 6px;
-        }
-
-        .tm-meter-track {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.08);
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            container-type: size;
+            background: #0a0812;
             overflow: hidden;
         }
 
-        .tm-meter-fill {
-            height: 100%;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .vibe-fill { background: linear-gradient(90deg, var(--tm-purple), var(--tm-pink)); }
-        .legs-fill { background: linear-gradient(90deg, var(--tm-cyan), var(--tm-green)); }
-
-        /* Story */
-        .tm-story h3 {
-            font-size: 1.05rem;
-            font-weight: 600;
-            margin: 0 0 1em;
-        }
-
-        .tm-story-body p {
-            color: var(--tm-text);
-            opacity: 0.92;
-            font-size: 1em;
-        }
-
-        .tm-flavor {
-            border-left: 2px solid var(--tm-purple);
-            padding-left: 16px;
-            margin: 1.5em 0;
-            font-style: italic;
-            display: none;
-        }
-
-        .tm-flavor.show { display: block; }
-
-        .tm-choices {
-            display: grid;
-            gap: 12px;
-            margin-top: 1.6em;
-        }
-
-        .tm-choices.hidden { display: none; }
-
-        .tm-choice {
-            text-align: left;
+        .rm-stage canvas {
+            position: absolute;
+            inset: 0;
             width: 100%;
-            border: 1px solid var(--tm-line);
-            background: var(--tm-panel);
-            color: var(--tm-text);
-            font-family: 'Inter', sans-serif;
-            padding: 16px 18px;
+            height: 100%;
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            object-fit: contain;
+            object-position: center top;
+        }
+
+        /* --- Overlays --- */
+        .rm-layer {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            pointer-events: none;
+        }
+
+        .rm-layer.on { pointer-events: auto; }
+        .rm-hide { display: none !important; }
+
+        /* Loading */
+        .rm-load {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            background: var(--rm-ink);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .rm-load-bar {
+            width: min(260px, 70%);
+            height: 10px;
+            border: 2px solid var(--rm-edge);
+            background: #0a0812;
+            padding: 2px;
+        }
+
+        .rm-load-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--rm-gold);
+            transition: width .18s linear;
+        }
+
+        /* Title */
+        .rm-title {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4% 6%;
+            gap: 2px;
+            background: linear-gradient(180deg, rgba(10, 8, 18, .5), rgba(10, 8, 18, .86));
+        }
+
+        .rm-brand {
+            font-size: clamp(.5rem, 1.5vw, .72rem);
+            letter-spacing: .34em;
+            color: var(--rm-gold);
+            margin-bottom: .4em;
+        }
+
+        .rm-title h3 {
+            margin: 0;
+            font-family: inherit;
+            color: var(--rm-cream);
+            font-size: clamp(1.1rem, 4.4vw, 2.5rem);
+            line-height: 1.08;
+            letter-spacing: .04em;
+            text-shadow: 0 3px 0 #6b2d1f, 0 4px 10px rgba(0, 0, 0, .6);
+        }
+
+        .rm-sub {
+            margin: .9em 0 0;
+            font-size: clamp(.52rem, 1.5vw, .74rem);
+            letter-spacing: .16em;
+            color: var(--rm-dim);
+            border: 1px solid var(--rm-edge);
+            padding: .5em 1em;
+        }
+
+        /* Story card */
+        .rm-story {
+            flex-direction: column;
+            padding: 3%;
+            overflow-y: auto;
+            background: linear-gradient(180deg, transparent 12%, rgba(10, 8, 18, .82) 62%);
+        }
+
+        .rm-card {
+            border: 2px solid var(--rm-edge);
+            background: rgba(22, 18, 28, .95);
+            padding: clamp(9px, 3.1cqmin, 18px);
+            max-width: 780px;
+            width: 100%;
+            max-height: 78cqh;
+            overflow-y: auto;
+            margin: auto auto 0;
+            flex: none;
+        }
+
+        .rm-chapter-tag {
+            color: var(--rm-gold);
+            font-size: clamp(8px, 2.8cqmin, 12px);
+            letter-spacing: .2em;
+            margin-bottom: .7em;
+        }
+
+        .rm-text {
+            font-size: clamp(10px, 3.3cqmin, 14px);
+            line-height: 1.6;
+            color: var(--rm-cream);
+            margin: 0;
+            min-height: 3.4em;
+        }
+
+        .rm-choices {
+            display: grid;
+            gap: 7px;
+            margin-top: clamp(10px, 1.8vw, 16px);
+        }
+
+        .rm-btn {
+            font-family: inherit;
+            font-size: clamp(9px, 3cqmin, 13px);
+            line-height: 1.45;
+            text-align: left;
+            color: var(--rm-cream);
+            background: var(--rm-panel-hi);
+            border: 2px solid var(--rm-edge);
+            padding: .62em .9em;
             cursor: pointer;
-            font-size: 0.88em;
-            line-height: 1.5;
-            transition: border-color 0.25s ease, background 0.25s ease;
+            transition: background .12s, border-color .12s, transform .12s;
         }
 
-        .tm-choice:hover {
-            border-color: var(--tm-pink);
-            background: rgba(249, 168, 212, 0.06);
+        .rm-btn:hover,
+        .rm-btn:focus-visible {
+            background: #322538;
+            border-color: var(--rm-gold);
+            transform: translateX(3px);
+            outline: none;
         }
 
-        .tm-continue { display: none; }
-        .tm-continue.show { display: inline-block; }
-
-        /* Ending */
-        .tm-ending h3 {
-            font-size: 1.6em;
+        .rm-btn.rm-go {
+            text-align: center;
+            color: var(--rm-ink);
+            background: var(--rm-gold);
+            border-color: var(--rm-gold);
+            letter-spacing: .16em;
             font-weight: 700;
-            margin-bottom: 0.6em;
         }
 
-        @media (max-width: 640px) {
-            .tm-inner { padding: 30px 22px; }
-            .tm-cast { grid-template-columns: 1fr; }
-            .tm-meters { grid-template-columns: 1fr; }
-            .tm-stop-label { display: none; }
+        .rm-btn.rm-go:hover { background: #f0c06a; transform: translateY(-2px); }
+
+        /* Chapter interstitial */
+        .rm-chapcard {
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 8, 18, .9);
+            flex-direction: column;
+            gap: .5em;
+            text-align: center;
+            padding: 20px;
+            transition: opacity .5s ease;
+        }
+
+        .rm-chapcard .n {
+            color: var(--rm-gold);
+            font-size: clamp(.55rem, 1.6vw, .8rem);
+            letter-spacing: .3em;
+        }
+
+        .rm-chapcard .t {
+            font-size: clamp(1rem, 3.6vw, 2rem);
+            letter-spacing: .06em;
+            color: var(--rm-cream);
+        }
+
+        /* HUD */
+        .rm-hud {
+            display: flex;
+            align-items: center;
+            gap: clamp(6px, 1.4vw, 16px);
+            flex-wrap: wrap;
+            padding: clamp(7px, 1.3vw, 12px) clamp(8px, 1.6vw, 16px);
+            border-top: 3px solid var(--rm-edge);
+            background: var(--rm-panel);
+        }
+
+        .rm-stat { display: flex; align-items: center; gap: 6px; }
+
+        .rm-stat-ico { width: 14px; height: 14px; flex: none; }
+
+        .rm-pips { display: flex; gap: 2px; }
+
+        .rm-pips i {
+            width: clamp(4px, .85vw, 7px);
+            height: clamp(9px, 1.5vw, 13px);
+            background: #2c2434;
+            display: block;
+        }
+
+        .rm-pips i.f { background: var(--pip, var(--rm-gold)); }
+
+        .rm-stat-lab {
+            font-size: clamp(.42rem, 1.05vw, .58rem);
+            letter-spacing: .12em;
+            color: var(--rm-dim);
+        }
+
+        .rm-spacer { flex: 1 1 auto; }
+
+        .rm-icobtn {
+            font-family: inherit;
+            font-size: clamp(.44rem, 1.1vw, .6rem);
+            letter-spacing: .1em;
+            color: var(--rm-dim);
+            background: var(--rm-panel-hi);
+            border: 2px solid var(--rm-edge);
+            padding: .55em .8em;
+            cursor: pointer;
+        }
+
+        .rm-icobtn:hover { color: var(--rm-cream); border-color: var(--rm-gold); }
+        .rm-icobtn[aria-pressed="true"] { color: var(--rm-gold); border-color: var(--rm-gold); }
+
+        /* Floating name tags */
+        .rm-tags { position: absolute; inset: 0; pointer-events: none; }
+
+        .rm-tag {
+            position: absolute;
+            top: 38%;
+            transform: translateX(-50%);
+            font-size: clamp(.42rem, 1.15vw, .6rem);
+            letter-spacing: .14em;
+            color: var(--rm-gold);
+            background: rgba(10, 8, 18, .8);
+            border: 1px solid var(--rm-edge);
+            padding: .28em .6em;
+            white-space: nowrap;
+        }
+
+        .rm-tag b {
+            position: absolute;
+            left: 50%;
+            bottom: -5px;
+            margin-left: -4px;
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 4px solid var(--rm-edge);
+        }
+
+        /* Walk prompt */
+        .rm-prompt {
+            position: absolute;
+            left: 50%;
+            bottom: 3%;
+            transform: translateX(-50%);
+            font-size: clamp(.5rem, 1.4vw, .68rem);
+            letter-spacing: .18em;
+            color: var(--rm-cream);
+            background: rgba(10, 8, 18, .78);
+            border: 2px solid var(--rm-edge);
+            padding: .5em 1em;
+            white-space: nowrap;
+            animation: rmPulse 1.9s ease-in-out infinite;
+        }
+
+        @keyframes rmPulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+        /* Route progress */
+        .rm-route {
+            position: absolute;
+            top: 4%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(10, 8, 18, .68);
+            border: 2px solid var(--rm-edge);
+            padding: .4em .7em;
+        }
+
+        .rm-route i {
+            width: 7px;
+            height: 7px;
+            background: #2c2434;
+            display: block;
+        }
+
+        .rm-route i.d { background: var(--rm-gold); }
+        .rm-route i.c { background: var(--rm-cream); box-shadow: 0 0 0 2px rgba(212, 167, 88, .35); }
+
+        .rm-alt {
+            font-size: clamp(.42rem, 1.05vw, .56rem);
+            letter-spacing: .1em;
+            color: var(--rm-dim);
+            margin-left: 5px;
+        }
+
+        .rm-cap {
+            padding: clamp(8px, 1.4vw, 13px) clamp(9px, 1.6vw, 16px);
+            border-top: 2px solid #2a2230;
+            background: #100d16;
+            font-size: clamp(.44rem, 1.1vw, .58rem);
+            letter-spacing: .14em;
+            color: #6b5f52;
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 620px) {
+            .rm-stage { aspect-ratio: 4 / 5; }
+            .rm-title, .rm-chapcard { justify-content: flex-start; padding-top: 12%; }
+            .rm-stat-lab { display: none; }
+            .rm-cap { justify-content: center; text-align: center; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rm-prompt { animation: none; opacity: .9; }
+            .rm-btn { transition: none; }
+        }
+
+        .tagline {
+            font-size: 1.1em;
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: -.6em;
+            margin-bottom: 1.6em;
+        }
+
+        .game-meta {
+            font-size: .7em;
+            color: var(--text-lighter);
+            margin-bottom: 3em;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: .08em;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -362,124 +412,86 @@
 
     <main>
         <article>
-            <h2>Trail Mix</h2>
-            <p class="tagline">A Hiking Story</p>
-            <span class="game-meta">Interactive Fiction | Two Characters, One Trail | 2026</span>
+            <h2>Running in the Mountains Pt. 2</h2>
+            <p class="tagline">A guided journey through sound &amp; landscape</p>
+            <span class="game-meta">Mount Media | Pixel-Art Narrative Hike | Bergen, 2026</span>
 
-            <p>This one didn't start as a project. It started as an actual hike — Jack a few steps ahead with a DJ controller he insisted on carrying up a mountain, me a few steps behind with a speaker strapped to my pack like an oversized snail shell. Somewhere around the second switchback it became obvious this was happening at the top whether the trail agreed to it or not.</p>
+            <p>This started as an actual hike. Jack a few steps ahead with a DJ controller he insisted on carrying up a mountain, me behind him with a speaker strapped to my pack like an oversized snail shell. Somewhere around the second switchback it became obvious this was happening at the top whether the trail agreed to it or not.</p>
 
-            <p>So I turned us into characters. Not as a metaphor for anything — just because it was a good story, and because turning a hike into something playable felt like the most honest way to keep it.</p>
+            <p>So I turned us into characters. Jack is the Trail DJ — he drops the soundtrack and reads the path the way he reads a room. I'm the Sound Carrier — I walk behind, carry the vibe, and keep the battery percentage in my head at all times.</p>
 
-            <p>Trail Mix is short: five stops on the way up, a choice at each one, and a summit set waiting at the end. Nothing you pick can go wrong — every path gets you to the top. The only thing that changes is what kind of set is waiting there for you.</p>
+            <p>Six chapters, from the car park to the dark walk down. Hold to walk. The mountain does the rest.</p>
 
-            <div class="tm">
-                <div class="tm-inner">
+            <div class="rm">
+                <div class="rm-stage">
+                    <canvas id="rmCanvas" width="320" height="180" role="img"
+                            aria-label="Pixel-art scene of two hikers walking a Bergen mountain trail at sunset, one carrying a DJ controller, one carrying a speaker backpack."></canvas>
 
-                    <!-- SCREEN 1: TITLE -->
-                    <div class="tm-screen tm-title active" data-screen="title">
-                        <p class="tm-eyebrow">Trail Mix</p>
-                        <h3>A hike becomes a set.</h3>
-                        <p>Two hikers. One speaker. One controller. A trail that goes up until it doesn't anymore. Make five small calls along the way and see what's playing when you get there.</p>
-                        <div class="tm-actions">
-                            <button class="tm-btn tm-primary" id="tmToCast">Meet the Hikers →</button>
+                    <div class="rm-route rm-hide" id="rmRoute" aria-hidden="true"></div>
+                    <div class="rm-tags rm-hide" id="rmTags" aria-hidden="true">
+                        <span class="rm-tag" style="left:38.75%">JACK<b></b></span>
+                        <span class="rm-tag" style="left:63.1%">INGRID<b></b></span>
+                    </div>
+                    <div class="rm-prompt rm-hide" id="rmPrompt">HOLD → OR TAP TO WALK</div>
+
+                    <!-- Loading -->
+                    <div class="rm-layer rm-load on" id="rmLoad">
+                        <div class="rm-brand">MOUNT MEDIA</div>
+                        <div class="rm-load-bar"><div class="rm-load-fill" id="rmLoadFill"></div></div>
+                        <div class="rm-stat-lab" id="rmLoadTxt">DRAWING SPRITES…</div>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="rm-layer rm-title rm-hide" id="rmTitle">
+                        <div class="rm-brand">MOUNT MEDIA PRESENTS</div>
+                        <h3>RUNNING IN THE<br>MOUNTAINS PT. 2</h3>
+                        <p class="rm-sub">A GUIDED JOURNEY THROUGH SOUND &amp; LANDSCAPE</p>
+                        <div class="rm-choices" style="margin-top:1.4em;min-width:min(280px,80%)">
+                            <button class="rm-btn rm-go" id="rmStart">BEGIN THE JOURNEY →</button>
                         </div>
                     </div>
 
-                    <!-- SCREEN 2: CHARACTER SELECT -->
-                    <div class="tm-screen tm-cast-screen" data-screen="cast">
-                        <p class="tm-eyebrow">Who's on the trail</p>
-                        <h3 style="margin-bottom:1em;">The cast</h3>
-
-                        <div class="tm-cast">
-                            <div class="tm-card jack">
-                                <div class="tm-card-head">
-                                    <svg class="hiker-icon" viewBox="0 0 60 90" aria-hidden="true">
-                                        <path class="hiker-headphone" d="M20,14 Q30,0 40,14"/>
-                                        <circle class="hiker-headphone" cx="20" cy="15" r="2.5" fill="currentColor"/>
-                                        <circle class="hiker-headphone" cx="40" cy="15" r="2.5" fill="currentColor"/>
-                                        <circle class="hiker-body" cx="30" cy="14" r="8"/>
-                                        <rect class="hiker-body" x="22" y="24" width="16" height="26" rx="6"/>
-                                        <rect class="hiker-body" x="17" y="50" width="8" height="24" rx="4" transform="rotate(-8 21 50)"/>
-                                        <rect class="hiker-body" x="35" y="50" width="8" height="24" rx="4" transform="rotate(10 39 50)"/>
-                                        <rect class="hiker-gear" x="4" y="28" width="20" height="13" rx="2"/>
-                                        <circle class="hiker-body" cx="10" cy="34.5" r="3" fill="var(--tm-bg)"/>
-                                        <circle class="hiker-body" cx="18" cy="34.5" r="3" fill="var(--tm-bg)"/>
-                                    </svg>
-                                    <div>
-                                        <h4>Jack</h4>
-                                        <p class="tm-role">The Selector</p>
-                                    </div>
-                                </div>
-                                <p class="tm-desc">Walks in front. Carries the controller. Reads a trail the way he reads a room — by testing what happens if he speeds up.</p>
-                                <div class="tm-stat"><span>Pace</span><span class="tm-dots"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span></span></div>
-                                <div class="tm-stat"><span>Track sense</span><span class="tm-dots"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span></span></div>
-                            </div>
-
-                            <div class="tm-card ingrid">
-                                <div class="tm-card-head">
-                                    <svg class="hiker-icon" viewBox="0 0 60 90" aria-hidden="true">
-                                        <path class="hiker-wave" d="M46,26 Q52,32 46,38"/>
-                                        <path class="hiker-wave" d="M50,22 Q59,32 50,42"/>
-                                        <circle class="hiker-body" cx="30" cy="14" r="8"/>
-                                        <rect class="hiker-body" x="22" y="24" width="16" height="26" rx="6"/>
-                                        <rect class="hiker-body" x="17" y="50" width="8" height="24" rx="4" transform="rotate(-8 21 50)"/>
-                                        <rect class="hiker-body" x="35" y="50" width="8" height="24" rx="4" transform="rotate(10 39 50)"/>
-                                        <rect class="hiker-gear" x="36" y="24" width="14" height="20" rx="2"/>
-                                        <circle class="hiker-body" cx="43" cy="34" r="3.5" fill="var(--tm-bg)"/>
-                                    </svg>
-                                    <div>
-                                        <h4>Ingrid</h4>
-                                        <p class="tm-role">The Amplifier</p>
-                                    </div>
-                                </div>
-                                <p class="tm-desc">Walks behind. Carries the speaker. Sets the pace nobody notices is being set, and keeps the battery percentage in her head at all times.</p>
-                                <div class="tm-stat"><span>Stamina</span><span class="tm-dots"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span></span></span></div>
-                                <div class="tm-stat"><span>Vibe curation</span><span class="tm-dots"><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span><span class="filled"></span></span></div>
-                            </div>
-                        </div>
-
-                        <div class="tm-actions">
-                            <button class="tm-btn tm-primary" id="tmToGame">Begin the Climb →</button>
-                        </div>
+                    <!-- Chapter card -->
+                    <div class="rm-layer rm-chapcard rm-hide" id="rmChap" aria-hidden="true">
+                        <div class="n" id="rmChapN"></div>
+                        <div class="t" id="rmChapT"></div>
                     </div>
 
-                    <!-- SCREEN 3: GAME -->
-                    <div class="tm-screen tm-story" data-screen="game">
-                        <div class="tm-trail" id="tmTrail"></div>
-
-                        <div class="tm-meters">
-                            <div>
-                                <div class="tm-meter-label"><span>Vibe</span><span id="tmVibeVal">50</span></div>
-                                <div class="tm-meter-track"><div class="tm-meter-fill vibe-fill" id="tmVibeFill" style="width:50%"></div></div>
-                            </div>
-                            <div>
-                                <div class="tm-meter-label"><span>Legs</span><span id="tmLegsVal">50</span></div>
-                                <div class="tm-meter-track"><div class="tm-meter-fill legs-fill" id="tmLegsFill" style="width:50%"></div></div>
-                            </div>
-                        </div>
-
-                        <h3 id="tmLocation"></h3>
-                        <div class="tm-story-body" id="tmBody"></div>
-
-                        <div class="tm-flavor" id="tmFlavor"></div>
-
-                        <div class="tm-choices" id="tmChoices"></div>
-
-                        <div class="tm-actions">
-                            <button class="tm-btn tm-primary tm-continue" id="tmContinue">Continue →</button>
+                    <!-- Story -->
+                    <div class="rm-layer rm-story rm-hide" id="rmStory">
+                        <div class="rm-card">
+                            <div class="rm-chapter-tag" id="rmStoryTag"></div>
+                            <p class="rm-text" id="rmStoryTxt"></p>
+                            <div class="rm-choices" id="rmStoryChoices"></div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- SCREEN 4: ENDING -->
-                    <div class="tm-screen tm-ending" data-screen="ending">
-                        <p class="tm-eyebrow">Summit</p>
-                        <h3 id="tmEndingTitle"></h3>
-                        <div id="tmEndingBody"></div>
-                        <div class="tm-actions">
-                            <button class="tm-btn tm-primary" id="tmRestart">Hike It Again</button>
-                        </div>
+                <!-- HUD -->
+                <div class="rm-hud">
+                    <div class="rm-stat">
+                        <svg class="rm-stat-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="#c74a3c" d="M8 14 2 8.5C.5 7 .5 4.5 2.5 3.2 4 2.2 6 2.6 7 4l1 1.2L9 4c1-1.4 3-1.8 4.5-.8 2 1.3 2 3.8.5 5.3z"/></svg>
+                        <span class="rm-stat-lab">ENERGY</span>
+                        <span class="rm-pips" id="rmPipEnergy" style="--pip:#c74a3c"></span>
                     </div>
+                    <div class="rm-stat">
+                        <svg class="rm-stat-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="#9a6ac7" stroke-width="1.6" d="M3 10V8a5 5 0 0 1 10 0v2"/><rect x="1.5" y="9.5" width="3.5" height="5" fill="#9a6ac7"/><rect x="11" y="9.5" width="3.5" height="5" fill="#9a6ac7"/></svg>
+                        <span class="rm-stat-lab">SOUND</span>
+                        <span class="rm-pips" id="rmPipSound" style="--pip:#9a6ac7"></span>
+                    </div>
+                    <div class="rm-stat">
+                        <svg class="rm-stat-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="#6aa84a" d="M8 14 2 8.5C.5 7 .5 4.5 2.5 3.2 4 2.2 6 2.6 7 4l1 1.2L9 4c1-1.4 3-1.8 4.5-.8 2 1.3 2 3.8.5 5.3z"/></svg>
+                        <span class="rm-stat-lab">CONNECTION</span>
+                        <span class="rm-pips" id="rmPipConn" style="--pip:#6aa84a"></span>
+                    </div>
+                    <div class="rm-spacer"></div>
+                    <button class="rm-icobtn" id="rmSound" aria-pressed="false">♪ SOUND OFF</button>
+                    <button class="rm-icobtn" id="rmReset">↺ RESTART</button>
+                </div>
 
+                <div class="rm-cap">
+                    <span>FLØYEN TRAIL · BERGEN, NORWAY</span>
+                    <span>WE DON'T CHASE SUMMITS. WE CHASE MOMENTS THAT STAY.</span>
                 </div>
             </div>
 
@@ -494,214 +506,980 @@
 
     <script src="script.js"></script>
     <script>
-        (function () {
-            var scenes = [
-                {
-                    location: 'Trailhead',
-                    body: [
-                        "The car park empties out onto gravel, then dirt, then nothing but trail. Jack's already testing something under his breath before they've gone twenty meters — a rhythm with no source yet, just a sound he's carrying in his head until the gear can carry it for real. Ingrid adjusts the speaker on her pack until it stops swinging and settles into the walk."
-                    ],
-                    choices: [
-                        {
-                            label: "Start with a warm-up track for the walk in",
-                            vibe: 15, legs: -5,
-                            flavor: "Jack thumbs open a playlist and something low and easy comes out of the speaker at Ingrid's back. It's less a DJ set than a soundtrack, but it turns the first kilometer into something with a pulse."
-                        },
-                        {
-                            label: "Save the batteries, save your legs",
-                            vibe: 0, legs: 15,
-                            flavor: "They keep it quiet instead, boots on gravel the only rhythm for now. Ingrid does the math on battery percentage and elevation gain and decides they'll thank her later."
-                        }
-                    ]
-                },
-                {
-                    location: 'Switchbacks',
-                    body: [
-                        "The trail folds back on itself, steep enough that conversation turns into breathing. Jack's still in front, setting a pace that's really a dare. Ingrid can feel the speaker's weight change on the incline, like it's arguing with gravity too."
-                    ],
-                    choices: [
-                        {
-                            label: "Race him to the next bend",
-                            vibe: 15, legs: -15,
-                            flavor: "She catches him at the bend, barely, and he laughs like he let her — he didn't. It costs both of them a little air, but the trail feels shorter when it's a competition."
-                        },
-                        {
-                            label: "Let him win, save your legs",
-                            vibe: 5, legs: 15,
-                            flavor: "She lets the gap open on purpose. Jack turns around at the top of the switchback, hands on hips, pretending he wasn't waiting. The extra rest is worth the bruised ego — his, not hers."
-                        }
-                    ]
-                },
-                {
-                    location: 'Treeline',
-                    body: [
-                        "The trees give up first, then the trail widens into open rock, and suddenly there's a horizon instead of branches. It's the kind of view that makes people stop talking for a second. Jack doesn't stop talking. He's already narrating what the drop is going to sound like from up here."
-                    ],
-                    choices: [
-                        {
-                            label: "Test the speaker early, just for the view",
-                            vibe: 10, legs: -10,
-                            flavor: "One track, low volume, into all that open air. It's not a set yet, just a preview — proof the gear survived the climb and the idea wasn't crazy."
-                        },
-                        {
-                            label: "Save it. Keep walking.",
-                            vibe: 0, legs: 10,
-                            flavor: "They keep the speaker off and let the wind do the soundtrack instead. Ingrid clocks the extra battery still sitting in reserve and feels smug about it later."
-                        }
-                    ]
-                },
-                {
-                    location: 'The Ridge',
-                    body: [
-                        "The path narrows to a spine of rock with air on both sides. Jack calls a track name back over his shoulder without breaking stride — half question, half command — and Ingrid's already scrolling before he finishes the sentence."
-                    ],
-                    choices: [
-                        {
-                            label: "Queue it before he finishes asking",
-                            vibe: 20, legs: -5,
-                            flavor: "She has it loaded before the words land. He doesn't even turn around, just lifts a hand back at her, and the whole exchange takes four seconds and says something about how long they've been doing this."
-                        },
-                        {
-                            label: "Make him wait, keep walking",
-                            vibe: 5, legs: 15,
-                            flavor: "She makes him wait for it, just to hear him ask twice. The ridge is no place to be distracted anyway, and arriving upright matters more than arriving fast."
-                        }
-                    ]
-                },
-                {
-                    location: 'Final Push',
-                    body: [
-                        "One last rise, steeper than it looks from below, the kind that lies to you about how close the top is. Somewhere behind them the valley has gone small. Somewhere ahead, if the map isn't lying too, there's flat ground."
-                    ],
-                    choices: [
-                        {
-                            label: "Sprint it",
-                            vibe: 15, legs: -15,
-                            flavor: "They sprint the last of it, which is less sprinting than aggressive stumbling, and arrive too out of breath to speak — which somehow feels like the correct way to arrive."
-                        },
-                        {
-                            label: "Steady pace, arrive together",
-                            vibe: 10, legs: 15,
-                            flavor: "They keep it steady instead, matching steps without discussing it, and crest the ridge at exactly the same moment — which either of them would deny planning."
-                        }
-                    ]
+    (function () {
+        'use strict';
+
+        var cv = document.getElementById('rmCanvas');
+        if (!cv || !cv.getContext) return;
+        var ctx = cv.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+
+        var W = 320, H = 180, GROUND = 148;
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ---------- helpers ---------- */
+        function el(id) { return document.getElementById(id); }
+        function make(w, h) {
+            var c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            var g = c.getContext('2d');
+            g.imageSmoothingEnabled = false;
+            return { c: c, g: g };
+        }
+        function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+        function lerp(a, b, t) { return a + (b - a) * t; }
+        function rng(seed) {
+            var s = seed >>> 0;
+            return function () {
+                s ^= s << 13; s >>>= 0;
+                s ^= s >> 17;
+                s ^= s << 5; s >>>= 0;
+                return s / 4294967296;
+            };
+        }
+
+        /* ---------- palette ---------- */
+        var P = {
+            jSkin: '#d9a077', jSkinS: '#b07c56',
+            jHair: '#a29e9a', jHairS: '#767270', jHairH: '#bebab6',
+            jShirt: '#d9a02c', jShirtS: '#a8761a',
+            jShort: '#a8804a', jShortS: '#7e5f36',
+            iSkin: '#e0a880', iSkinS: '#b8825c',
+            iHair: '#8f4a24', iHairS: '#682f14', iHairH: '#a85c2e',
+            dark: '#1c1820', dark2: '#282430', darkS: '#12101a',
+            sock: '#e8e0d0', shoe: '#f2eee2', shoeS: '#bdb6a6',
+            gear: '#2a2a34', gearS: '#1a1a22', gearHi: '#4e4e5c',
+            gold: '#d4a758', cream: '#e8dcc0'
+        };
+
+        /* ---------- character sprites ---------- */
+        var SW = 46, SH = 46, FEET = 42;
+
+        function px(g, x, y, w, h, c) { g.fillStyle = c; g.fillRect(x | 0, y | 0, w | 0, h | 0); }
+
+        // Draw a leg: hip at (hx,hy), swing = horizontal foot offset
+        // ---- limb primitives -------------------------------------------------
+        // hip at (hx,hy): thigh 3, shin 3, sock 1, shoe 2  => 9 tall total
+        function leg(g, hx, hy, swing, skin, skinS, sockC, shoeC, shoeSC) {
+            var kx = hx + Math.round(swing * 0.45);
+            var fx = hx + Math.round(swing);
+            var lift = swing > 2.5 ? 1 : 0;
+            px(g, hx, hy, 4, 3, skin);
+            px(g, hx, hy, 1, 3, skinS);
+            px(g, kx, hy + 3, 4, 3, skin);
+            px(g, kx, hy + 3, 1, 3, skinS);
+            px(g, kx + 1, hy + 3, 2, 1, skinS);
+            px(g, fx, hy + 6, 4, 1, sockC);
+            px(g, fx - 1, hy + 7 - lift, 6, 2, shoeC);
+            px(g, fx - 1, hy + 9 - lift, 6, 1, shoeSC);
+        }
+
+        // shoulder at (sx,sy): upper 5, forearm 4, hand 2 => 11 tall
+        function arm(g, sx, sy, swing, sleeve, sleeveS, skin) {
+            var ex = sx + Math.round(swing * 0.55);
+            px(g, sx, sy, 3, 5, sleeve);
+            px(g, sx, sy, 1, 5, sleeveS);
+            px(g, ex, sy + 5, 3, 4, skin);
+            px(g, ex, sy + 9, 3, 2, skin);
+        }
+
+        function speakerPack(g, x, y) {
+            px(g, x, y, 8, 16, P.gear);
+            px(g, x, y, 1, 16, P.gearHi);
+            px(g, x + 7, y, 1, 16, P.gearS);
+            for (var i = 0; i < 3; i++) {
+                var cy = y + 2 + i * 5;
+                px(g, x + 2, cy, 5, 4, P.gearS);
+                px(g, x + 3, cy + 1, 3, 2, '#0b0b10');
+                px(g, x + 3, cy + 1, 1, 1, '#4a4a58');
+            }
+        }
+
+        function djRig(g, x, y) {
+            px(g, x, y, 17, 6, P.gear);
+            px(g, x, y, 17, 1, P.gearHi);
+            px(g, x, y + 5, 17, 1, P.gearS);
+            px(g, x + 1, y + 1, 4, 4, '#484856');
+            px(g, x + 2, y + 2, 2, 2, '#14141a');
+            px(g, x + 12, y + 1, 4, 4, '#484856');
+            px(g, x + 13, y + 2, 2, 2, '#14141a');
+            px(g, x + 6, y + 1, 5, 1, P.jShirt);
+            px(g, x + 6, y + 3, 5, 1, '#6aa84a');
+        }
+
+        // ---- INGRID · sound carrier -----------------------------------------
+        // Anatomy (offsets from T = top of head, feet land at T+42):
+        //   cap 0-4 | face 3-13 | neck 12-14 | torso 14-27 | shorts 27-33 | legs 33-42
+        function drawIngrid(g, anim, f, tot) {
+            var ph = (f / tot) * Math.PI * 2;
+            var walking = anim === 'walk';
+            var sw = walking ? Math.sin(ph) * 4 : 0;
+            var bob = walking ? (Math.cos(ph) > 0 ? 0 : 1)
+                     : (anim === 'idle' && f % 4 >= 2 ? 1 : 0);
+            var cx = 24, T = FEET - 42 + bob;
+
+            // speaker worn high on her back, tucked against the torso
+            speakerPack(g, cx - 11, T + 14);
+            px(g, cx - 5, T + 15, 2, 2, '#3a3a46');
+            px(g, cx - 5, T + 22, 2, 2, '#3a3a46');
+
+            // back arm + back leg
+            arm(g, cx - 6, T + 15, -sw, P.dark, P.darkS, P.iSkin);
+            leg(g, cx - 4, T + 33, -sw, P.iSkin, P.iSkinS, P.sock, P.shoe, P.shoeS);
+
+            // long wavy hair down her back — narrow, tucked behind the shoulder
+            px(g, cx - 7, T + 5, 4, 17, P.iHairS);
+            px(g, cx - 6, T + 6, 3, 15, P.iHair);
+            px(g, cx - 7, T + 13, 2, 4, P.iHairH);
+            px(g, cx - 6, T + 20, 3, 4, P.iHairS);
+            px(g, cx - 5, T + 22, 2, 3, P.iHair);
+
+            // torso — loose black button-up
+            px(g, cx - 5, T + 14, 10, 13, P.dark2);
+            px(g, cx - 5, T + 14, 2, 13, P.dark);
+            px(g, cx + 3, T + 14, 2, 13, P.dark);
+            px(g, cx, T + 15, 1, 11, P.darkS);
+            px(g, cx - 1, T + 18, 1, 1, '#4a4658');
+            px(g, cx - 1, T + 22, 1, 1, '#4a4658');
+            // knee-length black shorts
+            px(g, cx - 5, T + 27, 10, 6, P.dark);
+            px(g, cx, T + 28, 1, 5, P.darkS);
+
+            // front leg
+            leg(g, cx + 1, T + 33, sw, P.iSkin, P.iSkinS, P.sock, P.shoe, P.shoeS);
+
+            // neck + bandana
+            px(g, cx - 1, T + 12, 3, 2, P.iSkinS);
+            px(g, cx - 3, T + 13, 7, 2, '#14141a');
+
+            // face
+            px(g, cx - 4, T + 3, 8, 10, P.iSkin);
+            px(g, cx - 4, T + 3, 2, 10, P.iSkinS);
+            px(g, cx + 3, T + 9, 1, 2, P.iSkinS);
+            // oversized black sunglasses
+            px(g, cx - 2, T + 6, 7, 3, '#08080d');
+            px(g, cx + 3, T + 6, 1, 1, '#50506a');
+            // septum + lips
+            px(g, cx + 2, T + 10, 1, 1, P.iSkinS);
+            px(g, cx, T + 11, 2, 1, '#a86a58');
+            // black cap
+            px(g, cx - 5, T, 10, 4, '#14141a');
+            px(g, cx - 5, T, 10, 1, '#26262f');
+            px(g, cx + 4, T + 3, 6, 2, '#14141a');
+            px(g, cx + 4, T + 3, 6, 1, '#1e1e28');
+            // fringe escaping the cap
+            px(g, cx - 5, T + 4, 2, 8, P.iHair);
+
+            // front arm
+            var fa = anim === 'look' ? -3 : sw;
+            arm(g, cx + 4, T + 15, fa, P.dark, P.darkS, P.iSkin);
+        }
+
+        // ---- JACK · trail DJ -------------------------------------------------
+        function drawJack(g, anim, f, tot) {
+            var ph = (f / tot) * Math.PI * 2;
+            var walking = anim === 'walk';
+            var sw = walking ? Math.sin(ph) * 4 : 0;
+            var bob = walking ? (Math.cos(ph) > 0 ? 0 : 1)
+                     : (anim === 'idle' && f % 4 >= 2 ? 1 : 0);
+            var cx = 24, T = FEET - 42 + bob;
+
+            // daypack on his back
+            px(g, cx - 10, T + 16, 6, 11, '#6b5438');
+            px(g, cx - 10, T + 16, 1, 11, '#8a6c48');
+            px(g, cx - 9, T + 19, 4, 3, '#4a3a26');
+
+            // back arm + back leg
+            arm(g, cx - 6, T + 15, -sw * 0.35, P.jShirt, P.jShirtS, P.jSkin);
+            leg(g, cx - 4, T + 33, -sw, P.jSkin, P.jSkinS, P.sock, P.shoe, P.shoeS);
+
+            // torso — mustard tee
+            px(g, cx - 5, T + 14, 10, 13, P.jShirt);
+            px(g, cx - 5, T + 14, 2, 13, P.jShirtS);
+            px(g, cx + 3, T + 14, 2, 13, P.jShirtS);
+            px(g, cx - 5, T + 14, 10, 1, '#e8b448');
+            // small crest badge
+            px(g, cx, T + 17, 3, 3, '#ded6c4');
+            px(g, cx + 1, T + 18, 1, 1, '#b8402f');
+            // harness straps for the rig
+            px(g, cx - 3, T + 14, 1, 13, '#38383f');
+            px(g, cx + 2, T + 14, 1, 13, '#38383f');
+            // tan shorts
+            px(g, cx - 5, T + 27, 10, 6, P.jShort);
+            px(g, cx, T + 28, 1, 5, P.jShortS);
+
+            // front leg
+            leg(g, cx + 1, T + 33, sw, P.jSkin, P.jSkinS, P.sock, P.shoe, P.shoeS);
+
+            // neck
+            px(g, cx - 1, T + 12, 3, 2, P.jSkinS);
+
+            // face
+            px(g, cx - 4, T + 3, 8, 10, P.jSkin);
+            px(g, cx - 4, T + 3, 2, 10, P.jSkinS);
+            px(g, cx + 3, T + 9, 1, 2, P.jSkinS);
+            // short grey hair — a cap of hair, not a hat
+            px(g, cx - 4, T + 1, 8, 2, P.jHair);
+            px(g, cx - 3, T, 6, 1, P.jHair);
+            px(g, cx - 4, T + 1, 3, 1, P.jHairH);
+            px(g, cx - 4, T + 3, 1, 3, P.jHairS);
+            px(g, cx + 3, T + 3, 1, 2, P.jHairS);
+            // rectangular glasses — frames, with lens showing through
+            px(g, cx - 3, T + 6, 3, 1, '#1a1a20');
+            px(g, cx - 3, T + 8, 3, 1, '#1a1a20');
+            px(g, cx - 3, T + 6, 1, 3, '#1a1a20');
+            px(g, cx - 1, T + 6, 1, 3, '#1a1a20');
+            px(g, cx + 1, T + 6, 3, 1, '#1a1a20');
+            px(g, cx + 1, T + 8, 3, 1, '#1a1a20');
+            px(g, cx + 1, T + 6, 1, 3, '#1a1a20');
+            px(g, cx + 3, T + 6, 1, 3, '#1a1a20');
+            px(g, cx, T + 7, 1, 1, '#1a1a20');
+            px(g, cx - 2, T + 7, 1, 1, '#9ec4e4');
+            px(g, cx + 2, T + 7, 1, 1, '#9ec4e4');
+            // mouth
+            px(g, cx, T + 11, 2, 1, '#a8705a');
+
+            // the rig, held at waist height, both hands on it
+            var jog = anim === 'mix' ? (f % 2) : 0;
+            var rigX = cx + 1, rigY = T + 21 + jog;
+            djRig(g, rigX, rigY);
+            // front arm reaching down onto the rig
+            px(g, cx + 4, T + 15, 3, 5, P.jShirt);
+            px(g, cx + 4, T + 15, 1, 5, P.jShirtS);
+            px(g, cx + 5, T + 19, 3, 3, P.jSkin);
+            var hx = anim === 'mix' ? rigX + 10 + (f % 3) : rigX + 11;
+            px(g, hx, rigY - 1, 3, 2, P.jSkin);
+            px(g, rigX + 1, rigY - 1, 3, 2, P.jSkin);
+        }
+
+        /* ---------- sprite bank ---------- */
+        var SPR = { ingrid: {}, jack: {} };
+        var ANIMS = [['idle', 4], ['walk', 8], ['look', 4], ['mix', 4]];
+
+        function buildSprites() {
+            ANIMS.forEach(function (a) {
+                var name = a[0], n = a[1];
+                SPR.ingrid[name] = [];
+                SPR.jack[name] = [];
+                for (var f = 0; f < n; f++) {
+                    var i1 = make(SW, SH); drawIngrid(i1.g, name, f, n); SPR.ingrid[name].push(i1.c);
+                    var j1 = make(SW, SH); drawJack(j1.g, name, f, n); SPR.jack[name].push(j1.c);
                 }
-            ];
+            });
+        }
 
-            var stopLabels = scenes.map(function (s) { return s.location; }).concat(['Summit']);
+        /* ---------- scenery layers ---------- */
+        var LAYW = 640;
 
-            var state = { index: 0, vibe: 50, legs: 50, awaitingContinue: false };
+        function mountainLayer(seed, colr, baseY, amp, step) {
+            var m = make(LAYW, H);
+            var r = rng(seed), g = m.g;
+            g.fillStyle = colr;
+            g.beginPath();
+            g.moveTo(0, H);
+            var y = baseY;
+            var pts = [];
+            for (var x = 0; x <= LAYW; x += step) {
+                y = baseY + (r() - 0.5) * amp;
+                pts.push([x, y]);
+            }
+            pts[pts.length - 1][1] = pts[0][1];
+            pts.forEach(function (p) { g.lineTo(p[0], p[1]); });
+            g.lineTo(LAYW, H);
+            g.closePath();
+            g.fill();
+            return m.c;
+        }
 
-            var $ = function (id) { return document.getElementById(id); };
-            var screens = document.querySelectorAll('.tm-screen');
+        function treeLayer(seed, colr, colr2, baseY, minH, maxH, gap) {
+            var m = make(LAYW, H);
+            var r = rng(seed), g = m.g;
+            for (var x = -10; x < LAYW + 10; x += gap * (0.6 + r() * 0.8)) {
+                var th = minH + r() * (maxH - minH);
+                var tw = th * 0.36;
+                var bx = Math.round(x), by = Math.round(baseY);
+                g.fillStyle = r() > 0.5 ? colr : colr2;
+                // conifer: stacked triangles, pixel-snapped
+                var layers = 4;
+                for (var L = 0; L < layers; L++) {
+                    var lw = Math.round(tw * (1 - L * 0.18));
+                    var ly = Math.round(by - (th / layers) * (L + 1));
+                    var lh = Math.round(th / layers) + 2;
+                    for (var s = 0; s < lh; s += 2) {
+                        var wr = Math.round(lw * (s / lh));
+                        g.fillRect(bx - wr, ly + s, wr * 2 + 1, 2);
+                    }
+                }
+                g.fillRect(bx - 1, by - 4, 2, 5);
+            }
+            return m.c;
+        }
 
-            function showScreen(name) {
-                screens.forEach(function (el) {
-                    el.classList.toggle('active', el.getAttribute('data-screen') === name);
-                });
+        var LAYERS = {};
+        function buildLayers() {
+            LAYERS.far = mountainLayer(1337, '#000000', 96, 26, 40);
+            LAYERS.mid = mountainLayer(90210, '#000000', 112, 18, 28);
+            LAYERS.treeFar = treeLayer(555, '#000000', '#000000', 132, 16, 30, 13);
+            LAYERS.treeNear = treeLayer(777, '#000000', '#000000', 156, 26, 48, 22);
+        }
+
+        function tinted(src, colr) {
+            var m = make(LAYW, H);
+            m.g.drawImage(src, 0, 0);
+            m.g.globalCompositeOperation = 'source-in';
+            m.g.fillStyle = colr;
+            m.g.fillRect(0, 0, LAYW, H);
+            return m.c;
+        }
+
+        /* ---------- chapters ---------- */
+        var CH = [
+            {
+                n: 'CHAPTER ONE', t: 'The Call',
+                sky: ['#38537d', '#7b8fb2', '#c0a898', '#e8bf8c'],
+                sun: '#ffe6b8', sunY: 112, fog: 0.06, stars: 0.08, city: 0.5, dist: 520,
+                tag: 'CHAPTER ONE · THE CALL · 40M',
+                text: "The car park empties out onto gravel, then dirt, then nothing but trail. Jack has the controller out of the van before the doors are properly shut, testing a rhythm under his breath with no source for it yet. Ingrid swings the speaker onto her back and adjusts it until it stops arguing with her spine.",
+                choices: [
+                    { label: '▸ Start the first track here, at the bottom', e: -5, s: 18, c: 10,
+                      out: "The first track goes on at the trailhead, low and unhurried. It turns the walk-in from an approach into a beginning. Two people out for a hike become two people arriving somewhere." },
+                    { label: '▸ Save the batteries. Walk in quiet.', e: 15, s: 0, c: 5,
+                      out: "They walk in quiet instead, boots on gravel doing the percussion. Ingrid runs the numbers — battery against elevation — and decides the mountain can wait for it." }
+                ]
+            },
+            {
+                n: 'CHAPTER TWO', t: 'Into the Woods',
+                sky: ['#3f74a0', '#7ba3c6', '#accbd0', '#d6d3ae'],
+                sun: '#fff4d0', sunY: 96, fog: 0.14, stars: 0, city: 0.25, dist: 560,
+                tag: 'CHAPTER TWO · INTO THE WOODS · 120M',
+                text: "The city noise thins out and then stops mattering. Trees close over the path. Somewhere behind them Bergen is still doing whatever Bergen does on a Saturday, and it has stopped being relevant. The walking has found its own tempo and neither of them set it.",
+                choices: [
+                    { label: '▸ Let the forest set the tempo', e: 10, s: 8, c: 15,
+                      out: "Jack drops the BPM to meet the pace of the walking instead of pushing against it. The set stops being something they're carrying and starts being something they're inside." },
+                    { label: '▸ Push the pace, push the beat', e: -12, s: 18, c: 8,
+                      out: "He pushes it faster and the walking follows, because it always does. They cover ground quickly and arrive at the next bend breathing harder than the trail strictly required." }
+                ]
+            },
+            {
+                n: 'CHAPTER THREE', t: 'The Climb',
+                sky: ['#2e2a4a', '#6b4a63', '#b06a52', '#d99a5e'],
+                sun: '#f2b45e', sunY: 88, fog: 0.18, stars: 0.1, city: 0.2, dist: 600,
+                tag: 'CHAPTER THREE · THE CLIMB · 220M',
+                text: "The trail folds back on itself and stops pretending to be friendly. Conversation turns into breathing. Jack is still in front, setting a pace that is really a dare, and the speaker on Ingrid's back has started to feel like it is negotiating with gravity on its own terms.",
+                choices: [
+                    { label: '▸ Take the speaker off her back for a stretch', e: 18, s: -5, c: 20,
+                      out: "Jack takes the speaker for the worst of the switchbacks without being asked and without making it a thing. Ingrid carries the controller. Neither of them mentions it at the top, which is how she knows it counted." },
+                    { label: '▸ Race him to the next bend', e: -18, s: 15, c: 12,
+                      out: "She catches him at the bend, barely, and he laughs like he let her — he didn't. It costs both of them air they'll want back later, and the trail gets shorter when it's a competition." }
+                ]
+            },
+            {
+                n: 'CHAPTER FOUR', t: 'The View',
+                sky: ['#241a3a', '#7a2f4a', '#d15a34', '#f09048'],
+                sun: '#ffd27a', sunY: 96, fog: 0.1, stars: 0.35, city: 1, dist: 560,
+                tag: 'CHAPTER FOUR · THE VIEW · 320M',
+                text: "The trees give up first. The path opens onto bare rock and suddenly there is a horizon where the branches were — the fjord going gold, the city laid out below in a grid of small lights, seven mountains holding all of it. It is the kind of view that makes people stop talking. Jack does not stop talking. He is already describing what the drop is going to sound like from up here.",
+                choices: [
+                    { label: '▸ Play for the landscape', e: -8, s: 22, c: 12,
+                      out: "They turn the speaker outward, toward the fjord, and play to the valley instead of to each other. It is an absurd thing to do and it works completely. The mountains listen back." },
+                    { label: '▸ Sit down. Say nothing. Watch it.', e: 15, s: 0, c: 22,
+                      out: "They sit on their packs with the gear switched off and watch the light go from gold to red to gone. Twenty minutes of nothing. It ends up being the part either of them describes first, afterwards." }
+                ]
+            },
+            {
+                n: 'CHAPTER FIVE', t: 'The Flow',
+                sky: ['#150f2a', '#3a1f45', '#7a2f45', '#b04a3a'],
+                sun: '#e8703a', sunY: 116, fog: 0.14, stars: 0.6, city: 1, dist: 580, night: true,
+                tag: 'CHAPTER FIVE · THE FLOW · 380M',
+                text: "Flat ground at the top, roughly the size of a dance floor, which nobody planned and everybody accepts. Jack unclips the controller before his pack is off. Ingrid sets the speaker on a rock, checks the charge, and counts him in. Whatever this is, it is happening now.",
+                choices: [
+                    { label: '▸ Go all in. Full set, full volume.', e: -15, s: 25, c: 15,
+                      out: "They give it everything. Two strangers coming down off Ulriken stop, look at each other, and stay for three tracks. For about forty minutes there is a functioning party at 380 metres, run entirely off one speaker and two people who never rehearsed this." },
+                    { label: '▸ Keep it low. Keep it theirs.', e: 10, s: 8, c: 25,
+                      out: "They keep it quiet and close, volume low enough that the wind stays in the mix. Nobody stops. Nobody needs to. It stays a thing that belonged to the two of them and the rock they were standing on." }
+                ]
+            },
+            {
+                n: 'CHAPTER SIX', t: "What's Next",
+                sky: ['#0a0818', '#141230', '#241f42', '#3a2f50'],
+                sun: '#8a9ac0', sunY: 130, fog: 0.2, stars: 1, city: 1, dist: 620, night: true,
+                tag: 'CHAPTER SIX · WHAT\'S NEXT · DESCENT',
+                text: "The light goes and the trail changes character completely. Same path, different mountain. They walk down with one head-torch between them and the speaker running on whatever percentage is left, and the descent takes longer than the climb because neither of them is trying to be anywhere.",
+                choices: [
+                    { label: '▸ Run the last track all the way down', e: -8, s: 18, c: 18,
+                      out: "One long track for the whole descent, no transitions, letting it run past where a set would normally end. The trail unspools in front of the torchlight and the track outlasts the mountain." },
+                    { label: '▸ Switch it off. Walk down in the dark.', e: 12, s: -5, c: 22,
+                      out: "Ingrid kills the speaker at the treeline and the silence comes in like weather. Boots, breathing, water somewhere off the path. They walk the rest of it without a soundtrack, which turns out to be its own kind of set." }
+                ]
+            }
+        ];
+
+        /* ---------- state ---------- */
+        var S = {
+            phase: 'load', chapter: 0, dist: 0, walking: false,
+            energy: 60, sound: 40, conn: 50,
+            t: 0, cam: 0, fired: false, sparks: [], notes: []
+        };
+
+        /* ---------- audio ---------- */
+        var AU = { on: false, ctxA: null, timer: null, step: 0 };
+
+        function audioInit() {
+            if (AU.ctxA) return true;
+            try {
+                var AC = window.AudioContext || window.webkitAudioContext;
+                if (!AC) return false;
+                AU.ctxA = new AC();
+                AU.master = AU.ctxA.createGain();
+                AU.master.gain.value = 0.16;
+                AU.master.connect(AU.ctxA.destination);
+                return true;
+            } catch (e) { return false; }
+        }
+
+        function blip(type, freq, dur, vol, wave) {
+            if (!AU.ctxA) return;
+            var t0 = AU.ctxA.currentTime;
+            var o = AU.ctxA.createOscillator();
+            var g = AU.ctxA.createGain();
+            o.type = wave || 'sine';
+            o.frequency.setValueAtTime(freq, t0);
+            if (type === 'kick') o.frequency.exponentialRampToValueAtTime(freq * 0.25, t0 + dur);
+            g.gain.setValueAtTime(vol, t0);
+            g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+            o.connect(g); g.connect(AU.master);
+            o.start(t0); o.stop(t0 + dur + 0.02);
+        }
+
+        var SCALE = [220, 261.63, 293.66, 349.23, 392, 440, 523.25];
+
+        function audioStep() {
+            if (!AU.on || !AU.ctxA) return;
+            var s = AU.step % 16;
+            var lvl = S.sound / 100;
+            if (s % 4 === 0) blip('kick', 110, 0.22, 0.9, 'sine');
+            if (lvl > 0.25 && s % 4 === 2) blip('hat', 7200, 0.03, 0.14, 'square');
+            if (lvl > 0.45 && s % 8 === 6) blip('bass', 82.41, 0.3, 0.5, 'triangle');
+            if (lvl > 0.6 && (s === 0 || s === 6 || s === 11)) {
+                var note = SCALE[(AU.step / 3 | 0) % SCALE.length];
+                blip('lead', note, 0.35, 0.1, 'triangle');
+            }
+            AU.step++;
+        }
+
+        function audioToggle() {
+            var btn = el('rmSound');
+            if (!AU.on) {
+                if (!audioInit()) { btn.textContent = '♪ NO AUDIO'; btn.disabled = true; return; }
+                if (AU.ctxA.state === 'suspended') AU.ctxA.resume();
+                AU.on = true;
+                AU.step = 0;
+                AU.timer = setInterval(audioStep, 125);
+                btn.textContent = '♪ SOUND ON';
+                btn.setAttribute('aria-pressed', 'true');
+            } else {
+                AU.on = false;
+                clearInterval(AU.timer);
+                btn.textContent = '♪ SOUND OFF';
+                btn.setAttribute('aria-pressed', 'false');
+            }
+        }
+
+        /* ---------- rendering ---------- */
+        function drawSky(ch, prog) {
+            var g = ctx.createLinearGradient(0, 0, 0, GROUND);
+            g.addColorStop(0, ch.sky[0]);
+            g.addColorStop(0.42, ch.sky[1]);
+            g.addColorStop(0.76, ch.sky[2]);
+            g.addColorStop(1, ch.sky[3]);
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, GROUND + 4);
+
+            // stars
+            if (ch.stars > 0) {
+                var r = rng(4242);
+                ctx.fillStyle = '#ffffff';
+                for (var i = 0; i < 70; i++) {
+                    var x = r() * W, y = r() * 78, tw = r();
+                    var a = ch.stars * (0.35 + tw * 0.65);
+                    if (!reduceMotion) a *= 0.72 + 0.28 * Math.sin(S.t * 1.6 + i);
+                    ctx.globalAlpha = clamp(a, 0, 1);
+                    ctx.fillRect(x | 0, y | 0, 1, 1);
+                }
+                ctx.globalAlpha = 1;
             }
 
-            function clamp(n) { return Math.max(0, Math.min(100, n)); }
+            // sun / moon
+            ctx.fillStyle = ch.sun;
+            ctx.globalAlpha = 0.9;
+            var sx = 224, sy = ch.sunY;
+            ctx.fillRect(sx - 6, sy - 2, 13, 5);
+            ctx.fillRect(sx - 4, sy - 5, 9, 11);
+            ctx.fillRect(sx - 2, sy - 6, 5, 13);
+            ctx.globalAlpha = 0.14;
+            ctx.fillRect(sx - 14, sy - 1, 29, 3);
+            ctx.globalAlpha = 1;
+        }
 
-            function renderTrail() {
-                var html = '';
-                stopLabels.forEach(function (label, i) {
-                    var cls = i < state.index ? 'done' : (i === state.index ? 'current' : '');
-                    html += '<div class="tm-stop ' + cls + '"><div class="tm-dot"></div><div class="tm-stop-label">' + label + '</div></div>';
-                });
-                $('tmTrail').innerHTML = html;
+        function tile(img, offset, alpha) {
+            ctx.globalAlpha = alpha === undefined ? 1 : alpha;
+            var o = ((offset % LAYW) + LAYW) % LAYW;
+            ctx.drawImage(img, -o, 0);
+            ctx.drawImage(img, LAYW - o, 0);
+            ctx.globalAlpha = 1;
+        }
+
+        function drawFjord(ch) {
+            var y = 118;
+            ctx.fillStyle = '#1b2340';
+            ctx.fillRect(0, y, W, 14);
+            ctx.fillStyle = '#243055';
+            ctx.fillRect(0, y, W, 4);
+            // golden reflection column under the sun
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = ch.sun;
+            for (var i = 0; i < 7; i++) {
+                var w = 12 - i;
+                var yy = y + 1 + i * 2;
+                var wob = reduceMotion ? 0 : Math.round(Math.sin(S.t * 1.4 + i) * 2);
+                ctx.fillRect(224 - w / 2 + wob, yy, w, 1);
+            }
+            ctx.globalAlpha = 1;
+            // city lights along the shore
+            if (ch.city > 0) {
+                var r = rng(8899);
+                for (var j = 0; j < 90; j++) {
+                    var cxp = r() * W, cyp = y - 1 - r() * 3;
+                    ctx.globalAlpha = ch.city * (0.45 + r() * 0.55);
+                    ctx.fillStyle = r() > 0.75 ? '#fff0c0' : '#f0c060';
+                    ctx.fillRect(cxp | 0, cyp | 0, 1, 1);
+                }
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function drawGround(ch) {
+            ctx.fillStyle = '#2a2119';
+            ctx.fillRect(0, GROUND, W, H - GROUND);
+            ctx.fillStyle = '#3a2f26';
+            ctx.fillRect(0, GROUND, W, 10);
+            ctx.fillStyle = '#4a3d30';
+            ctx.fillRect(0, GROUND, W, 3);
+
+            // trail texture — scrolls with camera
+            var r = rng(31415);
+            for (var i = 0; i < 150; i++) {
+                var bx = r() * LAYW, by = GROUND + 2 + r() * (H - GROUND - 4);
+                var x = ((bx - S.cam * 1.25) % LAYW + LAYW) % LAYW;
+                if (x > W) continue;
+                var tone = r();
+                ctx.fillStyle = tone > 0.72 ? '#5a4a38' : tone > 0.4 ? '#241c15' : '#332a20';
+                ctx.fillRect(x | 0, by | 0, tone > 0.9 ? 3 : 2, tone > 0.9 ? 2 : 1);
             }
 
-            function renderMeters() {
-                $('tmVibeVal').textContent = state.vibe;
-                $('tmLegsVal').textContent = state.legs;
-                $('tmVibeFill').style.width = state.vibe + '%';
-                $('tmLegsFill').style.width = state.legs + '%';
-            }
-
-            function renderScene() {
-                var scene = scenes[state.index];
-                renderTrail();
-                renderMeters();
-                $('tmLocation').textContent = scene.location;
-                $('tmBody').innerHTML = scene.body.map(function (p) { return '<p>' + p + '</p>'; }).join('');
-                $('tmFlavor').className = 'tm-flavor';
-                $('tmFlavor').textContent = '';
-                $('tmContinue').className = 'tm-btn tm-primary tm-continue';
-
-                var choicesEl = $('tmChoices');
-                choicesEl.className = 'tm-choices';
-                choicesEl.innerHTML = '';
-                scene.choices.forEach(function (choice, i) {
-                    var btn = document.createElement('button');
-                    btn.className = 'tm-choice';
-                    btn.textContent = choice.label;
-                    btn.addEventListener('click', function () { pickChoice(choice); });
-                    choicesEl.appendChild(btn);
-                });
-            }
-
-            function pickChoice(choice) {
-                state.vibe = clamp(state.vibe + choice.vibe);
-                state.legs = clamp(state.legs + choice.legs);
-                renderMeters();
-
-                $('tmChoices').className = 'tm-choices hidden';
-                var flavorEl = $('tmFlavor');
-                flavorEl.textContent = choice.flavor;
-                flavorEl.className = 'tm-flavor show';
-                $('tmContinue').className = 'tm-btn tm-primary tm-continue show';
-            }
-
-            function nextScene() {
-                state.index += 1;
-                if (state.index >= scenes.length) {
-                    renderEnding();
-                    showScreen('ending');
-                } else {
-                    renderScene();
+            // heather / flowers in the foreground
+            var r2 = rng(2718);
+            for (var k = 0; k < 46; k++) {
+                var bx2 = r2() * LAYW, by2 = GROUND + 6 + r2() * 22;
+                var x2 = ((bx2 - S.cam * 1.35) % LAYW + LAYW) % LAYW;
+                if (x2 > W) continue;
+                ctx.fillStyle = '#1d2a1c';
+                ctx.fillRect(x2 | 0, by2 | 0, 2, 3);
+                if (r2() > 0.72) {
+                    ctx.fillStyle = ch.stars > 0.5 ? '#6a5a8a' : '#b078b0';
+                    ctx.fillRect(x2 | 0, (by2 - 1) | 0, 2, 1);
                 }
             }
+        }
 
-            function renderEnding() {
-                var vibeText, legsText;
+        function drawSign() {
+            // a trail sign appears once per chapter, drifting past
+            var sx = 300 - (S.dist % CH[S.chapter].dist) * 0.42;
+            if (sx < -30 || sx > W + 10) return;
+            var base = GROUND + 6;
+            ctx.fillStyle = '#4a3a26';
+            ctx.fillRect(sx | 0, base - 26, 2, 26);
+            var names = ['FLØYEN', 'ULRIKEN', 'NØKKEN'];
+            for (var i = 0; i < 2; i++) {
+                var y = base - 24 + i * 7;
+                ctx.fillStyle = '#6b5438';
+                ctx.fillRect((sx + 2) | 0, y, 20, 5);
+                ctx.fillStyle = '#8a6c48';
+                ctx.fillRect((sx + 2) | 0, y, 20, 1);
+                ctx.fillStyle = '#d4a758';
+                for (var c = 0; c < 6; c++) ctx.fillRect((sx + 4 + c * 3) | 0, y + 2, 2, 1);
+            }
+            void names;
+        }
 
-                if (state.vibe >= 70) {
-                    vibeText = "The first track drops and it is, unreasonably, exactly right — the kind of track that makes strangers on a mountain nod at each other like they're in on something. The valley below has no idea what it's hosting. For a while there is a real, functioning party at altitude, powered by one speaker, one controller, and two people who apparently rehearsed this without ever rehearsing it.";
-                } else if (state.vibe >= 40) {
-                    vibeText = "The first track drops, a little tentative, finding its feet the way a beat does when it isn't sure yet if the mountain is listening. It doesn't need to be a party. Jack tweaks the EQ, Ingrid turns the volume down half a notch so it drifts instead of demands, and somewhere in the second track it stops being an experiment and starts being exactly the right amount of good.";
-                } else {
-                    vibeText = "The first track drops quiet, more suggestion than set — something soft enough that the wind doesn't fight it. Nobody says it needed to be more than this. Jack lets the track run long. Ingrid sits down next to the speaker instead of standing over it. It is small, and it is theirs, and that turns out to be the whole point.";
+        function drawFog(ch) {
+            if (ch.fog <= 0) return;
+            for (var i = 0; i < 4; i++) {
+                var y = 104 + i * 9;
+                var off = reduceMotion ? 0 : (S.t * (5 + i * 3)) % (W + 120);
+                ctx.globalAlpha = ch.fog * (1 - i * 0.16);
+                ctx.fillStyle = '#c8d4e0';
+                ctx.fillRect(-60 + off, y, 90, 2);
+                ctx.fillRect(-200 + off, y + 3, 130, 2);
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        function drawParticles(ch) {
+            // music notes rising from the speaker when sound is high
+            if (S.sound > 30 && !reduceMotion) {
+                if (S.notes.length < 14 && Math.random() < 0.06) {
+                    S.notes.push({ x: 190, y: GROUND - 26, vy: -0.28 - Math.random() * 0.2, a: 1, sw: Math.random() * 6 });
                 }
+            }
+            S.notes.forEach(function (n) {
+                n.y += n.vy; n.a -= 0.006;
+                var x = n.x + Math.sin(n.y * 0.09) * n.sw;
+                ctx.globalAlpha = clamp(n.a, 0, 1) * 0.85;
+                ctx.fillStyle = '#c9a6f0';
+                ctx.fillRect(x | 0, n.y | 0, 2, 2);
+                ctx.fillRect((x + 1) | 0, (n.y - 3) | 0, 1, 3);
+            });
+            S.notes = S.notes.filter(function (n) { return n.a > 0 && n.y > 20; });
+            ctx.globalAlpha = 1;
 
-                if (state.legs >= 70) {
-                    legsText = "Legs still fresh enough to dance, they do — badly, gloriously, for longer than either of them planned.";
-                } else if (state.legs >= 40) {
-                    legsText = "Legs tired in the good way, they sit close to the speaker and let the set carry the rest of the effort.";
-                } else {
-                    legsText = "Legs finally done arguing with the climb, they don't dance so much as sway, sat on their packs — and that's enough.";
+            // fireflies / embers at night
+            if (ch.stars > 0.5 && !reduceMotion) {
+                var r = rng(6161);
+                for (var i = 0; i < 22; i++) {
+                    var bx = r() * W;
+                    var by = 120 + r() * 50;
+                    var fl = 0.5 + 0.5 * Math.sin(S.t * 2 + i * 1.7);
+                    ctx.globalAlpha = fl * 0.7;
+                    ctx.fillStyle = '#f0d080';
+                    ctx.fillRect((bx + Math.sin(S.t * 0.6 + i) * 6) | 0, (by + Math.cos(S.t * 0.5 + i) * 3) | 0, 1, 1);
                 }
+                ctx.globalAlpha = 1;
+            }
+        }
 
-                $('tmEndingTitle').textContent = state.vibe >= 70 ? 'The set that shouldn\'t have worked, worked.' : (state.vibe >= 40 ? 'A good, small set.' : 'A quiet one, and that\'s fine.');
+        function drawVignette() {
+            var g = ctx.createRadialGradient(W / 2, H / 2, 60, W / 2, H / 2, 190);
+            g.addColorStop(0, 'rgba(0,0,0,0)');
+            g.addColorStop(1, 'rgba(0,0,0,0.5)');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, H);
+        }
 
-                $('tmEndingBody').innerHTML =
-                    '<p>The trail runs out where the rock does. Above the last switchback, the ridge opens into sky, and there — impossibly, wonderfully — is flat ground exactly the size of a dance floor.</p>' +
-                    '<p>Jack unclips the controller before his pack is even off. Ingrid swings the speaker down, checks the charge, and hands him one earbud without a word. He nods. She counts him in.</p>' +
-                    '<p>' + vibeText + '</p>' +
-                    '<p>' + legsText + ' The sun does the rest.</p>';
+        function pickAnim(who) {
+            if (S.phase === 'story') return who === 'jack' ? 'mix' : 'look';
+            if (S.walking) return 'walk';
+            return 'idle';
+        }
+
+        var ACT = 1.6;                    // hero scale for the two characters
+        var ACT_W = SW * ACT, ACT_H = SH * ACT;
+        var ACT_CX = 24 * ACT;            // sprite's own centre, scaled
+        var ACT_FEET = FEET * ACT;
+
+        function actor(img, centerX, footY) {
+            ctx.drawImage(img, 0, 0, SW, SH,
+                Math.round(centerX - ACT_CX), Math.round(footY - ACT_FEET),
+                ACT_W, ACT_H);
+        }
+
+        function drawActors() {
+            var jAnim = pickAnim('jack'), iAnim = pickAnim('ingrid');
+            var jFrames = SPR.jack[jAnim], iFrames = SPR.ingrid[iAnim];
+            var fps = S.walking ? 9 : 4;
+            var jf = Math.floor(S.t * fps) % jFrames.length;
+            var f2 = Math.floor(S.t * fps + 1.5) % iFrames.length;
+
+            var jcx = 124, icx = 202, footY = GROUND + 5;
+
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(jcx - 13, footY - 2, 26, 3);
+            ctx.fillRect(icx - 13, footY - 2, 26, 3);
+            ctx.globalAlpha = 1;
+
+            actor(jFrames[jf], jcx, footY);
+            actor(iFrames[f2], icx, footY);
+        }
+
+        // Low scrub drawn in front of the hikers' feet for depth
+        function drawForeground(ch) {
+            var r = rng(9091);
+            for (var i = 0; i < 70; i++) {
+                var bx = r() * LAYW;
+                var x = ((bx - S.cam * 1.5) % LAYW + LAYW) % LAYW;
+                if (x > W) continue;
+                var h = 4 + r() * 7;
+                var y = H - h - r() * 6;
+                ctx.fillStyle = ch.stars > 0.5 ? '#0b120d' : '#111c12';
+                ctx.fillRect(x | 0, y | 0, 2, h | 0);
+                ctx.fillRect((x - 2) | 0, (y + 2) | 0, 2, h - 2);
+                ctx.fillRect((x + 2) | 0, (y + 3) | 0, 2, h - 3);
+            }
+        }
+
+        function syncNameTags() {
+            var on = S.phase === 'walk' || S.phase === 'story';
+            el('rmTags').classList.toggle('rm-hide', !on);
+        }
+
+        function render() {
+            var ch = CH[S.chapter];
+            ctx.clearRect(0, 0, W, H);
+            drawSky(ch, S.dist / ch.dist);
+
+            tile(tintCache('far', ch.night ? '#191634' : '#3d3358'), -S.cam * 0.08, 0.85);
+            drawFjord(ch);
+            tile(tintCache('mid', '#241d38'), -S.cam * 0.18, 0.95);
+            tile(tintCache('treeFar', '#141d18'), -S.cam * 0.42);
+            drawFog(ch);
+            tile(tintCache('treeNear', '#0d140f'), -S.cam * 0.9);
+            drawGround(ch);
+            drawSign();
+            drawActors();
+            drawForeground(ch);
+            drawParticles(ch);
+            drawVignette();
+        }
+
+        var TINTS = {};
+        function tintCache(key, colr) {
+            var k = key + colr;
+            if (!TINTS[k]) TINTS[k] = tinted(LAYERS[key], colr);
+            return TINTS[k];
+        }
+
+        /* ---------- UI ---------- */
+        function pips(node, val) {
+            var n = 10, on = Math.round(clamp(val, 0, 100) / 10);
+            var html = '';
+            for (var i = 0; i < n; i++) html += '<i class="' + (i < on ? 'f' : '') + '"></i>';
+            node.innerHTML = html;
+        }
+
+        function syncHud() {
+            pips(el('rmPipEnergy'), S.energy);
+            pips(el('rmPipSound'), S.sound);
+            pips(el('rmPipConn'), S.conn);
+        }
+
+        function syncRoute() {
+            var html = '';
+            for (var i = 0; i < CH.length; i++) {
+                html += '<i class="' + (i < S.chapter ? 'd' : i === S.chapter ? 'c' : '') + '"></i>';
+            }
+            var alt = [40, 120, 220, 320, 380, 200][S.chapter];
+            html += '<span class="rm-alt">' + alt + 'M</span>';
+            el('rmRoute').innerHTML = html;
+        }
+
+        function show(id) { el(id).classList.remove('rm-hide'); el(id).classList.add('on'); }
+        function hide(id) { el(id).classList.add('rm-hide'); el(id).classList.remove('on'); }
+
+        /* ---------- flow ---------- */
+        function startChapter(i) {
+            S.chapter = i;
+            S.dist = 0;
+            S.fired = false;
+            S.notes = [];
+            syncRoute();
+
+            var ch = CH[i];
+            el('rmChapN').textContent = ch.n;
+            el('rmChapT').textContent = ch.t;
+            el('rmTags').classList.add('rm-hide');
+            show('rmChap');
+            el('rmChap').style.opacity = '1';
+            S.phase = 'card';
+
+            setTimeout(function () {
+                el('rmChap').style.opacity = '0';
+                setTimeout(function () {
+                    hide('rmChap');
+                    S.phase = 'walk';
+                    show('rmRoute');
+                    syncNameTags();
+                    el('rmPrompt').classList.remove('rm-hide');
+                }, 500);
+            }, 1500);
+        }
+
+        function openStory() {
+            S.phase = 'story';
+            S.walking = false;
+            var ch = CH[S.chapter];
+            el('rmPrompt').classList.add('rm-hide');
+            el('rmStoryTag').textContent = ch.tag;
+            el('rmStoryTxt').textContent = ch.text;
+
+            var box = el('rmStoryChoices');
+            box.innerHTML = '';
+            ch.choices.forEach(function (c) {
+                var b = document.createElement('button');
+                b.className = 'rm-btn';
+                b.textContent = c.label;
+                b.addEventListener('click', function () { resolve(c); });
+                box.appendChild(b);
+            });
+            show('rmStory');
+        }
+
+        function resolve(c) {
+            S.energy = clamp(S.energy + c.e, 0, 100);
+            S.sound = clamp(S.sound + c.s, 0, 100);
+            S.conn = clamp(S.conn + c.c, 0, 100);
+            syncHud();
+
+            el('rmStoryTxt').textContent = c.out;
+            var box = el('rmStoryChoices');
+            box.innerHTML = '';
+            var b = document.createElement('button');
+            b.className = 'rm-btn rm-go';
+            b.textContent = S.chapter < CH.length - 1 ? 'CONTINUE THE JOURNEY →' : 'SEE HOW IT ENDED →';
+            b.addEventListener('click', function () {
+                hide('rmStory');
+                if (S.chapter < CH.length - 1) startChapter(S.chapter + 1);
+                else ending();
+            });
+            box.appendChild(b);
+            b.focus();
+        }
+
+        function ending() {
+            S.phase = 'end';
+            hide('rmRoute');
+            el('rmTags').classList.add('rm-hide');
+            var top = Math.max(S.sound, S.conn, S.energy);
+            var title, body;
+
+            if (S.conn >= top) {
+                title = 'ENDING · THE ONE THAT STAYED';
+                body = "Nobody filmed it. There is no set list and no recording and no proof, which turns out to be the point. What there is: two people who carried heavy things up a mountain for each other without making a thing of it, and a track neither of them will hear again without being briefly, stupidly back on that rock. We don't chase summits. We chase moments that stay.";
+            } else if (S.sound >= top) {
+                title = 'ENDING · THE MOUNTAIN HEARD IT';
+                body = "It should not have worked. One speaker, one controller, 380 metres of Norwegian rock and no permit whatsoever. It worked. For one evening the fjord had a soundtrack and the seven mountains had an opinion about it, and strangers coming down off Ulriken stopped and stayed for three tracks. Move. Listen. Connect. This is Mount Media.";
+            } else {
+                title = 'ENDING · THE LONG WAY DOWN';
+                body = "They got everything down intact — the gear, the legs, most of the battery. It was never really about the set surviving the climb. It was about finding out whether the idea did. It did. Jack is already describing the next one before they reach the car park, and Ingrid is already doing the maths on battery against elevation.";
             }
 
-            function resetGame() {
-                state = { index: 0, vibe: 50, legs: 50, awaitingContinue: false };
-                renderScene();
-                showScreen('game');
+            el('rmStoryTag').textContent = title;
+            el('rmStoryTxt').textContent = body;
+            var box = el('rmStoryChoices');
+            box.innerHTML = '';
+            var b = document.createElement('button');
+            b.className = 'rm-btn rm-go';
+            b.textContent = '↺ WALK IT AGAIN';
+            b.addEventListener('click', reset);
+            box.appendChild(b);
+            show('rmStory');
+        }
+
+        function reset() {
+            hide('rmStory');
+            S.energy = 60; S.sound = 40; S.conn = 50;
+            S.cam = 0;
+            syncHud();
+            startChapter(0);
+        }
+
+        /* ---------- input ---------- */
+        function setWalk(v) {
+            if (S.phase !== 'walk') { S.walking = false; return; }
+            S.walking = v;
+        }
+
+        var stage = cv.parentNode;
+        ['mousedown', 'touchstart'].forEach(function (ev) {
+            stage.addEventListener(ev, function (e) {
+                if (S.phase === 'walk') { e.preventDefault(); setWalk(true); }
+            }, { passive: false });
+        });
+        ['mouseup', 'mouseleave', 'touchend', 'touchcancel'].forEach(function (ev) {
+            stage.addEventListener(ev, function () { setWalk(false); });
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === ' ') {
+                if (S.phase === 'walk') { e.preventDefault(); setWalk(true); }
+            }
+        });
+        document.addEventListener('keyup', function (e) {
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === ' ') setWalk(false);
+        });
+
+        el('rmStart').addEventListener('click', function () {
+            hide('rmTitle');
+            startChapter(0);
+        });
+        el('rmSound').addEventListener('click', audioToggle);
+        el('rmReset').addEventListener('click', function () {
+            hide('rmTitle'); hide('rmChap');
+            reset();
+        });
+
+        /* ---------- loop ---------- */
+        var last = 0, paused = false;
+        document.addEventListener('visibilitychange', function () { paused = document.hidden; });
+
+        function frame(now) {
+            requestAnimationFrame(frame);
+            if (paused) { last = now; return; }
+            var dt = Math.min((now - last) / 1000, 0.05);
+            last = now;
+            S.t += dt;
+
+            if (S.phase === 'walk' && S.walking) {
+                var speed = 42 * (0.78 + (S.energy / 100) * 0.44);
+                S.dist += speed * dt;
+                S.cam += speed * dt;
+                if (S.dist >= CH[S.chapter].dist && !S.fired) {
+                    S.fired = true;
+                    openStory();
+                }
+            } else if (S.phase !== 'walk') {
+                S.cam += 4 * dt;
             }
 
-            $('tmToCast').addEventListener('click', function () { showScreen('cast'); });
-            $('tmToGame').addEventListener('click', function () { renderScene(); showScreen('game'); });
-            $('tmContinue').addEventListener('click', nextScene);
-            $('tmRestart').addEventListener('click', resetGame);
-        })();
+            render();
+        }
+
+        /* ---------- boot ---------- */
+        var steps = [
+            ['DRAWING SPRITES…', buildSprites],
+            ['BUILDING THE MOUNTAINS…', buildLayers],
+            ['LOADING THE TRAIL…', function () {
+                tintCache('far', '#3d3358'); tintCache('far', '#191634');
+                tintCache('mid', '#241d38');
+                tintCache('treeFar', '#141d18');
+                tintCache('treeNear', '#0d140f');
+            }],
+            ['READY', function () { syncHud(); syncRoute(); }]
+        ];
+
+        var si = 0;
+        function boot() {
+            if (si >= steps.length) {
+                el('rmLoadFill').style.width = '100%';
+                setTimeout(function () {
+                    hide('rmLoad');
+                    show('rmTitle');
+                    S.phase = 'title';
+                    requestAnimationFrame(frame);
+                }, 320);
+                return;
+            }
+            el('rmLoadTxt').textContent = steps[si][0];
+            el('rmLoadFill').style.width = Math.round((si / steps.length) * 100) + '%';
+            setTimeout(function () {
+                try { steps[si][1](); } catch (err) { /* keep booting */ }
+                si++;
+                boot();
+            }, 130);
+        }
+
+        boot();
+    })();
     </script>
 </body>
 </html>
