@@ -338,6 +338,7 @@
 
         .work-card {
             position: relative;
+            display: block;
             min-height: 340px;
             padding: 28px;
             border: 1px solid var(--about-line);
@@ -348,7 +349,30 @@
             -webkit-backdrop-filter: blur(20px);
             overflow: hidden;
             box-shadow: var(--about-shadow);
+            color: inherit;
+            text-decoration: none;
             transition: transform .35s ease, border-color .35s ease;
+        }
+
+        .work-arrow {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--about-line);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 14px;
+            color: var(--about-muted);
+            transition: .3s ease;
+        }
+
+        .work-card:hover .work-arrow {
+            transform: translate(4px, -4px);
+            border-color: var(--about-purple);
+            color: var(--about-text);
         }
 
         .work-card:hover {
@@ -746,7 +770,8 @@
             </div>
 
             <div class="selected-grid">
-                <article class="work-card large reveal" style="--card-accent: var(--about-green);">
+                <a class="work-card large reveal" style="--card-accent: var(--about-green);" href="pride-park-spill-2026.html">
+                    <span class="work-arrow">↗</span>
                     <span class="work-index">01 · Game studies / public intervention</span>
                     <h4>Pride Park 2026</h4>
                     <p>
@@ -760,9 +785,10 @@
                         <span>Procedural rhetoric</span>
                         <span>Folklore</span>
                     </div>
-                </article>
+                </a>
 
-                <article class="work-card small reveal" style="--card-accent: var(--about-purple);">
+                <a class="work-card small reveal" style="--card-accent: var(--about-purple);" href="bergtatt-visuals.html">
+                    <span class="work-arrow">↗</span>
                     <span class="work-index">02 · Audio-reactive visual system</span>
                     <h4>Bergtatt</h4>
                     <p>
@@ -774,9 +800,10 @@
                         <span>Live sound</span>
                         <span>Immersive media</span>
                     </div>
-                </article>
+                </a>
 
-                <article class="work-card small reveal" style="--card-accent: var(--about-cyan);">
+                <a class="work-card small reveal" style="--card-accent: var(--about-cyan);" href="fjordtatt-visuals.html">
+                    <span class="work-arrow">↗</span>
                     <span class="work-index">03 · Expanded installation</span>
                     <h4>Fjordtatt</h4>
                     <p>
@@ -789,9 +816,10 @@
                         <span>Embodiment</span>
                         <span>Lesbian aesthetics</span>
                     </div>
-                </article>
+                </a>
 
-                <article class="work-card large reveal" style="--card-accent: var(--about-pink);">
+                <a class="work-card large reveal" style="--card-accent: var(--about-pink);" href="posts/2026-04-09-mountmedia.html">
+                    <span class="work-arrow">↗</span>
                     <span class="work-index">04 · AI co-authorship / artistic research</span>
                     <h4>Mount Media</h4>
                     <p>
@@ -805,7 +833,7 @@
                         <span>Electronic literature</span>
                         <span>Machine intimacy</span>
                     </div>
-                </article>
+                </a>
             </div>
         </section>
 

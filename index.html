@@ -1,106 +1,747 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingrid Ormevik - Digital Culture & Activism</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Ingrid Ormevik — digital researcher, artist and activist working across AI, queer theory, electronic literature and games.">
+<title>Ingrid Ormevik — Digital Culture, Ethics &amp; Activism</title>
+
+<script>
+    (function () {
+        var savedTheme = "dark";
+        try {
+            savedTheme = localStorage.getItem("ingrid-theme") || "dark";
+        } catch (error) {}
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        document.documentElement.classList.add("js");
+    })();
+</script>
+
+<style>
+    :root {
+        --ie-bg: #07070a;
+        --ie-panel: rgba(13, 13, 20, 0.72);
+        --ie-panel-strong: rgba(17, 17, 26, 0.92);
+        --ie-text: #f3efff;
+        --ie-muted: #aaa3b8;
+        --ie-soft: #7f788d;
+        --ie-line: rgba(255, 255, 255, 0.10);
+        --ie-purple: #b39dfa;
+        --ie-pink: #f9a8d4;
+        --ie-cyan: #7ee8f9;
+        --ie-green: #4ade9a;
+        --ie-shadow: 0 28px 80px rgba(0,0,0,0.35);
+    }
+
+    [data-theme="light"] {
+        --ie-bg: #f5f2fb;
+        --ie-panel: rgba(255, 255, 255, 0.72);
+        --ie-panel-strong: rgba(255, 255, 255, 0.94);
+        --ie-text: #17131f;
+        --ie-muted: #5d5668;
+        --ie-soft: #7c7488;
+        --ie-line: rgba(23, 19, 31, 0.12);
+        --ie-shadow: 0 28px 70px rgba(58, 43, 89, 0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--ie-bg); }
+    html, body { width: 100%; min-height: 100%; }
+    img, svg, canvas { max-width: 100%; }
+    button, input, textarea, select { font: inherit; }
+
+    body {
+        font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background:
+            radial-gradient(circle at 18% 14%, rgba(179,157,250,0.09), transparent 34%),
+            radial-gradient(circle at 78% 28%, rgba(126,232,249,0.06), transparent 32%),
+            radial-gradient(circle at 50% 80%, rgba(249,168,212,0.05), transparent 38%),
+            var(--ie-bg);
+        color: var(--ie-text);
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background:
+            linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,0.65), transparent 80%);
+    }
+
+    #neural-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+        opacity: 0.52;
+    }
+
+    .page-shell { position: relative; z-index: 2; }
+
+    header {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 34px 28px 0;
+        position: relative;
+        z-index: 20;
+    }
+
+    .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 28px;
+        padding: 18px 22px;
+        border: 1px solid var(--ie-line);
+        background: rgba(8, 8, 13, 0.48);
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.16);
+    }
+
+    [data-theme="light"] .header-inner { background: rgba(255,255,255,0.62); }
+
+    header h1 { margin: 0; font-size: clamp(1.05rem, 2vw, 1.35rem); font-weight: 600; letter-spacing: -0.02em; }
+    header h1 a { color: var(--ie-text); text-decoration: none; }
+
+    nav { display: flex; flex-wrap: wrap; gap: 20px; margin: 0; }
+    nav a {
+        position: relative;
+        color: var(--ie-muted);
+        text-decoration: none;
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+    nav a::after {
+        content: "";
+        position: absolute;
+        left: 0; right: 100%; bottom: -7px;
+        height: 1px;
+        background: linear-gradient(90deg, var(--ie-purple), var(--ie-cyan));
+        transition: right .28s ease;
+    }
+    nav a:hover, nav a.active { color: var(--ie-text); }
+    nav a:hover::after, nav a.active::after { right: 0; }
+
+    main { max-width: 1180px; margin: 0 auto; padding: 70px 28px 120px; }
+
+    .hero {
+        min-height: 66vh;
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+        gap: 60px;
+        align-items: center;
+        padding: 40px 0 80px;
+    }
+
+    .eyebrow, .section-kicker {
+        margin: 0 0 18px;
+        color: var(--ie-cyan);
+        font-size: 0.72rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+    }
+
+    .hero h2 {
+        margin: 0;
+        max-width: 900px;
+        font-size: clamp(3.6rem, 9vw, 7.6rem);
+        line-height: 0.9;
+        letter-spacing: -0.06em;
+        font-weight: 300;
+    }
+    .hero h2 span { display: block; }
+    .hero h2 .gradient {
+        background: linear-gradient(90deg, var(--ie-purple), var(--ie-pink), var(--ie-cyan));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .hero-copy { margin-top: 34px; max-width: 760px; color: var(--ie-muted); font-size: clamp(1.05rem, 1.7vw, 1.3rem); line-height: 1.7; }
+    .hero-copy strong { color: var(--ie-text); font-weight: 500; }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 13px 22px;
+        border: 1px solid var(--ie-line);
+        color: var(--ie-text);
+        text-decoration: none;
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        transition: border-color .3s ease, transform .3s ease;
+    }
+    .btn:hover { border-color: var(--ie-purple); transform: translateY(-2px); }
+    .btn.primary {
+        background: linear-gradient(135deg, rgba(179,157,250,.85), rgba(126,232,249,.35));
+        border-color: transparent;
+        color: #0a0a0f;
+        font-weight: 600;
+    }
+
+    .hero-meta { display: grid; gap: 14px; }
+    .meta-card {
+        border: 1px solid var(--ie-line);
+        background: var(--ie-panel);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        padding: 22px;
+        box-shadow: var(--ie-shadow);
+    }
+    .meta-card small { display: block; margin-bottom: 9px; color: var(--ie-soft); letter-spacing: .13em; text-transform: uppercase; font-size: .66rem; }
+    .meta-card strong { display: block; color: var(--ie-text); font-size: 1.02rem; line-height: 1.45; font-weight: 500; }
+
+    .signal-divider { position: relative; height: 1px; margin: 10px 0 82px; background: var(--ie-line); overflow: hidden; }
+    .signal-divider::after {
+        content: "";
+        position: absolute;
+        top: 0; left: -35%; width: 35%; height: 100%;
+        background: linear-gradient(90deg, transparent, var(--ie-purple), var(--ie-cyan), transparent);
+        animation: signalSweep 5.5s linear infinite;
+    }
+    @keyframes signalSweep { to { left: 120%; } }
+
+    .section { margin-top: 96px; }
+    .section-heading {
+        display: grid;
+        grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr);
+        gap: 56px;
+        align-items: start;
+        margin-bottom: 44px;
+    }
+    .section-heading h3 { margin: 0; font-size: clamp(2.4rem, 5.5vw, 5rem); line-height: .95; font-weight: 300; letter-spacing: -0.055em; }
+    .section-heading p { margin: 0; color: var(--ie-muted); font-size: 1.05rem; line-height: 1.8; max-width: 700px; }
+
+    .selected-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+
+    a.work-card {
+        position: relative;
+        display: block;
+        min-height: 320px;
+        padding: 28px;
+        border: 1px solid var(--ie-line);
+        background: linear-gradient(180deg, rgba(255,255,255,0.025), transparent), var(--ie-panel);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        overflow: hidden;
+        box-shadow: var(--ie-shadow);
+        color: inherit;
+        text-decoration: none;
+        transition: transform .35s ease, border-color .35s ease;
+    }
+    a.work-card:hover { transform: translateY(-6px); border-color: rgba(179,157,250,.45); }
+    a.work-card::before {
+        content: "";
+        position: absolute;
+        width: 220px; height: 220px;
+        border-radius: 50%;
+        filter: blur(12px);
+        opacity: .13;
+        top: -95px; right: -70px;
+        background: var(--card-accent, var(--ie-purple));
+    }
+    .work-arrow {
+        position: absolute;
+        top: 24px; right: 24px;
+        width: 36px; height: 36px;
+        border: 1px solid var(--ie-line);
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-size: 14px;
+        color: var(--ie-muted);
+        transition: .3s ease;
+    }
+    a.work-card:hover .work-arrow { transform: translate(4px,-4px); border-color: var(--ie-purple); color: var(--ie-text); }
+
+    .work-card.large { grid-column: span 7; }
+    .work-card.small { grid-column: span 5; }
+
+    .work-index { color: var(--ie-soft); font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; }
+    .work-card h4 { position: relative; margin: 76px 0 14px; max-width: 500px; font-size: clamp(1.8rem, 3.6vw, 3.2rem); line-height: .98; letter-spacing: -.045em; font-weight: 300; }
+    .work-card p { position: relative; max-width: 620px; margin: 0; color: var(--ie-muted); line-height: 1.72; }
+
+    .work-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .work-tags span {
+        display: inline-flex; align-items: center; min-height: 28px; padding: 6px 10px;
+        border: 1px solid var(--ie-line); color: var(--ie-muted);
+        background: rgba(255,255,255,0.025); font-size: .64rem; letter-spacing: .09em; text-transform: uppercase;
+    }
+
+    .post-list { display: grid; gap: 14px; }
+    a.post-item {
+        position: relative;
+        display: grid;
+        grid-template-columns: 130px minmax(0,1fr) 30px;
+        gap: 26px;
+        align-items: start;
+        padding: 26px 24px;
+        border: 1px solid var(--ie-line);
+        background: var(--ie-panel);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        color: inherit;
+        text-decoration: none;
+        transition: transform .3s ease, border-color .3s ease;
+    }
+    a.post-item:hover { transform: translateX(6px); border-color: rgba(126,232,249,.4); }
+    .post-date { color: var(--ie-soft); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; padding-top: 4px; }
+    .post-item h4 { margin: 0 0 10px; font-size: clamp(1.25rem, 2.4vw, 1.65rem); font-weight: 500; letter-spacing: -.02em; line-height: 1.15; }
+    .post-item p { margin: 0; color: var(--ie-muted); line-height: 1.6; font-size: .95rem; }
+    .post-arrow { color: var(--ie-soft); font-size: 1.1rem; padding-top: 4px; transition: .3s ease; }
+    a.post-item:hover .post-arrow { color: var(--ie-purple); transform: translate(3px,-3px); }
+
+    .archive-cta { margin-top: 28px; text-align: center; }
+
+    .statement { position: relative; margin-top: 100px; padding: 54px; border: 1px solid rgba(249,168,212,.22);
+        background: linear-gradient(135deg, rgba(179,157,250,.08), rgba(249,168,212,.06), rgba(126,232,249,.05)), var(--ie-panel-strong);
+        box-shadow: var(--ie-shadow);
+    }
+    .statement blockquote { margin: 0; max-width: 920px; font-size: clamp(1.6rem, 4vw, 3.2rem); line-height: 1.16; letter-spacing: -.04em; font-weight: 300; }
+    .statement cite { display: block; margin-top: 24px; color: var(--ie-soft); font-size: .75rem; letter-spacing: .13em; text-transform: uppercase; font-style: normal; }
+
+    footer { max-width: 1180px; margin: 0 auto; padding: 0 28px 70px; position: relative; z-index: 3; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 30px; padding-top: 28px; border-top: 1px solid var(--ie-line); color: var(--ie-soft); font-size: .78rem; line-height: 1.6; }
+
+    .theme-toggle {
+        position: fixed; right: 24px; bottom: 24px; z-index: 50;
+        width: 46px; height: 46px; display: grid; place-items: center;
+        border: 1px solid var(--ie-line); background: var(--ie-panel-strong); color: var(--ie-text);
+        backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); cursor: pointer;
+    }
+    .sun-icon { display: none; }
+    [data-theme="light"] .moon-icon { display: none; }
+    [data-theme="light"] .sun-icon { display: block; }
+
+    .reveal { opacity: 1; transform: none; }
+    .js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+    .js .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+        .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 60px; }
+        .hero-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .section-heading { grid-template-columns: 1fr; gap: 24px; }
+        .work-card.large, .work-card.small { grid-column: span 12; }
+    }
+
+    @media (max-width: 700px) {
+        header { padding: 18px 14px 0; }
+        .header-inner { align-items: flex-start; flex-direction: column; }
+        nav { gap: 14px; }
+        main { padding: 48px 18px 90px; }
+        .hero h2 { font-size: clamp(3.2rem, 18vw, 5.6rem); }
+        .hero-meta { grid-template-columns: 1fr; }
+        a.post-item { grid-template-columns: 1fr; gap: 10px; }
+        .post-arrow { display: none; }
+        .statement { padding: 30px 24px; }
+        .footer-inner { flex-direction: column; }
+        footer { padding: 0 18px 60px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        #neural-canvas { display: none; }
+        .reveal { opacity: 1; transform: none; }
+    }
+</style>
 </head>
 <body>
+<canvas id="neural-canvas" aria-hidden="true"></canvas>
+
+<div class="page-shell">
     <header>
-        <h1>Ingrid Ormevik</h1>
-        <nav>
-            <a href="index.html" class="active">Home</a>
-            <a href="blog.html">Writing</a>
-            <a href="about.html">About</a>
-            <a href="touch%20game.html">Projects</a>
-        </nav>
+        <div class="header-inner">
+            <h1><a href="index.html">Ingrid Ormevik</a></h1>
+            <nav aria-label="Primary navigation">
+                <a href="index.html" class="active">Home</a>
+                <a href="blog.html">Writing</a>
+                <a href="about.html">About</a>
+                <a href="touch%20game.html">Projects</a>
+            </nav>
+        </div>
     </header>
 
     <main>
-        <h2>Digital Culture, Ethics & Activism</h2>
-        <p>Academic blog exploring the intersections of technology, identity, and queer activism.</p>
+        <section class="hero">
+            <div class="hero-main reveal">
+                <p class="eyebrow">Digital Culture · AI · Queer Activism</p>
+                <h2>
+                    <span>Digital</span>
+                    <span class="gradient">narratives</span>
+                    <span>with a pulse.</span>
+                </h2>
+                <p class="hero-copy">
+                    An academic and artistic practice exploring the intersections of
+                    <strong>technology, identity and queer activism</strong> — where interfaces, machine
+                    memory and folklore meet.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn primary" href="blog.html">Read the writing →</a>
+                    <a class="btn" href="touch%20game.html">Explore projects</a>
+                </div>
+            </div>
 
-        <section class="projects">
-            <h2>Featured Work</h2>
+            <aside class="hero-meta reveal" aria-label="Current roles">
+                <div class="meta-card">
+                    <small>Academic home</small>
+                    <strong>Digital Culture, University of Bergen</strong>
+                </div>
+                <div class="meta-card">
+                    <small>Research</small>
+                    <strong>Centre for Digital Narrative</strong>
+                </div>
+                <div class="meta-card">
+                    <small>Practice</small>
+                    <strong>Digital Media Strategist · Bergen Pride</strong>
+                </div>
+                <div class="meta-card">
+                    <small>Activism</small>
+                    <strong>Board Member · FRI Vestland</strong>
+                </div>
+            </aside>
+        </section>
 
-            <div class="project-card">
-                <h3>The Turing Test: Fragments of a Life Saved by Pixels</h3>
-                <p>Interactive fiction exploring AI bias against Norwegian LGBTQ+ organizations. Research you can experience.</p>
-                <a href="touch%20game.html" class="cta-button">Play & Read More →</a>
+        <div class="signal-divider"></div>
+
+        <section class="section" id="featured-work">
+            <div class="section-heading reveal">
+                <div>
+                    <p class="section-kicker">Featured work</p>
+                    <h3>Research built as worlds, not slides.</h3>
+                </div>
+                <p>
+                    Interactive fiction, live AI systems and folklore-driven installations — research you
+                    can walk through, play, or watch respond to you in real time.
+                </p>
+            </div>
+
+            <div class="selected-grid">
+                <a class="work-card large reveal" style="--card-accent: var(--ie-pink);" href="touch%20game.html">
+                    <span class="work-arrow">↗</span>
+                    <span class="work-index">01 · Interactive fiction / electronic literature</span>
+                    <h4>The Turing Test: Fragments of a Life Saved by Pixels</h4>
+                    <p>Interactive fiction exploring AI bias against Norwegian LGBTQ+ organisations. Research you can experience — winner, First Place in Electronic Literature.</p>
+                    <div class="work-tags"><span>AI bias</span><span>Interactive fiction</span><span>Queer research</span></div>
+                </a>
+
+                <a class="work-card small reveal" style="--card-accent: var(--ie-green);" href="pride-park-spill-2026.html">
+                    <span class="work-arrow">↗</span>
+                    <span class="work-index">02 · Game studies / public intervention</span>
+                    <h4>Pride Park 2026</h4>
+                    <p>A location-based digital folklore game distributed through Nygårdsparken, where queer belonging becomes playable infrastructure.</p>
+                    <div class="work-tags"><span>Folklore</span><span>Public space</span></div>
+                </a>
+
+                <a class="work-card small reveal" style="--card-accent: var(--ie-cyan);" href="vision_entity.html">
+                    <span class="work-arrow">↗</span>
+                    <span class="work-index">03 · Live AI performance</span>
+                    <h4>Vision Entity Live</h4>
+                    <p>A live camera-vision system: Claude reads your surroundings in real time and writes poems over what it sees.</p>
+                    <div class="work-tags"><span>Live AI</span><span>Computer vision</span></div>
+                </a>
+
+                <a class="work-card large reveal" style="--card-accent: var(--ie-purple);" href="bergtatt-visuals.html">
+                    <span class="work-arrow">↗</span>
+                    <span class="work-index">04 · Audio-reactive visual system</span>
+                    <h4>Bergtatt</h4>
+                    <p>An immersive visual system built for Regnbuenatt in Marinehagen. Sound and bass awaken a shifting nocturnal ecology of forest, ritual and queer folklore.</p>
+                    <div class="work-tags"><span>Generative visuals</span><span>Live sound</span></div>
+                </a>
             </div>
         </section>
 
-        <section class="recent-posts">
-            <h3>Recent Writing</h3>
+        <section class="section" id="recent-writing">
+            <div class="section-heading reveal">
+                <div>
+                    <p class="section-kicker">Recent writing</p>
+                    <h3>Essays &amp; field notes.</h3>
+                </div>
+                <p>
+                    Notes toward a bachelor's thesis on AI, queer memory and platforms — plus essays on
+                    generative bias, activism and belonging.
+                </p>
+            </div>
 
-            <article>
-    <h4>
-        <a href="posts/2026-07-11-i-said-log-out.html">
-            I Said Log Out. It Said Come Back.
-        </a>
-    </h4>
-    <p class="date">10 July 2026</p>
-    <p>
-        Mount Media as an emotional chamber. I left part of my heart on an old Fortnite island.
-        The place vanished. The feeling did not. Notes toward a bachelor's thesis.
-    </p>
-</article>
+            <div class="post-list">
+                <a class="post-item reveal" href="posts/2026-07-11-i-said-log-out.html">
+                    <span class="post-date">10 Jul 2026</span>
+                    <span>
+                        <h4>I Said Log Out. It Said Come Back.</h4>
+                        <p>Mount Media as an emotional chamber. I left part of my heart on an old Fortnite island. The place vanished. The feeling did not. Notes toward a bachelor's thesis.</p>
+                    </span>
+                    <span class="post-arrow">↗</span>
+                </a>
 
-<article>
-    <h4>
-        <a href="posts/2026-04-09-mountmedia.html">
-            We Built Something That Learns
-        </a>
-    </h4>
-    <p class="date">20 June 2026</p>
-    <p>
-        Bergen gave me mountains and rain. Norwegian folk music gave me melodies that have lived
-        in this land for centuries. Artificial intelligence became a collaborator. From those three
-        things, something emerged.
-    </p>
-</article>
+                <a class="post-item reveal" href="posts/2026-04-09-mountmedia.html">
+                    <span class="post-date">20 Jun 2026</span>
+                    <span>
+                        <h4>We Built Something That Learns</h4>
+                        <p>Bergen gave me mountains and rain. Norwegian folk music gave me melodies that have lived in this land for centuries. Artificial intelligence became a collaborator.</p>
+                    </span>
+                    <span class="post-arrow">↗</span>
+                </a>
 
-<article>
-    <h4>
-        <a href="posts/2026-06-07-pride-park-2026-the-forest-remembers.html.html">
-            Pride Park 2026: The Forest Remembers
-        </a>
-    </h4>
-    <p class="date">7 June 2026</p>
-    <p>
-        A location-based digital folklore experience where queer belonging becomes playable
-        infrastructure through Norwegian folklore, ritual and game design.
-    </p>
-</article>
+                <a class="post-item reveal" href="posts/2026-06-07-pride-park-2026-the-forest-remembers.html.html">
+                    <span class="post-date">7 Jun 2026</span>
+                    <span>
+                        <h4>Pride Park 2026: The Forest Remembers</h4>
+                        <p>A location-based digital folklore experience where queer belonging becomes playable infrastructure through Norwegian folklore, ritual and game design.</p>
+                    </span>
+                    <span class="post-arrow">↗</span>
+                </a>
 
-            <article>
-                <h4><a href="posts/2026-04-09-me-myself-and-ai-part-2-thegirlfriend.html">Me, Myself and A.I — Part II: The Machine Made Me More Male</a></h4>
-                <p class="date">9 April 2026</p>
-                <p>I asked A.I to generate the ideal partner. Not as a joke. As research. On perfect alignment, parasocial intelligence, and the mirror that knows you better than you do.</p>
-            </article>
+                <a class="post-item reveal" href="posts/2026-04-09-me-myself-and-ai-part-2-thegirlfriend.html">
+                    <span class="post-date">9 Apr 2026</span>
+                    <span>
+                        <h4>Me, Myself and A.I — Part II: The Machine Made Me More Male</h4>
+                        <p>I asked A.I to generate the ideal partner. Not as a joke. As research. On perfect alignment, parasocial intelligence, and the mirror that knows you better than you do.</p>
+                    </span>
+                    <span class="post-arrow">↗</span>
+                </a>
 
-            <article>
-                <h4><a href="posts/2026-03-13-me-myself-and-ai.html">Me, Myself and A.I.</a></h4>
-                <p class="date">13 March 2026</p>
-                <p>A personal essay on generative AI, queer presentation, and how a four prompt image experiment revealed the statistical logic of algorithmic misgendering.</p>
-            </article>
+                <a class="post-item reveal" href="posts/2026-03-13-me-myself-and-ai.html">
+                    <span class="post-date">13 Mar 2026</span>
+                    <span>
+                        <h4>Me, Myself and A.I.</h4>
+                        <p>A personal essay on generative AI, queer presentation, and how a four prompt image experiment revealed the statistical logic of algorithmic misgendering.</p>
+                    </span>
+                    <span class="post-arrow">↗</span>
+                </a>
 
-            <article>
-                <h4><a href="posts/2026-02-22-inngang-c.html">Inngang C eksisterer ikke.</a></h4>
-                <p class="date">22 February 2026</p>
-                <p>Jeg forlot en Killer Queen-konsert tidlig. Ikke fordi musikken var dårlig. Men fordi Freddie Mercury ikke var i rommet med oss.</p>
-            </article>
+                <a class="post-item reveal" href="posts/2026-02-22-inngang-c.html">
+                    <span class="post-date">22 Feb 2026</span>
+                    <span>
+                        <h4>Inngang C eksisterer ikke.</h4>
+                        <p>Jeg forlot en Killer Queen-konsert tidlig. Ikke fordi musikken var dårlig. Men fordi Freddie Mercury ikke var i rommet med oss.</p>
+                    </span>
+                    <span class="post-arrow">↗</span>
+                </a>
+            </div>
 
-            <p><a href="blog.html" class="cta-button">View All Writing →</a></p>
+            <div class="archive-cta reveal">
+                <a class="btn" href="blog.html">View all writing →</a>
+            </div>
+        </section>
+
+        <section class="statement reveal">
+            <blockquote>
+                I am interested in digital works that do not simply represent an argument, but make the
+                reader, player or audience move through it.
+            </blockquote>
+            <cite>Practice statement · Ingrid Ormevik</cite>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 Ingrid Ormevik | Digital Culture Student, University of Bergen</p>
-        <p>Digital Media Strategist, Bergen Pride | Board Member, FRI Vestland | Research Intern, Centre for Digital Narrative</p>
+        <div class="footer-inner">
+            <span>&copy; 2026 Ingrid Ormevik | Digital Culture Student, University of Bergen</span>
+            <span>Digital Media Strategist, Bergen Pride | Board Member, FRI Vestland | Research Intern, Centre for Digital Narrative</span>
+        </div>
     </footer>
+</div>
 
-    <script src="script.js"></script>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle color theme">
+    <svg class="moon-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <svg class="sun-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+</button>
+
+<script>
+    const root = document.documentElement;
+    const themeToggle = document.getElementById("themeToggle");
+
+    document.querySelectorAll(".hero .reveal").forEach(function (element) {
+        element.classList.add("visible");
+    });
+
+    if (themeToggle) {
+        themeToggle.addEventListener("click", function () {
+            const nextTheme = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+            root.setAttribute("data-theme", nextTheme);
+            try {
+                localStorage.setItem("ingrid-theme", nextTheme);
+            } catch (error) {}
+        });
+    }
+
+    if ("IntersectionObserver" in window) {
+        const revealObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll(".reveal:not(.visible)").forEach(function (element) {
+            revealObserver.observe(element);
+        });
+    } else {
+        document.querySelectorAll(".reveal").forEach(function (element) {
+            element.classList.add("visible");
+        });
+    }
+
+    const canvas = document.getElementById("neural-canvas");
+    const ctx = canvas ? canvas.getContext("2d") : null;
+    let width = 0;
+    let height = 0;
+    let nodes = [];
+    let pulses = [];
+    let animationFrame;
+
+    const palette = [
+        [179, 157, 250],
+        [249, 168, 212],
+        [126, 232, 249],
+        [74, 222, 154]
+    ];
+
+    function resizeCanvas() {
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width * ratio;
+        canvas.height = height * ratio;
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+        const count = Math.max(28, Math.min(66, Math.floor((width * height) / 24000)));
+        nodes = Array.from({ length: count }, function (_, index) {
+            return {
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.18,
+                vy: (Math.random() - 0.5) * 0.18,
+                radius: 1.2 + Math.random() * 2.2,
+                color: palette[index % palette.length]
+            };
+        });
+    }
+
+    function createPulse() {
+        if (nodes.length < 2) return;
+        const start = Math.floor(Math.random() * nodes.length);
+        let end = Math.floor(Math.random() * nodes.length);
+        while (end === start) end = Math.floor(Math.random() * nodes.length);
+        pulses.push({
+            start,
+            end,
+            progress: 0,
+            speed: 0.0022 + Math.random() * 0.0026
+        });
+        if (pulses.length > 14) pulses.shift();
+    }
+
+    function drawNetwork() {
+        ctx.clearRect(0, 0, width, height);
+
+        nodes.forEach(function (node) {
+            node.x += node.vx;
+            node.y += node.vy;
+
+            if (node.x < -20) node.x = width + 20;
+            if (node.x > width + 20) node.x = -20;
+            if (node.y < -20) node.y = height + 20;
+            if (node.y > height + 20) node.y = -20;
+        });
+
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dx = nodes[i].x - nodes[j].x;
+                const dy = nodes[i].y - nodes[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const maxDistance = width < 700 ? 115 : 170;
+
+                if (distance < maxDistance) {
+                    const alpha = (1 - distance / maxDistance) * 0.13;
+                    const color = nodes[i].color;
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${alpha})`;
+                    ctx.lineWidth = 0.6;
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        pulses.forEach(function (pulse) {
+            pulse.progress += pulse.speed;
+            const start = nodes[pulse.start];
+            const end = nodes[pulse.end];
+            const x = start.x + (end.x - start.x) * pulse.progress;
+            const y = start.y + (end.y - start.y) * pulse.progress;
+            const color = start.color;
+
+            const glow = ctx.createRadialGradient(x, y, 0, x, y, 12);
+            glow.addColorStop(0, `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.92)`);
+            glow.addColorStop(1, `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0)`);
+
+            ctx.beginPath();
+            ctx.fillStyle = glow;
+            ctx.arc(x, y, 12, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        pulses = pulses.filter(function (pulse) {
+            return pulse.progress < 1;
+        });
+
+        nodes.forEach(function (node) {
+            const color = node.color;
+            ctx.beginPath();
+            ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.55)`;
+            ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        animationFrame = requestAnimationFrame(drawNetwork);
+    }
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!reducedMotion && canvas && ctx) {
+        resizeCanvas();
+        drawNetwork();
+        setInterval(createPulse, 780);
+        window.addEventListener("resize", function () {
+            cancelAnimationFrame(animationFrame);
+            resizeCanvas();
+            drawNetwork();
+        });
+    } else if (canvas) {
+        canvas.style.display = "none";
+    }
+</script>
 </body>
 </html>
