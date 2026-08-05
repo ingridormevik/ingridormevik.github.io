@@ -56,8 +56,7 @@
             display: block;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
-            object-fit: contain;
-            object-position: center top;
+            object-fit: fill;
         }
 
         /* --- Overlays --- */
@@ -284,7 +283,6 @@
 
         .rm-tag {
             position: absolute;
-            top: 25cqw;
             transform: translateX(-50%);
             font-size: clamp(.42rem, 1.15vw, .6rem);
             letter-spacing: .14em;
@@ -311,7 +309,7 @@
         .rm-prompt {
             position: absolute;
             left: 50%;
-            top: 48cqw;
+            bottom: 4%;
             transform: translateX(-50%);
             font-size: clamp(.5rem, 1.4vw, .68rem);
             letter-spacing: .18em;
@@ -328,7 +326,7 @@
         /* Route progress */
         .rm-route {
             position: absolute;
-            top: 2.4cqw;
+            top: 4%;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -370,7 +368,7 @@
         }
 
         @media (max-width: 620px) {
-            .rm-stage.tall { aspect-ratio: 3 / 4; }
+            .rm-stage { aspect-ratio: 3 / 4; }
             .rm-title, .rm-chapcard { justify-content: flex-start; padding-top: 12%; }
             .rm-stat-lab { display: none; }
             .rm-cap { justify-content: center; text-align: center; }
@@ -433,8 +431,8 @@
 
                     <div class="rm-route rm-hide" id="rmRoute" aria-hidden="true"></div>
                     <div class="rm-tags rm-hide" id="rmTags" aria-hidden="true">
-                        <span class="rm-tag" style="left:60.8%">JACK<b></b></span>
-                        <span class="rm-tag" style="left:40.8%">INGRID<b></b></span>
+                        <span class="rm-tag" style="left:60%">INGRID<b></b></span>
+                        <span class="rm-tag" style="left:40%">JACK<b></b></span>
                     </div>
                     <div class="rm-prompt rm-hide" id="rmPrompt">HOLD → OR TAP TO WALK</div>
 
@@ -518,7 +516,38 @@
         var ctx = cv.getContext('2d');
         ctx.imageSmoothingEnabled = false;
 
-        var W = 480, H = 270, GROUND = 222;
+        // The canvas is resized to the panel's true aspect ratio so the scene
+        // always fills it - no letterbox bars, whatever shape the panel is.
+        var H = 270, W = 480, GROUND = 222;
+
+        function fitCanvas() {
+            var box = cv.parentNode.getBoundingClientRect();
+            if (!box.width || !box.height) return;
+            var aspect = box.width / box.height;
+
+            // Match the panel's aspect exactly: the scene fills it edge to edge
+            // with no bars and no stretching, whatever shape the panel takes.
+            var nw, nh;
+            if (aspect >= 1) {
+                nh = 270;
+                nw = Math.max(320, Math.min(960, Math.round(nh * aspect)));
+            } else {
+                nw = 320;
+                nh = Math.max(270, Math.min(620, Math.round(nw / aspect)));
+            }
+
+            // On a tall panel the horizon sits high, so the pair stay clear of
+            // the story card and the trail below them stays full of scenery.
+            var groundFrac = aspect >= 1.35 ? 0.822 : 0.46;
+            var ng = Math.round(nh * groundFrac);
+            if (nw === W && nh === H && ng === GROUND && cv.width === W) return;
+
+            W = nw; H = nh; GROUND = ng;
+            cv.width = W;
+            cv.height = H;
+            ctx.imageSmoothingEnabled = false;
+            placeTags();
+        }
         var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         /* ---------- helpers ---------- */
@@ -876,7 +905,7 @@
             // sun / moon
             ctx.fillStyle = ch.sun;
             ctx.globalAlpha = 0.9;
-            var sx = 336, sy = ch.sunY;
+            var sx = Math.round(W * 0.70), sy = ch.sunY;
             ctx.fillRect(sx - 9, sy - 3, 19, 7);
             ctx.fillRect(sx - 6, sy - 7, 13, 16);
             ctx.fillRect(sx - 3, sy - 9, 7, 20);
@@ -906,7 +935,7 @@
                 var w = 18 - i;
                 var yy = y + 2 + i * 2;
                 var wob = reduceMotion ? 0 : Math.round(Math.sin(S.t * 1.4 + i) * 3);
-                ctx.fillRect(336 - w / 2 + wob, yy, w, 2);
+                ctx.fillRect(Math.round(W * 0.70) - w / 2 + wob, yy, w, 2);
             }
             ctx.globalAlpha = 1;
             // city lights along the shore
@@ -923,17 +952,38 @@
         }
 
         function drawGround(ch) {
-            ctx.fillStyle = '#2a2119';
-            ctx.fillRect(0, GROUND, W, H - GROUND);
+            var below = H - GROUND;
+            ctx.fillStyle = '#221b14';
+            ctx.fillRect(0, GROUND, W, below);
             ctx.fillStyle = '#3a2f26';
-            ctx.fillRect(0, GROUND, W, 15);
+            ctx.fillRect(0, GROUND, W, Math.min(26, below));
             ctx.fillStyle = '#4a3d30';
             ctx.fillRect(0, GROUND, W, 4);
+            // verge below the trail: graded, so a tall panel is not a flat slab
+            var vTop = GROUND + Math.min(26, below);
+            if (below > 26) {
+                var grad = ctx.createLinearGradient(0, vTop, 0, H);
+                grad.addColorStop(0, '#2b3a1d');
+                grad.addColorStop(0.35, '#1d2916');
+                grad.addColorStop(0.72, '#141d10');
+                grad.addColorStop(1, '#0b110b');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, vTop, W, H - vTop);
+                // broken edge where the trail meets the growth
+                var re = rng(4477);
+                for (var e = 0; e < W + 8; e += 3) {
+                    var ex = ((e - S.cam * 1.4) % LAYW + LAYW) % LAYW;
+                    var eh = 2 + Math.round(re() * 5);
+                    ctx.fillStyle = '#2b3820';
+                    ctx.fillRect(e, vTop - eh + Math.round(Math.sin(ex * 0.4) * 2), 3, eh + 2);
+                }
+            }
 
             // trail texture — scrolls with camera
             var r = rng(31415);
-            for (var i = 0; i < 230; i++) {
-                var bx = r() * LAYW, by = GROUND + 2 + r() * (H - GROUND - 4);
+            var texN = Math.round(230 * Math.max(1, (H - GROUND) / 48));
+            for (var i = 0; i < texN; i++) {
+                var bx = r() * LAYW, by = GROUND + 2 + r() * Math.min(24, H - GROUND - 4);
                 var x = ((bx - S.cam * 1.25) % LAYW + LAYW) % LAYW;
                 if (x > W) continue;
                 var tone = r();
@@ -943,8 +993,9 @@
 
             // heather / flowers in the foreground
             var r2 = rng(2718);
-            for (var k = 0; k < 70; k++) {
-                var bx2 = r2() * LAYW, by2 = GROUND + 9 + r2() * 33;
+            var scrubN = Math.round(70 * Math.max(1, (H - GROUND) / 48));
+            for (var k = 0; k < scrubN; k++) {
+                var bx2 = r2() * LAYW, by2 = GROUND + 12 + r2() * Math.max(33, H - GROUND - 12);
                 var x2 = ((bx2 - S.cam * 1.35) % LAYW + LAYW) % LAYW;
                 if (x2 > W) continue;
                 ctx.fillStyle = '#1d2a1c';
@@ -958,7 +1009,7 @@
 
         function drawSign() {
             // a trail sign appears once per chapter, drifting past
-            var sx = 450 - (S.dist % CH[S.chapter].dist) * 0.62;
+            var sx = (W + 60) - (S.dist % CH[S.chapter].dist) * 0.62;
             if (sx < -45 || sx > W + 15) return;
             var base = GROUND + 9;
             ctx.fillStyle = '#4a3a26';
@@ -993,7 +1044,7 @@
             // music notes rising from the speaker when sound is high
             if (S.sound > 30 && !reduceMotion) {
                 if (S.notes.length < 14 && Math.random() < 0.06) {
-                    S.notes.push({ x: 178, y: GROUND - 52, vy: -0.28 - Math.random() * 0.2, a: 1, sw: Math.random() * 6 });
+                    S.notes.push({ x: Math.round(W * 0.38), y: GROUND - 52, vy: -0.28 - Math.random() * 0.2, a: 1, sw: Math.random() * 6 });
                 }
             }
             S.notes.forEach(function (n) {
@@ -1040,11 +1091,17 @@
         var ACT = 0.75;                       // 128px frame box -> ~95px character
         var ACT_W = SPRW * ACT, ACT_H = SPRH * ACT;
 
+        // The pack's walk strips face the opposite way to the direction of
+        // travel, which read as walking backwards, so every sprite is flipped.
         function actor(img, centerX, footY) {
             if (!img) return;
-            ctx.drawImage(img, 0, 0, SPRW, SPRH,
-                Math.round(centerX - ACT_W / 2), Math.round(footY - ACT_H),
-                Math.round(ACT_W), Math.round(ACT_H));
+            var x = Math.round(centerX - ACT_W / 2);
+            var y = Math.round(footY - ACT_H);
+            ctx.save();
+            ctx.translate(x + Math.round(ACT_W), y);
+            ctx.scale(-1, 1);
+            ctx.drawImage(img, 0, 0, SPRW, SPRH, 0, 0, Math.round(ACT_W), Math.round(ACT_H));
+            ctx.restore();
         }
 
         function frameOf(who, state, offset) {
@@ -1057,7 +1114,9 @@
 
         function drawActors() {
             // Jack leads the way, Ingrid follows with the speaker
-            var jcx = 292, icx = 196, footY = GROUND + 8;
+            // Ingrid out front with the speaker, Jack a few steps behind
+            var icx = Math.round(W * 0.60), jcx = Math.round(W * 0.40);
+            var footY = GROUND + 8;
 
             ctx.globalAlpha = 0.3;
             ctx.fillStyle = '#000000';
@@ -1071,18 +1130,39 @@
 
         // Low scrub drawn in front of the hikers' feet for depth
         function drawForeground(ch) {
-            var r = rng(9091);
-            for (var i = 0; i < 105; i++) {
-                var bx = r() * LAYW;
-                var x = ((bx - S.cam * 1.5) % LAYW + LAYW) % LAYW;
-                if (x > W) continue;
-                var h = 6 + r() * 11;
-                var y = H - h - r() * 9;
-                ctx.fillStyle = ch.stars > 0.5 ? '#0b120d' : '#111c12';
-                ctx.fillRect(x | 0, y | 0, 3, h | 0);
-                ctx.fillRect((x - 3) | 0, (y + 3) | 0, 3, h - 3);
-                ctx.fillRect((x + 3) | 0, (y + 4) | 0, 3, h - 4);
+            var below = H - GROUND;
+            var bands = below > 90 ? 3 : 1;
+            for (var band = 0; band < bands; band++) {
+                var r = rng(9091 + band * 733);
+                var depth = (band + 1) / bands;              // 0..1, 1 = nearest
+                var speed = 1.15 + band * 0.4;
+                var count = Math.round((120 + band * 50) * Math.max(1, below / 60));
+                var scale = 4 + depth * (below > 90 ? 18 : 6);
+                var top = GROUND + 24 + (below - 24) * (band * 0.24);
+                var tone = ch.stars > 0.5
+                    ? ['#131c14', '#0d150e', '#080d09'][band]
+                    : ['#1a2718', '#132012', '#0c150d'][band];
+                for (var i = 0; i < count; i++) {
+                    var x = ((r() * LAYW - S.cam * speed) % LAYW + LAYW) % LAYW;
+                    if (x > W) continue;
+                    var h = scale * (0.5 + r() * 0.9);
+                    var y = top + r() * Math.max(1, (H - top) * 0.92) - h * 0.4;
+                    ctx.fillStyle = tone;
+                    ctx.fillRect(x | 0, y | 0, 3, h | 0);
+                    ctx.fillRect((x - 3) | 0, (y + h * 0.28) | 0, 3, h * 0.75);
+                    ctx.fillRect((x + 3) | 0, (y + h * 0.36) | 0, 3, h * 0.68);
+                }
             }
+        }
+
+        function placeTags() {
+            var tags = el('rmTags');
+            if (!tags) return;
+            var kids = tags.children;
+            // sit just above the characters' heads, in canvas space
+            var top = ((GROUND + 8 - ACT_H - 14) / H) * 100;
+            if (kids[0]) { kids[0].style.left = '60%'; kids[0].style.top = top + '%'; }
+            if (kids[1]) { kids[1].style.left = '40%'; kids[1].style.top = top + '%'; }
         }
 
         function syncNameTags() {
@@ -1291,6 +1371,8 @@
         /* ---------- loop ---------- */
         var last = 0, paused = false;
         document.addEventListener('visibilitychange', function () { paused = document.hidden; });
+        window.addEventListener('resize', fitCanvas);
+        if (window.ResizeObserver) new ResizeObserver(fitCanvas).observe(cv.parentNode);
 
         function frame(now) {
             requestAnimationFrame(frame);
@@ -1323,7 +1405,7 @@
                 tintCache('treeFar', '#141d18');
                 tintCache('treeNear', '#0d140f');
             }],
-            ['READY', function () { syncHud(); syncRoute(); }]
+            ['READY', function () { fitCanvas(); syncHud(); syncRoute(); }]
         ];
 
         var si = 0;
