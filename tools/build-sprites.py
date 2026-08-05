@@ -247,9 +247,13 @@ def build_animation(who, strip_file, anim, fps):
 
         ys, xs = np.where(alpha)
         base = ys.max() + 1
-        feet = alpha[max(base - 18, 0):base, :]
-        fx = np.where(feet.sum(axis=0) > 0)[0]
-        centre = int(round(fx.mean())) if len(fx) else int(round(xs.mean()))
+        top = ys.min()
+        # Anchor on the torso, NOT the feet. Aligning on the feet pins them to
+        # the same spot in every frame, so the legs never appear to move and the
+        # body wobbles around them instead - the walk reads as sliding.
+        torso = alpha[top:top + max(4, int((base - top) * 0.42)), :]
+        tx = np.where(torso.sum(axis=0) > 0)[0]
+        centre = int(round(tx.mean())) if len(tx) else int(round(xs.mean()))
 
         frame = np.zeros((FRAME_H, FRAME_W, 4), np.uint8)
         for sy in range(alpha.shape[0]):
