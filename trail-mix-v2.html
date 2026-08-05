@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Running in the Mountains Pt. 2 — a pixel-art hiking game about carrying a DJ set up a Bergen mountain. Mount Media.">
+    <meta name="description" content="Running in the Mountains Pt. 2 — play the hike, then come and walk it. A real DJ set on a real Bergen mountain. Mount Media.">
     <title>Running in the Mountains Pt. 2 (new sprites) — Ingrid Ormevik</title>
     <link rel="stylesheet" href="style.css">
     <style>
@@ -379,6 +379,28 @@
             .rm-btn { transition: none; }
         }
 
+        .rm-flag {
+            border-left: 3px solid #d4a758;
+            background: rgba(212, 167, 88, .07);
+            padding: 1em 1.2em;
+            margin-bottom: 1.6em;
+        }
+
+        .rm-facts { margin: 1.4em 0 2em 1.4em; }
+        .rm-facts li { margin-bottom: .7em; }
+
+        .rm-invite {
+            margin-top: 1.2em;
+            padding: .9em 1em;
+            border: 2px solid var(--rm-gold);
+            background: rgba(212, 167, 88, .08);
+            color: var(--rm-cream);
+            font-size: clamp(9px, 3cqmin, 13px);
+            line-height: 1.5;
+        }
+
+        .rm-invite b { color: var(--rm-gold); }
+
         .tagline {
             font-size: 1.1em;
             color: var(--text-light);
@@ -411,14 +433,26 @@
     <main>
         <article>
             <h2>Running in the Mountains Pt. 2</h2>
-            <p class="tagline">A guided journey through sound &amp; landscape</p>
-            <span class="game-meta">Mount Media | Pixel-Art Narrative Hike | Bergen, 2026</span>
+            <p class="tagline">A guided journey through sound &amp; landscape — and an invitation to the real one</p>
+            <span class="game-meta">Mount Media | Play the hike, then come and walk it | Bergen, 2026</span>
 
-            <p>This started as an actual hike. Jack a few steps ahead with a DJ controller he insisted on carrying up a mountain, me behind him with a speaker strapped to my pack like an oversized snail shell. Somewhere around the second switchback it became obvious this was happening at the top whether the trail agreed to it or not.</p>
+            <p class="rm-flag"><strong>This is happening for real.</strong> Not a metaphor, not a concept
+            piece — an actual hike, up an actual mountain in Bergen, with an actual DJ set at the top.
+            Play the game first. Then come and walk it with us.</p>
 
-            <p>So I turned us into characters. Jack is the Trail DJ — he drops the soundtrack and reads the path the way he reads a room. I'm the Sound Carrier — I walk behind, carry the vibe, and keep the battery percentage in my head at all times.</p>
+            <p>Jack goes in front with a DJ controller he insists on carrying up a mountain. I follow with
+            a speaker strapped to my pack like an oversized snail shell. Somewhere around the second
+            switchback it becomes obvious this is happening at the top whether the trail agrees to it or
+            not.</p>
 
-            <p>Six chapters, from the car park to the dark walk down. Hold to walk. The mountain does the rest.</p>
+            <p>So I turned us into characters, because the fastest way to explain a moving DJ set is to let
+            you walk one. Jack is the Trail DJ — he drops the soundtrack and reads the path the way he
+            reads a room. I'm the Sound Carrier — I walk in front, carry the vibe, and keep the battery
+            percentage in my head at all times.</p>
+
+            <p>Six chapters, from the car park to the dark walk down. Hold to walk. The mountain does the
+            rest. It takes about seven minutes, and by the end you'll know exactly what you'd be signing
+            up for — the climb, the light going, the flat bit at the top the size of a dance floor.</p>
 
             <p><em>This is the new build, running the sprite pack — 81 frames across 17 animations. The
             version currently published is still at <a href="trail-mix.html">trail-mix.html</a>, untouched,
@@ -448,6 +482,7 @@
                         <div class="rm-brand">MOUNT MEDIA PRESENTS</div>
                         <h3>RUNNING IN THE<br>MOUNTAINS PT. 2</h3>
                         <p class="rm-sub">A GUIDED JOURNEY THROUGH SOUND &amp; LANDSCAPE</p>
+                        <p class="rm-sub" style="margin-top:.5em;border-color:#d4a758;color:#d4a758">THIS HIKE IS REALLY HAPPENING · WALK IT WITH US</p>
                         <div class="rm-choices" style="margin-top:1.4em;min-width:min(280px,80%)">
                             <button class="rm-btn rm-go" id="rmStart">BEGIN THE JOURNEY →</button>
                         </div>
@@ -497,7 +532,32 @@
                 </div>
             </div>
 
-            <p>It's a true story, mostly — the mountain, the gear, the two of us. The choices and the meters are the game. The part where it turns out fine no matter what you pick is not a difficulty setting. That part's just how the actual hike went.</p>
+            <h3 id="join">Come and do it properly</h3>
+
+            <p>Everything in the game is real except the pixels. The trail is real, the gear is real, the
+            two people carrying it up are real, and the set at the top is going to happen with or without
+            an audience — though it is significantly better with one.</p>
+
+            <p>You don't need to be fit and you don't need to know anything about music. The pace in the
+            game is the pace on the day: steady, chatty, stopping whenever the view earns it. Bring shoes
+            you don't mind getting muddy, a jacket for when the light goes, and something to drink. We'll
+            bring the rest.</p>
+
+            <ul class="rm-facts">
+                <li><strong>Where</strong> — Bergen. The route climbs to a viewpoint over the fjord and the
+                    city lights, and we walk back down in the dark.</li>
+                <li><strong>How long</strong> — a few hours up, a set at the top, and a slow descent. No
+                    summit-bagging, no rush.</li>
+                <li><strong>What it costs</strong> — nothing. It's a walk with a soundtrack.</li>
+                <li><strong>Who it's for</strong> — anyone who wants to come. Bring people.</li>
+            </ul>
+
+            <p><strong>Want in?</strong> Mail me at
+            <a href="mailto:ingrid@bergenpride.no?subject=Trail%20Mix%20-%20count%20me%20in">ingrid@bergenpride.no</a>
+            with "count me in" and I'll send you the date, the meeting point and the trailhead. Say if
+            you're bringing anyone, so we know how loud to make it.</p>
+
+            <p><em>We don't chase summits. We chase moments that stay. Come and get one.</em></p>
         </article>
     </main>
 
@@ -1042,21 +1102,44 @@
 
         function drawParticles(ch) {
             // music notes rising from the speaker when sound is high
-            if (S.sound > 30 && !reduceMotion) {
-                if (S.notes.length < 14 && Math.random() < 0.06) {
-                    S.notes.push({ x: Math.round(W * 0.38), y: GROUND - 52, vy: -0.28 - Math.random() * 0.2, a: 1, sw: Math.random() * 6 });
+            if (S.sound > 12 && !reduceMotion) {
+                var want = 0.02 + (S.sound / 100) * 0.10;
+                if (S.notes.length < 16 && Math.random() < want) {
+                    // lifting off the speaker on Ingrid's back
+                    S.notes.push({
+                        x: Math.round(W * 0.555) + (Math.random() * 6 - 3),
+                        y: GROUND - 34 - Math.random() * 10,
+                        vy: -0.30 - Math.random() * 0.26,
+                        a: 1,
+                        sw: 7 + Math.random() * 14,
+                        ph: Math.random() * Math.PI * 2,
+                        drift: (Math.random() - 0.35) * 0.22,
+                        big: Math.random() > 0.55
+                    });
                 }
             }
             S.notes.forEach(function (n) {
-                n.y += n.vy; n.a -= 0.006;
-                var x = n.x + Math.sin(n.y * 0.09) * n.sw;
-                ctx.globalAlpha = clamp(n.a, 0, 1) * 0.85;
-                ctx.fillStyle = '#c9a6f0';
-                ctx.fillRect(x | 0, n.y | 0, 3, 2);
-                ctx.fillRect((x + 2) | 0, (n.y - 4) | 0, 1, 5);
-                ctx.fillRect((x + 3) | 0, (n.y - 4) | 0, 2, 1);
+                n.y += n.vy;
+                n.x += n.drift;
+                n.a -= 0.0058;
+                var x = n.x + Math.sin(n.y * 0.055 + n.ph) * n.sw;
+                var al = clamp(n.a, 0, 1);
+                ctx.globalAlpha = al * 0.35;
+                ctx.fillStyle = '#2a1c3a';
+                ctx.fillRect((x + 1) | 0, (n.y + 1) | 0, 4, 3);       // soft shadow
+                ctx.globalAlpha = al;
+                ctx.fillStyle = n.big ? '#f3d6ff' : '#c9a6f0';
+                if (n.big) {                                          // quaver
+                    ctx.fillRect(x | 0, n.y | 0, 4, 3);
+                    ctx.fillRect((x + 3) | 0, (n.y - 7) | 0, 2, 8);
+                    ctx.fillRect((x + 5) | 0, (n.y - 7) | 0, 2, 3);
+                } else {                                              // beam
+                    ctx.fillRect(x | 0, n.y | 0, 3, 3);
+                    ctx.fillRect((x + 2) | 0, (n.y - 6) | 0, 2, 7);
+                    ctx.fillRect((x + 4) | 0, (n.y - 6) | 0, 3, 2);
+                }
             });
-            S.notes = S.notes.filter(function (n) { return n.a > 0 && n.y > 30; });
+            S.notes = S.notes.filter(function (n) { return n.a > 0 && n.y > 18; });
             ctx.globalAlpha = 1;
 
             // fireflies / embers at night
@@ -1317,6 +1400,13 @@
             el('rmStoryTxt').textContent = body;
             var box = el('rmStoryChoices');
             box.innerHTML = '';
+
+            var invite = document.createElement('div');
+            invite.className = 'rm-invite';
+            invite.innerHTML = '<b>NOW DO IT FOR REAL.</b> This hike is actually happening — same ' +
+                'mountain, same gear, same set at the top. Scroll down for the details, or mail ' +
+                '<b>ingrid@bergenpride.no</b> with &quot;count me in&quot;.';
+            box.appendChild(invite);
             var b = document.createElement('button');
             b.className = 'rm-btn rm-go';
             b.textContent = '↺ WALK IT AGAIN';
