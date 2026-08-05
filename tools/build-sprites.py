@@ -20,7 +20,9 @@ alpha and rebuilds it:
                    that the pack's crops pulled in from neighbouring sheet rows
 
 Frames are then sliced on the pack's own gaps, foot-aligned into a uniform box,
-and written with a manifest. Re-run after replacing anything in assets/pack/.
+and written with a manifest. Output goes to assets/sprites-pack/ - the live
+game's own set in assets/sprites/ is never touched. Re-run after replacing
+anything in assets/pack/.
 
     python3 tools/build-sprites.py
 """
@@ -34,7 +36,7 @@ from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PACK = os.path.join(ROOT, 'assets', 'pack')
-OUT = os.path.join(ROOT, 'assets', 'sprites')
+OUT = os.path.join(ROOT, 'assets', 'sprites-pack')
 
 FRAME_W, FRAME_H = 128, 128
 FOOT_Y = 120                 # baseline inside the frame box
@@ -306,7 +308,7 @@ def main():
 
     with open(os.path.join(OUT, 'manifest.json'), 'w') as fh:
         json.dump(manifest, fh, indent=2)
-    print('\nmanifest -> assets/sprites/manifest.json')
+    print('\nmanifest -> assets/sprites-pack/manifest.json')
 
 
 if __name__ == '__main__':

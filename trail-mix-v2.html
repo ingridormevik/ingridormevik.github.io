@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Running in the Mountains Pt. 2 — a pixel-art hiking game about carrying a DJ set up a Bergen mountain. Mount Media.">
-    <title>Running in the Mountains Pt. 2 — Ingrid Ormevik</title>
+    <title>Running in the Mountains Pt. 2 (new sprites) — Ingrid Ormevik</title>
     <link rel="stylesheet" href="style.css">
     <style>
         /* ============================================
@@ -422,6 +422,10 @@
 
             <p>Six chapters, from the car park to the dark walk down. Hold to walk. The mountain does the rest.</p>
 
+            <p><em>This is the new build, running the sprite pack — 81 frames across 17 animations. The
+            version currently published is still at <a href="trail-mix.html">trail-mix.html</a>, untouched,
+            and every frame here can be inspected at <a href="sprite-preview.html">sprite-preview.html</a>.</em></p>
+
             <div class="rm">
                 <div class="rm-stage">
                     <canvas id="rmCanvas" width="480" height="270" role="img"
@@ -556,59 +560,74 @@
            Real pixel art, sliced from the Mount Media reference sheet and
            served from assets/sprites/. Frame boxes are foot-aligned, so a
            sprite can be swapped without touching the walk code.            */
-        var SPRW = 76, SPRH = 112;
-        var SHEET = {
-            ingrid: { idle: 4, walk: 6, look: 4 },
-            jack:   { idle: 4, walk: 6, mix: 3 }
+        var SPRW = 128, SPRH = 128;
+
+        // Which manifest animation drives each on-screen state. The pair walk
+        // to the RIGHT, so the *_right strips are the travelling frames.
+        var ANIM_MAP = {
+            ingrid: { walk: 'walk_right', idle: 'idle', look: 'looking_out', rest: 'listen_rest' },
+            jack:   { walk: 'walk_right', idle: 'idle', look: 'signal_lead',  rest: 'idle' }
         };
+
         var SPR = { ingrid: {}, jack: {} };
+        var FPS = { ingrid: {}, jack: {} };
 
         function loadSprites(done) {
-            var jobs = [];
-            Object.keys(SHEET).forEach(function (who) {
-                Object.keys(SHEET[who]).forEach(function (anim) {
-                    SPR[who][anim] = [];
-                    for (var i = 0; i < SHEET[who][anim]; i++) {
-                        jobs.push([who, anim, i]);
-                    }
-                });
-            });
+            fetch('assets/sprites-pack/manifest.json')
+                .then(function (r) { return r.json(); })
+                .then(function (man) {
+                    SPRW = man.frame.width;
+                    SPRH = man.frame.height;
 
-            var left = jobs.length, failed = 0;
-            if (!left) { done(false); return; }
+                    var jobs = [];
+                    Object.keys(ANIM_MAP).forEach(function (who) {
+                        var have = (man.characters[who] || {}).animations || {};
+                        Object.keys(ANIM_MAP[who]).forEach(function (state) {
+                            var anim = ANIM_MAP[who][state];
+                            var info = have[anim] || have.idle;
+                            if (!info) return;
+                            SPR[who][state] = [];
+                            FPS[who][state] = info.fps;
+                            for (var i = 0; i < info.frames; i++) {
+                                jobs.push([who, state, i, have[anim] ? anim : 'idle']);
+                            }
+                        });
+                    });
 
-            jobs.forEach(function (j) {
-                var who = j[0], anim = j[1], i = j[2];
-                var img = new Image();
-                img.onload = function () {
-                    SPR[who][anim][i] = img;
-                    if (--left === 0) done(failed > 0);
-                };
-                img.onerror = function () {
-                    failed++;
-                    if (--left === 0) done(true);
-                };
-                img.src = 'assets/sprites/' + who + '/' + anim + '_' +
-                          (i < 10 ? '0' + i : i) + '.png';
-            });
+                    if (!jobs.length) { done(true); return; }
+                    var left = jobs.length, failed = 0;
+                    jobs.forEach(function (j) {
+                        var who = j[0], state = j[1], i = j[2], anim = j[3];
+                        var img = new Image();
+                        img.onload = function () {
+                            SPR[who][state][i] = img;
+                            if (--left === 0) done(failed > 0);
+                        };
+                        img.onerror = function () {
+                            failed++;
+                            if (--left === 0) done(true);
+                        };
+                        img.src = 'assets/sprites-pack/' + who + '/' + anim + '_' +
+                                  (i < 10 ? '0' + i : i) + '.png';
+                    });
+                })
+                .catch(function () { done(true); });
         }
 
-        // Fallback silhouettes, only used if the PNGs cannot be fetched.
+        // Only used if the manifest or the PNGs cannot be fetched at all.
         function stubSprites() {
-            Object.keys(SHEET).forEach(function (who) {
-                Object.keys(SHEET[who]).forEach(function (anim) {
-                    for (var i = 0; i < SHEET[who][anim]; i++) {
-                        if (SPR[who][anim][i]) continue;
-                        var m = make(SPRW, SPRH), g = m.g;
-                        var body = who === 'jack' ? '#d9a02c' : '#22222a';
-                        g.fillStyle = body;
-                        g.fillRect(28, 34, 20, 40);
-                        g.fillStyle = who === 'jack' ? '#d9a077' : '#e0a880';
-                        g.fillRect(30, 16, 16, 18);
-                        g.fillRect(30, 74, 6, 30);
-                        g.fillRect(40, 74, 6, 30);
-                        SPR[who][anim][i] = m.c;
-                    }
+            Object.keys(ANIM_MAP).forEach(function (who) {
+                Object.keys(ANIM_MAP[who]).forEach(function (state) {
+                    if (SPR[who][state] && SPR[who][state][0]) return;
+                    var m = make(SPRW, SPRH), g = m.g;
+                    g.fillStyle = who === 'jack' ? '#d9a02c' : '#22222a';
+                    g.fillRect(52, 46, 24, 44);
+                    g.fillStyle = who === 'jack' ? '#d9a077' : '#e0a880';
+                    g.fillRect(54, 26, 20, 20);
+                    g.fillRect(54, 90, 7, 30);
+                    g.fillRect(67, 90, 7, 30);
+                    SPR[who][state] = [m.c];
+                    FPS[who][state] = 4;
                 });
             });
         }
@@ -1018,7 +1037,7 @@
             return 'idle';
         }
 
-        var ACT = 0.82;                       // sprites are ~96px tall natively
+        var ACT = 0.75;                       // 128px frame box -> ~95px character
         var ACT_W = SPRW * ACT, ACT_H = SPRH * ACT;
 
         function actor(img, centerX, footY) {
@@ -1028,9 +1047,11 @@
                 Math.round(ACT_W), Math.round(ACT_H));
         }
 
-        function frameOf(who, anim, offset) {
-            var set = SPR[who][anim] && SPR[who][anim].length ? SPR[who][anim] : SPR[who].idle;
-            var fps = S.walking ? 8 : 3.5;
+        function frameOf(who, state, offset) {
+            var set = SPR[who][state];
+            if (!set || !set.length) { state = 'idle'; set = SPR[who].idle; }
+            if (!set || !set.length) return null;
+            var fps = FPS[who][state] || 6;
             return set[Math.floor(S.t * fps + offset) % set.length];
         }
 

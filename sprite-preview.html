@@ -139,9 +139,9 @@
     <h1>Trail Mix — Sprite Preview</h1>
     <p class="lede">
         Every animation built by <code>tools/build-sprites.py</code> from <code>assets/pack/</code>.
-        Nothing here is wired into the game yet. Check the frame boundaries and the cutouts,
-        then say which animations are approved.
-        <a href="trail-mix.html">← back to the game</a>
+        Check the frame boundaries and the cutouts, then say which animations are approved.
+        <a href="trail-mix-v2.html">play these in the game →</a> ·
+        <a href="trail-mix.html">the current live game (unchanged) →</a>
     </p>
 
     <div class="note">
@@ -183,11 +183,11 @@
         return g;
     }
 
-    fetch('assets/sprites/manifest.json')
+    fetch('assets/sprites-pack/manifest.json')
         .then(function (r) { return r.json(); })
         .then(build)
         .catch(function () {
-            out.innerHTML = '<p style="color:#c74a3c">Could not load assets/sprites/manifest.json — ' +
+            out.innerHTML = '<p style="color:#c74a3c">Could not load assets/sprites-pack/manifest.json — ' +
                             'run <code>python3 tools/build-sprites.py</code> first.</p>';
         });
 
@@ -213,7 +213,7 @@
                 [1, 2].forEach(function (s) {
                     var c = document.createElement('div'); c.className = 'cell';
                     var img = document.createElement('img');
-                    img.src = 'assets/sprites/' + who + '/' + ch.portrait;
+                    img.src = 'assets/sprites-pack/' + who + '/' + ch.portrait;
                     img.className = 'checker';
                     img.style.width = (170 * s) + 'px';
                     c.appendChild(img);
@@ -265,7 +265,7 @@
                             px(c).drawImage(im, 0, 0);
                             strip.appendChild(c);
                         };
-                        im.src = 'assets/sprites/' + who + '/' + anim + '_' +
+                        im.src = 'assets/sprites-pack/' + who + '/' + anim + '_' +
                                  (i < 10 ? '0' + i : i) + '.png';
                         imgs[i] = im;
                     })(i);
