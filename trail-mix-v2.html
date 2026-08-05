@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Running in the Mountains Pt. 2 — a pixel-art hiking game about carrying a DJ set up a Bergen mountain. Mount Media.">
+    <title>Running in the Mountains Pt. 2 (new sprites) — Ingrid Ormevik</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ============================================
+           RUNNING IN THE MOUNTAINS PT.2
+           Self-contained pixel-art narrative hike
+           ============================================ */
+
+        .rm {
+            --rm-ink: #0d0a12;
+            --rm-panel: #16121c;
+            --rm-panel-hi: #221a28;
+            --rm-edge: #4a3a2a;
+            --rm-edge-hi: #6b5438;
+            --rm-gold: #d4a758;
+            --rm-cream: #e8dcc0;
+            --rm-dim: #9a8a76;
+            --rm-red: #c74a3c;
+            --rm-green: #6aa84a;
+            --rm-blue: #4a8ac7;
+            --rm-purple: #9a6ac7;
+
+            margin: 4em 0;
+            font-family: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+            color: var(--rm-cream);
+            background: var(--rm-ink);
+            border: 3px solid var(--rm-edge);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, .5);
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .rm * { box-sizing: border-box; }
+
+        /* --- Stage --- */
+        .rm-stage {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            container-type: size;
+            background: #0a0812;
+            overflow: hidden;
+        }
+
+        .rm-stage canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            object-fit: contain;
+            object-position: center top;
+        }
+
+        /* --- Overlays --- */
+        .rm-layer {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            pointer-events: none;
+        }
+
+        .rm-layer.on { pointer-events: auto; }
+        .rm-hide { display: none !important; }
+
+        /* Loading */
+        .rm-load {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            background: var(--rm-ink);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .rm-load-bar {
+            width: min(260px, 70%);
+            height: 10px;
+            border: 2px solid var(--rm-edge);
+            background: #0a0812;
+            padding: 2px;
+        }
+
+        .rm-load-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--rm-gold);
+            transition: width .18s linear;
+        }
+
+        /* Title */
+        .rm-title {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4% 6%;
+            gap: 2px;
+            background: linear-gradient(180deg, rgba(10, 8, 18, .5), rgba(10, 8, 18, .86));
+        }
+
+        .rm-brand {
+            font-size: clamp(.5rem, 1.5vw, .72rem);
+            letter-spacing: .34em;
+            color: var(--rm-gold);
+            margin-bottom: .4em;
+        }
+
+        .rm-title h3 {
+            margin: 0;
+            font-family: inherit;
+            color: var(--rm-cream);
+            font-size: clamp(1.1rem, 4.4vw, 2.5rem);
+            line-height: 1.08;
+            letter-spacing: .04em;
+            text-shadow: 0 3px 0 #6b2d1f, 0 4px 10px rgba(0, 0, 0, .6);
+        }
+
+        .rm-sub {
+            margin: .9em 0 0;
+            font-size: clamp(.52rem, 1.5vw, .74rem);
+            letter-spacing: .16em;
+            color: var(--rm-dim);
+            border: 1px solid var(--rm-edge);
+            padding: .5em 1em;
+        }
+
+        /* Story card */
+        .rm-story {
+            flex-direction: column;
+            padding: 3%;
+            overflow-y: auto;
+            background: linear-gradient(180deg, transparent 12%, rgba(10, 8, 18, .82) 62%);
+        }
+
+        .rm-card {
+            border: 2px solid var(--rm-edge);
+            background: rgba(22, 18, 28, .95);
+            padding: clamp(9px, 3.1cqmin, 18px);
+            max-width: 780px;
+            width: 100%;
+            max-height: 78cqh;
+            overflow-y: auto;
+            margin: auto auto 0;
+            flex: none;
+        }
+
+        .rm-chapter-tag {
+            color: var(--rm-gold);
+            font-size: clamp(8px, 2.8cqmin, 12px);
+            letter-spacing: .2em;
+            margin-bottom: .7em;
+        }
+
+        .rm-text {
+            font-size: clamp(10px, 3.3cqmin, 14px);
+            line-height: 1.6;
+            color: var(--rm-cream);
+            margin: 0;
+            min-height: 3.4em;
+        }
+
+        .rm-choices {
+            display: grid;
+            gap: 7px;
+            margin-top: clamp(10px, 1.8vw, 16px);
+        }
+
+        .rm-btn {
+            font-family: inherit;
+            font-size: clamp(9px, 3cqmin, 13px);
+            line-height: 1.45;
+            text-align: left;
+            color: var(--rm-cream);
+            background: var(--rm-panel-hi);
+            border: 2px solid var(--rm-edge);
+            padding: .62em .9em;
+            cursor: pointer;
+            transition: background .12s, border-color .12s, transform .12s;
+        }
+
+        .rm-btn:hover,
+        .rm-btn:focus-visible {
+            background: #322538;
+            border-color: var(--rm-gold);
+            transform: translateX(3px);
+            outline: none;
+        }
+
+        .rm-btn.rm-go {
+            text-align: center;
+            color: var(--rm-ink);
+            background: var(--rm-gold);
+            border-color: var(--rm-gold);
+            letter-spacing: .16em;
+            font-weight: 700;
+        }
+
+        .rm-btn.rm-go:hover { background: #f0c06a; transform: translateY(-2px); }
+
+        /* Chapter interstitial */
+        .rm-chapcard {
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 8, 18, .9);
+            flex-direction: column;
+            gap: .5em;
+            text-align: center;
+            padding: 20px;
+            transition: opacity .5s ease;
+        }
+
+        .rm-chapcard .n {
+            color: var(--rm-gold);
+            font-size: clamp(.55rem, 1.6vw, .8rem);
+            letter-spacing: .3em;
+        }
+
+        .rm-chapcard .t {
+            font-size: clamp(1rem, 3.6vw, 2rem);
+            letter-spacing: .06em;
+            color: var(--rm-cream);
+        }
+
+        /* HUD */
+        .rm-hud {
+            display: flex;
+            align-items: center;
+            gap: clamp(6px, 1.4vw, 16px);
+            flex-wrap: wrap;
+            padding: clamp(7px, 1.3vw, 12px) clamp(8px, 1.6vw, 16px);
+            border-top: 3px solid var(--rm-edge);
+            background: var(--rm-panel);
+        }
+
+        .rm-stat { display: flex; align-items: center; gap: 6px; }
+
+        .rm-stat-ico { width: 14px; height: 14px; flex: none; }
+
+        .rm-pips { display: flex; gap: 2px; }
+
+        .rm-pips i {
+            width: clamp(4px, .85vw, 7px);
+            height: clamp(9px, 1.5vw, 13px);
+            background: #2c2434;
+            display: block;
+        }
+
+        .rm-pips i.f { background: var(--pip, var(--rm-gold)); }
+
+        .rm-stat-lab {
+            font-size: clamp(.42rem, 1.05vw, .58rem);
+            letter-spacing: .12em;
+            color: var(--rm-dim);
+        }
+
+        .rm-spacer { flex: 1 1 auto; }
+
+        .rm-icobtn {
+            font-family: inherit;
+            font-size: clamp(.44rem, 1.1vw, .6rem);
+            letter-spacing: .1em;
+            color: var(--rm-dim);
+            background: var(--rm-panel-hi);
+            border: 2px solid var(--rm-edge);
+            padding: .55em .8em;
+            cursor: pointer;
+        }
+
+        .rm-icobtn:hover { color: var(--rm-cream); border-color: var(--rm-gold); }
+        .rm-icobtn[aria-pressed="true"] { color: var(--rm-gold); border-color: var(--rm-gold); }
+
+        /* Floating name tags */
+        .rm-tags { position: absolute; inset: 0; pointer-events: none; }
+
+        .rm-tag {
+            position: absolute;
+            top: 25cqw;
+            transform: translateX(-50%);
+            font-size: clamp(.42rem, 1.15vw, .6rem);
+            letter-spacing: .14em;
+            color: var(--rm-gold);
+            background: rgba(10, 8, 18, .8);
+            border: 1px solid var(--rm-edge);
+            padding: .28em .6em;
+            white-space: nowrap;
+        }
+
+        .rm-tag b {
+            position: absolute;
+            left: 50%;
+            bottom: -5px;
+            margin-left: -4px;
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 4px solid var(--rm-edge);
+        }
+
+        /* Walk prompt */
+        .rm-prompt {
+            position: absolute;
+            left: 50%;
+            top: 48cqw;
+            transform: translateX(-50%);
+            font-size: clamp(.5rem, 1.4vw, .68rem);
+            letter-spacing: .18em;
+            color: var(--rm-cream);
+            background: rgba(10, 8, 18, .78);
+            border: 2px solid var(--rm-edge);
+            padding: .5em 1em;
+            white-space: nowrap;
+            animation: rmPulse 1.9s ease-in-out infinite;
+        }
+
+        @keyframes rmPulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+        /* Route progress */
+        .rm-route {
+            position: absolute;
+            top: 2.4cqw;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(10, 8, 18, .68);
+            border: 2px solid var(--rm-edge);
+            padding: .4em .7em;
+        }
+
+        .rm-route i {
+            width: 7px;
+            height: 7px;
+            background: #2c2434;
+            display: block;
+        }
+
+        .rm-route i.d { background: var(--rm-gold); }
+        .rm-route i.c { background: var(--rm-cream); box-shadow: 0 0 0 2px rgba(212, 167, 88, .35); }
+
+        .rm-alt {
+            font-size: clamp(.42rem, 1.05vw, .56rem);
+            letter-spacing: .1em;
+            color: var(--rm-dim);
+            margin-left: 5px;
+        }
+
+        .rm-cap {
+            padding: clamp(8px, 1.4vw, 13px) clamp(9px, 1.6vw, 16px);
+            border-top: 2px solid #2a2230;
+            background: #100d16;
+            font-size: clamp(.44rem, 1.1vw, .58rem);
+            letter-spacing: .14em;
+            color: #6b5f52;
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 620px) {
+            .rm-stage.tall { aspect-ratio: 3 / 4; }
+            .rm-title, .rm-chapcard { justify-content: flex-start; padding-top: 12%; }
+            .rm-stat-lab { display: none; }
+            .rm-cap { justify-content: center; text-align: center; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rm-prompt { animation: none; opacity: .9; }
+            .rm-btn { transition: none; }
+        }
+
+        .tagline {
+            font-size: 1.1em;
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: -.6em;
+            margin-bottom: 1.6em;
+        }
+
+        .game-meta {
+            font-size: .7em;
+            color: var(--text-lighter);
+            margin-bottom: 3em;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="index.html">Ingrid Ormevik</a></h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="blog.html">Writing</a>
+            <a href="about.html">About</a>
+            <a href="touch%20game.html">Projects</a>
+        </nav>
+    </header>
+
+    <main>
+        <article>
+            <h2>Running in the Mountains Pt. 2</h2>
+            <p class="tagline">A guided journey through sound &amp; landscape</p>
+            <span class="game-meta">Mount Media | Pixel-Art Narrative Hike | Bergen, 2026</span>
+
+            <p>This started as an actual hike. Jack a few steps ahead with a DJ controller he insisted on carrying up a mountain, me behind him with a speaker strapped to my pack like an oversized snail shell. Somewhere around the second switchback it became obvious this was happening at the top whether the trail agreed to it or not.</p>
+
+            <p>So I turned us into characters. Jack is the Trail DJ — he drops the soundtrack and reads the path the way he reads a room. I'm the Sound Carrier — I walk behind, carry the vibe, and keep the battery percentage in my head at all times.</p>
+
+            <p>Six chapters, from the car park to the dark walk down. Hold to walk. The mountain does the rest.</p>
+
+            <p><em>This is the new build, running the sprite pack — 81 frames across 17 animations. The
+            version currently published is still at <a href="trail-mix.html">trail-mix.html</a>, untouched,
+            and every frame here can be inspected at <a href="sprite-preview.html">sprite-preview.html</a>.</em></p>
+
+            <div class="rm">
+                <div class="rm-stage">
+                    <canvas id="rmCanvas" width="480" height="270" role="img"
+                            aria-label="Pixel-art scene of two hikers walking a Bergen mountain trail at sunset, one carrying a DJ controller, one carrying a speaker backpack."></canvas>
+
+                    <div class="rm-route rm-hide" id="rmRoute" aria-hidden="true"></div>
+                    <div class="rm-tags rm-hide" id="rmTags" aria-hidden="true">
+                        <span class="rm-tag" style="left:60.8%">JACK<b></b></span>
+                        <span class="rm-tag" style="left:40.8%">INGRID<b></b></span>
+                    </div>
+                    <div class="rm-prompt rm-hide" id="rmPrompt">HOLD → OR TAP TO WALK</div>
+
+                    <!-- Loading -->
+                    <div class="rm-layer rm-load on" id="rmLoad">
+                        <div class="rm-brand">MOUNT MEDIA</div>
+                        <div class="rm-load-bar"><div class="rm-load-fill" id="rmLoadFill"></div></div>
+                        <div class="rm-stat-lab" id="rmLoadTxt">DRAWING SPRITES…</div>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="rm-layer rm-title rm-hide" id="rmTitle">
+                        <div class="rm-brand">MOUNT MEDIA PRESENTS</div>
+                        <h3>RUNNING IN THE<br>MOUNTAINS PT. 2</h3>
+                        <p class="rm-sub">A GUIDED JOURNEY THROUGH SOUND &amp; LANDSCAPE</p>
+                        <div class="rm-choices" style="margin-top:1.4em;min-width:min(280px,80%)">
+                            <button class="rm-btn rm-go" id="rmStart">BEGIN THE JOURNEY →</button>
+                        </div>
+                    </div>
+
+                    <!-- Chapter card -->
+                    <div class="rm-layer rm-chapcard rm-hide" id="rmChap" aria-hidden="true">
+                        <div class="n" id="rmChapN"></div>
+                        <div class="t" id="rmChapT"></div>
+                    </div>
+
+                    <!-- Story -->
+                    <div class="rm-layer rm-story rm-hide" id="rmStory">
+                        <div class="rm-card">
+                            <div class="rm-chapter-tag" id="rmStoryTag"></div>
+                            <p class="rm-text" id="rmStoryTxt"></p>
+                            <div class="rm-choices" id="rmStoryChoices"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HUD -->
+                <div class="rm-hud">
+                    <div class="rm-stat">
+                        <svg class="rm-stat-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="#c74a3c" d="M8 14 2 8.5C.5 7 .5 4.5 2.5 3.2 4 2.2 6 2.6 7 4l1 1.2L9 4c1-1.4 3-1.8 4.5-.8 2 1.3 2 3.8.5 5.3z"/></svg>
+                        <span class="rm-stat-lab">ENERGY</span>
+                        <span class="rm-pips" id="rmPipEnergy" style="--pip:#c74a3c"></span>
+                    </div>
+                    <div class="rm-stat">
+                        <svg class="rm-stat-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="#9a6ac7" stroke-width="1.6" d="M3 10V8a5 5 0 0 1 10 0v2"/><rect x="1.5" y="9.5" width="3.5" height="5" fill="#9a6ac7"/><rect x="11" y="9.5" width="3.5" height="5" fill="#9a6ac7"/></svg>
+                        <span class="rm-stat-lab">SOUND</span>
+                        <span class="rm-pips" id="rmPipSound" style="--pip:#9a6ac7"></span>
+                    </div>
+                    <div class="rm-stat">
+                        <svg class="rm-stat-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="#6aa84a" d="M8 14 2 8.5C.5 7 .5 4.5 2.5 3.2 4 2.2 6 2.6 7 4l1 1.2L9 4c1-1.4 3-1.8 4.5-.8 2 1.3 2 3.8.5 5.3z"/></svg>
+                        <span class="rm-stat-lab">CONNECTION</span>
+                        <span class="rm-pips" id="rmPipConn" style="--pip:#6aa84a"></span>
+                    </div>
+                    <div class="rm-spacer"></div>
+                    <button class="rm-icobtn" id="rmSound" aria-pressed="false">♪ SOUND OFF</button>
+                    <button class="rm-icobtn" id="rmReset">↺ RESTART</button>
+                </div>
+
+                <div class="rm-cap">
+                    <span>FLØYEN TRAIL · BERGEN, NORWAY</span>
+                    <span>WE DON'T CHASE SUMMITS. WE CHASE MOMENTS THAT STAY.</span>
+                </div>
+            </div>
+
+            <p>It's a true story, mostly — the mountain, the gear, the two of us. The choices and the meters are the game. The part where it turns out fine no matter what you pick is not a difficulty setting. That part's just how the actual hike went.</p>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Ingrid Ormevik | Digital Culture Student, University of Bergen</p>
+        <p>Digital Media Strategist, Bergen Pride | Board Member, FRI Vestland | Research Intern, Centre for Digital Narrative</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        var cv = document.getElementById('rmCanvas');
+        if (!cv || !cv.getContext) return;
+        var ctx = cv.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+
+        var W = 480, H = 270, GROUND = 222;
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ---------- helpers ---------- */
+        function el(id) { return document.getElementById(id); }
+        function make(w, h) {
+            var c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            var g = c.getContext('2d');
+            g.imageSmoothingEnabled = false;
+            return { c: c, g: g };
+        }
+        function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+        function lerp(a, b, t) { return a + (b - a) * t; }
+        function rng(seed) {
+            var s = seed >>> 0;
+            return function () {
+                s ^= s << 13; s >>>= 0;
+                s ^= s >> 17;
+                s ^= s << 5; s >>>= 0;
+                return s / 4294967296;
+            };
+        }
+
+        /* ---------- palette ---------- */
+        var P = {
+            jSkin: '#d9a077', jSkinS: '#b07c56',
+            jHair: '#a29e9a', jHairS: '#767270', jHairH: '#bebab6',
+            jShirt: '#d9a02c', jShirtS: '#a8761a',
+            jShort: '#a8804a', jShortS: '#7e5f36',
+            iSkin: '#e0a880', iSkinS: '#b8825c',
+            iHair: '#8f4a24', iHairS: '#682f14', iHairH: '#a85c2e',
+            dark: '#1c1820', dark2: '#282430', darkS: '#12101a',
+            sock: '#e8e0d0', shoe: '#f2eee2', shoeS: '#bdb6a6',
+            gear: '#2a2a34', gearS: '#1a1a22', gearHi: '#4e4e5c',
+            gold: '#d4a758', cream: '#e8dcc0'
+        };
+
+        /* ---------- character sprites ----------
+           Real pixel art, sliced from the Mount Media reference sheet and
+           served from assets/sprites/. Frame boxes are foot-aligned, so a
+           sprite can be swapped without touching the walk code.            */
+        var SPRW = 128, SPRH = 128;
+
+        // Which manifest animation drives each on-screen state. The pair walk
+        // to the RIGHT, so the *_right strips are the travelling frames.
+        var ANIM_MAP = {
+            ingrid: { walk: 'walk_right', idle: 'idle', look: 'looking_out', rest: 'listen_rest' },
+            jack:   { walk: 'walk_right', idle: 'idle', look: 'signal_lead',  rest: 'idle' }
+        };
+
+        var SPR = { ingrid: {}, jack: {} };
+        var FPS = { ingrid: {}, jack: {} };
+
+        function loadSprites(done) {
+            fetch('assets/sprites-pack/manifest.json')
+                .then(function (r) { return r.json(); })
+                .then(function (man) {
+                    SPRW = man.frame.width;
+                    SPRH = man.frame.height;
+
+                    var jobs = [];
+                    Object.keys(ANIM_MAP).forEach(function (who) {
+                        var have = (man.characters[who] || {}).animations || {};
+                        Object.keys(ANIM_MAP[who]).forEach(function (state) {
+                            var anim = ANIM_MAP[who][state];
+                            var info = have[anim] || have.idle;
+                            if (!info) return;
+                            SPR[who][state] = [];
+                            FPS[who][state] = info.fps;
+                            for (var i = 0; i < info.frames; i++) {
+                                jobs.push([who, state, i, have[anim] ? anim : 'idle']);
+                            }
+                        });
+                    });
+
+                    if (!jobs.length) { done(true); return; }
+                    var left = jobs.length, failed = 0;
+                    jobs.forEach(function (j) {
+                        var who = j[0], state = j[1], i = j[2], anim = j[3];
+                        var img = new Image();
+                        img.onload = function () {
+                            SPR[who][state][i] = img;
+                            if (--left === 0) done(failed > 0);
+                        };
+                        img.onerror = function () {
+                            failed++;
+                            if (--left === 0) done(true);
+                        };
+                        img.src = 'assets/sprites-pack/' + who + '/' + anim + '_' +
+                                  (i < 10 ? '0' + i : i) + '.png';
+                    });
+                })
+                .catch(function () { done(true); });
+        }
+
+        // Only used if the manifest or the PNGs cannot be fetched at all.
+        function stubSprites() {
+            Object.keys(ANIM_MAP).forEach(function (who) {
+                Object.keys(ANIM_MAP[who]).forEach(function (state) {
+                    if (SPR[who][state] && SPR[who][state][0]) return;
+                    var m = make(SPRW, SPRH), g = m.g;
+                    g.fillStyle = who === 'jack' ? '#d9a02c' : '#22222a';
+                    g.fillRect(52, 46, 24, 44);
+                    g.fillStyle = who === 'jack' ? '#d9a077' : '#e0a880';
+                    g.fillRect(54, 26, 20, 20);
+                    g.fillRect(54, 90, 7, 30);
+                    g.fillRect(67, 90, 7, 30);
+                    SPR[who][state] = [m.c];
+                    FPS[who][state] = 4;
+                });
+            });
+        }
+
+        /* ---------- scenery layers ---------- */
+        var LAYW = 960;
+
+        function mountainLayer(seed, colr, baseY, amp, step) {
+            var m = make(LAYW, H);
+            var r = rng(seed), g = m.g;
+            g.fillStyle = colr;
+            g.beginPath();
+            g.moveTo(0, H);
+            var y = baseY;
+            var pts = [];
+            for (var x = 0; x <= LAYW; x += step) {
+                y = baseY + (r() - 0.5) * amp;
+                pts.push([x, y]);
+            }
+            pts[pts.length - 1][1] = pts[0][1];
+            pts.forEach(function (p) { g.lineTo(p[0], p[1]); });
+            g.lineTo(LAYW, H);
+            g.closePath();
+            g.fill();
+            return m.c;
+        }
+
+        function treeLayer(seed, colr, colr2, baseY, minH, maxH, gap) {
+            var m = make(LAYW, H);
+            var r = rng(seed), g = m.g;
+            for (var x = -10; x < LAYW + 10; x += gap * (0.6 + r() * 0.8)) {
+                var th = minH + r() * (maxH - minH);
+                var tw = th * 0.36;
+                var bx = Math.round(x), by = Math.round(baseY);
+                g.fillStyle = r() > 0.5 ? colr : colr2;
+                // conifer: stacked triangles, pixel-snapped
+                var layers = 4;
+                for (var L = 0; L < layers; L++) {
+                    var lw = Math.round(tw * (1 - L * 0.18));
+                    var ly = Math.round(by - (th / layers) * (L + 1));
+                    var lh = Math.round(th / layers) + 2;
+                    for (var s = 0; s < lh; s += 2) {
+                        var wr = Math.round(lw * (s / lh));
+                        g.fillRect(bx - wr, ly + s, wr * 2 + 1, 2);
+                    }
+                }
+                g.fillRect(bx - 1, by - 4, 2, 5);
+            }
+            return m.c;
+        }
+
+        var LAYERS = {};
+        function buildLayers() {
+            LAYERS.far = mountainLayer(1337, '#000000', 144, 39, 60);
+            LAYERS.mid = mountainLayer(90210, '#000000', 168, 27, 42);
+            LAYERS.treeFar = treeLayer(555, '#000000', '#000000', 198, 24, 45, 20);
+            LAYERS.treeNear = treeLayer(777, '#000000', '#000000', 234, 39, 72, 33);
+        }
+
+        function tinted(src, colr) {
+            var m = make(LAYW, H);
+            m.g.drawImage(src, 0, 0);
+            m.g.globalCompositeOperation = 'source-in';
+            m.g.fillStyle = colr;
+            m.g.fillRect(0, 0, LAYW, H);
+            return m.c;
+        }
+
+        /* ---------- chapters ---------- */
+        var CH = [
+            {
+                n: 'CHAPTER ONE', t: 'The Call',
+                sky: ['#38537d', '#7b8fb2', '#c0a898', '#e8bf8c'],
+                sun: '#ffe6b8', sunY: 168, fog: 0.06, stars: 0.08, city: 0.5, dist: 520,
+                tag: 'CHAPTER ONE · THE CALL · 40M',
+                text: "The car park empties out onto gravel, then dirt, then nothing but trail. Jack has the controller out of the van before the doors are properly shut, testing a rhythm under his breath with no source for it yet. Ingrid swings the speaker onto her back and adjusts it until it stops arguing with her spine.",
+                choices: [
+                    { label: '▸ Start the first track here, at the bottom', e: -5, s: 18, c: 10,
+                      out: "The first track goes on at the trailhead, low and unhurried. It turns the walk-in from an approach into a beginning. Two people out for a hike become two people arriving somewhere." },
+                    { label: '▸ Save the batteries. Walk in quiet.', e: 15, s: 0, c: 5,
+                      out: "They walk in quiet instead, boots on gravel doing the percussion. Ingrid runs the numbers — battery against elevation — and decides the mountain can wait for it." }
+                ]
+            },
+            {
+                n: 'CHAPTER TWO', t: 'Into the Woods',
+                sky: ['#3f74a0', '#7ba3c6', '#accbd0', '#d6d3ae'],
+                sun: '#fff4d0', sunY: 144, fog: 0.14, stars: 0, city: 0.25, dist: 560,
+                tag: 'CHAPTER TWO · INTO THE WOODS · 120M',
+                text: "The city noise thins out and then stops mattering. Trees close over the path. Somewhere behind them Bergen is still doing whatever Bergen does on a Saturday, and it has stopped being relevant. The walking has found its own tempo and neither of them set it.",
+                choices: [
+                    { label: '▸ Let the forest set the tempo', e: 10, s: 8, c: 15,
+                      out: "Jack drops the BPM to meet the pace of the walking instead of pushing against it. The set stops being something they're carrying and starts being something they're inside." },
+                    { label: '▸ Push the pace, push the beat', e: -12, s: 18, c: 8,
+                      out: "He pushes it faster and the walking follows, because it always does. They cover ground quickly and arrive at the next bend breathing harder than the trail strictly required." }
+                ]
+            },
+            {
+                n: 'CHAPTER THREE', t: 'The Climb',
+                sky: ['#2e2a4a', '#6b4a63', '#b06a52', '#d99a5e'],
+                sun: '#f2b45e', sunY: 132, fog: 0.18, stars: 0.1, city: 0.2, dist: 600,
+                tag: 'CHAPTER THREE · THE CLIMB · 220M',
+                text: "The trail folds back on itself and stops pretending to be friendly. Conversation turns into breathing. Jack is still in front, setting a pace that is really a dare, and the speaker on Ingrid's back has started to feel like it is negotiating with gravity on its own terms.",
+                choices: [
+                    { label: '▸ Take the speaker off her back for a stretch', e: 18, s: -5, c: 20,
+                      out: "Jack takes the speaker for the worst of the switchbacks without being asked and without making it a thing. Ingrid carries the controller. Neither of them mentions it at the top, which is how she knows it counted." },
+                    { label: '▸ Race him to the next bend', e: -18, s: 15, c: 12,
+                      out: "She catches him at the bend, barely, and he laughs like he let her — he didn't. It costs both of them air they'll want back later, and the trail gets shorter when it's a competition." }
+                ]
+            },
+            {
+                n: 'CHAPTER FOUR', t: 'The View',
+                sky: ['#241a3a', '#7a2f4a', '#d15a34', '#f09048'],
+                sun: '#ffd27a', sunY: 144, fog: 0.1, stars: 0.35, city: 1, dist: 560,
+                tag: 'CHAPTER FOUR · THE VIEW · 320M',
+                text: "The trees give up first. The path opens onto bare rock and suddenly there is a horizon where the branches were — the fjord going gold, the city laid out below in a grid of small lights, seven mountains holding all of it. It is the kind of view that makes people stop talking. Jack does not stop talking. He is already describing what the drop is going to sound like from up here.",
+                choices: [
+                    { label: '▸ Play for the landscape', e: -8, s: 22, c: 12,
+                      out: "They turn the speaker outward, toward the fjord, and play to the valley instead of to each other. It is an absurd thing to do and it works completely. The mountains listen back." },
+                    { label: '▸ Sit down. Say nothing. Watch it.', e: 15, s: 0, c: 22,
+                      out: "They sit on their packs with the gear switched off and watch the light go from gold to red to gone. Twenty minutes of nothing. It ends up being the part either of them describes first, afterwards." }
+                ]
+            },
+            {
+                n: 'CHAPTER FIVE', t: 'The Flow',
+                sky: ['#150f2a', '#3a1f45', '#7a2f45', '#b04a3a'],
+                sun: '#e8703a', sunY: 174, fog: 0.14, stars: 0.6, city: 1, dist: 580, night: true,
+                tag: 'CHAPTER FIVE · THE FLOW · 380M',
+                text: "Flat ground at the top, roughly the size of a dance floor, which nobody planned and everybody accepts. Jack unclips the controller before his pack is off. Ingrid sets the speaker on a rock, checks the charge, and counts him in. Whatever this is, it is happening now.",
+                choices: [
+                    { label: '▸ Go all in. Full set, full volume.', e: -15, s: 25, c: 15,
+                      out: "They give it everything. Two strangers coming down off Ulriken stop, look at each other, and stay for three tracks. For about forty minutes there is a functioning party at 380 metres, run entirely off one speaker and two people who never rehearsed this." },
+                    { label: '▸ Keep it low. Keep it theirs.', e: 10, s: 8, c: 25,
+                      out: "They keep it quiet and close, volume low enough that the wind stays in the mix. Nobody stops. Nobody needs to. It stays a thing that belonged to the two of them and the rock they were standing on." }
+                ]
+            },
+            {
+                n: 'CHAPTER SIX', t: "What's Next",
+                sky: ['#0a0818', '#141230', '#241f42', '#3a2f50'],
+                sun: '#8a9ac0', sunY: 195, fog: 0.2, stars: 1, city: 1, dist: 620, night: true,
+                tag: 'CHAPTER SIX · WHAT\'S NEXT · DESCENT',
+                text: "The light goes and the trail changes character completely. Same path, different mountain. They walk down with one head-torch between them and the speaker running on whatever percentage is left, and the descent takes longer than the climb because neither of them is trying to be anywhere.",
+                choices: [
+                    { label: '▸ Run the last track all the way down', e: -8, s: 18, c: 18,
+                      out: "One long track for the whole descent, no transitions, letting it run past where a set would normally end. The trail unspools in front of the torchlight and the track outlasts the mountain." },
+                    { label: '▸ Switch it off. Walk down in the dark.', e: 12, s: -5, c: 22,
+                      out: "Ingrid kills the speaker at the treeline and the silence comes in like weather. Boots, breathing, water somewhere off the path. They walk the rest of it without a soundtrack, which turns out to be its own kind of set." }
+                ]
+            }
+        ];
+
+        /* ---------- state ---------- */
+        var S = {
+            phase: 'load', chapter: 0, dist: 0, walking: false,
+            energy: 60, sound: 40, conn: 50,
+            t: 0, cam: 0, fired: false, sparks: [], notes: []
+        };
+
+        /* ---------- audio ---------- */
+        var AU = { on: false, ctxA: null, timer: null, step: 0 };
+
+        function audioInit() {
+            if (AU.ctxA) return true;
+            try {
+                var AC = window.AudioContext || window.webkitAudioContext;
+                if (!AC) return false;
+                AU.ctxA = new AC();
+                AU.master = AU.ctxA.createGain();
+                AU.master.gain.value = 0.16;
+                AU.master.connect(AU.ctxA.destination);
+                return true;
+            } catch (e) { return false; }
+        }
+
+        function blip(type, freq, dur, vol, wave) {
+            if (!AU.ctxA) return;
+            var t0 = AU.ctxA.currentTime;
+            var o = AU.ctxA.createOscillator();
+            var g = AU.ctxA.createGain();
+            o.type = wave || 'sine';
+            o.frequency.setValueAtTime(freq, t0);
+            if (type === 'kick') o.frequency.exponentialRampToValueAtTime(freq * 0.25, t0 + dur);
+            g.gain.setValueAtTime(vol, t0);
+            g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+            o.connect(g); g.connect(AU.master);
+            o.start(t0); o.stop(t0 + dur + 0.02);
+        }
+
+        var SCALE = [220, 261.63, 293.66, 349.23, 392, 440, 523.25];
+
+        function audioStep() {
+            if (!AU.on || !AU.ctxA) return;
+            var s = AU.step % 16;
+            var lvl = S.sound / 100;
+            if (s % 4 === 0) blip('kick', 110, 0.22, 0.9, 'sine');
+            if (lvl > 0.25 && s % 4 === 2) blip('hat', 7200, 0.03, 0.14, 'square');
+            if (lvl > 0.45 && s % 8 === 6) blip('bass', 82.41, 0.3, 0.5, 'triangle');
+            if (lvl > 0.6 && (s === 0 || s === 6 || s === 11)) {
+                var note = SCALE[(AU.step / 3 | 0) % SCALE.length];
+                blip('lead', note, 0.35, 0.1, 'triangle');
+            }
+            AU.step++;
+        }
+
+        function audioToggle() {
+            var btn = el('rmSound');
+            if (!AU.on) {
+                if (!audioInit()) { btn.textContent = '♪ NO AUDIO'; btn.disabled = true; return; }
+                if (AU.ctxA.state === 'suspended') AU.ctxA.resume();
+                AU.on = true;
+                AU.step = 0;
+                AU.timer = setInterval(audioStep, 125);
+                btn.textContent = '♪ SOUND ON';
+                btn.setAttribute('aria-pressed', 'true');
+            } else {
+                AU.on = false;
+                clearInterval(AU.timer);
+                btn.textContent = '♪ SOUND OFF';
+                btn.setAttribute('aria-pressed', 'false');
+            }
+        }
+
+        /* ---------- rendering ---------- */
+        function drawSky(ch, prog) {
+            var g = ctx.createLinearGradient(0, 0, 0, GROUND);
+            g.addColorStop(0, ch.sky[0]);
+            g.addColorStop(0.42, ch.sky[1]);
+            g.addColorStop(0.76, ch.sky[2]);
+            g.addColorStop(1, ch.sky[3]);
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, GROUND + 4);
+
+            // stars
+            if (ch.stars > 0) {
+                var r = rng(4242);
+                ctx.fillStyle = '#ffffff';
+                for (var i = 0; i < 110; i++) {
+                    var x = r() * W, y = r() * 117, tw = r();
+                    var a = ch.stars * (0.35 + tw * 0.65);
+                    if (!reduceMotion) a *= 0.72 + 0.28 * Math.sin(S.t * 1.6 + i);
+                    ctx.globalAlpha = clamp(a, 0, 1);
+                    ctx.fillRect(x | 0, y | 0, 1, 1);
+                }
+                ctx.globalAlpha = 1;
+            }
+
+            // sun / moon
+            ctx.fillStyle = ch.sun;
+            ctx.globalAlpha = 0.9;
+            var sx = 336, sy = ch.sunY;
+            ctx.fillRect(sx - 9, sy - 3, 19, 7);
+            ctx.fillRect(sx - 6, sy - 7, 13, 16);
+            ctx.fillRect(sx - 3, sy - 9, 7, 20);
+            ctx.globalAlpha = 0.14;
+            ctx.fillRect(sx - 21, sy - 2, 43, 5);
+            ctx.globalAlpha = 1;
+        }
+
+        function tile(img, offset, alpha) {
+            ctx.globalAlpha = alpha === undefined ? 1 : alpha;
+            var o = ((offset % LAYW) + LAYW) % LAYW;
+            ctx.drawImage(img, -o, 0);
+            ctx.drawImage(img, LAYW - o, 0);
+            ctx.globalAlpha = 1;
+        }
+
+        function drawFjord(ch) {
+            var y = 177;
+            ctx.fillStyle = '#1b2340';
+            ctx.fillRect(0, y, W, 21);
+            ctx.fillStyle = '#243055';
+            ctx.fillRect(0, y, W, 6);
+            // golden reflection column under the sun
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = ch.sun;
+            for (var i = 0; i < 10; i++) {
+                var w = 18 - i;
+                var yy = y + 2 + i * 2;
+                var wob = reduceMotion ? 0 : Math.round(Math.sin(S.t * 1.4 + i) * 3);
+                ctx.fillRect(336 - w / 2 + wob, yy, w, 2);
+            }
+            ctx.globalAlpha = 1;
+            // city lights along the shore
+            if (ch.city > 0) {
+                var r = rng(8899);
+                for (var j = 0; j < 140; j++) {
+                    var cxp = r() * W, cyp = y - 1 - r() * 5;
+                    ctx.globalAlpha = ch.city * (0.45 + r() * 0.55);
+                    ctx.fillStyle = r() > 0.75 ? '#fff0c0' : '#f0c060';
+                    ctx.fillRect(cxp | 0, cyp | 0, 1, 1);
+                }
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function drawGround(ch) {
+            ctx.fillStyle = '#2a2119';
+            ctx.fillRect(0, GROUND, W, H - GROUND);
+            ctx.fillStyle = '#3a2f26';
+            ctx.fillRect(0, GROUND, W, 15);
+            ctx.fillStyle = '#4a3d30';
+            ctx.fillRect(0, GROUND, W, 4);
+
+            // trail texture — scrolls with camera
+            var r = rng(31415);
+            for (var i = 0; i < 230; i++) {
+                var bx = r() * LAYW, by = GROUND + 2 + r() * (H - GROUND - 4);
+                var x = ((bx - S.cam * 1.25) % LAYW + LAYW) % LAYW;
+                if (x > W) continue;
+                var tone = r();
+                ctx.fillStyle = tone > 0.72 ? '#5a4a38' : tone > 0.4 ? '#241c15' : '#332a20';
+                ctx.fillRect(x | 0, by | 0, tone > 0.9 ? 4 : 3, tone > 0.9 ? 3 : 2);
+            }
+
+            // heather / flowers in the foreground
+            var r2 = rng(2718);
+            for (var k = 0; k < 70; k++) {
+                var bx2 = r2() * LAYW, by2 = GROUND + 9 + r2() * 33;
+                var x2 = ((bx2 - S.cam * 1.35) % LAYW + LAYW) % LAYW;
+                if (x2 > W) continue;
+                ctx.fillStyle = '#1d2a1c';
+                ctx.fillRect(x2 | 0, by2 | 0, 3, 5);
+                if (r2() > 0.72) {
+                    ctx.fillStyle = ch.stars > 0.5 ? '#6a5a8a' : '#b078b0';
+                    ctx.fillRect(x2 | 0, (by2 - 2) | 0, 3, 2);
+                }
+            }
+        }
+
+        function drawSign() {
+            // a trail sign appears once per chapter, drifting past
+            var sx = 450 - (S.dist % CH[S.chapter].dist) * 0.62;
+            if (sx < -45 || sx > W + 15) return;
+            var base = GROUND + 9;
+            ctx.fillStyle = '#4a3a26';
+            ctx.fillRect(sx | 0, base - 39, 3, 39);
+            var names = ['FLØYEN', 'ULRIKEN', 'NØKKEN'];
+            for (var i = 0; i < 2; i++) {
+                var y = base - 36 + i * 11;
+                ctx.fillStyle = '#6b5438';
+                ctx.fillRect((sx + 3) | 0, y, 30, 8);
+                ctx.fillStyle = '#8a6c48';
+                ctx.fillRect((sx + 3) | 0, y, 30, 2);
+                ctx.fillStyle = '#d4a758';
+                for (var c = 0; c < 6; c++) ctx.fillRect((sx + 6 + c * 4) | 0, y + 3, 3, 2);
+            }
+            void names;
+        }
+
+        function drawFog(ch) {
+            if (ch.fog <= 0) return;
+            for (var i = 0; i < 4; i++) {
+                var y = 156 + i * 14;
+                var off = reduceMotion ? 0 : (S.t * (7 + i * 4)) % (W + 180);
+                ctx.globalAlpha = ch.fog * (1 - i * 0.16);
+                ctx.fillStyle = '#c8d4e0';
+                ctx.fillRect(-90 + off, y, 135, 3);
+                ctx.fillRect(-300 + off, y + 5, 195, 3);
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        function drawParticles(ch) {
+            // music notes rising from the speaker when sound is high
+            if (S.sound > 30 && !reduceMotion) {
+                if (S.notes.length < 14 && Math.random() < 0.06) {
+                    S.notes.push({ x: 178, y: GROUND - 52, vy: -0.28 - Math.random() * 0.2, a: 1, sw: Math.random() * 6 });
+                }
+            }
+            S.notes.forEach(function (n) {
+                n.y += n.vy; n.a -= 0.006;
+                var x = n.x + Math.sin(n.y * 0.09) * n.sw;
+                ctx.globalAlpha = clamp(n.a, 0, 1) * 0.85;
+                ctx.fillStyle = '#c9a6f0';
+                ctx.fillRect(x | 0, n.y | 0, 3, 2);
+                ctx.fillRect((x + 2) | 0, (n.y - 4) | 0, 1, 5);
+                ctx.fillRect((x + 3) | 0, (n.y - 4) | 0, 2, 1);
+            });
+            S.notes = S.notes.filter(function (n) { return n.a > 0 && n.y > 30; });
+            ctx.globalAlpha = 1;
+
+            // fireflies / embers at night
+            if (ch.stars > 0.5 && !reduceMotion) {
+                var r = rng(6161);
+                for (var i = 0; i < 32; i++) {
+                    var bx = r() * W;
+                    var by = 180 + r() * 75;
+                    var fl = 0.5 + 0.5 * Math.sin(S.t * 2 + i * 1.7);
+                    ctx.globalAlpha = fl * 0.7;
+                    ctx.fillStyle = '#f0d080';
+                    ctx.fillRect((bx + Math.sin(S.t * 0.6 + i) * 9) | 0, (by + Math.cos(S.t * 0.5 + i) * 5) | 0, 2, 2);
+                }
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function drawVignette() {
+            var g = ctx.createRadialGradient(W / 2, H / 2, 90, W / 2, H / 2, 285);
+            g.addColorStop(0, 'rgba(0,0,0,0)');
+            g.addColorStop(1, 'rgba(0,0,0,0.5)');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, H);
+        }
+
+        function pickAnim(who) {
+            if (S.phase === 'story') return who === 'jack' ? 'mix' : 'look';
+            if (S.walking) return 'walk';
+            return 'idle';
+        }
+
+        var ACT = 0.75;                       // 128px frame box -> ~95px character
+        var ACT_W = SPRW * ACT, ACT_H = SPRH * ACT;
+
+        function actor(img, centerX, footY) {
+            if (!img) return;
+            ctx.drawImage(img, 0, 0, SPRW, SPRH,
+                Math.round(centerX - ACT_W / 2), Math.round(footY - ACT_H),
+                Math.round(ACT_W), Math.round(ACT_H));
+        }
+
+        function frameOf(who, state, offset) {
+            var set = SPR[who][state];
+            if (!set || !set.length) { state = 'idle'; set = SPR[who].idle; }
+            if (!set || !set.length) return null;
+            var fps = FPS[who][state] || 6;
+            return set[Math.floor(S.t * fps + offset) % set.length];
+        }
+
+        function drawActors() {
+            // Jack leads the way, Ingrid follows with the speaker
+            var jcx = 292, icx = 196, footY = GROUND + 8;
+
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(jcx - 16, footY - 3, 32, 4);
+            ctx.fillRect(icx - 16, footY - 3, 32, 4);
+            ctx.globalAlpha = 1;
+
+            actor(frameOf('ingrid', pickAnim('ingrid'), 1.5), icx, footY);
+            actor(frameOf('jack',   pickAnim('jack'),   0),   jcx, footY);
+        }
+
+        // Low scrub drawn in front of the hikers' feet for depth
+        function drawForeground(ch) {
+            var r = rng(9091);
+            for (var i = 0; i < 105; i++) {
+                var bx = r() * LAYW;
+                var x = ((bx - S.cam * 1.5) % LAYW + LAYW) % LAYW;
+                if (x > W) continue;
+                var h = 6 + r() * 11;
+                var y = H - h - r() * 9;
+                ctx.fillStyle = ch.stars > 0.5 ? '#0b120d' : '#111c12';
+                ctx.fillRect(x | 0, y | 0, 3, h | 0);
+                ctx.fillRect((x - 3) | 0, (y + 3) | 0, 3, h - 3);
+                ctx.fillRect((x + 3) | 0, (y + 4) | 0, 3, h - 4);
+            }
+        }
+
+        function syncNameTags() {
+            var on = S.phase === 'walk' || S.phase === 'story';
+            el('rmTags').classList.toggle('rm-hide', !on);
+        }
+
+        function render() {
+            var ch = CH[S.chapter];
+            ctx.clearRect(0, 0, W, H);
+            drawSky(ch, S.dist / ch.dist);
+
+            tile(tintCache('far', ch.night ? '#191634' : '#3d3358'), -S.cam * 0.08, 0.85);
+            drawFjord(ch);
+            tile(tintCache('mid', '#241d38'), -S.cam * 0.18, 0.95);
+            tile(tintCache('treeFar', '#141d18'), -S.cam * 0.42);
+            drawFog(ch);
+            tile(tintCache('treeNear', '#0d140f'), -S.cam * 0.9);
+            drawGround(ch);
+            drawSign();
+            drawActors();
+            drawForeground(ch);
+            drawParticles(ch);
+            drawVignette();
+        }
+
+        var TINTS = {};
+        function tintCache(key, colr) {
+            var k = key + colr;
+            if (!TINTS[k]) TINTS[k] = tinted(LAYERS[key], colr);
+            return TINTS[k];
+        }
+
+        /* ---------- UI ---------- */
+        function pips(node, val) {
+            var n = 10, on = Math.round(clamp(val, 0, 100) / 10);
+            var html = '';
+            for (var i = 0; i < n; i++) html += '<i class="' + (i < on ? 'f' : '') + '"></i>';
+            node.innerHTML = html;
+        }
+
+        function syncHud() {
+            pips(el('rmPipEnergy'), S.energy);
+            pips(el('rmPipSound'), S.sound);
+            pips(el('rmPipConn'), S.conn);
+        }
+
+        function syncRoute() {
+            var html = '';
+            for (var i = 0; i < CH.length; i++) {
+                html += '<i class="' + (i < S.chapter ? 'd' : i === S.chapter ? 'c' : '') + '"></i>';
+            }
+            var alt = [40, 120, 220, 320, 380, 200][S.chapter];
+            html += '<span class="rm-alt">' + alt + 'M</span>';
+            el('rmRoute').innerHTML = html;
+        }
+
+        function show(id) { el(id).classList.remove('rm-hide'); el(id).classList.add('on'); }
+        function hide(id) { el(id).classList.add('rm-hide'); el(id).classList.remove('on'); }
+
+        /* ---------- flow ---------- */
+        function startChapter(i) {
+            S.chapter = i;
+            S.dist = 0;
+            S.fired = false;
+            S.notes = [];
+            syncRoute();
+
+            var ch = CH[i];
+            el('rmChapN').textContent = ch.n;
+            el('rmChapT').textContent = ch.t;
+            el('rmTags').classList.add('rm-hide');
+            cv.parentNode.classList.remove('tall');
+            show('rmChap');
+            el('rmChap').style.opacity = '1';
+            S.phase = 'card';
+
+            setTimeout(function () {
+                el('rmChap').style.opacity = '0';
+                setTimeout(function () {
+                    hide('rmChap');
+                    S.phase = 'walk';
+                    show('rmRoute');
+                    syncNameTags();
+                    el('rmPrompt').classList.remove('rm-hide');
+                }, 500);
+            }, 1500);
+        }
+
+        function openStory() {
+            S.phase = 'story';
+            S.walking = false;
+            var ch = CH[S.chapter];
+            el('rmPrompt').classList.add('rm-hide');
+            el('rmStoryTag').textContent = ch.tag;
+            el('rmStoryTxt').textContent = ch.text;
+
+            var box = el('rmStoryChoices');
+            box.innerHTML = '';
+            ch.choices.forEach(function (c) {
+                var b = document.createElement('button');
+                b.className = 'rm-btn';
+                b.textContent = c.label;
+                b.addEventListener('click', function () { resolve(c); });
+                box.appendChild(b);
+            });
+            cv.parentNode.classList.add('tall');
+            show('rmStory');
+        }
+
+        function resolve(c) {
+            S.energy = clamp(S.energy + c.e, 0, 100);
+            S.sound = clamp(S.sound + c.s, 0, 100);
+            S.conn = clamp(S.conn + c.c, 0, 100);
+            syncHud();
+
+            el('rmStoryTxt').textContent = c.out;
+            var box = el('rmStoryChoices');
+            box.innerHTML = '';
+            var b = document.createElement('button');
+            b.className = 'rm-btn rm-go';
+            b.textContent = S.chapter < CH.length - 1 ? 'CONTINUE THE JOURNEY →' : 'SEE HOW IT ENDED →';
+            b.addEventListener('click', function () {
+                hide('rmStory');
+                if (S.chapter < CH.length - 1) startChapter(S.chapter + 1);
+                else ending();
+            });
+            box.appendChild(b);
+            b.focus();
+        }
+
+        function ending() {
+            S.phase = 'end';
+            hide('rmRoute');
+            el('rmTags').classList.add('rm-hide');
+            cv.parentNode.classList.add('tall');
+            var top = Math.max(S.sound, S.conn, S.energy);
+            var title, body;
+
+            if (S.conn >= top) {
+                title = 'ENDING · THE ONE THAT STAYED';
+                body = "Nobody filmed it. There is no set list and no recording and no proof, which turns out to be the point. What there is: two people who carried heavy things up a mountain for each other without making a thing of it, and a track neither of them will hear again without being briefly, stupidly back on that rock. We don't chase summits. We chase moments that stay.";
+            } else if (S.sound >= top) {
+                title = 'ENDING · THE MOUNTAIN HEARD IT';
+                body = "It should not have worked. One speaker, one controller, 380 metres of Norwegian rock and no permit whatsoever. It worked. For one evening the fjord had a soundtrack and the seven mountains had an opinion about it, and strangers coming down off Ulriken stopped and stayed for three tracks. Move. Listen. Connect. This is Mount Media.";
+            } else {
+                title = 'ENDING · THE LONG WAY DOWN';
+                body = "They got everything down intact — the gear, the legs, most of the battery. It was never really about the set surviving the climb. It was about finding out whether the idea did. It did. Jack is already describing the next one before they reach the car park, and Ingrid is already doing the maths on battery against elevation.";
+            }
+
+            el('rmStoryTag').textContent = title;
+            el('rmStoryTxt').textContent = body;
+            var box = el('rmStoryChoices');
+            box.innerHTML = '';
+            var b = document.createElement('button');
+            b.className = 'rm-btn rm-go';
+            b.textContent = '↺ WALK IT AGAIN';
+            b.addEventListener('click', reset);
+            box.appendChild(b);
+            show('rmStory');
+        }
+
+        function reset() {
+            hide('rmStory');
+            S.energy = 60; S.sound = 40; S.conn = 50;
+            S.cam = 0;
+            syncHud();
+            startChapter(0);
+        }
+
+        /* ---------- input ---------- */
+        function setWalk(v) {
+            if (S.phase !== 'walk') { S.walking = false; return; }
+            S.walking = v;
+        }
+
+        var stage = cv.parentNode;
+        ['mousedown', 'touchstart'].forEach(function (ev) {
+            stage.addEventListener(ev, function (e) {
+                if (S.phase === 'walk') { e.preventDefault(); setWalk(true); }
+            }, { passive: false });
+        });
+        ['mouseup', 'mouseleave', 'touchend', 'touchcancel'].forEach(function (ev) {
+            stage.addEventListener(ev, function () { setWalk(false); });
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === ' ') {
+                if (S.phase === 'walk') { e.preventDefault(); setWalk(true); }
+            }
+        });
+        document.addEventListener('keyup', function (e) {
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === ' ') setWalk(false);
+        });
+
+        el('rmStart').addEventListener('click', function () {
+            hide('rmTitle');
+            startChapter(0);
+        });
+        el('rmSound').addEventListener('click', audioToggle);
+        el('rmReset').addEventListener('click', function () {
+            hide('rmTitle'); hide('rmChap');
+            reset();
+        });
+
+        /* ---------- loop ---------- */
+        var last = 0, paused = false;
+        document.addEventListener('visibilitychange', function () { paused = document.hidden; });
+
+        function frame(now) {
+            requestAnimationFrame(frame);
+            if (paused) { last = now; return; }
+            var dt = Math.min((now - last) / 1000, 0.05);
+            last = now;
+            S.t += dt;
+
+            if (S.phase === 'walk' && S.walking) {
+                var speed = 76 * (0.82 + (S.energy / 100) * 0.36);
+                S.dist += speed * dt;
+                S.cam += speed * dt;
+                if (S.dist >= CH[S.chapter].dist && !S.fired) {
+                    S.fired = true;
+                    openStory();
+                }
+            } else if (S.phase !== 'walk') {
+                S.cam += 4 * dt;
+            }
+
+            render();
+        }
+
+        /* ---------- boot ---------- */
+        var steps = [
+            ['BUILDING THE MOUNTAINS…', buildLayers],
+            ['LOADING THE TRAIL…', function () {
+                tintCache('far', '#3d3358'); tintCache('far', '#191634');
+                tintCache('mid', '#241d38');
+                tintCache('treeFar', '#141d18');
+                tintCache('treeNear', '#0d140f');
+            }],
+            ['READY', function () { syncHud(); syncRoute(); }]
+        ];
+
+        var si = 0;
+        function runSteps() {
+            if (si >= steps.length) {
+                el('rmLoadFill').style.width = '100%';
+                setTimeout(function () {
+                    hide('rmLoad');
+                    show('rmTitle');
+                    S.phase = 'title';
+                    requestAnimationFrame(frame);
+                }, 320);
+                return;
+            }
+            el('rmLoadTxt').textContent = steps[si][0];
+            el('rmLoadFill').style.width = Math.round((si / steps.length) * 100) + '%';
+            setTimeout(function () {
+                try { steps[si][1](); } catch (err) { /* keep booting */ }
+                si++;
+                runSteps();
+            }, 130);
+        }
+
+        function boot() {
+            el('rmLoadTxt').textContent = 'LOADING SPRITES…';
+            el('rmLoadFill').style.width = '12%';
+            loadSprites(function (anyFailed) {
+                if (anyFailed) stubSprites();
+                runSteps();
+            });
+        }
+
+        boot();
+    })();
+    </script>
+</body>
+</html>

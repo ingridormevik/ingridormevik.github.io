@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Trail Mix — Sprite Preview</title>
+    <style>
+        :root {
+            --ink: #0d0a12;
+            --panel: #16121c;
+            --panel-hi: #221a28;
+            --edge: #4a3a2a;
+            --gold: #d4a758;
+            --cream: #e8dcc0;
+            --dim: #9a8a76;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 28px 20px 80px;
+            background: var(--ink);
+            color: var(--cream);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .wrap { max-width: 1100px; margin: 0 auto; }
+
+        h1 { font-size: 1.4rem; margin: 0 0 .2em; letter-spacing: .04em; }
+        h2 {
+            font-size: 1rem;
+            letter-spacing: .16em;
+            color: var(--gold);
+            margin: 2.6em 0 .2em;
+            border-bottom: 2px solid var(--edge);
+            padding-bottom: .5em;
+        }
+        .lede { color: var(--dim); margin: 0 0 1.6em; max-width: 70ch; }
+
+        .bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            padding: 12px 0;
+            background: var(--ink);
+            border-bottom: 1px solid #241d2c;
+        }
+
+        button, select {
+            font: inherit;
+            font-size: .8rem;
+            letter-spacing: .08em;
+            color: var(--cream);
+            background: var(--panel-hi);
+            border: 2px solid var(--edge);
+            padding: .5em .9em;
+            cursor: pointer;
+        }
+        button:hover, select:hover { border-color: var(--gold); }
+        button[aria-pressed="true"] { color: var(--gold); border-color: var(--gold); }
+
+        .anim {
+            border: 2px solid var(--edge);
+            background: var(--panel);
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .anim h3 {
+            margin: 0 0 4px;
+            font-size: .92rem;
+            letter-spacing: .1em;
+        }
+        .anim .meta { color: var(--dim); font-size: .74rem; margin-bottom: 12px; }
+
+        .row { display: flex; gap: 26px; align-items: flex-end; flex-wrap: wrap; }
+
+        .cell { text-align: center; }
+        .cell span {
+            display: block;
+            font-size: .66rem;
+            letter-spacing: .1em;
+            color: var(--dim);
+            margin-top: 6px;
+        }
+
+        canvas, img {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            display: block;
+        }
+
+        .checker {
+            background-color: #6e7a90;
+            background-image:
+                linear-gradient(45deg, #5c6678 25%, transparent 25%, transparent 75%, #5c6678 75%),
+                linear-gradient(45deg, #5c6678 25%, transparent 25%, transparent 75%, #5c6678 75%);
+            background-size: 16px 16px;
+            background-position: 0 0, 8px 8px;
+        }
+
+        .dark { background: #14131c; }
+
+        .strip {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-top: 14px;
+            border-top: 1px solid #241d2c;
+            padding-top: 12px;
+        }
+        .strip canvas { flex: none; }
+
+        .portraits { display: flex; gap: 20px; flex-wrap: wrap; }
+
+        .note {
+            border-left: 3px solid var(--gold);
+            padding: 10px 0 10px 14px;
+            color: var(--dim);
+            margin: 1.4em 0;
+            max-width: 78ch;
+        }
+        .note b { color: var(--cream); font-weight: 600; }
+
+        a { color: var(--gold); }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h1>Trail Mix — Sprite Preview</h1>
+    <p class="lede">
+        Every animation built by <code>tools/build-sprites.py</code> from <code>assets/pack/</code>.
+        Check the frame boundaries and the cutouts, then say which animations are approved.
+        <a href="trail-mix-v2.html">play these in the game →</a> ·
+        <a href="trail-mix.html">the current live game (unchanged) →</a>
+    </p>
+
+    <div class="note">
+        <b>Why the sprites were rebuilt.</b> The supplied pack was cut from the concept sheet with a
+        brightness threshold. Ingrid's black shirt and shorts sit within a few levels of that sheet's
+        near-black background, so the pack's own alpha punches holes straight through her clothing
+        (and through Jack's shorts and controller). The pack's RGB survives under that alpha, so the
+        build script ignores the packed alpha and rebuilds it with a sealed flood fill. Toggle
+        <b>Compare with pack alpha</b> below to see the difference.
+    </div>
+
+    <div class="bar">
+        <button id="playBtn" aria-pressed="true">⏸ PAUSE</button>
+        <button id="bgBtn" aria-pressed="false">◐ DARK BACKGROUND</button>
+        <button id="cmpBtn" aria-pressed="false">◑ COMPARE WITH PACK ALPHA</button>
+        <select id="charSel">
+            <option value="all">Both characters</option>
+            <option value="ingrid">Ingrid only</option>
+            <option value="jack">Jack only</option>
+        </select>
+        <span class="meta" id="status" style="color:var(--dim);font-size:.74rem"></span>
+    </div>
+
+    <div id="out"></div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    var out = document.getElementById('out');
+    var status = document.getElementById('status');
+    var playing = true, darkBg = false, compare = false, filter = 'all';
+    var blocks = [];
+
+    function px(canvas) {
+        var g = canvas.getContext('2d');
+        g.imageSmoothingEnabled = false;
+        return g;
+    }
+
+    fetch('assets/sprites-pack/manifest.json')
+        .then(function (r) { return r.json(); })
+        .then(build)
+        .catch(function () {
+            out.innerHTML = '<p style="color:#c74a3c">Could not load assets/sprites-pack/manifest.json — ' +
+                            'run <code>python3 tools/build-sprites.py</code> first.</p>';
+        });
+
+    function build(man) {
+        var FW = man.frame.width, FH = man.frame.height;
+        var total = 0;
+
+        Object.keys(man.characters).forEach(function (who) {
+            var ch = man.characters[who];
+
+            var h2 = document.createElement('h2');
+            h2.textContent = who.toUpperCase() + (who === 'jack' ? ' · TRAIL DJ' : ' · SOUND CARRIER');
+            h2.dataset.who = who;
+            out.appendChild(h2);
+
+            if (ch.portrait) {
+                var pWrap = document.createElement('div');
+                pWrap.className = 'anim';
+                pWrap.dataset.who = who;
+                pWrap.innerHTML = '<h3>portrait</h3><div class="meta">dialogue / HUD</div>';
+                var pRow = document.createElement('div');
+                pRow.className = 'portraits';
+                [1, 2].forEach(function (s) {
+                    var c = document.createElement('div'); c.className = 'cell';
+                    var img = document.createElement('img');
+                    img.src = 'assets/sprites-pack/' + who + '/' + ch.portrait;
+                    img.className = 'checker';
+                    img.style.width = (170 * s) + 'px';
+                    c.appendChild(img);
+                    var lab = document.createElement('span'); lab.textContent = s + '×';
+                    c.appendChild(lab); pRow.appendChild(c);
+                });
+                pWrap.appendChild(pRow);
+                out.appendChild(pWrap);
+            }
+
+            Object.keys(ch.animations).forEach(function (anim) {
+                var info = ch.animations[anim];
+                total += info.frames;
+
+                var box = document.createElement('div');
+                box.className = 'anim';
+                box.dataset.who = who;
+                box.innerHTML = '<h3>' + anim + '</h3><div class="meta">' +
+                    info.frames + ' frames · ' + info.fps + ' fps · ' + FW + '×' + FH + '</div>';
+
+                var row = document.createElement('div');
+                row.className = 'row';
+                var players = [];
+                [1, 2, 4].forEach(function (scale) {
+                    var cell = document.createElement('div'); cell.className = 'cell';
+                    var cv = document.createElement('canvas');
+                    cv.width = FW * scale; cv.height = FH * scale;
+                    cv.className = 'checker';
+                    cell.appendChild(cv);
+                    var lab = document.createElement('span'); lab.textContent = scale + '×';
+                    cell.appendChild(lab);
+                    row.appendChild(cell);
+                    players.push({ cv: cv, g: px(cv), scale: scale });
+                });
+                box.appendChild(row);
+
+                // every frame laid out flat, so boundaries can be eyeballed
+                var strip = document.createElement('div');
+                strip.className = 'strip';
+                box.appendChild(strip);
+
+                var imgs = [];
+                for (var i = 0; i < info.frames; i++) {
+                    (function (i) {
+                        var im = new Image();
+                        im.onload = function () {
+                            var c = document.createElement('canvas');
+                            c.width = FW; c.height = FH; c.className = 'checker';
+                            px(c).drawImage(im, 0, 0);
+                            strip.appendChild(c);
+                        };
+                        im.src = 'assets/sprites-pack/' + who + '/' + anim + '_' +
+                                 (i < 10 ? '0' + i : i) + '.png';
+                        imgs[i] = im;
+                    })(i);
+                }
+
+                // the pack's original strip, for the alpha comparison
+                var packImg = new Image();
+                packImg.src = 'assets/pack/' + who + '/' + anim.replace('walk_right', 'walk_right')
+                                                             .replace(/^(.*)$/, '$1') + '_strip.png';
+
+                blocks.push({ who: who, anim: anim, info: info, players: players,
+                              imgs: imgs, FW: FW, FH: FH, box: box, strip: strip,
+                              pack: packImg });
+                out.appendChild(box);
+            });
+        });
+
+        status.textContent = total + ' frames across ' + blocks.length + ' animations';
+        requestAnimationFrame(tick);
+    }
+
+    var t0 = performance.now(), clock = 0;
+    function tick(now) {
+        requestAnimationFrame(tick);
+        var dt = Math.min((now - t0) / 1000, 0.1);
+        t0 = now;
+        if (playing) clock += dt;
+
+        blocks.forEach(function (b) {
+            if (b.box.style.display === 'none') return;
+            var idx = Math.floor(clock * b.info.fps) % b.info.frames;
+            var img = b.imgs[idx];
+            b.players.forEach(function (p) {
+                p.g.clearRect(0, 0, p.cv.width, p.cv.height);
+                if (img && img.complete && img.naturalWidth) {
+                    p.g.drawImage(img, 0, 0, b.FW, b.FH, 0, 0, b.FW * p.scale, b.FH * p.scale);
+                }
+            });
+        });
+    }
+
+    function applyView() {
+        blocks.forEach(function (b) {
+            var show = filter === 'all' || filter === b.who;
+            b.box.style.display = show ? '' : 'none';
+            b.players.forEach(function (p) {
+                p.cv.className = darkBg ? 'dark' : 'checker';
+            });
+            Array.prototype.forEach.call(b.strip.children, function (c) {
+                c.className = darkBg ? 'dark' : 'checker';
+            });
+            b.strip.style.display = compare ? 'none' : '';
+            if (compare) {
+                if (!b.cmp) {
+                    b.cmp = document.createElement('div');
+                    b.cmp.className = 'strip';
+                    b.cmp.innerHTML = '<div style="font-size:.7rem;color:#9a8a76">' +
+                        'pack alpha (holes in dark clothing) →</div>';
+                    b.cmp.appendChild(b.pack);
+                    b.pack.className = 'checker';
+                    b.pack.style.height = '110px';
+                    b.box.appendChild(b.cmp);
+                }
+                b.cmp.style.display = '';
+            } else if (b.cmp) {
+                b.cmp.style.display = 'none';
+            }
+        });
+        Array.prototype.forEach.call(out.querySelectorAll('h2'), function (h) {
+            h.style.display = (filter === 'all' || filter === h.dataset.who) ? '' : 'none';
+        });
+        document.body.style.background = darkBg ? '#0d0a12' : '#0d0a12';
+    }
+
+    document.getElementById('playBtn').addEventListener('click', function () {
+        playing = !playing;
+        this.textContent = playing ? '⏸ PAUSE' : '▶ PLAY';
+        this.setAttribute('aria-pressed', playing);
+    });
+    document.getElementById('bgBtn').addEventListener('click', function () {
+        darkBg = !darkBg;
+        this.setAttribute('aria-pressed', darkBg);
+        this.textContent = darkBg ? '◑ CHECKER BACKGROUND' : '◐ DARK BACKGROUND';
+        applyView();
+    });
+    document.getElementById('cmpBtn').addEventListener('click', function () {
+        compare = !compare;
+        this.setAttribute('aria-pressed', compare);
+        applyView();
+    });
+    document.getElementById('charSel').addEventListener('change', function () {
+        filter = this.value;
+        applyView();
+    });
+})();
+</script>
+</body>
+</html>
