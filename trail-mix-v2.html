@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Running in the Mountains Pt. 2 — play the hike, then come and walk it. A real DJ set on a real Bergen mountain. Mount Media.">
+    <meta name="description" content="Running in the Mountains Pt. 2 — play the hike, then come and walk it. A moving DJ set on a real Bergen mountain, with performances along the route. Mount Media.">
     <title>Running in the Mountains Pt. 2 (new sprites) — Ingrid Ormevik</title>
     <link rel="stylesheet" href="style.css">
     <style>
@@ -262,6 +262,13 @@
             color: var(--rm-dim);
         }
 
+        .rm-count {
+            font-size: clamp(.52rem, 1.25vw, .72rem);
+            letter-spacing: .1em;
+            color: var(--rm-gold);
+            min-width: 1.4em;
+        }
+
         .rm-spacer { flex: 1 1 auto; }
 
         .rm-icobtn {
@@ -283,7 +290,8 @@
 
         .rm-tag {
             position: absolute;
-            transform: translateX(-50%);
+            top: 52%;
+            transform: translate(-50%, -100%);
             font-size: clamp(.42rem, 1.15vw, .6rem);
             letter-spacing: .14em;
             color: var(--rm-gold);
@@ -437,26 +445,51 @@
             <span class="game-meta">Mount Media | Play the hike, then come and walk it | Bergen, 2026</span>
 
             <p class="rm-flag"><strong>This is happening for real.</strong> Not a metaphor, not a concept
-            piece — an actual hike, up an actual mountain in Bergen, with an actual DJ set at the top.
+            piece — an actual hike, up an actual mountain in Bergen, with an actual DJ set moving along it.
             Play the game first. Then come and walk it with us.</p>
 
             <p>Jack goes in front with a DJ controller he insists on carrying up a mountain. I follow with
-            a speaker strapped to my pack like an oversized snail shell. Somewhere around the second
-            switchback it becomes obvious this is happening at the top whether the trail agrees to it or
-            not.</p>
+            a speaker on my back, and — less romantically — a roll of bin bags and a pair of plastic gloves
+            packed in beside it. Somewhere around the second switchback it becomes obvious this is happening
+            whether the trail agrees to it or not.</p>
 
-            <p>So I turned us into characters, because the fastest way to explain a moving DJ set is to let
-            you walk one. Jack is the Trail DJ — he drops the soundtrack and reads the path the way he
-            reads a room. I'm the Sound Carrier — I walk in front, carry the vibe, and keep the battery
-            percentage in my head at all times.</p>
+            <p>Everyone else walks with us. That's the whole format: not an audience standing in front of a
+            stage, but a group moving through a place while the music moves with it. The set changes as the
+            landscape changes. There are stops along the way where somebody performs — a track, a reading,
+            a few minutes of something — and then we keep walking. You are inside the piece for as long as
+            you are on the path.</p>
 
-            <p>Six chapters, from the car park to the dark walk down. Hold to walk. The mountain does the
-            rest. It takes about seven minutes, and by the end you'll know exactly what you'd be signing
-            up for — the climb, the light going, the flat bit at the top the size of a dance floor.</p>
+            <h3>Pick things up on the way</h3>
 
-            <p><em>This is the new build, running the sprite pack — 81 frames across 17 animations. The
-            version currently published is still at <a href="trail-mix.html">trail-mix.html</a>, untouched,
-            and every frame here can be inspected at <a href="sprite-preview.html">sprite-preview.html</a>.</em></p>
+            <p>The bin bags are not a gesture. Bergen's trails carry other people's rubbish, and a group of
+            forty walking the same route is forty pairs of eyes. If you see something, pick it up — gloves
+            and bags come out of my pack, and we carry it down. It costs nothing and it is the one part of
+            the evening that leaves the mountain measurably better than we found it.</p>
+
+            <p>That's why it's in the game. Tap anything you spot on the trail and it goes in the bag. It's
+            the only mechanic that maps one-to-one onto something you'll actually do.</p>
+
+            <h3>Why a game at all</h3>
+
+            <p>Because a poster can't tell you what a moving DJ set feels like, and neither can a paragraph.
+            The fastest way to explain a format nobody has been to is to let people walk a small version of
+            it first — the climb, the light going, the flat bit at the top the size of a dance floor.</p>
+
+            <p>That's also the research question I keep circling at the <a
+            href="https://www4.uib.no/en/research/research-centres/center-for-digital-narrative" target="_blank" rel="noopener noreferrer">Center
+            for Digital Narrative</a>, where I've been a research intern: what happens when a story is told
+            through movement, place and sound rather than through text on a screen. CDN works on algorithmic
+            narrativity, electronic literature, game studies and what it calls extended digital narrative —
+            stories that leave the screen and take place in rooms, landscapes and bodies. A hike with a
+            soundtrack, a route, chapters and a set of choices about pace and attention is exactly that: a
+            narrative you walk rather than read, with the mountain as co-author and the weather as an
+            unreliable one.</p>
+
+            <p>So this page is doing two jobs at once. It's an invitation, and it's the argument for the
+            format — a playable pitch for the kind of work I want to keep making, and want funded.</p>
+
+            <p>Six chapters, from the car park to the dark walk down. Hold to walk. Tap what you find. The
+            mountain does the rest. It takes about seven minutes.</p>
 
             <div class="rm">
                 <div class="rm-stage">
@@ -468,7 +501,7 @@
                         <span class="rm-tag" style="left:60%">INGRID<b></b></span>
                         <span class="rm-tag" style="left:40%">JACK<b></b></span>
                     </div>
-                    <div class="rm-prompt rm-hide" id="rmPrompt">HOLD → OR TAP TO WALK</div>
+                    <div class="rm-prompt rm-hide" id="rmPrompt">HOLD TO WALK · TAP ANYTHING ON THE TRAIL TO BAG IT</div>
 
                     <!-- Loading -->
                     <div class="rm-layer rm-load on" id="rmLoad">
@@ -482,7 +515,7 @@
                         <div class="rm-brand">MOUNT MEDIA PRESENTS</div>
                         <h3>RUNNING IN THE<br>MOUNTAINS PT. 2</h3>
                         <p class="rm-sub">A GUIDED JOURNEY THROUGH SOUND &amp; LANDSCAPE</p>
-                        <p class="rm-sub" style="margin-top:.5em;border-color:#d4a758;color:#d4a758">THIS HIKE IS REALLY HAPPENING · WALK IT WITH US</p>
+                        <p class="rm-sub" style="margin-top:.5em;border-color:#d4a758;color:#d4a758">A REAL HIKE · A MOVING DJ SET · WALK IT WITH US</p>
                         <div class="rm-choices" style="margin-top:1.4em;min-width:min(280px,80%)">
                             <button class="rm-btn rm-go" id="rmStart">BEGIN THE JOURNEY →</button>
                         </div>
@@ -521,6 +554,11 @@
                         <span class="rm-stat-lab">CONNECTION</span>
                         <span class="rm-pips" id="rmPipConn" style="--pip:#6aa84a"></span>
                     </div>
+                    <div class="rm-stat">
+                        <svg class="rm-stat-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="#6aa84a" d="M3 5h10l-1 9H4z"/><path fill="none" stroke="#e8dcc0" stroke-width="1.4" d="M6 5V3.6A2 2 0 0 1 10 3.6V5"/></svg>
+                        <span class="rm-stat-lab">BAGGED</span>
+                        <span class="rm-count" id="rmBag">0</span>
+                    </div>
                     <div class="rm-spacer"></div>
                     <button class="rm-icobtn" id="rmSound" aria-pressed="false">♪ SOUND OFF</button>
                     <button class="rm-icobtn" id="rmReset">↺ RESTART</button>
@@ -535,29 +573,40 @@
             <h3 id="join">Come and do it properly</h3>
 
             <p>Everything in the game is real except the pixels. The trail is real, the gear is real, the
-            two people carrying it up are real, and the set at the top is going to happen with or without
-            an audience — though it is significantly better with one.</p>
+            two people carrying it up are real, the performances along the way are real, and the set at the
+            top is going to happen with or without an audience — though it is significantly better with one.</p>
 
-            <p>You don't need to be fit and you don't need to know anything about music. The pace in the
-            game is the pace on the day: steady, chatty, stopping whenever the view earns it. Bring shoes
-            you don't mind getting muddy, a jacket for when the light goes, and something to drink. We'll
-            bring the rest.</p>
+            <p>You don't need to be fit and you don't need to know anything about music. The pace in the game
+            is the pace on the day: steady, chatty, stopping whenever the view earns it or somebody has
+            something to play. Bring shoes you don't mind getting muddy, a jacket for when the light goes,
+            and something to drink. We'll bring the sound, the gloves and the bags.</p>
 
             <ul class="rm-facts">
                 <li><strong>Where</strong> — Bergen. The route climbs to a viewpoint over the fjord and the
                     city lights, and we walk back down in the dark.</li>
+                <li><strong>How it runs</strong> — we walk together, the set moves with us, and there are
+                    stops along the route where people perform. No stage, no barrier, no queue.</li>
                 <li><strong>How long</strong> — a few hours up, a set at the top, and a slow descent. No
                     summit-bagging, no rush.</li>
                 <li><strong>What it costs</strong> — nothing. It's a walk with a soundtrack.</li>
+                <li><strong>What you carry down</strong> — whatever litter you spotted on the way up.</li>
                 <li><strong>Who it's for</strong> — anyone who wants to come. Bring people.</li>
             </ul>
 
+            <h3>Want to perform on the way up?</h3>
+
+            <p>There are slots along the route for anyone who wants one — a track, a poem, a field recording,
+            something you've been making and haven't shown anyone. It doesn't have to be loud and it doesn't
+            have to be finished. Tell me roughly what you'd do and roughly how long, and I'll find you a bend
+            in the trail to do it on.</p>
+
             <p><strong>Want in?</strong> Mail me at
             <a href="mailto:ingrid@bergenpride.no?subject=Trail%20Mix%20-%20count%20me%20in">ingrid@bergenpride.no</a>
-            with "count me in" and I'll send you the date, the meeting point and the trailhead. Say if
-            you're bringing anyone, so we know how loud to make it.</p>
+            with "count me in" and I'll send the date, the meeting point and the trailhead. Say if you're
+            bringing anyone, so we know how loud to make it — and say if you want a slot.</p>
 
             <p><em>We don't chase summits. We chase moments that stay. Come and get one.</em></p>
+
         </article>
     </main>
 
@@ -600,12 +649,16 @@
             // the story card and the trail below them stays full of scenery.
             var groundFrac = aspect >= 1.35 ? 0.822 : 0.46;
             var ng = Math.round(nh * groundFrac);
-            if (nw === W && nh === H && ng === GROUND && cv.width === W) return;
 
-            W = nw; H = nh; GROUND = ng;
-            cv.width = W;
-            cv.height = H;
-            ctx.imageSmoothingEnabled = false;
+            // Only redo the canvas when the shape actually changed, but always
+            // reposition the tags: on first run the size already matches the
+            // defaults, and an early return here left them unplaced.
+            if (nw !== W || nh !== H || ng !== GROUND || cv.width !== W) {
+                W = nw; H = nh; GROUND = ng;
+                cv.width = W;
+                cv.height = H;
+                ctx.imageSmoothingEnabled = false;
+            }
             placeTags();
         }
         var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -650,6 +703,7 @@
            served from assets/sprites/. Frame boxes are foot-aligned, so a
            sprite can be swapped without touching the walk code.            */
         var SPRW = 128, SPRH = 128;
+        var SPR_FOOT = 120, SPR_HEAD = 20;   // baseline and head row inside the frame
 
         // Which manifest animation drives each on-screen state. The pair walk
         // to the RIGHT, so the *_right strips are the travelling frames.
@@ -667,6 +721,7 @@
                 .then(function (man) {
                     SPRW = man.frame.width;
                     SPRH = man.frame.height;
+                    SPR_FOOT = man.frame.footY || 120;
 
                     var jobs = [];
                     Object.keys(ANIM_MAP).forEach(function (who) {
@@ -871,7 +926,8 @@
         var S = {
             phase: 'load', chapter: 0, dist: 0, walking: false,
             energy: 60, sound: 40, conn: 50,
-            t: 0, cam: 0, fired: false, sparks: [], notes: []
+            t: 0, cam: 0, fired: false, sparks: [], notes: [],
+            items: [], picked: 0, litter: 0, pops: [], nextItem: 0
         };
 
         /* ---------- audio ---------- */
@@ -936,6 +992,176 @@
                 btn.textContent = '♪ SOUND OFF';
                 btn.setAttribute('aria-pressed', 'false');
             }
+        }
+
+        /* ---------- things on the trail ----------
+           Litter to bag, and small things worth stopping for. Tap one, or
+           press E / Space when the pair are alongside it.                */
+        var ITEMS = [
+            { id: 'bottle', kind: 'litter', label: 'plastic bottle' },
+            { id: 'can',    kind: 'litter', label: 'crushed can' },
+            { id: 'wrap',   kind: 'litter', label: 'crisp packet' },
+            { id: 'cup',    kind: 'litter', label: 'coffee cup' },
+            { id: 'flower', kind: 'find',   label: 'late harebell' },
+            { id: 'stone',  kind: 'find',   label: 'a good flat stone' },
+            { id: 'berry',  kind: 'find',   label: 'blueberries, still going' }
+        ];
+
+        function seedItems() {
+            S.items = [];
+            S.nextItem = 40 + Math.random() * 50;
+        }
+
+        function spawnItem() {
+            var litterBias = Math.random() < 0.62;
+            var pool = ITEMS.filter(function (i) {
+                return litterBias ? i.kind === 'litter' : i.kind === 'find';
+            });
+            var def = pool[Math.floor(Math.random() * pool.length)];
+            S.items.push({
+                def: def,
+                world: S.dist + W * 0.46 + Math.random() * 40,
+                dy: Math.random() * 10,
+                taken: 0
+            });
+            S.nextItem = S.dist + 95 + Math.random() * 95;
+        }
+
+        function itemScreenX(it) { return it.world - S.dist + W * 0.60; }
+
+        function drawItem(it) {
+            var x = Math.round(itemScreenX(it));
+            var y = Math.round(GROUND + 6 + it.dy);
+            var g = ctx;
+
+            if (it.taken) {                      // shrink and fade on pickup
+                var k = 1 - it.taken;
+                g.globalAlpha = k;
+                y -= (1 - k) * 22;
+            }
+
+            switch (it.def.id) {
+                case 'bottle':
+                    g.fillStyle = '#9fd8e0'; g.fillRect(x, y - 9, 4, 9);
+                    g.fillStyle = '#cfeef4'; g.fillRect(x, y - 9, 1, 9);
+                    g.fillStyle = '#6aa0aa'; g.fillRect(x + 1, y - 11, 2, 2);
+                    break;
+                case 'can':
+                    g.fillStyle = '#b8483a'; g.fillRect(x, y - 6, 7, 6);
+                    g.fillStyle = '#d9d4c8'; g.fillRect(x, y - 6, 7, 1);
+                    g.fillStyle = '#8a3128'; g.fillRect(x + 2, y - 4, 3, 2);
+                    break;
+                case 'wrap':
+                    g.fillStyle = '#d8c24a'; g.fillRect(x, y - 4, 8, 4);
+                    g.fillStyle = '#f0e08a'; g.fillRect(x + 1, y - 3, 3, 1);
+                    break;
+                case 'cup':
+                    g.fillStyle = '#e6e0d4'; g.fillRect(x, y - 8, 6, 8);
+                    g.fillStyle = '#b8433a'; g.fillRect(x, y - 8, 6, 2);
+                    break;
+                case 'flower':
+                    g.fillStyle = '#3f6b3a'; g.fillRect(x + 2, y - 7, 1, 7);
+                    g.fillStyle = '#a97fd8'; g.fillRect(x + 1, y - 10, 3, 3);
+                    g.fillStyle = '#d3b6f0'; g.fillRect(x + 2, y - 9, 1, 1);
+                    break;
+                case 'stone':
+                    g.fillStyle = '#7d7a72'; g.fillRect(x, y - 4, 9, 4);
+                    g.fillStyle = '#9b978c'; g.fillRect(x + 1, y - 5, 6, 2);
+                    g.fillStyle = '#5c5a54'; g.fillRect(x, y - 1, 9, 1);
+                    break;
+                case 'berry':
+                    g.fillStyle = '#2f5230'; g.fillRect(x, y - 5, 7, 5);
+                    g.fillStyle = '#3b4fa0'; g.fillRect(x + 1, y - 6, 2, 2);
+                    g.fillStyle = '#4a63c8'; g.fillRect(x + 4, y - 5, 2, 2);
+                    break;
+            }
+            g.globalAlpha = 1;
+
+            // a soft marker so it reads as interactive
+            if (!it.taken && !reduceMotion) {
+                var pulse = 0.35 + 0.35 * Math.sin(S.t * 3 + it.world);
+                g.globalAlpha = pulse;
+                g.fillStyle = it.def.kind === 'litter' ? '#e8a13c' : '#7fd8a0';
+                g.fillRect(x + 1, y - 16, 2, 2);
+                g.globalAlpha = 1;
+            }
+        }
+
+        function drawItems() {
+            S.items.forEach(function (it) {
+                var x = itemScreenX(it);
+                if (x < -30 || x > W + 30) return;
+                drawItem(it);
+            });
+        }
+
+        function collect(it) {
+            if (it.taken) return;
+            it.taken = 0.001;
+            S.picked++;
+            if (it.def.kind === 'litter') {
+                S.litter++;
+                S.conn = clamp(S.conn + 4, 0, 100);
+                S.energy = clamp(S.energy - 1, 0, 100);
+            } else {
+                S.sound = clamp(S.sound + 2, 0, 100);
+                S.conn = clamp(S.conn + 2, 0, 100);
+            }
+            syncHud();
+            S.pops.push({
+                x: itemScreenX(it), y: GROUND - 4, a: 1,
+                text: it.def.kind === 'litter' ? '+ bagged' : '+ noticed'
+            });
+        }
+
+        // nearest un-taken item within reach of the pair
+        function reachable() {
+            var best = null, bestD = 1e9;
+            for (var i = 0; i < S.items.length; i++) {
+                var it = S.items[i];
+                if (it.taken) continue;
+                var d = Math.abs(itemScreenX(it) - W * 0.60);
+                if (d < 70 && d < bestD) { bestD = d; best = it; }
+            }
+            return best;
+        }
+
+        function tryCollectAt(px, py) {
+            var hit = null;
+            S.items.forEach(function (it) {
+                if (it.taken) return;
+                var x = itemScreenX(it);
+                if (Math.abs(px - x) < 16 && Math.abs(py - (GROUND + it.dy)) < 26) hit = it;
+            });
+            if (hit) { collect(hit); return true; }
+            return false;
+        }
+
+        function updateItems(dt) {
+            if (S.phase === 'walk' && S.dist > S.nextItem) spawnItem();
+            S.items.forEach(function (it) {
+                if (it.taken) it.taken = Math.min(1, it.taken + dt * 2.2);
+            });
+            S.items = S.items.filter(function (it) {
+                return it.taken < 1 && itemScreenX(it) > -80;
+            });
+            S.pops.forEach(function (p) { p.y -= dt * 26; p.a -= dt * 0.9; });
+            S.pops = S.pops.filter(function (p) { return p.a > 0; });
+        }
+
+        function drawPops() {
+            if (!S.pops.length) return;
+            ctx.font = '9px ui-monospace, monospace';
+            ctx.textAlign = 'center';
+            S.pops.forEach(function (p) {
+                ctx.globalAlpha = clamp(p.a, 0, 1);
+                ctx.fillStyle = '#0d0a12';
+                ctx.fillText(p.text, (p.x + 1) | 0, (p.y + 1) | 0);
+                ctx.fillStyle = '#e8dcc0';
+                ctx.fillText(p.text, p.x | 0, p.y | 0);
+            });
+            ctx.globalAlpha = 1;
+            ctx.textAlign = 'left';
         }
 
         /* ---------- rendering ---------- */
@@ -1242,8 +1468,11 @@
             var tags = el('rmTags');
             if (!tags) return;
             var kids = tags.children;
-            // sit just above the characters' heads, in canvas space
-            var top = ((GROUND + 8 - ACT_H - 14) / H) * 100;
+            // The sprite sits inside a padded 128px box, so the head is well
+            // above the frame's top edge. Anchor on the real head, and let the
+            // tag hang by its own bottom edge (translateY(-100%)).
+            var headY = (GROUND + 8) - (SPR_FOOT - SPR_HEAD) * ACT;
+            var top = Math.max(6, (headY / H) * 100 - 1);
             if (kids[0]) { kids[0].style.left = '60%'; kids[0].style.top = top + '%'; }
             if (kids[1]) { kids[1].style.left = '40%'; kids[1].style.top = top + '%'; }
         }
@@ -1266,9 +1495,11 @@
             tile(tintCache('treeNear', '#0d140f'), -S.cam * 0.9);
             drawGround(ch);
             drawSign();
+            drawItems();
             drawActors();
             drawForeground(ch);
             drawParticles(ch);
+            drawPops();
             drawVignette();
         }
 
@@ -1288,6 +1519,8 @@
         }
 
         function syncHud() {
+            var bag = el('rmBag');
+            if (bag) bag.textContent = S.litter;
             pips(el('rmPipEnergy'), S.energy);
             pips(el('rmPipSound'), S.sound);
             pips(el('rmPipConn'), S.conn);
@@ -1312,6 +1545,8 @@
             S.dist = 0;
             S.fired = false;
             S.notes = [];
+            S.pops = [];
+            seedItems();
             syncRoute();
 
             var ch = CH[i];
@@ -1396,6 +1631,15 @@
                 body = "They got everything down intact — the gear, the legs, most of the battery. It was never really about the set surviving the climb. It was about finding out whether the idea did. It did. Jack is already describing the next one before they reach the car park, and Ingrid is already doing the maths on battery against elevation.";
             }
 
+            if (S.litter > 0) {
+                body += ' You came down carrying ' + S.litter + ' piece' +
+                    (S.litter === 1 ? '' : 's') + ' of somebody else\'s rubbish, ' +
+                    'which is the part of the evening nobody photographs.';
+            } else {
+                body += ' The gloves and the bags stayed in the pack this time. ' +
+                    'They will not on the day.';
+            }
+
             el('rmStoryTag').textContent = title;
             el('rmStoryTxt').textContent = body;
             var box = el('rmStoryChoices');
@@ -1403,8 +1647,9 @@
 
             var invite = document.createElement('div');
             invite.className = 'rm-invite';
-            invite.innerHTML = '<b>NOW DO IT FOR REAL.</b> This hike is actually happening — same ' +
-                'mountain, same gear, same set at the top. Scroll down for the details, or mail ' +
+            invite.innerHTML = '<b>NOW DO IT FOR REAL.</b> Same mountain, same gear, same set — and ' +
+                'everyone walks it together, with performances along the route and the bags coming ' +
+                'out whenever somebody spots litter. Scroll down for the details, or mail ' +
                 '<b>ingrid@bergenpride.no</b> with &quot;count me in&quot;.';
             box.appendChild(invite);
             var b = document.createElement('button');
@@ -1418,6 +1663,7 @@
         function reset() {
             hide('rmStory');
             S.energy = 60; S.sound = 40; S.conn = 50;
+            S.litter = 0; S.picked = 0; S.items = []; S.pops = [];
             S.cam = 0;
             syncHud();
             startChapter(0);
@@ -1430,9 +1676,25 @@
         }
 
         var stage = cv.parentNode;
+
+        // pointer position -> canvas coordinates
+        function toCanvas(e) {
+            var r = cv.getBoundingClientRect();
+            var pt = e.touches && e.touches[0] ? e.touches[0] : e;
+            return {
+                x: (pt.clientX - r.left) / r.width * W,
+                y: (pt.clientY - r.top) / r.height * H
+            };
+        }
+
         ['mousedown', 'touchstart'].forEach(function (ev) {
             stage.addEventListener(ev, function (e) {
-                if (S.phase === 'walk') { e.preventDefault(); setWalk(true); }
+                if (S.phase !== 'walk') return;
+                e.preventDefault();
+                var p = toCanvas(e);
+                // a tap on something on the trail bags it instead of walking
+                if (tryCollectAt(p.x, p.y)) return;
+                setWalk(true);
             }, { passive: false });
         });
         ['mouseup', 'mouseleave', 'touchend', 'touchcancel'].forEach(function (ev) {
@@ -1440,8 +1702,22 @@
         });
 
         document.addEventListener('keydown', function (e) {
+            if (e.key === 'e' || e.key === 'E') {
+                if (S.phase === 'walk') {
+                    var it = reachable();
+                    if (it) { e.preventDefault(); collect(it); }
+                }
+                return;
+            }
             if (e.key === 'ArrowRight' || e.key === 'd' || e.key === ' ') {
-                if (S.phase === 'walk') { e.preventDefault(); setWalk(true); }
+                if (S.phase !== 'walk') return;
+                e.preventDefault();
+                // space doubles as pick-up when something is within reach
+                if (e.key === ' ') {
+                    var near = reachable();
+                    if (near) { collect(near); return; }
+                }
+                setWalk(true);
             }
         });
         document.addEventListener('keyup', function (e) {
@@ -1470,6 +1746,8 @@
             var dt = Math.min((now - last) / 1000, 0.05);
             last = now;
             S.t += dt;
+
+            updateItems(dt);
 
             if (S.phase === 'walk' && S.walking) {
                 var speed = 76 * (0.82 + (S.energy / 100) * 0.36);
