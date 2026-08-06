@@ -1,0 +1,151 @@
+{
+  "title": "Trail Mix",
+  "core_promise": "A moving cultural performance where music, local history, ecological attention and collective care travel through Bergen together.",
+  "route": [
+    {
+      "id": "sandviken_sykehus",
+      "title": "Sandviken sykehus",
+      "scene_role": "Arrival and orientation",
+      "visual_requirements": [
+        "documented exterior reference only",
+        "realistic path geometry",
+        "urban-edge vegetation",
+        "quiet arrival activity"
+      ],
+      "interactions": [
+        "check equipment",
+        "meet the group",
+        "open route journal",
+        "collect first verified historical entry"
+      ],
+      "moving_background": [
+        "pedestrians",
+        "subtle tree movement",
+        "distant traffic",
+        "clouds"
+      ]
+    },
+    {
+      "id": "sandviksbatteriet",
+      "title": "Sandviksbatteriet",
+      "scene_role": "Military landscape and panoramic transition",
+      "visual_requirements": [
+        "verified battery structures",
+        "stonework",
+        "documented viewpoints",
+        "no invented cannons or dates"
+      ],
+      "interactions": [
+        "inspect information point",
+        "compare historic image",
+        "listen to short sound layer",
+        "pick up litter"
+      ],
+      "moving_background": [
+        "birds",
+        "harbour activity in distance",
+        "wind",
+        "cloud shadows"
+      ]
+    },
+    {
+      "id": "sandvikspilen",
+      "title": "Sandvikspilen",
+      "scene_role": "The climb becomes collective",
+      "visual_requirements": [
+        "steep route logic",
+        "stone steps where documented",
+        "real trail signage",
+        "verified vegetation"
+      ],
+      "interactions": [
+        "adjust walking tempo",
+        "help slower participants",
+        "collect plant observation",
+        "rest or continue"
+      ],
+      "moving_background": [
+        "hikers",
+        "dogs on leads",
+        "swaying branches",
+        "insects",
+        "falling leaves when seasonal"
+      ]
+    },
+    {
+      "id": "forest_transition",
+      "title": "Forest transition",
+      "scene_role": "Music begins responding to place",
+      "visual_requirements": [
+        "species verified for the route",
+        "no fantasy vegetation",
+        "actual Bergen terrain character",
+        "soft parallax depth"
+      ],
+      "interactions": [
+        "listen",
+        "identify verified species",
+        "collect soundscape",
+        "pick up litter",
+        "discover optional artistic folklore layer"
+      ],
+      "moving_background": [
+        "birds",
+        "red squirrel only if verified plausible",
+        "fog",
+        "rain",
+        "branch movement",
+        "distant hikers"
+      ]
+    },
+    {
+      "id": "floyen",
+      "title": "Fløyen",
+      "scene_role": "Public culture, tourism and shared performance",
+      "visual_requirements": [
+        "verified viewpoint and structures",
+        "tourist activity",
+        "realistic public-space density",
+        "clear distinction between fact and artistic folklore"
+      ],
+      "interactions": [
+        "live performance stop",
+        "talk to tourists",
+        "unlock cultural journal entries",
+        "environmental action",
+        "group reflection"
+      ],
+      "moving_background": [
+        "tourists",
+        "families",
+        "cyclists",
+        "dogs",
+        "birds",
+        "moving Fløibanen where visible and accurate"
+      ]
+    },
+    {
+      "id": "floibanen_stop",
+      "title": "Fløibanen stop",
+      "scene_role": "Return, transition and invitation to the real event",
+      "visual_requirements": [
+        "verified station appearance",
+        "correct signage",
+        "realistic crowd flow",
+        "accurate urban transition"
+      ],
+      "interactions": [
+        "choose descent ending",
+        "review collected knowledge",
+        "unlock event invitation",
+        "share environmental contribution"
+      ],
+      "moving_background": [
+        "arriving and departing visitors",
+        "train movement",
+        "city lights",
+        "weather shift"
+      ]
+    }
+  ]
+}
