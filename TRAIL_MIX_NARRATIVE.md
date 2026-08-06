@@ -1,227 +1,71 @@
-# TRAIL MIX — Narrative Bible for Claude Code
+# TRAIL MIX — FULL ROUTE NARRATIVE
 
-## Core idea
+## Core identity
 
-Trail Mix is not a game about conquering a mountain. It is a moving performance in which a group gradually learns to hear the landscape, one another, and the music as a single system.
+Trail Mix is an interactive cultural journey through Bergen. It is not a game about defeating the mountain. It is about learning how to move through a place with other people, while carrying sound, history, care and attention together.
 
-Jack walks in front with a wearable DJ controller. Ingrid follows with the portable speaker. The players are not heroic adventurers and the mountain is not an enemy. Their task is to keep the group connected while the city fades, the path changes, and the set becomes shaped by weather, breath, footsteps and attention.
+Jack leads with the portable DJ controller. Ingrid follows with the speaker system, gloves and trash bags. The group becomes the third protagonist.
 
-The central question is:
+## Emotional arc
 
-**Can a DJ set become a way of moving through a place together rather than simply playing music inside it?**
+### 1. ARRIVAL — We are separate
+At Sandviken sykehus, participants arrive as individuals. The city is still louder than the music. The player helps prepare equipment, introduces the route and chooses how the first sound enters.
 
-## Tone
+### 2. ORIENTATION — The place has memory
+At Sandviksbatteriet, the group encounters documented history and a wider view of Bergen. The first knowledge objects are collected. History is not decoration; it changes how the landscape is read.
 
-Warm, playful, grounded, slightly strange and emotionally sincere.
+### 3. EFFORT — We adjust for one another
+At Sandvikspilen, the climb creates different paces. The player cannot maximise speed, energy, connection and attention at the same time. Care becomes an active choice.
 
-Avoid:
-- fantasy prophecy
-- combat language
-- chosen-one narratives
-- mystical clichés
-- treating nature as a passive aesthetic backdrop
-- references to Mare or Mare's Breath
+### 4. LISTENING — The environment joins the set
+In the forest, rhythm, rain, footsteps, branches and birds become part of the composition. The player is rewarded for pausing. Environmental care is integrated through litter collection without turning stewardship into a shallow score chase.
 
-The world may feel enchanted, but the enchantment comes from attention, rhythm, shared movement and the shifting landscape.
+### 5. GATHERING — The public becomes part of the work
+At Fløyen, tourists, families, local walkers and performers overlap. The live DJ stop is not a spectacle imposed on the mountain; it is a temporary meeting between people, place and sound.
 
-## Player role
+### 6. RETURN — We leave with more than we carried
+At the Fløibanen stop, participants review what they noticed, learned, cleaned and contributed. The final reward is not ownership. It is an invitation to join the real walking event and continue the story with others.
 
-The player is the invisible coordinator of the hike. They do not directly control Jack or Ingrid like platform characters. Instead, they shape the group's pace, listening and choices.
+## Final line
 
-The player manages three connected values:
+**The music travelled through Bergen. We travelled through one another.**
 
-- **Energy** — whether the group can keep moving
-- **Connection** — whether people still feel part of the same experience
-- **Attention** — whether the group is noticing the place rather than consuming it
+## Player verbs
 
-No value should simply mean “winning.” Moving faster may raise energy but reduce attention. Stopping may deepen connection but make the group cold. A good journey is a changing balance rather than a perfect score.
+Walk  
+Listen  
+Ask  
+Collect  
+Clean  
+Wait  
+Share  
+Remember  
+Continue together
 
-## Story structure
+## Collectibles
 
-### Chapter 1 — Loading In
+No coins. The player collects:
 
-The city is still loud. Cables are checked, water bottles are packed and the first people arrive unsure whether this is a hike, a performance or both.
+- verified historical photographs
+- sourced local history
+- plant observations
+- animal sightings
+- architecture details
+- soundscape fragments
+- oral memories
+- environmental actions
+- route viewpoints
+- artistic folklore entries clearly marked as interpretation
 
-Jack tests the controller.
-Ingrid checks the speaker straps.
-The first bass pulse is almost lost beneath traffic.
+## Smart togetherness
 
-Player choice:
-- Start with an immediate beat
-- Let the city remain audible
-- Ask the group to introduce themselves
+The game's intelligence comes from relationships between systems:
 
-Narrative purpose:
-Establish that the group begins as strangers and that the set is not complete before they arrive.
+- Walking faster may raise energy but reduce connection.
+- Stopping may deepen attention but make the group colder.
+- Loud music may increase excitement but hide the landscape.
+- A quieter mix may reveal environmental sound and conversation.
+- Picking up litter improves nature health but also changes dialogue and group trust.
+- Helping the slowest participant can unlock stories that speed would miss.
 
-### Chapter 2 — Leaving the City
-
-The road narrows into trail. Notifications, engines and voices begin to recede. The group's walking pace creates an accidental rhythm.
-
-The music does not replace the city at once. It absorbs fragments of it.
-
-Player choice:
-- Match the music to the walking pace
-- Slow the group and listen
-- Let someone else choose the next sound
-
-Narrative purpose:
-Show the transition from audience to participants.
-
-### Chapter 3 — Under the Trees
-
-The forest changes how the music travels. Bass becomes physical. High frequencies disappear into leaves. The group can no longer see the full route ahead.
-
-A person near the back begins falling behind.
-
-Player choice:
-- Lower the tempo
-- Ask Ingrid to move closer to the back
-- Keep the current momentum and trust the group to adapt
-
-Narrative purpose:
-Turn care into a mechanic. The “best” musical choice may not be the best collective choice.
-
-### Chapter 4 — The Climb
-
-Conversation becomes shorter. Breath and footsteps become louder than the track. Jack cannot constantly mix while climbing, so the music becomes simpler.
-
-The path asks for effort without becoming an enemy.
-
-Player choice:
-- Strip the track down to rhythm and breath
-- Stop at a small overlook
-- Let the group vote on whether to continue
-
-Narrative purpose:
-The set becomes collaborative because physical limitation removes total control.
-
-### Chapter 5 — The View
-
-The group reaches an overlook. Bergen is visible below, but the game does not frame this as victory.
-
-Jack lets a track run without touching it.
-Ingrid lowers the speaker.
-For a moment, the landscape is louder than the music.
-
-Player interaction:
-Hold to listen. The longer the player waits without pressing anything, the more environmental detail becomes audible and visible.
-
-Possible line:
-**Nobody says we made it. We are simply here at the same time.**
-
-Narrative purpose:
-Create the emotional centre through stillness rather than spectacle.
-
-### Chapter 6 — The Shared Set
-
-On the return, members of the group contribute sounds, memories or small choices. The hierarchy between DJ, sound carrier and audience begins to soften.
-
-The set now contains:
-- footsteps
-- fragments of conversation
-- weather
-- sounds selected earlier
-- traces of the city's opening noise
-
-Player choice:
-Choose which earlier sound returns, not which ending is “correct.”
-
-Narrative purpose:
-Show that the route has become an archive of the group.
-
-### Chapter 7 — The Descent
-
-The same trail feels unfamiliar in different light. The group is tired, looser and more connected. Music is no longer guiding every step.
-
-Jack packs down part of the controller.
-Ingrid keeps one small speaker playing.
-The last track is quieter than the first.
-
-Final choice:
-- Let the track finish before the city
-- Carry it back into the streets
-- End with footsteps only
-
-Final line:
-**The set ends. The route keeps playing in us.**
-
-## Replay structure
-
-Each new walk can change:
-- route
-- weather
-- time of day
-- music genre
-- group mood
-- environmental sound
-- story fragments
-- balance between energy, connection and attention
-
-The point is not to unlock a “true ending.” Each route produces a different memory of moving together.
-
-## Dialogue style
-
-Use short, human lines.
-
-Jack:
-- “Give me ten seconds. The path changed the mix.”
-- “We can slow down. The mountain isn't going anywhere.”
-- “I thought I was leading. Apparently the tempo is.”
-
-Ingrid:
-- “The people at the back can't hear us.”
-- “Turn it down for a second. Listen to that.”
-- “The speaker is heavy, but the silence would be heavier.”
-- “We don't need a drop here.”
-
-Group:
-- “Is this still part of the set?”
-- “I can hear the city from here.”
-- “Wait. Let everyone catch up.”
-- “Play the one from before, but quieter.”
-
-## Claude Code implementation brief
-
-Use the assets in this folder as visual references.
-
-First:
-1. Inspect the existing `trail-mix.html`.
-2. Preserve working interactions.
-3. Add the narrative as data, not hard-coded scattered strings.
-4. Create `story-data.js` or `story-data.json`.
-5. Represent each chapter with:
-   - id
-   - title
-   - opening text
-   - environmental state
-   - available choices
-   - stat effects
-   - character dialogue
-   - transition condition
-6. Keep the experience mobile-first and compatible with GitHub Pages.
-7. Do not turn it into a platformer or combat game.
-8. Do not reference Mare.
-9. Use the extracted sprites as prototypes only until clean final animations exist.
-
-Suggested data shape:
-
-```js
-{
-  id: "under-the-trees",
-  title: "Under the Trees",
-  environment: {
-    light: "forest",
-    weather: "still",
-    soundscape: "muffled"
-  },
-  opening: "The trees change how the music travels.",
-  choices: [
-    {
-      label: "Lower the tempo",
-      effects: { energy: -1, connection: 2, attention: 1 },
-      response: "The people at the back begin walking with the group again."
-    }
-  ]
-}
-```
+There is no perfect numerical ending. A meaningful route is one where the group notices, adapts and arrives together.

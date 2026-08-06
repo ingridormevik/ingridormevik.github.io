@@ -45,6 +45,17 @@ MIN_FRAME_W = 22             # narrower runs are debris, not a pose
 MAX_CHAR_H = 100             # tallest real pose; anything above is row bleed
 PINCH_W = 6                  # a row this narrow high up is a weld, not anatomy
 
+# Individual pre-cut frames (already transparent, already facing right).
+# These win over the strip-derived version of the same animation.
+FRAME_DIRS = {
+    'ingrid': [('assets/route/ingrid/frames', 'ingrid_walk_right_', 'walk_right', 8)],
+    'jack':   [('assets/route/jack/frames',   'jack_walk_right_',   'walk_right', 8)],
+}
+
+# The concept-sheet strips face LEFT while the pair travel right, so anything
+# built from them is mirrored here rather than at draw time.
+FLIP_STRIPS = True
+
 # strip -> (animation name, fps). Order defines manifest order.
 SOURCES = {
     'ingrid': [
@@ -266,8 +277,54 @@ def build_animation(who, strip_file, anim, fps):
                     frame[ty, tx, :3] = chunk[sy, sx]
                     frame[ty, tx, 3] = 255
 
-        Image.fromarray(frame, 'RGBA').save(
-            os.path.join(out_dir, '%s_%02d.png' % (anim, written)))
+        img = Image.fromarray(frame, 'RGBA')
+        if FLIP_STRIPS:
+            img = img.transpose(Image.FLIP_LEFT_RIGHT)
+        img.save(os.path.join(out_dir, '%s_%02d.png' % (anim, written)))
+        written += 1
+
+    return {'frames': written, 'fps': fps} if written else None
+
+
+def build_frame_dir(who, rel_dir, prefix, anim, fps):
+    """Normalise ready-made frames into the same foot-aligned 128px box."""
+    src_dir = os.path.join(ROOT, rel_dir)
+    if not os.path.isdir(src_dir):
+        return None
+    names = sorted(n for n in os.listdir(src_dir)
+                   if n.startswith(prefix) and n.endswith('.png'))
+    if not names:
+        return None
+
+    out_dir = os.path.join(OUT, who)
+    os.makedirs(out_dir, exist_ok=True)
+    written = 0
+    for name in names:
+        src = np.asarray(Image.open(os.path.join(src_dir, name)).convert('RGBA'))
+        alpha = src[..., 3] > 24
+        alpha = largest_blob(alpha)
+        if alpha.sum() < 400:
+            continue
+
+        ys, xs = np.where(alpha)
+        base, top = ys.max() + 1, ys.min()
+        # torso anchor, same as the strips: pinning the feet kills the stride
+        torso = alpha[top:top + max(4, int((base - top) * 0.42)), :]
+        tx = np.where(torso.sum(axis=0) > 0)[0]
+        centre = int(round(tx.mean())) if len(tx) else int(round(xs.mean()))
+
+        # scale the taller source down to the shared character height
+        scale = min(1.0, float(MAX_CHAR_H) / (base - top))
+        cut = Image.fromarray(np.where(alpha[..., None], src, 0).astype('uint8'), 'RGBA')
+        if scale < 1.0:
+            nw, nh = max(1, int(round(cut.width * scale))), max(1, int(round(cut.height * scale)))
+            cut = cut.resize((nw, nh), Image.NEAREST)
+            base, centre = base * scale, centre * scale
+
+        frame = Image.new('RGBA', (FRAME_W, FRAME_H), (0, 0, 0, 0))
+        frame.alpha_composite(cut, (int(round(FRAME_W // 2 - centre)),
+                                    int(round(FOOT_Y - base))))
+        frame.save(os.path.join(out_dir, '%s_%02d.png' % (anim, written)))
         written += 1
 
     return {'frames': written, 'fps': fps} if written else None
@@ -305,6 +362,14 @@ def main():
             if info:
                 anims[anim] = info
                 print('%-7s %-15s %d frames @ %d fps' % (who, anim, info['frames'], info['fps']))
+
+        # ready-made frames override the strip version of the same animation
+        for rel_dir, prefix, anim, fps in FRAME_DIRS.get(who, []):
+            info = build_frame_dir(who, rel_dir, prefix, anim, fps)
+            if info:
+                anims[anim] = info
+                print('%-7s %-15s %d frames @ %d fps  (from %s)' %
+                      (who, anim, info['frames'], info['fps'], rel_dir))
         entry = {'animations': anims}
         if build_portrait(who):
             entry['portrait'] = 'portrait.png'
