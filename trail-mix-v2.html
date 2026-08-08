@@ -509,7 +509,8 @@
 
             <div class="rm">
                 <div class="rm-stage">
-                    <audio id="rmTheme" loop preload="none" src="assets/audio/trail-mix-theme.mp3"></audio>
+                    <audio id="rmTheme" loop preload="none" title="Trail Mix Theme Song"
+                           src="assets/audio/trail-mix-theme.mp3"></audio>
                     <canvas id="rmCanvas" width="480" height="270" role="img"
                             aria-label="Pixel-art scene of two hikers walking a Bergen mountain trail at sunset, one carrying a DJ controller, one carrying a speaker backpack."></canvas>
 
@@ -577,13 +578,14 @@
                         <span class="rm-count" id="rmBag">0</span>
                     </div>
                     <div class="rm-spacer"></div>
-                    <button class="rm-icobtn" id="rmMusic" aria-pressed="false">♫ THEME OFF</button>
+                    <button class="rm-icobtn" id="rmMusic" aria-pressed="false" title="Trail Mix Theme Song">♫ THEME OFF</button>
                     <button class="rm-icobtn" id="rmSound" aria-pressed="false">♪ SOUND OFF</button>
                     <button class="rm-icobtn" id="rmReset">↺ RESTART</button>
                 </div>
 
                 <div class="rm-cap">
                     <span>FLØYEN TRAIL · BERGEN, NORWAY</span>
+                    <span>THEME: “TRAIL MIX THEME SONG” · MOUNT MEDIA</span>
                     <span>WE DON'T CHASE SUMMITS. WE CHASE MOMENTS THAT STAY.</span>
                 </div>
             </div>
@@ -1766,7 +1768,7 @@
         function paintMusicBtn() {
             var btn = el('rmMusic');
             if (!btn) return;
-            btn.textContent = themeOn ? '♫ THEME ON' : '♫ THEME OFF';
+            btn.textContent = themeOn ? '♫ TRAIL MIX THEME' : '♫ THEME OFF';
             btn.setAttribute('aria-pressed', themeOn ? 'true' : 'false');
         }
 
