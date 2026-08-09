@@ -38,6 +38,28 @@
 
         .rm * { box-sizing: border-box; }
 
+        /* Fullscreen keeps the exact same layout - the panel just fills the
+           screen and the canvas re-fits to the new aspect. Nothing moves. */
+        .rm:fullscreen,
+        .rm:-webkit-full-screen {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            border: 0;
+        }
+
+        .rm:fullscreen .rm-stage,
+        .rm:-webkit-full-screen .rm-stage {
+            flex: 1 1 auto;
+            aspect-ratio: auto;
+            min-height: 0;
+        }
+
+        .rm:fullscreen .rm-cap,
+        .rm:-webkit-full-screen .rm-cap { display: none; }
+
         /* --- Stage --- */
         .rm-stage {
             position: relative;
@@ -519,7 +541,7 @@
                         <span class="rm-tag" style="left:60%">INGRID<b></b></span>
                         <span class="rm-tag" style="left:40%">JACK<b></b></span>
                     </div>
-                    <div class="rm-prompt rm-hide" id="rmPrompt">HOLD TO WALK · TAP ANYTHING ON THE TRAIL TO BAG IT</div>
+                    <div class="rm-prompt rm-hide" id="rmPrompt">HOLD TO WALK · TAP ON THE BEAT TO BAG IT</div>
 
                     <!-- Loading -->
                     <div class="rm-layer rm-load on" id="rmLoad">
@@ -578,6 +600,7 @@
                         <span class="rm-count" id="rmBag">0</span>
                     </div>
                     <div class="rm-spacer"></div>
+                    <button class="rm-icobtn" id="rmFull" title="Fullscreen">⛶ FULLSCREEN</button>
                     <button class="rm-icobtn" id="rmMusic" aria-pressed="false" title="Trail Mix Theme Song">♫ THEME OFF</button>
                     <button class="rm-icobtn" id="rmSound" aria-pressed="false">♪ SOUND OFF</button>
                     <button class="rm-icobtn" id="rmReset">↺ RESTART</button>
@@ -948,7 +971,8 @@
             phase: 'load', chapter: 0, dist: 0, walking: false,
             energy: 60, sound: 40, conn: 50,
             t: 0, cam: 0, fired: false, sparks: [], notes: [],
-            items: [], picked: 0, litter: 0, pops: [], nextItem: 0, still: 0
+            items: [], picked: 0, litter: 0, pops: [], nextItem: 0, still: 0,
+            beatCount: 0, combo: 0, comboAt: 0, best: 0, shake: 0
         };
 
         /* ---------- audio ---------- */
@@ -1100,10 +1124,14 @@
 
             // a soft marker so it reads as interactive
             if (!it.taken && !reduceMotion) {
-                var pulse = 0.35 + 0.35 * Math.sin(S.t * 3 + it.world);
-                g.globalAlpha = pulse;
+                // the marker breathes on the beat, so pickups read as rhythmic
+                var b = 0.3 + BEAT.pulse * 0.7;
+                g.globalAlpha = b;
                 g.fillStyle = it.def.kind === 'litter' ? '#e8a13c' : '#7fd8a0';
-                g.fillRect(x + 1, y - 16, 2, 2);
+                var r = 2 + Math.round(BEAT.pulse * 2);
+                g.fillRect(x + 1 - (r >> 1), y - 16 - (r >> 1), r, r);
+                g.globalAlpha = b * 0.35;
+                g.fillRect(x - 2, y - 3, 8, 1);
                 g.globalAlpha = 1;
             }
         }
@@ -1128,11 +1156,27 @@
                 S.energy = clamp(S.energy + 4, 0, 100);     // Curiosity
                 S.conn = clamp(S.conn + 2, 0, 100);
             }
+            // on-beat pickups chain into a combo
+            var onBeat = (S.t - BEAT.last) < 0.28 || BEAT.pulse > 0.45;
+            if (S.t - S.comboAt < 2.6) S.combo++; else S.combo = 1;
+            S.comboAt = S.t;
+            if (onBeat) S.combo++;
+            if (S.combo > S.best) S.best = S.combo;
+            S.shake = onBeat ? 3 : 1.6;
+
             syncHud();
             S.pops.push({
-                x: itemScreenX(it), y: GROUND - 4, a: 1,
-                text: it.def.kind === 'litter' ? '+ bagged' : '+ noticed'
+                x: itemScreenX(it), y: GROUND - 4, a: 1, big: onBeat,
+                text: (it.def.kind === 'litter' ? '+ bagged' : '+ noticed') +
+                      (S.combo > 1 ? '  x' + S.combo : '') + (onBeat ? '  ON BEAT' : '')
             });
+            for (var k = 0; k < (onBeat ? 12 : 6); k++) {
+                S.sparks.push({
+                    x: itemScreenX(it) + 2, y: GROUND - 2,
+                    vx: (Math.random() - 0.5) * 60, vy: -20 - Math.random() * 60,
+                    a: 1, c: it.def.kind === 'litter' ? '#e8c05c' : '#8fe8b0'
+                });
+            }
         }
 
         // nearest un-taken item within reach of the pair
@@ -1159,7 +1203,6 @@
         }
 
         function updateItems(dt) {
-            if (S.phase === 'walk' && S.dist > S.nextItem) spawnItem();
             S.items.forEach(function (it) {
                 if (it.taken) it.taken = Math.min(1, it.taken + dt * 2.2);
             });
@@ -1168,6 +1211,38 @@
             });
             S.pops.forEach(function (p) { p.y -= dt * 26; p.a -= dt * 0.9; });
             S.pops = S.pops.filter(function (p) { return p.a > 0; });
+
+            S.sparks.forEach(function (k) {
+                k.x += k.vx * dt; k.y += k.vy * dt; k.vy += 150 * dt; k.a -= dt * 1.5;
+            });
+            S.sparks = S.sparks.filter(function (k) { return k.a > 0; });
+            S.shake = Math.max(0, S.shake - dt * 9);
+            if (S.t - S.comboAt > 2.6) S.combo = 0;
+        }
+
+        function drawSparks() {
+            S.sparks.forEach(function (k) {
+                ctx.globalAlpha = clamp(k.a, 0, 1);
+                ctx.fillStyle = k.c;
+                ctx.fillRect(k.x | 0, k.y | 0, 2, 2);
+            });
+            ctx.globalAlpha = 1;
+        }
+
+        function drawCombo() {
+            if (S.combo < 2) return;
+            var scale = 1 + BEAT.pulse * 0.25;
+            ctx.save();
+            ctx.translate(W * 0.5, H * 0.30);
+            ctx.scale(scale, scale);
+            ctx.font = 'bold 13px ui-monospace, monospace';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#0d0a12';
+            ctx.fillText('x' + S.combo, 1, 1);
+            ctx.fillStyle = S.combo >= 6 ? '#f3d6ff' : '#d4a758';
+            ctx.fillText('x' + S.combo, 0, 0);
+            ctx.restore();
+            ctx.textAlign = 'left';
         }
 
         function drawPops() {
@@ -1178,11 +1253,82 @@
                 ctx.globalAlpha = clamp(p.a, 0, 1);
                 ctx.fillStyle = '#0d0a12';
                 ctx.fillText(p.text, (p.x + 1) | 0, (p.y + 1) | 0);
-                ctx.fillStyle = '#e8dcc0';
+                ctx.fillStyle = p.big ? '#f3d6ff' : '#e8dcc0';
                 ctx.fillText(p.text, p.x | 0, p.y | 0);
             });
             ctx.globalAlpha = 1;
             ctx.textAlign = 'left';
+        }
+
+        /* ---------- beat tracking ----------
+           The theme drives the game: bass energy is watched for onsets, and
+           everything worth picking up is placed and pulsed on those beats. */
+        var BEAT = {
+            ctx: null, analyser: null, data: null,
+            level: 0, avg: 0, pulse: 0, last: 0, interval: 0.5, at: 0, ready: false
+        };
+
+        function beatInit(mediaEl) {
+            if (BEAT.ready || !mediaEl) return;
+            try {
+                var AC = window.AudioContext || window.webkitAudioContext;
+                if (!AC) return;
+                BEAT.ctx = AU.ctxA || new AC();
+                var src = BEAT.ctx.createMediaElementSource(mediaEl);
+                BEAT.analyser = BEAT.ctx.createAnalyser();
+                BEAT.analyser.fftSize = 1024;
+                BEAT.analyser.smoothingTimeConstant = 0.72;
+                BEAT.data = new Uint8Array(BEAT.analyser.frequencyBinCount);
+                // through the analyser and on to the speakers, or it goes silent
+                src.connect(BEAT.analyser);
+                BEAT.analyser.connect(BEAT.ctx.destination);
+                BEAT.ready = true;
+            } catch (e) { BEAT.ready = false; }
+        }
+
+        function beatUpdate(dt) {
+            BEAT.pulse = Math.max(0, BEAT.pulse - dt * 3.4);
+
+            // Watchdog: if nothing has registered as a beat for a while - muted
+            // theme, silent passage, analyser unavailable - keep a pulse going
+            // so the trail never runs dry.
+            BEAT.since = (BEAT.since || 0) + dt;
+            if (BEAT.since > 1.1) {
+                BEAT.since = 0;
+                BEAT.pulse = 1;
+                onBeat();
+                return;
+            }
+
+            if (!BEAT.ready || !themeOn) {
+                // no analyser (or muted): fall back to a steady 120bpm pulse so
+                // the rhythm of the placement survives with the sound off
+                BEAT.at += dt;
+                if (BEAT.at >= 0.5) { BEAT.at = 0; BEAT.pulse = 1; BEAT.since = 0; onBeat(); }
+                return;
+            }
+
+            BEAT.analyser.getByteFrequencyData(BEAT.data);
+            var sum = 0, n = 14;                       // low bins ~ kick + bass
+            for (var i = 1; i <= n; i++) sum += BEAT.data[i];
+            BEAT.level = sum / n / 255;
+            BEAT.avg = BEAT.avg * 0.92 + BEAT.level * 0.08;
+
+            var since = S.t - BEAT.last;
+            if (BEAT.level > BEAT.avg * 1.32 && BEAT.level > 0.16 && since > 0.24) {
+                if (BEAT.last) BEAT.interval = BEAT.interval * 0.8 + Math.min(since, 1.2) * 0.2;
+                BEAT.last = S.t;
+                BEAT.pulse = 1;
+                BEAT.since = 0;
+                onBeat();
+            }
+        }
+
+        // one beat = one thing worth noticing, spaced so they arrive in time
+        function onBeat() {
+            if (S.phase !== 'walk') return;
+            S.beatCount++;
+            if (S.items.length < 5) spawnItem();
         }
 
         /* ---------- rendering ---------- */
@@ -1502,6 +1648,13 @@
         function render() {
             var ch = CH[S.chapter];
             ctx.clearRect(0, 0, W, H);
+
+            // the frame breathes with the track and kicks on a pickup
+            var shook = !reduceMotion && S.shake > 0.05;
+            if (shook) {
+                ctx.save();
+                ctx.translate((Math.random() - 0.5) * S.shake, (Math.random() - 0.5) * S.shake);
+            }
             drawSky(ch, S.dist / ch.dist);
 
             tile(tintCache('far', ch.night ? '#191634' : '#3d3358'), -S.cam * 0.08, 0.85);
@@ -1516,8 +1669,19 @@
             drawActors();
             drawForeground(ch);
             drawParticles(ch);
+            drawSparks();
             drawPops();
+            drawCombo();
             drawVignette();
+
+            // a soft light lift on the beat - the world nods along
+            if (BEAT.pulse > 0.02 && !reduceMotion) {
+                ctx.globalAlpha = BEAT.pulse * 0.07;
+                ctx.fillStyle = '#ffe6c0';
+                ctx.fillRect(0, 0, W, H);
+                ctx.globalAlpha = 1;
+            }
+            if (shook) ctx.restore();
         }
 
         var TINTS = {};
@@ -1681,6 +1845,7 @@
             hide('rmStory');
             S.energy = 60; S.sound = 40; S.conn = 50;
             S.litter = 0; S.picked = 0; S.items = []; S.pops = [];
+            S.combo = 0; S.best = 0; S.sparks = []; S.beatCount = 0;
             S.cam = 0;
             syncHud();
             startChapter(0);
@@ -1777,14 +1942,55 @@
                 var btn = el('rmMusic');
                 if (btn) { btn.textContent = '♫ NO THEME'; btn.disabled = true; }
             });
-            el('rmMusic').addEventListener('click', function () { themeSet(!themeOn); });
+            el('rmMusic').addEventListener('click', function () {
+                beatInit(theme);
+                if (BEAT.ctx && BEAT.ctx.state === 'suspended') BEAT.ctx.resume();
+                themeSet(!themeOn);
+            });
         }
 
         // first press of Begin starts the theme
         function armTheme() {
             if (themeArmed) return;
             themeArmed = true;
+            beatInit(theme);
+            if (BEAT.ctx && BEAT.ctx.state === 'suspended') BEAT.ctx.resume();
             themeSet(true);
+        }
+
+        // Fullscreen. Layout is untouched - the panel fills the screen and
+        // fitCanvas re-fits the scene to whatever aspect that turns out to be.
+        var shell = cv.parentNode.parentNode;
+        function fullBtn() { return el('rmFull'); }
+
+        function toggleFull() {
+            var d = document;
+            var on = d.fullscreenElement || d.webkitFullscreenElement;
+            if (on) {
+                (d.exitFullscreen || d.webkitExitFullscreen || function () {}).call(d);
+            } else {
+                var req = shell.requestFullscreen || shell.webkitRequestFullscreen;
+                if (req) req.call(shell);
+            }
+        }
+
+        function syncFullBtn() {
+            var on = !!(document.fullscreenElement || document.webkitFullscreenElement);
+            var b = fullBtn();
+            if (b) b.textContent = on ? '⛶ EXIT FULLSCREEN' : '⛶ FULLSCREEN';
+            setTimeout(fitCanvas, 60);
+            setTimeout(fitCanvas, 260);
+        }
+
+        if (fullBtn()) {
+            if (!(shell.requestFullscreen || shell.webkitRequestFullscreen)) {
+                fullBtn().disabled = true;
+                fullBtn().textContent = '⛶ N/A';
+            } else {
+                fullBtn().addEventListener('click', toggleFull);
+                document.addEventListener('fullscreenchange', syncFullBtn);
+                document.addEventListener('webkitfullscreenchange', syncFullBtn);
+            }
         }
 
         el('rmSound').addEventListener('click', audioToggle);
@@ -1809,6 +2015,7 @@
             last = now;
             S.t += dt;
 
+            beatUpdate(dt);
             updateItems(dt);
 
             if (S.phase === 'walk' && S.walking) {
