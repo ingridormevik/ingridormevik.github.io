@@ -1,0 +1,133 @@
+{
+  "_comment": "What tools/build-pack-v2.py cut from the concept pack, and what it refused. Source art stays in assets/pack-v2/.",
+  "locations": [
+    {
+      "id": "sandviken-sykehus",
+      "stop": "sandviken-sykehus",
+      "asset": "assets/locations/sandviken-sykehus.png",
+      "kind": "concept_art",
+      "status": "unverified",
+      "note": "Painted interpretation, not a photograph. Carries no factual claim."
+    },
+    {
+      "id": "city-edge",
+      "stop": "city-releases-you",
+      "asset": "assets/locations/city-edge.png",
+      "kind": "concept_art",
+      "status": "unverified",
+      "note": "Painted interpretation, not a photograph. Carries no factual claim."
+    },
+    {
+      "id": "trail-forest",
+      "stop": "forest-transition",
+      "asset": "assets/locations/trail-forest.png",
+      "kind": "concept_art",
+      "status": "unverified",
+      "note": "Painted interpretation, not a photograph. Carries no factual claim."
+    },
+    {
+      "id": "sandvikspilen",
+      "stop": "sandvikspilen",
+      "asset": "assets/locations/sandvikspilen.png",
+      "kind": "concept_art",
+      "status": "unverified",
+      "note": "Painted interpretation, not a photograph. Carries no factual claim."
+    },
+    {
+      "id": "floyen",
+      "stop": "floyen",
+      "asset": "assets/locations/floyen.png",
+      "kind": "concept_art",
+      "status": "unverified",
+      "note": "Painted interpretation, not a photograph. Carries no factual claim."
+    },
+    {
+      "id": "floibanen-top",
+      "stop": "floibanen",
+      "asset": "assets/locations/floibanen-top.png",
+      "kind": "concept_art",
+      "status": "unverified",
+      "note": "Painted interpretation, not a photograph. Carries no factual claim."
+    },
+    {
+      "id": "floibanen-bottom",
+      "stop": null,
+      "asset": "assets/locations/floibanen-bottom.png",
+      "kind": "concept_art",
+      "status": "unverified",
+      "note": "Painted interpretation, not a photograph. Carries no factual claim."
+    }
+  ],
+  "folklore": [
+    {
+      "id": "huldra",
+      "asset": "assets/folklore/huldra.png",
+      "kind": "imagined",
+      "status": "unverified",
+      "label": "ARTISTIC INTERPRETATION — INSPIRED BY NORWEGIAN FOLKLORE"
+    },
+    {
+      "id": "nokken",
+      "asset": "assets/folklore/nokken.png",
+      "kind": "imagined",
+      "status": "unverified",
+      "label": "ARTISTIC INTERPRETATION — INSPIRED BY NORWEGIAN FOLKLORE"
+    },
+    {
+      "id": "troll",
+      "asset": "assets/folklore/troll.png",
+      "kind": "imagined",
+      "status": "unverified",
+      "label": "ARTISTIC INTERPRETATION — INSPIRED BY NORWEGIAN FOLKLORE"
+    },
+    {
+      "id": "fossegrimen",
+      "asset": "assets/folklore/fossegrimen.png",
+      "kind": "imagined",
+      "status": "unverified",
+      "label": "ARTISTIC INTERPRETATION — INSPIRED BY NORWEGIAN FOLKLORE"
+    },
+    {
+      "id": "draugen",
+      "asset": "assets/folklore/draugen.png",
+      "kind": "imagined",
+      "status": "unverified",
+      "label": "ARTISTIC INTERPRETATION — INSPIRED BY NORWEGIAN FOLKLORE"
+    },
+    {
+      "id": "mare",
+      "asset": "assets/folklore/mare.png",
+      "kind": "imagined",
+      "status": "unverified",
+      "label": "ARTISTIC INTERPRETATION — INSPIRED BY NORWEGIAN FOLKLORE"
+    },
+    {
+      "id": "nisse",
+      "asset": "assets/folklore/nisse.png",
+      "kind": "imagined",
+      "status": "unverified",
+      "label": "ARTISTIC INTERPRETATION — INSPIRED BY NORWEGIAN FOLKLORE"
+    },
+    {
+      "id": "underjordiske",
+      "asset": "assets/folklore/underjordiske.png",
+      "kind": "imagined",
+      "status": "unverified",
+      "label": "ARTISTIC INTERPRETATION — INSPIRED BY NORWEGIAN FOLKLORE"
+    }
+  ],
+  "quarantined": [
+    {
+      "asset": "assets/quarantine/sandviksbatteriet.png",
+      "stop": "sandviksbatteriet",
+      "reason": "Depicts a naval cannon on a stone emplacement. The world spec for this stop says 'no invented cannons or dates'. The armament at Sandviksbatteriet is research_queue/sandviksbatteriet_history and is unresolved, so this gun is invented. Reshoot from a photograph of the real site.",
+      "usable_as": null
+    },
+    {
+      "asset": "assets/quarantine/12_history_archive.png",
+      "stop": null,
+      "reason": "Fabricated archival photographs carrying hallucinated captions and dates — readable as 'Neevengardrent 1591', 'Slojtbaroe 1178' and similar. These are not photographs of the real buildings and the dates are invented. The core rule forbids fabricating buildings, dates and historical events. May be reused ONLY as paper and frame texture with every caption painted out; never as an archival image, and never behind a history-lens overlay.",
+      "usable_as": "paper/frame texture only, all captions removed"
+    }
+  ]
+}

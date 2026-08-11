@@ -1,0 +1,119 @@
+{
+  "project": "Trail Mix — Mount Media x Preem Cast",
+  "route": [
+    "Sandviken sykehus",
+    "Sandviksbatteriet",
+    "Sandvikspilen",
+    "Fløyen",
+    "Fløibanen"
+  ],
+  "note": "Separated concept-art panels. Individual characters/objects still require transparent cutout and animation-frame normalization.",
+  "factuality": "Verify history, ecology, maps and locations before educational use. Folklore is artistic interpretation.",
+  "assets": [
+    {
+      "file": "00_master_sheet.png",
+      "size": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "file": "01_cover.png",
+      "size": [
+        468,
+        291
+      ]
+    },
+    {
+      "file": "02_jack_dj_sprites.png",
+      "size": [
+        538,
+        291
+      ]
+    },
+    {
+      "file": "03_ingrid_sprites.png",
+      "size": [
+        538,
+        276
+      ]
+    },
+    {
+      "file": "04_npc_tourists.png",
+      "size": [
+        530,
+        414
+      ]
+    },
+    {
+      "file": "05_route_landscapes.png",
+      "size": [
+        729,
+        287
+      ]
+    },
+    {
+      "file": "06_tiles_props.png",
+      "size": [
+        307,
+        328
+      ]
+    },
+    {
+      "file": "07_signs_ui_map.png",
+      "size": [
+        500,
+        328
+      ]
+    },
+    {
+      "file": "08_weather_time.png",
+      "size": [
+        522,
+        174
+      ]
+    },
+    {
+      "file": "09_particles_audio.png",
+      "size": [
+        514,
+        174
+      ]
+    },
+    {
+      "file": "10_flora_fauna.png",
+      "size": [
+        522,
+        190
+      ]
+    },
+    {
+      "file": "11_folklore.png",
+      "size": [
+        583,
+        195
+      ]
+    },
+    {
+      "file": "12_history_archive.png",
+      "size": [
+        1105,
+        82
+      ]
+    },
+    {
+      "file": "13_transitions.png",
+      "size": [
+        185,
+        328
+      ]
+    },
+    {
+      "file": "14_branding_structure.png",
+      "size": [
+        246,
+        405
+      ]
+    }
+  ]
+}

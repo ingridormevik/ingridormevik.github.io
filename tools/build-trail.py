@@ -98,9 +98,11 @@ def render_record(entry, smap, ok_sources):
 </article>"""
 
 
-def render_being(being):
+def render_being(being, portrait=None):
     """A being's card. The attestation line is generated, never authored."""
     name = being.get("display_name_en") or being["id"]
+    pic = (f'<img class="portrait" src="/{esc(portrait)}" alt="{esc(name)}, '
+           f'artistic interpretation">' if portrait else "")
     fn = being.get("narrative_function", "")
     care = being.get("care", "")
 
@@ -122,6 +124,7 @@ def render_being(being):
     return f"""<article class="entry imagined">
   <header><span class="tier">STORY</span><span class="era">interpretation</span></header>
   <h3>{esc(name)}</h3>
+  {pic}
   {att}
   {body}
   {care_block}
@@ -175,6 +178,12 @@ footer{margin-top:2rem;font-size:.78rem;color:var(--dim);}
 footer a{color:inherit;}
 .saved{font:600 .75rem/1 ui-sans-serif,system-ui;color:var(--doc);
 letter-spacing:.08em;text-transform:uppercase;margin:0 0 1rem;}
+.banner{width:100%;height:auto;display:block;border:1px solid var(--rule);
+border-radius:3px;margin:0 0 1rem;image-rendering:auto;}
+.banner-note{font-size:.7rem;color:var(--dim);margin:-.75rem 0 1.25rem;}
+.portrait{float:right;width:5.5rem;height:auto;margin:0 0 .5rem .8rem;
+border:1px solid var(--rule);border-radius:2px;}
+.entry.imagined::after{content:"";display:block;clear:both;}
 """
 
 # Standing at the place is the collection. Loading the page writes its records
@@ -313,6 +322,15 @@ def main():
     smap = source_map(sources)
 
     beings = {b["id"]: b for b in folklore["beings"]}
+
+    # Art cut by tools/build-pack-v2.py. Quarantined art is absent from this
+    # registry by construction, so a banned panel cannot reach a page.
+    pack_file = DATA / "pack-v2.json"
+    banners, portraits = {}, {}
+    if pack_file.exists():
+        pack = json.loads(pack_file.read_text(encoding="utf-8"))
+        banners = {l["stop"]: l["asset"] for l in pack["locations"] if l.get("stop")}
+        portraits = {f["id"]: f["asset"] for f in pack["folklore"]}
     stops = route["stops"]
     stop_by_id = {s["id"]: s for s in stops}
     chapter_by_id = {c["id"]: c for c in route["chapters"]}
@@ -348,7 +366,8 @@ def main():
             # STORY sits below the RECORD, behind a disclosure, so the record is
             # always read first — the same order the game enforces by unlocking.
             story = (f'<details class="story"><summary>A story grew here — open it '
-                     f'after the record</summary>\n{render_being(being)}\n</details>')
+                     f'after the record</summary>\n'
+                     f'{render_being(being, portraits.get(being["id"]))}\n</details>')
         elif stop.get("folklore_permitted") is False:
             story = (f'<p class="care">No folklore is told at this stop. '
                      f'{esc(stop.get("folklore_ban_reason", ""))}</p>')
@@ -364,9 +383,19 @@ def main():
             nav = ('<a class="next" href="../">You have reached the last stop →'
                    '<b>Open the full Trail Archive</b></a>')
 
+        if sid in banners:
+            banner = (f'<img class="banner" src="/{esc(banners[sid])}" '
+                      f'alt="{esc(stop.get("title_no") or stop["title_en"])}, '
+                      f'painted interpretation">'
+                      f'<p class="banner-note">Concept art — a painted '
+                      f'interpretation, not a photograph of the site.</p>')
+        else:
+            banner = ""
+
         body = f"""<p class="chapter">Chapter {ch.get('n','')} · {esc(ch.get('theme',''))}</p>
 <h1>{esc(stop.get('title_no') or stop['title_en'])}</h1>
 <p class="role">{esc(stop.get('scene_role',''))}</p>
+{banner}
 <p class="saved" id="saved"></p>
 {records}
 {story}
