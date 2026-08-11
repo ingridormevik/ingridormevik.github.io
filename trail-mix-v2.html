@@ -156,16 +156,30 @@
         }
 
         /* Story card */
+        /* The story is told on the way, not on another screen. The ribbon sits at
+           the foot of the stage; the trail keeps rendering and moving above it,
+           so a chapter break never feels like leaving the walk. */
         .rm-story {
             flex-direction: column;
-            padding: 3%;
-            overflow-y: auto;
-            background: linear-gradient(180deg, transparent 12%, rgba(10, 8, 18, .82) 62%);
+            justify-content: flex-end;
+            padding: 0 2% 2%;
+            overflow: hidden;
+            background: linear-gradient(180deg, transparent 46%, rgba(10, 8, 18, .55) 100%);
         }
 
+        /* Carved-frame chrome: doubled rule, gilded inner line, corner studs.
+           Heavier and more made than a flat panel — the weight is the point. */
         .rm-card {
-            border: 2px solid var(--rm-edge);
-            background: rgba(22, 18, 28, .95);
+            position: relative;
+            border: 2px solid var(--rm-edge-hi);
+            outline: 2px solid var(--rm-ink);
+            outline-offset: 2px;
+            box-shadow:
+                inset 0 0 0 1px rgba(212, 167, 88, .38),
+                inset 0 2px 0 0 rgba(212, 167, 88, .12),
+                0 10px 34px rgba(0, 0, 0, .66);
+            background:
+                linear-gradient(180deg, rgba(48, 36, 30, .96) 0, rgba(22, 18, 28, .97) 42%);
             padding: clamp(9px, 3.1cqmin, 18px);
             max-width: 780px;
             width: 100%;
@@ -175,9 +189,90 @@
             flex: none;
         }
 
+        /* Corner studs, drawn rather than imported. */
+        .rm-card::before,
+        .rm-card::after {
+            content: "";
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border: 2px solid var(--rm-gold);
+            opacity: .5;
+            pointer-events: none;
+        }
+
+        .rm-card::before {
+            top: 3px;
+            left: 3px;
+            border-right: 0;
+            border-bottom: 0;
+        }
+
+        .rm-card::after {
+            bottom: 3px;
+            right: 3px;
+            border-left: 0;
+            border-top: 0;
+        }
+
+        /* Illuminated capital, the way a painted panel opens. */
+        .rm-text.rm-illum::first-letter {
+            float: left;
+            font-size: 2.7em;
+            line-height: .82;
+            padding: .06em .16em 0 0;
+            color: var(--rm-gold);
+            text-shadow: 0 2px 0 rgba(0, 0, 0, .55);
+        }
+
+        /* A face beside the words. Portrait for a folklore encounter, the
+           location plate otherwise. */
+        .rm-portrait {
+            float: right;
+            width: clamp(46px, 15cqmin, 92px);
+            margin: 0 0 .5em .8em;
+            border: 2px solid var(--rm-edge-hi);
+            box-shadow: inset 0 0 0 1px rgba(212, 167, 88, .3);
+            image-rendering: pixelated;
+        }
+
+        .rm-story-body::after { content: ""; display: block; clear: both; }
+
         /* Archive — same card chrome as the story overlay, so it reads as a screen
            of the game rather than a document bolted onto it. */
         .rm-arch-card { max-height: 84cqh; }
+
+        .rm-folk {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+            gap: .55em;
+            margin: 0 0 1em;
+        }
+
+        .rm-folk figure {
+            margin: 0;
+            border: 2px solid var(--rm-edge);
+            background: var(--rm-panel-hi);
+            padding: 3px;
+            text-align: center;
+        }
+
+        .rm-folk img {
+            width: 100%;
+            display: block;
+            image-rendering: pixelated;
+        }
+
+        .rm-folk figcaption {
+            font-size: clamp(7px, 2cqmin, 10px);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--rm-gold);
+            margin-top: .35em;
+        }
+
+        .rm-folk .unseen { opacity: .3; filter: grayscale(1); }
+        .rm-folk .unseen figcaption { color: var(--rm-dim); }
 
         .rm-arch-lead {
             color: var(--rm-dim);
@@ -1128,9 +1223,147 @@
             { id: 'berry',  kind: 'find',   label: 'blueberries, still going' }
         ];
 
+        /* ---------- folklore beings ----------
+           Huldra's rule in data/folklore.json is that she is only ever glimpsed
+           sideways, encountered by noticing rather than searching, and never a
+           threat. So a being is not a pickup and cannot be chased: it stands back
+           in the treeline, and it stays a little longer if you STOP walking. Keep
+           marching and it is gone before you reach it.
+
+           Where a being may stand is decided by data, not here. route.json carries
+           folklore_permitted per stop and folklore.json carries cast_at, so the
+           hospital and Fløibanen can never host one. */
+        var BEINGS = {
+            cast: {},      // chapter index -> being record
+            live: [],      // beings currently in the world
+            seen: {},
+            art: {},
+
+            metAt: function (chapter) {
+                var b = this.cast[chapter];
+                return b && this.seen[b.id] ? b : null;
+            },
+
+            load: function () {
+                var self = this;
+                fetch('data/folklore.json').then(function (r) { return r.json(); })
+                    .then(function (f) {
+                        fetch('data/pack-v2.json').then(function (r) { return r.json(); })
+                            .then(function (p) {
+                                p.folklore.forEach(function (a) {
+                                    var im = new Image();
+                                    im.src = a.asset;
+                                    self.art[a.id] = im;
+                                });
+                            }).catch(function () { });
+                        f.beings.forEach(function (b) {
+                            var i = STOP_IDS.indexOf(b.cast_at);
+                            if (i >= 0) self.cast[i] = b;
+                        });
+                        self.all = f.beings;
+                    }).catch(function () { });
+            },
+
+            seed: function (chapter) {
+                this.live = [];
+                var b = this.cast[chapter];
+                if (!b) return;
+                // two chances to notice per chapter, both well inside its length
+                var len = CH[chapter].dist;
+                this.live.push(this.make(b, len * 0.34));
+                this.live.push(this.make(b, len * 0.72));
+            },
+
+            make: function (b, at) {
+                return {
+                    being: b, world: at, a: 0, phase: 'wait',
+                    depth: 0.58 + Math.random() * 0.14,
+                    off: (Math.random() - 0.5) * 30
+                };
+            },
+
+            update: function (dt) {
+                var self = this;
+                this.live.forEach(function (g) {
+                    var near = Math.abs(g.world - S.dist) < 120;
+                    if (!near) { g.a = Math.max(0, g.a - dt * 0.8); return; }
+                    if (g.phase === 'wait') { g.phase = 'here'; }
+                    if (g.phase === 'here') {
+                        // stillness holds her; walking on lets her go
+                        var pull = S.walking ? -0.32 : 0.75;
+                        g.a = Math.max(0, Math.min(0.86, g.a + pull * dt));
+                        if (!S.walking && g.a > 0.5 && !self.seen[g.being.id]) {
+                            self.seen[g.being.id] = true;
+                            S.conn = clamp(S.conn + 3, 0, 100);   // Presence
+                            syncHud();
+                            archNoteBeing(g.being);
+                            S.pops.push({
+                                x: self.screenX(g), y: GROUND - 40, a: 1, big: true,
+                                text: (g.being.display_name_en || g.being.id).toUpperCase()
+                            });
+                        }
+                    }
+                });
+            },
+
+            screenX: function (g) {
+                return (g.world - S.dist) * g.depth + W * 0.62 + g.off;
+            },
+
+            draw: function () {
+                var self = this;
+                this.live.forEach(function (g) {
+                    if (g.a <= 0.01) return;
+                    var x = Math.round(self.screenX(g));
+                    if (x < -60 || x > W + 60) return;
+                    var h = Math.round((GROUND - 18) * 0.30 * g.depth + 34);
+                    var im = self.art[g.being.id];
+                    var y = Math.round(GROUND - h + 6);
+                    ctx.save();
+                    ctx.globalAlpha = g.a * 0.9;
+                    if (im && im.complete && im.naturalWidth) {
+                        var w = Math.round(h * (im.naturalWidth / im.naturalHeight));
+                        ctx.drawImage(im, Math.round(x - w / 2), y, w, h);
+                    } else {
+                        // silhouette until the portrait loads - never a blank
+                        ctx.fillStyle = '#0b1410';
+                        ctx.fillRect(Math.round(x - h * 0.14), y, Math.round(h * 0.28), h);
+                    }
+                    // she is lit from behind, not by us
+                    ctx.globalCompositeOperation = 'lighter';
+                    ctx.globalAlpha = g.a * 0.16 * (0.6 + BEAT.pulse * 0.6);
+                    ctx.fillStyle = '#9a6ac7';
+                    ctx.fillRect(Math.round(x - h * 0.22), y - 4,
+                        Math.round(h * 0.44), h + 8);
+                    ctx.restore();
+                });
+            }
+        };
+
+        function archNoteBeing(b) {
+            var a = archRead();
+            a.beings = a.beings || [];
+            if (a.beings.indexOf(b.id) < 0) a.beings.push(b.id);
+            archWrite(a);
+        }
+
+        function storyPortrait(being) {
+            var host = el('rmStoryTxt');
+            var old = host.parentNode.querySelector('.rm-portrait');
+            if (old) old.remove();
+            var src = being && BEINGS.art[being.id] && BEINGS.art[being.id].src;
+            if (!src) return;
+            var im = document.createElement('img');
+            im.className = 'rm-portrait';
+            im.src = src;
+            im.alt = (being.display_name_en || being.id) + ', artistic interpretation';
+            host.parentNode.insertBefore(im, host);
+        }
+
         function seedItems() {
             S.items = [];
             S.nextItem = 40 + Math.random() * 50;
+            BEINGS.seed(S.chapter);
         }
 
         function spawnItem() {
@@ -1741,6 +1974,7 @@
             tile(tintCache('treeNear', '#0d140f'), -S.cam * 0.9);
             drawGround(ch);
             drawSign();
+            BEINGS.draw();
             drawItems();
             drawActors();
             drawForeground(ch);
@@ -1911,6 +2145,25 @@
                 html += '</div>';
             });
 
+            if (BEINGS.all) {
+                var met = archRead().beings || [];
+                html += '<div class="rm-arch-stop"><h4>Folklore<span>' + met.length +
+                    ' of ' + BEINGS.all.length + ' glimpsed</span></h4><div class="rm-folk">';
+                BEINGS.all.forEach(function (b) {
+                    var seen = met.indexOf(b.id) >= 0;
+                    var art = BEINGS.art[b.id];
+                    html += '<figure class="' + (seen ? '' : 'unseen') + '">' +
+                        (art ? '<img src="' + art.src + '" alt="">' : '') +
+                        '<figcaption>' + archEsc(seen ? (b.display_name_en || b.id)
+                            : '???') + '</figcaption></figure>';
+                });
+                html += '</div><p class="rm-arch-lead">Artistic interpretation, ' +
+                    'inspired by Norwegian folklore. None of these beings is ' +
+                    'attested at a Trail Mix location — where one appears at all, ' +
+                    'it is Mount Media\'s reading, not a record. Stand still on ' +
+                    'the trail to notice one; walk on and it is gone.</p></div>';
+            }
+
             html += '<p class="rm-text rm-arch-lead">Every stop has a QR code on the ' +
                 'route. <a href="trail/" target="_blank" rel="noopener">Open the ' +
                 'folklore trail →</a></p>';
@@ -1959,6 +2212,8 @@
             el('rmPrompt').classList.add('rm-hide');
             el('rmStoryTag').textContent = ch.tag;
             el('rmStoryTxt').textContent = ch.text;
+            el('rmStoryTxt').classList.add('rm-illum');
+            storyPortrait(BEINGS.metAt(S.chapter));
 
             var box = el('rmStoryChoices');
             box.innerHTML = '';
@@ -1969,7 +2224,8 @@
                 b.addEventListener('click', function () { resolve(c); });
                 box.appendChild(b);
             });
-            cv.parentNode.classList.add('tall');
+            // Deliberately no 'tall' switch here. Resizing the stage for the story
+            // is what made a chapter break feel like a different screen.
             show('rmStory');
         }
 
@@ -2209,6 +2465,7 @@
             }
         }
 
+        BEINGS.load();
         el('rmArchBtn').addEventListener('click', archOpen);
         el('rmArchClose').addEventListener('click', function () { hide('rmArch'); });
         archCount();
@@ -2237,6 +2494,7 @@
 
             beatUpdate(dt);
             updateItems(dt);
+            BEINGS.update(dt);
 
             if (S.phase === 'walk' && S.walking) {
                 var speed = 76 * (0.82 + (S.energy / 100) * 0.36);
