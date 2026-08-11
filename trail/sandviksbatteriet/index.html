@@ -51,7 +51,9 @@ text-transform:none;margin-top:.3rem;}
 footer{margin-top:2rem;font-size:.68rem;color:var(--dim);line-height:1.8;}
 footer a{color:var(--gold);}
 .saved{font-size:.68rem;color:var(--green);letter-spacing:.14em;
-text-transform:uppercase;margin:0 0 1rem;}
+text-transform:uppercase;margin:0 0 .4rem;}
+.offline{font-size:.62rem;color:var(--dim);letter-spacing:.12em;
+text-transform:uppercase;margin:0 0 1rem;min-height:.9rem;}
 .banner{width:100%;height:auto;display:block;border:2px solid var(--edge);
 margin:0 0 .6rem;}
 .banner-note{font-size:.62rem;color:var(--dim);margin:0 0 1.25rem;
@@ -66,6 +68,7 @@ border:2px solid var(--edge);}
 <p class="role">Military landscape and panoramic transition</p>
 
 <p class="saved" id="saved"></p>
+<p class="offline" id="offline"></p>
 <article class="entry unverified">
   <header><span class="tier">RECORD</span><span class="era"></span></header>
   <h3>Sandviksbatteriet</h3>
@@ -99,5 +102,15 @@ this page works offline and makes no external requests</footer>
     ? added+' new entr'+(added===1?'y':'ies')+' added to your Trail Archive'
     : 'Already in your Trail Archive';
 })();
+
+if('serviceWorker' in navigator){
+  addEventListener('load',function(){
+    navigator.serviceWorker.register('/trail/sw.js',{scope:'/trail/'})
+      .then(function(){
+        var n=document.getElementById('offline');
+        if(n) n.textContent='Saved for offline — the rest of the trail works without signal';
+      }).catch(function(){});
+  });
+}
 </script>
 </body></html>
