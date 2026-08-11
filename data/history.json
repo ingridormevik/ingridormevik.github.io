@@ -1,0 +1,163 @@
+{
+  "_comment": "Documented-tier entries. kind is always 'documented'. status:'unverified' means educational_text_* MUST be empty and the renderer MUST refuse to display it. See docs/asset-spec.md rule 18.",
+  "_schema": {
+    "kind": "documented | observed | imagined",
+    "status": "verified | unverified",
+    "source": "id from data/sources.json — required when status is verified",
+    "coerced": "true for words extracted under duress (trial testimony). Documented that it was said; not true because it was said.",
+    "research_required": "true while the entry is waiting on someone who can reach the archives"
+  },
+  "entries": [
+    {
+      "id": "sandviken_1891_opening",
+      "kind": "documented",
+      "status": "verified",
+      "stop": "sandviken-sykehus",
+      "era": "1891",
+      "source": "snl_sandviken_sykehus",
+      "display_name_no": "Neevengården sinnssykeasyl åpner",
+      "display_name_en": "Neevengården asylum opens",
+      "educational_text_no": "Institusjonen åpnet i 1891 under navnet Neevengården sinnssykeasyl.",
+      "educational_text_en": "The institution opened in 1891 under the name Neevengården sinnssykeasyl.",
+      "asset": null
+    },
+    {
+      "id": "sandviken_1927_rename",
+      "kind": "documented",
+      "status": "verified",
+      "stop": "sandviken-sykehus",
+      "era": "1927",
+      "source": "snl_sandviken_sykehus",
+      "display_name_no": "Neevengården sykehus",
+      "display_name_en": "Renamed Neevengården sykehus",
+      "educational_text_no": "I 1927 ble navnet endret til Neevengården sykehus. «Asyl» falt bort.",
+      "educational_text_en": "In 1927 the name changed to Neevengården sykehus. The word for asylum was dropped.",
+      "asset": null
+    },
+    {
+      "id": "sandviken_1978_rename",
+      "kind": "documented",
+      "status": "verified",
+      "stop": "sandviken-sykehus",
+      "era": "1978",
+      "source": "snl_sandviken_sykehus",
+      "display_name_no": "Sandviken sykehus",
+      "display_name_en": "Renamed Sandviken sykehus",
+      "educational_text_no": "I 1978 fikk sykehuset navnet Sandviken sykehus — et stedsnavn, ikke en diagnose.",
+      "educational_text_en": "In 1978 it became Sandviken sykehus — named for a place rather than for what happened inside it. Three names in eighty-seven years, each one moving further from the last. The building did not change. What we were willing to call it did.",
+      "asset": null
+    },
+
+    {
+      "id": "sandviksbatteriet_construction",
+      "kind": "documented",
+      "status": "unverified",
+      "stop": "sandviksbatteriet",
+      "era": "",
+      "source": null,
+      "research_required": true,
+      "research_id": "sandviksbatteriet_history",
+      "display_name_no": "Sandviksbatteriet",
+      "display_name_en": "Sandviksbatteriet",
+      "educational_text_no": "",
+      "educational_text_en": "",
+      "asset": null
+    },
+    {
+      "id": "sandviksbatteriet_wwii",
+      "kind": "documented",
+      "status": "unverified",
+      "stop": "sandviksbatteriet",
+      "era": "",
+      "source": null,
+      "research_required": true,
+      "research_id": "sandviksbatteriet_history",
+      "display_name_no": "Andre verdenskrig",
+      "display_name_en": "The Second World War",
+      "educational_text_no": "",
+      "educational_text_en": "",
+      "asset": null
+    },
+    {
+      "id": "sandvikspilen_name",
+      "kind": "documented",
+      "status": "unverified",
+      "stop": "sandvikspilen",
+      "era": "",
+      "source": null,
+      "research_required": true,
+      "research_id": "sandvikspilen_history",
+      "display_name_no": "Sandvikspilen",
+      "display_name_en": "Sandvikspilen",
+      "educational_text_no": "",
+      "educational_text_en": "",
+      "asset": null
+    },
+
+    {
+      "id": "floibanen_1895_idea",
+      "kind": "documented",
+      "status": "verified",
+      "stop": "floibanen",
+      "era": "1895",
+      "source": "floyen_floibanen_history",
+      "display_name_no": "Idéen",
+      "display_name_en": "The idea",
+      "educational_text_no": "Idéen om en bane opp Fløyen ble foreslått i 1895.",
+      "educational_text_en": "The idea of a railway up Fløyen was proposed in 1895.",
+      "asset": null
+    },
+    {
+      "id": "floibanen_1912_company",
+      "kind": "documented",
+      "status": "verified",
+      "stop": "floibanen",
+      "era": "1912",
+      "source": "floyen_floibanen_history",
+      "display_name_no": "A/S Fløibanen stiftes",
+      "display_name_en": "A/S Fløibanen established",
+      "educational_text_no": "Selskapet A/S Fløibanen ble stiftet i 1912.",
+      "educational_text_en": "The company A/S Fløibanen was established in 1912.",
+      "asset": null
+    },
+    {
+      "id": "floibanen_1914_construction",
+      "kind": "documented",
+      "status": "verified",
+      "stop": "floibanen",
+      "era": "1914",
+      "source": "floyen_floibanen_history",
+      "display_name_no": "Byggingen starter",
+      "display_name_en": "Construction begins",
+      "educational_text_no": "Byggingen startet i 1914.",
+      "educational_text_en": "Construction began in 1914.",
+      "asset": null
+    },
+    {
+      "id": "floibanen_1918_opening",
+      "kind": "documented",
+      "status": "verified",
+      "stop": "floibanen",
+      "era": "1918",
+      "source": "floyen_floibanen_history",
+      "display_name_no": "Fløibanen åpner",
+      "display_name_en": "Fløibanen opens",
+      "educational_text_no": "Fløibanen åpnet 15. januar 1918.",
+      "educational_text_en": "Fløibanen opened on 15 January 1918. Twenty-three years from idea to opening — and from that day the mountain was something anyone in Bergen could get to, not only those who could climb it.",
+      "asset": null
+    },
+    {
+      "id": "floibanen_2022_cars",
+      "kind": "documented",
+      "status": "verified",
+      "stop": "floibanen",
+      "era": "2022",
+      "source": "floyen_floibanen_history",
+      "display_name_no": "Femte generasjon: Rødhette og Blåmann",
+      "display_name_en": "Fifth generation: Rødhette and Blåmann",
+      "educational_text_no": "Femte generasjon vogner ble satt i drift 1. april 2022. De heter Rødhette og Blåmann.",
+      "educational_text_en": "The fifth generation of cars entered service on 1 April 2022. They are called Rødhette and Blåmann. You have just walked up what they climb in eight minutes. Both ways of arriving are the point.",
+      "asset": null
+    }
+  ]
+}
