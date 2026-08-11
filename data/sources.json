@@ -1,0 +1,89 @@
+{
+  "_comment": "Citation registry for Trail Mix. Every factual claim in history.json points at a source id here. Nothing renders educational text unless its source is present AND verified:true. See docs/asset-spec.md rule 18.",
+  "_schema": {
+    "id": "stable key referenced by entries",
+    "title": "human-readable source name",
+    "url": "canonical URL",
+    "publisher": "who stands behind it",
+    "verified": "true only when a human has opened the URL and confirmed the claim",
+    "verified_by": "who checked it",
+    "verified_date": "ISO date of the check"
+  },
+  "sources": [
+    {
+      "id": "snl_sandviken_sykehus",
+      "title": "Sandviken sykehus",
+      "url": "https://snl.no/Sandviken_sykehus",
+      "publisher": "Store norske leksikon",
+      "verified": true,
+      "verified_by": "ingrid",
+      "verified_date": "2026-08-11"
+    },
+    {
+      "id": "floyen_floibanen_history",
+      "title": "Fløibanen's history",
+      "url": "https://api.floyen.no/en/floibanen/history",
+      "publisher": "Fløyen / Fløibanen AS",
+      "verified": true,
+      "verified_by": "ingrid",
+      "verified_date": "2026-08-11"
+    }
+  ],
+  "research_queue": [
+    {
+      "id": "sandviksbatteriet_history",
+      "subject": "Sandviksbatteriet — construction period, purpose, armament, WWII use",
+      "why_blocked": "Web search returns confident but uncitable claims (hiking sites, hash-house-harriers pages) giving conflicting construction ranges of 1895-1902 and 1895-1905. Authoritative sources are unreachable from the build environment: snl.no, no.wikipedia.org and kulturminnesok.no are all blocked by the network egress proxy.",
+      "try": [
+        "Bergen Byarkiv",
+        "Riksantikvaren / kulturminnesok.no",
+        "Bergen byleksikon",
+        "Bergens Sjøfartsmuseum / Museum Vest"
+      ],
+      "priority": 1,
+      "research_required": true
+    },
+    {
+      "id": "sandvikspilen_history",
+      "subject": "Sandvikspilen — origin of the name, trail construction, any documented markers",
+      "why_blocked": "No authoritative source reachable from the build environment.",
+      "try": ["Bergen Byarkiv", "Bergen og Hordaland Turlag", "Bergen byleksikon"],
+      "priority": 2,
+      "research_required": true
+    },
+    {
+      "id": "vagen_1349",
+      "subject": "The 1349 plague ship at Vågen — vessel, cargo, and what is actually attested",
+      "why_blocked": "The Lögmanns-annáll attribution is carried from the folklore catalogue and has not been checked against the annal itself or a scholarly edition.",
+      "try": ["Store norske leksikon", "Lögmanns-annáll scholarly edition", "Bergen byleksikon"],
+      "priority": 3,
+      "research_required": true
+    },
+    {
+      "id": "anne_pedersdotter_trial",
+      "subject": "Anne Pedersdotter — trial record, charges, date and place of execution",
+      "why_blocked": "Requires archival sources. This entry is load-bearing and must not be filled from memory or from search summaries.",
+      "try": ["Bergen Byarkiv", "Store norske leksikon", "Statsarkivet i Bergen"],
+      "priority": 1,
+      "research_required": true,
+      "care": "Her name is required. The execution must not be skipped or softened. Trial-extracted material is marked coerced:true and never rendered as fact."
+    },
+    {
+      "id": "route_ecology",
+      "subject": "Which flora and fauna are actually present on the Sandviken-Fløyen route",
+      "why_blocked": "Species lists in the asset spec are candidates, not observations.",
+      "try": ["Artsdatabanken", "Artsobservasjoner.no", "field observation on the walk itself"],
+      "priority": 2,
+      "research_required": true,
+      "care": "Observed-tier entries can be verified by walking with a camera. This is the one research task that does not need an archive."
+    },
+    {
+      "id": "telenor_kulturarv_rundemanen",
+      "subject": "Rundemanen audio — licensing before any use in the set",
+      "why_blocked": "Licensing conversation, not a sourcing problem.",
+      "try": ["Telenor Kulturarv"],
+      "priority": 3,
+      "research_required": true
+    }
+  ]
+}

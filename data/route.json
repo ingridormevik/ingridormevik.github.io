@@ -1,0 +1,84 @@
+{
+  "_comment": "Trail Mix route. 8 chapters, 6 physical stops. Transition chapters have no QR code and no archive stop. Stop ids are the URL slugs at /trail/{id}/ and must never change once printed.",
+  "title": "Trail Mix",
+  "subtitle": "Mount Media × Preem Cast",
+  "core_promise": "A moving cultural performance where music, local history, ecological attention and collective care travel through Bergen together.",
+  "chapters": [
+    { "n": 1, "id": "sandviken-sykehus",  "title": "Sandviken sykehus",      "theme": "MEMORY",        "stop": true },
+    { "n": 2, "id": "city-releases-you",  "title": "The City Releases You",  "theme": "TRANSITION",    "stop": false },
+    { "n": 3, "id": "sandviksbatteriet",  "title": "Sandviksbatteriet",      "theme": "HISTORY",       "stop": true },
+    { "n": 4, "id": "the-climb",          "title": "The Climb",              "theme": "EFFORT",        "stop": false },
+    { "n": 5, "id": "sandvikspilen",      "title": "Sandvikspilen",          "theme": "PERSPECTIVE",   "stop": true },
+    { "n": 6, "id": "forest-transition",  "title": "The Forest Remembers",   "theme": "ATTENTION",     "stop": true },
+    { "n": 7, "id": "floyen",             "title": "Fløyen",                 "theme": "TOGETHERNESS",  "stop": true },
+    { "n": 8, "id": "floibanen",          "title": "Fløibanen",              "theme": "CONNECTION",    "stop": true }
+  ],
+  "stops": [
+    {
+      "id": "sandviken-sykehus",
+      "title_no": "Sandviken sykehus",
+      "title_en": "Sandviken Hospital",
+      "scene_role": "Arrival and orientation",
+      "folklore_permitted": false,
+      "folklore_ban_reason": "Chapter theme is MEMORY and institutional history. Casting any being here produces the asylum-horror trope the spec bans. Enforced in code, not left to judgement.",
+      "next": "sandviksbatteriet",
+      "npc_density": "urban"
+    },
+    {
+      "id": "sandviksbatteriet",
+      "title_no": "Sandviksbatteriet",
+      "title_en": "Sandviken Battery",
+      "scene_role": "Military landscape and panoramic transition",
+      "folklore_permitted": true,
+      "next": "sandvikspilen",
+      "npc_density": "sparse"
+    },
+    {
+      "id": "sandvikspilen",
+      "title_no": "Sandvikspilen",
+      "title_en": "Sandvikspilen",
+      "scene_role": "The climb becomes collective",
+      "folklore_permitted": true,
+      "next": "forest-transition",
+      "npc_density": "hikers"
+    },
+    {
+      "id": "forest-transition",
+      "title_no": "Skogen husker",
+      "title_en": "The Forest Remembers",
+      "scene_role": "Music begins responding to place",
+      "folklore_permitted": true,
+      "primary_being": "huldra",
+      "next": "floyen",
+      "npc_density": "sparse"
+    },
+    {
+      "id": "floyen",
+      "title_no": "Fløyen",
+      "title_en": "Fløyen",
+      "scene_role": "Public culture, tourism and shared performance",
+      "folklore_permitted": true,
+      "next": "floibanen",
+      "npc_density": "busy"
+    },
+    {
+      "id": "floibanen",
+      "title_no": "Fløibanen",
+      "title_en": "The Fløibanen Funicular",
+      "scene_role": "Technology, tourism and public access to the mountain",
+      "folklore_permitted": false,
+      "folklore_ban_reason": "Closing chapter is documented infrastructure history. Keep the ending factual.",
+      "next": null,
+      "npc_density": "busy"
+    }
+  ],
+  "parallax": {
+    "sky": 0.05,
+    "mountains": 0.12,
+    "city": 0.20,
+    "distant_forest": 0.35,
+    "mid_forest": 0.55,
+    "gameplay": 1.0,
+    "foreground": 1.25
+  }
+}

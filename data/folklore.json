@@ -1,0 +1,168 @@
+{
+  "_comment": "Imagined-tier entries. Folklore has provenance too. Two separate claims: tradition_source says where the being is documented as a tradition; local_attestation says whether it is documented FOR THIS PLACE. local_attestation:null forces the renderer to print 'Not attested at this location — Mount Media interpretation.' That line is generated from data, never typed by an author.",
+  "_schema": {
+    "kind": "always 'imagined' in this file",
+    "status": "verified = the tradition itself has a citable source; unverified = Mount Media invention",
+    "tradition_source": "citation for the being as a documented folk tradition",
+    "local_attestation": "citation that this being is attested at THIS location, or null",
+    "cast_at": "stop id where the being appears on this route, or null for archive-only",
+    "never_enemy": "folklore is cultural imagination, not monster hunting. No combat, anywhere, ever."
+  },
+  "route_casting_note": "On the Sandviken → Fløyen route only Huldra is cast, in the forest. Pesta belongs to the harbour at Vågen, which is not on this route; she stays archive-only here rather than being relocated to fit. Sandviken sykehus and Fløibanen are folklore_permitted:false in route.json and cannot host any being.",
+  "beings": [
+    {
+      "id": "huldra",
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Huldra",
+      "display_name_en": "The Hulder",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": "forest-transition",
+      "never_enemy": true,
+      "narrative_function": "The being who is only ever glimpsed sideways. She is what attention feels like when the forest is paying it back. Encountered by noticing, never by searching.",
+      "interactions": ["observe", "listen", "follow briefly", "watch disappear"],
+      "care": "Not seductive, not a trap, not a monster. The player is never in danger from her and never rewarded for pursuing her.",
+      "assets": ["huldra_silhouette", "huldra_forest_idle", "huldra_walk", "huldra_disappear", "huldra_tree_transition"],
+      "voice": {
+        "walk_1": "",
+        "walk_2": "",
+        "walk_3": "",
+        "walk_n": ""
+      }
+    },
+    {
+      "id": "pesta",
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Pesta",
+      "display_name_en": "Pesta",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": null,
+      "never_enemy": true,
+      "narrative_function": "The plague given a face and a errand. Belongs to the harbour arrival at Vågen, on a future route. Archive-only here.",
+      "care": "Her story is only ever reached through the documented arrival it grew out of. Requires research entry vagen_1349 before anything renders.",
+      "assets": ["pesta_archive_portrait"]
+    },
+    {
+      "id": "nokken",
+      "kind": "imagined", "status": "unverified",
+      "display_name_no": "Nøkken", "display_name_en": "The Nix",
+      "tradition_source": null, "local_attestation": null, "research_required": true,
+      "cast_at": null, "never_enemy": true,
+      "assets": ["nokken_water_idle", "nokken_partial_reveal", "nokken_reflection", "nokken_disappear"]
+    },
+    {
+      "id": "troll",
+      "kind": "imagined", "status": "unverified",
+      "display_name_no": "Troll", "display_name_en": "Troll",
+      "tradition_source": null, "local_attestation": null, "research_required": true,
+      "cast_at": null, "never_enemy": true,
+      "narrative_function": "Candidate for Fløyen only as an unconfirmed distant silhouette among tourists. Never confirmed as real.",
+      "assets": ["troll_mountain_large", "troll_forest", "troll_sleeping_rock", "troll_distant_silhouette", "troll_turn_to_landscape"]
+    },
+    {
+      "id": "fossegrimen",
+      "kind": "imagined", "status": "unverified",
+      "display_name_no": "Fossegrimen", "display_name_en": "Fossegrimen",
+      "tradition_source": null, "local_attestation": null, "research_required": true,
+      "cast_at": null, "never_enemy": true,
+      "narrative_function": "The one being whose subject is music. Strong candidate once a documented watercourse on the route is confirmed.",
+      "assets": ["fossegrimen_water_edge", "fossegrimen_instrument", "fossegrimen_silhouette"]
+    },
+    {
+      "id": "draugen",
+      "kind": "imagined", "status": "unverified",
+      "display_name_no": "Draugen", "display_name_en": "Draugen",
+      "tradition_source": null, "local_attestation": null, "research_required": true,
+      "cast_at": null, "never_enemy": true,
+      "narrative_function": "Coastal. Archive-only on a mountain route.",
+      "assets": ["draugen_coastal_archive", "draugen_mist", "draugen_sea_silhouette"]
+    },
+    {
+      "id": "mare",
+      "kind": "imagined", "status": "unverified",
+      "display_name_no": "Mare", "display_name_en": "Mare",
+      "tradition_source": null, "local_attestation": null, "research_required": true,
+      "cast_at": null, "never_enemy": true,
+      "flag": "Ingrid's first instruction on this project was not to reference Mare. Both the later folklore catalogue and the asset spec include her, archive-only. Shipping archive-only per the later instruction — pull this entry if the original reason still stands.",
+      "assets": ["mare_archive_portrait", "mare_shadow", "mare_dream_visual"]
+    },
+    {
+      "id": "nisse",
+      "kind": "imagined", "status": "unverified",
+      "display_name_no": "Nisse / tuftefolk", "display_name_en": "Nisse / tuftefolk",
+      "tradition_source": null, "local_attestation": null, "research_required": true,
+      "cast_at": null, "never_enemy": true,
+      "assets": ["nisse_archive", "farmstead_interpretation"]
+    },
+    {
+      "id": "underjordiske",
+      "kind": "imagined", "status": "unverified",
+      "display_name_no": "Underjordiske", "display_name_en": "The people underground",
+      "tradition_source": null, "local_attestation": null, "research_required": true,
+      "cast_at": null, "never_enemy": true,
+      "assets": ["underground_people_silhouette", "forest_glimpse", "vanish_animation"]
+    },
+    {
+      "id": "myling",
+      "kind": "imagined", "status": "unverified",
+      "display_name_no": "Myling", "display_name_en": "Myling",
+      "tradition_source": null, "local_attestation": null, "research_required": true,
+      "cast_at": null, "never_enemy": true,
+      "care": "Archive-only until contextual research is complete. The tradition concerns dead children; it is not decoration and must not be cast casually.",
+      "assets": []
+    },
+    {
+      "id": "havfrue",
+      "kind": "imagined", "status": "unverified",
+      "display_name_no": "Havfrue", "display_name_en": "Mermaid traditions",
+      "tradition_source": null, "local_attestation": null, "research_required": true,
+      "cast_at": null, "never_enemy": true,
+      "care": "Archive-only; verify the Norwegian source and context before use rather than importing a generic mermaid.",
+      "assets": []
+    }
+  ],
+  "historical_persons": [
+    {
+      "id": "anne_pedersdotter",
+      "kind": "documented",
+      "status": "unverified",
+      "research_required": true,
+      "research_id": "anne_pedersdotter_trial",
+      "name_required": true,
+      "name": "Anne Pedersdotter",
+      "cast_at": null,
+      "note": "Not folklore. A real woman about whom an account was manufactured by a system with power over her, which then killed her. Belongs to the Lyderhorn route. The schema supports her now so the constraints cannot be lost later.",
+      "constraints": {
+        "execution_entry_required": true,
+        "execution_may_not_be_skipped": true,
+        "may_not_be_rendered_as": ["a witch", "the Bergen witch", "unnamed"],
+        "trial_material_coerced": true
+      },
+      "entries": [
+        {
+          "id": "anne_flying",
+          "kind": "documented",
+          "coerced": true,
+          "status": "unverified",
+          "source": null,
+          "educational_text_en": "",
+          "note": "Flying, the sabbath, the three Christmas nights. Documented that these words were recorded; extracted at trial. Renders as TESTIMONY with its authorship visible — these are the prosecution's words, not hers and not the people's."
+        },
+        {
+          "id": "anne_execution",
+          "kind": "documented",
+          "required": true,
+          "status": "unverified",
+          "source": null,
+          "educational_text_en": "",
+          "note": "Blocks chapter resolution. The route ends on the fact of the killing."
+        }
+      ]
+    }
+  ]
+}
