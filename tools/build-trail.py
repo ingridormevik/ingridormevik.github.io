@@ -143,7 +143,7 @@ SHARED_CSS = """
 *{box-sizing:border-box}
 body{margin:0;background:var(--ink);color:var(--cream);
 font:15px/1.65 ui-monospace,"SFMono-Regular","Cascadia Mono",Menlo,Consolas,monospace;
-padding:1.25rem;max-width:40rem;margin-inline:auto;
+padding:0 1rem;max-width:42rem;margin-inline:auto;
 background-image:radial-gradient(circle at 50% 0,#1a1424 0,var(--ink) 70%);
 background-attachment:fixed;}
 img{image-rendering:pixelated;image-rendering:crisp-edges;}
@@ -183,6 +183,19 @@ font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;}
 text-transform:none;margin-top:.3rem;}
 footer{margin-top:2rem;font-size:.68rem;color:var(--dim);line-height:1.8;}
 footer a{color:var(--gold);}
+/* The game's panel chrome. A scan should land inside Trail Mix, not on a
+   webpage about it — same frame, same brand line, same footer strip. */
+.shell{border:3px solid var(--edge);background:var(--panel);
+box-shadow:0 30px 90px rgba(0,0,0,.5);margin:1rem 0 2rem;}
+.shell-top{display:flex;justify-content:space-between;gap:1rem;
+padding:.7rem 1rem;border-bottom:2px solid var(--edge);font-size:.6rem;
+letter-spacing:.2em;color:var(--gold);text-transform:uppercase;}
+.shell-top a{color:var(--dim);text-decoration:none;}
+.shell-top a:hover{color:var(--gold);}
+.shell-body{padding:1.1rem 1rem 1.3rem;}
+.shell-cap{border-top:2px solid var(--edge);padding:.65rem 1rem;
+display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;font-size:.56rem;
+letter-spacing:.14em;color:var(--dim);text-transform:uppercase;}
 .saved{font-size:.68rem;color:var(--green);letter-spacing:.14em;
 text-transform:uppercase;margin:0 0 .4rem;}
 .offline{font-size:.62rem;color:var(--dim);letter-spacing:.12em;
@@ -226,7 +239,19 @@ def page(title, body, stop_id, entry_ids):
 <title>{esc(title)} — Trail Mix</title>
 <style>{SHARED_CSS}</style>
 </head><body>
+<div class="shell">
+  <div class="shell-top">
+    <span>Mount Media &times; Preem Cast</span>
+    <a href="/trail-mix-v2.html">&#9636; Play&nbsp;&rarr;</a>
+  </div>
+  <div class="shell-body">
 {body}
+  </div>
+  <div class="shell-cap">
+    <span>Fl&oslash;yen Trail &middot; Bergen, Norway</span>
+    <span>We don't chase summits. We chase moments that stay.</span>
+  </div>
+</div>
 <script>{js}</script>
 </body></html>
 """

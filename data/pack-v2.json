@@ -129,5 +129,43 @@
       "reason": "Fabricated archival photographs carrying hallucinated captions and dates — readable as 'Neevengardrent 1591', 'Slojtbaroe 1178' and similar. These are not photographs of the real buildings and the dates are invented. The core rule forbids fabricating buildings, dates and historical events. May be reused ONLY as paper and frame texture with every caption painted out; never as an archival image, and never behind a history-lens overlay.",
       "usable_as": "paper/frame texture only, all captions removed"
     }
-  ]
+  ],
+  "palette": {
+    "_comment": "One palette for every panel, seeded with the game's UI colours so the art and the interface cannot drift apart.",
+    "colours": 32,
+    "hex": [
+      "#e2cfbe",
+      "#d5a18d",
+      "#78bae7",
+      "#6b99c3",
+      "#ac7e71",
+      "#7e7572",
+      "#517799",
+      "#1b75bf",
+      "#835348",
+      "#5d4e4e",
+      "#47474a",
+      "#14558d",
+      "#183d6f",
+      "#253e34",
+      "#532628",
+      "#2d2936",
+      "#212a39",
+      "#201c29",
+      "#15253f",
+      "#16231c",
+      "#141624",
+      "#042846",
+      "#061a39",
+      "#091f1e",
+      "#06151f",
+      "#040e2b",
+      "#060c0f",
+      "#c74a3c",
+      "#d4a758",
+      "#e8dcc0",
+      "#4a3a2a",
+      "#0d0a12"
+    ]
+  }
 }

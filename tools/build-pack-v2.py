@@ -97,6 +97,63 @@ def autotrim(im, max_shave=12, flat=12.0):
 PIXEL_COLOURS = 32
 
 
+# Colours held out of quantisation and written into the palette by hand.
+#
+# Seeding them into the sheet and hoping median cut keeps them does not work — it
+# allocates by colour distribution, so a colour covering a few hundred pixels gets
+# merged away. Measured: gold came back 44 units off, and every saturated red was
+# dropped, which turned the Fløibanen cars brown. They are named Rødhette and
+# Blåmann. Red is not a stylistic preference there, it is the subject.
+RESERVED = [
+    (0xc7, 0x4a, 0x3c),  # rm-red — Fløibanen's cars, and the UI's warning colour
+    (0xd4, 0xa7, 0x58),  # rm-gold — headings, and warm window light
+    (0xe8, 0xdc, 0xc0),  # rm-cream — body text, and painted render
+    (0x4a, 0x3a, 0x2a),  # rm-edge — panel borders, and bare timber
+    (0x0d, 0x0a, 0x12),  # rm-ink — the background everything sits on
+]
+
+
+def build_shared_palette(images, colours=PIXEL_COLOURS):
+    """One palette for every panel in the game.
+
+    Quantising each image on its own gives each panel its own private colours —
+    which is exactly why AI art cut into a game reads as a pile of stock images
+    rather than as one world. Real pixel art commits to a fixed palette and makes
+    every scene live inside it. So: tile all the art into one sheet, quantise that
+    once, and map every image through the result.
+
+    The art gets colours - len(RESERVED) slots by median cut; the reserved colours
+    take the remainder verbatim, so the interface and the artwork are literally
+    drawn from the same box of pencils.
+    """
+    tile = max(im.width for im in images), max(im.height for im in images)
+    sheet = Image.new("RGB", (tile[0] * len(images), tile[1]))
+    for i, im in enumerate(images):
+        sheet.paste(im.convert("RGB").resize(tile, Image.BOX), (tile[0] * i, 0))
+
+    # MEDIANCUT, not MAXCOVERAGE. On a single small panel MAXCOVERAGE is fine, but
+    # across the concatenated sheet it degenerates into near-primaries (#ffffff,
+    # #f1171d, #6eeefc) that appear nowhere in the art. MEDIANCUT splits the actual
+    # colour distribution and returns the greys, ochres and blues of the paintings.
+    art = sheet.quantize(colors=colours - len(RESERVED),
+                         method=Image.MEDIANCUT, dither=Image.NONE)
+
+    flat = art.getpalette()[:(colours - len(RESERVED)) * 3]
+    for c in RESERVED:
+        flat += list(c)
+    flat += [0] * (768 - len(flat))
+
+    pal = Image.new("P", (1, 1))
+    pal.putpalette(flat)
+    return pal
+
+
+def to_palette(im, palette):
+    """Map one image onto the shared palette."""
+    rgb = im.convert("RGB").filter(ImageFilter.MedianFilter(3))
+    return rgb.quantize(palette=palette, dither=Image.NONE)
+
+
 def pixelate(im, colours=PIXEL_COLOURS):
     """Return a palette-mode image at its native pixel grid.
 
@@ -135,36 +192,54 @@ def main():
                        "what it refused. Source art stays in assets/pack-v2/.",
            "locations": [], "folklore": [], "quarantined": []}
 
+    # Pass one: cut every crop, in memory. Pass two: derive one palette from all
+    # of them together, then write. The palette cannot be built until every crop
+    # exists, and no crop may be written until the palette exists.
+    crops = []  # (image, destination, kind, name, stop, reason)
+
     land = Image.open(PACK / "05_route_landscapes.png").convert("RGBA")
     for row, col, name, stop, reason in LANDSCAPES:
         # Inset past the painted frame so a neighbouring panel cannot bleed in.
         x0, x1 = LAND_COLS[col]
         y0, y1 = LAND_ROWS[row]
-        x0, x1, y0, y1 = x0 + 7, x1 - 3, y0 + 3, y1 - 3
-        if reason:
-            p = cut(land, (x0, y0, x1, y1),
-                    ROOT / "assets" / "quarantine" / f"{name}.png",
-                    trim=True, pixel=True)
-            reg["quarantined"].append(
-                {"asset": p, "stop": stop, "reason": reason, "usable_as": None})
-        else:
-            p = cut(land, (x0, y0, x1, y1),
-                    ROOT / "assets" / "locations" / f"{name}.png",
-                    trim=True, pixel=True)
-            reg["locations"].append({"id": name, "stop": stop, "asset": p,
-                                     "kind": "concept_art", "status": "unverified",
-                                     "note": "Painted interpretation, not a photograph. "
-                                             "Carries no factual claim."})
+        c = autotrim(land.crop((x0 + 7, y0 + 3, x1 - 3, y1 - 3)))
+        folder = "quarantine" if reason else "locations"
+        crops.append((c, ROOT / "assets" / folder / f"{name}.png",
+                      "quarantined" if reason else "location", name, stop, reason))
 
     folk = Image.open(PACK / "00_master_sheet.png").convert("RGBA")
     y0, y1 = FOLK_ROW
     for name, (x0, x1) in zip(FOLK_NAMES, FOLK_COLS):
-        p = cut(folk, (x0, y0, x1, y1),
-                ROOT / "assets" / "folklore" / f"{name}.png", pixel=True)
-        reg["folklore"].append({"id": name, "asset": p, "kind": "imagined",
-                                "status": "unverified",
-                                "label": "ARTISTIC INTERPRETATION — INSPIRED BY "
-                                         "NORWEGIAN FOLKLORE"})
+        crops.append((folk.crop((x0, y0, x1, y1)),
+                      ROOT / "assets" / "folklore" / f"{name}.png",
+                      "folklore", name, None, None))
+
+    palette = build_shared_palette([c[0] for c in crops])
+
+    for img, dest, kind, name, stop, reason in crops:
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        to_palette(img, palette).save(dest, optimize=True)
+        p = dest.relative_to(ROOT).as_posix()
+        if kind == "quarantined":
+            reg["quarantined"].append(
+                {"asset": p, "stop": stop, "reason": reason, "usable_as": None})
+        elif kind == "location":
+            reg["locations"].append({"id": name, "stop": stop, "asset": p,
+                                     "kind": "concept_art", "status": "unverified",
+                                     "note": "Painted interpretation, not a photograph. "
+                                             "Carries no factual claim."})
+        else:
+            reg["folklore"].append({"id": name, "asset": p, "kind": "imagined",
+                                    "status": "unverified",
+                                    "label": "ARTISTIC INTERPRETATION — INSPIRED BY "
+                                             "NORWEGIAN FOLKLORE"})
+
+    reg["palette"] = {
+        "_comment": "One palette for every panel, seeded with the game's UI colours "
+                    "so the art and the interface cannot drift apart.",
+        "colours": PIXEL_COLOURS,
+        "hex": ["#%02x%02x%02x" % tuple(palette.getpalette()[i * 3:i * 3 + 3])
+                for i in range(PIXEL_COLOURS)]}
 
     for fname, reason in QUARANTINE_SHEETS:
         src = PACK / fname
