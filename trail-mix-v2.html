@@ -175,6 +175,69 @@
             flex: none;
         }
 
+        /* Archive — same card chrome as the story overlay, so it reads as a screen
+           of the game rather than a document bolted onto it. */
+        .rm-arch-card { max-height: 84cqh; }
+
+        .rm-arch-lead {
+            color: var(--rm-dim);
+            font-size: clamp(9px, 2.5cqmin, 13px);
+            margin: 0 0 1em;
+        }
+
+        .rm-arch-lead a { color: var(--rm-gold); }
+
+        .rm-arch-stop { margin: 0 0 1.1em; }
+
+        .rm-arch-stop h4 {
+            font-size: clamp(9px, 2.4cqmin, 12px);
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--rm-gold);
+            border-bottom: 1px solid var(--rm-edge);
+            padding-bottom: .35em;
+            margin: 0 0 .6em;
+            display: flex;
+            justify-content: space-between;
+            gap: 1em;
+        }
+
+        .rm-arch-stop h4 span {
+            color: var(--rm-dim);
+            letter-spacing: .06em;
+            text-transform: none;
+        }
+
+        .rm-arch-e {
+            border-left: 3px solid var(--rm-green);
+            padding: .1em 0 .1em .7em;
+            margin: 0 0 .7em;
+            font-size: clamp(9px, 2.5cqmin, 13px);
+        }
+
+        .rm-arch-e.locked {
+            border-left-color: var(--rm-edge);
+            color: var(--rm-dim);
+        }
+
+        .rm-arch-e.warn { border-left-color: var(--rm-red); }
+        .rm-arch-e.warn em { color: var(--rm-red); }
+        .rm-arch-e b { color: var(--rm-gold); margin-right: .5em; }
+
+        .rm-arch-e em {
+            display: block;
+            font-style: normal;
+            color: var(--rm-cream);
+            margin-top: .3em;
+        }
+
+        .rm-arch-e span {
+            display: block;
+            color: var(--rm-dim);
+            font-size: .86em;
+            margin-top: .3em;
+        }
+
         .rm-chapter-tag {
             color: var(--rm-gold);
             font-size: clamp(8px, 2.8cqmin, 12px);
@@ -575,6 +638,18 @@
                             <div class="rm-choices" id="rmStoryChoices"></div>
                         </div>
                     </div>
+
+                    <!-- Archive: the same collection the QR trail writes to.
+                         Scan a code on the mountain, it is waiting here. -->
+                    <div class="rm-layer rm-story rm-hide" id="rmArch">
+                        <div class="rm-card rm-arch-card">
+                            <div class="rm-chapter-tag">TRAIL ARCHIVE</div>
+                            <div id="rmArchBody"></div>
+                            <div class="rm-choices">
+                                <button class="rm-btn rm-go" id="rmArchClose">← BACK TO THE TRAIL</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- HUD -->
@@ -600,6 +675,7 @@
                         <span class="rm-count" id="rmBag">0</span>
                     </div>
                     <div class="rm-spacer"></div>
+                    <button class="rm-icobtn" id="rmArchBtn" title="Trail Archive">▤ ARCHIVE <span id="rmArchN">0</span></button>
                     <button class="rm-icobtn" id="rmFull" title="Fullscreen">⛶ FULLSCREEN</button>
                     <button class="rm-icobtn" id="rmMusic" aria-pressed="false" title="Trail Mix Theme Song">♫ THEME OFF</button>
                     <button class="rm-icobtn" id="rmSound" aria-pressed="false">♪ SOUND OFF</button>
@@ -1720,6 +1796,131 @@
         function show(id) { el(id).classList.remove('rm-hide'); el(id).classList.add('on'); }
         function hide(id) { el(id).classList.add('rm-hide'); el(id).classList.remove('on'); }
 
+        /* ---------- the archive ----------
+           The game and the QR trail are one system with two doors. Both read and
+           write trailmix.archive.v1 on this origin, so a code scanned at
+           Sandviksbatteriet is waiting in here that evening, and an entry found
+           in the game opens unlocked on the mountain.
+
+           Rendering repeats the trail builder's rule 18 gate rather than trusting
+           it: an entry shows facts only when it is verified AND names a source
+           that is itself verified. The gate has to hold in both doors or it does
+           not hold at all. */
+        var ARCH = { key: 'trailmix.archive.v1', data: null, loaded: false };
+
+        function archRead() {
+            try { return JSON.parse(localStorage.getItem(ARCH.key) || '{}'); }
+            catch (e) { return {}; }
+        }
+
+        function archWrite(a) {
+            try { localStorage.setItem(ARCH.key, JSON.stringify(a)); } catch (e) { }
+        }
+
+        function archAdd(ids, where) {
+            var a = archRead();
+            a.entries = a.entries || []; a.scanned = a.scanned || {}; a.walks = a.walks || 0;
+            var added = 0;
+            ids.forEach(function (id) {
+                if (a.entries.indexOf(id) < 0) { a.entries.push(id); added++; }
+            });
+            if (where && !a.scanned[where]) a.scanned[where] = new Date().toISOString();
+            archWrite(a);
+            archCount();
+            return added;
+        }
+
+        function archCount() {
+            var a = archRead();
+            el('rmArchN').textContent = (a.entries || []).length;
+        }
+
+        function archLoad(then) {
+            if (ARCH.loaded) return then();
+            ARCH.loaded = true;
+            Promise.all([
+                fetch('data/history.json').then(function (r) { return r.json(); }),
+                fetch('data/sources.json').then(function (r) { return r.json(); }),
+                fetch('data/route.json').then(function (r) { return r.json(); })
+            ]).then(function (r) {
+                ARCH.data = { history: r[0], sources: r[1], route: r[2] };
+                then();
+            }).catch(function () { ARCH.data = null; then(); });
+        }
+
+        function archEsc(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function archRender() {
+            var body = el('rmArchBody');
+            var a = archRead();
+            var have = a.entries || [];
+
+            if (!ARCH.data) {
+                body.innerHTML = '<p class="rm-text">The archive could not be loaded. ' +
+                    'It needs to be served over http — open the site rather than the ' +
+                    'file on disk.</p>';
+                return;
+            }
+
+            var ok = {};
+            ARCH.data.sources.sources.forEach(function (s) { if (s.verified) ok[s.id] = s; });
+
+            var stopName = {};
+            ARCH.data.route.stops.forEach(function (s) {
+                stopName[s.id] = s.title_no || s.title_en;
+            });
+
+            var byStop = {}, total = ARCH.data.history.entries.length;
+            ARCH.data.history.entries.forEach(function (e) {
+                (byStop[e.stop] = byStop[e.stop] || []).push(e);
+            });
+
+            var html = '<p class="rm-text rm-arch-lead">' + have.length + ' of ' + total +
+                ' entries found. Scan the codes on the real route to fill the rest — ' +
+                'what you collect out there appears in here.</p>';
+
+            ARCH.data.route.stops.forEach(function (st) {
+                var list = byStop[st.id] || [];
+                if (!list.length) return;
+                var when = (a.scanned || {})[st.id];
+                html += '<div class="rm-arch-stop"><h4>' + archEsc(stopName[st.id]) +
+                    (when ? '<span>visited ' + when.slice(0, 10) + '</span>' : '') + '</h4>';
+
+                list.forEach(function (e) {
+                    var found = have.indexOf(e.id) >= 0;
+                    var gated = !(e.status === 'verified' && ok[e.source]);
+                    if (!found) {
+                        html += '<div class="rm-arch-e locked">▢ not yet found — ' +
+                            archEsc(e.era || 'at this stop') + '</div>';
+                    } else if (gated) {
+                        html += '<div class="rm-arch-e warn">▣ ' +
+                            archEsc(e.display_name_en || e.id) +
+                            '<em>RESEARCH REQUIRED — no verified source, so no facts ' +
+                            'are shown.</em></div>';
+                    } else {
+                        html += '<div class="rm-arch-e"><b>' + archEsc(e.era) + '</b> ' +
+                            archEsc(e.display_name_en) + '<em>' +
+                            archEsc(e.educational_text_en) + '</em><span>' +
+                            archEsc(ok[e.source].title) + ', ' +
+                            archEsc(ok[e.source].publisher) + '</span></div>';
+                    }
+                });
+                html += '</div>';
+            });
+
+            html += '<p class="rm-text rm-arch-lead">Every stop has a QR code on the ' +
+                'route. <a href="trail/" target="_blank" rel="noopener">Open the ' +
+                'folklore trail →</a></p>';
+            body.innerHTML = html;
+        }
+
+        function archOpen() {
+            archLoad(function () { archRender(); show('rmArch'); });
+        }
+
         /* ---------- flow ---------- */
         function startChapter(i) {
             S.chapter = i;
@@ -1772,11 +1973,26 @@
             show('rmStory');
         }
 
+        // Chapter index maps 1:1 onto the six physical stops in data/route.json.
+        // Finishing a chapter in the game unlocks that stop's entries, exactly as
+        // scanning its code on the mountain does — the two doors stay symmetrical.
+        var STOP_IDS = ['sandviken-sykehus', 'sandviksbatteriet', 'sandvikspilen',
+            'forest-transition', 'floyen', 'floibanen'];
+
         function resolve(c) {
             S.energy = clamp(S.energy + c.e, 0, 100);
             S.sound = clamp(S.sound + c.s, 0, 100);
             S.conn = clamp(S.conn + c.c, 0, 100);
             syncHud();
+
+            archLoad(function () {
+                if (!ARCH.data) return;
+                var stop = STOP_IDS[S.chapter];
+                var ids = ARCH.data.history.entries.filter(function (e) {
+                    return e.stop === stop;
+                }).map(function (e) { return e.id; });
+                archAdd(ids, stop);
+            });
 
             el('rmStoryTxt').textContent = c.out;
             var box = el('rmStoryChoices');
@@ -1992,6 +2208,10 @@
                 document.addEventListener('webkitfullscreenchange', syncFullBtn);
             }
         }
+
+        el('rmArchBtn').addEventListener('click', archOpen);
+        el('rmArchClose').addEventListener('click', function () { hide('rmArch'); });
+        archCount();
 
         el('rmSound').addEventListener('click', audioToggle);
         el('rmReset').addEventListener('click', function () {
