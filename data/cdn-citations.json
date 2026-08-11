@@ -1,0 +1,85 @@
+{
+  "_comment": "Academic/institutional citations proposed as backing for Trail Mix's CDN relevance. Same discipline as data/sources.json's research_queue, kept in a separate file because these support the funding application and the project's research framing rather than in-game educational text — nothing in trail-mix-v2.html or the trail pages reads this file.",
+  "_warning": "Every entry below arrived as prose from an AI chat session (ChatGPT), not from opening the cited page. None of it has been checked. snl.no, no.wikipedia.org, api.floyen.no and kulturminnesok.no are already known to be blocked from this build environment; uib.no and cdn.uib.no have not been tested but should be assumed blocked until proven otherwise. This file exists so these claims can be checked one at a time and never used unverified — using AI-generated academic citations to argue a project is 'CDN-worthy' undermines the argument if any of them turn out to be wrong or invented, and the specific researchers named below (Rizvi, Gunderson) are cited as studying exactly that failure mode.",
+  "_schema": {
+    "id": "stable key",
+    "person": "researcher or project named",
+    "as_claimed": "the claim as it arrived, close to verbatim — not cleaned up or made more confident than the source text",
+    "verify_at": "where to actually check this — the person's own CDN or UiB staff page, or the named publication",
+    "verified": "true only after a human has opened the page and confirmed the claim matches",
+    "verified_by": null,
+    "verified_date": null
+  },
+  "citations": [
+    {
+      "id": "magnuson_game_poems",
+      "person": "Jordan Magnuson",
+      "as_claimed": "CDN 2025 exhibition 'Game Poems of Place and Encounter'. Described as moving away from conventional objectives toward metaphor, ritual space and rhythm, with walking and traversal as gameplay mechanics tied to pacing and exploration of place. A piece titled 'With Magnus to Norway' is claimed to combine 8-bit aesthetics with a contemplative walk through Norwegian nature.",
+      "verify_at": "Jordan Magnuson's CDN/UiB staff page and exhibition record",
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "relevance_if_true": "Would support treating walking itself, without conventional objectives, as the game's core mechanic — directly relevant to Trail Mix having no 'reach the summit' scoring."
+    },
+    {
+      "id": "rusch_witchs_way",
+      "person": "Doris C. Rusch",
+      "as_claimed": "Professor II in CDN's games node, focus on Transformative Play. Project 'The Witch's Way' described as emerging through an 'embodied dialogue' with the physical place of Gotland, exploring how games can trigger transformative processes around identity, isolation, meaning and purpose.",
+      "verify_at": "Doris C. Rusch's CDN/UiB staff page",
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "relevance_if_true": "Would support the idea that Bergen's actual terrain (gradient, weather, other walkers) can shape narrative structure rather than just decorate it."
+    },
+    {
+      "id": "jorgensen_interface_sound",
+      "person": "Kristine Jørgensen",
+      "as_claimed": "Leads CDN's Computer Games and Interactive Digital Narrative node. Research on player-centred interaction with game interfaces and experience of sound in games; node investigates agency, materiality, interactivity, emotion and immersion.",
+      "verify_at": "Kristine Jørgensen's CDN/UiB staff page",
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "relevance_if_true": "Would support treating Jack's live set as an interface the player experiences the route through, not background music."
+    },
+    {
+      "id": "rettberg_xdn_air",
+      "person": "Scott Rettberg / Jhave Johnston, XDN and AIR",
+      "as_claimed": "'Extending Digital Narrative' (XDN) project uses artistic practice as research method, testing AI/VR/interactive media hands-on. A 2026 paper is claimed: 'Extending Digital Narrative with AI, Games, Chatbots, and XR: How Experimental Creative Practice Yields Research Insights.' Separately, CDN's Artistic Integrated Research (AIR) is claimed to describe using a handheld projector to place hidden digital works in forests, with location-changing narratives.",
+      "verify_at": "Scott Rettberg's publication list on CDN/UiB; CDN's AIR project page",
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "relevance_if_true": "The AIR/projector claim, if real, is a close precedent for the QR/print trail already built and for any future physical projection work. The 2026 paper title should be checked for exact wording before it is quoted anywhere."
+    },
+    {
+      "id": "de_seta_algofolk",
+      "person": "Gabriele de Seta / ALGOFOLK",
+      "as_claimed": "ALGOFOLK project studies the mutual shaping of everyday creativity and automated systems — not whether machines are creative, but how algorithms shape creative practice and vice versa.",
+      "verify_at": "Gabriele de Seta's CDN/UiB staff page and the ALGOFOLK project page",
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "relevance_if_true": "Would give a citable frame for the existing distinction already built into data/folklore.json: a being's tradition_source (the documented folklore) versus its rendering here (Mount Media's contemporary interpretation)."
+    },
+    {
+      "id": "rizvi_gunderson_flattening",
+      "person": "Zahra Rizvi and Marianne Gunderson",
+      "as_claimed": "CDN 2026 seminar 'Daemons, Myths and Monsters'. Rizvi's research described as examining cultural flattening and narrative bias in LLMs, including 'flattened spirits and displaced monsters in GPT stories.' Gunderson's work described as covering AI imaginaries, algorithmic folklore, monstrosity and prompting as relational practice.",
+      "verify_at": "CDN seminar/event listing for 2026; Rizvi and Gunderson's CDN/UiB staff pages",
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "relevance_if_true": "The single most load-bearing citation in this file if it checks out: it would mean the researchers most likely to review this application study exactly the failure mode this citation list itself risks (AI-generated claims about folklore presented with unearned confidence). Verify this one first and most carefully."
+    },
+    {
+      "id": "walker_rettberg_machine_vision",
+      "person": "Jill Walker Rettberg",
+      "as_claimed": "'Machine Vision' project studied how algorithmic images and machine-vision technologies affect how people and societies understand the world, including through games, narratives and digital art.",
+      "verify_at": "Jill Walker Rettberg's CDN/UiB staff page and the Machine Vision project page (this one is a large, well-known ERC-scale project and is the most likely to be straightforwardly checkable)",
+      "verified": false,
+      "verified_by": null,
+      "verified_date": null,
+      "relevance_if_true": "Would support the interface pattern already built for the Botanical Garden concept: show the sensor reading (INPUT: SOUND LEVEL) rather than implying the installation understands the visitor."
+    }
+  ]
+}
