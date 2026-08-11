@@ -309,12 +309,29 @@ if('serviceWorker' in navigator){
 """
 
 
-def build_service_worker(stop_ids, assets, version):
+def build_service_worker(stop_ids, assets):
     files = ["/trail/", "/trail/print.html"]
     files += [f"/trail/{s}/" for s in stop_ids]
     files += [f"/{a}" for a in assets]
+    files = sorted(set(files))
+
+    # Version from CONTENT, never from the file list.
+    #
+    # This hashed the asset paths, which never change — so the cache name was a
+    # constant, the install step never superseded anything, and every browser
+    # that had loaded a stop page once kept serving that copy forever. A
+    # cache-first worker with a fixed key is a permanent freeze, and it hid two
+    # releases: nobody who had visited saw the shell restyle or the shared
+    # palette. Hash the bytes, and a changed page or a recut panel produces a new
+    # cache that the activate step clears the old one for.
+    h = hashlib.sha1()
+    for f in files:
+        p = ROOT / (f.lstrip("/") + ("index.html" if f.endswith("/") else ""))
+        h.update(f.encode())
+        h.update(p.read_bytes() if p.exists() else b"")
+
     (ROOT / "trail" / "sw.js").write_text(
-        SW_JS % (version, json.dumps(sorted(set(files)))), encoding="utf-8")
+        SW_JS % (h.hexdigest()[:8], json.dumps(files)), encoding="utf-8")
     return len(files)
 
 
@@ -536,10 +553,7 @@ facts until someone with access to Bergen Byarkiv checks them.</p>
     # Cache version is derived from the asset list, so a rebuild that changes the
     # art invalidates the old cache instead of serving stale pages forever.
     asset_paths = list(banners.values()) + list(portraits.values())
-    n_cached = build_service_worker([s["id"] for s in stops], asset_paths,
-                                    hashlib.sha1(
-                                        "".join(sorted(asset_paths)).encode()
-                                    ).hexdigest()[:8])
+    n_cached = build_service_worker([s["id"] for s in stops], asset_paths)
 
     print(f"built {built} stop pages + index + print sheet")
     print(f"service worker precaches {n_cached} files for offline use")

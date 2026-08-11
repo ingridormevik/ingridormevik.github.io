@@ -1,5 +1,5 @@
 
-var CACHE = 'trailmix-trail-cf5e0edd';
+var CACHE = 'trailmix-trail-b068404f';
 var FILES = ["/assets/folklore/draugen.png", "/assets/folklore/fossegrimen.png", "/assets/folklore/huldra.png", "/assets/folklore/mare.png", "/assets/folklore/nisse.png", "/assets/folklore/nokken.png", "/assets/folklore/troll.png", "/assets/folklore/underjordiske.png", "/assets/locations/city-edge.png", "/assets/locations/floibanen-top.png", "/assets/locations/floyen.png", "/assets/locations/sandviken-sykehus.png", "/assets/locations/sandvikspilen.png", "/assets/locations/trail-forest.png", "/trail/", "/trail/floibanen/", "/trail/floyen/", "/trail/forest-transition/", "/trail/print.html", "/trail/sandviken-sykehus/", "/trail/sandviksbatteriet/", "/trail/sandvikspilen/"];
 self.addEventListener('install', function(e){
   e.waitUntil(caches.open(CACHE).then(function(c){
