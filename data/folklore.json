@@ -22,9 +22,20 @@
       "cast_at": "forest-transition",
       "never_enemy": true,
       "narrative_function": "The being who is only ever glimpsed sideways. She is what attention feels like when the forest is paying it back. Encountered by noticing, never by searching.",
-      "interactions": ["observe", "listen", "follow briefly", "watch disappear"],
+      "interactions": [
+        "observe",
+        "listen",
+        "follow briefly",
+        "watch disappear"
+      ],
       "care": "Not seductive, not a trap, not a monster. The player is never in danger from her and never rewarded for pursuing her.",
-      "assets": ["huldra_silhouette", "huldra_forest_idle", "huldra_walk", "huldra_disappear", "huldra_tree_transition"],
+      "assets": [
+        "huldra_silhouette",
+        "huldra_forest_idle",
+        "huldra_walk",
+        "huldra_disappear",
+        "huldra_tree_transition"
+      ],
       "voice": {
         "walk_1": "",
         "walk_2": "",
@@ -45,83 +56,161 @@
       "never_enemy": true,
       "narrative_function": "The plague given a face and a errand. Belongs to the harbour arrival at Vågen, on a future route. Archive-only here.",
       "care": "Her story is only ever reached through the documented arrival it grew out of. Requires research entry vagen_1349 before anything renders.",
-      "assets": ["pesta_archive_portrait"]
+      "assets": [
+        "pesta_archive_portrait"
+      ]
     },
     {
       "id": "nokken",
-      "kind": "imagined", "status": "unverified",
-      "display_name_no": "Nøkken", "display_name_en": "The Nix",
-      "tradition_source": null, "local_attestation": null, "research_required": true,
-      "cast_at": null, "never_enemy": true,
-      "assets": ["nokken_water_idle", "nokken_partial_reveal", "nokken_reflection", "nokken_disappear"]
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Nøkken",
+      "display_name_en": "The Nix",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": null,
+      "never_enemy": true,
+      "assets": [
+        "nokken_water_idle",
+        "nokken_partial_reveal",
+        "nokken_reflection",
+        "nokken_disappear"
+      ]
     },
     {
       "id": "troll",
-      "kind": "imagined", "status": "unverified",
-      "display_name_no": "Troll", "display_name_en": "Troll",
-      "tradition_source": null, "local_attestation": null, "research_required": true,
-      "cast_at": null, "never_enemy": true,
-      "narrative_function": "Candidate for Fløyen only as an unconfirmed distant silhouette among tourists. Never confirmed as real.",
-      "assets": ["troll_mountain_large", "troll_forest", "troll_sleeping_rock", "troll_distant_silhouette", "troll_turn_to_landscape"]
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Troll",
+      "display_name_en": "Troll",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": "floyen",
+      "never_enemy": true,
+      "narrative_function": "At Fløyen, among the tourists, a distant shape that might be a troll and might be a rock. The game never confirms which. This is the spec's own note for this stop, not a new claim.",
+      "assets": [
+        "troll_mountain_large",
+        "troll_forest",
+        "troll_sleeping_rock",
+        "troll_distant_silhouette",
+        "troll_turn_to_landscape"
+      ],
+      "care": "Never resolved, never approached, never fought. If the player walks toward it, it is a rock."
     },
     {
       "id": "fossegrimen",
-      "kind": "imagined", "status": "unverified",
-      "display_name_no": "Fossegrimen", "display_name_en": "Fossegrimen",
-      "tradition_source": null, "local_attestation": null, "research_required": true,
-      "cast_at": null, "never_enemy": true,
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Fossegrimen",
+      "display_name_en": "Fossegrimen",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": null,
+      "never_enemy": true,
       "narrative_function": "The one being whose subject is music. Strong candidate once a documented watercourse on the route is confirmed.",
-      "assets": ["fossegrimen_water_edge", "fossegrimen_instrument", "fossegrimen_silhouette"]
+      "assets": [
+        "fossegrimen_water_edge",
+        "fossegrimen_instrument",
+        "fossegrimen_silhouette"
+      ]
     },
     {
       "id": "draugen",
-      "kind": "imagined", "status": "unverified",
-      "display_name_no": "Draugen", "display_name_en": "Draugen",
-      "tradition_source": null, "local_attestation": null, "research_required": true,
-      "cast_at": null, "never_enemy": true,
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Draugen",
+      "display_name_en": "Draugen",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": null,
+      "never_enemy": true,
       "narrative_function": "Coastal. Archive-only on a mountain route.",
-      "assets": ["draugen_coastal_archive", "draugen_mist", "draugen_sea_silhouette"]
+      "assets": [
+        "draugen_coastal_archive",
+        "draugen_mist",
+        "draugen_sea_silhouette"
+      ]
     },
     {
       "id": "mare",
-      "kind": "imagined", "status": "unverified",
-      "display_name_no": "Mare", "display_name_en": "Mare",
-      "tradition_source": null, "local_attestation": null, "research_required": true,
-      "cast_at": null, "never_enemy": true,
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Mare",
+      "display_name_en": "Mare",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": null,
+      "never_enemy": true,
       "flag": "Ingrid's first instruction on this project was not to reference Mare. Both the later folklore catalogue and the asset spec include her, archive-only. Shipping archive-only per the later instruction — pull this entry if the original reason still stands.",
-      "assets": ["mare_archive_portrait", "mare_shadow", "mare_dream_visual"]
+      "assets": [
+        "mare_archive_portrait",
+        "mare_shadow",
+        "mare_dream_visual"
+      ]
     },
     {
       "id": "nisse",
-      "kind": "imagined", "status": "unverified",
-      "display_name_no": "Nisse / tuftefolk", "display_name_en": "Nisse / tuftefolk",
-      "tradition_source": null, "local_attestation": null, "research_required": true,
-      "cast_at": null, "never_enemy": true,
-      "assets": ["nisse_archive", "farmstead_interpretation"]
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Nisse / tuftefolk",
+      "display_name_en": "Nisse / tuftefolk",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": null,
+      "never_enemy": true,
+      "assets": [
+        "nisse_archive",
+        "farmstead_interpretation"
+      ]
     },
     {
       "id": "underjordiske",
-      "kind": "imagined", "status": "unverified",
-      "display_name_no": "Underjordiske", "display_name_en": "The people underground",
-      "tradition_source": null, "local_attestation": null, "research_required": true,
-      "cast_at": null, "never_enemy": true,
-      "assets": ["underground_people_silhouette", "forest_glimpse", "vanish_animation"]
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Underjordiske",
+      "display_name_en": "The people underground",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": null,
+      "never_enemy": true,
+      "assets": [
+        "underground_people_silhouette",
+        "forest_glimpse",
+        "vanish_animation"
+      ]
     },
     {
       "id": "myling",
-      "kind": "imagined", "status": "unverified",
-      "display_name_no": "Myling", "display_name_en": "Myling",
-      "tradition_source": null, "local_attestation": null, "research_required": true,
-      "cast_at": null, "never_enemy": true,
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Myling",
+      "display_name_en": "Myling",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": null,
+      "never_enemy": true,
       "care": "Archive-only until contextual research is complete. The tradition concerns dead children; it is not decoration and must not be cast casually.",
       "assets": []
     },
     {
       "id": "havfrue",
-      "kind": "imagined", "status": "unverified",
-      "display_name_no": "Havfrue", "display_name_en": "Mermaid traditions",
-      "tradition_source": null, "local_attestation": null, "research_required": true,
-      "cast_at": null, "never_enemy": true,
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Havfrue",
+      "display_name_en": "Mermaid traditions",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": null,
+      "never_enemy": true,
       "care": "Archive-only; verify the Norwegian source and context before use rather than importing a generic mermaid.",
       "assets": []
     }
@@ -140,7 +229,11 @@
       "constraints": {
         "execution_entry_required": true,
         "execution_may_not_be_skipped": true,
-        "may_not_be_rendered_as": ["a witch", "the Bergen witch", "unnamed"],
+        "may_not_be_rendered_as": [
+          "a witch",
+          "the Bergen witch",
+          "unnamed"
+        ],
         "trial_material_coerced": true
       },
       "entries": [

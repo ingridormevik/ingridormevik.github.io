@@ -184,7 +184,34 @@ def cut(im, box, out, trim=False, pixel=False):
     return out.relative_to(ROOT).as_posix()
 
 
+def export_print(scale=4):
+    """Write 4x nearest-neighbour copies for print handoff.
+
+    A supplied HIGH_RES_4X pack was checked against the originals: downsampled
+    with NEAREST it is pixel-identical, and its edge energy matches a plain 4x
+    nearest enlargement exactly (4.099 against 4.099). It contains no detail the
+    originals do not, which is what its own README says. So there is no reason to
+    carry 11 MB of duplicated pixels in the repository — the same files are one
+    line of code away whenever a printer asks for them.
+
+    Real extra resolution has to come from re-rendering the panels larger, not
+    from enlarging them.
+    """
+    out = ROOT / "assets" / "print"
+    out.mkdir(parents=True, exist_ok=True)
+    n = 0
+    for src in sorted((ROOT / "assets" / "locations").glob("*.png")):
+        im = Image.open(src)
+        im.resize((im.width * scale, im.height * scale), Image.NEAREST).save(
+            out / src.name, optimize=True)
+        n += 1
+    print(f"print export: {n} files at {scale}x nearest -> assets/print/")
+
+
 def main():
+    if "--print" in sys.argv:
+        return export_print()
+
     if not PACK.exists():
         sys.exit(f"missing {PACK} — unpack the concept pack there first")
 
