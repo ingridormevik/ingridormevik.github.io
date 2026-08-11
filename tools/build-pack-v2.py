@@ -92,14 +92,20 @@ def autotrim(im, max_shave=12, flat=12.0):
 
 
 # The concept panels are painterly renders about 176px wide. Upscaling a painting
-# gives mush. Quantising it to a small palette first and then scaling by an integer
-# factor with nearest-neighbour gives crisp, deliberate pixels at any size — the
+# gives mush. Quantising to a small palette gives crisp, deliberate pixels — the
 # same treatment the game's canvas already gets via image-rendering: pixelated.
 PIXEL_COLOURS = 32
-PIXEL_SCALE = 4
 
 
-def pixelate(im, colours=PIXEL_COLOURS, scale=PIXEL_SCALE):
+def pixelate(im, colours=PIXEL_COLOURS):
+    """Return a palette-mode image at its native pixel grid.
+
+    No upscaling is baked in. The page sets image-rendering:pixelated, so the
+    browser does the nearest-neighbour scaling at whatever size it renders — the
+    result on screen is identical to a pre-scaled file, and the file is about six
+    times smaller (5 KB against 29 KB for the forest panel). On a trail with bad
+    signal that difference is the whole point.
+    """
     # Median first. Quantising painterly foliage straight off turns high-frequency
     # brushwork into speckle that reads as noise, not as pixels; a 3px median
     # collapses it into flat shapes the palette can hold. Halving the resolution
@@ -107,14 +113,7 @@ def pixelate(im, colours=PIXEL_COLOURS, scale=PIXEL_SCALE):
     rgb = im.convert("RGB").filter(ImageFilter.MedianFilter(3))
     # Adaptive palette keeps each scene readable; MAXCOVERAGE favours the broad
     # areas (sky, foliage, stone) over stray highlights.
-    q = rgb.quantize(colors=colours, method=Image.MAXCOVERAGE, dither=Image.NONE)
-    q = q.convert("RGB")
-    big = q.resize((q.width * scale, q.height * scale), Image.NEAREST)
-    if im.mode == "RGBA":
-        a = im.getchannel("A").resize(big.size, Image.NEAREST)
-        big = big.convert("RGBA")
-        big.putalpha(a)
-    return big
+    return rgb.quantize(colors=colours, method=Image.MAXCOVERAGE, dither=Image.NONE)
 
 
 def cut(im, box, out, trim=False, pixel=False):
@@ -124,7 +123,7 @@ def cut(im, box, out, trim=False, pixel=False):
         c = autotrim(c)
     if pixel:
         c = pixelate(c)
-    c.save(out)
+    c.save(out, optimize=True)
     return out.relative_to(ROOT).as_posix()
 
 

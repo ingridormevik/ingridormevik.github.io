@@ -26,6 +26,7 @@ Design rules enforced here rather than trusted to authors:
 The URL is the contract. Once a card is printed the slug can never change.
 """
 
+import hashlib
 import json
 import pathlib
 import sys
@@ -183,7 +184,9 @@ text-transform:none;margin-top:.3rem;}
 footer{margin-top:2rem;font-size:.68rem;color:var(--dim);line-height:1.8;}
 footer a{color:var(--gold);}
 .saved{font-size:.68rem;color:var(--green);letter-spacing:.14em;
-text-transform:uppercase;margin:0 0 1rem;}
+text-transform:uppercase;margin:0 0 .4rem;}
+.offline{font-size:.62rem;color:var(--dim);letter-spacing:.12em;
+text-transform:uppercase;margin:0 0 1rem;min-height:.9rem;}
 .banner{width:100%;height:auto;display:block;border:2px solid var(--edge);
 margin:0 0 .6rem;}
 .banner-note{font-size:.62rem;color:var(--dim);margin:0 0 1.25rem;
@@ -215,7 +218,7 @@ ARCHIVE_JS = """
 
 
 def page(title, body, stop_id, entry_ids):
-    js = ARCHIVE_JS % (json.dumps(stop_id), json.dumps(entry_ids))
+    js = ARCHIVE_JS % (json.dumps(stop_id), json.dumps(entry_ids)) + SW_REGISTER
     return f"""<!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8">
@@ -227,6 +230,67 @@ def page(title, body, stop_id, entry_ids):
 <script>{js}</script>
 </body></html>
 """
+
+
+# ---------------------------------------------------------------- offline
+
+# Signal is fine at the harbour and on Fløyen, and unreliable in the forest between
+# Sandviksbatteriet and Sandvikspilen. The first scan is normally at the bottom of
+# the hill where signal is good, so the whole trail is cached before the walk gets
+# hard. Cache-first: once a stop is stored it never waits on the network again.
+SW_JS = """
+var CACHE = 'trailmix-trail-%s';
+var FILES = %s;
+self.addEventListener('install', function(e){
+  e.waitUntil(caches.open(CACHE).then(function(c){
+    // addAll fails the whole install if any one file 404s, so fetch individually.
+    return Promise.all(FILES.map(function(f){
+      return c.add(f).catch(function(){});
+    }));
+  }).then(function(){ return self.skipWaiting(); }));
+});
+self.addEventListener('activate', function(e){
+  e.waitUntil(caches.keys().then(function(ks){
+    return Promise.all(ks.map(function(k){
+      return k === CACHE ? null : caches.delete(k);
+    }));
+  }).then(function(){ return self.clients.claim(); }));
+});
+self.addEventListener('fetch', function(e){
+  if(e.request.method !== 'GET') return;
+  e.respondWith(caches.match(e.request).then(function(hit){
+    if(hit) return hit;
+    return fetch(e.request).then(function(res){
+      if(res && res.ok && res.type === 'basic'){
+        var copy = res.clone();
+        caches.open(CACHE).then(function(c){ c.put(e.request, copy); });
+      }
+      return res;
+    }).catch(function(){ return caches.match('/trail/'); });
+  }));
+});
+"""
+
+SW_REGISTER = """
+if('serviceWorker' in navigator){
+  addEventListener('load',function(){
+    navigator.serviceWorker.register('/trail/sw.js',{scope:'/trail/'})
+      .then(function(){
+        var n=document.getElementById('offline');
+        if(n) n.textContent='Saved for offline — the rest of the trail works without signal';
+      }).catch(function(){});
+  });
+}
+"""
+
+
+def build_service_worker(stop_ids, assets, version):
+    files = ["/trail/", "/trail/print.html"]
+    files += [f"/trail/{s}/" for s in stop_ids]
+    files += [f"/{a}" for a in assets]
+    (ROOT / "trail" / "sw.js").write_text(
+        SW_JS % (version, json.dumps(sorted(set(files)))), encoding="utf-8")
+    return len(files)
 
 
 # ---------------------------------------------------------------- print
@@ -404,6 +468,7 @@ def main():
 <p class="role">{esc(stop.get('scene_role',''))}</p>
 {banner}
 <p class="saved" id="saved"></p>
+<p class="offline" id="offline"></p>
 {records}
 {story}
 <hr>
@@ -443,7 +508,16 @@ facts until someone with access to Bergen Byarkiv checks them.</p>
 
     build_print_sheet(route, history, smap, ok, stop_by_id, chapter_by_id)
 
+    # Cache version is derived from the asset list, so a rebuild that changes the
+    # art invalidates the old cache instead of serving stale pages forever.
+    asset_paths = list(banners.values()) + list(portraits.values())
+    n_cached = build_service_worker([s["id"] for s in stops], asset_paths,
+                                    hashlib.sha1(
+                                        "".join(sorted(asset_paths)).encode()
+                                    ).hexdigest()[:8])
+
     print(f"built {built} stop pages + index + print sheet")
+    print(f"service worker precaches {n_cached} files for offline use")
     print(f"{gated} entries gated by rule 18 (no verified source → no facts shown)")
     print(f"qr codes: assets/qr/*.svg  →  {BASE_URL}/<stop>/")
 
