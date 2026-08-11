@@ -26,7 +26,7 @@ import pathlib
 import sys
 
 try:
-    from PIL import Image
+    from PIL import Image, ImageFilter
 except ImportError:
     sys.exit("Pillow is required:  pip install pillow")
 
@@ -91,11 +91,39 @@ def autotrim(im, max_shave=12, flat=12.0):
     return im.crop((l, t, r, b))
 
 
-def cut(im, box, out, trim=False):
+# The concept panels are painterly renders about 176px wide. Upscaling a painting
+# gives mush. Quantising it to a small palette first and then scaling by an integer
+# factor with nearest-neighbour gives crisp, deliberate pixels at any size — the
+# same treatment the game's canvas already gets via image-rendering: pixelated.
+PIXEL_COLOURS = 32
+PIXEL_SCALE = 4
+
+
+def pixelate(im, colours=PIXEL_COLOURS, scale=PIXEL_SCALE):
+    # Median first. Quantising painterly foliage straight off turns high-frequency
+    # brushwork into speckle that reads as noise, not as pixels; a 3px median
+    # collapses it into flat shapes the palette can hold. Halving the resolution
+    # instead was tried and loses too much definition on these small panels.
+    rgb = im.convert("RGB").filter(ImageFilter.MedianFilter(3))
+    # Adaptive palette keeps each scene readable; MAXCOVERAGE favours the broad
+    # areas (sky, foliage, stone) over stray highlights.
+    q = rgb.quantize(colors=colours, method=Image.MAXCOVERAGE, dither=Image.NONE)
+    q = q.convert("RGB")
+    big = q.resize((q.width * scale, q.height * scale), Image.NEAREST)
+    if im.mode == "RGBA":
+        a = im.getchannel("A").resize(big.size, Image.NEAREST)
+        big = big.convert("RGBA")
+        big.putalpha(a)
+    return big
+
+
+def cut(im, box, out, trim=False, pixel=False):
     out.parent.mkdir(parents=True, exist_ok=True)
     c = im.crop(box)
     if trim:
         c = autotrim(c)
+    if pixel:
+        c = pixelate(c)
     c.save(out)
     return out.relative_to(ROOT).as_posix()
 
@@ -116,12 +144,14 @@ def main():
         x0, x1, y0, y1 = x0 + 7, x1 - 3, y0 + 3, y1 - 3
         if reason:
             p = cut(land, (x0, y0, x1, y1),
-                    ROOT / "assets" / "quarantine" / f"{name}.png", trim=True)
+                    ROOT / "assets" / "quarantine" / f"{name}.png",
+                    trim=True, pixel=True)
             reg["quarantined"].append(
                 {"asset": p, "stop": stop, "reason": reason, "usable_as": None})
         else:
             p = cut(land, (x0, y0, x1, y1),
-                    ROOT / "assets" / "locations" / f"{name}.png", trim=True)
+                    ROOT / "assets" / "locations" / f"{name}.png",
+                    trim=True, pixel=True)
             reg["locations"].append({"id": name, "stop": stop, "asset": p,
                                      "kind": "concept_art", "status": "unverified",
                                      "note": "Painted interpretation, not a photograph. "
@@ -131,7 +161,7 @@ def main():
     y0, y1 = FOLK_ROW
     for name, (x0, x1) in zip(FOLK_NAMES, FOLK_COLS):
         p = cut(folk, (x0, y0, x1, y1),
-                ROOT / "assets" / "folklore" / f"{name}.png")
+                ROOT / "assets" / "folklore" / f"{name}.png", pixel=True)
         reg["folklore"].append({"id": name, "asset": p, "kind": "imagined",
                                 "status": "unverified",
                                 "label": "ARTISTIC INTERPRETATION — INSPIRED BY "

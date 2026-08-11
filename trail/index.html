@@ -4,56 +4,60 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The folklore trail — Trail Mix</title>
 <style>
-:root{--bg:#f4f1ea;--ink:#1b1a17;--dim:#5d574c;--rule:#cdc5b4;--doc:#2f5d50;
---img:#6b4a7a;--warn:#8a5a1e;--card:#fffdf8;}
-:root:not([data-theme=light]) {}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
---bg:#14130f;--ink:#ece7db;--dim:#a09883;--rule:#3a3630;--doc:#8fd3bd;
---img:#c9a9d8;--warn:#e0a95e;--card:#1d1b16;}}
-:root[data-theme=dark]{--bg:#14130f;--ink:#ece7db;--dim:#a09883;--rule:#3a3630;
---doc:#8fd3bd;--img:#c9a9d8;--warn:#e0a95e;--card:#1d1b16;}
+:root{--ink:#0d0a12;--panel:#16121c;--panel-hi:#221a28;--edge:#4a3a2a;
+--edge-hi:#6b5438;--gold:#d4a758;--cream:#e8dcc0;--dim:#9a8a76;--red:#c74a3c;
+--green:#6aa84a;--blue:#4a8ac7;--purple:#9a6ac7;}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);
-font:16px/1.6 ui-serif,Georgia,'Times New Roman',serif;
-padding:1.25rem;max-width:38rem;margin-inline:auto;}
-.chapter{font:600 .72rem/1 ui-sans-serif,system-ui;letter-spacing:.14em;
-text-transform:uppercase;color:var(--dim);}
-h1{font-size:1.7rem;line-height:1.15;margin:.35rem 0 .2rem;}
-.role{color:var(--dim);margin:0 0 1.5rem;font-style:italic;}
-.entry{background:var(--card);border:1px solid var(--rule);border-left-width:4px;
-border-radius:3px;padding:.9rem 1rem;margin:0 0 1rem;}
-.entry.documented{border-left-color:var(--doc);}
-.entry.imagined{border-left-color:var(--img);}
-.entry.unverified{border-left-color:var(--warn);}
+body{margin:0;background:var(--ink);color:var(--cream);
+font:15px/1.65 ui-monospace,"SFMono-Regular","Cascadia Mono",Menlo,Consolas,monospace;
+padding:1.25rem;max-width:40rem;margin-inline:auto;
+background-image:radial-gradient(circle at 50% 0,#1a1424 0,var(--ink) 70%);
+background-attachment:fixed;}
+img{image-rendering:pixelated;image-rendering:crisp-edges;}
+.chapter{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+color:var(--gold);margin:0;}
+h1{font-size:1.5rem;line-height:1.15;margin:.4rem 0 .2rem;color:var(--cream);
+letter-spacing:.02em;}
+.role{color:var(--dim);margin:0 0 1.25rem;font-size:.82rem;}
+.entry{background:var(--panel);border:2px solid var(--edge);
+border-left-width:5px;padding:.9rem 1rem;margin:0 0 1rem;}
+.entry.documented{border-left-color:var(--green);}
+.entry.imagined{border-left-color:var(--purple);}
+.entry.unverified{border-left-color:var(--red);}
 .entry header{display:flex;justify-content:space-between;gap:1rem;
-font:600 .68rem/1 ui-sans-serif,system-ui;letter-spacing:.12em;color:var(--dim);}
-.entry h3{font-size:1.05rem;margin:.5rem 0 .45rem;}
-.entry p{margin:.45rem 0;}
-.no{color:var(--dim);font-size:.92rem;}
-.source{font-size:.8rem;color:var(--dim);}
-.source a{color:inherit;}
-.research{font:600 .8rem/1.5 ui-sans-serif,system-ui;color:var(--warn);}
-.attest{font:600 .8rem/1.5 ui-sans-serif,system-ui;color:var(--img);}
-.attest.ok{color:var(--doc);}
-.care{font-size:.85rem;color:var(--dim);}
+font-size:.62rem;letter-spacing:.16em;color:var(--dim);}
+.entry h3{font-size:.98rem;margin:.55rem 0 .5rem;color:var(--gold);}
+.entry p{margin:.5rem 0;}
+.no{color:var(--dim);font-size:.86rem;}
+.source{font-size:.72rem;color:var(--dim);}
+.source a{color:var(--dim);}
+.research{font-size:.75rem;line-height:1.6;color:var(--red);letter-spacing:.02em;}
+.attest{font-size:.75rem;line-height:1.6;color:var(--purple);}
+.attest.ok{color:var(--green);}
+.care{font-size:.78rem;color:var(--dim);}
 details.story{margin:0 0 1rem;}
-details.story>summary{cursor:pointer;font:600 .8rem/1 ui-sans-serif,system-ui;
-letter-spacing:.1em;text-transform:uppercase;color:var(--img);
-padding:.85rem 1rem;background:var(--card);border:1px dashed var(--img);
-border-radius:3px;}
-hr{border:0;border-top:1px solid var(--rule);margin:1.6rem 0;}
-.next{display:block;padding:.9rem 1rem;background:var(--card);
-border:1px solid var(--rule);border-radius:3px;color:inherit;text-decoration:none;}
-.next b{display:block;font-size:1.05rem;}
-footer{margin-top:2rem;font-size:.78rem;color:var(--dim);}
-footer a{color:inherit;}
-.saved{font:600 .75rem/1 ui-sans-serif,system-ui;color:var(--doc);
-letter-spacing:.08em;text-transform:uppercase;margin:0 0 1rem;}
-.banner{width:100%;height:auto;display:block;border:1px solid var(--rule);
-border-radius:3px;margin:0 0 1rem;image-rendering:auto;}
-.banner-note{font-size:.7rem;color:var(--dim);margin:-.75rem 0 1.25rem;}
-.portrait{float:right;width:5.5rem;height:auto;margin:0 0 .5rem .8rem;
-border:1px solid var(--rule);border-radius:2px;}
+details.story>summary{cursor:pointer;font-size:.72rem;letter-spacing:.14em;
+text-transform:uppercase;color:var(--purple);padding:.85rem 1rem;
+background:var(--panel-hi);border:2px dashed var(--purple);list-style:none;}
+details.story>summary::-webkit-details-marker{display:none}
+details[open]>summary{border-bottom-width:0;}
+hr{border:0;border-top:2px solid var(--edge);margin:1.5rem 0;}
+.next{display:block;padding:.9rem 1rem;background:var(--panel);
+border:2px solid var(--edge-hi);color:var(--cream);text-decoration:none;
+font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;}
+.next:hover{background:var(--panel-hi);border-color:var(--gold);}
+.next b{display:block;font-size:1.05rem;color:var(--gold);letter-spacing:0;
+text-transform:none;margin-top:.3rem;}
+footer{margin-top:2rem;font-size:.68rem;color:var(--dim);line-height:1.8;}
+footer a{color:var(--gold);}
+.saved{font-size:.68rem;color:var(--green);letter-spacing:.14em;
+text-transform:uppercase;margin:0 0 1rem;}
+.banner{width:100%;height:auto;display:block;border:2px solid var(--edge);
+margin:0 0 .6rem;}
+.banner-note{font-size:.62rem;color:var(--dim);margin:0 0 1.25rem;
+letter-spacing:.08em;text-transform:uppercase;}
+.portrait{float:right;width:6rem;height:auto;margin:0 0 .5rem .85rem;
+border:2px solid var(--edge);}
 .entry.imagined::after{content:"";display:block;clear:both;}
 </style>
 </head><body>
