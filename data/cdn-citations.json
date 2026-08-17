@@ -1,6 +1,6 @@
 {
   "_comment": "Academic/institutional citations backing Trail Mix's CDN relevance. Same discipline as data/sources.json's research_queue, kept separate because these support the funding application and research framing rather than in-game educational text — nothing in trail-mix-v2.html or the trail pages reads this file.",
-  "_verification_method": "Confirmed via WebSearch returning matching snippets from official uib.no / cdn.uib.no pages (WebFetch to those domains is not reachable from this build environment — the same block that affects snl.no). This is stronger than the original unsourced AI-chat claims, which came with no URLs at all, but it is search-snippet corroboration, not a human reading the full rendered page. Before quoting any of this in a formal application, open each url once and confirm the snippet matches the live page — flagged per-entry as human_check_recommended.",
+  "_verification_method": "Confirmed via WebSearch returning matching snippets from official uib.no / cdn.uib.no pages, cross-checked with a second independent search per claim on 2026-08-17. WebFetch to uib.no, www4.uib.no and cdn.uib.no is confirmed EGRESS_BLOCKED from this build environment (tested directly, twice) — no page has been opened and read in full by anything in this pipeline. If a url below 404s or looks wrong, use its fallback_search: paste that exact query into Google or uib.no's own search, since the live URL may have changed since the search index was crawled, or the search tool's snippet may have paraphrased it.",
   "_schema": {
     "id": "stable key",
     "person": "researcher or project named",
@@ -22,7 +22,8 @@
       "verified": true,
       "verified_by": "claude (web search, 2026-08-16)",
       "human_check_recommended": true,
-      "relevance_if_true": "Supports treating walking itself, without conventional objectives, as the game's core mechanic — directly relevant to Trail Mix having no 'reach the summit' scoring."
+      "relevance_if_true": "Supports treating walking itself, without conventional objectives, as the game's core mechanic — directly relevant to Trail Mix having no 'reach the summit' scoring.",
+      "fallback_search": "site:uib.no \"Game Poems of Place and Encounter\""
     },
     {
       "id": "rusch_witchs_way",
@@ -33,7 +34,9 @@
       "verified": true,
       "verified_by": "claude (web search, 2026-08-16)",
       "human_check_recommended": true,
-      "relevance_if_true": "Supports the idea that Bergen's actual terrain (gradient, weather, other walkers) can shape narrative structure rather than just decorate it."
+      "relevance_if_true": "Supports the idea that Bergen's actual terrain (gradient, weather, other walkers) can shape narrative structure rather than just decorate it.",
+      "fallback_search": "site:uib.no \"Doris Rusch\" \"Witch's Way\" Gotland",
+      "url_note": "This URL is long and carries percent-encoded punctuation (%E2%80%99 = a curly apostrophe, %E2%80%93 = an en dash) because the live page title has both, and it bundles two separate talks on one event page (Rusch's and Rune Klevjer's). It looks broken even when it isn't. If it 404s, use fallback_search."
     },
     {
       "id": "jorgensen_interface_sound",
@@ -45,7 +48,8 @@
       "verified": true,
       "verified_by": "claude (web search, 2026-08-16)",
       "human_check_recommended": true,
-      "relevance_if_true": "Supports treating Jack's live set as an interface the player experiences the route through, not background music."
+      "relevance_if_true": "Supports treating Jack's live set as an interface the player experiences the route through, not background music.",
+      "fallback_search": "site:uib.no Kristine Jørgensen \"Computer Games and Interactive Digital Narrative\""
     },
     {
       "id": "rettberg_xdn_air",
@@ -58,7 +62,8 @@
       "verified": true,
       "verified_by": "claude (web search, 2026-08-16)",
       "human_check_recommended": true,
-      "relevance_if_true": "The AIR/projector claim is a close, citable precedent for the QR/print trail already built and for any future physical projection work. The paper can be cited directly by DOI."
+      "relevance_if_true": "The AIR/projector claim is a close, citable precedent for the QR/print trail already built and for any future physical projection work. The paper can be cited directly by DOI.",
+      "fallback_search": "site:uib.no \"Extending Digital Narrative\" Rettberg"
     },
     {
       "id": "de_seta_algofolk",
@@ -69,7 +74,8 @@
       "verified": true,
       "verified_by": "claude (web search, 2026-08-16)",
       "human_check_recommended": true,
-      "relevance_if_true": "Gives a citable frame for the distinction already built into data/folklore.json: a being's tradition_source (documented folklore) versus its rendering here (contemporary interpretation)."
+      "relevance_if_true": "Gives a citable frame for the distinction already built into data/folklore.json: a being's tradition_source (documented folklore) versus its rendering here (contemporary interpretation).",
+      "fallback_search": "site:uib.no ALGOFOLK \"algorithmic folklore\" de Seta"
     },
     {
       "id": "rizvi_gunderson_flattening",
@@ -80,7 +86,9 @@
       "verified": true,
       "verified_by": "claude (web search, 2026-08-16)",
       "human_check_recommended": true,
-      "relevance_if_true": "The single most load-bearing citation in this file — it means the researchers most likely to review this application study exactly the failure mode a citation list like this one risks. Was checked first and most carefully, as the checklist required."
+      "relevance_if_true": "The single most load-bearing citation in this file — it means the researchers most likely to review this application study exactly the failure mode a citation list like this one risks. Was checked first and most carefully, as the checklist required.",
+      "fallback_search": "site:uib.no \"Daemons, Myths, and Monsters\" Rizvi Gunderson",
+      "url_note": "Long URL, standard uib.no research-centre event path. If it 404s, use fallback_search."
     },
     {
       "id": "walker_rettberg_machine_vision",
@@ -91,7 +99,8 @@
       "verified": true,
       "verified_by": "claude (web search, 2026-08-16)",
       "human_check_recommended": true,
-      "relevance_if_true": "Supports the interface pattern already built for the Botanical Garden concept: show the sensor reading (INPUT: SOUND LEVEL) rather than implying the installation understands the visitor."
+      "relevance_if_true": "Supports the interface pattern already built for the Botanical Garden concept: show the sensor reading (INPUT: SOUND LEVEL) rather than implying the installation understands the visitor.",
+      "fallback_search": "site:uib.no \"Machine Vision\" Rettberg ERC"
     }
   ]
 }
