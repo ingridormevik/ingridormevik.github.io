@@ -423,6 +423,156 @@ def build_print_sheet(route, history, smap, ok, stop_by_id, chapter_by_id):
     (ROOT / "trail" / "print.html").write_text(html, encoding="utf-8")
 
 
+# ---------------------------------------------------------------- equinox
+
+def build_equinox_page():
+    """A standalone promo page for the equinox walk — same dark carved-frame
+    look as the trail stop pages (SHARED_CSS, .shell chrome), mobile-first,
+    but with none of the stop-specific machinery: no archive write, no
+    service worker registration. It isn't a stop on the route, it's an
+    invitation to the whole thing. Lives at the site root, not under /trail/,
+    so it's a clean standalone link to share on its own."""
+    eqx_path = DATA / "equinox.json"
+    if not eqx_path.exists():
+        return
+    eqx = json.loads(eqx_path.read_text(encoding="utf-8"))
+    cdn = eqx.get("cdn_tie_in", {})
+
+    banner_path = ROOT / "assets" / "locations" / "floyen.png"
+    banner = ""
+    if banner_path.exists():
+        banner = ('<img class="banner" src="assets/locations/floyen.png" '
+                   'alt="Fløyen, painted interpretation">'
+                   '<p class="banner-note">Concept art — a painted '
+                   'interpretation, not a photograph of the site.</p>')
+
+    cdn_card = ""
+    if cdn:
+        panel_name = cdn.get("ingrid_panel", "").split(",")[0]
+        cdn_card = f"""<article class="entry documented">
+  <header><span class="tier">RECORD</span><span class="era">{esc(cdn['event_date_display'])}</span></header>
+  <h3>{esc(cdn['event_name'])}</h3>
+  <p>{esc(cdn['venue'])}, {esc(cdn['event_time'])}.</p>
+  <p>I'm presenting <em>{esc(panel_name)}</em> at 10:30. Everyone's welcome
+  there too — this walk is timed for the weekend right after it.</p>
+</article>"""
+
+    qr_path = ROOT / "assets" / "qr" / "trail-root.svg"
+    qr_block = ""
+    if qr_path.exists():
+        import base64
+        qr64 = base64.b64encode(qr_path.read_text(encoding="utf-8").encode()).decode()
+        qr_block = f"""<hr>
+<div style="display:flex;gap:1rem;align-items:center;">
+  <img src="data:image/svg+xml;base64,{qr64}" alt="QR code to the Trail Mix folklore trail" style="width:6rem;height:6rem;border:2px solid var(--edge);flex:none;">
+  <p class="banner-note" style="margin:0;">Scan to open the trail, or play
+  the game straight from the link below.</p>
+</div>"""
+
+    body = f"""<p class="chapter">Mount Media &times; Preem Cast</p>
+<h1>September Equinox Walk</h1>
+<p class="role">{esc(eqx['tagline'])}</p>
+{banner}
+<article class="entry documented">
+  <header><span class="tier">RECORD</span><span class="era">{esc(eqx['event_date_display'])}</span></header>
+  <h3>Sandviken &rarr; Fl&oslash;yen</h3>
+  <p>A moving DJ set, walked at the balance point of the year — equal
+  day, equal night. Same route, same six stops, same archive. Come and
+  walk it with us.</p>
+</article>
+{cdn_card}
+{qr_block}
+<a class="next" href="trail-mix-v2.html">Play the game first &rarr;
+<b>trail-mix-v2.html</b></a>
+<a class="next" href="trail/">Or start on the real trail &rarr;
+<b>The folklore trail</b></a>"""
+
+    html = f"""<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>September Equinox Walk — Trail Mix</title>
+<meta property="og:title" content="Trail Mix — September Equinox Walk">
+<meta property="og:description" content="Equal day, equal night. A moving DJ set from Sandviken to Fløyen, {esc(eqx['event_date_display'])}.">
+<meta property="og:image" content="https://ingridormevik.github.io/assets/share/equinox-2026.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>{SHARED_CSS}</style>
+</head><body>
+<div class="shell">
+  <div class="shell-top">
+    <span>Mount Media &times; Preem Cast</span>
+    <a href="trail-mix-v2.html">&#9636; Play&nbsp;&rarr;</a>
+  </div>
+  <div class="shell-body">
+{body}
+  </div>
+  <div class="shell-cap">
+    <span>Sandviken &rarr; Fløyen &middot; Bergen, Norway</span>
+    <span>We don't chase summits. We chase moments that stay.</span>
+  </div>
+</div>
+</body></html>
+"""
+    (ROOT / "equinox.html").write_text(html, encoding="utf-8")
+    print(f"equinox page: equinox.html ({eqx['event_date_display']})")
+
+
+def build_equinox_flyer():
+    """A6/A4 dated poster for the fall equinox walk, reusing the exact print
+    pipeline already built for the stop cards — same card chrome, same
+    ink-on-white rule, same QR technique. Everything here reads
+    data/equinox.json; there is no date hardcoded in this file."""
+    eqx_path = DATA / "equinox.json"
+    if not eqx_path.exists():
+        return
+    eqx = json.loads(eqx_path.read_text(encoding="utf-8"))
+
+    import base64
+    qr_path = ROOT / "assets" / "qr" / "trail-root.svg"
+    segno.make(BASE_URL + "/", error=QR_ERROR).save(
+        str(qr_path), scale=QR_SCALE, border=QR_BORDER,
+        dark="#1b1a17", light="#ffffff")
+    qr64 = base64.b64encode(qr_path.read_text(encoding="utf-8").encode()).decode()
+
+    cdn = eqx.get("cdn_tie_in", {})
+    cdn_block = ""
+    if cdn:
+        cdn_block = f"""<div class="rec"><div class="era">{esc(cdn['event_date_display'])}</div>
+<h3>{esc(cdn['event_name'])}</h3>
+<p>{esc(cdn['venue'])}, {esc(cdn['event_time'])}. I'm presenting
+"{esc(cdn['ingrid_panel'].split(',')[0])}" at 10:30. Everyone's welcome to
+that too — this walk is timed for the weekend right after it.</p></div>"""
+
+    html = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trail Mix — September Equinox Walk</title>
+<style>{PRINT_CSS}</style></head>
+<body><section class="card">
+<div class="ch">Mount Media &times; Preem Cast</div>
+<h2>September Equinox Walk</h2>
+<p class="role">{esc(eqx['tagline'])}</p>
+{cdn_block}
+<div class="rec"><div class="era">{esc(eqx['event_date_display'])}</div>
+<h3>Sandviken &rarr; Fl&oslash;yen</h3>
+<p>A moving DJ set, walked at the balance point of the year — equal day,
+equal night. Same route, same six stops, same archive. Come and walk it
+with us.</p></div>
+<div class="gap"></div>
+<div class="foot">
+  <img src="data:image/svg+xml;base64,{qr64}" alt="QR code to the Trail Mix folklore trail">
+  <div>
+    <div class="u">ingridormevik.github.io<br>/trail/</div>
+    <p class="hint">Scan for the route, the archive and the game.
+    ingridormevik.github.io/trail-mix-v2.html</p>
+  </div>
+</div>
+</section></body></html>
+"""
+    (ROOT / "trail" / "equinox-flyer.html").write_text(html, encoding="utf-8")
+    print(f"equinox flyer: trail/equinox-flyer.html ({eqx['event_date_display']})")
+
+
 # ---------------------------------------------------------------- build
 
 def main():
@@ -549,6 +699,8 @@ facts until someone with access to Bergen Byarkiv checks them.</p>
         page("The folklore trail", index_body, "index", []), encoding="utf-8")
 
     build_print_sheet(route, history, smap, ok, stop_by_id, chapter_by_id)
+    build_equinox_page()
+    build_equinox_flyer()
 
     # Cache version is derived from the asset list, so a rebuild that changes the
     # art invalidates the old cache instead of serving stale pages forever.

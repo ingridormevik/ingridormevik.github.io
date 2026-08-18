@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Trail Mix by Mount Media &amp; Preem Cast — play the hike, then come and walk it. A moving DJ set from Sandviken to Fløyen, with performances along the route.">
     <title>Trail Mix — Mount Media &amp; Preem Cast</title>
+    <meta property="og:title" content="Trail Mix — September Equinox Walk">
+    <meta property="og:description" content="Equal day, equal night. A moving DJ set from Sandviken to Fløyen, Saturday 26 September 2026.">
+    <meta property="og:image" content="https://ingridormevik.github.io/assets/share/equinox-2026.png">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="style.css">
     <style>
         /* ============================================
@@ -724,6 +728,7 @@
                         <h3>TRAIL MIX</h3>
                         <p class="rm-sub">A GUIDED JOURNEY THROUGH SOUND &amp; LANDSCAPE</p>
                         <p class="rm-sub" style="margin-top:.5em;border-color:#d4a758;color:#d4a758">SANDVIKEN → FLØYEN · A MOVING DJ SET · WALK IT WITH US</p>
+                        <p class="rm-sub rm-hide" id="rmEquinox" style="margin-top:.5em">SEPTEMBER EQUINOX WALK · SAT 26 SEP 2026 · THE WEEKEND AFTER CDN'S AUTUMN EQUINOX RESEARCH DAY</p>
                         <div class="rm-choices" style="margin-top:1.4em;min-width:min(280px,80%)">
                             <button class="rm-btn rm-go" id="rmStart">BEGIN THE JOURNEY →</button>
                         </div>
@@ -1089,6 +1094,13 @@
             return m.c;
         }
 
+        /* ---------- seasonal promotion ----------
+           Kept in sync BY HAND with data/equinox.json — the game boots from
+           this file directly with no fetch for one date string, but that file
+           is the source of truth. Change the date in both places, or not at
+           all after eventDate has passed and this whole block goes quiet. */
+        var EQUINOX = { eventDate: '2026-09-26' };
+
         /* ---------- chapters ---------- */
         var CH = [
             {
@@ -1160,7 +1172,7 @@
                 n: 'CHAPTER SIX', t: 'Sunset Return',
                 sky: ['#0a0818', '#141230', '#241f42', '#3a2f50'],
                 sun: '#8a9ac0', sunY: 195, fog: 0.2, stars: 1, city: 1, dist: 620, night: true,
-                tag: 'CHAPTER SIX · SUNSET RETURN · DESCENT',
+                tag: 'CHAPTER SIX · SUNSET RETURN · EQUAL DARK, EQUAL LIGHT · DESCENT',
                 text: "The light goes and the trail changes character completely. Same path, different mountain. They walk down with one head-torch between them and the speaker running on whatever percentage is left, and the descent takes longer than the climb because neither of them is trying to be anywhere.",
                 choices: [
                     { label: '▸ Run the last track all the way down', e: -8, s: 18, c: 18,
@@ -2559,6 +2571,14 @@
         }
 
         BEINGS.load();
+
+        // Show the equinox line on the title screen only while the event is
+        // still ahead. Date-only comparison (no timezone math) is deliberate:
+        // this is a marketing line, not the rule-18 gate.
+        (function () {
+            var today = new Date().toISOString().slice(0, 10);
+            if (today <= EQUINOX.eventDate) el('rmEquinox').classList.remove('rm-hide');
+        })();
         el('rmArchBtn').addEventListener('click', archOpen);
         el('rmArchClose').addEventListener('click', function () { hide('rmArch'); });
         archCount();
