@@ -1402,6 +1402,11 @@
         }
 
         function openFind() {
+            // The HUD sits outside the stage, so its buttons stay reachable
+            // even while an overlay is open — a real device can end up with
+            // Find and Archive both shown at once, both eating every tap.
+            // Close whatever else is open first.
+            hide('rmArch');
             var wasWalking = S.walking;
             setWalk(false);
             show('rmFind');
@@ -2143,13 +2148,18 @@
 
         function archLoad(then) {
             if (ARCH.loaded) return then();
-            ARCH.loaded = true;
+            // loaded is only set on SUCCESS. A single dropped fetch on a
+            // mobile connection used to mark this loaded forever with
+            // ARCH.data staying null — "could not be loaded" for the rest of
+            // the session, even after signal came back. Now every reopen of
+            // the archive retries until it actually gets the data.
             Promise.all([
                 fetch('data/history.json').then(function (r) { return r.json(); }),
                 fetch('data/sources.json').then(function (r) { return r.json(); }),
                 fetch('data/route.json').then(function (r) { return r.json(); })
             ]).then(function (r) {
                 ARCH.data = { history: r[0], sources: r[1], route: r[2] };
+                ARCH.loaded = true;
                 then();
             }).catch(function () { ARCH.data = null; then(); });
         }
@@ -2165,9 +2175,15 @@
             var have = a.entries || [];
 
             if (!ARCH.data) {
-                body.innerHTML = '<p class="rm-text">The archive could not be loaded. ' +
-                    'It needs to be served over http — open the site rather than the ' +
-                    'file on disk.</p>';
+                // Usually a dropped connection, not a protocol problem — this
+                // used to unconditionally blame file:// even when the page
+                // was already served correctly over https.
+                body.innerHTML = '<p class="rm-text">Could not reach the archive data ' +
+                    '— probably a dropped connection. Check your signal and try ' +
+                    'again.</p><div class="rm-choices"><button class="rm-btn rm-go" ' +
+                    'id="rmArchRetry">↺ TRY AGAIN</button></div>';
+                var retryBtn = document.getElementById('rmArchRetry');
+                if (retryBtn) retryBtn.addEventListener('click', archOpen);
                 return;
             }
 
@@ -2264,6 +2280,7 @@
         }
 
         function archOpen() {
+            hide('rmFind');
             archLoad(function () { archRender(); show('rmArch'); });
         }
 
