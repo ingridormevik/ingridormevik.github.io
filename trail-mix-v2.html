@@ -36,6 +36,43 @@
             user-select: none;
         }
 
+        /* High Contrast overrides the same custom properties every component
+           is already built against, so cards/HUD/overlays all switch at once
+           with no per-component rework. */
+        .rm.rm-hicontrast {
+            --rm-ink: #000000;
+            --rm-panel: #000000;
+            --rm-panel-hi: #14141a;
+            --rm-edge: #ffffff;
+            --rm-edge-hi: #ffffff;
+            --rm-gold: #ffe14d;
+            --rm-cream: #ffffff;
+            --rm-dim: #d8d8d8;
+            --rm-red: #ff7a68;
+            --rm-green: #8bff68;
+            --rm-blue: #73c2ff;
+            --rm-purple: #d9a6ff;
+        }
+        .rm.rm-hicontrast .rm-card,
+        .rm.rm-hicontrast .rm-btn,
+        .rm.rm-hicontrast .rm-icobtn,
+        .rm.rm-hicontrast .rm-prompt,
+        .rm.rm-hicontrast .rm-route,
+        .rm.rm-hicontrast .rm-tag { border-width: 3px; }
+
+        /* Large Text targets the reading surfaces, not the pixel canvas or the
+           tight HUD labels — those would just break layout for no benefit. */
+        .rm.rm-largetext .rm-text,
+        .rm.rm-largetext .rm-arch-e,
+        .rm.rm-largetext .rm-arch-lead,
+        .rm.rm-largetext .rm-invite,
+        .rm.rm-largetext .rm-facts li {
+            font-size: clamp(14px, 4.4cqmin, 20px);
+            line-height: 1.7;
+        }
+        .rm.rm-largetext .rm-btn { font-size: clamp(13px, 3.8cqmin, 17px); }
+        .rm.rm-largetext .rm-chapter-tag { font-size: clamp(11px, 3.4cqmin, 15px); }
+
         .rm * { box-sizing: border-box; }
 
         /* Fullscreen keeps the exact same layout - the panel just fills the
@@ -475,6 +512,19 @@
         .rm-icobtn:hover { color: var(--rm-cream); border-color: var(--rm-gold); }
         .rm-icobtn[aria-pressed="true"] { color: var(--rm-gold); border-color: var(--rm-gold); }
 
+        /* Accessibility Hub — same .rm-icobtn look, stacked full-width as a
+           settings list rather than inline in a toolbar. */
+        .rm-acc-list { display: grid; gap: 8px; margin: 1em 0; }
+        .rm-acc-toggle {
+            width: 100%;
+            text-align: left;
+            font-size: clamp(9px, 2.6cqmin, 12px);
+            letter-spacing: .08em;
+            padding: .75em 1em;
+        }
+        .rm-acc-toggle::before { content: "☐  "; }
+        .rm-acc-toggle[aria-pressed="true"]::before { content: "☑  "; }
+
         /* Floating name tags */
         .rm-tags { position: absolute; inset: 0; pointer-events: none; }
 
@@ -726,6 +776,28 @@
                         <p class="rm-sub" style="margin-top:.5em;border-color:#d4a758;color:#d4a758">SANDVIKEN → FLØYEN · A MOVING DJ SET · WALK IT WITH US</p>
                         <div class="rm-choices" style="margin-top:1.4em;min-width:min(280px,80%)">
                             <button class="rm-btn rm-go" id="rmStart">BEGIN THE JOURNEY →</button>
+                            <button class="rm-btn" id="rmModeBtn">⚙ HOW DO YOU WANT TO WALK?</button>
+                        </div>
+                    </div>
+
+                    <!-- Pre-start mode selector: quick accessibility presets in front of
+                         the title screen. Entirely optional — BEGIN THE JOURNEY above
+                         works exactly as it always has if a player never opens this. -->
+                    <div class="rm-layer rm-title rm-hide" id="rmMode">
+                        <div class="rm-brand">MOUNT MEDIA &amp; PREEM CAST</div>
+                        <h3 style="font-size:clamp(.85rem,3.2vw,1.5rem)">HOW DO YOU WANT TO WALK?</h3>
+                        <p class="rm-sub">PICK A STARTING MODE — CHANGE ANYTHING LATER FROM ♿ ACCESSIBILITY</p>
+                        <div class="rm-choices" id="rmModeChoices" style="margin-top:1.2em;min-width:min(320px,86%)">
+                            <button class="rm-btn rm-go" data-mode="full">FULL TRAIL</button>
+                            <button class="rm-btn" data-mode="lowmotion">LOW MOTION</button>
+                            <button class="rm-btn" data-mode="textfirst">TEXT FIRST</button>
+                            <button class="rm-btn" data-mode="audiofirst">AUDIO FIRST</button>
+                            <button class="rm-btn" data-mode="noaudio">NO AUDIO</button>
+                            <button class="rm-btn" data-mode="highcontrast">HIGH CONTRAST</button>
+                            <button class="rm-btn" data-mode="largetext">LARGE TEXT</button>
+                        </div>
+                        <div class="rm-choices" style="margin-top:.6em;min-width:min(320px,86%)">
+                            <button class="rm-btn" id="rmModeBack">← BACK</button>
                         </div>
                     </div>
 
@@ -778,6 +850,28 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Accessibility Hub: High Contrast, Reduce Motion, Large Text, Read
+                         Aloud and Mute All, each one a real toggle that saves immediately
+                         and applies immediately — same overlay family as Find/Archive. -->
+                    <div class="rm-layer rm-story rm-hide" id="rmAcc">
+                        <div class="rm-card">
+                            <div class="rm-chapter-tag">♿ ACCESSIBILITY</div>
+                            <p class="rm-text">Every setting below saves on this device and
+                                applies right away. Tab and Enter/Space work the same as
+                                anywhere else in Trail Mix.</p>
+                            <div class="rm-acc-list">
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccContrast" aria-pressed="false">HIGH CONTRAST</button>
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccMotion" aria-pressed="false">REDUCE MOTION</button>
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccText" aria-pressed="false">LARGE TEXT</button>
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccRead" aria-pressed="false">READ ALOUD</button>
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccMute" aria-pressed="false">MUTE ALL</button>
+                            </div>
+                            <div class="rm-choices">
+                                <button class="rm-btn rm-go" id="rmAccClose">← BACK TO THE TRAIL</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- HUD -->
@@ -805,6 +899,7 @@
                     <button class="rm-icobtn" id="rmFindBtn" title="I found something">◎ I FOUND SOMETHING</button>
                     <div class="rm-spacer"></div>
                     <button class="rm-icobtn" id="rmArchBtn" title="Trail Archive">▤ ARCHIVE <span id="rmArchN">0</span></button>
+                    <button class="rm-icobtn" id="rmAccBtn" title="Accessibility settings" aria-pressed="false">♿ ACCESSIBILITY</button>
                     <button class="rm-icobtn" id="rmFull" title="Fullscreen">⛶ FULLSCREEN</button>
                     <button class="rm-icobtn" id="rmMusic" aria-pressed="false" title="Trail Mix Theme Song">♫ THEME OFF</button>
                     <button class="rm-icobtn" id="rmSound" aria-pressed="false">♪ SOUND OFF</button>
@@ -911,6 +1006,95 @@
             placeTags();
         }
         var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ---------- accessibility settings ----------
+           Sibling store to the archive's own trailmix.archive.v1 key, same
+           read/write/try-catch shape. reduceMotion above is already checked
+           live at every render call site each frame — setApply() just
+           reassigns that one variable, so none of those call sites change. */
+        var SETTINGS_KEY = 'trailmix.settings.v1';
+        var DEFAULT_SET = {
+            highContrast: false, reduceMotion: reduceMotion,
+            largeText: false, readAloud: false, muted: false
+        };
+        var SET = {
+            highContrast: false, reduceMotion: reduceMotion,
+            largeText: false, readAloud: false, muted: false
+        };
+        var MODE_PRESETS = {
+            full: DEFAULT_SET,
+            lowmotion: { reduceMotion: true },
+            textfirst: { readAloud: false, reduceMotion: true, muted: true },
+            audiofirst: { readAloud: true },
+            noaudio: { muted: true },
+            highcontrast: { highContrast: true },
+            largetext: { largeText: true }
+        };
+
+        function setRead() {
+            try { return JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}'); }
+            catch (e) { return {}; }
+        }
+        function setWrite() {
+            try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(SET)); } catch (e) { }
+        }
+        Object.assign(SET, setRead());
+        reduceMotion = SET.reduceMotion;
+
+        var PRE_MUTE = null;
+        function applyMute(mute) {
+            var sBtn = el('rmSound');
+            if (mute) {
+                if (PRE_MUTE === null) PRE_MUTE = { theme: typeof themeOn !== 'undefined' && themeOn, sound: AU.on };
+                if (AU.master) AU.master.gain.value = 0;
+                if (typeof themeOn !== 'undefined' && themeOn) themeSet(false);
+                if (AU.on) { AU.on = false; clearInterval(AU.timer); }
+                if (sBtn) { sBtn.textContent = '♪ SOUND OFF'; sBtn.setAttribute('aria-pressed', 'false'); }
+            } else {
+                if (AU.master) AU.master.gain.value = 0.16;
+                if (PRE_MUTE) {
+                    if (PRE_MUTE.theme) themeSet(true);
+                    if (PRE_MUTE.sound) {
+                        AU.on = true; AU.step = 0; AU.timer = setInterval(audioStep, 125);
+                        if (sBtn) { sBtn.textContent = '♪ SOUND ON'; sBtn.setAttribute('aria-pressed', 'true'); }
+                    }
+                }
+                PRE_MUTE = null;
+            }
+        }
+
+        function readCurrentText() {
+            if (!SET.readAloud || !window.speechSynthesis) return;
+            var ids = ['rmStory', 'rmArch', 'rmFind', 'rmAcc'], node = null;
+            for (var i = 0; i < ids.length; i++) {
+                var n = el(ids[i]);
+                if (n && n.classList.contains('on')) { node = n; break; }
+            }
+            var text = node && node.innerText;
+            if (!text) return;
+            speechSynthesis.cancel();
+            speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+        }
+
+        function paintAccButtons() {
+            [['rmAccContrast', SET.highContrast], ['rmAccMotion', SET.reduceMotion],
+             ['rmAccText', SET.largeText], ['rmAccRead', SET.readAloud],
+             ['rmAccMute', SET.muted]].forEach(function (pair) {
+                var b = el(pair[0]);
+                if (b) b.setAttribute('aria-pressed', pair[1] ? 'true' : 'false');
+            });
+        }
+
+        function setApply() {
+            var root = document.querySelector('.rm');
+            if (root) {
+                root.classList.toggle('rm-hicontrast', !!SET.highContrast);
+                root.classList.toggle('rm-largetext', !!SET.largeText);
+            }
+            reduceMotion = !!SET.reduceMotion;
+            applyMute(!!SET.muted);
+            paintAccButtons();
+        }
 
         /* ---------- helpers ---------- */
         function el(id) { return document.getElementById(id); }
@@ -1230,6 +1414,7 @@
             var btn = el('rmSound');
             if (!AU.on) {
                 if (!audioInit()) { btn.textContent = '♪ NO AUDIO'; btn.disabled = true; return; }
+                if (SET.muted) AU.master.gain.value = 0;
                 if (AU.ctxA.state === 'suspended') AU.ctxA.resume();
                 AU.on = true;
                 AU.step = 0;
@@ -1406,11 +1591,12 @@
             // even while an overlay is open — a real device can end up with
             // Find and Archive both shown at once, both eating every tap.
             // Close whatever else is open first.
-            hide('rmArch');
+            hide('rmArch'); hide('rmAcc');
             var wasWalking = S.walking;
             setWalk(false);
             show('rmFind');
             el('rmFind').dataset.resume = wasWalking ? '1' : '';
+            readCurrentText();
         }
 
         function closeFind(kind) {
@@ -2280,8 +2466,20 @@
         }
 
         function archOpen() {
-            hide('rmFind');
-            archLoad(function () { archRender(); show('rmArch'); });
+            hide('rmFind'); hide('rmAcc');
+            archLoad(function () { archRender(); show('rmArch'); readCurrentText(); });
+        }
+
+        function openAcc() {
+            hide('rmFind'); hide('rmArch');
+            setWalk(false);
+            show('rmAcc');
+            readCurrentText();
+            // The overlay's controls sit earlier in the DOM than the HUD button
+            // that opens it, so a forward Tab from that button would otherwise
+            // skip past them. Move focus in, same as any modal dialog would.
+            var first = el('rmAccContrast');
+            if (first) first.focus();
         }
 
         /* ---------- flow ---------- */
@@ -2337,6 +2535,7 @@
             // Deliberately no 'tall' switch here. Resizing the stage for the story
             // is what made a chapter break feel like a different screen.
             show('rmStory');
+            readCurrentText();
         }
 
         // Chapter index maps 1:1 onto the six physical stops in data/route.json.
@@ -2503,7 +2702,7 @@
             themeOn = on;
             var btn = el('rmMusic');
             if (on) {
-                theme.volume = 0.42;
+                theme.volume = SET.muted ? 0 : 0.42;
                 var p = theme.play();
                 if (p && p.catch) p.catch(function () { themeOn = false; paintMusicBtn(); });
             } else {
@@ -2595,6 +2794,44 @@
             hide('rmTitle'); hide('rmChap');
             reset();
         });
+
+        /* ---------- accessibility wiring ---------- */
+        el('rmAccBtn').addEventListener('click', openAcc);
+        el('rmAccClose').addEventListener('click', function () { hide('rmAcc'); });
+
+        function wireAccToggle(id, field, onChange) {
+            var b = el(id);
+            if (!b) return;
+            b.addEventListener('click', function () {
+                SET[field] = !SET[field];
+                setApply();
+                setWrite();
+                if (onChange) onChange();
+            });
+        }
+        wireAccToggle('rmAccContrast', 'highContrast');
+        wireAccToggle('rmAccMotion', 'reduceMotion');
+        wireAccToggle('rmAccText', 'largeText');
+        wireAccToggle('rmAccRead', 'readAloud', function () {
+            if (SET.readAloud) readCurrentText();
+            else if (window.speechSynthesis) speechSynthesis.cancel();
+        });
+        wireAccToggle('rmAccMute', 'muted');
+
+        el('rmModeBtn').addEventListener('click', function () { hide('rmTitle'); show('rmMode'); });
+        el('rmModeBack').addEventListener('click', function () { hide('rmMode'); show('rmTitle'); });
+        el('rmModeChoices').addEventListener('click', function (e) {
+            var b = e.target.closest('button[data-mode]');
+            if (!b) return;
+            var preset = MODE_PRESETS[b.dataset.mode];
+            if (preset) Object.assign(SET, preset);
+            setApply();
+            setWrite();
+            hide('rmMode');
+            show('rmTitle');
+        });
+
+        setApply();
 
         /* ---------- loop ---------- */
         var last = 0, paused = false;
