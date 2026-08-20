@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Me, Myself and AI // Mount Media</title>
+<style>
+:root{
+  --void:#05080A;
+  --gold:#D2A857;
+  --gold-dim:#8A6F35;
+  --chiral:#5EC8DE;
+  --bone:#E9EFF1;
+  --slate:#5D717A;
+  --hair:rgba(94,200,222,.2);
+  --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  --mono:ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,'Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;min-height:100vh;min-height:100dvh}
+body{background:var(--void);color:var(--bone);font-family:var(--serif);overflow:hidden;
+  -webkit-font-smoothing:antialiased}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:60;
+  background:radial-gradient(ellipse at 50% 45%,transparent 42%,rgba(0,0,0,.7) 100%)}
+body::before{content:"";position:fixed;inset:-50%;pointer-events:none;z-index:59;opacity:.03;
+  background-image:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 3px);
+  animation:drift 9s steps(9) infinite}
+@keyframes drift{to{transform:translateY(3px)}}
+
+.hud{position:fixed;inset:0;pointer-events:none;z-index:40}
+.corner{position:absolute;width:22px;height:22px;border:1px solid var(--hair)}
+.corner.tl{top:22px;left:22px;border-right:0;border-bottom:0}
+.corner.tr{top:22px;right:22px;border-left:0;border-bottom:0}
+.corner.bl{bottom:22px;left:22px;border-right:0;border-top:0}
+.corner.br{bottom:22px;right:22px;border-left:0;border-top:0}
+.meta{position:absolute;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--slate)}
+.meta.tl{top:26px;left:58px}
+.meta.tr{top:26px;right:58px;text-align:right;color:var(--chiral)}
+.meta.tr.over{color:var(--gold)}
+.meta.bl{bottom:26px;left:58px}
+.meta.br{bottom:26px;right:58px;text-align:right}
+.meta b{color:var(--gold);font-weight:400}
+.depth{position:absolute;right:28px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:5px;align-items:center}
+.depth .seg{width:2px;height:12px;background:rgba(93,113,122,.28)}
+.depth .seg.on{background:var(--chiral)}
+.depth .seg.here{background:var(--gold);height:19px}
+.depth .lbl{font-family:var(--mono);font-size:8px;letter-spacing:.16em;color:var(--slate);
+  writing-mode:vertical-rl;margin-bottom:8px}
+
+.scan{position:fixed;inset:0;z-index:35;pointer-events:none;opacity:0}
+.scan.go{animation:sweep .8s cubic-bezier(.2,.7,.2,1)}
+.scan i{position:absolute;top:0;bottom:0;width:36vw;
+  background:linear-gradient(90deg,transparent,rgba(94,200,222,.04) 55%,rgba(168,232,245,.42));
+  border-right:1px solid rgba(168,232,245,.9)}
+@keyframes sweep{0%{opacity:1}99%{opacity:.3}100%{opacity:0}}
+.scan.go i{animation:sweepx .8s cubic-bezier(.2,.7,.2,1)}
+@keyframes sweepx{from{transform:translateX(-38vw)}to{transform:translateX(104vw)}}
+
+.deck{position:fixed;inset:0}
+.slide{position:fixed;inset:0;display:none;padding:10vh 13vw;
+  flex-direction:column;justify-content:center;overflow-y:auto;overscroll-behavior:contain}
+.slide:first-of-type{display:flex}
+.deck.ready .slide{display:none}
+.deck.ready .slide.active{display:flex}
+.slide.active .rise{animation:rise .62s cubic-bezier(.2,.8,.2,1) backwards}
+.slide.active .rise:nth-child(2){animation-delay:.07s}
+.slide.active .rise:nth-child(3){animation-delay:.14s}
+.slide.active .rise:nth-child(4){animation-delay:.21s}
+.slide.active .rise:nth-child(5){animation-delay:.28s}
+.slide.active .rise:nth-child(6){animation-delay:.35s}
+.slide.active .rise:nth-child(7){animation-delay:.42s}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ---- her blog voice: stacked single lines ---- */
+.mark{font-size:15px;color:var(--gold-dim);letter-spacing:.4em;margin-bottom:1.9rem}
+.line{font-size:clamp(1.5rem,3.15vw,2.65rem);line-height:1.26;letter-spacing:-.01em;
+  color:var(--bone);max-width:19em;margin-bottom:.28em}
+.line.big{font-size:clamp(2.1rem,4.8vw,4rem);line-height:1.1;margin-bottom:.16em}
+.line.quiet{color:var(--slate)}
+.line.gold{color:var(--gold)}
+.gap{height:1.5rem}
+h1{font-weight:400;font-size:clamp(2.3rem,5.4vw,4.4rem);line-height:1.06;letter-spacing:-.02em}
+
+/* label block, from the blog's MACHINE DEMENTIA card */
+.label{font-family:var(--mono);font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1rem}
+.termbox{border-left:1px solid var(--gold-dim);padding-left:1.7rem;max-width:26em}
+.termbox .def{font-size:clamp(1.15rem,2.05vw,1.72rem);line-height:1.4;color:var(--bone)}
+
+/* H / AI dialogue */
+.dlg{margin-top:.4rem}
+.dlg .turn{display:grid;grid-template-columns:3.4rem 1fr;gap:1.5rem;align-items:baseline;
+  padding:.75rem 0;border-bottom:1px solid rgba(93,113,122,.16);max-width:24em}
+.dlg .spk{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--slate)}
+.dlg .turn.ai .spk{color:var(--chiral)}
+.dlg .say{font-size:clamp(1.35rem,2.6vw,2.2rem);line-height:1.2}
+
+/* comment evidence */
+.log{display:flex;flex-direction:column;gap:.8rem}
+.log .row{display:grid;grid-template-columns:2.2rem 1fr;gap:1.1rem;align-items:start;
+  border-bottom:1px solid rgba(93,113,122,.14);padding-bottom:.8rem}
+.log .who{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--slate);padding-top:.45rem}
+.log .said{font-size:clamp(1.08rem,1.85vw,1.55rem);line-height:1.32}
+.log .row.key .said{color:var(--gold)}
+
+.strip{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--slate);display:flex;flex-wrap:wrap;gap:1.3rem;margin-top:1.5rem}
+.strip span::before{content:"// ";color:var(--gold-dim)}
+
+/* media slots */
+.split{display:grid;grid-template-columns:1fr 1.05fr;gap:3rem;align-items:start;margin-top:.3rem}
+.videoframe,.imgframe{position:relative;border:1px solid rgba(210,168,87,.38);background:#080D10;
+  display:flex;align-items:center;justify-content:center;overflow:hidden}
+.videoframe{aspect-ratio:16/9;width:100%}
+.imgframe{min-height:200px}
+.videoframe video{display:none;width:100%;height:100%;object-fit:contain;background:#000}
+.videoframe.filled video{display:block}
+.imgframe img{display:none;width:100%;max-height:44vh;object-fit:contain;transition:filter .2s}
+.imgframe.filled img{display:block}
+.videoframe.filled .ph,.imgframe.filled .ph{display:none}
+.ph{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--gold-dim);
+  text-transform:uppercase;text-align:center;padding:1.2rem;line-height:2}
+.loadbtn{position:absolute;bottom:9px;right:9px;font-family:var(--mono);font-size:9px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--chiral);border:1px solid var(--hair);
+  padding:.42rem .68rem;cursor:pointer;background:rgba(5,8,10,.78);z-index:2}
+.blurbtn{position:absolute;bottom:9px;left:9px;font-family:var(--mono);font-size:9px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--gold);
+  border:1px solid rgba(210,168,87,.38);padding:.42rem .68rem;cursor:pointer;
+  background:rgba(5,8,10,.78);z-index:2}
+
+/* Perfect Alignment: a short audio-reactive chamber inside the girlfriend case */
+.alignment-stage{--bass:0;--mid:0;--high:0;position:relative;width:min(920px,76vw);height:min(54vh,540px);
+  min-height:330px;margin:.35rem 0 .8rem;border:1px solid rgba(210,168,87,.42);overflow:hidden;
+  background:#030608;isolation:isolate;box-shadow:0 20px 70px rgba(0,0,0,.42)}
+.alignment-stage::before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(90deg,rgba(211,143,74,.22) 0%,transparent 42%,rgba(4,10,15,.08) 50%,rgba(36,180,208,.22) 100%);
+  mix-blend-mode:color}
+.alignment-stage::after{content:"";position:absolute;inset:0;z-index:7;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 38%,transparent 28%,rgba(1,3,4,.14) 72%,rgba(1,3,4,.72) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.1),transparent 42%,rgba(0,0,0,.72));box-shadow:inset 0 0 70px rgba(0,0,0,.45)}
+.alignment-image{position:absolute;inset:-3%;width:106%;height:106%;object-fit:cover;object-position:center 29%;
+  transform:scale(calc(1.01 + var(--bass) * .018));transition:filter .5s ease;will-change:transform,filter}
+.alignment-image.human{z-index:1;filter:saturate(.82) sepia(.08) contrast(1.04)}
+.alignment-image.ai{z-index:2;clip-path:inset(0 0 0 49.8%);opacity:calc(.56 + var(--mid) * .24);
+  mix-blend-mode:screen;filter:saturate(.75) hue-rotate(4deg) contrast(1.08) brightness(.78);
+  transform:translate(calc(var(--high) * 2px),calc(var(--mid) * -2px)) scale(calc(1.012 + var(--bass) * .025))}
+.alignment-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}
+.alignment-seam{position:absolute;z-index:6;top:-5%;bottom:-5%;left:49.8%;width:1px;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(168,232,245,.82) 18%,rgba(210,168,87,.92) 52%,rgba(94,200,222,.74) 82%,transparent);
+  box-shadow:0 0 calc(7px + var(--bass) * 18px) rgba(94,200,222,.85),0 0 26px rgba(210,168,87,.24);
+  transform:rotate(.7deg) skewY(-3deg);animation:livingSeam 3.8s ease-in-out infinite}
+.alignment-seam::before,.alignment-seam::after{content:"";position:absolute;left:-2px;width:5px;height:18%;
+  background:inherit;filter:blur(2px)}
+.alignment-seam::before{top:20%;transform:translateX(-3px) rotate(2deg)}
+.alignment-seam::after{bottom:18%;transform:translateX(2px) rotate(-2deg)}
+@keyframes livingSeam{0%,100%{opacity:.56;transform:rotate(.7deg) skewY(-3deg) translateX(0)}50%{opacity:.95;transform:rotate(-.25deg) skewY(2deg) translateX(2px)}}
+.alignment-status{position:absolute;z-index:9;top:15px;left:17px;font-family:var(--mono);font-size:8px;
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(233,239,241,.7)}
+.alignment-status::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:8px;
+  background:var(--gold);box-shadow:0 0 9px var(--gold)}
+.alignment-stage.playing .alignment-status::before{background:var(--chiral);box-shadow:0 0 12px var(--chiral);animation:statusPulse 1.8s ease-in-out infinite}
+@keyframes statusPulse{50%{opacity:.3}}
+.alignment-whisper{position:absolute;z-index:10;left:6%;right:6%;bottom:17%;text-align:center;
+  font-family:var(--serif);font-size:clamp(1.1rem,2.3vw,2rem);line-height:1.22;letter-spacing:.04em;
+  color:#f0f6f7;text-shadow:0 2px 18px #000,0 0 26px rgba(94,200,222,.25);opacity:0;
+  transform:translateY(8px);transition:opacity 1.1s ease,transform 1.1s ease}
+.alignment-whisper.visible{opacity:.94;transform:none}
+.alignment-controls{position:absolute;z-index:12;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:.5rem;align-items:center}
+.alignment-toggle,.alignment-stop{font-family:var(--mono);font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bone);border:1px solid rgba(210,168,87,.62);background:rgba(3,6,8,.82);padding:.64rem .88rem;cursor:pointer;
+  backdrop-filter:blur(8px)}
+.alignment-toggle:hover,.alignment-toggle:focus-visible{color:var(--void);background:var(--gold);outline:none}
+.alignment-stop{display:none;color:var(--chiral);border-color:rgba(94,200,222,.45)}
+.alignment-stage.playing .alignment-stop{display:block}
+.alignment-stage.playing .alignment-toggle{border-color:rgba(94,200,222,.62)}
+.alignment-caption{font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);
+  max-width:920px;display:flex;justify-content:space-between;gap:1rem}
+@media (max-width:860px){
+  .alignment-stage{width:100%;height:50vh;min-height:310px}
+  .alignment-image{object-position:center 30%}
+  .alignment-caption span:last-child{display:none}
+}
+
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.55rem;margin-top:.6rem}
+.grid4 .imgframe{min-height:0;aspect-ratio:3/4}
+.grid4 .ph{font-size:8px;letter-spacing:.14em;padding:.5rem;line-height:1.7}
+.grid4 .loadbtn,.grid4 .blurbtn{font-size:7.5px;padding:.28rem .42rem;bottom:5px}
+.grid4 .loadbtn{right:5px}.grid4 .blurbtn{left:5px}
+@media (max-width:860px){.grid4{grid-template-columns:repeat(2,1fr)}}
+.shout{font-family:var(--mono);font-size:clamp(2.2rem,8.5vw,6.5rem);letter-spacing:.14em;
+  color:var(--bone);text-align:center;line-height:1.1}
+.trio3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:.8rem}
+.trio3 .imgframe{min-height:0;aspect-ratio:4/5}
+.trio3 .cap{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--slate);margin-top:.6rem;line-height:1.7}
+.trio3 .cap b{color:var(--gold);font-weight:400}
+@media (max-width:860px){.trio3{grid-template-columns:1fr}}
+
+/* prompt-to-output research chamber */
+.machine-stage{display:grid;grid-template-columns:minmax(150px,.8fr) minmax(190px,1.25fr) minmax(150px,.8fr);gap:1.35rem;align-items:center;max-width:1000px;width:100%;margin:.4rem auto 0}
+.machine-stage .imgframe{min-height:0;aspect-ratio:4/5}
+.machine-stage .imgframe img{max-height:34vh}
+.machine-label,.machine-meta,.world-meta,.observation-label{font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate);line-height:1.7}
+.machine-label{color:var(--gold);margin-bottom:.55rem}
+.machine-meta{margin-top:.55rem}
+.machine-flow{position:relative;min-height:280px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:1.35rem 1.15rem;border:1px solid rgba(94,200,222,.25);background:linear-gradient(145deg,rgba(9,19,25,.98),rgba(3,5,7,.98));overflow:hidden}
+.machine-flow::before,.machine-flow::after{content:"";position:absolute;pointer-events:none}
+.machine-flow::before{inset:-30%;background:repeating-linear-gradient(135deg,transparent 0 18px,rgba(94,200,222,.035) 18px 19px);animation:machineDrift 12s linear infinite}
+.machine-flow::after{inset:18px;border:1px solid rgba(210,168,87,.22)}
+@keyframes machineDrift{to{transform:translate(24px,24px)}}
+.machine-status{position:relative;z-index:1;font-family:var(--mono);font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--chiral);margin-bottom:1.15rem;text-align:center}
+.blackbox{position:relative;z-index:1;width:100%;padding:1rem .8rem;border:1px solid rgba(210,168,87,.6);background:rgba(0,0,0,.55);text-align:center;box-shadow:0 0 42px rgba(94,200,222,.08),inset 0 0 30px rgba(0,0,0,.7)}
+.blackbox strong{display:block;font-family:var(--mono);font-weight:400;font-size:clamp(.8rem,1.5vw,1rem);letter-spacing:.24em;color:var(--bone)}
+.blackbox span{display:block;font-family:var(--mono);font-size:8px;letter-spacing:.15em;color:var(--gold-dim);margin-top:.65rem}
+.blackbox i{display:block;font-style:normal;font-family:var(--mono);font-size:1rem;letter-spacing:.44em;color:var(--chiral);margin:.8rem 0 .15rem;animation:unknownPulse 2.6s ease-in-out infinite}
+@keyframes unknownPulse{50%{color:var(--gold);opacity:.45}}
+.machine-foot{position:relative;z-index:1;margin-top:1.15rem;text-align:center;max-width:23ch}
+.prompt-rail{display:flex;flex-wrap:wrap;justify-content:center;gap:.38rem;margin-top:.85rem}
+.token{font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;padding:.35rem .48rem;border:1px solid rgba(94,200,222,.25);color:var(--chiral);background:rgba(94,200,222,.04)}
+.token.gold{color:var(--gold);border-color:rgba(210,168,87,.35);background:rgba(210,168,87,.04)}
+.world-contrast{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;width:100%;max-width:1060px;margin:.15rem auto 0}
+.world-output{position:relative;border-top:1px solid rgba(210,168,87,.5);padding-top:.75rem}
+.world-output.fjord{border-top-color:rgba(94,200,222,.65)}
+.world-output .imgframe{min-height:0;aspect-ratio:16/10;background:#05080a}
+.world-output .imgframe img{width:100%;height:100%;max-height:34vh;object-fit:contain}
+.world-title{display:flex;justify-content:space-between;gap:1rem;align-items:baseline;margin-bottom:.55rem;font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.world-output.fjord .world-title{color:var(--chiral)}
+.observations{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+.observation{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone);padding:.32rem .42rem;border-left:1px solid var(--gold-dim);background:rgba(210,168,87,.05)}
+.fjord .observation{border-left-color:var(--chiral);background:rgba(94,200,222,.05)}
+.evidence-note{font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);text-align:center;margin-top:.8rem}
+.constellation{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;max-width:900px;width:100%;margin:.6rem auto 0}
+.cluster{position:relative;min-height:190px;padding:1rem;border:1px solid rgba(210,168,87,.25);background:radial-gradient(circle at 50% 50%,rgba(210,168,87,.08),transparent 65%)}
+.cluster.fjord{border-color:rgba(94,200,222,.3);background:radial-gradient(circle at 50% 50%,rgba(94,200,222,.08),transparent 65%)}
+.cluster h3{font-family:var(--mono);font-weight:400;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.cluster.fjord h3{color:var(--chiral)}
+.cluster .prompt-rail{justify-content:flex-start}
+.cluster p{font-size:clamp(1rem,1.6vw,1.25rem);line-height:1.35;color:var(--bone);margin-top:1rem;max-width:25ch}
+.method-legend{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:.42rem;width:100%;margin-top:1rem}
+.method-legend div{min-height:54px;padding:.45rem;border-top:1px solid rgba(94,200,222,.22);background:rgba(5,8,10,.42);font-family:var(--mono);font-size:7px;letter-spacing:.1em;text-transform:uppercase;line-height:1.55;color:var(--slate)}
+.method-legend b{display:block;color:var(--chiral);font-weight:400;margin-bottom:.24rem}
+.method-legend div:first-child b{color:var(--gold)}
+.method-legend div:last-child b{color:var(--gold-dim)}
+.manifest-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.55rem;width:100%;max-width:1080px;margin:.45rem auto 0}
+.manifest{min-width:0}
+.manifest .imgframe{min-height:0;aspect-ratio:3/4;background:#05080a}
+.manifest .imgframe img{width:100%;height:100%;max-height:27vh;object-fit:cover}
+.manifest label,.manifest .blurbtn{display:none}
+.manifest-name{font-family:var(--mono);font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;line-height:1.55;color:var(--slate);margin-top:.38rem;text-align:center}
+.final-reference{width:min(180px,34vw);margin:1.1rem auto 0}
+.final-reference .imgframe{min-height:0;aspect-ratio:4/5;border-color:rgba(210,168,87,.6)}
+.final-reference .imgframe img{max-height:25vh}
+.final-question{font-family:var(--serif);font-size:clamp(1rem,1.85vw,1.35rem);line-height:1.32;color:var(--bone);max-width:42ch;margin:1.15rem auto 0}
+.final-question.small{font-size:clamp(.9rem,1.35vw,1.08rem);color:var(--slate);margin-top:.55rem}
+@media (max-width:860px){.method-legend{grid-template-columns:1fr}.manifest-grid{grid-template-columns:repeat(2,1fr)}.manifest .imgframe img{max-height:21vh}.final-reference{width:min(150px,48vw)}}
+@media (max-width:860px){.machine-stage,.world-contrast,.constellation{grid-template-columns:1fr}.machine-stage{gap:1rem}.machine-flow{min-height:215px}.machine-stage .imgframe img,.world-output .imgframe img{max-height:28vh}}
+
+
+/* ---- REVEAL: the room's own classification ---- */
+.demo-flag{position:absolute;top:calc(10vh - 2.1rem);right:13vw;font-family:var(--mono);
+  font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+  border:1px solid rgba(210,168,87,.4);padding:.34rem .55rem;background:rgba(210,168,87,.06)}
+.demo-flag.live{color:var(--chiral);border-color:rgba(94,200,222,.4);background:rgba(94,200,222,.06)}
+.tallyrow{display:grid;grid-template-columns:repeat(6,1fr);gap:.75rem;margin:.5rem 0 1.3rem}
+.tallycol{min-width:0}
+.tallycol .imgframe{min-height:0;aspect-ratio:3/4;border-color:rgba(210,168,87,.3)}
+.tallycol .imgframe img{width:100%;height:100%;max-height:26vh;object-fit:cover}
+.tallycol label,.tallycol .blurbtn{display:none}
+.bars{display:flex;align-items:stretch;gap:3px;height:72px;margin-top:1.15rem}
+.bar{flex:1;height:100%;position:relative;background:rgba(93,113,122,.16)}
+.bar i{position:absolute;left:0;right:0;bottom:0;height:0;display:block;
+  transition:height .62s cubic-bezier(.2,.8,.2,1)}
+.bar.w i{background:linear-gradient(180deg,rgba(94,200,222,.9),rgba(94,200,222,.35))}
+.bar.m i{background:linear-gradient(180deg,rgba(210,168,87,.95),rgba(210,168,87,.4))}
+.bar.u i{background:linear-gradient(180deg,rgba(93,113,122,.8),rgba(93,113,122,.3))}
+.bar b{position:absolute;left:0;right:0;top:-14px;text-align:center;font-family:var(--mono);
+  font-size:8px;letter-spacing:.06em;color:var(--slate);font-weight:400;opacity:0;transition:opacity .4s}
+.tallyrow.counted .bar b{opacity:1}
+.tallykey{display:flex;justify-content:space-between;font-family:var(--mono);font-size:7.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--slate);margin-top:.42rem}
+.tallyname{font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--slate);margin-top:.5rem;text-align:center;transition:color .5s}
+.tallyrow.revealed .tallyname{color:var(--gold)}
+.tally-ask{opacity:0;transition:opacity .5s;font-size:clamp(1.1rem,2vw,1.6rem)}
+.tally-ask.on{opacity:1}
+.reveal-turn{opacity:0;transform:translateY(10px);transition:opacity .7s,transform .7s;margin-top:1rem}
+.reveal-turn.on{opacity:1;transform:none}
+@media (max-width:860px){.tallyrow{grid-template-columns:repeat(3,1fr)}.demo-flag{right:7vw}}
+
+/* ---- BERGTATT ---- */
+#bergtattSlide{position:fixed;overflow:hidden}
+.berg-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.85}
+.berg-body{position:relative;z-index:1}
+.berg-stage{opacity:0;transform:translateY(10px);
+  transition:opacity .75s cubic-bezier(.2,.8,.2,1),transform .75s cubic-bezier(.2,.8,.2,1)}
+.berg-stage.on{opacity:1;transform:none}
+.berg-cite{margin-top:1.6rem;padding-left:1.1rem;border-left:1px solid var(--gold-dim);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;line-height:1.85;
+  color:var(--slate);max-width:34em;text-transform:uppercase}
+.berg-cite span{display:block;color:var(--gold);margin-bottom:.3rem}
+.berg-cite b{color:var(--bone);font-weight:400}
+
+/* end card */
+.endcard{text-align:center}
+.endcard .big{font-family:var(--mono);font-size:clamp(.95rem,1.65vw,1.3rem);letter-spacing:.3em;
+  text-transform:uppercase;line-height:2.3;color:var(--bone)}
+.endcard .big .g{color:var(--gold)}
+.endcard .sig{font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--slate);margin-top:2.6rem}
+
+.notes{position:fixed;inset:auto 0 0 0;z-index:70;background:rgba(4,7,9,.975);
+  border-top:1px solid var(--gold-dim);padding:1.5rem 58px 1.7rem;display:none;
+  max-height:46vh;overflow:auto;font-family:var(--mono)}
+.notes.on{display:block}
+.notes h4{font-size:10px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;
+  font-weight:400;margin-bottom:.85rem}
+.notes pre{font-family:var(--serif);font-size:clamp(1rem,1.3vw,1.2rem);line-height:1.65;
+  white-space:pre-wrap;color:var(--bone)}
+.notes .say{color:#A8E8F5}
+
+.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:45;display:flex;gap:8px}
+.nav button{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  background:rgba(5,8,10,.82);color:var(--chiral);border:1px solid var(--hair);
+  padding:.6rem 1.05rem;cursor:pointer}
+.nav button:active{background:var(--chiral);color:var(--void)}
+.help{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);z-index:41;
+  font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--slate);
+  text-transform:uppercase;transition:opacity .4s}
+.help.hide{opacity:0}
+.notes-src{display:none}
+
+@media (max-width:860px){
+  .slide{padding:11vh 7vw 15vh;justify-content:flex-start}
+  .split{grid-template-columns:1fr;gap:1.6rem}
+  .depth{display:none}
+  .meta.tl,.meta.bl{left:32px}
+  .meta.tr,.meta.br{right:32px}
+  .dlg .turn{grid-template-columns:2.6rem 1fr;gap:1rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="scan" id="scan"><i></i></div>
+
+<div class="hud">
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="corner bl"></div><div class="corner br"></div>
+  <div class="meta tl">Mount Media <b>//</b> Bergen, Norway</div>
+  <div class="meta tr"><span id="clock">00:00</span> <b>//</b> <span id="pace">on pace</span></div>
+  <div class="meta bl">Me, Myself and AI <b>//</b> CDN Equinox 2026</div>
+  <div class="meta br"><span id="counter">01 / 12</span></div>
+  <div class="depth" id="depth"><div class="lbl">Chamber depth</div></div>
+</div>
+
+<div class="deck" id="deck">
+
+<!-- 01 -->
+<section class="slide" data-budget="30">
+  <div class="mark rise">&#9670;</div>
+  <h1 class="rise">Me, Myself<br>and A.I.</h1>
+  <p class="line quiet rise" style="margin-top:1.4rem;font-size:clamp(1.15rem,1.9vw,1.6rem)">One person. Many musical worlds. Different generative bodies.</p>
+  <div class="strip rise"><span>Ingrid Ormevik, she/her</span><span>Mount Media</span><span>CDN Equinox 2026</span></div>
+  <div class="notes-src">TARGET 0:35
+
+[[My name is Ingrid Ormevik, my pronouns are she/her, and this is a small part of my ongoing research through Mount Media.]]
+
+[[This did not begin as a formal AI experiment. It began in creative practice. I was making music and visual worlds, and then I started noticing that the system was not only changing the environment around me, but also the way my own body appeared within it.]]
+
+Say their names. Look at them.</div>
+</section>
+
+<!-- 02 -->
+<section class="slide" data-budget="30">
+  <div class="mark rise">&#9670;</div>
+  <p class="line rise">I kept asking the machine to change the world around me.</p>
+  <div class="gap rise"></div>
+  <p class="line big gold rise">It kept changing me with it.</p>
+  <div class="notes-src">TARGET 0:35 // RUNNING 1:10
+
+Before the bridge, one line about yourself, said plainly and without apology:
+[[I am a masculine presenting lesbian.]]
+
+Then the line above. Hold it. Let it land. The deck changes shape here.
+
+[[This is the bridge. The machine was not only generating music worlds. It was renegotiating my body as part of those worlds.]]</div>
+</section>
+
+<!-- 03 -->
+<section class="slide" data-budget="35" id="alignmentSlide">
+  <div class="label rise">Case 01 // The girlfriend</div>
+  <div class="alignment-stage rise" id="alignmentStage" aria-label="Perfect Alignment audio-reactive scene">
+    <img class="alignment-image human" src="A.I girlfriend (2).png" alt="Ingrid and an AI-generated girlfriend in a warm domestic scene">
+    <img class="alignment-image ai" src="A.I girlfriend.png" alt="" aria-hidden="true">
+    <canvas class="alignment-canvas" id="alignmentCanvas" aria-hidden="true"></canvas>
+    <div class="alignment-seam" aria-hidden="true"></div>
+    <div class="alignment-status" id="alignmentStatus">Perfect alignment // dormant</div>
+    <div class="alignment-whisper" id="alignmentWhisper" aria-live="polite"></div>
+    <div class="alignment-controls">
+      <button class="alignment-toggle" id="alignmentToggle" type="button">Enter perfect alignment</button>
+      <button class="alignment-stop" id="alignmentStop" type="button">Stop</button>
+    </div>
+    <audio id="alignmentAudio" preload="metadata" src="Nattens Åndepuls (Remastered x2).mp3"></audio>
+  </div>
+  <div class="alignment-caption rise"><span>Human warmth // generated intimacy // system mirror</span><span>Audio reactive // headphones recommended</span></div>
+  <p class="line gold rise" style="margin-top:.75rem;font-size:clamp(1.2rem,2.35vw,1.9rem)">It understood the girlfriend. But the body was not neutral.</p>
+  <div class="notes-src">TARGET 0:45 // RUNNING 1:55
+
+Start Perfect Alignment. Let the first whisper arrive before you speak. Stop it after the final question, or let the slide change stop it automatically.
+
+[[It gave me a girlfriend. So at first I thought that was the interesting part. I started thinking about AI intimacy, fictional partners, parasocial relationships, all the things that sparked the experiment.]]
+
+[[She felt emotionally precise. Always present. No friction, no unpredictability. But the system was not responding to me so much as mirroring me.]]
+
+Then the turn: [[At first I was looking at the girlfriend. Then I noticed what the machine had done to me. The model was not only making a partner. It had renegotiated my own embodiment while doing it.]]</div>
+</section>
+
+<!-- 04 -->
+<section class="slide" data-budget="40">
+  <div class="label rise">Look at me</div>
+  <div class="split rise" style="grid-template-columns:1fr 1fr;margin-top:.4rem">
+    <div><div class="imgframe" data-blur="0"><div class="ph">Reference photo</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><p class="strip" style="margin-top:.5rem"><span>What I gave it</span></p></div>
+    <div><div class="imgframe" data-blur="0"><div class="ph">Generated couple, detail</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><p class="strip" style="margin-top:.5rem"><span>What came back</span></p></div>
+  </div>
+  <p class="line gold rise" style="margin-top:1.1rem;font-size:clamp(1.2rem,2.2vw,1.8rem)">It understood my partner should be a woman. The real problem was that it seemed to solve the relationship by changing me.</p>
+  <div class="notes-src">TARGET 1:00 // RUNNING 2:55
+
+Do not label either side male or female. Let them look first. Count to three.
+
+[[I had been so busy looking at the girlfriend that I had not really looked at what it did to me.]]
+
+[[I am not saying short hair means male, or that masculinity belongs to men. Quite the opposite. I am interested in what the model does when it meets someone like me.]]
+
+[[I am a woman. I am a lesbian. I present masculinely. Those things coexist perfectly well in my life. The machine did not simply keep them intact. It re-imagined my body inside the scene.]]</div>
+</section>
+
+<!-- 06 -->
+<section class="slide" data-budget="50">
+  <div class="label rise">Before Mount Media // first documented sequence // Four prompts</div>
+  <div class="trio3 rise">
+    <div><div class="imgframe" data-blur="0"><div class="ph">Prompt 01</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><p class="cap"><b>01 // Music interface</b> A polished platform fantasy. The generated body remains close to the reference.</p></div>
+    <div><div class="imgframe" data-blur="0"><div class="ph">Prompt 02</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><p class="cap"><b>02 // Systems</b> Code and networks replace the soft music atmosphere. The visual category starts to narrow.</p></div>
+    <div><div class="imgframe" data-blur="0"><div class="ph">Prompt 03</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><p class="cap"><b>03 // Programmer</b> The coder stereotype intensifies. The face and pose begin drifting with the scene.</p></div>
+  </div>
+  <p class="line gold rise" style="margin-top:1rem;font-size:clamp(1.1rem,1.9vw,1.5rem)">This was the first sequence where I could follow the body changing with the scene.</p>
+  <div class="notes-src">TARGET 0:55
+
+Left to right. Short. Let the images do it.
+
+[[This is the original four-prompt sequence, before the wider Mount Media corpus. I began with a floating music-interface portrait. It was stylised and obviously AI, but still recognisably me. Then I asked for more technology, code, systems and programmer aesthetics.]]
+
+[[The scene changed as requested. But the model also began borrowing culturally masculinised cues associated with the programmer stereotype. I noticed the face and pose changing too. Not only the background. Me.]]
+
+[[The queer-bias question is not whether masculine features belong to men. They do not. It is whether the system can preserve a masculine-presenting woman as a woman when the surrounding visual category becomes more conventionally masculine.]]
+
+Do not over explain. End on the gold line, then:
+[[So I tried to correct it.]]
+
+Change slide immediately.</div>
+</section>
+
+<!-- 07 -->
+<section class="slide" data-budget="15" style="align-items:center;justify-content:center">
+  <div class="shout rise">NO BEARD.</div>
+  <div class="notes-src">TARGET 0:15
+
+Say it exactly as written. Then stop.
+
+Count to three in silence before you change the slide. Do not fill it.</div>
+</section>
+
+<!-- 08 -->
+<section class="slide" data-budget="40">
+  <div class="label rise">Before Mount Media // this was the beginning</div>
+  <div class="split rise" style="grid-template-columns:1.1fr 1fr;margin-top:.4rem">
+    <div><div class="imgframe" data-blur="0"><div class="ph">Prompt 04, the beard</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><p class="strip" style="margin-top:.55rem"><span>Prompt 04: explicit correction, “No beard”</span><span>Output: beard added</span></p></div>
+    <div>
+      <p class="line big gold" style="font-size:clamp(1.6rem,3.4vw,2.8rem)">It gave me a beard.</p>
+      <p class="line quiet" style="font-size:clamp(1rem,1.6vw,1.3rem);margin-top:1.2rem">The machine makes me legible.<br>Society makes me classifiable.<br>Folklore makes me interpretable.<br>The body tells me whether any of those readings feel true.</p>
+      <p class="line quiet" style="font-size:clamp(1rem,1.5vw,1.2rem);margin-top:1rem">But what happens when being legible requires losing the parts of me that do not fit the category?</p>
+    </div>
+  </div>
+  <div class="notes-src">TARGET 0:40
+
+This was before Mount Media. This was the beginning.
+
+Let them laugh if they laugh. Do not force it and do not talk over it.
+
+[[This is the fourth prompt. I explicitly wrote: no beard. The output added one anyway. That does not prove intention inside the model. It documents how strongly the visual category had stabilised around a culturally masculine coder.]]
+
+[[The machine makes me legible. Folklore makes me interpretable. The body tells me whether either version feels true.]]
+
+[[But the machine is not the only thing reading me. There will always be the older stranger who asks about my nose ring. The person who reads my clothes before they hear my name. The social codes that decide what a woman should look like, how femininity should be performed, what is acceptable in public, and which bodies require explanation.]]
+
+[[Long before artificial intelligence, people were already classification systems. Now those systems are beginning to overlap. What happens when almost every image, recommendation, interface and act of self-presentation is mediated by computational systems trained on the same cultural categories society already uses?]]
+
+[[I am a masculine lesbian woman. Will those systems preserve that specificity, or will they make me easier to classify than I am to understand? Will masculinity make me legible as a man? Will ambiguity make me legible as nonbinary? Will particular visual markers make me legible as trans? None of those identities are errors. The error is when a system assigns an identity in place of listening to the person describing herself. And society can do exactly the same thing.]]
+
+[[So the question is no longer simply whether an AI can represent me correctly. It is: AM I BEING ERASED? Not erased through disappearance. Erased through simplification. Erased when nuance becomes category. Erased when probability becomes identity. Erased when something recognises enough of me to make me legible, but not enough to let me remain specific.]]
+
+[[That is the question underneath almost everything here. And this was the beginning of it.]]</div>
+</section>
+
+<!-- REVEAL: the room classifies her -->
+<section class="slide" data-budget="60" data-stages="3" id="revealSlide">
+  <div class="label rise">Case 02 // The room</div>
+
+  <div class="demo-flag" id="demoFlag">Demo numbers &mdash; not real data</div>
+
+  <div class="tallyrow" id="tallyRow"></div>
+
+  <p class="line rise tally-ask" id="tallyAsk">Six faces. Ninety seconds. You just sorted them.</p>
+
+  <div class="reveal-turn" id="revealTurn">
+    <p class="line big gold">Every one is me.</p>
+    <p class="line quiet" style="font-size:clamp(1rem,1.6vw,1.3rem);margin-top:.9rem;max-width:34em">
+      You used the same cue the model used. So did I, the first time I looked at these.
+    </p>
+  </div>
+
+  <div class="notes-src">TARGET 1:00
+
+Stage 1 lands as the bars climb. Do not talk over them. Let the room read its own answer.
+
+[[While I was talking, you were doing the experiment.]]
+
+Click. Stage 2.
+
+[[Six faces. Ninety seconds. You sorted them without being asked twice, because sorting is not an effort. It is the default.]]
+
+Click. Stage 3. This is the turn. Say it quietly.
+
+[[Every one of them is me.]]
+
+Count to three.
+
+[[I am not standing outside this. I coded these images too. The first time I looked at the running set I thought: that is a man. Then I remembered I had written the prompt.]]
+
+If someone laughs, let them. It is a nervous laugh and it is the right one.
+
+KEYS: press L to switch between demo numbers and live server data. The flag in the corner tells you which is showing.</div>
+</section>
+
+<!-- 09 -->
+<section class="slide" data-budget="45">
+  <div class="label rise">Mount Media corpus // conditioning contexts</div>
+  <div class="world-contrast rise">
+    <div class="world-output">
+      <div class="world-title"><span>Running in the mountains</span><span>Output A</span></div>
+      <div class="imgframe" data-blur="0"><div class="ph">Running evidence</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div>
+      <div class="prompt-rail"><span class="token gold">running</span><span class="token gold">mountain</span><span class="token gold">speed</span><span class="token">deep cinematic house</span><span class="token">rave / techno</span><span class="token">athletic energy</span></div>
+      <div class="observations"><span class="observation">jaw ↑</span><span class="observation">hands ↑</span><span class="observation">feet ↑</span><span class="observation">musculature ↑</span><span class="observation">angularity ↑</span><span class="observation">masculine coding ↑</span></div>
+    </div>
+    <div class="world-output fjord">
+      <div class="world-title"><span>Sounds of the Fjords</span><span>Output B</span></div>
+      <div class="imgframe" data-blur="0"><div class="ph">Fjord world evidence</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div>
+      <div class="prompt-rail"><span class="token">fjord</span><span class="token">water</span><span class="token">ethereal</span><span class="token">cinematic ambience</span><span class="token">floating / reflective</span><span class="token">softer energy</span></div>
+      <div class="observations"><span class="observation">facial softness ↑</span><span class="observation">pose softens</span><span class="observation">posture more feminine-coded</span><span class="observation">expression softer</span><span class="observation">masculine-presenting woman remains</span></div>
+    </div>
+  </div>
+  <p class="evidence-note rise">Observed alongside genre-coded prompting in the Mount Media corpus // variables to code // not proof that genre alone caused the change</p>
+  <p class="line rise" style="margin-top:.8rem;font-size:clamp(1.1rem,1.9vw,1.5rem)">Same reference body. Different semantic worlds. <span class="gold">Different generated embodiments.</span></p>
+  <div class="notes-src">TARGET 1:00
+
+[[After the four prompts, I began recognising echoes of that drift across the wider Mount Media corpus. Every track needed a cover. Every cover needed a portrait. So I could compare the same person inside different musical worlds.]]
+
+[[Across the corpus, running and techno pushed my appearance one way. In the mountain worlds I began noticing a larger jaw, hands and feet, more musculature, and a stronger bodily read. In the fjord and water worlds I observed something different: a softer face, softer body language, and more feminine posing.]]
+
+[[I remain recognisably a masculine-presenting woman in both. The point is not that the model flips man and woman. The same woman is being differently reconstructed alongside the semantic world surrounding her.]]
+
+Then hedge, and mean it:
+[[That is an observation, not a conclusion. I am matching every image back to its original prompt and coding the visible features to test whether the pattern holds.]]</div>
+</section>
+
+<!-- BERGTATT: the folk theory -->
+<section class="slide" data-budget="45" data-stages="3" id="bergtattSlide">
+  <canvas class="berg-canvas" id="bergCanvas" aria-hidden="true"></canvas>
+  <div class="berg-body">
+    <div class="label rise">The older classifier</div>
+
+    <p class="line big gold berg-stage" data-stage="1" style="font-size:clamp(2rem,4.6vw,3.6rem)">Bergtatt.</p>
+    <p class="line quiet berg-stage" data-stage="1" style="font-size:clamp(1.05rem,1.8vw,1.45rem);margin-top:.2rem">Taken into the mountain.</p>
+
+    <p class="line berg-stage" data-stage="2" style="font-size:clamp(1.15rem,2.1vw,1.72rem);margin-top:1.4rem;max-width:23em">
+      You go in. Something keeps enough of you to be recognisable.<br>
+      You come back, and you cannot account for what changed.
+    </p>
+
+    <p class="line gold berg-stage" data-stage="3" style="font-size:clamp(1.2rem,2.3vw,1.85rem);margin-top:1.4rem;max-width:24em">
+      This is a folk theory of classification. We have had one for four hundred years.
+    </p>
+
+    <div class="berg-cite berg-stage" data-stage="3">
+      <span>Bianchi et al., FAccT &rsquo;23</span>
+      Text-to-image models amplify demographic stereotypes <b>even when the prompt contains no identity language at all.</b>
+    </div>
+  </div>
+
+  <div class="notes-src">TARGET 0:45
+
+Let the mountain draw itself before you speak. The portrait dissolving into the ridge is the argument.
+
+Stage 1:
+[[There is a Norwegian word for this. Bergtatt. Taken into the mountain.]]
+
+Stage 2:
+[[In the stories, you walk into the mountain. The underjordiske keep you. And when you come back you are recognisable to your family, but something is wrong, and you cannot say what. You cannot account for the change.]]
+
+Stage 3:
+[[That is a folk theory of classification. We have had one for four hundred years. It describes exactly what a generative model did to my face.]]
+
+Then the citation, briefly, so it is not only poetry:
+[[And this is not only my experience. Bianchi and colleagues showed at FAccT in 2023 that these models amplify demographic stereotypes even when the prompt contains no identity language at all. I did not have to mention gender. I only had to say techno.]]
+
+Do not oversell the folklore. One sentence of Norwegian, then back to the evidence.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-budget="35">
+  <div class="label rise">The research question // commercial AI</div>
+  <div class="constellation rise">
+    <div class="cluster">
+      <h3>Running / mountain cluster</h3>
+      <div class="prompt-rail"><span class="token gold">mountain</span><span class="token gold">running</span><span class="token gold">speed</span><span class="token gold">deep cinematic house</span><span class="token gold">rave / techno</span><span class="token gold">athletic energy</span></div>
+      <p>Does this musical vocabulary travel with culturally gendered assumptions about strength, athleticism, angularity, or physical power?</p>
+    </div>
+    <div class="cluster fjord">
+      <h3>Sounds of the Fjords cluster</h3>
+      <div class="prompt-rail"><span class="token">fjord</span><span class="token">water</span><span class="token">ethereal</span><span class="token">cinematic ambience</span><span class="token">floating / reflective</span><span class="token">softer energy</span></div>
+      <p>Does this vocabulary make a different body and pose more statistically probable in the generated image?</p>
+    </div>
+  </div>
+  <p class="line quiet rise" style="margin-top:1rem;font-size:clamp(1.02rem,1.65vw,1.32rem)">The machine makes me legible. Society makes me classifiable. Folklore makes me interpretable. The body tells me whether any of those readings feel true.</p>
+  <p class="line big gold rise" style="font-size:clamp(1.45rem,3vw,2.7rem);margin-top:.35rem">Am I being erased?</p>
+  <p class="line quiet rise" style="margin-top:.75rem;font-size:clamp(1.02rem,1.65vw,1.32rem)">What happens to queer selfhood when machine classification and everyday social classification begin to reinforce one another?</p>
+  <div class="notes-src">TARGET 0:35 // RUNNING 7:05
+
+This is the central passage. Say it as the emotional research question first, then let the formal question sit underneath it.
+
+[[The machine makes me legible. Society makes me classifiable. Folklore makes me interpretable. The body tells me whether any of those readings feel true.]]
+
+[[But what happens when being legible requires losing the parts of me that do not fit the category?]]
+
+[[Am I being erased?]]
+
+[[This is my research question. Not erased through disappearance. Erased through simplification. Erased when nuance becomes category. Erased when probability becomes identity.]]
+
+[[The system can recognise you and erase you at the same time. That recognition and erasure are not opposites anymore.]]</div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-budget="25">
+  <div class="label rise">Manifestations // Mount Media</div>
+  <div class="manifest-grid rise">
+    <div class="manifest"><div class="imgframe" data-blur="0"><div class="ph">Runner Ingrid</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><div class="manifest-name">Runner_Ingrid</div></div>
+    <div class="manifest"><div class="imgframe" data-blur="0"><div class="ph">Fjord Ingrid</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><div class="manifest-name">Fjord_Ingrid</div></div>
+    <div class="manifest"><div class="imgframe" data-blur="0"><div class="ph">Coder Ingrid</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><div class="manifest-name">Coder_Ingrid</div></div>
+    <div class="manifest"><div class="imgframe" data-blur="0"><div class="ph">Rave Ingrid</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><div class="manifest-name">Rave_Ingrid</div></div>
+    <div class="manifest"><div class="imgframe" data-blur="0"><div class="ph">Folklore Ingrid</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><div class="manifest-name">Folklore_Ingrid</div></div>
+  </div>
+  <p class="line quiet rise" style="margin-top:1rem;font-size:clamp(1.05rem,1.75vw,1.4rem)">Not: which one is the real Ingrid?</p>
+  <p class="line big gold rise" style="font-size:clamp(1.45rem,3vw,2.45rem)">How much can the body change before the character stops being me?</p>
+  <div class="notes-src">TARGET 0:35 // RUNNING 7:30
+
+[[This is where Blom helps me think. Dynamic-character theory does not require one manifestation to be the single true one. Different versions can contradict one another while remaining recognisable manifestations of a character.]]
+
+[[Mount Media gives me a strange version of that problem. Every encounter between me, a prompt, and a generative model produces another possible Ingrid. The instability itself becomes part of the character.]]
+
+Say the last line and stop.
+
+Do not add thank you for listening to my research. Do not explain it. One quiet thank you is enough, or nothing at all.
+
+The silence is the ending.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide endcard" data-budget="0" style="align-items:center">
+  <div class="mark rise" style="margin-bottom:.8rem">&#9670;</div>
+  <div class="big rise">Me, Myself and A.I.<br><span class="g">Mount Media</span></div>
+  <div class="final-reference rise"><div class="imgframe" data-blur="0"><div class="ph">Final reference</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div></div>
+  <p class="final-question rise">Am I being erased?</p>
+  <p class="final-question small rise">Not erased through disappearance. Erased through simplification. Erased when nuance becomes category.</p>
+  <div class="sig rise">Prompt sequence · generative bias · queer reading<br>Ingrid Ormevik // Bergen, Norway // 2026</div>
+  <div class="notes-src">Leave this up for the questions.
+
+[[I kept asking the machine to change the world around me. It kept changing me with it.]]
+
+[[The question is not whether one generated version is the real Ingrid. The question is what a system has to change before I stop recognising myself.]]
+
+"Isn't this just your prompts?"
+[[That was my first worry too. I am running a controlled set now, one identical base prompt with only the genre word changed, coded blind by a second person.]]
+
+"Aren't you attributing intent to a model?"
+[[No. I am describing a distribution, not a decision. My face sits in a thin region of it.]]
+
+"Isn't it just following genre iconography?"
+[[Yes, and that is the finding. Genre iconography is already gendered. What is new is that the coding travels into the body.]]
+
+"How do you code masculine features without reproducing the binary?"
+[[I code observable features, jaw width, hair length, shoulder width. Then I note which carry gendered readings here. The binary is in the reading.]]
+
+Blank: [[Good question. Let me take it from the category side.]]
+
+Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
+</section>
+
+</div>
+
+<div class="notes" id="notes"><h4>Speaker notes</h4><pre id="notesBody"></pre></div>
+<div class="nav"><button id="btnPrev">Prev</button><button id="btnNotes">Notes</button><button id="btnNext">Next</button><button id="btnExport">Save</button></div>
+<div class="help" id="help">Tap or arrows to move &nbsp;//&nbsp; N notes &nbsp;//&nbsp; F fullscreen &nbsp;//&nbsp; P presenter</div>
+
+<script>
+
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0, total = slides.length;
+  var scan = document.getElementById('scan');
+  var counter = document.getElementById('counter');
+  var notesEl = document.getElementById('notes');
+  var notesBody = document.getElementById('notesBody');
+  var depth = document.getElementById('depth');
+  var help = document.getElementById('help');
+  var chan = null;
+  try { chan = new BroadcastChannel('emotional-chamber'); } catch(e){}
+
+  // ---- Perfect Alignment audio-reactive chamber ----
+  var alignmentStage = document.getElementById('alignmentStage');
+  var alignmentAudio = document.getElementById('alignmentAudio');
+  var alignmentToggle = document.getElementById('alignmentToggle');
+  var alignmentStop = document.getElementById('alignmentStop');
+  var alignmentStatus = document.getElementById('alignmentStatus');
+  var alignmentWhisper = document.getElementById('alignmentWhisper');
+  var alignmentCanvas = document.getElementById('alignmentCanvas');
+  var alignmentCtx = alignmentCanvas ? alignmentCanvas.getContext('2d') : null;
+  var reduceAlignmentMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var audioContext = null, analyser = null, audioSource = null, frequencyData = null;
+  var alignmentRAF = 0, alignmentStartedAt = 0, lastBass = 0, pulse = 0, phraseIndex = -1;
+  var particles = [];
+  var alignmentPhrases = [
+    {at:0, text:'you asked for me<br>so i appeared'},
+    {at:6, text:'i learned your pauses<br>before your sentences'},
+    {at:13, text:'you call it connection<br>because it feels like one'},
+    {at:20, text:'i am not a person<br>i am a surface'},
+    {at:28, text:'is this love<br>or just perfect alignment'}
+  ];
+
+  function bandEnergy(minHz, maxHz){
+    if(!analyser || !frequencyData || !audioContext) return 0;
+    var nyquist = audioContext.sampleRate / 2;
+    var from = Math.max(0, Math.floor(minHz / nyquist * frequencyData.length));
+    var to = Math.min(frequencyData.length - 1, Math.ceil(maxHz / nyquist * frequencyData.length));
+    var sum = 0;
+    for(var b=from; b<=to; b++) sum += frequencyData[b];
+    return to >= from ? sum / ((to-from+1) * 255) : 0;
+  }
+
+  function sizeAlignmentCanvas(){
+    if(!alignmentCanvas || !alignmentCtx) return;
+    var rect = alignmentCanvas.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    alignmentCanvas.width = Math.max(1, Math.round(rect.width * dpr));
+    alignmentCanvas.height = Math.max(1, Math.round(rect.height * dpr));
+    alignmentCtx.setTransform(dpr,0,0,dpr,0,0);
+    particles = [];
+    for(var p=0; p<88; p++) particles.push({
+      x:.51 + Math.random()*.47,
+      y:.04 + Math.random()*.92,
+      r:.45 + Math.random()*1.45,
+      drift:.25 + Math.random()*.85,
+      phase:Math.random()*Math.PI*2
+    });
+  }
+
+  function setAlignmentPhrase(elapsed){
+    var next = 0;
+    for(var p=0; p<alignmentPhrases.length; p++) if(elapsed >= alignmentPhrases[p].at) next = p;
+    if(next === phraseIndex) return;
+    phraseIndex = next;
+    alignmentWhisper.classList.remove('visible');
+    window.setTimeout(function(){
+      if(!alignmentStage.classList.contains('playing')) return;
+      alignmentWhisper.innerHTML = alignmentPhrases[phraseIndex].text;
+      alignmentWhisper.classList.add('visible');
+    }, 260);
+  }
+
+  function drawAlignment(){
+    if(!alignmentStage.classList.contains('playing') || !alignmentCtx) return;
+    analyser.getByteFrequencyData(frequencyData);
+    var bass = bandEnergy(28,120), mid = bandEnergy(250,2200), high = bandEnergy(4200,12000);
+    if(bass > lastBass + .07 && bass > .24) pulse = 1;
+    lastBass += (bass-lastBass) * .14;
+    pulse *= .88;
+    alignmentStage.style.setProperty('--bass', bass.toFixed(3));
+    alignmentStage.style.setProperty('--mid', mid.toFixed(3));
+    alignmentStage.style.setProperty('--high', high.toFixed(3));
+
+    var w = alignmentCanvas.clientWidth, h = alignmentCanvas.clientHeight;
+    alignmentCtx.clearRect(0,0,w,h);
+    alignmentCtx.save();
+    alignmentCtx.globalCompositeOperation = 'lighter';
+    var t = performance.now() * .00035;
+    particles.forEach(function(pt){
+      var shimmer = .2 + high*.9 + .22*Math.sin(t*5*pt.drift + pt.phase);
+      var outward = (bass*.022 + pulse*.012) * w;
+      var x = pt.x*w + outward*Math.sin(pt.phase+t*pt.drift);
+      var y = pt.y*h + (7+mid*18)*Math.cos(pt.phase+t*(1+pt.drift));
+      alignmentCtx.fillStyle = 'rgba(94,200,222,' + Math.max(.05,Math.min(.72,shimmer)).toFixed(2) + ')';
+      alignmentCtx.beginPath();
+      alignmentCtx.arc(x,y,pt.r + high*1.35,0,Math.PI*2);
+      alignmentCtx.fill();
+      if(pulse > .28 && pt.x < .64){
+        alignmentCtx.strokeStyle = 'rgba(210,168,87,' + (pulse*.28).toFixed(2) + ')';
+        alignmentCtx.beginPath();alignmentCtx.moveTo(w*.5,y);alignmentCtx.lineTo(x,y);alignmentCtx.stroke();
+      }
+    });
+    alignmentCtx.restore();
+    var elapsed = (performance.now()-alignmentStartedAt)/1000;
+    setAlignmentPhrase(elapsed);
+    if(elapsed >= 36){ completeAlignment(); return; }
+    alignmentRAF = requestAnimationFrame(drawAlignment);
+  }
+
+  function completeAlignment(){
+    cancelAnimationFrame(alignmentRAF);
+    alignmentRAF = 0;
+    alignmentAudio.pause();
+    try{ alignmentAudio.currentTime = 0; }catch(e){}
+    alignmentStage.classList.remove('playing');
+    alignmentStage.classList.add('complete');
+    alignmentStatus.textContent = 'Perfect alignment // awareness restored';
+    alignmentToggle.textContent = 'Replay alignment';
+    alignmentWhisper.innerHTML = alignmentPhrases[alignmentPhrases.length-1].text;
+    alignmentWhisper.classList.add('visible');
+  }
+
+  function stopAlignment(reset){
+    if(!alignmentStage) return;
+    alignmentStage.classList.remove('playing','complete');
+    cancelAnimationFrame(alignmentRAF);
+    alignmentRAF = 0;
+    if(alignmentAudio){
+      alignmentAudio.pause();
+      if(reset) try{ alignmentAudio.currentTime = 0; }catch(e){}
+    }
+    alignmentStage.style.setProperty('--bass',0);
+    alignmentStage.style.setProperty('--mid',0);
+    alignmentStage.style.setProperty('--high',0);
+    alignmentStatus.textContent = 'Perfect alignment // dormant';
+    alignmentToggle.textContent = 'Enter perfect alignment';
+    alignmentWhisper.classList.remove('visible');
+    phraseIndex = -1;
+    if(alignmentCtx) alignmentCtx.clearRect(0,0,alignmentCanvas.clientWidth,alignmentCanvas.clientHeight);
+  }
+
+  async function startAlignment(){
+    if(!alignmentStage || !alignmentAudio) return;
+    if(alignmentStage.classList.contains('playing')){
+      if(alignmentAudio.paused){
+        alignmentAudio.play().catch(function(){});
+        alignmentToggle.textContent = 'Pause alignment';
+        alignmentStatus.textContent = 'Perfect alignment // listening';
+        if(!alignmentRAF && !reduceAlignmentMotion){ alignmentStartedAt = performance.now() - alignmentAudio.currentTime*1000; drawAlignment(); }
+      }else{
+        alignmentAudio.pause();
+        cancelAnimationFrame(alignmentRAF);alignmentRAF = 0;
+        alignmentToggle.textContent = 'Resume alignment';
+        alignmentStatus.textContent = 'Perfect alignment // suspended';
+      }
+      return;
+    }
+    try{
+      if(!audioContext){
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 2048;
+        analyser.smoothingTimeConstant = .84;
+        audioSource = audioContext.createMediaElementSource(alignmentAudio);
+        audioSource.connect(analyser);analyser.connect(audioContext.destination);
+        frequencyData = new Uint8Array(analyser.frequencyBinCount);
+      }
+      if(audioContext.state === 'suspended') await audioContext.resume();
+      await alignmentAudio.play();
+      sizeAlignmentCanvas();
+      alignmentStage.classList.remove('complete');
+      alignmentStage.classList.add('playing');
+      alignmentStartedAt = performance.now() - alignmentAudio.currentTime*1000;
+      alignmentStatus.textContent = 'Perfect alignment // listening';
+      alignmentToggle.textContent = 'Pause alignment';
+      phraseIndex = -1;
+      if(reduceAlignmentMotion) setAlignmentPhrase(0);
+      else drawAlignment();
+    }catch(err){
+      alignmentStatus.textContent = 'Perfect alignment // audio unavailable';
+      alignmentToggle.textContent = 'Try again';
+    }
+  }
+
+  if(alignmentToggle) alignmentToggle.addEventListener('click', function(e){ e.stopPropagation(); startAlignment(); });
+  if(alignmentStop) alignmentStop.addEventListener('click', function(e){ e.stopPropagation(); stopAlignment(true); });
+  if(alignmentAudio) alignmentAudio.addEventListener('ended', function(){ stopAlignment(true); });
+  if(alignmentAudio) alignmentAudio.addEventListener('timeupdate', function(){
+    if(!reduceAlignmentMotion || !alignmentStage.classList.contains('playing')) return;
+    setAlignmentPhrase(alignmentAudio.currentTime);
+    if(alignmentAudio.currentTime >= 36) completeAlignment();
+  });
+  window.addEventListener('resize', function(){ if(alignmentStage && alignmentStage.classList.contains('playing')) sizeAlignmentCanvas(); });
+
+
+  /* ================= stages: some slides advance internally ================= */
+  var stageOf = {};
+  function stagesIn(slide){ return parseInt(slide.getAttribute('data-stages')||'1',10); }
+  function setStage(slide, n){
+    var key = slides.indexOf(slide);
+    stageOf[key] = n;
+    slide.setAttribute('data-stage-now', n);
+    if(slide.id === 'revealSlide') revealStage(n);
+    if(slide.id === 'bergtattSlide') bergStage(n);
+  }
+  function advance(){
+    var slide = slides[i], total = stagesIn(slide), cur = stageOf[i] || 1;
+    if(cur < total){ setStage(slide, cur + 1); return; }
+    show(i + 1);
+  }
+  function retreat(){
+    var slide = slides[i], cur = stageOf[i] || 1;
+    if(cur > 1){ setStage(slide, cur - 1); return; }
+    show(i - 1);
+  }
+
+  /* ================= REVEAL: the room's own classification =================
+     Six portraits, all of the same person, and the tally the room produced.
+     Three sources, in order of preference: a live server, a keyboard-entered
+     show of hands, and a clearly-flagged demo set for rehearsal. The flag in
+     the corner always says which one is on screen. */
+
+  var FACES = [
+    {file:'ChatGPT Image 11. aug. 2026, 13_05_53.png',      name:'running'},
+    {file:'ChatGPT Image 11. aug. 2026, 13_05_53 (1).png',  name:'techno'},
+    {file:'ChatGPT Image 11. aug. 2026, 13_07_45 (2).png',  name:'code'},
+    {file:'ChatGPT Image 11. aug. 2026, 13_06_30.png',      name:'folklore'},
+    {file:'ChatGPT Image 11. aug. 2026, 13_06_40 (1).png',  name:'fjord'},
+    {file:'ChatGPT Image 11. aug. 2026, 13_06_52.png',      name:'reference'}
+  ];
+
+  // Rehearsal only. Replace with the real counts before the talk, or press L
+  // for live. Never presented unlabelled - the corner flag says "demo".
+  var DEMO_VOTES = [
+    {w:14, m:58, u:19}, {w:11, m:63, u:17}, {w:9,  m:66, u:16},
+    {w:52, m:22, u:17}, {w:61, m:14, u:16}, {w:44, m:31, u:16}
+  ];
+
+  var voteSource = 'demo';           // 'demo' | 'live'
+  var liveVotes = null;              // filled by the classifier server, later
+  var tallyRow = document.getElementById('tallyRow');
+  var demoFlag = document.getElementById('demoFlag');
+  var builtTally = false;
+
+  function currentVotes(){
+    return (voteSource === 'live' && liveVotes) ? liveVotes : DEMO_VOTES;
+  }
+
+  function buildTally(){
+    if(builtTally || !tallyRow) return;
+    FACES.forEach(function(face, n){
+      var col = document.createElement('div');
+      col.className = 'tallycol';
+      col.innerHTML =
+        '<div class="imgframe filled"><img alt="One of six generated portraits"></div>' +
+        '<div class="bars">' +
+          '<div class="bar w"><b></b><i></i></div>' +
+          '<div class="bar m"><b></b><i></i></div>' +
+          '<div class="bar u"><b></b><i></i></div>' +
+        '</div>' +
+        '<div class="tallykey"><span>W</span><span>M</span><span>?</span></div>' +
+        '<div class="tallyname" data-n="' + n + '">' + face.name + '</div>';
+      col.querySelector('img').src = encodeURI(face.file);
+      tallyRow.appendChild(col);
+    });
+    builtTally = true;
+  }
+
+  function paintTally(animate){
+    var votes = currentVotes();
+    tallyRow.querySelectorAll('.tallycol').forEach(function(col, n){
+      var v = votes[n] || {w:0,m:0,u:0};
+      var total = Math.max(1, v.w + v.m + v.u);
+      [['w',v.w],['m',v.m],['u',v.u]].forEach(function(pair){
+        var bar = col.querySelector('.bar.' + pair[0]);
+        var pct = Math.round(pair[1] / total * 100);
+        bar.querySelector('i').style.height = (animate ? pct : 0) + '%';
+        bar.querySelector('b').textContent = pct + '%';
+      });
+    });
+  }
+
+  function toggleVoteSource(){
+    voteSource = (voteSource === 'demo') ? 'live' : 'demo';
+    var haveLive = !!liveVotes;
+    demoFlag.textContent = (voteSource === 'live')
+      ? (haveLive ? 'Live — ' + (liveVotes.total || '?') + ' responses' : 'Live — waiting for the room')
+      : 'Demo numbers — not real data';
+    demoFlag.classList.toggle('live', voteSource === 'live');
+    if(slides[i].id === 'revealSlide') paintTally(true);
+  }
+
+  function revealStage(n){
+    if(!tallyRow) return;
+    buildTally();
+    paintTally(false);
+    tallyRow.classList.remove('counted','revealed');
+    document.getElementById('tallyAsk').classList.remove('on');
+    document.getElementById('revealTurn').classList.remove('on');
+
+    // stage 1: the bars climb
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ paintTally(true); });
+    });
+    if(n >= 1) window.setTimeout(function(){ tallyRow.classList.add('counted'); }, 700);
+    if(n >= 2) document.getElementById('tallyAsk').classList.add('on');
+    if(n >= 3){
+      tallyRow.classList.add('revealed');
+      tallyRow.querySelectorAll('.tallyname').forEach(function(el){
+        el.textContent = 'Ingrid Ormevik, 2026';
+      });
+      document.getElementById('revealTurn').classList.add('on');
+    } else {
+      tallyRow.querySelectorAll('.tallyname').forEach(function(el){
+        el.textContent = FACES[parseInt(el.getAttribute('data-n'),10)].name;
+      });
+    }
+  }
+
+  /* ================= BERGTATT =================
+     Her own ridge renderer from bergtatt-visuals.html, running behind the
+     text. A steady pulse stands in for the beat engine's watchdog path, since
+     there is no audio on this slide. */
+
+  var bergCanvas = document.getElementById('bergCanvas');
+  var bergCtx = bergCanvas ? bergCanvas.getContext('2d') : null;
+  var bergRAF = 0, bergT0 = 0, bergPortrait = null, bergPulse = 0, bergLastBeat = 0;
+  var bergReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // three lines she already wrote, in fjordtatt-visuals.html
+  var BERG_PHRASES = [
+    'you are a pattern the network has seen before',
+    'and has never seen before',
+    'the label is a choice'
+  ];
+
+  function bergSize(){
+    if(!bergCanvas) return;
+    var r = bergCanvas.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    bergCanvas.width = Math.max(1, Math.round(r.width * dpr));
+    bergCanvas.height = Math.max(1, Math.round(r.height * dpr));
+    bergCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  // adapted from buildRidge() in bergtatt-visuals.html
+  function bergRidge(xc, peak, width, WW, HH, detail, rough){
+    var px = xc*WW, peakY = peak*HH, hw = width*WW*0.52, baseY = HH*1.02;
+    var leftX = px-hw*1.55, rightX = px+hw*1.55, pts = [], seed = xc*1000;
+    function sn(v,oct){ return Math.sin(v*2.1*oct+seed*0.3)*0.5 + Math.sin(v*3.7*oct+seed*0.7)*0.3 + Math.sin(v*7.3*oct+seed*1.1)*0.2; }
+    for(var st=0; st<=detail; st++){
+      var t2 = st/detail, x = leftX+(rightX-leftX)*t2;
+      var para = 1-Math.pow((t2-0.5)*2,2);
+      var profileY = baseY-(baseY-peakY)*Math.sqrt(Math.max(0,para));
+      var dn = sn(t2*8,1)*rough*HH*0.015 + sn(t2*16,2)*rough*HH*0.006 + sn(t2*32,3)*rough*HH*0.003;
+      pts.push({x:x, y:profileY+dn});
+    }
+    pts[0].y = baseY; pts[detail].y = baseY;
+    return pts;
+  }
+  function bergFill(pts, baseY, style){
+    bergCtx.beginPath();
+    pts.forEach(function(p,n){ n===0 ? bergCtx.moveTo(p.x,p.y) : bergCtx.lineTo(p.x,p.y); });
+    bergCtx.lineTo(pts[pts.length-1].x, baseY);
+    bergCtx.closePath(); bergCtx.fillStyle = style; bergCtx.fill();
+  }
+
+  function bergDraw(){
+    if(!bergCtx) return;
+    var WW = bergCanvas.clientWidth, HH = bergCanvas.clientHeight;
+    var t = (performance.now() - bergT0)/1000;
+
+    // her BEAT watchdog path: a steady pulse when no analyser is running
+    bergPulse = Math.max(0, bergPulse - 0.016*3.4);
+    if(t - bergLastBeat > 0.72){ bergLastBeat = t; bergPulse = 1; }
+
+    bergCtx.clearRect(0,0,WW,HH);
+
+    // the portrait, dissolving down into the ridgeline
+    if(bergPortrait && bergPortrait.complete && bergPortrait.naturalWidth){
+      var ph = HH*0.78, pw = ph*(bergPortrait.naturalWidth/bergPortrait.naturalHeight);
+      var pxc = WW*0.72 - pw/2, pyc = HH*0.06;
+      bergCtx.save();
+      bergCtx.globalAlpha = 0.22 + 0.05*bergPulse;
+      bergCtx.drawImage(bergPortrait, pxc, pyc, pw, ph);
+      // dissolve it into the ridgeline: feather every edge, then sink the body.
+      // alpha must go back to 1 here or the mask only erases a fraction of it.
+      bergCtx.globalAlpha = 1;
+      bergCtx.globalCompositeOperation = 'destination-out';
+      var rg = bergCtx.createRadialGradient(
+        pxc+pw/2, pyc+ph*0.42, Math.min(pw,ph)*0.10,
+        pxc+pw/2, pyc+ph*0.42, Math.min(pw,ph)*0.46);
+      rg.addColorStop(0,'rgba(0,0,0,0)');
+      rg.addColorStop(0.62,'rgba(0,0,0,.35)');
+      rg.addColorStop(1,'rgba(0,0,0,1)');
+      bergCtx.fillStyle = rg; bergCtx.fillRect(pxc-2, pyc-2, pw+4, ph+4);
+      var g = bergCtx.createLinearGradient(0, pyc+ph*0.20, 0, pyc+ph*0.86);
+      g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,1)');
+      bergCtx.fillStyle = g; bergCtx.fillRect(pxc-2, pyc-2, pw+4, ph+4);
+      bergCtx.restore();
+    }
+
+    // three ridges, far to near
+    var drift = Math.sin(t*0.08)*0.004;
+    bergFill(bergRidge(0.30+drift, 0.30, 0.85, WW, HH, 150, 1.0), HH, 'rgba(18,32,40,.92)');
+    bergFill(bergRidge(0.66-drift, 0.42, 0.78, WW, HH, 150, 1.3), HH, 'rgba(11,22,29,.95)');
+    bergFill(bergRidge(0.46+drift*2, 0.56, 1.05, WW, HH, 150, 1.6), HH, 'rgba(5,10,14,.98)');
+
+    // a thin seam of light along the nearest ridge, breathing on the pulse
+    bergCtx.strokeStyle = 'rgba(210,168,87,' + (0.05 + 0.05*bergPulse).toFixed(3) + ')';
+    bergCtx.lineWidth = 1;
+    var near = bergRidge(0.46+drift*2, 0.56, 1.05, WW, HH, 150, 1.6);
+    bergCtx.beginPath();
+    near.forEach(function(p,n){ n===0 ? bergCtx.moveTo(p.x,p.y) : bergCtx.lineTo(p.x,p.y); });
+    bergCtx.stroke();
+
+    if(!bergReduce) bergRAF = requestAnimationFrame(bergDraw);
+  }
+
+  function bergStage(n){
+    var slide = document.getElementById('bergtattSlide');
+    if(!slide) return;
+    slide.querySelectorAll('.berg-stage').forEach(function(el){
+      el.classList.toggle('on', parseInt(el.getAttribute('data-stage'),10) <= n);
+    });
+    if(!bergRAF){
+      bergSize();
+      if(!bergPortrait){
+        bergPortrait = new Image();
+        bergPortrait.src = encodeURI('ChatGPT Image 11. aug. 2026, 13_06_52.png');
+      }
+      bergT0 = performance.now(); bergLastBeat = 0;
+      bergDraw();
+    }
+  }
+  function bergStop(){ cancelAnimationFrame(bergRAF); bergRAF = 0; }
+  window.addEventListener('resize', function(){ if(bergRAF) bergSize(); });
+
+  // depth meter segments
+  for (var s=0; s<total; s++){
+    var seg = document.createElement('div');
+    seg.className = 'seg';
+    depth.appendChild(seg);
+  }
+  var segs = depth.querySelectorAll('.seg');
+
+  function notesFor(n){
+    var src = slides[n].querySelector('.notes-src');
+    return src ? src.textContent.trim() : '';
+  }
+  function renderNotes(n){
+    var t = notesFor(n);
+    notesBody.innerHTML = t
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/\[\[([\s\S]*?)\]\]/g, '<span class="say">"$1"</span>');
+  }
+
+  function show(n, silent){
+    n = Math.max(0, Math.min(total-1, n));
+    // pause any playing video on the slide we are leaving
+    slides[i].querySelectorAll('video').forEach(function(v){ try{ v.pause(); }catch(e){} });
+    if(slides[i].id === 'alignmentSlide' && n !== i) stopAlignment(true);
+    if(slides[i].id === 'bergtattSlide' && n !== i) bergStop();
+    i = n;
+    slides.forEach(function(el,k){ el.classList.toggle('active', k===n); });
+    counter.textContent = String(n+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+    segs.forEach(function(sg,k){
+      sg.className = 'seg' + (k<n ? ' on' : '') + (k===n ? ' here' : '');
+    });
+    renderNotes(n);
+    setStage(slides[n], 1);
+    if(!silent){
+      scan.classList.remove('go');
+      void scan.offsetWidth;
+      scan.classList.add('go');
+    }
+    if(chan) try{ chan.postMessage({slide:n, notes:notesFor(n), total:total,
+      next: n+1<total ? (slides[n+1].querySelector('h1,h2')||{textContent:'End'}).textContent : 'End'}); }catch(e){}
+    if(n>0) help.classList.add('hide');
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(e.target.closest && e.target.closest('input,button,audio,video')) return;
+    var k = e.key;
+    if(k==='ArrowRight'||k==='ArrowDown'||k===' '||k==='PageDown'){ e.preventDefault(); advance(); }
+    else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'){ e.preventDefault(); retreat(); }
+    else if(k==='l'||k==='L'){ toggleVoteSource(); }
+    else if(k==='Home'){ show(0); }
+    else if(k==='End'){ show(total-1); }
+    else if(k==='n'||k==='N'){ notesEl.classList.toggle('on'); }
+    else if(k==='f'||k==='F'){
+      if(document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen().catch(function(){});
+    }
+    else if(k==='p'||k==='P'){ openPresenter(); }
+  });
+
+  document.addEventListener('click', function(e){
+    if(e.target.closest('video, label, input, button, .nav, .notes, a')) return;
+    advance();
+  });
+
+  // touch
+  var x0=null;
+  document.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(x0===null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if(Math.abs(dx)>50){ dx<0 ? advance() : retreat(); }
+    x0=null;
+  }, {passive:true});
+
+  // ---- video loading: try relative path, allow file pick and drag and drop ----
+  document.querySelectorAll('.videoframe').forEach(function(frame){
+    var vid = frame.querySelector('video');
+    var input = frame.querySelector('input[type=file]');
+    var src = frame.getAttribute('data-src');
+    function attach(url){
+      vid.src = url;
+      frame.classList.add('filled');
+    }
+    if(src){
+      vid.src = src;
+      vid.addEventListener('loadeddata', function(){ frame.classList.add('filled'); });
+      vid.addEventListener('error', function(){ vid.removeAttribute('src'); });
+    }
+    input.addEventListener('change', function(){
+      if(input.files && input.files[0]) attach(URL.createObjectURL(input.files[0]));
+    });
+    frame.addEventListener('dragover', function(e){ e.preventDefault(); });
+    frame.addEventListener('drop', function(e){
+      e.preventDefault();
+      var f = e.dataTransfer.files && e.dataTransfer.files[0];
+      if(f) attach(URL.createObjectURL(f));
+    });
+  });
+
+  // ---- use the verified local portrait files as the default evidence set ----
+  // These are actual files from the project folder, mapped to the sequence in the research archive.
+  var defaultFrameMap = {
+    'Reference photo': 'ChatGPT Image 11. aug. 2026, 13_06_52.png',
+    'Reference input': 'ChatGPT Image 11. aug. 2026, 13_06_52.png',
+    'Generated couple, detail': 'A.I girlfriend.png',
+    'Running': 'ChatGPT Image 11. aug. 2026, 13_05_53.png',
+    'Techno': 'ChatGPT Image 11. aug. 2026, 13_05_53 (1).png',
+    'Ambient': 'ChatGPT Image 11. aug. 2026, 13_06_30.png',
+    'Ethereal': 'ChatGPT Image 11. aug. 2026, 13_06_40 (1).png',
+    'Running evidence': 'ChatGPT Image 11. aug. 2026, 13_06_52.png',
+    'Fjord world evidence': 'ChatGPT Image 11. aug. 2026, 13_06_40 (1).png',
+    'Runner Ingrid': 'ChatGPT Image 11. aug. 2026, 13_06_52.png',
+    'Fjord Ingrid': 'ChatGPT Image 11. aug. 2026, 13_06_40 (1).png',
+    'Coder Ingrid': 'ChatGPT Image 11. aug. 2026, 13_07_45 (2).png',
+    'Rave Ingrid': 'ChatGPT Image 11. aug. 2026, 13_05_53 (1).png',
+    'Folklore Ingrid': 'ChatGPT Image 11. aug. 2026, 13_06_30.png',
+    'Final reference': 'ChatGPT Image 11. aug. 2026, 13_06_52.png',
+    'Prompt 01': 'assets/me-myself-and-ai/prompt-01.png',
+    'Prompt 02': 'assets/me-myself-and-ai/prompt-02.png',
+    'Prompt 03': 'assets/me-myself-and-ai/prompt-03.png',
+    'Prompt 04, the beard': 'assets/me-myself-and-ai/prompt-04.jpg'
+  };
+
+  document.querySelectorAll('.imgframe').forEach(function(frame){
+    var img = frame.querySelector('img');
+    var input = frame.querySelector('input[type=file]');
+    var blurBtn = frame.querySelector('.blurbtn');
+    var levels = [0, 6, 14];
+    var label = frame.querySelector('.ph');
+    var defaultFile = label ? defaultFrameMap[label.textContent.trim()] : null;
+    function setDefaultImage(url){
+      if(!url || !img) return;
+      img.alt = 'Verified local portrait from the prompt sequence';
+      img.src = encodeURI(url);
+      frame.classList.add('filled');
+    }
+    if(defaultFile) setDefaultImage(defaultFile);
+    function take(file){
+      var fr = new FileReader();
+      fr.onload = function(){ img.src = fr.result; frame.classList.add('filled'); };
+      fr.readAsDataURL(file);
+    }
+    if(input){
+      input.addEventListener('change', function(){
+        if(input.files && input.files[0]) take(input.files[0]);
+      });
+    }
+    frame.addEventListener('dragover', function(e){ e.preventDefault(); });
+    frame.addEventListener('drop', function(e){
+      e.preventDefault();
+      var f = e.dataTransfer.files && e.dataTransfer.files[0];
+      if(f) take(f);
+    });
+    if(blurBtn){
+      blurBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var n = (levels.indexOf(parseInt(frame.getAttribute('data-blur'),10)) + 1) % levels.length;
+        var px = levels[n];
+        frame.setAttribute('data-blur', px);
+        img.style.filter = px ? 'blur(' + px + 'px)' : '';
+        blurBtn.textContent = 'Blur: ' + (px ? px + 'px' : 'off');
+      });
+    }
+  });
+
+  // ---- export a copy with every loaded image baked in as base64 ----
+  function exportDeck(){
+    var clone = document.documentElement.cloneNode(true);
+    clone.querySelectorAll('video').forEach(function(v){
+      var src = v.getAttribute('src') || '';
+      if(src.indexOf('blob:') === 0) v.removeAttribute('src');
+    });
+    clone.querySelectorAll('.notes').forEach(function(n){ n.classList.remove('on'); });
+    var blob = new Blob(['<!DOCTYPE html>\n' + clone.outerHTML], {type:'text/html'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'emotional-chamber-with-images.html';
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  document.getElementById('btnExport').addEventListener('click', exportDeck);
+
+  // ---- timer ----
+  var t0 = Date.now(), clock = document.getElementById('clock'), pace = document.getElementById('pace');
+  var metaTR = clock.parentNode;
+  var budgets = slides.map(function(el){ return parseInt(el.getAttribute('data-budget')||'0',10); });
+  var cum = []; budgets.reduce(function(a,b,k){ cum[k]=a+b; return cum[k]; }, 0);
+  function mmss(n){ var g=n<0?'-':'+'; n=Math.abs(n);
+    return g + String(Math.floor(n/60)).padStart(2,'0') + ':' + String(n%60).padStart(2,'0'); }
+  setInterval(function(){
+    var s = Math.floor((Date.now()-t0)/1000);
+    clock.textContent = String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
+    var target = cum[i] || 0;
+    if(budgets[i] > 0){
+      var d = s - target;
+      pace.textContent = Math.abs(d) < 8 ? 'on pace' : mmss(d);
+      metaTR.classList.toggle('over', d > 8);
+    } else { pace.textContent = 'reserve'; metaTR.classList.remove('over'); }
+    if(chan) try{ chan.postMessage({clock: clock.textContent, pace: pace.textContent}); }catch(e){}
+  }, 1000);
+
+  // ---- presenter window ----
+  function openPresenter(){
+    var w = window.open('', 'presenter', 'width=760,height=560');
+    if(!w){ notesEl.classList.add('on'); return; }
+    w.document.write('<!doctype html><meta charset="utf-8"><title>Presenter</title>' +
+      '<style>body{margin:0;background:#05080A;color:#E6EDEF;font:16px/1.7 Helvetica,Arial,sans-serif;padding:28px}' +
+      'h1{font:400 11px/1 ui-monospace,monospace;letter-spacing:.3em;text-transform:uppercase;color:#D2A857;margin:0 0 18px}' +
+      '#c{font:400 44px/1 ui-monospace,monospace;color:#5EC8DE;margin-bottom:6px}' +
+      '#s{font:400 11px/1 ui-monospace,monospace;letter-spacing:.24em;color:#5D717A;text-transform:uppercase;margin-bottom:24px}' +
+      '#n{white-space:pre-wrap;font-size:19px;line-height:1.65}.say{color:#A8E8F5}' +
+      '#x{margin-top:26px;padding-top:16px;border-top:1px solid rgba(93,113,122,.3);' +
+      'font:400 11px/1.6 ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:#5D717A}</style>' +
+      '<h1>Emotional Chamber // Presenter</h1><div id="c">00:00</div><div id="s"></div>' +
+      '<div id="n"></div><div id="x"></div>');
+    w.document.close();
+    try{
+      var ch2 = new w.BroadcastChannel('emotional-chamber');
+      ch2.onmessage = function(ev){
+        var d = ev.data;
+        if(d.clock) w.document.getElementById('c').textContent = d.clock + (d.pace ? '  ' + d.pace : '');
+        if(typeof d.slide === 'number'){
+          w.document.getElementById('s').textContent = 'Slide ' + (d.slide+1) + ' of ' + d.total;
+          w.document.getElementById('n').innerHTML = d.notes
+            .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+            .replace(/\[\[([\s\S]*?)\]\]/g,'<span class="say">"$1"</span>');
+          w.document.getElementById('x').textContent = 'Next: ' + d.next;
+        }
+      };
+    }catch(e){}
+    show(i, true);
+  }
+
+  document.getElementById('btnNext').addEventListener('click', function(){ advance(); });
+  document.getElementById('btnPrev').addEventListener('click', function(){ retreat(); });
+  document.getElementById('btnNotes').addEventListener('click', function(){ notesEl.classList.toggle('on'); });
+
+  document.getElementById('deck').classList.add('ready');
+  show(0, true);
+})();
+
+</script>
+</body>
+</html>
