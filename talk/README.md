@@ -7,10 +7,16 @@ Litteraturhuset, Bergen. Forked from the working deck so the original stays inta
 
 Open `me-myself-and-ai.html` directly — it needs no server.
 
-The six portraits and the Case 01 images are **not in the repo**; they live in the
-same folder as the HTML on the presenting laptop. Copy them in beside this file
-before rehearsing. Filenames the deck expects are listed in `FACES` and in
-`defaultFrameMap` inside the file.
+The portraits and the audio track are **not in the repo** — they live on the
+presenting laptop. Put them in any one of these places and the deck will find them:
+
+- beside this file, in `talk/`
+- in the folder above it (the repo root, where they already are)
+- in a `media/` folder in either location
+
+Each file is probed against those bases and the first hit wins, so moving the deck
+does not break it. **Press `M` for a report of anything that did not resolve** —
+do that once before going on stage.
 
 ## Controls
 
@@ -22,6 +28,7 @@ before rehearsing. Filenames the deck expects are listed in `FACES` and in
 | `P` | presenter window (notes + clock, over BroadcastChannel) |
 | `F` | fullscreen |
 | `L` | **on the reveal slide:** switch between demo numbers and live server data |
+| `M` | media check — lists any file that could not be found |
 
 Two slides advance internally rather than jumping: the reveal (3 stages) and
 bergtatt (3 stages). Sixteen advances carry the whole deck end to end.

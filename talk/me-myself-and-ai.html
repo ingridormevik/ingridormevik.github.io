@@ -393,8 +393,8 @@ Then the line above. Hold it. Let it land. The deck changes shape here.
 <section class="slide" data-budget="35" id="alignmentSlide">
   <div class="label rise">Case 01 // The girlfriend</div>
   <div class="alignment-stage rise" id="alignmentStage" aria-label="Perfect Alignment audio-reactive scene">
-    <img class="alignment-image human" src="A.I girlfriend (2).png" alt="Ingrid and an AI-generated girlfriend in a warm domestic scene">
-    <img class="alignment-image ai" src="A.I girlfriend.png" alt="" aria-hidden="true">
+    <img class="alignment-image human" data-media="A.I girlfriend (2).png" alt="Ingrid and an AI-generated girlfriend in a warm domestic scene">
+    <img class="alignment-image ai" data-media="A.I girlfriend.png" alt="" aria-hidden="true">
     <canvas class="alignment-canvas" id="alignmentCanvas" aria-hidden="true"></canvas>
     <div class="alignment-seam" aria-hidden="true"></div>
     <div class="alignment-status" id="alignmentStatus">Perfect alignment // dormant</div>
@@ -403,7 +403,7 @@ Then the line above. Hold it. Let it land. The deck changes shape here.
       <button class="alignment-toggle" id="alignmentToggle" type="button">Enter perfect alignment</button>
       <button class="alignment-stop" id="alignmentStop" type="button">Stop</button>
     </div>
-    <audio id="alignmentAudio" preload="metadata" src="Nattens Åndepuls (Remastered x2).mp3"></audio>
+    <audio id="alignmentAudio" preload="metadata"></audio>
   </div>
   <div class="alignment-caption rise"><span>Human warmth // generated intimacy // system mirror</span><span>Audio reactive // headphones recommended</span></div>
   <p class="line gold rise" style="margin-top:.75rem;font-size:clamp(1.2rem,2.35vw,1.9rem)">It understood the girlfriend. But the body was not neutral.</p>
@@ -727,7 +727,71 @@ Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
   var chan = null;
   try { chan = new BroadcastChannel('emotional-chamber'); } catch(e){}
 
+
+  /* ================= finding the media =================
+     The deck lives in talk/ but the portraits and audio may sit beside it, in
+     the folder above, or in a media/ folder. Rather than hardcoding one layout,
+     every file is probed against a few plausible bases and the first that loads
+     wins. Press M for a report of anything that never resolved. */
+
+  var MEDIA_BASES = ['', '../', 'media/', '../media/', 'assets/me-myself-and-ai/', '../assets/me-myself-and-ai/'];
+  var mediaMissing = [];
+
+  function mediaCandidates(file){
+    var base = file.replace(/^.*\//, '');          // bare filename
+    var out = [], seen = {};
+    MEDIA_BASES.forEach(function(b){
+      [b + file, b + base].forEach(function(c){
+        if(!seen[c]){ seen[c] = 1; out.push(c); }
+      });
+    });
+    return out;
+  }
+
+  // Try each candidate in turn; call ok(url) on the first that loads.
+  function findImage(file, ok){
+    var list = mediaCandidates(file), n = 0;
+    (function attempt(){
+      if(n >= list.length){
+        if(mediaMissing.indexOf(file) < 0) mediaMissing.push(file);
+        return;
+      }
+      var url = encodeURI(list[n++]);
+      var probe = new Image();
+      probe.onload  = function(){ ok(url); };
+      probe.onerror = attempt;
+      probe.src = url;
+    })();
+  }
+
+  function findAudio(el, file){
+    if(!el) return;
+    var list = mediaCandidates(file), n = 0;
+    function attempt(){
+      if(n >= list.length){
+        if(mediaMissing.indexOf(file) < 0) mediaMissing.push(file);
+        return;
+      }
+      el.src = encodeURI(list[n++]);
+      el.load();
+    }
+    el.addEventListener('error', attempt);
+    attempt();
+  }
+
+  function mediaReport(){
+    var msg = mediaMissing.length
+      ? 'Not found (' + mediaMissing.length + '):\n\n' + mediaMissing.join('\n') +
+        '\n\nDrop these beside the deck, in the folder above it, or in a media/ folder.'
+      : 'All media resolved.';
+    window.alert(msg);
+  }
+
   // ---- Perfect Alignment audio-reactive chamber ----
+  document.querySelectorAll('img[data-media]').forEach(function(im){
+    findImage(im.getAttribute('data-media'), function(url){ im.src = url; });
+  });
+
   var alignmentStage = document.getElementById('alignmentStage');
   var alignmentAudio = document.getElementById('alignmentAudio');
   var alignmentToggle = document.getElementById('alignmentToggle');
@@ -900,6 +964,8 @@ Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
     }
   }
 
+  findAudio(alignmentAudio, 'Nattens Åndepuls (Remastered x2).mp3');
+
   if(alignmentToggle) alignmentToggle.addEventListener('click', function(e){ e.stopPropagation(); startAlignment(); });
   if(alignmentStop) alignmentStop.addEventListener('click', function(e){ e.stopPropagation(); stopAlignment(true); });
   if(alignmentAudio) alignmentAudio.addEventListener('ended', function(){ stopAlignment(true); });
@@ -978,7 +1044,9 @@ Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
         '</div>' +
         '<div class="tallykey"><span>W</span><span>M</span><span>?</span></div>' +
         '<div class="tallyname" data-n="' + n + '">' + face.name + '</div>';
-      col.querySelector('img').src = encodeURI(face.file);
+      (function(imgEl, f){
+        findImage(f, function(url){ imgEl.src = url; });
+      })(col.querySelector('img'), face.file);
       tallyRow.appendChild(col);
     });
     builtTally = true;
@@ -1145,7 +1213,7 @@ Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
       bergSize();
       if(!bergPortrait){
         bergPortrait = new Image();
-        bergPortrait.src = encodeURI('ChatGPT Image 11. aug. 2026, 13_06_52.png');
+        findImage('ChatGPT Image 11. aug. 2026, 13_06_52.png', function(url){ bergPortrait.src = url; });
       }
       bergT0 = performance.now(); bergLastBeat = 0;
       bergDraw();
@@ -1203,6 +1271,7 @@ Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
     if(k==='ArrowRight'||k==='ArrowDown'||k===' '||k==='PageDown'){ e.preventDefault(); advance(); }
     else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'){ e.preventDefault(); retreat(); }
     else if(k==='l'||k==='L'){ toggleVoteSource(); }
+    else if(k==='m'||k==='M'){ mediaReport(); }
     else if(k==='Home'){ show(0); }
     else if(k==='End'){ show(total-1); }
     else if(k==='n'||k==='N'){ notesEl.classList.toggle('on'); }
@@ -1284,11 +1353,13 @@ Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
     var levels = [0, 6, 14];
     var label = frame.querySelector('.ph');
     var defaultFile = label ? defaultFrameMap[label.textContent.trim()] : null;
-    function setDefaultImage(url){
-      if(!url || !img) return;
-      img.alt = 'Verified local portrait from the prompt sequence';
-      img.src = encodeURI(url);
-      frame.classList.add('filled');
+    function setDefaultImage(file){
+      if(!file || !img) return;
+      findImage(file, function(url){
+        img.alt = 'Verified local portrait from the prompt sequence';
+        img.src = url;
+        frame.classList.add('filled');
+      });
     }
     if(defaultFile) setDefaultImage(defaultFile);
     function take(file){
