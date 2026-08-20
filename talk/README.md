@@ -52,3 +52,62 @@ most likely to overrun.
 - Beat/pulse watchdog — `trail-mix-v2.html` (`BEAT`, `beatUpdate`)
 - Ridge renderer — `bergtatt-visuals.html` (`buildRidge`, `fillRidge`)
 - Phrases — `fjordtatt-visuals.html` (`DIGITAL_NARRATIVE`)
+
+---
+
+## The Classifier — the audience test
+
+The room votes on six portraits from their phones; the deck shows the tally
+live; then the reveal that every portrait is the same person.
+
+### Running it
+
+```
+node talk/classifier/server.js --images /path/to/the/portraits
+```
+
+It prints the URL the room should open. Then make the QR:
+
+```
+python3 tools/make-classifier-qr.py --url http://<that address>
+```
+
+Open the deck. If the server is on a different address than the default
+`localhost:8080`, point the deck at it:
+
+```
+talk/me-myself-and-ai.html?server=http://192.168.1.42:8080
+```
+
+### Three states, and no fourth
+
+The flag in the corner of the reveal slide always says which one is showing:
+
+| Flag | Means |
+|---|---|
+| `Waiting for the room` | nobody has answered yet — bars sit at zero |
+| `Live — N responses` | the server, updating as people tap |
+| `Counted by hand` | a show of hands, typed in with `H` |
+
+**No number ever appears on that screen that did not come from real people.**
+There is no demo mode and no sample data. If the server dies mid-talk the deck
+drops back to `Waiting for the room` and zeroes the bars rather than leaving
+stale figures up.
+
+`H` on the reveal slide opens the hand-count entry — six lines, `woman man unsure`.
+`L` switches between live and hand-counted when both exist.
+
+### What is recorded
+
+One line per vote in `talk/classifier/votes.jsonl`: timestamp, a random
+per-phone id, the face, the choice. The id exists only to stop one phone voting
+twice on the same face. No names, no accounts, no device details, no IP. The
+phone screen says this before anyone taps.
+
+`votes.jsonl` is gitignored — the room's answers stay on the laptop.
+
+### If the network fails
+
+The count survives a restart: the server replays `votes.jsonl` on start, so
+killing and relaunching mid-talk rebuilds the tally rather than resetting it.
+If there is no network at all, use `H` and count hands.

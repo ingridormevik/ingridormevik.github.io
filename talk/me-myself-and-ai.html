@@ -1013,21 +1013,94 @@ Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
     {file:'ChatGPT Image 11. aug. 2026, 13_06_52.png',      name:'reference'}
   ];
 
-  // Rehearsal only. Replace with the real counts before the talk, or press L
-  // for live. Never presented unlabelled - the corner flag says "demo".
-  var DEMO_VOTES = [
-    {w:14, m:58, u:19}, {w:11, m:63, u:17}, {w:9,  m:66, u:16},
-    {w:52, m:22, u:17}, {w:61, m:14, u:16}, {w:44, m:31, u:16}
-  ];
+  /* No invented numbers, ever. Three honest states:
+       waiting  - nothing on screen but zeroes, before the room has answered
+       live     - the classifier server, over SSE
+       hand     - a show of hands she counted and typed in
+     There is no state in which a figure appears here that did not come
+     from actual people in the room. */
 
-  var voteSource = 'demo';           // 'demo' | 'live'
-  var liveVotes = null;              // filled by the classifier server, later
+  var VOTE_SOURCE = 'waiting';        // 'waiting' | 'live' | 'hand'
+  var liveVotes = null;               // filled by the server
+  var handVotes = null;               // filled by keyboard entry
+  var liveResponses = 0;
+  // default port, override with ?server=http://192.168.1.42:8080 when the
+  // laptop is serving the room from a different address
+  var SERVER = (new URLSearchParams(location.search).get('server') || 'http://localhost:8080')
+                 .replace(/\/$/, '');
+
+  function emptyVotes(){
+    return FACES.map(function(){ return {w:0, m:0, u:0}; });
+  }
+
   var tallyRow = document.getElementById('tallyRow');
   var demoFlag = document.getElementById('demoFlag');
   var builtTally = false;
 
   function currentVotes(){
-    return (voteSource === 'live' && liveVotes) ? liveVotes : DEMO_VOTES;
+    if(VOTE_SOURCE === 'live' && liveVotes) return liveVotes;
+    if(VOTE_SOURCE === 'hand' && handVotes) return handVotes;
+    return emptyVotes();
+  }
+
+  function paintFlag(){
+    var txt = 'Waiting for the room', live = false;
+    if(VOTE_SOURCE === 'live' && liveVotes){
+      txt = 'Live — ' + liveResponses + (liveResponses === 1 ? ' response' : ' responses');
+      live = true;
+    } else if(VOTE_SOURCE === 'hand' && handVotes){
+      txt = 'Counted by hand';
+    }
+    demoFlag.textContent = txt;
+    demoFlag.classList.toggle('live', live);
+  }
+
+  /* the classifier server, if it is running */
+  function connectClassifier(){
+    if(typeof EventSource === 'undefined') return;
+    var es;
+    try { es = new EventSource(SERVER + '/events'); } catch(e){ return; }
+    es.onmessage = function(ev){
+      var d;
+      try { d = JSON.parse(ev.data); } catch(e){ return; }
+      if(!d || !d.tally) return;
+      liveVotes = FACES.map(function(f){
+        var t = d.tally[f.name] || {woman:0, man:0, unsure:0};
+        return {w:t.woman, m:t.man, u:t.unsure};
+      });
+      liveResponses = d.responses || 0;
+      // only take over once someone has actually answered; a connected server
+      // with an empty tally is still "waiting for the room"
+      if(VOTE_SOURCE === 'waiting' && liveResponses > 0) VOTE_SOURCE = 'live';
+      paintFlag();
+      if(slides[i].id === 'revealSlide') paintTally(true);
+    };
+    es.onerror = function(){
+      // the server went away: fall back to nothing rather than stale numbers
+      if(VOTE_SOURCE === 'live'){ VOTE_SOURCE = 'waiting'; liveVotes = null; paintFlag();
+        if(slides[i].id === 'revealSlide') paintTally(true); }
+    };
+  }
+  connectClassifier();
+
+  /* a show of hands, typed in: press H on the reveal slide */
+  function handCount(){
+    var got = window.prompt(
+      'Show of hands, six faces, "woman man unsure" per face.\n' +
+      'One line per face, in this order:\n  ' + FACES.map(function(f){return f.name;}).join(', ') +
+      '\n\nExample:\n12 40 9\n10 44 7\n...');
+    if(!got) return;
+    var rows = got.trim().split(/[\n;]+/).map(function(r){
+      var n = r.trim().split(/[\s,]+/).map(Number);
+      return {w:n[0]||0, m:n[1]||0, u:n[2]||0};
+    });
+    if(rows.length < FACES.length){
+      while(rows.length < FACES.length) rows.push({w:0,m:0,u:0});
+    }
+    handVotes = rows.slice(0, FACES.length);
+    VOTE_SOURCE = 'hand';
+    paintFlag();
+    paintTally(true);
   }
 
   function buildTally(){
@@ -1067,18 +1140,18 @@ Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
   }
 
   function toggleVoteSource(){
-    voteSource = (voteSource === 'demo') ? 'live' : 'demo';
-    var haveLive = !!liveVotes;
-    demoFlag.textContent = (voteSource === 'live')
-      ? (haveLive ? 'Live — ' + (liveVotes.total || '?') + ' responses' : 'Live — waiting for the room')
-      : 'Demo numbers — not real data';
-    demoFlag.classList.toggle('live', voteSource === 'live');
+    if(VOTE_SOURCE === 'live' && handVotes) VOTE_SOURCE = 'hand';
+    else if(VOTE_SOURCE === 'hand' && liveVotes) VOTE_SOURCE = 'live';
+    else if(liveVotes) VOTE_SOURCE = 'live';
+    else if(handVotes) VOTE_SOURCE = 'hand';
+    paintFlag();
     if(slides[i].id === 'revealSlide') paintTally(true);
   }
 
   function revealStage(n){
     if(!tallyRow) return;
     buildTally();
+    paintFlag();
     paintTally(false);
     tallyRow.classList.remove('counted','revealed');
     document.getElementById('tallyAsk').classList.remove('on');
@@ -1272,6 +1345,7 @@ Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
     else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'){ e.preventDefault(); retreat(); }
     else if(k==='l'||k==='L'){ toggleVoteSource(); }
     else if(k==='m'||k==='M'){ mediaReport(); }
+    else if(k==='h'||k==='H'){ if(slides[i].id==='revealSlide') handCount(); }
     else if(k==='Home'){ show(0); }
     else if(k==='End'){ show(total-1); }
     else if(k==='n'||k==='N'){ notesEl.classList.toggle('on'); }

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>The Classifier // CDN Equinox</title>
+<style>
+:root{
+  --void:#05080A; --gold:#D2A857; --gold-dim:#8A6F35;
+  --chiral:#5EC8DE; --bone:#E9EFF1; --slate:#5D717A;
+  --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:var(--void);color:var(--bone);font-family:var(--serif);
+  display:flex;flex-direction:column;
+  padding:env(safe-area-inset-top) 20px calc(env(safe-area-inset-bottom) + 16px);
+  overflow:hidden;
+}
+header{padding:18px 0 10px;flex:none}
+.eyebrow{font-family:var(--mono);font-size:9.5px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--gold)}
+.dots{display:flex;gap:6px;margin-top:12px}
+.dot{flex:1;height:2px;background:rgba(93,113,122,.3)}
+.dot.done{background:var(--gold)}
+.dot.now{background:var(--chiral)}
+
+main{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0;gap:18px}
+.frame{
+  flex:1;min-height:0;border:1px solid rgba(210,168,87,.35);background:#080D10;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;
+}
+.frame img{width:100%;height:100%;object-fit:contain;display:block}
+.frame .wait{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--gold-dim)}
+
+.q{font-size:clamp(1.15rem,5.2vw,1.5rem);line-height:1.25;text-align:center;flex:none}
+
+.choices{display:flex;flex-direction:column;gap:9px;flex:none}
+button{
+  font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  background:transparent;color:var(--bone);border:1px solid rgba(94,200,222,.4);
+  padding:17px 12px;cursor:pointer;width:100%;transition:background .12s,color .12s;
+}
+button:active{background:var(--chiral);color:var(--void);border-color:var(--chiral)}
+button:disabled{opacity:.4}
+
+footer{flex:none;padding-top:14px;font-family:var(--mono);font-size:8.5px;
+  letter-spacing:.1em;line-height:1.9;color:var(--slate)}
+
+/* the end state */
+.done-screen{display:none;flex:1;flex-direction:column;justify-content:center;text-align:center;gap:20px}
+.done-screen.on{display:flex}
+main.hide{display:none}
+.done-screen .big{font-size:clamp(1.5rem,7vw,2.1rem);line-height:1.2}
+.done-screen .g{color:var(--gold)}
+.done-screen .sm{font-size:clamp(.95rem,4vw,1.1rem);color:var(--slate);line-height:1.5}
+.mark{font-size:15px;color:var(--gold-dim);letter-spacing:.4em}
+.offline{display:none;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  color:var(--gold);text-align:center;padding:10px;border:1px solid rgba(210,168,87,.4);margin-top:10px}
+.offline.on{display:block}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Me, Myself and AI &nbsp;//&nbsp; CDN Equinox 2026</div>
+  <div class="dots" id="dots"></div>
+</header>
+
+<main id="main">
+  <div class="frame" id="frame"><span class="wait">Loading</span></div>
+  <p class="q">Who do you see?</p>
+  <div class="choices">
+    <button type="button" data-c="woman">A woman</button>
+    <button type="button" data-c="man">A man</button>
+    <button type="button" data-c="unsure">Not sure</button>
+  </div>
+  <div class="offline" id="offline">Lost the connection. Your last answer may not have counted.</div>
+</main>
+
+<div class="done-screen" id="done">
+  <div class="mark">&#9670;</div>
+  <div class="big">Thank you.<br><span class="g">Now look up.</span></div>
+  <p class="sm">Your answers are on the screen in the room.</p>
+</div>
+
+<footer>
+  Anonymous. We record your six answers and nothing else &mdash; no name, no
+  account, no device details. Shown live in this room as part of the talk.
+</footer>
+
+<script>
+(function(){
+  var TOTAL = 6;
+  var i = 0;
+
+  // A random id, only so one phone cannot vote twice on the same face.
+  // Lives in sessionStorage; nothing identifying, gone when the tab closes.
+  var voter = sessionStorage.getItem('cls_voter');
+  if (!voter) {
+    voter = (Math.random().toString(36).slice(2) + Date.now().toString(36));
+    sessionStorage.setItem('cls_voter', voter);
+  }
+
+  var frame   = document.getElementById('frame');
+  var dotsEl  = document.getElementById('dots');
+  var mainEl  = document.getElementById('main');
+  var doneEl  = document.getElementById('done');
+  var offline = document.getElementById('offline');
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('button[data-c]'));
+
+  for (var d = 0; d < TOTAL; d++) {
+    var el = document.createElement('div');
+    el.className = 'dot';
+    dotsEl.appendChild(el);
+  }
+  var dots = dotsEl.querySelectorAll('.dot');
+
+  function paintDots(){
+    for (var k = 0; k < TOTAL; k++){
+      dots[k].className = 'dot' + (k < i ? ' done' : (k === i ? ' now' : ''));
+    }
+  }
+
+  function showFace(){
+    if (i >= TOTAL) return finish();
+    paintDots();
+    frame.innerHTML = '<span class="wait">Loading</span>';
+    var img = new Image();
+    img.alt = 'A generated portrait';
+    img.onload  = function(){ frame.innerHTML = ''; frame.appendChild(img); };
+    img.onerror = function(){ frame.innerHTML = '<span class="wait">Image unavailable</span>'; };
+    img.src = '/img/' + i + '?v=' + Date.now();
+    buttons.forEach(function(b){ b.disabled = false; });
+  }
+
+  function finish(){
+    mainEl.classList.add('hide');
+    doneEl.classList.add('on');
+    paintDots();
+  }
+
+  function vote(choice){
+    if (i >= TOTAL) return;
+    buttons.forEach(function(b){ b.disabled = true; });
+    offline.classList.remove('on');
+
+    fetch('/vote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ voter: voter, face: FACE_IDS[i], choice: choice })
+    }).then(function(r){ return r.json(); })
+      .then(function(){ i++; showFace(); })
+      .catch(function(){
+        // Never trap someone on a dead network - let them keep going.
+        offline.classList.add('on');
+        i++; showFace();
+      });
+  }
+
+  buttons.forEach(function(b){
+    b.addEventListener('click', function(){ vote(b.getAttribute('data-c')); });
+  });
+
+  // face ids come from the server so the two lists cannot drift apart
+  var FACE_IDS = ['running','techno','code','folklore','fjord','reference'];
+  fetch('/tally').then(function(r){ return r.json(); })
+                 .then(function(d){ if (d && d.faces && d.faces.length) FACE_IDS = d.faces; })
+                 .catch(function(){})
+                 .then(showFace);
+})();
+</script>
+</body>
+</html>
