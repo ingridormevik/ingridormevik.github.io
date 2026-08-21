@@ -30,8 +30,9 @@ do that once before going on stage.
 | `L` | **on the reveal slide:** switch between demo numbers and live server data |
 | `M` | media check — lists any file that could not be found |
 
-Two slides advance internally rather than jumping: the reveal (3 stages) and
-bergtatt (3 stages). Sixteen advances carry the whole deck end to end.
+Three slides advance internally rather than jumping: the reveal (3 stages),
+bergtatt (3 stages) and the closing (4 beats). Eighteen advances carry the
+whole deck end to end.
 
 ## The reveal slide and its data
 
@@ -43,9 +44,24 @@ for the room's actual answer.
 
 ## Timing
 
-Budgets total **7:30**, leaving reserve inside an 8-minute slot. The pace clock in
+Budgets total **7:45**, leaving reserve inside an 8-minute slot. The pace clock in
 the top right tracks against them. Rehearse against it — the reveal is the beat
 most likely to overrun.
+
+## The argument
+
+The machine is not the antagonist. It is the evidence. Society classified her
+long before any of this was computational; AI did not invent the categories,
+it returned them with computational confidence. So the question is not *how
+does the machine see me* but **what has society made available for the machine
+to see** — and the reveal slide proves it by having the room do the sorting.
+
+The closing states it in four beats, one per click, ending on *"It was a test
+of us."* Earlier beats dim rather than disappear, so the whole argument is
+standing on screen through Q&A.
+
+Slide 12, Manifestations / Blom, was cut to make room. Blom survives in the
+Q&A notes on the end card.
 
 ## Borrowed from elsewhere in this repo
 

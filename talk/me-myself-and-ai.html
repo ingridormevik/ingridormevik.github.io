@@ -302,6 +302,22 @@ h1{font-weight:400;font-size:clamp(2.3rem,5.4vw,4.4rem);line-height:1.06;letter-
 .berg-cite span{display:block;color:var(--gold);margin-bottom:.3rem}
 .berg-cite b{color:var(--bone);font-weight:400}
 
+
+/* ---- the closing, staged ---- */
+.endcard{justify-content:center}
+.close{font-size:clamp(1.5rem,3.5vw,2.6rem);line-height:1.24;max-width:20em;
+  margin:0 auto;text-align:center;color:var(--bone)}
+.end-stage{margin-bottom:1.5rem}
+.close.sm{font-size:clamp(1.05rem,2.1vw,1.5rem);color:var(--slate);max-width:26em;line-height:1.4}
+.close.final{font-size:clamp(2.1rem,5.6vw,4.2rem);line-height:1.1;margin-top:.7rem;
+  letter-spacing:-.015em;text-transform:none;font-family:var(--serif)}
+.close .g{color:var(--gold)}
+.end-stage{opacity:0;transform:translateY(10px);
+  transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.end-stage.on{opacity:1;transform:none}
+.end-stage[data-stage="1"].fade,.end-stage[data-stage="2"].fade,
+.end-stage[data-stage="3"].fade{opacity:.28}
+
 /* end card */
 .endcard{text-align:center}
 .endcard .big{font-family:var(--mono);font-size:clamp(.95rem,1.65vw,1.3rem);letter-spacing:.3em;
@@ -374,19 +390,32 @@ Say their names. Look at them.</div>
 </section>
 
 <!-- 02 -->
-<section class="slide" data-budget="30">
+<section class="slide" data-budget="40">
   <div class="mark rise">&#9670;</div>
-  <p class="line rise">I kept asking the machine to change the world around me.</p>
+  <p class="line rise">My body has always been interpreted,<br>questioned and corrected.</p>
   <div class="gap rise"></div>
-  <p class="line big gold rise">It kept changing me with it.</p>
+  <p class="line rise">Then artificial intelligence arrived.</p>
+  <div class="gap rise"></div>
+  <p class="line big gold rise">And I recognised the behaviour.</p>
   <div class="notes-src">TARGET 0:35 // RUNNING 1:10
 
-Before the bridge, one line about yourself, said plainly and without apology:
+This is the hinge of the whole talk. Do not rush it. Three beats, with air between them.
+
+One line about yourself first, said plainly and without apology:
 [[I am a masculine presenting lesbian.]]
 
-Then the line above. Hold it. Let it land. The deck changes shape here.
+Then, slowly:
+[[My body has always been interpreted, questioned and corrected. Long before any of this was computational.]]
 
-[[This is the bridge. The machine was not only generating music worlds. It was renegotiating my body as part of those worlds.]]</div>
+[[Then artificial intelligence arrived.]]
+
+Pause.
+
+[[And I recognised the behaviour.]]
+
+[[The machine was doing something people had done throughout my life: making me easier to understand by making me less complex.]]
+
+The rest of the talk follows from this. The machine is not the antagonist here. It is the evidence.</div>
 </section>
 
 <!-- 03 -->
@@ -519,6 +548,9 @@ Let them laugh if they laugh. Do not force it and do not talk over it.
     <p class="line quiet" style="font-size:clamp(1rem,1.6vw,1.3rem);margin-top:.9rem;max-width:34em">
       You used the same cue the model used. So did I, the first time I looked at these.
     </p>
+    <p class="line gold" style="font-size:clamp(1.15rem,2.1vw,1.7rem);margin-top:1.1rem">
+      AI did not invent these categories. We did.
+    </p>
   </div>
 
   <div class="notes-src">TARGET 1:00
@@ -538,6 +570,9 @@ Click. Stage 3. This is the turn. Say it quietly.
 Count to three.
 
 [[I am not standing outside this. I coded these images too. The first time I looked at the running set I thought: that is a man. Then I remembered I had written the prompt.]]
+
+Then the line that turns the talk:
+[[AI did not invent these categories. We did. The system simply returned them with computational confidence.]]
 
 If someone laughs, let them. It is a nervous laugh and it is the right one.
 
@@ -593,6 +628,10 @@ Then hedge, and mean it:
       This is a folk theory of classification. We have had one for four hundred years.
     </p>
 
+    <p class="line berg-stage" data-stage="3" style="font-size:clamp(1.1rem,2vw,1.6rem);margin-top:1rem;max-width:24em">
+      The machine is not the antagonist. <span class="gold">It is the evidence.</span>
+    </p>
+
     <div class="berg-cite berg-stage" data-stage="3">
       <span>Bianchi et al., FAccT &rsquo;23</span>
       Text-to-image models amplify demographic stereotypes <b>even when the prompt contains no identity language at all.</b>
@@ -635,7 +674,8 @@ Do not oversell the folklore. One sentence of Norwegian, then back to the eviden
   </div>
   <p class="line quiet rise" style="margin-top:1rem;font-size:clamp(1.02rem,1.65vw,1.32rem)">The machine makes me legible. Society makes me classifiable. Folklore makes me interpretable. The body tells me whether any of those readings feel true.</p>
   <p class="line big gold rise" style="font-size:clamp(1.45rem,3vw,2.7rem);margin-top:.35rem">Am I being erased?</p>
-  <p class="line quiet rise" style="margin-top:.75rem;font-size:clamp(1.02rem,1.65vw,1.32rem)">What happens to queer selfhood when machine classification and everyday social classification begin to reinforce one another?</p>
+  <p class="line quiet rise" style="margin-top:.9rem;font-size:clamp(1.02rem,1.65vw,1.32rem)">The question is no longer: how does the machine see me?</p>
+  <p class="line gold rise" style="margin-top:.3rem;font-size:clamp(1.15rem,2.1vw,1.7rem)">It is: what has society made available for the machine to see?</p>
   <div class="notes-src">TARGET 0:35 // RUNNING 7:05
 
 This is the central passage. Say it as the emotional research question first, then let the formal question sit underneath it.
@@ -648,50 +688,69 @@ This is the central passage. Say it as the emotional research question first, th
 
 [[This is my research question. Not erased through disappearance. Erased through simplification. Erased when nuance becomes category. Erased when probability becomes identity.]]
 
-[[The system can recognise you and erase you at the same time. That recognition and erasure are not opposites anymore.]]</div>
-</section>
+[[The system can recognise you and erase you at the same time. That recognition and erasure are not opposites anymore.]]
 
-<!-- 11 -->
-<section class="slide" data-budget="25">
-  <div class="label rise">Manifestations // Mount Media</div>
-  <div class="manifest-grid rise">
-    <div class="manifest"><div class="imgframe" data-blur="0"><div class="ph">Runner Ingrid</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><div class="manifest-name">Runner_Ingrid</div></div>
-    <div class="manifest"><div class="imgframe" data-blur="0"><div class="ph">Fjord Ingrid</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><div class="manifest-name">Fjord_Ingrid</div></div>
-    <div class="manifest"><div class="imgframe" data-blur="0"><div class="ph">Coder Ingrid</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><div class="manifest-name">Coder_Ingrid</div></div>
-    <div class="manifest"><div class="imgframe" data-blur="0"><div class="ph">Rave Ingrid</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><div class="manifest-name">Rave_Ingrid</div></div>
-    <div class="manifest"><div class="imgframe" data-blur="0"><div class="ph">Folklore Ingrid</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div><div class="manifest-name">Folklore_Ingrid</div></div>
-  </div>
-  <p class="line quiet rise" style="margin-top:1rem;font-size:clamp(1.05rem,1.75vw,1.4rem)">Not: which one is the real Ingrid?</p>
-  <p class="line big gold rise" style="font-size:clamp(1.45rem,3vw,2.45rem)">How much can the body change before the character stops being me?</p>
-  <div class="notes-src">TARGET 0:35 // RUNNING 7:30
-
-[[This is where Blom helps me think. Dynamic-character theory does not require one manifestation to be the single true one. Different versions can contradict one another while remaining recognisable manifestations of a character.]]
-
-[[Mount Media gives me a strange version of that problem. Every encounter between me, a prompt, and a generative model produces another possible Ingrid. The instability itself becomes part of the character.]]
-
-Say the last line and stop.
-
-Do not add thank you for listening to my research. Do not explain it. One quiet thank you is enough, or nothing at all.
-
-The silence is the ending.</div>
+Then the pivot. This is the research question in its final form:
+[[So the question is no longer how does the machine see me. It is: what has society made available for the machine to see?]]</div>
 </section>
 
 <!-- 12 -->
-<section class="slide endcard" data-budget="0" style="align-items:center">
+<section class="slide endcard" data-budget="30" data-stages="4" id="endSlide" style="align-items:center">
   <div class="mark rise" style="margin-bottom:.8rem">&#9670;</div>
-  <div class="big rise">Me, Myself and A.I.<br><span class="g">Mount Media</span></div>
-  <div class="final-reference rise"><div class="imgframe" data-blur="0"><div class="ph">Final reference</div><img alt=""><label class="loadbtn">Load<input type="file" accept="image/*" hidden></label><span class="blurbtn">Blur: off</span></div></div>
-  <p class="final-question rise">Am I being erased?</p>
-  <p class="final-question small rise">Not erased through disappearance. Erased through simplification. Erased when nuance becomes category.</p>
-  <div class="sig rise">Prompt sequence · generative bias · queer reading<br>Ingrid Ormevik // Bergen, Norway // 2026</div>
-  <div class="notes-src">Leave this up for the questions.
 
-[[I kept asking the machine to change the world around me. It kept changing me with it.]]
+  <p class="close end-stage" data-stage="1">
+    The machine could generate the girlfriend.<br>
+    <span class="g">The harder problem seemed to be me.</span>
+  </p>
 
-[[The question is not whether one generated version is the real Ingrid. The question is what a system has to change before I stop recognising myself.]]
+  <p class="close sm end-stage" data-stage="2">
+    Not because women like me do not exist.<br>
+    Because society has never known how to see us without trying to
+    explain us, inspect us or correct us.
+  </p>
+
+  <p class="close end-stage" data-stage="3">
+    AI did not create that failure.<br><span class="g">It automated it.</span>
+  </p>
+
+  <div class="end-stage" data-stage="4">
+    <p class="close sm">So this was never really a test of artificial intelligence.</p>
+    <p class="close final"><span class="g">It was a test of us.</span></p>
+    <div class="sig" style="margin-top:2.2rem">Me, Myself and A.I. &nbsp;//&nbsp; Mount Media<br>
+      Ingrid Ormevik // Bergen, Norway // 2026</div>
+  </div>
+
+  <div class="notes-src">TARGET 0:30 // the last thing they see
+
+Four beats, four clicks. Silence between each one. Do not join them into a paragraph.
+
+[[The machine could generate the girlfriend. The harder problem seemed to be me.]]
+
+Click.
+
+[[Not because women like me do not exist. Because society has never known how to see us without trying to explain us, inspect us or correct us.]]
+
+Click.
+
+[[AI did not create that failure. It automated it.]]
+
+Click. Then look at them, not the screen.
+
+[[So this was never really a test of artificial intelligence. It was a test of us.]]
+
+Stop. Do not add thank you for listening to my research. Do not explain it.
+One quiet thank you is enough, or nothing at all. The silence is the ending.
+
+Leave this up for the questions.
+
+--- the through-line, if you lose your place ---
+My life is the pathos. My activism and research are the ethos.
+The documented prompt sequence is the logos.
+
+--- Q&A ---
 
 "Isn't this just your prompts?"
-[[That was my first worry too. I am running a controlled set now, one identical base prompt with only the genre word changed, coded blind by a second person.]]
+[[That was my first worry too. I am running a controlled set now, one identical base prompt with only the genre word changed, coded blind by a second person. And Bianchi and colleagues found the same thing at scale at FAccT in 2023, with prompts that contained no identity language at all.]]
 
 "Aren't you attributing intent to a model?"
 [[No. I am describing a distribution, not a decision. My face sits in a thin region of it.]]
@@ -702,9 +761,16 @@ The silence is the ending.</div>
 "How do you code masculine features without reproducing the binary?"
 [[I code observable features, jaw width, hair length, shoulder width. Then I note which carry gendered readings here. The binary is in the reading.]]
 
+"Which generated version is the real you?"
+[[None of them, and that is Blom's point about dynamic characters. Different manifestations can contradict each other and still be recognisably the same character. The instability is part of the character now.]]
+
+"Isn't this just about AI?"
+[[It never was. The machine is the evidence, not the antagonist. It made a familiar thing legible by doing it at scale and with confidence.]]
+
 Blank: [[Good question. Let me take it from the category side.]]
 
-Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
+Halberstam 1998. Butler 1990. Russell 2020. Rettberg 2023. Keyes 2018.
+Scheuerman, Pape and Hanna 2021. Bianchi et al. 2023. Blom 2023.</div>
 </section>
 
 </div>
@@ -986,6 +1052,7 @@ Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
     slide.setAttribute('data-stage-now', n);
     if(slide.id === 'revealSlide') revealStage(n);
     if(slide.id === 'bergtattSlide') bergStage(n);
+    if(slide.id === 'endSlide') endStage(n);
   }
   function advance(){
     var slide = slides[i], total = stagesIn(slide), cur = stageOf[i] || 1;
@@ -1292,6 +1359,17 @@ Halberstam 1998. Butler 1990. Rettberg 2024. Keyes 2018.</div>
       bergDraw();
     }
   }
+  /* the closing: each beat arrives alone, earlier ones dim rather than vanish */
+  function endStage(n){
+    var slide = document.getElementById('endSlide');
+    if(!slide) return;
+    slide.querySelectorAll('.end-stage').forEach(function(el){
+      var st = parseInt(el.getAttribute('data-stage'), 10);
+      el.classList.toggle('on', st <= n);
+      el.classList.toggle('fade', st < n);
+    });
+  }
+
   function bergStop(){ cancelAnimationFrame(bergRAF); bergRAF = 0; }
   window.addEventListener('resize', function(){ if(bergRAF) bergSize(); });
 
