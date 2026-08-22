@@ -1754,14 +1754,19 @@
         // the same way a cast being would. The forest is also left empty even
         // though its density is "sparse", so a passer-by is never mistaken
         // for Huldra, who uses the same off-to-the-side treatment there.
+        // Each list is ordered by how many figures should populate that
+        // stretch — sparse stops get one, "hikers" gets two, "busy" (Fløyen,
+        // Fløibanen) gets three staggered across the walk, so presence
+        // actually reads as concentrated at the tourist hub instead of one
+        // random figure appearing with equal odds everywhere.
         var STOP_NPC = {
-            'sandviken-sykehus': null,
-            'munkebotn': 'hikers-pair',
-            'sandviksbatteriet': 'hikers-pair',
-            'sandvikspilen': 'hikers-group',
-            'forest-transition': null,
-            'floyen': 'hikers-family',
-            'floibanen': 'hikers-family'
+            'sandviken-sykehus': [],
+            'munkebotn': ['hikers-pair'],
+            'sandviksbatteriet': ['hikers-pair'],
+            'sandvikspilen': ['hikers-group', 'hikers-pair'],
+            'forest-transition': [],
+            'floyen': ['hikers-family', 'hikers-group', 'hikers-pair'],
+            'floibanen': ['hikers-family', 'hikers-group']
         };
 
         var AMBIENT = {
@@ -1776,14 +1781,21 @@
             },
             seed: function (chapter) {
                 this.live = [];
-                var npc = STOP_NPC[STOP_IDS[chapter]];
-                if (!npc) return;
+                var npcs = STOP_NPC[STOP_IDS[chapter]];
+                if (!npcs || !npcs.length) return;
                 var len = CH[chapter].dist;
-                this.live.push({
-                    npc: npc, a: 0,
-                    world: len * (0.4 + Math.random() * 0.3),
-                    depth: 0.32 + Math.random() * 0.08,
-                    side: Math.random() < 0.5 ? -1 : 1
+                var self = this;
+                npcs.forEach(function (npc, i) {
+                    // Slot each figure into its own share of the walk (with
+                    // a little jitter) so a busy stop's three figures spread
+                    // out along the whole stretch instead of clumping.
+                    var slot = (i + 0.5) / npcs.length;
+                    self.live.push({
+                        npc: npc, a: 0,
+                        world: len * (0.12 + slot * 0.72 + (Math.random() - 0.5) * 0.08),
+                        depth: 0.3 + Math.random() * 0.1,
+                        side: i % 2 === 0 ? -1 : 1
+                    });
                 });
             },
             update: function (dt) {
