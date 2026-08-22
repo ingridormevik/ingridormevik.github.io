@@ -211,6 +211,8 @@
             padding: 0 2% 2%;
             overflow: hidden;
             background: linear-gradient(180deg, transparent 46%, rgba(10, 8, 18, .55) 100%);
+            background-size: cover;
+            background-position: center;
         }
 
         /* Carved-frame chrome: doubled rule, gilded inner line, corner studs.
@@ -957,6 +959,22 @@
                         </div>
                     </div>
 
+                    <!-- Location Scene: revisiting a stop from the map opens this place
+                         specifically — its real banner art full-bleed, its own history
+                         and any being glimpsed here — instead of the whole multi-stop
+                         archive scrolled to a position. Same data, same rule-18 gate
+                         (entryListHtml), just entered as its own room. -->
+                    <div class="rm-layer rm-story rm-hide" id="rmScene">
+                        <div class="rm-card">
+                            <div class="rm-chapter-tag" id="rmSceneTag"></div>
+                            <div id="rmSceneBody"></div>
+                            <div class="rm-choices">
+                                <button class="rm-btn" id="rmSceneMap">← BACK TO THE MAP</button>
+                                <button class="rm-btn rm-go" id="rmSceneClose">← BACK TO THE TRAIL</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Accessibility Hub: High Contrast, Reduce Motion, Large Text, Read
                          Aloud and Mute All, each one a real toggle that saves immediately
                          and applies immediately — same overlay family as Find/Archive. -->
@@ -1172,7 +1190,7 @@
 
         function readCurrentText() {
             if (!SET.readAloud || !window.speechSynthesis) return;
-            var ids = ['rmStory', 'rmArch', 'rmFind', 'rmMap', 'rmAcc'], node = null;
+            var ids = ['rmStory', 'rmArch', 'rmFind', 'rmMap', 'rmScene', 'rmAcc'], node = null;
             for (var i = 0; i < ids.length; i++) {
                 var n = el(ids[i]);
                 if (n && n.classList.contains('on')) { node = n; break; }
@@ -1722,7 +1740,7 @@
             // even while an overlay is open — a real device can end up with
             // Find and Archive both shown at once, both eating every tap.
             // Close whatever else is open first.
-            hide('rmArch'); hide('rmAcc'); hide('rmMap');
+            hide('rmArch'); hide('rmAcc'); hide('rmMap'); hide('rmScene');
             var wasWalking = S.walking;
             setWalk(false);
             show('rmFind');
@@ -2486,6 +2504,34 @@
                 .replace(/>/g, '&gt;');
         }
 
+        // Shared by the full Archive (every stop) and the single-stop Scene: the
+        // rule 18 gate has to hold in every door it's rendered behind, so it lives
+        // once, not copied.
+        function entryListHtml(list, have, ok) {
+            var html = '';
+            list.forEach(function (e) {
+                var found = have.indexOf(e.id) >= 0;
+                var gated = !(e.status === 'verified' && ok[e.source]);
+                if (!found) {
+                    html += '<div class="rm-arch-e locked">▢ not yet found — ' +
+                        archEsc(e.era || 'at this stop') + '</div>';
+                } else if (gated) {
+                    html += '<div class="rm-arch-e warn">▣ ' +
+                        archEsc(e.display_name_en || e.id) +
+                        '<em>RESEARCH REQUIRED — no verified source, so no facts ' +
+                        'are shown.</em></div>';
+                } else {
+                    html += '<div class="rm-arch-e"><b>' + SYM.documented + ' ' +
+                        archEsc(e.era) + '</b> ' +
+                        archEsc(e.display_name_en) + '<em>' +
+                        archEsc(e.educational_text_en) + '</em><span>' +
+                        archEsc(ok[e.source].title) + ', ' +
+                        archEsc(ok[e.source].publisher) + '</span></div>';
+                }
+            });
+            return html;
+        }
+
         function archRender() {
             var body = el('rmArchBody');
             var a = archRead();
@@ -2531,29 +2577,8 @@
                 if (!list.length) return;
                 var when = (a.scanned || {})[st.id];
                 html += '<div class="rm-arch-stop" id="rmArchStop-' + st.id + '"><h4>' + archEsc(stopName[st.id]) +
-                    (when ? '<span>visited ' + when.slice(0, 10) + '</span>' : '') + '</h4>';
-
-                list.forEach(function (e) {
-                    var found = have.indexOf(e.id) >= 0;
-                    var gated = !(e.status === 'verified' && ok[e.source]);
-                    if (!found) {
-                        html += '<div class="rm-arch-e locked">▢ not yet found — ' +
-                            archEsc(e.era || 'at this stop') + '</div>';
-                    } else if (gated) {
-                        html += '<div class="rm-arch-e warn">▣ ' +
-                            archEsc(e.display_name_en || e.id) +
-                            '<em>RESEARCH REQUIRED — no verified source, so no facts ' +
-                            'are shown.</em></div>';
-                    } else {
-                        html += '<div class="rm-arch-e"><b>' + SYM.documented + ' ' +
-                            archEsc(e.era) + '</b> ' +
-                            archEsc(e.display_name_en) + '<em>' +
-                            archEsc(e.educational_text_en) + '</em><span>' +
-                            archEsc(ok[e.source].title) + ', ' +
-                            archEsc(ok[e.source].publisher) + '</span></div>';
-                    }
-                });
-                html += '</div>';
+                    (when ? '<span>visited ' + when.slice(0, 10) + '</span>' : '') + '</h4>' +
+                    entryListHtml(list, have, ok) + '</div>';
             });
 
             var finds = a.finds || [];
@@ -2597,7 +2622,7 @@
         }
 
         function archOpen(scrollToStop) {
-            hide('rmFind'); hide('rmAcc'); hide('rmMap');
+            hide('rmFind'); hide('rmAcc'); hide('rmMap'); hide('rmScene');
             archLoad(function () {
                 archRender();
                 show('rmArch');
@@ -2656,7 +2681,7 @@
         }
 
         function openMap() {
-            hide('rmFind'); hide('rmArch'); hide('rmAcc');
+            hide('rmFind'); hide('rmArch'); hide('rmAcc'); hide('rmScene');
             setWalk(false);
             mapRender();
             mapRenderReal();
@@ -2665,8 +2690,65 @@
             if (!ARCH.loaded) archLoad(mapRenderReal);
         }
 
+        // What a single stop has to show: its own history entries (same rule-18
+        // gate as the Archive), any being cast there and whether it's been
+        // glimpsed, and how many things were noticed here. Entering a place
+        // again, not re-reading a scrolled list of every place at once.
+        function sceneEntries(stopId) {
+            if (!ARCH.data) return '<p class="rm-text">Could not reach the archive data — check your signal.</p>';
+            var a = archRead();
+            var have = a.entries || [];
+            var ok = {};
+            ARCH.data.sources.sources.forEach(function (s) { if (s.verified) ok[s.id] = s; });
+            var list = ARCH.data.history.entries.filter(function (e) { return e.stop === stopId; });
+            var html = entryListHtml(list, have, ok);
+
+            var castHere = (BEINGS.all || []).filter(function (b) { return b.cast_at === stopId; });
+            if (castHere.length) {
+                var met = a.beings || [];
+                html += '<div class="rm-folk">';
+                castHere.forEach(function (b) {
+                    var seen = met.indexOf(b.id) >= 0;
+                    var art = BEINGS.art[b.id];
+                    html += '<figure class="' + (seen ? '' : 'unseen') + '">' +
+                        (art ? '<img src="' + art.src + '" alt="">' : '') +
+                        '<figcaption>' + archEsc(seen ? (b.display_name_en || b.id) : '???') +
+                        '</figcaption></figure>';
+                });
+                html += '</div><p class="rm-arch-lead">Artistic interpretation, inspired ' +
+                    'by Norwegian folklore — not attested at this location as fact.</p>';
+            }
+
+            var chapterIdx = STOP_IDS.indexOf(stopId);
+            var findsHere = (a.finds || []).filter(function (f) { return f.chapter === chapterIdx; });
+            if (findsHere.length) {
+                html += '<p class="rm-arch-lead">' + SYM.observed + ' ' + findsHere.length +
+                    ' thing' + (findsHere.length === 1 ? '' : 's') + ' you noticed here.</p>';
+            }
+            return html || '<p class="rm-text">Nothing recorded here yet.</p>';
+        }
+
+        function sceneRender(stopId) {
+            var art = MAP_ART[stopId];
+            el('rmScene').style.backgroundImage = art ?
+                'linear-gradient(180deg, rgba(9, 7, 14, .22) 0%, rgba(9, 7, 14, .6) 55%, rgba(9, 7, 14, .95) 100%), url(' + art + ')' : '';
+            var idx = STOP_IDS.indexOf(stopId);
+            el('rmSceneTag').textContent = (idx >= 0 ? CH[idx].t : stopId).toUpperCase() + ' · REVISITED';
+            el('rmSceneBody').innerHTML = sceneEntries(stopId);
+        }
+
+        function openScene(stopId) {
+            hide('rmFind'); hide('rmArch'); hide('rmAcc'); hide('rmMap');
+            setWalk(false);
+            archLoad(function () {
+                sceneRender(stopId);
+                show('rmScene');
+                readCurrentText();
+            });
+        }
+
         function openAcc() {
-            hide('rmFind'); hide('rmArch'); hide('rmMap');
+            hide('rmFind'); hide('rmArch'); hide('rmMap'); hide('rmScene');
             setWalk(false);
             show('rmAcc');
             readCurrentText();
@@ -2713,6 +2795,14 @@
             S.walking = false;
             var ch = CH[S.chapter];
             el('rmPrompt').classList.add('rm-hide');
+            // Arriving at a stop's own place, not just a text card over the walk —
+            // the location's real banner art as a backdrop behind the same story
+            // text/choices. Purely presentational: CH[]'s text, choices and
+            // resolve() are untouched. Falls back to the plain gradient (already
+            // the class default) where no location art exists, e.g. Sandviksbatteriet.
+            var art = MAP_ART[STOP_IDS[S.chapter]];
+            el('rmStory').style.backgroundImage = art ?
+                'linear-gradient(180deg, rgba(9, 7, 14, .2) 0%, rgba(9, 7, 14, .5) 45%, rgba(9, 7, 14, .93) 100%), url(' + art + ')' : '';
             el('rmStoryTag').textContent = ch.tag;
             el('rmStoryTxt').textContent = ch.text;
             el('rmStoryTxt').classList.add('rm-illum');
@@ -2975,14 +3065,16 @@
         el('rmArchClose').addEventListener('click', function () { hide('rmArch'); });
         archCount();
 
-        /* ---------- map wiring ---------- */
+        /* ---------- map & scene wiring ---------- */
         el('rmMapBtn').addEventListener('click', openMap);
         el('rmMapClose').addEventListener('click', function () { hide('rmMap'); });
         el('rmMapRoute').addEventListener('click', function (e) {
             var b = e.target.closest('.rm-map-node');
             if (!b || b.disabled) return;
-            archOpen(b.dataset.stop);
+            openScene(b.dataset.stop);
         });
+        el('rmSceneClose').addEventListener('click', function () { hide('rmScene'); });
+        el('rmSceneMap').addEventListener('click', function () { hide('rmScene'); openMap(); });
 
         el('rmFindBtn').addEventListener('click', function () {
             if (S.phase !== 'walk') return;
