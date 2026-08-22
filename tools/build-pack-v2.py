@@ -22,11 +22,13 @@ its own; the claims live in data/history.json behind the rule 18 gate.
 """
 
 import json
+import math
 import pathlib
+import random
 import sys
 
 try:
-    from PIL import Image, ImageFilter
+    from PIL import Image, ImageDraw, ImageFilter
 except ImportError:
     sys.exit("Pillow is required:  pip install pillow")
 
@@ -259,9 +261,104 @@ def export_print(scale=4):
     print(f"print export: {n} files at {scale}x nearest -> assets/print/")
 
 
+def draw_munken_rock(w=56, h=116):
+    """Procedurally paint an ambiguous rock / kneeling-figure silhouette.
+
+    No concept-art crop exists for Munken — the master sheet's one folklore
+    row (FOLK_COLS/FOLK_NAMES) only covers the other 8 beings. Munken's own
+    narrative_function in data/folklore.json is explicit that it must read
+    as a rock that, in the right light, only suggests a bowed hooded figure
+    without ever confirming it — so a generated ambiguous boulder is more
+    honest here than commissioning a literal monk. This feeds
+    pixelate_being() exactly like a cropped panel would, so exact edges
+    don't matter — only the coarse shape and stone/moss colour blocking
+    need to survive the 22px downscale.
+    """
+    rng = random.Random(20240817)  # fixed seed: reproducible across reruns
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+
+    cx = w / 2
+    base_y = h - 6
+    # Irregular boulder outline: a ring of points around an ellipse, jittered,
+    # wider and flatter at the base, tapering and squashed at the top so it
+    # reads as a bowed shape rather than a dome.
+    pts = []
+    n = 14
+    for i in range(n):
+        a = (i / n) * 2 * math.pi
+        rx = w * 0.42 * (0.7 + 0.3 * abs(math.sin(a * 0.5)))
+        ry = h * 0.40
+        jitter = 1 + rng.uniform(-0.12, 0.12)
+        x = cx + math.cos(a) * rx * jitter
+        y = base_y - h * 0.28 - math.sin(a) * ry * jitter
+        if math.sin(a) > 0.3:
+            y += (math.sin(a) - 0.3) * h * 0.22
+        pts.append((x, y))
+    d.polygon(pts, fill=(107, 100, 89, 255))
+
+    # darker hood-shadow patch, upper-front — the part that, in the right
+    # light, tips the shape into looking like a bowed head.
+    hood = [(cx - w * 0.22, base_y - h * 0.5), (cx + w * 0.16, base_y - h * 0.5),
+            (cx + w * 0.10, base_y - h * 0.24), (cx - w * 0.18, base_y - h * 0.24)]
+    d.polygon(hood, fill=(58, 54, 48, 210))
+
+    # mossy highlight streaks, so it reads as weathered stone, not a prop
+    for _ in range(3):
+        mx = cx + rng.uniform(-w * 0.25, w * 0.25)
+        my = base_y - rng.uniform(h * 0.1, h * 0.55)
+        mw = rng.uniform(w * 0.08, w * 0.16)
+        mh = mw * rng.uniform(1.4, 2.2)
+        d.ellipse([mx - mw / 2, my - mh / 2, mx + mw / 2, my + mh / 2],
+                  fill=(84, 94, 66, 160))
+
+    return im.filter(ImageFilter.GaussianBlur(1.1))
+
+
+def add_munken():
+    """Give Munken (Munkebotn) a portrait.
+
+    No concept-art crop exists for it (see draw_munken_rock's docstring), so
+    this generates one and slots it into the existing registry using the
+    ALREADY-FROZEN shared palette recorded in data/pack-v2.json, rather than
+    calling build_shared_palette() again — recomputing it over every crop
+    would shift the colours of all 8 existing beings, every location and
+    every NPC for a change that only needs to add one new file.
+    """
+    reg_path = ROOT / "data" / "pack-v2.json"
+    reg = json.loads(reg_path.read_text())
+    if any(b["id"] == "munken" for b in reg.get("folklore", [])):
+        print("munken already registered — nothing to do")
+        return
+
+    flat = []
+    for hexstr in reg["palette"]["hex"]:
+        hexstr = hexstr.lstrip("#")
+        flat += [int(hexstr[0:2], 16), int(hexstr[2:4], 16), int(hexstr[4:6], 16)]
+    flat += [0] * (768 - len(flat))
+    pal = Image.new("P", (1, 1))
+    pal.putpalette(flat)
+
+    out_im = pixelate_being(draw_munken_rock(), pal)
+    dest = ROOT / "assets" / "folklore" / "munken.png"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    out_im.save(dest, optimize=True)
+
+    reg["folklore"].append({
+        "id": "munken", "asset": "assets/folklore/munken.png",
+        "kind": "imagined", "status": "unverified",
+        "label": "ARTISTIC INTERPRETATION — INSPIRED BY NORWEGIAN FOLKLORE"
+    })
+    reg_path.write_text(json.dumps(reg, indent=2, ensure_ascii=False))
+    print(f"munken: wrote {dest.relative_to(ROOT)}, registered in "
+          f"{reg_path.relative_to(ROOT)}")
+
+
 def main():
     if "--print" in sys.argv:
         return export_print()
+    if "--munken" in sys.argv:
+        return add_munken()
 
     if not PACK.exists():
         sys.exit(f"missing {PACK} — unpack the concept pack there first")

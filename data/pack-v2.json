@@ -114,6 +114,13 @@
       "kind": "imagined",
       "status": "unverified",
       "label": "ARTISTIC INTERPRETATION — INSPIRED BY NORWEGIAN FOLKLORE"
+    },
+    {
+      "id": "munken",
+      "asset": "assets/folklore/munken.png",
+      "kind": "imagined",
+      "status": "unverified",
+      "label": "ARTISTIC INTERPRETATION — INSPIRED BY NORWEGIAN FOLKLORE"
     }
   ],
   "npcs": [
