@@ -33,7 +33,8 @@
     {
       "id": "sandviksbatteriet_history",
       "subject": "Sandviksbatteriet — construction period, purpose, armament, WWII use",
-      "why_blocked": "Web search returns confident but uncitable claims (hiking sites, hash-house-harriers pages) giving conflicting construction ranges of 1895-1902 and 1895-1905. Authoritative sources are unreachable from the build environment: snl.no, no.wikipedia.org and kulturminnesok.no are all blocked by the network egress proxy.",
+      "why_blocked": "Web search now consistently returns 1898 (as part of Bergen's inner fortifications, built 1895-1905 alongside Kvarven and Hellen forts) and describes 24 cm L/13 M1898 St. Chamond howitzer positions still visible at the upper battery — corroborated across Bergen byleksikon, Norwegian Wikipedia and a hiking guide (2026-08-22 search pass). This is meaningfully stronger than the earlier conflicting hiking-site claims, but still only WebSearch-snippet-confirmed, not read in full by a human — bergenbyarkiv.no, snl.no, no.wikipedia.org and kulturminnesok.no remain unreachable from the build environment.",
+      "candidate_url": "https://www.bergenbyarkiv.no/bergenbyleksikon/arkiv/1422965",
       "try": [
         "Bergen Byarkiv",
         "Riksantikvaren / kulturminnesok.no",
@@ -41,6 +42,32 @@
         "Bergens Sjøfartsmuseum / Museum Vest"
       ],
       "priority": 1,
+      "research_required": true
+    },
+    {
+      "id": "sandviken_sykehus_detail",
+      "subject": "Neevengården/Sandviken sykehus — architect, opening-day capacity, construction timeline",
+      "why_blocked": "The name-change dates (1891/1927/1978) are already verified via snl_sandviken_sykehus. This is additional detail from a different source — Bergen byarkiv's own oppslagsverket entry — naming architect Ole F. Ebbell (Ole Falk Ebbel, 1839-1919), construction starting autumn 1887, completion 1 April 1891, and capacity for 178 patients across six patient buildings plus admin/economy/mortuary/farm buildings. Corroborated across two independent bergenbyarkiv.no pages, Bergen kommune's own history feature and Norwegian Wikipedia (2026-08-22 search pass), but bergenbyarkiv.no is unreachable from the build environment, so no human here has read the primary page.",
+      "candidate_url": "https://www.bergenbyarkiv.no/oppslagsverket/2008/06/12/neevengarden-sykehus/",
+      "try": ["Bergen Byarkiv oppslagsverket", "Bergen byleksikon", "Bergen kommune byarkiv-forteller"],
+      "priority": 2,
+      "research_required": true
+    },
+    {
+      "id": "munkebotn_munken",
+      "subject": "Munkebotn valley and the Munken rock formation — the medieval boundary stream Gunnhildarå, Dominican monastery grazing, and the local legend attached to the monk-shaped rock",
+      "why_blocked": "Bergen byleksikon has a dedicated entry describing a real rock formation that can resemble a kneeling monk under certain light, with legends attached (including a version published in Bergens Tidende, 15 March 1980) — plus a separate entry on the Munkebotn valley itself naming the Gunnhildarå stream as Bergen's documented northern boundary until 1565, and Dominican-monastery grazing. Corroborated across bergenbyarkiv.no's own byleksikon and a Bergens Tidende article title (2026-08-22 search pass), but bergenbyarkiv.no is unreachable from the build environment.",
+      "candidate_url": "https://www.bergenbyarkiv.no/bergenbyleksikon/arkiv/1422349",
+      "try": ["Bergen byleksikon", "Bergens Tidende archive"],
+      "priority": 1,
+      "research_required": true
+    },
+    {
+      "id": "floyen_trolldans_witchcraft",
+      "subject": "Claimed connection between Fløyen and witch-trial-era 'trolldans' testimony",
+      "why_blocked": "A pasted research document claimed 'historical discussion also records stories of trolldans on Fløyen' tied to the 16th-century witch trials. A dedicated search pass (2026-08-22) found no independent source for this specific claim — only the well-documented Anne Pedersdotter case (Bergen, 1590), which this project's own folklore.json already reserves for a different route (Lyderhorn). Not used anywhere in this project unless a real, specific source for the Fløyen connection turns up.",
+      "try": ["Bergen Byarkiv", "Statsarkivet i Bergen", "a scholarly edition of the trial records"],
+      "priority": 3,
       "research_required": true
     },
     {

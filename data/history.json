@@ -47,6 +47,52 @@
       "educational_text_en": "In 1978 it became Sandviken sykehus — named for a place rather than for what happened inside it. Three names in eighty-seven years, each one moving further from the last. The building did not change. What we were willing to call it did.",
       "asset": null
     },
+    {
+      "id": "sandviken_1891_architect",
+      "kind": "documented",
+      "status": "unverified",
+      "stop": "sandviken-sykehus",
+      "era": "1887–1891",
+      "source": null,
+      "research_required": true,
+      "research_id": "sandviken_sykehus_detail",
+      "display_name_no": "Byggingen",
+      "display_name_en": "The building",
+      "educational_text_no": "",
+      "educational_text_en": "",
+      "asset": null
+    },
+
+    {
+      "id": "munkebotn_boundary",
+      "kind": "documented",
+      "status": "unverified",
+      "stop": "munkebotn",
+      "era": "",
+      "source": null,
+      "research_required": true,
+      "research_id": "munkebotn_munken",
+      "display_name_no": "Gunnhildarå og bygrensen",
+      "display_name_en": "Gunnhildarå and the old city boundary",
+      "educational_text_no": "",
+      "educational_text_en": "",
+      "asset": null
+    },
+    {
+      "id": "munkebotn_monastery",
+      "kind": "documented",
+      "status": "unverified",
+      "stop": "munkebotn",
+      "era": "",
+      "source": null,
+      "research_required": true,
+      "research_id": "munkebotn_munken",
+      "display_name_no": "Klosterbeite",
+      "display_name_en": "Monastery grazing",
+      "educational_text_no": "",
+      "educational_text_en": "",
+      "asset": null
+    },
 
     {
       "id": "sandviksbatteriet_construction",

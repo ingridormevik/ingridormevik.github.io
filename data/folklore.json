@@ -8,8 +8,24 @@
     "cast_at": "stop id where the being appears on this route, or null for archive-only",
     "never_enemy": "folklore is cultural imagination, not monster hunting. No combat, anywhere, ever."
   },
-  "route_casting_note": "On the Sandviken → Fløyen route only Huldra is cast, in the forest. Pesta belongs to the harbour at Vågen, which is not on this route; she stays archive-only here rather than being relocated to fit. Sandviken sykehus and Fløibanen are folklore_permitted:false in route.json and cannot host any being.",
+  "route_casting_note": "Five beings are cast on the Sandviken → Fløyen route: Munken in Munkebotn, Mare at Sandviksbatteriet, Nisse/tuftefolk at Sandvikspilen, Huldra in the forest, and Troll at Fløyen — one per folklore_permitted stop. Pesta belongs to the harbour at Vågen, which is not on this route; she stays archive-only here rather than being relocated to fit. Sandviken sykehus and Fløibanen are folklore_permitted:false in route.json and cannot host any being.",
   "beings": [
+    {
+      "id": "munken",
+      "kind": "imagined",
+      "status": "unverified",
+      "display_name_no": "Munken",
+      "display_name_en": "The Monk",
+      "tradition_source": null,
+      "local_attestation": null,
+      "research_required": true,
+      "cast_at": "munkebotn",
+      "never_enemy": true,
+      "narrative_function": "A rock shape in the old valley that, in the right light, tips into looking like a kneeling figure. Bergen byleksikon records a real local legend attached to it — a hooded monk, a confession, the stream called Gunnhildarå running past. The game never confirms the shape is anything but stone. Encountered by stopping at the right point and letting the light do the work, never by searching for it.",
+      "interactions": ["observe", "wait for the light", "watch it resolve back into rock"],
+      "care": "The one being on this route with a documented local legend behind it, not only Mount Media's own reading — still shown as unverified until a human confirms the source (see data/sources.json's munkebotn_munken), same bar as everything else here.",
+      "assets": []
+    },
     {
       "id": "huldra",
       "kind": "imagined",
@@ -144,9 +160,11 @@
       "tradition_source": null,
       "local_attestation": null,
       "research_required": true,
-      "cast_at": null,
+      "cast_at": "sandviksbatteriet",
       "never_enemy": true,
-      "flag": "Ingrid's first instruction on this project was not to reference Mare. Both the later folklore catalogue and the asset spec include her, archive-only. Shipping archive-only per the later instruction — pull this entry if the original reason still stands.",
+      "flag": "Ingrid confirmed 2026-08-22 that her original instruction not to reference Mare no longer stands. Now cast at Sandviksbatteriet, replacing an earlier Underjordiske draft for that stop.",
+      "narrative_function": "Something that presses at the edge of a dream you didn't mean to have — felt rather than seen, somewhere in the old gun emplacements once the light starts to go. Not a threat, nothing to fight. She is what unease feels like in a place built for a war that mostly didn't come.",
+      "care": "Never a jump-scare, never a monster. If she appears at all it's a felt weight, not an image — nothing to run from and nothing to chase.",
       "assets": [
         "mare_archive_portrait",
         "mare_shadow",
@@ -162,8 +180,10 @@
       "tradition_source": null,
       "local_attestation": null,
       "research_required": true,
-      "cast_at": null,
+      "cast_at": "sandvikspilen",
       "never_enemy": true,
+      "narrative_function": "An old boundary stone along the climb, and — once, at the edge of vision — someone small standing exactly where a wall used to run, gone the moment you look straight at it. Tuftefolk keep the memory of a farmstead the mountain has otherwise erased.",
+      "care": "Never approached, never spoken to on the player's initiative. A glimpse of upkeep from something that considers this ground its own, not a character to recruit.",
       "assets": [
         "nisse_archive",
         "farmstead_interpretation"
