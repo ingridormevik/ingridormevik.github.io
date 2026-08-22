@@ -62,6 +62,21 @@ FOLK_COLS = [(491, 543), (560, 609), (624, 702), (713, 776),
 FOLK_NAMES = ["huldra", "nokken", "troll", "fossegrimen",
               "draugen", "mare", "nisse", "underjordiske"]
 
+# NPC vignettes cut from 04_npc_tourists.png. The sheet's figures touch or
+# overlap at almost every column — connected-component analysis found one
+# blob covering nearly the whole image — so individual figures can't be
+# isolated cleanly. What IS separable are three natural clusters, bounded by
+# the sheet's only real gaps (measured by per-column pixel-density gaps,
+# same method as LAND_COLS above). Used as small ambient vignettes, not
+# individually posable sprites — consistent with what the source actually
+# supports rather than force-fitting a grid that isn't there.
+NPCS = [
+    # (crop box, output name)
+    ((0, 0, 106, 98), "hikers-pair"),
+    ((156, 0, 369, 98), "hikers-group"),
+    ((381, 0, 520, 98), "hikers-family"),
+]
+
 QUARANTINE_SHEETS = [
     ("12_history_archive.png",
      "Fabricated archival photographs carrying hallucinated captions and dates — "
@@ -227,7 +242,7 @@ def main():
 
     reg = {"_comment": "What tools/build-pack-v2.py cut from the concept pack, and "
                        "what it refused. Source art stays in assets/pack-v2/.",
-           "locations": [], "folklore": [], "quarantined": []}
+           "locations": [], "folklore": [], "npcs": [], "quarantined": []}
 
     # Pass one: cut every crop, in memory. Pass two: derive one palette from all
     # of them together, then write. The palette cannot be built until every crop
@@ -251,11 +266,19 @@ def main():
                       ROOT / "assets" / "folklore" / f"{name}.png",
                       "folklore", name, None, None))
 
+    npc_sheet_path = PACK / "04_npc_tourists.png"
+    if npc_sheet_path.exists():
+        npc_sheet = Image.open(npc_sheet_path).convert("RGBA")
+        for box, name in NPCS:
+            crops.append((autotrim(npc_sheet.crop(box)),
+                          ROOT / "assets" / "npcs" / f"{name}.png",
+                          "npc", name, None, None))
+
     palette = build_shared_palette([c[0] for c in crops])
 
     for img, dest, kind, name, stop, reason in crops:
         dest.parent.mkdir(parents=True, exist_ok=True)
-        to_palette(img, palette, keep_alpha=(kind == "folklore")).save(dest, optimize=True)
+        to_palette(img, palette, keep_alpha=(kind in ("folklore", "npc"))).save(dest, optimize=True)
         p = dest.relative_to(ROOT).as_posix()
         if kind == "quarantined":
             reg["quarantined"].append(
@@ -265,6 +288,12 @@ def main():
                                      "kind": "concept_art", "status": "unverified",
                                      "note": "Painted interpretation, not a photograph. "
                                              "Carries no factual claim."})
+        elif kind == "npc":
+            reg["npcs"].append({"id": name, "asset": p,
+                                "note": "Ambient background vignette, not an individually "
+                                        "posable character — the source sheet's figures "
+                                        "touch at almost every column, so a small cluster "
+                                        "is what the art actually supports."})
         else:
             reg["folklore"].append({"id": name, "asset": p, "kind": "imagined",
                                     "status": "unverified",
@@ -302,6 +331,7 @@ def main():
 
     print(f"locations cleared: {len(reg['locations'])}")
     print(f"folklore portraits: {len(reg['folklore'])}")
+    print(f"npc vignettes: {len(reg['npcs'])}")
     print(f"QUARANTINED: {len(reg['quarantined'])} — see assets/quarantine/README.md")
 
 

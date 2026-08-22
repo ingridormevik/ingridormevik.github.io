@@ -1727,6 +1727,78 @@
             }
         };
 
+        // Ambient background life — tourists and hikers passing at a distance.
+        // Pure decoration: no interaction, nothing to find, nothing written to
+        // the archive. Density per stop mirrors data/route.json's own
+        // npc_density field. Sandviken sykehus stays empty on purpose — that
+        // stop is folklore_permitted:false for the same asylum-horror-trope
+        // reason, and cheerful tourists would work against the MEMORY theme
+        // the same way a cast being would. The forest is also left empty even
+        // though its density is "sparse", so a passer-by is never mistaken
+        // for Huldra, who uses the same off-to-the-side treatment there.
+        var STOP_NPC = {
+            'sandviken-sykehus': null,
+            'munkebotn': 'hikers-pair',
+            'sandviksbatteriet': 'hikers-pair',
+            'sandvikspilen': 'hikers-group',
+            'forest-transition': null,
+            'floyen': 'hikers-family',
+            'floibanen': 'hikers-family'
+        };
+
+        var AMBIENT = {
+            live: [], art: {},
+            load: function () {
+                var self = this;
+                ['hikers-pair', 'hikers-group', 'hikers-family'].forEach(function (id) {
+                    var im = new Image();
+                    im.src = 'assets/npcs/' + id + '.png';
+                    self.art[id] = im;
+                });
+            },
+            seed: function (chapter) {
+                this.live = [];
+                var npc = STOP_NPC[STOP_IDS[chapter]];
+                if (!npc) return;
+                var len = CH[chapter].dist;
+                this.live.push({
+                    npc: npc, a: 0,
+                    world: len * (0.4 + Math.random() * 0.3),
+                    depth: 0.32 + Math.random() * 0.08,
+                    side: Math.random() < 0.5 ? -1 : 1
+                });
+            },
+            update: function (dt) {
+                this.live.forEach(function (g) {
+                    var near = Math.abs(g.world - S.dist) < 220;
+                    // Ambient life never reaches full strength — it stays
+                    // clearly background, whether or not the player stops.
+                    g.a = clamp(g.a + (near ? 1 : -1) * dt * 0.6, 0, 0.5);
+                });
+            },
+            screenX: function (g) {
+                var anchor = g.side < 0 ? W * 0.08 : W * 0.94;
+                return (g.world - S.dist) * g.depth + anchor;
+            },
+            draw: function () {
+                var self = this;
+                this.live.forEach(function (g) {
+                    if (g.a <= 0.01) return;
+                    var im = self.art[g.npc];
+                    if (!im || !im.complete || !im.naturalWidth) return;
+                    var x = Math.round(self.screenX(g));
+                    var h = Math.round((GROUND - 18) * 0.24 * g.depth + 22);
+                    var w = Math.round(h * (im.naturalWidth / im.naturalHeight));
+                    if (x + w / 2 < -40 || x - w / 2 > W + 40) return;
+                    var y = Math.round(GROUND - h + 4);
+                    ctx.save();
+                    ctx.globalAlpha = g.a;
+                    ctx.drawImage(im, Math.round(x - w / 2), y, w, h);
+                    ctx.restore();
+                });
+            }
+        };
+
         function archNoteBeing(b) {
             var a = archRead();
             a.beings = a.beings || [];
@@ -1789,6 +1861,7 @@
             S.items = [];
             S.nextItem = 40 + Math.random() * 50;
             BEINGS.seed(S.chapter);
+            AMBIENT.seed(S.chapter);
         }
 
         function spawnItem() {
@@ -2396,6 +2469,7 @@
             tile(tintCache('mid', '#241d38'), -S.cam * 0.18, 0.95);
             tile(tintCache('treeFar', '#141d18'), -S.cam * 0.42);
             drawFog(ch);
+            AMBIENT.draw();
             tile(tintCache('treeNear', '#0d140f'), -S.cam * 0.9);
             drawGround(ch);
             drawSign();
@@ -3083,6 +3157,7 @@
         }
 
         BEINGS.load();
+        AMBIENT.load();
 
         el('rmArchBtn').addEventListener('click', function () { archOpen(); });
         el('rmArchClose').addEventListener('click', function () { hide('rmArch'); });
@@ -3171,6 +3246,7 @@
             beatUpdate(dt);
             updateItems(dt);
             BEINGS.update(dt);
+            AMBIENT.update(dt);
 
             if (S.phase === 'walk' && S.walking) {
                 var speed = 76 * (0.82 + (S.energy / 100) * 0.36);
