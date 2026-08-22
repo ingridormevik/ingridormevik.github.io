@@ -949,6 +949,7 @@
                             <div class="rm-chapter-tag">TRAIL MAP</div>
                             <p class="rm-text">Sandviken sykehus → Fløyen. Tap a stop
                                 you've already reached to see what you found there.</p>
+                            <p class="rm-arch-lead" id="rmMapReal"></p>
                             <div class="rm-map-route" id="rmMapRoute"></div>
                             <div class="rm-choices">
                                 <button class="rm-btn rm-go" id="rmMapClose">← BACK TO THE TRAIL</button>
@@ -2640,12 +2641,28 @@
             el('rmMapRoute').innerHTML = html;
         }
 
+        // The real walking distance/time, exactly as Ingrid read it off Google
+        // Maps — not modelled, not estimated. Loaded separately from the node
+        // list so opening the map never has to wait on a fetch: the schematic
+        // route shows instantly, this line fills in if/when the data arrives,
+        // and is left blank rather than guessed at if it doesn't.
+        function mapRenderReal() {
+            var real = ARCH.data && ARCH.data.route && ARCH.data.route.real_route;
+            if (!real) { el('rmMapReal').textContent = ''; return; }
+            var h = Math.floor(real.duration_min / 60), m = real.duration_min % 60;
+            var time = (h ? h + 'H ' : '') + m + 'MIN';
+            el('rmMapReal').textContent = real.distance_km + ' KM · ABOUT ' + time +
+                ' ON FOOT, START TO FLØYEN';
+        }
+
         function openMap() {
             hide('rmFind'); hide('rmArch'); hide('rmAcc');
             setWalk(false);
             mapRender();
+            mapRenderReal();
             show('rmMap');
             readCurrentText();
+            if (!ARCH.loaded) archLoad(mapRenderReal);
         }
 
         function openAcc() {

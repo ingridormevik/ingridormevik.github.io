@@ -3,6 +3,16 @@
   "title": "Trail Mix",
   "subtitle": "Mount Media × Preem Cast",
   "core_promise": "A moving cultural performance where music, local history, ecological attention and collective care travel through Bergen together.",
+  "real_route": {
+    "_comment": "Not modelled or estimated — captured directly from Google Maps walking directions by Ingrid Ormevik and reported here as she read it off the screen, same tier of trust as a human pasting a live page's own content elsewhere in this project.",
+    "distance_km": 4.8,
+    "duration_min": 83,
+    "duration_text_no": "1 t 23 min",
+    "start_label": "Psykiatrisk klinikk, Haukeland (the Sandviken sykehus site, administratively part of Haukeland universitetssjukehus)",
+    "end_label": "Fløyen",
+    "source": "Google Maps walking directions, screenshot captured by Ingrid Ormevik",
+    "captured": "2026-08-22"
+  },
   "chapters": [
     { "n": 1, "id": "sandviken-sykehus",  "title": "Sandviken sykehus",      "theme": "MEMORY",        "stop": true },
     { "n": 2, "id": "city-releases-you",  "title": "The City Releases You",  "theme": "TRANSITION",    "stop": false },
