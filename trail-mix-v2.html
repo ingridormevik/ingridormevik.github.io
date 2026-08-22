@@ -711,6 +711,10 @@
             .rm-title, .rm-chapcard { justify-content: flex-start; padding-top: 12%; }
             .rm-stat-lab { display: none; }
             .rm-cap { justify-content: center; text-align: center; }
+            /* The three-part walk prompt is too long to force onto one line
+               at the smallest allowed font size without running past the
+               stage edges — let it wrap instead of clipping. */
+            .rm-prompt { white-space: normal; text-align: center; max-width: 90%; line-height: 1.5; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -850,7 +854,7 @@
                         <span class="rm-tag" style="left:60%">INGRID<b></b></span>
                         <span class="rm-tag" style="left:40%">JACK<b></b></span>
                     </div>
-                    <div class="rm-prompt rm-hide" id="rmPrompt">HOLD TO WALK · TAP ON THE BEAT TO BAG IT</div>
+                    <div class="rm-prompt rm-hide" id="rmPrompt">HOLD TO WALK · STOP TO NOTICE · TAP ON THE BEAT TO BAG IT</div>
 
                     <!-- Loading -->
                     <div class="rm-layer rm-load on" id="rmLoad">

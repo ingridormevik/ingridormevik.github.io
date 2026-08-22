@@ -179,6 +179,32 @@ def to_palette(im, palette, keep_alpha=False):
     return rgba
 
 
+BEING_PIXEL_W = 22  # measured against Jack/Ingrid's actual pixel density, see below
+
+
+def pixelate_being(im, palette, target_w=BEING_PIXEL_W):
+    """Real pixel art, not a posterized painting.
+
+    to_palette() alone quantises colour but not space — it leaves every fine
+    brushstroke as its own tiny same-coloured speckle, which is exactly why
+    the folklore beings read as painterly next to Jack and Ingrid's actual
+    sprites (assets/sprites-pack/, 128x128 but built from genuine large flat
+    blocks — measured directly, not guessed). This downscales to a real low
+    pixel-count grid first, maps THAT onto the shared palette, thresholds
+    the alpha into a hard silhouette instead of a soft cutout, then blows
+    everything back up with nearest-neighbour so every 'pixel' is an actual
+    flat block at the original display size.
+    """
+    ratio = target_w / im.width
+    target_h = max(1, round(im.height * ratio))
+    small = im.resize((target_w, target_h), Image.LANCZOS)
+    mapped = to_palette(small, palette, keep_alpha=False).convert("RGBA")
+    alpha_small = im.resize((target_w, target_h), Image.LANCZOS).getchannel("A")
+    alpha_small = alpha_small.point(lambda p: 255 if p > 110 else 0)
+    mapped.putalpha(alpha_small)
+    return mapped.resize((im.width, im.height), Image.NEAREST)
+
+
 def pixelate(im, colours=PIXEL_COLOURS):
     """Return a palette-mode image at its native pixel grid.
 
@@ -278,7 +304,11 @@ def main():
 
     for img, dest, kind, name, stop, reason in crops:
         dest.parent.mkdir(parents=True, exist_ok=True)
-        to_palette(img, palette, keep_alpha=(kind in ("folklore", "npc"))).save(dest, optimize=True)
+        if kind == "folklore":
+            out_im = pixelate_being(img, palette)
+        else:
+            out_im = to_palette(img, palette, keep_alpha=(kind == "npc"))
+        out_im.save(dest, optimize=True)
         p = dest.relative_to(ROOT).as_posix()
         if kind == "quarantined":
             reg["quarantined"].append(
