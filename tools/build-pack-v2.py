@@ -148,10 +148,20 @@ def build_shared_palette(images, colours=PIXEL_COLOURS):
     return pal
 
 
-def to_palette(im, palette):
+def to_palette(im, palette, keep_alpha=False):
     """Map one image onto the shared palette."""
     rgb = im.convert("RGB").filter(ImageFilter.MedianFilter(3))
-    return rgb.quantize(palette=palette, dither=Image.NONE)
+    quantized = rgb.quantize(palette=palette, dither=Image.NONE)
+    if not keep_alpha:
+        return quantized
+    # Folklore beings are painted with a real cutout in the source sheet — the
+    # concept art's own alpha channel is the being's silhouette, soft-edged,
+    # not a hard mask. Quantising is only ever about colour; keep the original
+    # alpha untouched so she is cut out the way she was painted, rather than
+    # boxed in whatever colour sat behind her on the panel.
+    rgba = quantized.convert("RGBA")
+    rgba.putalpha(im.convert("RGBA").getchannel("A"))
+    return rgba
 
 
 def pixelate(im, colours=PIXEL_COLOURS):
@@ -245,7 +255,7 @@ def main():
 
     for img, dest, kind, name, stop, reason in crops:
         dest.parent.mkdir(parents=True, exist_ok=True)
-        to_palette(img, palette).save(dest, optimize=True)
+        to_palette(img, palette, keep_alpha=(kind == "folklore")).save(dest, optimize=True)
         p = dest.relative_to(ROOT).as_posix()
         if kind == "quarantined":
             reg["quarantined"].append(
