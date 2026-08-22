@@ -1625,17 +1625,19 @@
                 this.live = [];
                 var b = this.cast[chapter];
                 if (!b) return;
-                // two chances to notice per chapter, both well inside its length
+                // two chances to notice per chapter, both well inside its length,
+                // one to each side of the path so neither ever stands where the
+                // party actually walks (Jack ~W*0.40, Ingrid ~W*0.60).
                 var len = CH[chapter].dist;
-                this.live.push(this.make(b, len * 0.34));
-                this.live.push(this.make(b, len * 0.72));
+                this.live.push(this.make(b, len * 0.34, -1));
+                this.live.push(this.make(b, len * 0.72, 1));
             },
 
-            make: function (b, at) {
+            make: function (b, at, side) {
                 return {
-                    being: b, world: at, a: 0, phase: 'wait',
-                    depth: 0.58 + Math.random() * 0.14,
-                    off: (Math.random() - 0.5) * 30,
+                    being: b, world: at, a: 0, phase: 'wait', side: side,
+                    depth: 0.5 + Math.random() * 0.12,
+                    off: (Math.random() - 0.5) * 20,
                     // A per-instance drift, not a fixed cutout — she should feel
                     // like she is standing among the trees, not pasted over them.
                     sway: Math.random() * Math.PI * 2,
@@ -1672,7 +1674,11 @@
                 // fully noticed drifts gently, like standing among moving trees.
                 var sway = reduceMotion ? 0 :
                     Math.sin(S.t * g.swaySpeed + g.sway) * 5 * g.a;
-                return (g.world - S.dist) * g.depth + W * 0.62 + g.off + sway;
+                // Off to one side of the path, in the trees — not where Jack
+                // (~W*0.40) or Ingrid (~W*0.60) actually walk. She was previously
+                // anchored at W*0.62, which put her almost on top of Ingrid.
+                var anchor = g.side < 0 ? W * 0.16 : W * 0.87;
+                return (g.world - S.dist) * g.depth + anchor + g.off + sway;
             },
 
             draw: function () {
