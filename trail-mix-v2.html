@@ -1621,16 +1621,22 @@
                     }).catch(function () { });
             },
 
+            flash: 0,
+
             seed: function (chapter) {
                 this.live = [];
                 var b = this.cast[chapter];
                 if (!b) return;
-                // two chances to notice per chapter, both well inside its length,
-                // one to each side of the path so neither ever stands where the
-                // party actually walks (Jack ~W*0.40, Ingrid ~W*0.60).
+                // Two chances to notice per chapter, one to each side of the
+                // path so neither ever stands where the party actually walks
+                // (Jack ~W*0.40, Ingrid ~W*0.60). Both sit well clear of the
+                // chapter's own end — the second used to land at 0.72, close
+                // enough to the story-card trigger that noticing her (which
+                // needs the player to stop and hold still for the alpha to
+                // rise) felt rushed, sometimes cut off before it landed.
                 var len = CH[chapter].dist;
-                this.live.push(this.make(b, len * 0.34, -1));
-                this.live.push(this.make(b, len * 0.72, 1));
+                this.live.push(this.make(b, len * 0.26, -1));
+                this.live.push(this.make(b, len * 0.55, 1));
             },
 
             make: function (b, at, side) {
@@ -1647,6 +1653,7 @@
 
             update: function (dt) {
                 var self = this;
+                this.flash = Math.max(0, this.flash - dt * 0.85);
                 this.live.forEach(function (g) {
                     var near = Math.abs(g.world - S.dist) < 120;
                     if (!near) { g.a = Math.max(0, g.a - dt * 0.8); return; }
@@ -1657,6 +1664,7 @@
                         g.a = Math.max(0, Math.min(0.92, g.a + pull * dt));
                         if (!S.walking && g.a > 0.5 && !self.seen[g.being.id]) {
                             self.seen[g.being.id] = true;
+                            self.flash = 1;
                             S.conn = clamp(S.conn + 3, 0, 100);   // Presence
                             syncHud();
                             archNoteBeing(g.being);
@@ -1664,6 +1672,12 @@
                                 x: self.screenX(g), y: GROUND - 40, a: 1, big: true,
                                 text: (g.being.display_name_en || g.being.id).toUpperCase()
                             });
+                            // A soft chime, not a jingle — the moment gets a sound as
+                            // well as a sight, same restraint as everywhere else here.
+                            if (AU.ctxA) {
+                                blip('lead', 660, 0.5, 0.1, 'sine');
+                                blip('lead', 990, 0.7, 0.06, 'sine');
+                            }
                         }
                     }
                 });
@@ -2357,6 +2371,23 @@
             }
         }
 
+        // The one moment a folklore encounter gets to feel like a moment — a
+        // soft bloom across the whole scene when a being is first fully
+        // noticed, not a jump-scare flash. Under Reduce Motion it still
+        // shows, just as a gentler, un-animated wash rather than a pulse.
+        function drawBeingFlash() {
+            var f = BEINGS.flash;
+            if (f <= 0.01) return;
+            var eased = reduceMotion ? Math.min(f, 0.4) : f;
+            ctx.save();
+            var rg = ctx.createRadialGradient(W / 2, H * 0.42, 4, W / 2, H * 0.42, W * 0.8);
+            rg.addColorStop(0, 'rgba(224, 196, 255,' + (0.22 * eased) + ')');
+            rg.addColorStop(1, 'rgba(224, 196, 255, 0)');
+            ctx.fillStyle = rg;
+            ctx.fillRect(0, 0, W, H);
+            ctx.restore();
+        }
+
         function drawVignette() {
             var g = ctx.createRadialGradient(W / 2, H / 2, 90, W / 2, H / 2, 285);
             g.addColorStop(0, 'rgba(0,0,0,0)');
@@ -2482,6 +2513,7 @@
             drawPops();
             drawCombo();
             drawVignette();
+            drawBeingFlash();
 
             // a soft light lift on the beat - the world nods along
             if (BEAT.pulse > 0.02 && !reduceMotion) {
@@ -2926,6 +2958,19 @@
         var STOP_IDS = ['sandviken-sykehus', 'munkebotn', 'sandviksbatteriet', 'sandvikspilen',
             'forest-transition', 'floyen', 'floibanen'];
 
+        // A short, dry-toned line for the chapter's own outcome text to carry,
+        // only when that chapter's being was actually noticed — the story
+        // acknowledging what happened, instead of a glimpse nobody mentions
+        // again. Never confirms what was seen; matches each being's own
+        // never_enemy/ambiguous care note in data/folklore.json.
+        var BEING_AFTERMATH = {
+            huldra: "Neither of them mentions the shape that was watching from the trees. Some things you don't confirm by naming them.",
+            troll: "Jack swears the rock by the viewpoint moved when he wasn't looking at it. It didn't. Probably.",
+            munken: "For a moment the light made the old stone look like it was kneeling. Then it was just a rock again.",
+            mare: "Something pressed at the edge of the evening back there, gone before either of them could say what it was.",
+            nisse: "Ingrid could swear the old wall had someone standing at it a moment ago. Jack didn't see anything. Neither of them brings it up again."
+        };
+
         function resolve(c) {
             S.energy = clamp(S.energy + c.e, 0, 100);
             S.sound = clamp(S.sound + c.s, 0, 100);
@@ -2941,7 +2986,12 @@
                 archAdd(ids, stop);
             });
 
-            el('rmStoryTxt').textContent = c.out;
+            var out = c.out;
+            var castBeing = BEINGS.cast[S.chapter];
+            if (castBeing && BEINGS.seen[castBeing.id] && BEING_AFTERMATH[castBeing.id]) {
+                out += ' ' + BEING_AFTERMATH[castBeing.id];
+            }
+            el('rmStoryTxt').textContent = out;
             var box = el('rmStoryChoices');
             box.innerHTML = '';
             var b = document.createElement('button');
