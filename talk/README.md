@@ -30,9 +30,12 @@ do that once before going on stage.
 | `L` | **on the reveal slide:** switch between demo numbers and live server data |
 | `M` | media check — lists any file that could not be found |
 
-Three slides advance internally rather than jumping: the reveal (3 stages),
-bergtatt (3 stages) and the closing (4 beats). Eighteen advances carry the
-whole deck end to end.
+Three slides advance internally rather than jumping: the reveal (3 beats),
+bergtatt (3 beats) and the closing (4 beats). Eighteen advances carry the whole
+deck end to end.
+
+On those slides the counter reads `08 / 12 · beat 2 of 3`, so a press always
+shows it registered even when the change on screen is only a line fading in.
 
 ## The reveal slide and its data
 

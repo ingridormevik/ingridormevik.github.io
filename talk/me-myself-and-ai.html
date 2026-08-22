@@ -327,7 +327,7 @@ h1{font-weight:400;font-size:clamp(2.3rem,5.4vw,4.4rem);line-height:1.06;letter-
   color:var(--slate);margin-top:2.6rem}
 
 .notes{position:fixed;inset:auto 0 0 0;z-index:70;background:rgba(4,7,9,.975);
-  border-top:1px solid var(--gold-dim);padding:1.5rem 58px 1.7rem;display:none;
+  border-top:1px solid var(--gold-dim);padding:1.5rem 58px 6rem;display:none;
   max-height:46vh;overflow:auto;font-family:var(--mono)}
 .notes.on{display:block}
 .notes h4{font-size:10px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;
@@ -336,9 +336,9 @@ h1{font-weight:400;font-size:clamp(2.3rem,5.4vw,4.4rem);line-height:1.06;letter-
   white-space:pre-wrap;color:var(--bone)}
 .notes .say{color:#A8E8F5}
 
-.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:45;display:flex;gap:8px}
+.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:80;display:flex;gap:8px}
 .nav button{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
-  background:rgba(5,8,10,.82);color:var(--chiral);border:1px solid var(--hair);
+  background:rgba(5,8,10,.96);color:var(--chiral);border:1px solid var(--hair);
   padding:.6rem 1.05rem;cursor:pointer}
 .nav button:active{background:var(--chiral);color:var(--void)}
 .help{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);z-index:41;
@@ -1050,6 +1050,7 @@ Scheuerman, Pape and Hanna 2021. Bianchi et al. 2023. Blom 2023.</div>
     var key = slides.indexOf(slide);
     stageOf[key] = n;
     slide.setAttribute('data-stage-now', n);
+    paintCounter(key, n);
     if(slide.id === 'revealSlide') revealStage(n);
     if(slide.id === 'bergtattSlide') bergStage(n);
     if(slide.id === 'endSlide') endStage(n);
@@ -1381,6 +1382,13 @@ Scheuerman, Pape and Hanna 2021. Bianchi et al. 2023. Blom 2023.</div>
   }
   var segs = depth.querySelectorAll('.seg');
 
+  function paintCounter(n, stage){
+    var txt = String(n+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+    var stages = stagesIn(slides[n]);
+    if(stages > 1) txt += '  \u00b7  beat ' + stage + ' of ' + stages;
+    counter.textContent = txt;
+  }
+
   function notesFor(n){
     var src = slides[n].querySelector('.notes-src');
     return src ? src.textContent.trim() : '';
@@ -1400,7 +1408,7 @@ Scheuerman, Pape and Hanna 2021. Bianchi et al. 2023. Blom 2023.</div>
     if(slides[i].id === 'bergtattSlide' && n !== i) bergStop();
     i = n;
     slides.forEach(function(el,k){ el.classList.toggle('active', k===n); });
-    counter.textContent = String(n+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+    paintCounter(n, 1);
     segs.forEach(function(sg,k){
       sg.className = 'seg' + (k<n ? ' on' : '') + (k===n ? ' here' : '');
     });
