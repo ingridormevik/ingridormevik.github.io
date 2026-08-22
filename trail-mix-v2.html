@@ -521,6 +521,86 @@
         .rm-icobtn:hover { color: var(--rm-cream); border-color: var(--rm-gold); }
         .rm-icobtn[aria-pressed="true"] { color: var(--rm-gold); border-color: var(--rm-gold); }
 
+        /* Trail map — six stop nodes joined by a route line, in the same carved
+           chrome as the rest of the HUD rather than a separate illustration
+           style. A node is a button so keyboard/touch work the same as
+           everywhere else; only visited stops are enabled. */
+        .rm-map-route {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0;
+            margin: 1em 0;
+        }
+
+        .rm-map-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .3em;
+            width: clamp(72px, 15.5cqmin, 110px);
+            background: var(--rm-panel-hi);
+            border: 2px solid var(--rm-edge);
+            padding: .5em .4em .6em;
+            font-family: inherit;
+            color: var(--rm-cream);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .rm-map-node:disabled { cursor: default; opacity: .42; }
+
+        .rm-map-node:not(:disabled):hover,
+        .rm-map-node:not(:disabled):focus-visible {
+            border-color: var(--rm-gold);
+            outline: none;
+        }
+
+        .rm-map-node img,
+        .rm-map-noart {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            display: block;
+            object-fit: cover;
+            image-rendering: pixelated;
+            border: 1px solid var(--rm-edge);
+        }
+
+        .rm-map-noart {
+            background: repeating-linear-gradient(45deg, #1c1622, #1c1622 4px, #241c2c 4px, #241c2c 8px);
+        }
+
+        .rm-map-node b {
+            font-size: clamp(8px, 2cqmin, 10px);
+            color: var(--rm-gold);
+            letter-spacing: .1em;
+        }
+
+        .rm-map-node span {
+            font-size: clamp(7px, 1.9cqmin, 9px);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        .rm-map-node em {
+            font-style: normal;
+            font-size: clamp(6px, 1.6cqmin, 8px);
+            letter-spacing: .08em;
+            color: var(--rm-dim);
+        }
+
+        .rm-map-current { border-color: var(--rm-gold); box-shadow: 0 0 0 2px rgba(212, 167, 88, .28); }
+        .rm-map-current em { color: var(--rm-gold); }
+
+        .rm-map-link {
+            flex: 0 0 clamp(10px, 2.4cqmin, 20px);
+            align-self: center;
+            height: 2px;
+            background: var(--rm-edge);
+        }
+
+        .rm-map-link.d { background: var(--rm-gold); }
+
         /* Accessibility Hub — same .rm-icobtn look, stacked full-width as a
            settings list rather than inline in a toolbar. */
         .rm-acc-list { display: grid; gap: 8px; margin: 1em 0; }
@@ -860,6 +940,22 @@
                         </div>
                     </div>
 
+                    <!-- Trail map: a progress view of the six stops, not a level-select.
+                         The walk stays one way — a stop only opens once you've actually
+                         reached it, and opening one reopens what you found there rather
+                         than jumping the story. -->
+                    <div class="rm-layer rm-story rm-hide" id="rmMap">
+                        <div class="rm-card rm-map-card">
+                            <div class="rm-chapter-tag">TRAIL MAP</div>
+                            <p class="rm-text">Sandviken sykehus → Fløyen. Tap a stop
+                                you've already reached to see what you found there.</p>
+                            <div class="rm-map-route" id="rmMapRoute"></div>
+                            <div class="rm-choices">
+                                <button class="rm-btn rm-go" id="rmMapClose">← BACK TO THE TRAIL</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Accessibility Hub: High Contrast, Reduce Motion, Large Text, Read
                          Aloud and Mute All, each one a real toggle that saves immediately
                          and applies immediately — same overlay family as Find/Archive. -->
@@ -908,6 +1004,7 @@
                     <button class="rm-icobtn" id="rmFindBtn" title="I found something">◎ I FOUND SOMETHING</button>
                     <div class="rm-spacer"></div>
                     <button class="rm-icobtn" id="rmArchBtn" title="Trail Archive">▤ ARCHIVE <span id="rmArchN">0</span></button>
+                    <button class="rm-icobtn" id="rmMapBtn" title="Trail Map">🗺 MAP</button>
                     <button class="rm-icobtn" id="rmAccBtn" title="Accessibility settings" aria-pressed="false">♿ ACCESSIBILITY</button>
                     <button class="rm-icobtn" id="rmFull" title="Fullscreen">⛶ FULLSCREEN</button>
                     <button class="rm-icobtn" id="rmMusic" aria-pressed="false" title="Trail Mix Theme Song">♫ THEME OFF</button>
@@ -1074,7 +1171,7 @@
 
         function readCurrentText() {
             if (!SET.readAloud || !window.speechSynthesis) return;
-            var ids = ['rmStory', 'rmArch', 'rmFind', 'rmAcc'], node = null;
+            var ids = ['rmStory', 'rmArch', 'rmFind', 'rmMap', 'rmAcc'], node = null;
             for (var i = 0; i < ids.length; i++) {
                 var n = el(ids[i]);
                 if (n && n.classList.contains('on')) { node = n; break; }
@@ -1624,7 +1721,7 @@
             // even while an overlay is open — a real device can end up with
             // Find and Archive both shown at once, both eating every tap.
             // Close whatever else is open first.
-            hide('rmArch'); hide('rmAcc');
+            hide('rmArch'); hide('rmAcc'); hide('rmMap');
             var wasWalking = S.walking;
             setWalk(false);
             show('rmFind');
@@ -2402,7 +2499,7 @@
                     'again.</p><div class="rm-choices"><button class="rm-btn rm-go" ' +
                     'id="rmArchRetry">↺ TRY AGAIN</button></div>';
                 var retryBtn = document.getElementById('rmArchRetry');
-                if (retryBtn) retryBtn.addEventListener('click', archOpen);
+                if (retryBtn) retryBtn.addEventListener('click', function () { archOpen(); });
                 return;
             }
 
@@ -2432,7 +2529,7 @@
                 var list = byStop[st.id] || [];
                 if (!list.length) return;
                 var when = (a.scanned || {})[st.id];
-                html += '<div class="rm-arch-stop"><h4>' + archEsc(stopName[st.id]) +
+                html += '<div class="rm-arch-stop" id="rmArchStop-' + st.id + '"><h4>' + archEsc(stopName[st.id]) +
                     (when ? '<span>visited ' + when.slice(0, 10) + '</span>' : '') + '</h4>';
 
                 list.forEach(function (e) {
@@ -2498,13 +2595,61 @@
             body.innerHTML = html;
         }
 
-        function archOpen() {
-            hide('rmFind'); hide('rmAcc');
-            archLoad(function () { archRender(); show('rmArch'); readCurrentText(); });
+        function archOpen(scrollToStop) {
+            hide('rmFind'); hide('rmAcc'); hide('rmMap');
+            archLoad(function () {
+                archRender();
+                show('rmArch');
+                readCurrentText();
+                if (scrollToStop) {
+                    var target = el('rmArchStop-' + scrollToStop);
+                    if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+                }
+            });
+        }
+
+        var MAP_ART = {
+            'sandviken-sykehus': 'assets/locations/sandviken-sykehus.png',
+            'sandviksbatteriet': null,
+            'sandvikspilen': 'assets/locations/sandvikspilen.png',
+            'forest-transition': 'assets/locations/trail-forest.png',
+            'floyen': 'assets/locations/floyen.png',
+            'floibanen': 'assets/locations/floibanen-top.png'
+        };
+
+        function mapRender() {
+            var a = archRead();
+            var scanned = a.scanned || {};
+            var curStop = STOP_IDS[S.chapter];
+            var html = '';
+            STOP_IDS.forEach(function (id, i) {
+                var visited = !!scanned[id];
+                var current = id === curStop && S.phase !== 'end';
+                var state = current ? 'current' : visited ? 'visited' : 'locked';
+                var art = MAP_ART[id];
+                html += '<button class="rm-map-node rm-map-' + state + '" data-stop="' + id + '"' +
+                    (state === 'locked' ? ' disabled' : '') + '>' +
+                    (art ? '<img src="' + art + '" alt="">' : '<span class="rm-map-noart"></span>') +
+                    '<b>' + (i + 1) + '</b><span>' + archEsc(CH[i].t) + '</span>' +
+                    '<em>' + (state === 'locked' ? 'NOT YET WALKED' :
+                        state === 'current' ? 'YOU ARE HERE' : 'WALKED') + '</em></button>';
+                if (i < STOP_IDS.length - 1) {
+                    html += '<i class="rm-map-link' + (visited ? ' d' : '') + '"></i>';
+                }
+            });
+            el('rmMapRoute').innerHTML = html;
+        }
+
+        function openMap() {
+            hide('rmFind'); hide('rmArch'); hide('rmAcc');
+            setWalk(false);
+            mapRender();
+            show('rmMap');
+            readCurrentText();
         }
 
         function openAcc() {
-            hide('rmFind'); hide('rmArch');
+            hide('rmFind'); hide('rmArch'); hide('rmMap');
             setWalk(false);
             show('rmAcc');
             readCurrentText();
@@ -2809,9 +2954,18 @@
 
         BEINGS.load();
 
-        el('rmArchBtn').addEventListener('click', archOpen);
+        el('rmArchBtn').addEventListener('click', function () { archOpen(); });
         el('rmArchClose').addEventListener('click', function () { hide('rmArch'); });
         archCount();
+
+        /* ---------- map wiring ---------- */
+        el('rmMapBtn').addEventListener('click', openMap);
+        el('rmMapClose').addEventListener('click', function () { hide('rmMap'); });
+        el('rmMapRoute').addEventListener('click', function (e) {
+            var b = e.target.closest('.rm-map-node');
+            if (!b || b.disabled) return;
+            archOpen(b.dataset.stop);
+        });
 
         el('rmFindBtn').addEventListener('click', function () {
             if (S.phase !== 'walk') return;
