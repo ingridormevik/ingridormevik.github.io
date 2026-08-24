@@ -32,7 +32,16 @@
       "folklore_permitted": false,
       "folklore_ban_reason": "Chapter theme is MEMORY and institutional history. Casting any being here produces the asylum-horror trope the spec bans. Enforced in code, not left to judgement.",
       "next": "munkebotn",
-      "npc_density": "urban"
+      "npc_density": "urban",
+      "geo": {
+        "_comment": "GPS proximity-unlock coordinate for real-world GPS mode. Sourced by web search, not confirmed on the ground — same tier as data/history.json's research_required entries. Ingrid should verify against Google Maps before relying on this while actually walking the route.",
+        "lat": 60.418,
+        "lng": 5.314,
+        "radius_m": 80,
+        "status": "unverified",
+        "research_required": true,
+        "source": "Wikipedia — Sandviken Hospital"
+      }
     },
     {
       "id": "munkebotn",
@@ -42,7 +51,16 @@
       "folklore_permitted": true,
       "primary_being": "munken",
       "next": "sandviksbatteriet",
-      "npc_density": "sparse"
+      "npc_density": "sparse",
+      "geo": {
+        "_comment": "GPS proximity-unlock coordinate for real-world GPS mode. Sourced by web search (trail database indexing the Munkebotn trailhead), not confirmed on the ground. Ingrid should verify against Google Maps before relying on this while actually walking the route.",
+        "lat": 60.41585,
+        "lng": 5.31919,
+        "radius_m": 80,
+        "status": "unverified",
+        "research_required": true,
+        "source": "Trailforks — Munkebotn trailhead"
+      }
     },
     {
       "id": "sandviksbatteriet",
@@ -52,7 +70,16 @@
       "folklore_permitted": true,
       "primary_being": "mare",
       "next": "sandvikspilen",
-      "npc_density": "sparse"
+      "npc_density": "sparse",
+      "geo": {
+        "_comment": "GPS proximity-unlock coordinate for real-world GPS mode. Sourced by web search — this is a mountain-bike trailhead near the site, not confirmed as the historic battery position itself. Ingrid should verify against Google Maps before relying on this while actually walking the route.",
+        "lat": 60.41565,
+        "lng": 5.33144,
+        "radius_m": 80,
+        "status": "unverified",
+        "research_required": true,
+        "source": "Trailforks — Sandviksbatteriet trailhead"
+      }
     },
     {
       "id": "sandvikspilen",
@@ -62,7 +89,16 @@
       "folklore_permitted": true,
       "primary_being": "nisse",
       "next": "forest-transition",
-      "npc_density": "hikers"
+      "npc_density": "hikers",
+      "geo": {
+        "_comment": "GPS proximity-unlock coordinate for real-world GPS mode. Sourced by web search, not confirmed on the ground. Ingrid should verify against Google Maps before relying on this while actually walking the route.",
+        "lat": 60.41211,
+        "lng": 5.33392,
+        "radius_m": 80,
+        "status": "unverified",
+        "research_required": true,
+        "source": "Trailforks / Mapcarta — Sandvikspilen"
+      }
     },
     {
       "id": "forest-transition",
@@ -72,7 +108,9 @@
       "folklore_permitted": true,
       "primary_being": "huldra",
       "next": "floyen",
-      "npc_density": "sparse"
+      "npc_density": "sparse",
+      "geo": null,
+      "geo_note": "No coordinate — this stop isn't a named landmark, just the wooded stretch of trail before Fløyen, so there's no single real-world point to search for. GPS mode always falls back to the simulated walk here."
     },
     {
       "id": "floyen",
@@ -82,7 +120,16 @@
       "folklore_permitted": true,
       "primary_being": "troll",
       "next": "floibanen",
-      "npc_density": "busy"
+      "npc_density": "busy",
+      "geo": {
+        "_comment": "GPS proximity-unlock coordinate for real-world GPS mode. Genuinely uncertain: web search returned two conflicting points for 'Fløyen' — this is Wikipedia's mountain-summit coordinate, but the chapter is actually set at the busy tourist viewpoint plaza near the top of Fløibanen, which may be a different point entirely. Ingrid should confirm the actual viewpoint location against Google Maps before relying on this.",
+        "lat": 60.39835,
+        "lng": 5.34541,
+        "radius_m": 100,
+        "status": "unverified",
+        "research_required": true,
+        "source": "Wikipedia — Fløyen (mountain summit, may not match the viewpoint plaza)"
+      }
     },
     {
       "id": "floibanen",
@@ -92,7 +139,16 @@
       "folklore_permitted": false,
       "folklore_ban_reason": "Closing chapter is documented infrastructure history. Keep the ending factual.",
       "next": null,
-      "npc_density": "busy"
+      "npc_density": "busy",
+      "geo": {
+        "_comment": "GPS proximity-unlock coordinate for real-world GPS mode. Sourced by web search, not confirmed on the ground. Ingrid should verify against Google Maps before relying on this while actually walking the route.",
+        "lat": 60.3911,
+        "lng": 5.3237,
+        "radius_m": 80,
+        "status": "unverified",
+        "research_required": true,
+        "source": "Fløibanen top station"
+      }
     }
   ],
   "parallax": {
