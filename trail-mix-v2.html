@@ -175,6 +175,15 @@
                 url('assets/hero/trail-mix-hero.jpg') center 40% / cover no-repeat;
         }
 
+        /* The mode picker's button list can be taller than the stage on a
+           short viewport — plain centering then clips both ends with no way
+           to reach them (BACK included). Scroll within the stage instead;
+           "safe center" keeps it dead-centered whenever it actually fits. */
+        #rmMode {
+            overflow-y: auto;
+            justify-content: safe center;
+        }
+
         .rm-brand {
             font-size: clamp(.5rem, 1.5vw, .72rem);
             letter-spacing: .34em;
@@ -890,6 +899,7 @@
                             <button class="rm-btn" data-mode="noaudio">NO AUDIO</button>
                             <button class="rm-btn" data-mode="highcontrast">HIGH CONTRAST</button>
                             <button class="rm-btn" data-mode="largetext">LARGE TEXT</button>
+                            <button class="rm-btn" data-mode="gps">🛰 I'M WALKING THE REAL TRAIL</button>
                         </div>
                         <div class="rm-choices" style="margin-top:.6em;min-width:min(320px,86%)">
                             <button class="rm-btn" id="rmModeBack">← BACK</button>
@@ -994,7 +1004,11 @@
                                 <button class="rm-icobtn rm-acc-toggle" id="rmAccText" aria-pressed="false">LARGE TEXT</button>
                                 <button class="rm-icobtn rm-acc-toggle" id="rmAccRead" aria-pressed="false">READ ALOUD</button>
                                 <button class="rm-icobtn rm-acc-toggle" id="rmAccMute" aria-pressed="false">MUTE ALL</button>
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccGps" aria-pressed="false">🛰 GPS — REAL TRAIL</button>
                             </div>
+                            <p class="rm-text" style="margin-top:.6em">GPS mode opens each chapter when you're
+                                physically near that real stop, on top of walking there in-game. Off by
+                                default — turning it on will ask your browser to share your location.</p>
                             <div class="rm-choices">
                                 <button class="rm-btn rm-go" id="rmAccClose">← BACK TO THE TRAIL</button>
                             </div>
@@ -1025,6 +1039,7 @@
                         <span class="rm-count" id="rmBag">0</span>
                     </div>
                     <button class="rm-icobtn" id="rmFindBtn" title="I found something">◎ I FOUND SOMETHING</button>
+                    <span class="rm-icobtn rm-hide" id="rmGpsStatus" style="cursor:default" aria-live="polite"></span>
                     <div class="rm-spacer"></div>
                     <button class="rm-icobtn" id="rmArchBtn" title="Trail Archive">▤ ARCHIVE <span id="rmArchN">0</span></button>
                     <button class="rm-icobtn" id="rmMapBtn" title="Trail Map">🗺 MAP</button>
@@ -1144,11 +1159,11 @@
         var SETTINGS_KEY = 'trailmix.settings.v1';
         var DEFAULT_SET = {
             highContrast: false, reduceMotion: reduceMotion,
-            largeText: false, readAloud: false, muted: false
+            largeText: false, readAloud: false, muted: false, gpsMode: false
         };
         var SET = {
             highContrast: false, reduceMotion: reduceMotion,
-            largeText: false, readAloud: false, muted: false
+            largeText: false, readAloud: false, muted: false, gpsMode: false
         };
         var MODE_PRESETS = {
             full: DEFAULT_SET,
@@ -1157,7 +1172,8 @@
             audiofirst: { readAloud: true },
             noaudio: { muted: true },
             highcontrast: { highContrast: true },
-            largetext: { largeText: true }
+            largetext: { largeText: true },
+            gps: { gpsMode: true }
         };
 
         function setRead() {
@@ -1208,7 +1224,7 @@
         function paintAccButtons() {
             [['rmAccContrast', SET.highContrast], ['rmAccMotion', SET.reduceMotion],
              ['rmAccText', SET.largeText], ['rmAccRead', SET.readAloud],
-             ['rmAccMute', SET.muted]].forEach(function (pair) {
+             ['rmAccMute', SET.muted], ['rmAccGps', SET.gpsMode]].forEach(function (pair) {
                 var b = el(pair[0]);
                 if (b) b.setAttribute('aria-pressed', pair[1] ? 'true' : 'false');
             });
@@ -1223,6 +1239,7 @@
             reduceMotion = !!SET.reduceMotion;
             applyMute(!!SET.muted);
             paintAccButtons();
+            GEO.sync();
         }
 
         /* ---------- helpers ---------- */
@@ -2832,6 +2849,72 @@
             if (!ARCH.loaded) archLoad(mapRenderReal);
         }
 
+        // Real GPS, opt-in only (SET.gpsMode, off by default). Never replaces
+        // the simulated hold-to-walk system — it only adds one more way a
+        // chapter's story can open: being physically near that stop's real
+        // coordinate (data/route.json's stops[].geo), on top of the existing
+        // "walked far enough" check. A stop with no geo (forest-transition —
+        // not a named landmark, nothing to check proximity against) simply
+        // never fires from GPS and always waits on the simulated walk, same
+        // as every player who never turns GPS mode on at all.
+        var GEO = {
+            watchId: null, pos: null,
+            status: 'idle', // idle | requesting | active | denied | unsupported | error
+            start: function () {
+                if (!('geolocation' in navigator)) { this.status = 'unsupported'; this.paintStatus(); return; }
+                if (!ARCH.loaded) archLoad(function () {});
+                this.status = 'requesting';
+                this.paintStatus();
+                var self = this;
+                this.watchId = navigator.geolocation.watchPosition(
+                    function (p) { self.status = 'active'; self.pos = p.coords; self.paintStatus(); },
+                    function (err) { self.status = (err && err.code === 1) ? 'denied' : 'error'; self.paintStatus(); },
+                    { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
+                );
+            },
+            stop: function () {
+                if (this.watchId != null) navigator.geolocation.clearWatch(this.watchId);
+                this.watchId = null; this.status = 'idle'; this.pos = null;
+                this.paintStatus();
+            },
+            // On, off, and every setApply() in between — mirrors the rest of
+            // SET's toggles (SET.gpsMode is the single source of truth,
+            // persisted the same way as highContrast/reduceMotion/etc.).
+            sync: function () {
+                var on = !!SET.gpsMode;
+                var badge = el('rmGpsStatus');
+                if (badge) badge.classList.toggle('rm-hide', !on);
+                if (on) { if (this.status === 'idle') this.start(); }
+                else if (this.watchId != null) { this.stop(); }
+                this.paintStatus();
+            },
+            paintStatus: function () {
+                var badge = el('rmGpsStatus');
+                if (!badge) return;
+                badge.textContent = {
+                    requesting: '🛰 FINDING YOU…', active: '🛰 GPS ACTIVE',
+                    denied: '🛰 GPS OFF — PERMISSION DENIED', unsupported: '🛰 GPS NOT SUPPORTED HERE',
+                    error: '🛰 GPS SIGNAL LOST'
+                }[this.status] || '';
+            },
+            haversine: function (lat1, lng1, lat2, lng2) {
+                var R = 6371000, toRad = Math.PI / 180;
+                var dLat = (lat2 - lat1) * toRad, dLng = (lng2 - lng1) * toRad;
+                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * toRad) * Math.cos(lat2 * toRad) *
+                    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            },
+            nearCurrentStop: function () {
+                if (!this.pos || !ARCH.data || !ARCH.data.route) return false;
+                var stopId = STOP_IDS[S.chapter];
+                var stop = ARCH.data.route.stops.filter(function (s) { return s.id === stopId; })[0];
+                if (!stop || !stop.geo) return false;
+                var d = this.haversine(this.pos.latitude, this.pos.longitude, stop.geo.lat, stop.geo.lng);
+                return d <= (stop.geo.radius_m || 80);
+            }
+        };
+
         // What a single stop has to show: its own history entries (same rule-18
         // gate as the Archive), any being cast there and whether it's been
         // glimpsed, and how many things were noticed here. Entering a place
@@ -3277,6 +3360,7 @@
             else if (window.speechSynthesis) speechSynthesis.cancel();
         });
         wireAccToggle('rmAccMute', 'muted');
+        wireAccToggle('rmAccGps', 'gpsMode');
 
         el('rmModeBtn').addEventListener('click', function () { hide('rmTitle'); show('rmMode'); });
         el('rmModeBack').addEventListener('click', function () { hide('rmMode'); show('rmTitle'); });
@@ -3318,10 +3402,6 @@
                 var speed = 76 * (0.82 + (S.energy / 100) * 0.36);
                 S.dist += speed * dt;
                 S.cam += speed * dt;
-                if (S.dist >= CH[S.chapter].dist && !S.fired) {
-                    S.fired = true;
-                    openStory();
-                }
             } else if (S.phase === 'walk' && !S.walking) {
                 // stillness is a move: attention accrues when you stop
                 S.still += dt;
@@ -3332,6 +3412,17 @@
                 }
             } else if (S.phase !== 'walk') {
                 S.cam += 4 * dt;
+            }
+            // Two independent ways a chapter can open: walked far enough
+            // (the simulated distance, always available), or — GPS mode only
+            // — physically near this stop's real coordinate, checked whether
+            // or not the player is currently holding the walk input. Either
+            // one is enough; neither is required if the other fires first.
+            if (S.phase === 'walk' && !S.fired &&
+                (S.dist >= CH[S.chapter].dist ||
+                    (SET.gpsMode && GEO.status === 'active' && GEO.nearCurrentStop()))) {
+                S.fired = true;
+                openStory();
             }
             if (S.walking) S.still = 0;
 
