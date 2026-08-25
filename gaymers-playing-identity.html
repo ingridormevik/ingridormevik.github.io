@@ -1,0 +1,962 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#c0c0c0">
+<title>GAYMERS // PLAYING IDENTITY — Sims 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{
+  --face:#c0c0c0; --faceLo:#808080; --faceHi:#fff; --faceDk:#000;
+  --titleA:#08246a; --titleB:#1e5fb0; --titleC:#3f8cdc;
+  --desktop1:#d8d3c2; --desktop2:#b7b09a;
+  --red:#c9453a; --orange:#e08a2e; --yellow:#e0c62e; --green:#5aa83a;
+  --ink:#101318;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--desktop1);font-family:Tahoma,"MS Sans Serif",Geneva,Arial,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}
+button{font:inherit;cursor:pointer}
+img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
+.pxfont{font-family:"Press Start 2P",Tahoma,monospace}
+
+#desktop{position:fixed;inset:0;background:
+  repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 4px),
+  linear-gradient(160deg,var(--desktop1),var(--desktop2));
+  overflow:hidden;user-select:none}
+
+/* ---------- window chrome ---------- */
+.win98{background:var(--face);border:2px solid;border-color:var(--faceHi) var(--faceDk) var(--faceDk) var(--faceHi);box-shadow:1px 1px 0 #fff inset,-1px -1px 0 var(--faceLo) inset,3px 3px 10px rgba(0,0,0,.35)}
+.titlebar{height:26px;display:flex;align-items:center;justify-content:space-between;padding:0 3px 0 5px;background:linear-gradient(90deg,var(--titleA),var(--titleB) 55%,var(--titleC));color:#fff;font-size:11px;font-weight:700;letter-spacing:.01em}
+.titleleft{display:flex;align-items:center;gap:6px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.titleicon{width:14px;height:14px;flex:0 0 auto;background:linear-gradient(#8eea6e,#3bb73c);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);box-shadow:0 0 0 1px #1f6b1f}
+.titlebtns{display:flex;gap:2px}
+.wbtn{width:17px;height:16px;background:var(--face);border:1px solid;border-color:var(--faceHi) var(--faceDk) var(--faceDk) var(--faceHi);font-size:9px;line-height:1;display:flex;align-items:center;justify-content:center;color:#000;font-weight:900;padding:0}
+.wbtn:active{border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk)}
+.menubar{height:20px;display:flex;align-items:center;gap:14px;padding:0 8px;font-size:10px;border-bottom:1px solid var(--faceLo);background:var(--face)}
+.menuitem{padding:1px 5px;border-radius:1px}
+.menuitem:hover{background:var(--titleB);color:#fff}
+.statusbar{height:20px;display:flex;align-items:center;gap:1px;padding:2px;background:var(--face);border-top:1px solid var(--faceHi)}
+.statusseg{flex:1;height:100%;display:flex;align-items:center;padding:0 6px;font-size:9px;color:#333;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.statusseg.grow{flex:2}
+
+.btn98{background:var(--face);border:2px solid;border-color:var(--faceHi) var(--faceDk) var(--faceDk) var(--faceHi);padding:5px 9px;font-size:10px;font-weight:700;color:#1a2027}
+.btn98:active,.btn98.pressed{border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk);transform:translate(1px,1px)}
+.btn98:disabled{color:#8a8a8a;cursor:default}
+.well{border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff}
+
+/* ---------- main game window ---------- */
+#gameWindow{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1180px,97vw);height:min(760px,94vh);display:flex;flex-direction:column;z-index:10}
+#windowBody{flex:1;display:flex;min-height:0}
+#mapArea{position:relative;flex:1;min-width:0;overflow:hidden;background:
+  repeating-conic-gradient(#9fae86 0% 25%, #93a37c 0% 50%) 0 0/34px 34px,
+  linear-gradient(180deg,#cfe0ea 0%,#cfe0ea 30%,transparent 30%)
+  ;border-right:2px solid var(--faceLo)}
+#skyStrip{position:absolute;left:0;right:0;top:0;height:30%;background:linear-gradient(180deg,#a8d0e6,#d7ecf2);border-bottom:3px solid #7f6b53}
+#skyStrip:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.35) 0 3px,transparent 3px 26px)}
+#dayNightTint{position:absolute;inset:0;pointer-events:none;background:rgba(10,15,40,0);transition:background 2s linear}
+#sidewalkPattern{position:absolute;left:0;right:0;top:28%;height:4px;background:repeating-linear-gradient(90deg,#7f6b53 0 2px,transparent 2px 22px)}
+
+.prop{position:absolute;pointer-events:none}
+.tree{width:20px}
+.tree .trunk{width:6px;height:16px;background:#6b4a30;margin:0 auto}
+.tree .leaves{width:20px;height:20px;background:#4f8f3f;border-radius:2px;box-shadow:0 0 0 2px #3c6f30 inset}
+.lamp{width:6px;height:44px;background:#4b4b4b}
+.lamp:before{content:"";position:absolute;left:-5px;top:-8px;width:16px;height:10px;background:#e8d97a;box-shadow:0 0 8px 2px rgba(232,217,122,.8)}
+.bench{width:34px;height:10px;background:#7a5230;box-shadow:0 6px 0 -3px #4b3620}
+
+.building{position:absolute;transform:translate(-50%,-100%);cursor:pointer;text-align:center;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.28))}
+.building .roof{width:96px;height:22px;clip-path:polygon(0 100%,50% 0,100% 100%);margin:0 auto}
+.building .box{width:86px;height:58px;margin:0 auto;position:relative;border:2px solid rgba(0,0,0,.35)}
+.building .door{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:20px;height:30px;background:#2c2116;border:1px solid #000}
+.building .win{position:absolute;top:10px;width:14px;height:14px;background:#cdeaf5;border:2px solid #2c2116}
+.building .win.l{left:10px}.building .win.r{right:10px}
+.building .sign{margin-top:4px;display:inline-block;padding:3px 7px;font-size:8px;font-weight:900;letter-spacing:.03em;color:#fff;background:#1c1f24;border:1px solid #000;white-space:nowrap}
+.building .glow{position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:60px;height:6px;border-radius:50%;filter:blur(4px);opacity:.85}
+.building.near .box{outline:2px dashed #fff;outline-offset:2px}
+.building:active{filter:brightness(.94)}
+
+#bClub .roof{background:#7a2f66}#bClub .box{background:#3a2140}#bClub .sign{background:#7a2f66}#bClub .glow{background:#e05fce}
+#bCommunity .roof{background:#c47a2e}#bCommunity .box{background:#8a5a2c}#bCommunity .sign{background:#c47a2e}#bCommunity .glow{background:#ffd27a}
+#bThrift .roof{background:#2f8a6f}#bThrift .box{background:#1f5a49}#bThrift .sign{background:#2f8a6f}#bThrift .glow{background:#6fe0c0}
+#bSafe .roof{background:#5470c4}#bSafe .box{background:#33477e}#bSafe .sign{background:#5470c4}#bSafe .glow{background:#a7c0ff}
+#bChat .roof{background:#c4508f}#bChat .box{background:#7e2f58}#bChat .sign{background:#c4508f}#bChat .glow{background:#ff9dcf}
+#bWaterfront .roof{background:#2f7ec4}#bWaterfront .box{background:#1f4e7e}#bWaterfront .sign{background:#2f7ec4}#bWaterfront .glow{background:#8fd6ff}
+
+.sprite{position:absolute;transform:translate(-50%,-100%);transition:left .05s linear,top .05s linear;pointer-events:none}
+.sprite .shadow{width:26px;height:8px;border-radius:50%;background:rgba(0,0,0,.32);margin:0 auto;filter:blur(1px)}
+.sprite canvas{display:block;image-rendering:pixelated}
+.sprite .plumb{position:absolute;left:50%;top:-30px;width:22px;height:34px;transform:translateX(-50%);animation:plumbfloat 1.6s ease-in-out infinite}
+.sprite .plumb:before,.sprite .plumb:after{content:"";position:absolute;left:50%;transform:translateX(-50%);border-left:11px solid transparent;border-right:11px solid transparent}
+.sprite .plumb:before{top:0;border-bottom:17px solid #8eea6e}
+.sprite .plumb:after{bottom:0;border-top:17px solid #3bb73c}
+@keyframes plumbfloat{50%{transform:translateX(-50%) translateY(-5px)}}
+.sprite .tag{position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);background:rgba(255,255,255,.92);border:1px solid #000;padding:1px 5px;font-size:7px;font-weight:900;white-space:nowrap;color:#222}
+.sprite.walking canvas{animation:bob .3s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-2px)}}
+
+.speechBubble{position:absolute;left:50%;top:-58px;transform:translate(-50%,4px);background:#fff;border:2px solid #000;border-radius:6px;padding:4px 7px;font-size:8px;font-weight:700;white-space:nowrap;opacity:0;transition:.18s;pointer-events:none;box-shadow:2px 2px 0 rgba(0,0,0,.25)}
+.speechBubble:after{content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);border:5px solid transparent;border-top-color:#000}
+.speechBubble:before{content:"";position:absolute;left:50%;bottom:-4.5px;transform:translateX(-50%);border:4px solid transparent;border-top-color:#fff;z-index:1}
+.speechBubble.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- side panel ---------- */
+#sidePanel{width:260px;flex:0 0 auto;background:var(--face);display:flex;flex-direction:column;gap:8px;padding:8px;overflow-y:auto}
+.panelBox{border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:var(--face)}
+.panelHead{background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff;font-size:9px;font-weight:900;padding:4px 7px;letter-spacing:.03em}
+.panelBody{padding:7px}
+
+#portraitRow{display:flex;gap:8px;align-items:center}
+#portraitFrame{width:58px;height:58px;flex:0 0 auto;background:#fff;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);overflow:hidden}
+#portraitFrame img{width:100%;height:100%;object-fit:cover;display:block}
+#portraitInfo{min-width:0}
+#simNameLbl{font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#simPronounLbl{font-size:8px;color:#4a4a4a}
+#moodWordLbl{font-size:9px;font-weight:900;margin-top:3px}
+
+#moodGaugeWrap{padding:8px 6px 4px;text-align:center}
+#moodTriangle{position:relative;width:100%;height:44px;clip-path:polygon(0 100%,50% 4%,100% 100%);background:linear-gradient(90deg,var(--red) 0 25%,var(--orange) 25% 50%,var(--yellow) 50% 75%,var(--green) 75% 100%);border:2px solid #1a1a1a}
+#moodNeedle{position:absolute;bottom:2px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid #1a1a1a;transform:translateX(-50%);transition:left .5s ease}
+#moodPct{font-size:8px;margin-top:4px;font-weight:700;color:#333}
+
+.need{display:grid;grid-template-columns:44px 1fr 26px;gap:6px;align-items:center;margin:5px 0}
+.need .nlbl{font-size:8px;font-weight:900;color:#333}
+.need .nval{font-size:8px;text-align:right;color:#555}
+.track98{height:11px;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff;overflow:hidden}
+.track98 i{display:block;height:100%;background:repeating-linear-gradient(90deg,#4f9a3c 0 6px,#63b84e 6px 8px)}
+.track98 i.low{background:repeating-linear-gradient(90deg,#c9453a 0 6px,#e0655a 6px 8px)}
+.track98 i.mid{background:repeating-linear-gradient(90deg,#c48c28 0 6px,#e0a83e 6px 8px)}
+
+#speedRow{display:flex;gap:4px;padding:6px;justify-content:space-between}
+#speedRow .btn98{flex:1;padding:6px 0}
+#freeWillRow{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;font-size:9px;font-weight:700}
+#clockRow{display:flex;justify-content:space-between;padding:2px 8px 6px;font-size:9px;color:#333}
+
+#panelActions{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px}
+#panelActions .btn98{padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px}
+#panelActions .btn98 b{font-size:14px}
+#panelActions .btn98 span{font-size:7px}
+
+#eventLog{max-height:96px;overflow-y:auto;font-size:8px;padding:6px;line-height:1.5;color:#333}
+#eventLog div{border-bottom:1px dotted #aaa;padding:2px 0}
+
+/* ---------- floating windows ---------- */
+.floatWin{position:absolute;z-index:200;display:none;min-width:220px}
+.floatWin.open{display:block}
+.floatBody{padding:9px}
+
+#relList .relRow{display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #d3d3d3}
+#relList .relRow:last-child{border-bottom:0}
+.relDot{width:26px;height:26px;border:2px solid #1a1a1a}
+.relName{font-size:10px;font-weight:900}
+.relTier{font-size:7px;color:#555;margin:2px 0 3px}
+.relBarWrap{height:8px;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff}
+.relBarWrap i{display:block;height:100%;background:linear-gradient(90deg,#d4569a,#f0a0c9)}
+.relUnknown{opacity:.45}
+
+#invGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.slot{aspect-ratio:1;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:3px;position:relative}
+.slot .icon{width:20px;height:20px}
+.slot .iname{font-size:6px;text-align:center;line-height:1.15;color:#333}
+.slot.empty{opacity:.3}
+.slot.empty:before{content:"";width:60%;height:1px;background:#bbb}
+
+/* CAS wizard */
+#casWindow{width:min(560px,94vw)}
+.casStep{padding:13px}
+.casStep h3{margin:0 0 4px;font-size:14px}
+.casStep p{margin:0 0 10px;font-size:9px;color:#444;line-height:1.4}
+.casField{margin-bottom:10px}
+.casField label{display:block;font-size:8px;font-weight:900;margin-bottom:3px;color:#333}
+.casField input[type=text]{width:100%;padding:6px 7px;font-size:11px;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo)}
+.pronounRow{display:flex;gap:5px;flex-wrap:wrap}
+.pronounBtn{padding:6px 9px;font-size:8px}
+.pronounBtn.sel{background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff;border-color:#000}
+#camWrap{position:relative;width:100%;height:230px;background:#111;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);overflow:hidden;margin-bottom:8px}
+#selfCam,#selfPreview{width:100%;height:100%;object-fit:cover;display:block;transform:scaleX(-1)}
+#selfPreview{position:absolute;inset:0;display:none;transform:none}
+.faceGuide{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:52%;aspect-ratio:.8;border:2px dashed rgba(255,255,255,.85);border-radius:46%;pointer-events:none}
+#pixPreviewWrap{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+#pixPreviewWrap canvas{width:64px;height:112px;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#e8e3d4}
+#pixPreviewWrap span{font-size:8px;color:#555;line-height:1.4}
+.casBtnRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.casBtnRow .btn98{flex:1}
+.captureInput{position:absolute;width:1px;height:1px;opacity:0}
+#casStatus{font-size:8px;color:#555;min-height:12px}
+.casFooter{display:flex;justify-content:flex-end;gap:6px;padding:9px;border-top:2px solid;border-color:var(--faceHi) transparent transparent}
+
+/* welcome dialog */
+#welcomeWindow{width:min(420px,92vw)}
+
+/* taskbar */
+#taskbar{position:absolute;left:0;right:0;bottom:0;height:34px;display:flex;align-items:center;gap:5px;padding:3px 5px;background:var(--face);border-top:2px solid var(--faceHi);z-index:300}
+#startBtn{display:flex;align-items:center;gap:5px;padding:4px 9px;font-size:10px}
+#startBtn .titleicon{width:15px;height:15px}
+#taskbarItems{flex:1;display:flex;gap:4px;overflow-x:auto}
+.taskItem{padding:4px 10px;font-size:9px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.taskItem.active{border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk)}
+#trayClock{padding:4px 9px;font-size:9px;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff}
+
+#toastWrap{position:absolute;right:12px;top:48px;z-index:400;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.toast98{width:250px;background:var(--face);border:2px solid;border-color:var(--faceHi) var(--faceDk) var(--faceDk) var(--faceHi);box-shadow:3px 3px 8px rgba(0,0,0,.3);opacity:0;transform:translateX(14px);transition:.25s;pointer-events:auto}
+.toast98.show{opacity:1;transform:translateX(0)}
+.toast98 .tHead{background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff;font-size:8px;font-weight:900;padding:3px 6px;display:flex;justify-content:space-between}
+.toast98 .tBody{padding:6px 7px;font-size:8px;color:#333;line-height:1.4}
+
+@media (max-width:820px){
+  #gameWindow{width:100vw;height:100dvh;top:0;left:0;transform:none;border-width:0}
+  #windowBody{flex-direction:column}
+  #mapArea{flex:1 1 auto;min-height:0}
+  #sidePanel{width:100%;flex:0 0 auto;flex-direction:row;flex-wrap:wrap;max-height:38dvh}
+  #sidePanel .panelBox{flex:1 1 46%}
+  #eventLog{max-height:64px}
+  .building .roof{width:70px;height:16px}.building .box{width:62px;height:42px}.building .win{width:10px;height:10px}.building .door{width:15px;height:22px}
+  .sprite canvas{width:52px!important;height:91px!important}
+  .toast98{width:200px}
+  #toastWrap{right:6px;top:6px}
+  #casWindow{width:96vw}
+  #camWrap{height:180px}
+}
+</style>
+</head>
+<body>
+<div id="desktop">
+
+  <section id="gameWindow" class="win98">
+    <div class="titlebar">
+      <div class="titleleft"><span class="titleicon"></span><span>GAYMERS — Playing Identity.exe</span></div>
+      <div class="titlebtns">
+        <button class="wbtn" id="helpMenuBtn" title="Help">?</button>
+        <button class="wbtn" id="maxBtn" title="Maximize">□</button>
+        <button class="wbtn closeBtn" id="closeBtn" title="Close">×</button>
+      </div>
+    </div>
+    <div class="menubar">
+      <span class="menuitem" id="menuGame">Game</span>
+      <span class="menuitem" id="menuSim">Sim</span>
+      <span class="menuitem" id="menuOptions">Options</span>
+      <span class="menuitem" id="menuHelp">Help</span>
+    </div>
+
+    <div id="windowBody">
+      <div id="mapArea">
+        <div id="skyStrip"></div>
+        <div id="sidewalkPattern"></div>
+        <div id="dayNightTint"></div>
+
+        <div class="prop tree" style="left:6%;top:34%"><div class="leaves"></div><div class="trunk"></div></div>
+        <div class="prop tree" style="left:93%;top:40%"><div class="leaves"></div><div class="trunk"></div></div>
+        <div class="prop lamp" style="left:35%;top:38%"></div>
+        <div class="prop lamp" style="left:65%;top:78%"></div>
+        <div class="prop bench" style="left:40%;top:80%"></div>
+
+        <div id="bClub" class="building" data-loc="club" style="left:18%;top:34%">
+          <div class="glow"></div><div class="roof"></div>
+          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
+          <div class="sign pxfont">CLUB</div>
+        </div>
+        <div id="bCommunity" class="building" data-loc="community" style="left:74%;top:28%">
+          <div class="glow"></div><div class="roof"></div>
+          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
+          <div class="sign pxfont">COMMUNITY</div>
+        </div>
+        <div id="bThrift" class="building" data-loc="thrift" style="left:13%;top:74%">
+          <div class="glow"></div><div class="roof"></div>
+          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
+          <div class="sign pxfont">THRIFT</div>
+        </div>
+        <div id="bSafe" class="building" data-loc="safe" style="left:50%;top:50%">
+          <div class="glow"></div><div class="roof"></div>
+          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
+          <div class="sign pxfont">SAFE SPACE</div>
+        </div>
+        <div id="bChat" class="building" data-loc="chat" style="left:84%;top:70%">
+          <div class="glow"></div><div class="roof"></div>
+          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
+          <div class="sign pxfont">CHAT ZONE</div>
+        </div>
+        <div id="bWaterfront" class="building" data-loc="waterfront" style="left:50%;top:91%">
+          <div class="glow"></div><div class="roof"></div>
+          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
+          <div class="sign pxfont">WATERFRONT</div>
+        </div>
+
+        <!-- NPCs injected by JS -->
+        <div id="npcLayer"></div>
+
+        <div id="player" class="sprite">
+          <div class="speechBubble" id="playerBubble"></div>
+          <div class="plumb"></div>
+          <canvas id="playerCanvas" width="16" height="28" style="width:64px;height:112px"></canvas>
+          <div class="shadow"></div>
+          <div class="tag" id="playerTag">YOU</div>
+        </div>
+      </div>
+
+      <div id="sidePanel">
+        <div class="panelBox">
+          <div class="panelBody" id="portraitRow">
+            <div id="portraitFrame"><img id="portraitImg" alt="Your Sim" src=""></div>
+            <div id="portraitInfo">
+              <div id="simNameLbl">YOU</div>
+              <div id="simPronounLbl">pronouns: —</div>
+              <div id="moodWordLbl">OKAY</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panelBox">
+          <div class="panelHead">MOOD</div>
+          <div id="moodGaugeWrap">
+            <div id="moodTriangle"><div id="moodNeedle" style="left:50%"></div></div>
+            <div id="moodPct">Mood: 0</div>
+          </div>
+        </div>
+
+        <div class="panelBox">
+          <div class="panelHead">NEEDS</div>
+          <div class="panelBody" id="needRows"></div>
+        </div>
+
+        <div class="panelBox">
+          <div class="panelHead">SPEED &amp; FREE WILL</div>
+          <div id="speedRow">
+            <button class="btn98" id="pauseBtn" title="Pause">Ⅱ</button>
+            <button class="btn98 pressed" id="s1Btn">1×</button>
+            <button class="btn98" id="s2Btn">2×</button>
+            <button class="btn98" id="s3Btn">3×</button>
+          </div>
+          <div id="freeWillRow">
+            <span>FREE WILL</span>
+            <button class="btn98 pressed" id="freeWillBtn">ON</button>
+          </div>
+          <div id="clockRow"><span id="dayLbl">DAY 1</span><span id="clockLbl">7:00 AM</span></div>
+        </div>
+
+        <div class="panelBox">
+          <div class="panelHead">ACTIONS</div>
+          <div id="panelActions">
+            <button class="btn98" id="openRelBtn"><b>♥</b><span>RELATIONSHIPS</span></button>
+            <button class="btn98" id="openInvBtn"><b>▤</b><span>INVENTORY</span></button>
+            <button class="btn98" id="openCasBtn" style="grid-column:1/3"><b>☺</b><span>MAKE YOUR CHARACTER</span></button>
+          </div>
+        </div>
+
+        <div class="panelBox" style="flex:1;display:flex;flex-direction:column;min-height:0">
+          <div class="panelHead">EVENT LOG</div>
+          <div id="eventLog"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="statusbar">
+      <div class="statusseg grow" id="statusText">Click a building to walk your Sim there.</div>
+      <div class="statusseg" id="statusZone">—</div>
+      <div class="statusseg" id="statusFps">Sims 1 mode</div>
+    </div>
+  </section>
+
+  <!-- Relationships window -->
+  <section id="relWindow" class="floatWin win98" style="left:8%;top:12%">
+    <div class="titlebar" data-drag="relWindow">
+      <div class="titleleft"><span class="titleicon"></span><span>Relationships</span></div>
+      <div class="titlebtns"><button class="wbtn" data-close="relWindow">×</button></div>
+    </div>
+    <div class="floatBody" id="relList"></div>
+  </section>
+
+  <!-- Inventory window -->
+  <section id="invWindow" class="floatWin win98" style="left:60%;top:14%">
+    <div class="titlebar" data-drag="invWindow">
+      <div class="titleleft"><span class="titleicon"></span><span>Inventory</span></div>
+      <div class="titlebtns"><button class="wbtn" data-close="invWindow">×</button></div>
+    </div>
+    <div class="floatBody"><div id="invGrid"></div></div>
+  </section>
+
+  <!-- Help window -->
+  <section id="helpWindow" class="floatWin win98" style="left:30%;top:20%;width:min(380px,92vw)">
+    <div class="titlebar" data-drag="helpWindow">
+      <div class="titleleft"><span class="titleicon"></span><span>How To Play</span></div>
+      <div class="titlebtns"><button class="wbtn" data-close="helpWindow">×</button></div>
+    </div>
+    <div class="floatBody" style="font-size:9px;line-height:1.6">
+      Click any building to send your Sim there — <b>Club</b>, <b>Community Center</b>, <b>Thrift</b>, <b>Safe Space</b>, <b>Chat Zone</b> or <b>Waterfront</b>.<br><br>
+      Every place changes your needs differently. Let them run low too long and mood drops.<br><br>
+      Turn <b>Free Will</b> on and your Sim decides for herself when you stop clicking.<br><br>
+      <b>Thrift</b> sometimes hands you a random item. <b>Club</b>, <b>Chat Zone</b> and <b>Community</b> build relationships with the people who hang out there.<br><br>
+      Use <b>MAKE YOUR CHARACTER</b> to set your name, pronouns and photo — it becomes your portrait and your pixel face in the room.
+    </div>
+  </section>
+
+  <!-- Character creator -->
+  <section id="casWindow" class="floatWin win98" style="left:50%;top:50%;transform:translate(-50%,-50%)">
+    <div class="titlebar" data-drag="casWindow">
+      <div class="titleleft"><span class="titleicon"></span><span>Create A Sim</span></div>
+      <div class="titlebtns"><button class="wbtn" data-close="casWindow">×</button></div>
+    </div>
+    <div class="casStep">
+      <h3 class="pxfont" style="font-size:11px">WHO ARE YOU TODAY?</h3>
+      <p>Your name, your pronouns, your face. This is saved on this device so the room remembers you.</p>
+
+      <div class="casField">
+        <label>NAME</label>
+        <input type="text" id="nameInput" maxlength="18" placeholder="Your Sim name">
+      </div>
+      <div class="casField">
+        <label>PRONOUNS</label>
+        <div class="pronounRow" id="pronounRow">
+          <button class="btn98 pronounBtn" data-p="she/her">she/her</button>
+          <button class="btn98 pronounBtn" data-p="he/him">he/him</button>
+          <button class="btn98 pronounBtn" data-p="they/them">they/them</button>
+          <button class="btn98 pronounBtn" data-p="custom">custom…</button>
+        </div>
+      </div>
+
+      <div class="casField">
+        <label>PHOTO</label>
+        <div id="camWrap">
+          <video id="selfCam" autoplay muted playsinline></video>
+          <img id="selfPreview" alt="">
+          <div class="faceGuide"></div>
+        </div>
+        <div class="casBtnRow">
+          <label class="btn98" for="selfieFileInput" style="text-align:center">TAKE / CHOOSE PHOTO
+            <input id="selfieFileInput" class="captureInput" type="file" accept="image/*" capture="user">
+          </label>
+          <button class="btn98" id="openSelfCamBtn">LIVE CAMERA</button>
+          <button class="btn98" id="snapSelfieBtn">SNAP</button>
+        </div>
+        <div id="pixPreviewWrap">
+          <canvas id="pixPreviewCanvas" width="16" height="28"></canvas>
+          <span>This is how you'll look walking around the room — the same photo, pixelated.</span>
+        </div>
+        <div id="casStatus">Upload or snap a photo, then finish below.</div>
+      </div>
+    </div>
+    <div class="casFooter">
+      <button class="btn98" data-close="casWindow">CANCEL</button>
+      <button class="btn98 pressed" id="finishCasBtn" style="background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff">BECOME THIS SIM</button>
+    </div>
+  </section>
+
+  <!-- Welcome dialog -->
+  <section id="welcomeWindow" class="floatWin win98 open" style="left:50%;top:50%;transform:translate(-50%,-50%);z-index:500">
+    <div class="titlebar"><div class="titleleft"><span class="titleicon"></span><span>Welcome</span></div></div>
+    <div class="floatBody" style="padding:16px">
+      <h3 class="pxfont" style="font-size:13px;margin:0 0 8px">GAYMERS // PLAYING IDENTITY</h3>
+      <p style="font-size:9px;line-height:1.6;color:#333;margin:0 0 14px">A small life-sim about the rooms where you get to be yourself. Make your Sim — your real photo becomes their pixel face — then send them out into a town with a Club, a Community Center, a Thrift store, a Safe Space, a Chat Zone and a Waterfront. Free Will is on: if you stop choosing, your Sim will.</p>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button class="btn98" id="skipWelcomeBtn">JUST EXPLORE</button>
+        <button class="btn98 pressed" id="startCasBtn" style="background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff">MAKE YOUR CHARACTER</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="toastWrap"></div>
+
+  <div id="taskbar">
+    <button class="btn98" id="startBtn"><span class="titleicon"></span>GAYMERS</button>
+    <div id="taskbarItems"></div>
+    <div id="trayClock">7:00 AM</div>
+  </div>
+</div>
+
+<script>
+(()=>{
+"use strict";
+
+/* ================= audio (tiny synth, no files) ================= */
+let actx=null,muted=false;
+function ac(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}return actx}
+function blip(freq,dur,type,gain){
+  if(muted)return; const c=ac(); if(!c)return;
+  const o=c.createOscillator(),g=c.createGain();
+  o.type=type||"square"; o.frequency.value=freq;
+  g.gain.value=gain||.05;
+  o.connect(g); g.connect(c.destination);
+  const t=c.currentTime;
+  g.gain.setValueAtTime(g.gain.value,t);
+  g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.start(t); o.stop(t+dur);
+}
+function sndClick(){blip(720,.05,"square",.04)}
+function sndArrive(){blip(520,.09,"triangle",.05);setTimeout(()=>blip(680,.11,"triangle",.05),70)}
+function sndPickup(){[520,660,880].forEach((f,i)=>setTimeout(()=>blip(f,.12,"square",.045),i*80))}
+function sndRel(){blip(440,.08,"sine",.045);setTimeout(()=>blip(660,.14,"sine",.045),90)}
+
+/* ================= locations ================= */
+const LOCATIONS={
+ club:{el:"bClub",label:"CLUB",x:18,y:34,deltas:{fun:20,social:16,energy:-14,identity:6},npc:"sasha",
+   lines:["The bassline finds your feet before you decide to dance.","Nobody here is asking you to explain yourself."]},
+ community:{el:"bCommunity",label:"COMMUNITY CENTER",x:74,y:28,deltas:{social:14,identity:16,comfort:10},npc:"theo",
+   lines:["Someone remembers your name from last time.","A flyer wall, a coffee pot, a room that keeps its promises."]},
+ thrift:{el:"bThrift",label:"THRIFT",x:13,y:74,deltas:{fun:12,identity:14,comfort:4},npc:"mia",giveItem:true,
+   lines:["The racks smell like other people's closets and possibility.","You try something on that isn't quite you yet — but could be."]},
+ safe:{el:"bSafe",label:"SAFE SPACE",x:50,y:50,deltas:{comfort:20,identity:12,energy:14,social:2},npc:"rowan",
+   lines:["Nothing is required of you here. That's the whole point.","You exhale a breath you didn't know you were holding."]},
+ chat:{el:"bChat",label:"CHAT ZONE",x:84,y:70,deltas:{social:20,fun:10},npc:"noor",
+   lines:["A conversation that doesn't feel like an interview.","Someone laughs at the exact joke you were about to make."]},
+ waterfront:{el:"bWaterfront",label:"WATERFRONT",x:50,y:91,deltas:{energy:16,comfort:12,hunger:-8},npc:"kai",
+   lines:["The fjord doesn't care what you're wearing.","Quiet water, quiet mind, for a minute."]}
+};
+const NPCS={
+ sasha:{name:"Sasha",pron:"they/them",outfit:"#7a2f66",tie:null,hair:"#20141c",loc:"club",known:false,score:6},
+ theo:{name:"Theo",pron:"he/him",outfit:"#c47a2e",tie:null,hair:"#2b1c10",loc:"community",known:false,score:6},
+ mia:{name:"Mia",pron:"she/her",outfit:"#2f8a6f",tie:null,hair:"#3a2418",loc:"thrift",known:false,score:6},
+ rowan:{name:"Rowan",pron:"they/them",outfit:"#5470c4",tie:null,hair:"#171a22",loc:"safe",known:false,score:6},
+ noor:{name:"Noor",pron:"she/her",outfit:"#c4508f",tie:null,hair:"#241318",loc:"chat",known:false,score:6},
+ kai:{name:"Kai",pron:"he/him",outfit:"#2f7ec4",tie:null,hair:"#1c1c1c",loc:"waterfront",known:false,score:6}
+};
+const ITEM_POOL=[
+ {name:"Rainbow Pin",color:"#e0559e",shape:"circle"},
+ {name:"Vintage Band Tee",color:"#3a3a3a",shape:"square"},
+ {name:"Platform Boots",color:"#5a3a24",shape:"square"},
+ {name:"Patch Jacket",color:"#2f6b46",shape:"square"},
+ {name:"Statement Shades",color:"#151515",shape:"circle"},
+ {name:"Silk Scarf",color:"#9d4fc4",shape:"triangle"},
+ {name:"Zine Collection",color:"#c4842f",shape:"square"},
+ {name:"Mixtape, Side B",color:"#2f7ec4",shape:"circle"},
+ {name:"Chunky Ring",color:"#d4af37",shape:"circle"},
+ {name:"Bomber Jacket",color:"#a83c3c",shape:"square"}
+];
+const FLAVOR_EVENTS=[
+ "You catch your reflection in a window and, for once, just look.",
+ "Free Will decided you needed this more than you knew.",
+ "Someone across the room dresses like nobody's watching. You take notes.",
+ "The town remembers what you chose here yesterday.",
+ "A small, unremarkable, good moment."
+];
+
+/* ================= state ================= */
+const state={
+ name:"YOU", pronoun:"she/her", photoData:null, faceImg:null,
+ needs:{energy:78,social:70,fun:74,hunger:66,comfort:72,identity:60},
+ x:50,y:50,target:null,walking:false,
+ freeWill:true, paused:false, speed:1, lastManual:Date.now(),
+ mood:20, minutes:7*60, day:1,
+ inventory:[], relOrder:["sasha","theo","mia","rowan","noor","kai"]
+};
+const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
+const $=id=>document.getElementById(id);
+
+/* ================= pixel sprite rendering ================= */
+function paintSprite(canvas,opts){
+ const ctx=canvas.getContext("2d");
+ ctx.imageSmoothingEnabled=false;
+ ctx.clearRect(0,0,16,28);
+ const outfit=opts.outfit||"#111318", tie=opts.tie, skin=opts.skin||"#e8bd93", hair=opts.hair||"#3a2b23";
+ ctx.fillStyle=outfit; ctx.fillRect(4,23,3,4); ctx.fillRect(9,23,3,4);
+ ctx.fillStyle="#15171a"; ctx.fillRect(3,27,5,1); ctx.fillRect(8,27,5,1);
+ ctx.fillStyle=outfit; ctx.fillRect(2,12,12,11); ctx.fillRect(0,12,2,9); ctx.fillRect(14,12,2,9);
+ ctx.fillStyle=skin; ctx.fillRect(0,19,2,2); ctx.fillRect(14,19,2,2);
+ if(tie){ctx.fillStyle=tie; ctx.fillRect(7,12,2,9)}
+ ctx.fillStyle=skin; ctx.fillRect(6,10,4,2);
+ if(opts.faceImg){
+   try{ctx.drawImage(opts.faceImg,3,0,10,10)}catch(e){ctx.fillStyle=skin;ctx.fillRect(3,0,10,10)}
+ }else{
+   ctx.fillStyle=skin; ctx.fillRect(3,0,10,10);
+   ctx.fillStyle="#2a2a2a"; ctx.fillRect(5,4,1,1); ctx.fillRect(10,4,1,1);
+   ctx.fillStyle="#8a5040"; ctx.fillRect(6,7,4,1);
+ }
+ ctx.fillStyle=hair; ctx.fillRect(3,0,10,2); ctx.fillRect(3,0,2,6); ctx.fillRect(11,0,2,6);
+ if(opts.shades){ctx.fillStyle="#0b0c0e"; ctx.fillRect(3,4,10,2)}
+}
+function repaintPlayerSprite(){
+ paintSprite($("playerCanvas"),{outfit:"#111318",tie:"#e0559e",hair:"#241a16",shades:true,faceImg:state.faceImg});
+ paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#e0559e",hair:"#241a16",shades:true,faceImg:state.faceImg});
+}
+
+/* ================= NPC ambient sprites ================= */
+const npcEls={};
+function buildNpcLayer(){
+ const layer=$("npcLayer");
+ layer.innerHTML="";
+ Object.entries(NPCS).forEach(([key,n])=>{
+   const loc=LOCATIONS[n.loc];
+   const wrap=document.createElement("div");
+   wrap.className="sprite"; wrap.id="npc_"+key;
+   wrap.innerHTML='<canvas width="16" height="28" style="width:48px;height:84px"></canvas><div class="shadow" style="width:20px;height:6px"></div>';
+   layer.appendChild(wrap);
+   paintSprite(wrap.querySelector("canvas"),{outfit:n.outfit,hair:n.hair});
+   const home={x:loc.x,y:clamp(loc.y+8,20,93)};
+   npcEls[key]={el:wrap,x:home.x+(Math.random()*8-4),y:home.y+(Math.random()*4-2),tx:home.x,ty:home.y,home:home};
+   placeEl(wrap,npcEls[key].x,npcEls[key].y);
+ });
+}
+function wanderNpcs(){
+ Object.values(npcEls).forEach(n=>{
+   const dx=n.tx-n.x,dy=n.ty-n.y,dd=Math.hypot(dx,dy);
+   if(dd<1.2){n.tx=clamp(n.home.x+(Math.random()*10-5),8,92);n.ty=clamp(n.home.y+(Math.random()*6-2),20,95)}
+   else{n.x+=dx/dd*.045;n.y+=dy/dd*.045}
+   placeEl(n.el,n.x,n.y);
+ });
+}
+
+/* ================= movement ================= */
+function placeEl(el,x,y){el.style.left=x+"%";el.style.top=y+"%"}
+function walkTick(){
+ const player=$("player");
+ if(!state.paused && state.target){
+   const loc=LOCATIONS[state.target];
+   const dx=loc.x-state.x,dy=loc.y-state.y,dd=Math.hypot(dx,dy);
+   const step=.28*state.speed;
+   state.walking=true;
+   if(dd<step){state.x=loc.x;state.y=loc.y;arrive(state.target);state.target=null;state.walking=false}
+   else{state.x+=dx/dd*step;state.y+=dy/dd*step}
+   placeEl(player,state.x,state.y);
+ }
+ player.classList.toggle("walking",state.walking && !state.paused);
+ if(!state.paused) wanderNpcs();
+ highlightNearBuilding();
+ requestAnimationFrame(walkTick);
+}
+function highlightNearBuilding(){
+ let nearest=null,bd=999;
+ Object.entries(LOCATIONS).forEach(([k,l])=>{
+   const dd=Math.hypot(l.x-state.x,l.y-state.y);
+   document.getElementById(l.el).classList.toggle("near",dd<9);
+   if(dd<bd){bd=dd;nearest=k}
+ });
+ $("statusZone").textContent = bd<9 ? LOCATIONS[nearest].label : "—";
+}
+
+function goTo(key){
+ state.target=key; state.lastManual=Date.now();
+ $("statusText").textContent="Walking to "+LOCATIONS[key].label+"…";
+}
+function arrive(key){
+ const loc=LOCATIONS[key];
+ sndArrive();
+ Object.entries(loc.deltas).forEach(([k,v])=>state.needs[k]=clamp(state.needs[k]+v));
+ renderNeeds(); updateMood();
+ const line=loc.lines[Math.floor(Math.random()*loc.lines.length)];
+ say(line);
+ logEvent(loc.label+": "+Object.entries(loc.deltas).map(([k,v])=>(v>0?"+":"")+v+" "+k).join(", "));
+ toast(loc.label,line);
+ $("statusText").textContent="At "+loc.label+". "+line;
+
+ if(loc.giveItem && Math.random()<.7) giveRandomItem();
+ if(loc.npc && Math.random()<.6) bumpRelationship(loc.npc);
+}
+
+/* ================= needs / mood ================= */
+function needIcon(k){return {energy:"↯",social:"☺",fun:"★",hunger:"◇",comfort:"♡",identity:"◈"}[k]}
+function renderNeeds(){
+ const order=["energy","social","fun","hunger","comfort","identity"];
+ $("needRows").innerHTML=order.map(k=>{
+   const v=Math.round(state.needs[k]);
+   const cls=v<30?"low":v<55?"mid":"";
+   return '<div class="need"><span class="nlbl">'+needIcon(k)+" "+k.toUpperCase()+'</span><div class="track98"><i class="'+cls+'" style="width:'+v+'%"></i></div><span class="nval">'+v+'</span></div>';
+ }).join("");
+}
+function updateMood(){
+ const n=state.needs;
+ const raw=(n.energy+n.social+n.fun+n.hunger+n.comfort)*.16 + n.identity*.2 - 60;
+ const mood=clamp(Math.round(raw*1.4),-100,100);
+ state.mood=mood;
+ const pct=(mood+100)/200*100;
+ $("moodNeedle").style.left=pct+"%";
+ $("moodPct").textContent="Mood: "+(mood>0?"+":"")+mood;
+ const word = mood<-40?"STRESSED": mood<-10?"UNSETTLED": mood<20?"OKAY": mood<55?"CONTENT": mood<85?"GOOD":"THRIVING";
+ $("moodWordLbl").textContent=word;
+}
+function tickNeeds(){
+ if(state.paused)return;
+ const n=state.needs, s=state.speed;
+ n.energy=clamp(n.energy-.05*s); n.social=clamp(n.social-.06*s); n.fun=clamp(n.fun-.06*s);
+ n.hunger=clamp(n.hunger-.05*s); n.comfort=clamp(n.comfort-.03*s); n.identity=clamp(n.identity-.025*s);
+ renderNeeds(); updateMood();
+}
+
+/* ================= free will ================= */
+function freeWillTick(){
+ if(state.paused || !state.freeWill || state.target) return;
+ if(Date.now()-state.lastManual < 6500*(1/state.speed)) return;
+ const n=state.needs;
+ const scores={
+   club:(100-n.fun)*.7+(100-n.social)*.3,
+   community:(100-n.social)*.5+(100-n.identity)*.5,
+   thrift:(100-n.identity)*.6+(100-n.fun)*.3,
+   safe:(100-n.comfort)*.6+(100-n.identity)*.3,
+   chat:(100-n.social)*.75,
+   waterfront:(100-n.energy)*.55+(100-n.comfort)*.35
+ };
+ const best=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
+ state.target=best;
+ $("statusText").textContent="Free Will chose: "+LOCATIONS[best].label+".";
+ logEvent("Free Will → "+LOCATIONS[best].label);
+}
+
+/* ================= relationships / inventory ================= */
+function tierFor(score){return score<15?"Stranger":score<35?"Acquaintance":score<60?"Friend":score<85?"Close Friend":"Chosen Family"}
+function bumpRelationship(key){
+ const n=NPCS[key];
+ const first=!n.known;
+ n.known=true;
+ n.score=clamp(n.score+(4+Math.random()*9),0,100);
+ sndRel();
+ if(first){toast("NEW CONNECTION",n.name+" ("+n.pron+") — "+tierFor(n.score));logEvent("Met "+n.name)}
+ renderRelationships();
+}
+function renderRelationships(){
+ $("relList").innerHTML = state.relOrder.map(key=>{
+   const n=NPCS[key];
+   if(!n.known) return '<div class="relRow relUnknown"><div class="relDot" style="background:#999"></div><div><div class="relName">???</div><div class="relTier">Not met yet — visit '+LOCATIONS[n.loc].label+'</div></div></div>';
+   return '<div class="relRow"><div class="relDot" style="background:'+n.outfit+'"></div><div><div class="relName">'+n.name+' <span style="font-weight:400;color:#666">· '+n.pron+'</span></div><div class="relTier">'+tierFor(n.score)+' · '+LOCATIONS[n.loc].label+'</div><div class="relBarWrap"><i style="width:'+Math.round(n.score)+'%"></i></div></div></div>';
+ }).join("");
+}
+function giveRandomItem(){
+ const item=ITEM_POOL[Math.floor(Math.random()*ITEM_POOL.length)];
+ state.inventory.push(item);
+ sndPickup();
+ toast("THRIFT FIND",'You found: "'+item.name+'"');
+ logEvent("Inventory + "+item.name);
+ renderInventory();
+}
+function renderInventory(){
+ const slots=8;
+ let html="";
+ for(let i=0;i<slots;i++){
+   const it=state.inventory[i];
+   if(!it){html+='<div class="slot empty"></div>';continue}
+   const shape = it.shape==="circle"?"border-radius:50%": it.shape==="triangle"?"clip-path:polygon(50% 0,100% 100%,0 100%)":"";
+   html+='<div class="slot"><div class="icon" style="background:'+it.color+';'+shape+'"></div><div class="iname">'+it.name+'</div></div>';
+ }
+ $("invGrid").innerHTML=html;
+}
+
+/* ================= toast / log / speech ================= */
+function toast(title,text){
+ const wrap=$("toastWrap");
+ const t=document.createElement("div");
+ t.className="toast98";
+ t.innerHTML='<div class="tHead"><span>'+title+'</span><span>×</span></div><div class="tBody">'+text+'</div>';
+ wrap.appendChild(t);
+ requestAnimationFrame(()=>t.classList.add("show"));
+ t.querySelector(".tHead span:last-child").onclick=()=>remove();
+ function remove(){t.classList.remove("show");setTimeout(()=>t.remove(),260)}
+ setTimeout(remove,5200);
+}
+function say(text){
+ const b=$("playerBubble");
+ b.textContent=text; b.classList.add("show");
+ clearTimeout(b._t); b._t=setTimeout(()=>b.classList.remove("show"),3200);
+}
+function logEvent(text){
+ const log=$("eventLog");
+ const row=document.createElement("div");
+ const t=Math.floor(state.minutes/60)%24, m=state.minutes%60;
+ row.textContent="["+String(t).padStart(2,"0")+":"+String(m).padStart(2,"0")+"] "+text;
+ log.prepend(row);
+ while(log.children.length>40) log.removeChild(log.lastChild);
+}
+
+/* ================= clock ================= */
+function tickClock(){
+ if(state.paused)return;
+ state.minutes += 3*state.speed;
+ if(state.minutes>=1440){state.minutes-=1440;state.day++;$("dayLbl").textContent="DAY "+state.day}
+ const h24=Math.floor(state.minutes/60), m=state.minutes%60;
+ const h12=((h24+11)%12)+1, ap=h24<12?"AM":"PM";
+ const label=h12+":"+String(m).padStart(2,"0")+" "+ap;
+ $("clockLbl").textContent=label; $("trayClock").textContent=label;
+ const night = h24<6||h24>=20;
+ const dusk = h24===6||h24===19;
+ $("dayNightTint").style.background = night?"rgba(8,10,35,.55)": dusk?"rgba(60,30,60,.28)":"rgba(10,15,40,0)";
+}
+
+/* ================= window management ================= */
+let zTop=210;
+function bringFront(el){zTop++; el.style.zIndex=zTop}
+function openWin(id){
+ const el=$(id);
+ if(window.innerWidth<820){
+   el.style.width="92vw"; el.style.left="4vw"; el.style.top="9vh"; el.style.transform="none";
+ }
+ el.classList.add("open"); bringFront(el);
+ syncTaskbar();
+}
+function closeWin(id){$(id).classList.remove("open");syncTaskbar()}
+function syncTaskbar(){
+ const items=$("taskbarItems");
+ const wins=[["relWindow","Relationships"],["invWindow","Inventory"],["helpWindow","How To Play"],["casWindow","Create A Sim"]];
+ items.innerHTML="";
+ wins.forEach(([id,label])=>{
+   if(!$(id).classList.contains("open"))return;
+   const b=document.createElement("button");
+   b.className="btn98 taskItem"; b.textContent=label;
+   b.onclick=()=>{sndClick();bringFront($(id))};
+   items.appendChild(b);
+ });
+}
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>{sndClick();closeWin(b.getAttribute("data-close"))});
+document.querySelectorAll(".floatWin").forEach(w=>w.addEventListener("pointerdown",()=>bringFront(w)));
+
+function makeDraggable(handle,target){
+ let dragging=false,ox=0,oy=0;
+ handle.addEventListener("pointerdown",e=>{
+   if(e.target.closest("button"))return;
+   dragging=true; bringFront(target);
+   const r=target.getBoundingClientRect();
+   ox=e.clientX-r.left; oy=e.clientY-r.top;
+   target.style.transform="none";
+   handle.setPointerCapture(e.pointerId);
+ });
+ handle.addEventListener("pointermove",e=>{
+   if(!dragging)return;
+   target.style.left=Math.max(0,e.clientX-ox)+"px";
+   target.style.top=Math.max(0,e.clientY-oy)+"px";
+ });
+ ["pointerup","pointercancel"].forEach(ev=>handle.addEventListener(ev,()=>dragging=false));
+}
+document.querySelectorAll("[data-drag]").forEach(h=>makeDraggable(h,$(h.getAttribute("data-drag"))));
+
+/* ================= UI wiring ================= */
+document.querySelectorAll(".building").forEach(b=>{
+ b.addEventListener("click",()=>{sndClick();goTo(b.getAttribute("data-loc"))});
+});
+
+function setSpeed(n){
+ state.paused=false; state.speed=n;
+ ["pauseBtn","s1Btn","s2Btn","s3Btn"].forEach(id=>$(id).classList.remove("pressed"));
+ $("s"+n+"Btn").classList.add("pressed");
+}
+$("pauseBtn").onclick=()=>{sndClick();state.paused=!state.paused;["pauseBtn","s1Btn","s2Btn","s3Btn"].forEach(id=>$(id).classList.remove("pressed"));$(state.paused?"pauseBtn":"s"+state.speed+"Btn").classList.add("pressed")};
+$("s1Btn").onclick=()=>{sndClick();setSpeed(1)};
+$("s2Btn").onclick=()=>{sndClick();setSpeed(2)};
+$("s3Btn").onclick=()=>{sndClick();setSpeed(3)};
+$("freeWillBtn").onclick=()=>{sndClick();state.freeWill=!state.freeWill;$("freeWillBtn").textContent=state.freeWill?"ON":"OFF";$("freeWillBtn").classList.toggle("pressed",state.freeWill)};
+
+$("openRelBtn").onclick=()=>{sndClick();openWin("relWindow")};
+$("openInvBtn").onclick=()=>{sndClick();openWin("invWindow")};
+$("openCasBtn").onclick=()=>{sndClick();openWin("casWindow")};
+$("menuHelp").onclick=$("helpMenuBtn").onclick=()=>{sndClick();openWin("helpWindow")};
+$("menuGame").onclick=()=>{sndClick();toast("GAME","Autosaves your Sim's look to this browser only.")};
+$("menuSim").onclick=()=>{sndClick();openWin("casWindow")};
+$("menuOptions").onclick=()=>{sndClick();muted=!muted;toast("SOUND",muted?"Muted.":"Sound on.")};
+$("startBtn").onclick=()=>{sndClick();openWin("helpWindow")};
+$("maxBtn").onclick=()=>{const el=document.documentElement;if(!document.fullscreenElement)el.requestFullscreen?.().catch(()=>{});else document.exitFullscreen?.()};
+$("closeBtn").onclick=()=>{sndClick();toast("GAYMERS","This is a browser tab, not a real window — but nice try.")};
+
+/* ================= CAS (character creator) ================= */
+let selfStream=null, pendingPhoto=null, pendingImg=null;
+function paintPending(){
+ if(pendingImg) paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#e0559e",hair:"#241a16",shades:true,faceImg:pendingImg});
+}
+$("pronounRow").addEventListener("click",e=>{
+ const b=e.target.closest(".pronounBtn"); if(!b)return; sndClick();
+ document.querySelectorAll(".pronounBtn").forEach(x=>x.classList.remove("sel"));
+ b.classList.add("sel");
+ if(b.getAttribute("data-p")==="custom"){
+   const v=prompt("Enter your pronouns:","she/they");
+   b.textContent=v||"custom…"; b.dataset.customValue=v||"";
+ }
+});
+function loadImageFromData(data,cb){
+ const img=new Image();
+ img.onload=()=>cb(img);
+ img.src=data;
+}
+$("selfieFileInput").addEventListener("change",e=>{
+ const f=e.target.files&&e.target.files[0]; if(!f)return;
+ const r=new FileReader();
+ r.onload=()=>{
+   pendingPhoto=r.result;
+   $("selfPreview").src=pendingPhoto; $("selfPreview").style.display="block"; $("selfPreview").style.transform="none";
+   loadImageFromData(pendingPhoto,img=>{pendingImg=img;paintPending()});
+   $("casStatus").textContent="Photo loaded. Pick pronouns and press BECOME THIS SIM.";
+ };
+ r.readAsDataURL(f);
+});
+$("openSelfCamBtn").onclick=async()=>{
+ try{
+   if(selfStream)selfStream.getTracks().forEach(t=>t.stop());
+   selfStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:640},height:{ideal:800}},audio:false});
+   const v=$("selfCam"); v.srcObject=selfStream; await v.play();
+   $("selfPreview").style.display="none";
+   $("casStatus").textContent="Camera live — frame your face, then press SNAP.";
+ }catch(e){ $("casStatus").textContent="Camera blocked here — use TAKE / CHOOSE PHOTO instead."; }
+};
+$("snapSelfieBtn").onclick=()=>{
+ const v=$("selfCam"); if(!v.videoWidth){$("casStatus").textContent="Open LIVE CAMERA first.";return}
+ const cw=480,ch=600,c=document.createElement("canvas");c.width=cw;c.height=ch;
+ const ctx=c.getContext("2d");
+ const sr=v.videoWidth/v.videoHeight, tr=cw/ch;
+ let sx=0,sy=0,sw=v.videoWidth,sh=v.videoHeight;
+ if(sr>tr){sw=v.videoHeight*tr;sx=(v.videoWidth-sw)/2}else{sh=v.videoWidth/tr;sy=(v.videoHeight-sh)/2}
+ ctx.translate(cw,0); ctx.scale(-1,1);
+ ctx.drawImage(v,sx,sy,sw,sh,0,0,cw,ch);
+ pendingPhoto=c.toDataURL("image/jpeg",.9);
+ $("selfPreview").src=pendingPhoto; $("selfPreview").style.display="block";
+ loadImageFromData(pendingPhoto,img=>{pendingImg=img;paintPending()});
+ $("casStatus").textContent="Photo captured. Press BECOME THIS SIM.";
+};
+$("finishCasBtn").onclick=()=>{
+ const nm=$("nameInput").value.trim();
+ if(nm) state.name=nm.toUpperCase().slice(0,18);
+ const selP=document.querySelector(".pronounBtn.sel");
+ if(selP) state.pronoun = selP.getAttribute("data-p")==="custom" ? (selP.dataset.customValue||"custom") : selP.getAttribute("data-p");
+ if(pendingPhoto){ state.photoData=pendingPhoto; state.faceImg=pendingImg; }
+ applyIdentity(); saveProfile();
+ toast("SIM CREATED","Welcome, "+state.name+".");
+ logEvent("Character created: "+state.name+" · "+state.pronoun);
+ if(selfStream){selfStream.getTracks().forEach(t=>t.stop());selfStream=null}
+ closeWin("casWindow");
+ closeWin("welcomeWindow");
+};
+function applyIdentity(){
+ $("simNameLbl").textContent=state.name;
+ $("simPronounLbl").textContent="pronouns: "+state.pronoun;
+ $("playerTag").textContent=state.name;
+ if(state.photoData) $("portraitImg").src=state.photoData;
+ repaintPlayerSprite();
+}
+
+/* ================= persistence ================= */
+function saveProfile(){
+ try{
+   localStorage.setItem("gaymersProfile", JSON.stringify({name:state.name,pronoun:state.pronoun,photo:state.photoData}));
+ }catch(e){}
+}
+function loadProfile(){
+ try{
+   const raw=localStorage.getItem("gaymersProfile");
+   if(!raw)return false;
+   const d=JSON.parse(raw);
+   if(d.name)state.name=d.name;
+   if(d.pronoun)state.pronoun=d.pronoun;
+   if(d.photo){
+     state.photoData=d.photo;
+     loadImageFromData(d.photo,img=>{state.faceImg=img;applyIdentity()});
+   }
+   applyIdentity();
+   return true;
+ }catch(e){return false}
+}
+
+/* ================= welcome dialog ================= */
+$("skipWelcomeBtn").onclick=()=>{sndClick();closeWin("welcomeWindow")};
+$("startCasBtn").onclick=()=>{sndClick();closeWin("welcomeWindow");openWin("casWindow")};
+
+/* ================= boot ================= */
+buildNpcLayer();
+placeEl($("player"),state.x,state.y);
+renderNeeds(); updateMood(); renderRelationships(); renderInventory(); applyIdentity();
+tickClock();
+const hadProfile=loadProfile();
+if(hadProfile) closeWin("welcomeWindow");
+
+requestAnimationFrame(walkTick);
+setInterval(tickNeeds,1000);
+setInterval(freeWillTick,2000);
+setInterval(tickClock,1000);
+setInterval(()=>{ if(!state.paused && Math.random()<.12) logEvent(FLAVOR_EVENTS[Math.floor(Math.random()*FLAVOR_EVENTS.length)]); },9000);
+
+window.addEventListener("beforeunload",saveProfile);
+})();
+</script>
+</body>
+</html>
