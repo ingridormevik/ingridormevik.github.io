@@ -51,13 +51,31 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #gameWindow{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1180px,97vw);height:min(760px,94vh);display:flex;flex-direction:column;z-index:10}
 #windowBody{flex:1;display:flex;min-height:0}
 #mapArea{position:relative;flex:1;min-width:0;overflow:hidden;background:
-  repeating-conic-gradient(#9fae86 0% 25%, #93a37c 0% 50%) 0 0/34px 34px,
-  linear-gradient(180deg,#cfe0ea 0%,#cfe0ea 30%,transparent 30%)
+  radial-gradient(circle,#4aa387 2px,transparent 2.6px) 3px 3px/24px 24px,
+  radial-gradient(circle,#5bbd9c 1.5px,transparent 2px) 15px 13px/24px 24px,
+  linear-gradient(180deg,#2f8068,#256a55)
   ;border-right:2px solid var(--faceLo)}
-#skyStrip{position:absolute;left:0;right:0;top:0;height:30%;background:linear-gradient(180deg,#a8d0e6,#d7ecf2);border-bottom:3px solid #7f6b53}
-#skyStrip:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.35) 0 3px,transparent 3px 26px)}
+#skyStrip{position:absolute;left:0;right:0;top:0;height:30%;background:linear-gradient(180deg,#7fc6e2,#c3ecf1);border-bottom:3px solid #1f5c4b;overflow:hidden}
 #dayNightTint{position:absolute;inset:0;pointer-events:none;background:rgba(10,15,40,0);transition:background 2s linear}
-#sidewalkPattern{position:absolute;left:0;right:0;top:28%;height:4px;background:repeating-linear-gradient(90deg,#7f6b53 0 2px,transparent 2px 22px)}
+#sidewalkPattern{position:absolute;left:0;right:0;top:28%;height:4px;background:repeating-linear-gradient(90deg,#1f5c4b 0 2px,transparent 2px 22px)}
+
+.cloud{position:absolute;background:#fff;border-radius:40%;opacity:.92}
+.cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cloud.c1{width:52px;height:18px;top:14px;left:8%}
+.cloud.c1:before{width:24px;height:24px;top:-13px;left:5px}
+.cloud.c1:after{width:18px;height:18px;top:-9px;left:28px}
+.cloud.c2{width:66px;height:22px;top:30px;left:52%}
+.cloud.c2:before{width:28px;height:28px;top:-15px;left:9px}
+.cloud.c2:after{width:22px;height:22px;top:-11px;left:36px}
+.cloud.c3{width:42px;height:15px;top:9px;left:78%}
+.cloud.c3:before{width:18px;height:18px;top:-10px;left:7px}
+@media(max-width:820px){.cloud{transform:scale(.7);transform-origin:top left}}
+
+.trailDot{position:absolute;width:6px;height:6px;border-radius:50%;background:#f5ecd2;border:1px solid #163d31;transform:translate(-50%,-50%);opacity:.9;pointer-events:none}
+
+.deskIcon{position:absolute;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.3))}
+.deskIcon .ico{width:24px;height:24px;background:linear-gradient(#fff,#e2e2e2);border:2px solid #000;display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1}
+@media(max-width:820px){.deskIcon .ico{width:18px;height:18px;font-size:10px}}
 
 .prop{position:absolute;pointer-events:none}
 .tree{width:20px}
@@ -78,7 +96,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .building.near .box{outline:2px dashed #fff;outline-offset:2px}
 .building:active{filter:brightness(.94)}
 
-#bClub .roof{background:#7a2f66}#bClub .box{background:#3a2140}#bClub .sign{background:#7a2f66}#bClub .glow{background:#e05fce}
+#bClub .roof{background:#eceadd}#bClub .box{background:#f7f5ec;border-color:#8f8a78}#bClub .win{background:#1d3a45;border-color:#7d7566}#bClub .door{background:#5a2c22}#bClub .sign{background:#c4384f}#bClub .glow{background:#ff6f91}
 #bCommunity .roof{background:#c47a2e}#bCommunity .box{background:#8a5a2c}#bCommunity .sign{background:#c47a2e}#bCommunity .glow{background:#ffd27a}
 #bThrift .roof{background:#2f8a6f}#bThrift .box{background:#1f5a49}#bThrift .sign{background:#2f8a6f}#bThrift .glow{background:#6fe0c0}
 #bSafe .roof{background:#5470c4}#bSafe .box{background:#33477e}#bSafe .sign{background:#5470c4}#bSafe .glow{background:#a7c0ff}
@@ -242,9 +260,18 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 
     <div id="windowBody">
       <div id="mapArea">
-        <div id="skyStrip"></div>
+        <div id="skyStrip">
+          <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+        </div>
         <div id="sidewalkPattern"></div>
         <div id="dayNightTint"></div>
+        <div id="trailLayer"></div>
+
+        <div class="deskIcon" style="left:32%;top:58%"><div class="ico">♻</div></div>
+        <div class="deskIcon" style="left:62%;top:44%"><div class="ico">⌛</div></div>
+        <div class="deskIcon" style="left:41%;top:24%"><div class="ico">🔑</div></div>
+        <div class="deskIcon" style="left:69%;top:83%"><div class="ico">🖥</div></div>
+        <div class="deskIcon" style="left:6%;top:52%"><div class="ico">✉</div></div>
 
         <div class="prop tree" style="left:6%;top:34%"><div class="leaves"></div><div class="trunk"></div></div>
         <div class="prop tree" style="left:93%;top:40%"><div class="leaves"></div><div class="trunk"></div></div>
@@ -255,7 +282,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
         <div id="bClub" class="building" data-loc="club" style="left:18%;top:34%">
           <div class="glow"></div><div class="roof"></div>
           <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
-          <div class="sign pxfont">CLUB</div>
+          <div class="sign pxfont">LANDMARK</div>
         </div>
         <div id="bCommunity" class="building" data-loc="community" style="left:74%;top:28%">
           <div class="glow"></div><div class="roof"></div>
@@ -383,10 +410,10 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
       <div class="titlebtns"><button class="wbtn" data-close="helpWindow">×</button></div>
     </div>
     <div class="floatBody" style="font-size:9px;line-height:1.6">
-      Click any building to send your Sim there — <b>Club</b>, <b>Community Center</b>, <b>Thrift</b>, <b>Safe Space</b>, <b>Chat Zone</b> or <b>Waterfront</b>.<br><br>
+      Click any building to send your Sim there — <b>Landmark</b>, <b>Community Center</b>, <b>Thrift</b>, <b>Safe Space</b>, <b>Chat Zone</b> or <b>Waterfront</b>.<br><br>
       Every place changes your needs differently. Let them run low too long and mood drops.<br><br>
       Turn <b>Free Will</b> on and your Sim decides for herself when you stop clicking.<br><br>
-      <b>Thrift</b> sometimes hands you a random item. <b>Club</b>, <b>Chat Zone</b> and <b>Community</b> build relationships with the people who hang out there.<br><br>
+      <b>Thrift</b> sometimes hands you a random item. <b>Landmark</b>, <b>Chat Zone</b> and <b>Community</b> build relationships with the people who hang out there.<br><br>
       Use <b>MAKE YOUR CHARACTER</b> to set your name, pronouns and photo — it becomes your portrait and your pixel face in the room.
     </div>
   </section>
@@ -447,7 +474,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
     <div class="titlebar"><div class="titleleft"><span class="titleicon"></span><span>Welcome</span></div></div>
     <div class="floatBody" style="padding:16px">
       <h3 class="pxfont" style="font-size:13px;margin:0 0 8px">GAYMERS // PLAYING IDENTITY</h3>
-      <p style="font-size:9px;line-height:1.6;color:#333;margin:0 0 14px">A small life-sim about the rooms where you get to be yourself. Make your Sim — your real photo becomes their pixel face — then send them out into a town with a Club, a Community Center, a Thrift store, a Safe Space, a Chat Zone and a Waterfront. Free Will is on: if you stop choosing, your Sim will.</p>
+      <p style="font-size:9px;line-height:1.6;color:#333;margin:0 0 14px">A small life-sim about the rooms where you get to be yourself. Make your Sim — your real photo becomes their pixel face — then send them out into a town with Landmark, a Community Center, a Thrift store, a Safe Space, a Chat Zone and a Waterfront. Free Will is on: if you stop choosing, your Sim will.</p>
       <div style="display:flex;gap:8px;justify-content:flex-end">
         <button class="btn98" id="skipWelcomeBtn">JUST EXPLORE</button>
         <button class="btn98 pressed" id="startCasBtn" style="background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff">MAKE YOUR CHARACTER</button>
@@ -489,8 +516,8 @@ function sndRel(){blip(440,.08,"sine",.045);setTimeout(()=>blip(660,.14,"sine",.
 
 /* ================= locations ================= */
 const LOCATIONS={
- club:{el:"bClub",label:"CLUB",x:18,y:34,deltas:{fun:20,social:16,energy:-14,identity:6},npc:"sasha",
-   lines:["The bassline finds your feet before you decide to dance.","Nobody here is asking you to explain yourself."]},
+ club:{el:"bClub",label:"LANDMARK",x:18,y:34,deltas:{fun:20,social:16,energy:-14,identity:6},npc:"sasha",
+   lines:["Teal carpet, a curved wood bar, red light spilling over the plants.","The bassline finds your feet before you decide to dance.","Track lights and neon — nobody here is asking you to explain yourself."]},
  community:{el:"bCommunity",label:"COMMUNITY CENTER",x:74,y:28,deltas:{social:14,identity:16,comfort:10},npc:"theo",
    lines:["Someone remembers your name from last time.","A flyer wall, a coffee pot, a room that keeps its promises."]},
  thrift:{el:"bThrift",label:"THRIFT",x:13,y:74,deltas:{fun:12,identity:14,comfort:4},npc:"mia",giveItem:true,
@@ -567,6 +594,24 @@ function paintSprite(canvas,opts){
 function repaintPlayerSprite(){
  paintSprite($("playerCanvas"),{outfit:"#111318",tie:"#e0559e",hair:"#241a16",shades:true,faceImg:state.faceImg});
  paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#e0559e",hair:"#241a16",shades:true,faceImg:state.faceImg});
+}
+
+/* ================= winding overworld trail ================= */
+function buildTrail(){
+ const order=["thrift","safe","club","community","chat","waterfront"];
+ const layer=$("trailLayer");
+ layer.innerHTML="";
+ const bez=(a,c,b,t)=>({x:(1-t)*(1-t)*a.x+2*(1-t)*t*c.x+t*t*b.x, y:(1-t)*(1-t)*a.y+2*(1-t)*t*c.y+t*t*b.y});
+ for(let i=0;i<order.length-1;i++){
+   const a=LOCATIONS[order[i]], b=LOCATIONS[order[i+1]];
+   const ctrl={x:(a.x+b.x)/2+(Math.random()*16-8), y:(a.y+b.y)/2+(Math.random()*12-6)};
+   for(let s=1;s<9;s++){
+     const t=s/9, pt=bez(a,ctrl,b,t);
+     const dot=document.createElement("div");
+     dot.className="trailDot"; dot.style.left=pt.x+"%"; dot.style.top=pt.y+"%";
+     layer.appendChild(dot);
+   }
+ }
 }
 
 /* ================= NPC ambient sprites ================= */
@@ -942,6 +987,7 @@ $("skipWelcomeBtn").onclick=()=>{sndClick();closeWin("welcomeWindow")};
 $("startCasBtn").onclick=()=>{sndClick();closeWin("welcomeWindow");openWin("casWindow")};
 
 /* ================= boot ================= */
+buildTrail();
 buildNpcLayer();
 placeEl($("player"),state.x,state.y);
 renderNeeds(); updateMood(); renderRelationships(); renderInventory(); applyIdentity();
