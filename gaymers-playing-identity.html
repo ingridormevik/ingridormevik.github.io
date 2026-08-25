@@ -51,13 +51,13 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #gameWindow{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1180px,97vw);height:min(760px,94vh);display:flex;flex-direction:column;z-index:10}
 #windowBody{flex:1;display:flex;min-height:0}
 #mapArea{position:relative;flex:1;min-width:0;overflow:hidden;background:
-  radial-gradient(circle,#4aa387 2px,transparent 2.6px) 3px 3px/24px 24px,
-  radial-gradient(circle,#5bbd9c 1.5px,transparent 2px) 15px 13px/24px 24px,
-  linear-gradient(180deg,#2f8068,#256a55)
+  repeating-linear-gradient(112deg, rgba(255,255,255,.05) 0 2px, transparent 2px 10px),
+  repeating-linear-gradient(24deg, rgba(0,0,0,.05) 0 2px, transparent 2px 12px),
+  radial-gradient(ellipse at 50% 20%,#6cbb5e,#4a9a4c 55%,#357a3f 100%)
   ;border-right:2px solid var(--faceLo)}
-#skyStrip{position:absolute;left:0;right:0;top:0;height:30%;background:linear-gradient(180deg,#7fc6e2,#c3ecf1);border-bottom:3px solid #1f5c4b;overflow:hidden}
+#skyStrip{position:absolute;left:0;right:0;top:0;height:16%;background:linear-gradient(180deg,#7fc6e2,#c3ecf1);border-bottom:3px solid #2f6b3a;overflow:hidden}
 #dayNightTint{position:absolute;inset:0;pointer-events:none;background:rgba(10,15,40,0);transition:background 2s linear}
-#sidewalkPattern{position:absolute;left:0;right:0;top:28%;height:4px;background:repeating-linear-gradient(90deg,#1f5c4b 0 2px,transparent 2px 22px)}
+#sidewalkPattern{display:none}
 
 .cloud{position:absolute;background:#fff;border-radius:40%;opacity:.92}
 .cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%}
@@ -71,8 +71,6 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .cloud.c3:before{width:18px;height:18px;top:-10px;left:7px}
 @media(max-width:820px){.cloud{transform:scale(.7);transform-origin:top left}}
 
-.trailDot{position:absolute;width:6px;height:6px;border-radius:50%;background:#f5ecd2;border:1px solid #163d31;transform:translate(-50%,-50%);opacity:.9;pointer-events:none}
-
 .deskIcon{position:absolute;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.3))}
 .deskIcon .ico{width:24px;height:24px;background:linear-gradient(#fff,#e2e2e2);border:2px solid #000;display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1}
 @media(max-width:820px){.deskIcon .ico{width:18px;height:18px;font-size:10px}}
@@ -85,23 +83,13 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .lamp:before{content:"";position:absolute;left:-5px;top:-8px;width:16px;height:10px;background:#e8d97a;box-shadow:0 0 8px 2px rgba(232,217,122,.8)}
 .bench{width:34px;height:10px;background:#7a5230;box-shadow:0 6px 0 -3px #4b3620}
 
-.building{position:absolute;transform:translate(-50%,-100%);cursor:pointer;text-align:center;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.28))}
-.building .roof{width:96px;height:22px;clip-path:polygon(0 100%,50% 0,100% 100%);margin:0 auto}
-.building .box{width:86px;height:58px;margin:0 auto;position:relative;border:2px solid rgba(0,0,0,.35)}
-.building .door{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:20px;height:30px;background:#2c2116;border:1px solid #000}
-.building .win{position:absolute;top:10px;width:14px;height:14px;background:#cdeaf5;border:2px solid #2c2116}
-.building .win.l{left:10px}.building .win.r{right:10px}
-.building .sign{margin-top:4px;display:inline-block;padding:3px 7px;font-size:8px;font-weight:900;letter-spacing:.03em;color:#fff;background:#1c1f24;border:1px solid #000;white-space:nowrap}
-.building .glow{position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:60px;height:6px;border-radius:50%;filter:blur(4px);opacity:.85}
-.building.near .box{outline:2px dashed #fff;outline-offset:2px}
+.building{position:absolute;transform:translate(-50%,-100%);cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(3px 5px 2px rgba(0,0,0,.34))}
+.building .bIllus{display:block;transition:filter .15s}
+.building.near .bIllus{filter:drop-shadow(0 0 7px #fff)}
 .building:active{filter:brightness(.94)}
-
-#bClub .roof{background:#eceadd}#bClub .box{background:#f7f5ec;border-color:#8f8a78}#bClub .win{background:#1d3a45;border-color:#7d7566}#bClub .door{background:#5a2c22}#bClub .sign{background:#c4384f}#bClub .glow{background:#ff6f91}
-#bCommunity .roof{background:#c47a2e}#bCommunity .box{background:#8a5a2c}#bCommunity .sign{background:#c47a2e}#bCommunity .glow{background:#ffd27a}
-#bThrift .roof{background:#2f8a6f}#bThrift .box{background:#1f5a49}#bThrift .sign{background:#2f8a6f}#bThrift .glow{background:#6fe0c0}
-#bSafe .roof{background:#5470c4}#bSafe .box{background:#33477e}#bSafe .sign{background:#5470c4}#bSafe .glow{background:#a7c0ff}
-#bChat .roof{background:#c4508f}#bChat .box{background:#7e2f58}#bChat .sign{background:#c4508f}#bChat .glow{background:#ff9dcf}
-#bWaterfront .roof{background:#2f7ec4}#bWaterfront .box{background:#1f4e7e}#bWaterfront .sign{background:#2f7ec4}#bWaterfront .glow{background:#8fd6ff}
+.signPlaque{margin-top:-6px;position:relative;z-index:2;background:#fbfaf6;border:2px solid #1c1f24;border-radius:13px;padding:4px 11px 5px;display:flex;flex-direction:column;align-items:center;box-shadow:2px 3px 0 rgba(0,0,0,.24)}
+.signPlaque b{font-size:10px;letter-spacing:.03em;color:#1c1f24;white-space:nowrap}
+.signPlaque span{font-size:7px;color:#6b7278;margin-top:1px;white-space:nowrap}
 
 .sprite{position:absolute;transform:translate(-50%,-100%);transition:left .05s linear,top .05s linear;pointer-events:none}
 .sprite .shadow{width:26px;height:8px;border-radius:50%;background:rgba(0,0,0,.32);margin:0 auto;filter:blur(1px)}
@@ -135,11 +123,16 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #moodWordLbl{font-size:9px;font-weight:900;margin-top:3px}
 
 #moodGaugeWrap{padding:8px 6px 4px;text-align:center}
-#moodTriangle{position:relative;width:100%;height:44px;clip-path:polygon(0 100%,50% 4%,100% 100%);background:linear-gradient(90deg,var(--red) 0 25%,var(--orange) 25% 50%,var(--yellow) 50% 75%,var(--green) 75% 100%);border:2px solid #1a1a1a}
+#moodRow{display:flex;align-items:center;gap:8px}
+#moodTriangle{position:relative;flex:1;height:44px;clip-path:polygon(0 100%,50% 4%,100% 100%);background:linear-gradient(90deg,var(--red) 0 25%,var(--orange) 25% 50%,var(--yellow) 50% 75%,var(--green) 75% 100%);border:2px solid #1a1a1a}
 #moodNeedle{position:absolute;bottom:2px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid #1a1a1a;transform:translateX(-50%);transition:left .5s ease}
+#moodFace{flex:0 0 auto;width:28px;height:28px}
+#moodFace svg{display:block}
 #moodPct{font-size:8px;margin-top:4px;font-weight:700;color:#333}
 
-.need{display:grid;grid-template-columns:44px 1fr 26px;gap:6px;align-items:center;margin:5px 0}
+.need{display:grid;grid-template-columns:15px 50px 1fr 26px;gap:6px;align-items:center;margin:5px 0}
+.need .nico{width:14px;height:14px;color:#3a4a52;display:flex;align-items:center;justify-content:center}
+.need .nico svg{display:block}
 .need .nlbl{font-size:8px;font-weight:900;color:#333}
 .need .nval{font-size:8px;text-align:right;color:#555}
 .track98{height:11px;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff;overflow:hidden}
@@ -230,7 +223,8 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
   #sidePanel{width:100%;flex:0 0 auto;flex-direction:row;flex-wrap:wrap;max-height:38dvh}
   #sidePanel .panelBox{flex:1 1 46%}
   #eventLog{max-height:64px}
-  .building .roof{width:70px;height:16px}.building .box{width:62px;height:42px}.building .win{width:10px;height:10px}.building .door{width:15px;height:22px}
+  .building .bIllus{width:86px;height:86px}
+  .signPlaque{padding:3px 7px 4px;border-radius:9px}.signPlaque b{font-size:7px}.signPlaque span{font-size:5.5px}
   .sprite canvas{width:52px!important;height:91px!important}
   .toast98{width:200px}
   #toastWrap{right:6px;top:6px}
@@ -280,34 +274,115 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
         <div class="prop bench" style="left:40%;top:80%"></div>
 
         <div id="bClub" class="building" data-loc="club" style="left:18%;top:34%">
-          <div class="glow"></div><div class="roof"></div>
-          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
-          <div class="sign pxfont">LANDMARK</div>
+          <svg class="bIllus" viewBox="0 0 160 160" width="132" height="132">
+            <ellipse cx="80" cy="150" rx="56" ry="8" fill="#000" opacity=".24"/>
+            <ellipse cx="80" cy="120" rx="50" ry="34" fill="#c85fd6" opacity=".25"/>
+            <rect x="24" y="64" width="112" height="84" rx="4" fill="#221826" stroke="#0d0910" stroke-width="3"/>
+            <rect x="24" y="54" width="112" height="14" fill="#171019" stroke="#0d0910" stroke-width="3"/>
+            <rect x="38" y="88" width="20" height="20" fill="#8a6ce0" opacity=".9"/>
+            <rect x="102" y="88" width="20" height="20" fill="#d868da" opacity=".9"/>
+            <rect x="66" y="116" width="28" height="32" fill="#100b13" stroke="#0d0910" stroke-width="2"/>
+            <rect x="42" y="70" width="76" height="22" rx="4" fill="#0d0910" stroke="#ff6fd0" stroke-width="2"/>
+            <text x="80" y="86" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="10" fill="#ff8fe0">CLUB</text>
+            <line x1="80" y1="54" x2="80" y2="34" stroke="#5a5a5a" stroke-width="3"/>
+            <circle cx="80" cy="24" r="14" fill="#cfd6dc" stroke="#8890a0" stroke-width="2"/>
+            <path d="M66 24h28M80 10v28M70 14l20 20M90 14l-20 20" stroke="#8890a0" stroke-width="1.3"/>
+            <path d="M38 8l3 6 6 1-5 4 1 6-6-3-6 3 1-6-5-4 6-1z" fill="#f4e37a"/>
+            <path d="M128 16l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z" fill="#f4e37a"/>
+          </svg>
+          <div class="signPlaque"><b>CLUB</b><span>The Queer Club</span></div>
         </div>
         <div id="bCommunity" class="building" data-loc="community" style="left:74%;top:28%">
-          <div class="glow"></div><div class="roof"></div>
-          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
-          <div class="sign pxfont">COMMUNITY</div>
+          <svg class="bIllus" viewBox="0 0 160 160" width="132" height="132">
+            <ellipse cx="80" cy="150" rx="56" ry="8" fill="#000" opacity=".2"/>
+            <polygon points="20,66 80,26 140,66" fill="#a5522f" stroke="#6e3018" stroke-width="3"/>
+            <rect x="30" y="64" width="100" height="84" rx="3" fill="#c98a52" stroke="#8a5a30" stroke-width="3"/>
+            <rect x="30" y="70" width="100" height="8" fill="#e63946"/>
+            <rect x="30" y="78" width="100" height="8" fill="#f4a300"/>
+            <rect x="30" y="86" width="100" height="8" fill="#ffd23f"/>
+            <rect x="30" y="94" width="100" height="8" fill="#3aa655"/>
+            <rect x="30" y="102" width="100" height="8" fill="#4a7fd6"/>
+            <rect x="30" y="110" width="100" height="8" fill="#8a4fd6"/>
+            <rect x="38" y="122" width="16" height="20" fill="#dff0f5" stroke="#5a3620" stroke-width="2"/>
+            <rect x="106" y="122" width="16" height="20" fill="#dff0f5" stroke="#5a3620" stroke-width="2"/>
+            <rect x="62" y="118" width="36" height="30" fill="#5a3620" stroke="#3a2210" stroke-width="2"/>
+            <circle cx="90" cy="133" r="2" fill="#e8d9a0"/>
+          </svg>
+          <div class="signPlaque"><b>TOGETHER</b><span>Community Space</span></div>
         </div>
         <div id="bThrift" class="building" data-loc="thrift" style="left:13%;top:74%">
-          <div class="glow"></div><div class="roof"></div>
-          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
-          <div class="sign pxfont">THRIFT</div>
+          <svg class="bIllus" viewBox="0 0 160 160" width="132" height="132">
+            <ellipse cx="80" cy="150" rx="56" ry="8" fill="#000" opacity=".22"/>
+            <rect x="28" y="66" width="104" height="82" rx="3" fill="#256b58" stroke="#12352b" stroke-width="3"/>
+            <rect x="28" y="58" width="104" height="10" fill="#1c5646" stroke="#12352b" stroke-width="2"/>
+            <path d="M30 66 L44 66 L40 84 L26 84 Z" fill="#f2ede0"/>
+            <path d="M44 66 L58 66 L56 84 L40 84 Z" fill="#256b58"/>
+            <path d="M58 66 L72 66 L72 84 L56 84 Z" fill="#f2ede0"/>
+            <path d="M72 66 L86 66 L88 84 L72 84 Z" fill="#256b58"/>
+            <path d="M86 66 L100 66 L104 84 L88 84 Z" fill="#f2ede0"/>
+            <path d="M100 66 L114 66 L120 84 L104 84 Z" fill="#256b58"/>
+            <path d="M114 66 L130 66 L136 84 L120 84 Z" fill="#f2ede0"/>
+            <rect x="40" y="92" width="80" height="30" fill="#0f382e" stroke="#12352b" stroke-width="2"/>
+            <line x1="46" y1="96" x2="114" y2="96" stroke="#8fb8ab" stroke-width="2"/>
+            <path d="M52 96v6M58 96v6M64 96v6" stroke="#e0d0a0" stroke-width="4" stroke-linecap="round"/>
+            <path d="M74 96v6M80 96v6M86 96v6" stroke="#d68fbc" stroke-width="4" stroke-linecap="round"/>
+            <path d="M96 96v6M102 96v6M108 96v6" stroke="#8fc4d6" stroke-width="4" stroke-linecap="round"/>
+            <rect x="66" y="124" width="28" height="24" fill="#12352b" stroke="#0a201a" stroke-width="2"/>
+          </svg>
+          <div class="signPlaque"><b>THRIFT</b><span>Thrift &amp; Wardrobe</span></div>
         </div>
         <div id="bSafe" class="building" data-loc="safe" style="left:50%;top:50%">
-          <div class="glow"></div><div class="roof"></div>
-          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
-          <div class="sign pxfont">SAFE SPACE</div>
+          <svg class="bIllus" viewBox="0 0 160 160" width="132" height="132">
+            <ellipse cx="80" cy="150" rx="56" ry="8" fill="#000" opacity=".2"/>
+            <rect x="18" y="110" width="7" height="38" fill="#6b4a30"/>
+            <circle cx="14" cy="102" r="14" fill="#f3b6cf"/>
+            <circle cx="28" cy="96" r="12" fill="#f7c9dc"/>
+            <circle cx="20" cy="88" r="10" fill="#f3b6cf"/>
+            <polygon points="60,58 80,30 100,58" fill="#8a6cc4" stroke="#5b4189" stroke-width="3"/>
+            <rect x="46" y="58" width="68" height="90" rx="4" fill="#cdbfe8" stroke="#5b4189" stroke-width="3"/>
+            <rect x="54" y="72" width="16" height="16" fill="#fff7fb" stroke="#5b4189" stroke-width="2"/>
+            <rect x="90" y="72" width="16" height="16" fill="#fff7fb" stroke="#5b4189" stroke-width="2"/>
+            <rect x="66" y="118" width="28" height="30" fill="#5b4189" stroke="#3d2a63" stroke-width="2"/>
+            <path d="M80 128c-3-4-9-4-9 1 0 4 9 9 9 9s9-5 9-9c0-5-6-5-9-1z" fill="#ff9dc0"/>
+          </svg>
+          <div class="signPlaque"><b>SAFE HERE</b><span>Safe Space</span></div>
         </div>
         <div id="bChat" class="building" data-loc="chat" style="left:84%;top:70%">
-          <div class="glow"></div><div class="roof"></div>
-          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
-          <div class="sign pxfont">CHAT ZONE</div>
+          <svg class="bIllus" viewBox="0 0 160 160" width="120" height="120">
+            <ellipse cx="80" cy="150" rx="46" ry="7" fill="#000" opacity=".18"/>
+            <rect x="52" y="108" width="56" height="8" fill="#8a97a0" stroke="#4a545c" stroke-width="2"/>
+            <rect x="58" y="116" width="6" height="30" fill="#6b747c"/>
+            <rect x="96" y="116" width="6" height="30" fill="#6b747c"/>
+            <rect x="60" y="70" width="40" height="32" rx="2" fill="#2a3138" stroke="#12161a" stroke-width="3"/>
+            <rect x="65" y="75" width="30" height="20" fill="#5fc7e0"/>
+            <path d="M65 79h20M65 85h14" stroke="#0d3948" stroke-width="2"/>
+            <rect x="76" y="102" width="8" height="8" fill="#12161a"/>
+            <path d="M108 56c0-9 8-16 18-16s18 7 18 16-8 16-18 16c-2 0-4 0-6-1l-6 5 1-7c-4-3-7-8-7-13z" fill="#fff7f0" stroke="#4a545c" stroke-width="2"/>
+            <circle cx="120" cy="56" r="1.6" fill="#4a545c"/><circle cx="126" cy="56" r="1.6" fill="#4a545c"/><circle cx="132" cy="56" r="1.6" fill="#4a545c"/>
+            <rect x="30" y="128" width="24" height="8" rx="3" fill="#c98a52" stroke="#6e3018" stroke-width="2"/>
+            <rect x="34" y="136" width="4" height="12" fill="#6e3018"/><rect x="46" y="136" width="4" height="12" fill="#6e3018"/>
+          </svg>
+          <div class="signPlaque"><b>CHAT ZONE</b><span>Social / Chat Zone</span></div>
         </div>
-        <div id="bWaterfront" class="building" data-loc="waterfront" style="left:50%;top:91%">
-          <div class="glow"></div><div class="roof"></div>
-          <div class="box"><div class="win l"></div><div class="win r"></div><div class="door"></div></div>
-          <div class="sign pxfont">WATERFRONT</div>
+        <div id="bWaterfront" class="building" data-loc="waterfront" style="left:50%;top:84%">
+          <svg class="bIllus" viewBox="0 0 160 160" width="132" height="120">
+            <rect x="10" y="128" width="140" height="26" fill="#2f7ec4"/>
+            <path d="M10 128q20-6 40 0t40 0 40 0 20 0" fill="none" stroke="#4a9adf" stroke-width="3" opacity=".7"/>
+            <rect x="30" y="96" width="100" height="14" fill="#a5793f" stroke="#6e4c22" stroke-width="2"/>
+            <line x1="34" y1="96" x2="34" y2="110" stroke="#6e4c22" stroke-width="1.5"/>
+            <line x1="46" y1="96" x2="46" y2="110" stroke="#6e4c22" stroke-width="1.5"/>
+            <line x1="58" y1="96" x2="58" y2="110" stroke="#6e4c22" stroke-width="1.5"/>
+            <line x1="70" y1="96" x2="70" y2="110" stroke="#6e4c22" stroke-width="1.5"/>
+            <line x1="82" y1="96" x2="82" y2="110" stroke="#6e4c22" stroke-width="1.5"/>
+            <line x1="94" y1="96" x2="94" y2="110" stroke="#6e4c22" stroke-width="1.5"/>
+            <line x1="106" y1="96" x2="106" y2="110" stroke="#6e4c22" stroke-width="1.5"/>
+            <line x1="118" y1="96" x2="118" y2="110" stroke="#6e4c22" stroke-width="1.5"/>
+            <rect x="36" y="110" width="8" height="20" fill="#6e4c22"/>
+            <rect x="116" y="110" width="8" height="20" fill="#6e4c22"/>
+            <path d="M64 54q6-8 12 0q6-8 12 0" stroke="#333" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            <path d="M100 44q4-6 8 0q4-6 8 0" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+          <div class="signPlaque"><b>WATERFRONT</b><span>Waterfront</span></div>
         </div>
 
         <!-- NPCs injected by JS -->
@@ -337,7 +412,14 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
         <div class="panelBox">
           <div class="panelHead">MOOD</div>
           <div id="moodGaugeWrap">
-            <div id="moodTriangle"><div id="moodNeedle" style="left:50%"></div></div>
+            <div id="moodRow">
+              <div id="moodTriangle"><div id="moodNeedle" style="left:50%"></div></div>
+              <div id="moodFace"><svg viewBox="0 0 24 24" width="28" height="28">
+                <circle id="moodFaceCircle" cx="12" cy="12" r="10.5" fill="#8de56d" stroke="#1a1a1a" stroke-width="1.6"/>
+                <circle cx="8" cy="10" r="1.3" fill="#1a1a1a"/><circle cx="16" cy="10" r="1.3" fill="#1a1a1a"/>
+                <path id="moodMouth" d="M8 15q4 3 8 0" stroke="#1a1a1a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+              </svg></div>
+            </div>
             <div id="moodPct">Mood: 0</div>
           </div>
         </div>
@@ -410,10 +492,10 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
       <div class="titlebtns"><button class="wbtn" data-close="helpWindow">×</button></div>
     </div>
     <div class="floatBody" style="font-size:9px;line-height:1.6">
-      Click any building to send your Sim there — <b>Landmark</b>, <b>Community Center</b>, <b>Thrift</b>, <b>Safe Space</b>, <b>Chat Zone</b> or <b>Waterfront</b>.<br><br>
+      Click any building to send your Sim there — <b>Club</b>, <b>Community Center</b>, <b>Thrift</b>, <b>Safe Space</b>, <b>Chat Zone</b> or <b>Waterfront</b>.<br><br>
       Every place changes your needs differently. Let them run low too long and mood drops.<br><br>
       Turn <b>Free Will</b> on and your Sim decides for herself when you stop clicking.<br><br>
-      <b>Thrift</b> sometimes hands you a random item. <b>Landmark</b>, <b>Chat Zone</b> and <b>Community</b> build relationships with the people who hang out there.<br><br>
+      <b>Thrift</b> sometimes hands you a random item. <b>Club</b>, <b>Chat Zone</b> and <b>Community</b> build relationships with the people who hang out there.<br><br>
       Use <b>MAKE YOUR CHARACTER</b> to set your name, pronouns and photo — it becomes your portrait and your pixel face in the room.
     </div>
   </section>
@@ -474,7 +556,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
     <div class="titlebar"><div class="titleleft"><span class="titleicon"></span><span>Welcome</span></div></div>
     <div class="floatBody" style="padding:16px">
       <h3 class="pxfont" style="font-size:13px;margin:0 0 8px">GAYMERS // PLAYING IDENTITY</h3>
-      <p style="font-size:9px;line-height:1.6;color:#333;margin:0 0 14px">A small life-sim about the rooms where you get to be yourself. Make your Sim — your real photo becomes their pixel face — then send them out into a town with Landmark, a Community Center, a Thrift store, a Safe Space, a Chat Zone and a Waterfront. Free Will is on: if you stop choosing, your Sim will.</p>
+      <p style="font-size:9px;line-height:1.6;color:#333;margin:0 0 14px">A small life-sim about the rooms where you get to be yourself. Make your Sim — your real photo becomes their pixel face — then send them out into a town with a Club, a Community Center, a Thrift store, a Safe Space, a Chat Zone and a Waterfront. Free Will is on: if you stop choosing, your Sim will.</p>
       <div style="display:flex;gap:8px;justify-content:flex-end">
         <button class="btn98" id="skipWelcomeBtn">JUST EXPLORE</button>
         <button class="btn98 pressed" id="startCasBtn" style="background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff">MAKE YOUR CHARACTER</button>
@@ -516,17 +598,17 @@ function sndRel(){blip(440,.08,"sine",.045);setTimeout(()=>blip(660,.14,"sine",.
 
 /* ================= locations ================= */
 const LOCATIONS={
- club:{el:"bClub",label:"LANDMARK",x:18,y:34,deltas:{fun:20,social:16,energy:-14,identity:6},npc:"sasha",
+ club:{el:"bClub",label:"CLUB",x:18,y:34,deltas:{fun:20,social:16,energy:-14,identity:6},npc:"sasha",
    lines:["Teal carpet, a curved wood bar, red light spilling over the plants.","The bassline finds your feet before you decide to dance.","Track lights and neon — nobody here is asking you to explain yourself."]},
  community:{el:"bCommunity",label:"COMMUNITY CENTER",x:74,y:28,deltas:{social:14,identity:16,comfort:10},npc:"theo",
    lines:["Someone remembers your name from last time.","A flyer wall, a coffee pot, a room that keeps its promises."]},
  thrift:{el:"bThrift",label:"THRIFT",x:13,y:74,deltas:{fun:12,identity:14,comfort:4},npc:"mia",giveItem:true,
    lines:["The racks smell like other people's closets and possibility.","You try something on that isn't quite you yet — but could be."]},
- safe:{el:"bSafe",label:"SAFE SPACE",x:50,y:50,deltas:{comfort:20,identity:12,energy:14,social:2},npc:"rowan",
+ safe:{el:"bSafe",label:"SAFE HERE",x:50,y:50,deltas:{comfort:20,identity:12,energy:14,social:2},npc:"rowan",
    lines:["Nothing is required of you here. That's the whole point.","You exhale a breath you didn't know you were holding."]},
  chat:{el:"bChat",label:"CHAT ZONE",x:84,y:70,deltas:{social:20,fun:10},npc:"noor",
    lines:["A conversation that doesn't feel like an interview.","Someone laughs at the exact joke you were about to make."]},
- waterfront:{el:"bWaterfront",label:"WATERFRONT",x:50,y:91,deltas:{energy:16,comfort:12,hunger:-8},npc:"kai",
+ waterfront:{el:"bWaterfront",label:"WATERFRONT",x:50,y:84,deltas:{energy:16,comfort:12,hunger:-8},npc:"kai",
    lines:["The fjord doesn't care what you're wearing.","Quiet water, quiet mind, for a minute."]}
 };
 const NPCS={
@@ -561,7 +643,7 @@ const FLAVOR_EVENTS=[
 const state={
  name:"YOU", pronoun:"she/her", photoData:null, faceImg:null,
  needs:{energy:78,social:70,fun:74,hunger:66,comfort:72,identity:60},
- x:50,y:50,target:null,walking:false,
+ x:63,y:60,target:null,walking:false,
  freeWill:true, paused:false, speed:1, lastManual:Date.now(),
  mood:20, minutes:7*60, day:1,
  inventory:[], relOrder:["sasha","theo","mia","rowan","noor","kai"]
@@ -596,22 +678,15 @@ function repaintPlayerSprite(){
  paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#e0559e",hair:"#241a16",shades:true,faceImg:state.faceImg});
 }
 
-/* ================= winding overworld trail ================= */
+/* ================= winding overworld path ================= */
 function buildTrail(){
- const order=["thrift","safe","club","community","chat","waterfront"];
  const layer=$("trailLayer");
- layer.innerHTML="";
- const bez=(a,c,b,t)=>({x:(1-t)*(1-t)*a.x+2*(1-t)*t*c.x+t*t*b.x, y:(1-t)*(1-t)*a.y+2*(1-t)*t*c.y+t*t*b.y});
- for(let i=0;i<order.length-1;i++){
-   const a=LOCATIONS[order[i]], b=LOCATIONS[order[i+1]];
-   const ctrl={x:(a.x+b.x)/2+(Math.random()*16-8), y:(a.y+b.y)/2+(Math.random()*12-6)};
-   for(let s=1;s<9;s++){
-     const t=s/9, pt=bez(a,ctrl,b,t);
-     const dot=document.createElement("div");
-     dot.className="trailDot"; dot.style.left=pt.x+"%"; dot.style.top=pt.y+"%";
-     layer.appendChild(dot);
-   }
- }
+ const d="M13,74 Q30,66 50,50 Q35,40 18,34 Q45,25 74,28 Q88,45 84,70 Q68,80 50,84";
+ layer.innerHTML=
+   '<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">'+
+   '<path d="'+d+'" fill="none" stroke="#8a6a3c" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>'+
+   '<path d="'+d+'" fill="none" stroke="#e8d5a3" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>'+
+   '</svg>';
 }
 
 /* ================= NPC ambient sprites ================= */
@@ -626,7 +701,7 @@ function buildNpcLayer(){
    wrap.innerHTML='<canvas width="16" height="28" style="width:48px;height:84px"></canvas><div class="shadow" style="width:20px;height:6px"></div>';
    layer.appendChild(wrap);
    paintSprite(wrap.querySelector("canvas"),{outfit:n.outfit,hair:n.hair});
-   const home={x:loc.x,y:clamp(loc.y+8,20,93)};
+   const home={x:loc.x,y:clamp(loc.y+13,20,95)};
    npcEls[key]={el:wrap,x:home.x+(Math.random()*8-4),y:home.y+(Math.random()*4-2),tx:home.x,ty:home.y,home:home};
    placeEl(wrap,npcEls[key].x,npcEls[key].y);
  });
@@ -688,15 +763,24 @@ function arrive(key){
 }
 
 /* ================= needs / mood ================= */
-function needIcon(k){return {energy:"↯",social:"☺",fun:"★",hunger:"◇",comfort:"♡",identity:"◈"}[k]}
+const NEED_ICONS={
+ energy:'<path d="M11 2 L4 13h6l-1 9 8-13h-6z"/>',
+ social:'<circle cx="8" cy="9" r="5" opacity=".85"/><circle cx="15" cy="9" r="5" opacity=".85"/>',
+ fun:'<path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9 5.8 20.4l1.6-6.8L2.2 9l6.9-.7z"/>',
+ hunger:'<path d="M12 8c-3 0-5 2.2-5 5.5S9 21 12 21s5-3.2 5-7.5S15 8 12 8z"/><path d="M12 8c0-2 1-3.5 2.5-4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/>',
+ comfort:'<path d="M12 21s-7-4.6-9.5-9.2C.6 8 2.6 4 6.5 4c2 0 3.4 1.1 4 2.2.6-1.1 2-2.2 4-2.2 3.9 0 5.9 4 4 7.8C19 16.4 12 21 12 21z"/>',
+ identity:'<rect x="5" y="2" width="2" height="20" rx="1"/><path d="M7 3h12l-3 4 3 4H7z"/>'
+};
+function needIconSvg(k){return '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">'+NEED_ICONS[k]+'</svg>';}
 function renderNeeds(){
  const order=["energy","social","fun","hunger","comfort","identity"];
  $("needRows").innerHTML=order.map(k=>{
    const v=Math.round(state.needs[k]);
    const cls=v<30?"low":v<55?"mid":"";
-   return '<div class="need"><span class="nlbl">'+needIcon(k)+" "+k.toUpperCase()+'</span><div class="track98"><i class="'+cls+'" style="width:'+v+'%"></i></div><span class="nval">'+v+'</span></div>';
+   return '<div class="need"><span class="nico">'+needIconSvg(k)+'</span><span class="nlbl">'+k.toUpperCase()+'</span><div class="track98"><i class="'+cls+'" style="width:'+v+'%"></i></div><span class="nval">'+v+'</span></div>';
  }).join("");
 }
+const MOOD_MOUTH={sad:"M8 17Q12 13 16 17",flat:"M8 16h8",happy:"M8 15q4 3 8 0"};
 function updateMood(){
  const n=state.needs;
  const raw=(n.energy+n.social+n.fun+n.hunger+n.comfort)*.16 + n.identity*.2 - 60;
@@ -707,6 +791,9 @@ function updateMood(){
  $("moodPct").textContent="Mood: "+(mood>0?"+":"")+mood;
  const word = mood<-40?"STRESSED": mood<-10?"UNSETTLED": mood<20?"OKAY": mood<55?"CONTENT": mood<85?"GOOD":"THRIVING";
  $("moodWordLbl").textContent=word;
+ const faceColor = mood<-40?"var(--red)": mood<-10?"var(--orange)": mood<20?"var(--yellow)":"var(--green)";
+ $("moodFaceCircle").style.fill=faceColor;
+ $("moodMouth").setAttribute("d", mood<-10?MOOD_MOUTH.sad: mood<15?MOOD_MOUTH.flat:MOOD_MOUTH.happy);
 }
 function tickNeeds(){
  if(state.paused)return;
