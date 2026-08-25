@@ -275,20 +275,30 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 
         <div id="bClub" class="building" data-loc="club" style="left:18%;top:34%">
           <svg class="bIllus" viewBox="0 0 160 160" width="132" height="132">
-            <ellipse cx="80" cy="150" rx="56" ry="8" fill="#000" opacity=".24"/>
-            <ellipse cx="80" cy="120" rx="50" ry="34" fill="#c85fd6" opacity=".25"/>
-            <rect x="24" y="64" width="112" height="84" rx="4" fill="#221826" stroke="#0d0910" stroke-width="3"/>
-            <rect x="24" y="54" width="112" height="14" fill="#171019" stroke="#0d0910" stroke-width="3"/>
-            <rect x="38" y="88" width="20" height="20" fill="#8a6ce0" opacity=".9"/>
-            <rect x="102" y="88" width="20" height="20" fill="#d868da" opacity=".9"/>
-            <rect x="66" y="116" width="28" height="32" fill="#100b13" stroke="#0d0910" stroke-width="2"/>
-            <rect x="42" y="70" width="76" height="22" rx="4" fill="#0d0910" stroke="#ff6fd0" stroke-width="2"/>
-            <text x="80" y="86" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="10" fill="#ff8fe0">CLUB</text>
-            <line x1="80" y1="54" x2="80" y2="34" stroke="#5a5a5a" stroke-width="3"/>
-            <circle cx="80" cy="24" r="14" fill="#cfd6dc" stroke="#8890a0" stroke-width="2"/>
-            <path d="M66 24h28M80 10v28M70 14l20 20M90 14l-20 20" stroke="#8890a0" stroke-width="1.3"/>
-            <path d="M38 8l3 6 6 1-5 4 1 6-6-3-6 3 1-6-5-4 6-1z" fill="#f4e37a"/>
-            <path d="M128 16l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z" fill="#f4e37a"/>
+            <ellipse cx="80" cy="150" rx="56" ry="8" fill="#000" opacity=".22"/>
+            <ellipse cx="80" cy="112" rx="52" ry="36" fill="#ff7a8f" opacity=".22"/>
+            <rect x="10" y="118" width="6" height="30" fill="#5a7a4e"/>
+            <circle cx="13" cy="112" r="11" fill="#5f9a4f"/>
+            <rect x="28" y="54" width="104" height="94" rx="2" fill="#f2efe4" stroke="#a9a290" stroke-width="3"/>
+            <rect x="26" y="47" width="108" height="8" fill="#d9d4c4" stroke="#a9a290" stroke-width="2"/>
+            <rect x="36" y="62" width="16" height="46" fill="#ffab7a" opacity=".92"/>
+            <rect x="60" y="62" width="16" height="46" fill="#ff8f6b" opacity=".92"/>
+            <rect x="84" y="62" width="16" height="46" fill="#ff8f6b" opacity=".92"/>
+            <rect x="108" y="62" width="16" height="46" fill="#ffab7a" opacity=".92"/>
+            <path d="M36 85h16M60 85h16M84 85h16M108 85h16M44 62v46M68 62v46M92 62v46M116 62v46" stroke="#6b6456" stroke-width="1.3"/>
+            <rect x="36" y="62" width="16" height="46" fill="none" stroke="#6b6456" stroke-width="1.6"/>
+            <rect x="60" y="62" width="16" height="46" fill="none" stroke="#6b6456" stroke-width="1.6"/>
+            <rect x="84" y="62" width="16" height="46" fill="none" stroke="#6b6456" stroke-width="1.6"/>
+            <rect x="108" y="62" width="16" height="46" fill="none" stroke="#6b6456" stroke-width="1.6"/>
+            <rect x="64" y="120" width="28" height="28" fill="#241a14" stroke="#150f0a" stroke-width="2"/>
+            <polygon points="58,148 98,148 92,140 64,140" fill="#d8d4c8" stroke="#a9a290" stroke-width="1.4"/>
+            <rect x="52" y="108" width="52" height="15" rx="3" fill="#1a1310" stroke="#ff6fd0" stroke-width="2"/>
+            <text x="78" y="119" text-anchor="middle" font-family="'Press Start 2P',monospace" font-size="7" fill="#ff8fe0">CLUB</text>
+            <line x1="90" y1="47" x2="90" y2="28" stroke="#5a5a5a" stroke-width="3"/>
+            <circle cx="90" cy="20" r="12" fill="#cfd6dc" stroke="#8890a0" stroke-width="2"/>
+            <path d="M78 20h24M90 8v24M81 11l18 18M99 11l-18 18" stroke="#8890a0" stroke-width="1.2"/>
+            <path d="M40 6l3 6 6 1-5 4 1 6-6-3-6 3 1-6-5-4 6-1z" fill="#f4e37a"/>
+            <path d="M132 12l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z" fill="#f4e37a"/>
           </svg>
           <div class="signPlaque"><b>CLUB</b><span>The Queer Club</span></div>
         </div>
@@ -391,7 +401,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
         <div id="player" class="sprite">
           <div class="speechBubble" id="playerBubble"></div>
           <div class="plumb"></div>
-          <canvas id="playerCanvas" width="16" height="28" style="width:64px;height:112px"></canvas>
+          <canvas id="playerCanvas" width="32" height="56" style="width:72px;height:126px"></canvas>
           <div class="shadow"></div>
           <div class="tag" id="playerTag">YOU</div>
         </div>
@@ -532,14 +542,14 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
           <div class="faceGuide"></div>
         </div>
         <div class="casBtnRow">
-          <label class="btn98" for="selfieFileInput" style="text-align:center">TAKE / CHOOSE PHOTO
+          <label class="btn98" style="text-align:center">TAKE / CHOOSE PHOTO
             <input id="selfieFileInput" class="captureInput" type="file" accept="image/*" capture="user">
           </label>
           <button class="btn98" id="openSelfCamBtn">LIVE CAMERA</button>
           <button class="btn98" id="snapSelfieBtn">SNAP</button>
         </div>
         <div id="pixPreviewWrap">
-          <canvas id="pixPreviewCanvas" width="16" height="28"></canvas>
+          <canvas id="pixPreviewCanvas" width="32" height="56"></canvas>
           <span>This is how you'll look walking around the room — the same photo, pixelated.</span>
         </div>
         <div id="casStatus">Upload or snap a photo, then finish below.</div>
@@ -655,23 +665,23 @@ const $=id=>document.getElementById(id);
 function paintSprite(canvas,opts){
  const ctx=canvas.getContext("2d");
  ctx.imageSmoothingEnabled=false;
- ctx.clearRect(0,0,16,28);
+ ctx.clearRect(0,0,32,56);
  const outfit=opts.outfit||"#111318", tie=opts.tie, skin=opts.skin||"#e8bd93", hair=opts.hair||"#3a2b23";
- ctx.fillStyle=outfit; ctx.fillRect(4,23,3,4); ctx.fillRect(9,23,3,4);
- ctx.fillStyle="#15171a"; ctx.fillRect(3,27,5,1); ctx.fillRect(8,27,5,1);
- ctx.fillStyle=outfit; ctx.fillRect(2,12,12,11); ctx.fillRect(0,12,2,9); ctx.fillRect(14,12,2,9);
- ctx.fillStyle=skin; ctx.fillRect(0,19,2,2); ctx.fillRect(14,19,2,2);
- if(tie){ctx.fillStyle=tie; ctx.fillRect(7,12,2,9)}
- ctx.fillStyle=skin; ctx.fillRect(6,10,4,2);
+ ctx.fillStyle=outfit; ctx.fillRect(8,46,6,8); ctx.fillRect(18,46,6,8);
+ ctx.fillStyle="#15171a"; ctx.fillRect(6,54,10,2); ctx.fillRect(16,54,10,2);
+ ctx.fillStyle=outfit; ctx.fillRect(4,24,24,22); ctx.fillRect(0,24,4,18); ctx.fillRect(28,24,4,18);
+ ctx.fillStyle=skin; ctx.fillRect(0,38,4,4); ctx.fillRect(28,38,4,4);
+ if(tie){ctx.fillStyle=tie; ctx.fillRect(14,24,4,18)}
+ ctx.fillStyle=skin; ctx.fillRect(12,20,8,4);
  if(opts.faceImg){
-   try{ctx.drawImage(opts.faceImg,3,0,10,10)}catch(e){ctx.fillStyle=skin;ctx.fillRect(3,0,10,10)}
+   try{ctx.drawImage(opts.faceImg,6,0,20,20)}catch(e){ctx.fillStyle=skin;ctx.fillRect(6,0,20,20)}
  }else{
-   ctx.fillStyle=skin; ctx.fillRect(3,0,10,10);
-   ctx.fillStyle="#2a2a2a"; ctx.fillRect(5,4,1,1); ctx.fillRect(10,4,1,1);
-   ctx.fillStyle="#8a5040"; ctx.fillRect(6,7,4,1);
+   ctx.fillStyle=skin; ctx.fillRect(6,0,20,20);
+   ctx.fillStyle="#2a2a2a"; ctx.fillRect(10,8,3,3); ctx.fillRect(19,8,3,3);
+   ctx.fillStyle="#8a5040"; ctx.fillRect(12,15,8,2);
  }
- ctx.fillStyle=hair; ctx.fillRect(3,0,10,2); ctx.fillRect(3,0,2,6); ctx.fillRect(11,0,2,6);
- if(opts.shades){ctx.fillStyle="#0b0c0e"; ctx.fillRect(3,4,10,2)}
+ ctx.fillStyle=hair; ctx.fillRect(6,0,20,4); ctx.fillRect(6,0,4,12); ctx.fillRect(22,0,4,12);
+ if(opts.shades){ctx.fillStyle="#0b0c0e"; ctx.fillRect(6,8,20,4)}
 }
 function repaintPlayerSprite(){
  paintSprite($("playerCanvas"),{outfit:"#111318",tie:"#e0559e",hair:"#241a16",shades:true,faceImg:state.faceImg});
@@ -698,7 +708,7 @@ function buildNpcLayer(){
    const loc=LOCATIONS[n.loc];
    const wrap=document.createElement("div");
    wrap.className="sprite"; wrap.id="npc_"+key;
-   wrap.innerHTML='<canvas width="16" height="28" style="width:48px;height:84px"></canvas><div class="shadow" style="width:20px;height:6px"></div>';
+   wrap.innerHTML='<canvas width="32" height="56" style="width:52px;height:91px"></canvas><div class="shadow" style="width:20px;height:6px"></div>';
    layer.appendChild(wrap);
    paintSprite(wrap.querySelector("canvas"),{outfit:n.outfit,hair:n.hair});
    const home={x:loc.x,y:clamp(loc.y+13,20,95)};
