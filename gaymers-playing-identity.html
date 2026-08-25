@@ -35,6 +35,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .titlebtns{display:flex;gap:2px}
 .wbtn{width:17px;height:16px;background:var(--face);border:1px solid;border-color:var(--faceHi) var(--faceDk) var(--faceDk) var(--faceHi);font-size:9px;line-height:1;display:flex;align-items:center;justify-content:center;color:#000;font-weight:900;padding:0}
 .wbtn:active{border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk)}
+.wbtn.off{color:#c33;border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk)}
 .menubar{height:20px;display:flex;align-items:center;gap:14px;padding:0 8px;font-size:10px;border-bottom:1px solid var(--faceLo);background:var(--face)}
 .menuitem{padding:1px 5px;border-radius:1px}
 .menuitem:hover{background:var(--titleB);color:#fff}
@@ -83,7 +84,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .lamp:before{content:"";position:absolute;left:-5px;top:-8px;width:16px;height:10px;background:#e8d97a;box-shadow:0 0 8px 2px rgba(232,217,122,.8)}
 .bench{width:34px;height:10px;background:#7a5230;box-shadow:0 6px 0 -3px #4b3620}
 
-.building{position:absolute;transform:translate(-50%,-100%);cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(3px 5px 2px rgba(0,0,0,.34))}
+.building{position:absolute;z-index:6;transform:translate(-50%,-100%);cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;filter:drop-shadow(3px 5px 2px rgba(0,0,0,.34))}
 .building .bIllus{display:block;transition:filter .15s}
 .building.near .bIllus{filter:drop-shadow(0 0 7px #fff)}
 .building:active{filter:brightness(.94)}
@@ -97,7 +98,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .photoBuilding .miniDisco{position:absolute;z-index:2;top:-13px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#cfd6dc,#8890a0);border:2px solid #5a5a5a;box-shadow:0 2px 4px rgba(0,0,0,.35)}
 .photoBuilding .miniSign{position:absolute;z-index:2;left:50%;bottom:9px;transform:translateX(-50%);background:#1a1310;border:2px solid #ff6fd0;border-radius:4px;padding:2px 8px;font-family:"Press Start 2P",monospace;font-size:7px;color:#ff8fe0;white-space:nowrap}
 
-.sprite{position:absolute;transform:translate(-50%,-100%);transition:left .05s linear,top .05s linear;pointer-events:none}
+.sprite{position:absolute;z-index:3;transform:translate(-50%,-100%);transition:left .05s linear,top .05s linear;pointer-events:none}
 .sprite .shadow{width:26px;height:8px;border-radius:50%;background:rgba(0,0,0,.32);margin:0 auto;filter:blur(1px)}
 .sprite canvas{display:block;image-rendering:pixelated}
 .sprite .plumb{position:absolute;left:50%;top:-30px;width:22px;height:34px;transform:translateX(-50%);animation:plumbfloat 1.6s ease-in-out infinite}
@@ -221,6 +222,8 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .toast98.show{opacity:1;transform:translateX(0)}
 .toast98 .tHead{background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff;font-size:8px;font-weight:900;padding:3px 6px;display:flex;justify-content:space-between}
 .toast98 .tBody{padding:6px 7px;font-size:8px;color:#333;line-height:1.4}
+.toast98 .tBody.withImg{display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:center;padding:6px}
+.toast98 .tBody.withImg img{width:52px;height:52px;object-fit:cover;border-radius:6px;border:2px solid #1c1f24}
 
 @media (max-width:820px){
   #gameWindow{width:100vw;height:100dvh;top:0;left:0;transform:none;border-width:0}
@@ -246,6 +249,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
     <div class="titlebar">
       <div class="titleleft"><span class="titleicon"></span><span>GAYMERS — Playing Identity.exe</span></div>
       <div class="titlebtns">
+        <button class="wbtn" id="soundBtn" title="Sound">♪</button>
         <button class="wbtn" id="helpMenuBtn" title="Help">?</button>
         <button class="wbtn" id="maxBtn" title="Maximize">□</button>
         <button class="wbtn closeBtn" id="closeBtn" title="Close">×</button>
@@ -751,7 +755,7 @@ function arrive(key){
  const line=loc.lines[Math.floor(Math.random()*loc.lines.length)];
  say(line);
  logEvent(loc.label+": "+Object.entries(loc.deltas).map(([k,v])=>(v>0?"+":"")+v+" "+k).join(", "));
- toast(loc.label,line);
+ toast(loc.label,line,key==="club"?"assets/locations/landmark-exterior.jpg":null);
  $("statusText").textContent="At "+loc.label+". "+line;
 
  if(loc.giveItem && Math.random()<.7) giveRandomItem();
@@ -857,11 +861,12 @@ function renderInventory(){
 }
 
 /* ================= toast / log / speech ================= */
-function toast(title,text){
+function toast(title,text,img){
  const wrap=$("toastWrap");
  const t=document.createElement("div");
  t.className="toast98";
- t.innerHTML='<div class="tHead"><span>'+title+'</span><span>×</span></div><div class="tBody">'+text+'</div>';
+ const body=img?'<div class="tBody withImg"><img src="'+img+'" alt=""><span>'+text+'</span></div>':'<div class="tBody">'+text+'</div>';
+ t.innerHTML='<div class="tHead"><span>'+title+'</span><span>×</span></div>'+body;
  wrap.appendChild(t);
  requestAnimationFrame(()=>t.classList.add("show"));
  t.querySelector(".tHead span:last-child").onclick=()=>remove();
@@ -964,7 +969,15 @@ $("openCasBtn").onclick=()=>{sndClick();openWin("casWindow")};
 $("menuHelp").onclick=$("helpMenuBtn").onclick=()=>{sndClick();openWin("helpWindow")};
 $("menuGame").onclick=()=>{sndClick();toast("GAME","Autosaves your Sim's look to this browser only.")};
 $("menuSim").onclick=()=>{sndClick();openWin("casWindow")};
-$("menuOptions").onclick=()=>{sndClick();muted=!muted;toast("SOUND",muted?"Muted.":"Sound on.")};
+function toggleSound(){
+ muted=!muted;
+ $("soundBtn").classList.toggle("off",muted);
+ $("soundBtn").textContent=muted?"✕":"♪";
+ if(!muted)sndClick();
+ toast("SOUND",muted?"Muted.":"Sound on.");
+}
+$("menuOptions").onclick=toggleSound;
+$("soundBtn").onclick=toggleSound;
 $("startBtn").onclick=()=>{sndClick();openWin("helpWindow")};
 $("maxBtn").onclick=()=>{const el=document.documentElement;if(!document.fullscreenElement)el.requestFullscreen?.().catch(()=>{});else document.exitFullscreen?.()};
 $("closeBtn").onclick=()=>{sndClick();toast("GAYMERS","This is a browser tab, not a real window — but nice try.")};
