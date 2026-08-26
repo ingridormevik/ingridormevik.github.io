@@ -939,6 +939,8 @@
                                 <button class="rm-btn" data-k="fungus">fungus</button>
                                 <button class="rm-btn" data-k="geology">rock / geology</button>
                                 <button class="rm-btn" data-k="sound">a sound</button>
+                                <button class="rm-btn" data-k="viewpoint">a view worth stopping for</button>
+                                <button class="rm-btn" data-k="action">something I did to help</button>
                                 <button class="rm-btn" data-k="unknown">◇ I don't know what it was</button>
                             </div>
                         </div>
@@ -1039,6 +1041,7 @@
                         <span class="rm-count" id="rmBag">0</span>
                     </div>
                     <button class="rm-icobtn" id="rmFindBtn" title="I found something">◎ I FOUND SOMETHING</button>
+                    <button class="rm-icobtn rm-hide" id="rmMix" title="Loud brings excitement and hides the landscape. Quiet reveals it.">🔊 TURN IT UP</button>
                     <span class="rm-icobtn rm-hide" id="rmGpsStatus" style="cursor:default" aria-live="polite"></span>
                     <div class="rm-spacer"></div>
                     <button class="rm-icobtn" id="rmArchBtn" title="Trail Archive">▤ ARCHIVE <span id="rmArchN">0</span></button>
@@ -1467,7 +1470,7 @@
                 tag: 'CHAPTER FOUR · SANDVIKSPILEN · WHAT LIVES HERE · 230M',
                 text: "The trail folds back on itself and stops pretending to be friendly. Conversation turns into breathing. Jack is still in front, setting a pace that is really a dare, and the speaker on Ingrid's back has started to feel like it is negotiating with gravity on its own terms.",
                 choices: [
-                    { label: '▸ Take the speaker off her back for a stretch', e: 18, s: -5, c: 20,
+                    { label: '▸ Take the speaker off her back for a stretch', e: 18, s: -5, c: 20, helps: true,
                       out: "Jack takes the speaker for the worst of the switchbacks without being asked and without making it a thing. Ingrid carries the controller. Neither of them mentions it at the top, which is how she knows it counted." },
                     { label: '▸ Race him to the next bend', e: -18, s: 15, c: 12,
                       out: "She catches him at the bend, barely, and he laughs like he let her — he didn't. It costs both of them air they'll want back later, and the trail gets shorter when it's a competition." }
@@ -1519,7 +1522,7 @@
             phase: 'load', chapter: 0, dist: 0, walking: false,
             energy: 60, sound: 40, conn: 50,
             t: 0, cam: 0, fired: false, sparks: [], notes: [],
-            items: [], picked: 0, litter: 0, pops: [], nextItem: 0, still: 0,
+            items: [], picked: 0, litter: 0, pops: [], nextItem: 0, still: 0, walkSync: 0,
             beatCount: 0, combo: 0, comboAt: 0, best: 0, shake: 0
         };
 
@@ -1598,7 +1601,10 @@
             { id: 'cup',    kind: 'litter', label: 'coffee cup' },
             { id: 'flower', kind: 'find',   label: 'late harebell' },
             { id: 'stone',  kind: 'find',   label: 'a good flat stone' },
-            { id: 'berry',  kind: 'find',   label: 'blueberries, still going' }
+            { id: 'berry',  kind: 'find',   label: 'blueberries, still going' },
+            { id: 'feather', kind: 'find',  label: 'a dropped feather' },
+            { id: 'moss',   kind: 'find',   label: 'moss thick enough to sit on' },
+            { id: 'view',   kind: 'find',   label: 'a gap in the trees worth stopping for' }
         ];
 
         /* ---------- folklore beings ----------
@@ -1680,8 +1686,12 @@
                     if (!near) { g.a = Math.max(0, g.a - dt * 0.8); return; }
                     if (g.phase === 'wait') { g.phase = 'here'; }
                     if (g.phase === 'here') {
-                        // stillness holds her; walking on lets her go
-                        var pull = S.walking ? -0.32 : 0.75;
+                        // stillness holds her; walking on lets her go. A
+                        // loud mix crowds her out too — she's noticed
+                        // faster the quieter the set is, never blocked
+                        // outright, just slower to surface over the noise.
+                        var quiet = 1 - (S.sound / 100) * 0.5;
+                        var pull = S.walking ? -0.32 : 0.75 * quiet;
                         g.a = Math.max(0, Math.min(0.92, g.a + pull * dt));
                         if (!S.walking && g.a > 0.5 && !self.seen[g.being.id]) {
                             self.seen[g.being.id] = true;
@@ -2579,6 +2589,8 @@
             pips(el('rmPipEnergy'), S.energy);
             pips(el('rmPipSound'), S.sound);
             pips(el('rmPipConn'), S.conn);
+            var mix = el('rmMix');
+            if (mix) mix.textContent = S.sound >= 50 ? '🔈 QUIET IT DOWN' : '🔊 TURN IT UP';
         }
 
         function syncRoute() {
@@ -3011,6 +3023,7 @@
                     show('rmRoute');
                     syncNameTags();
                     el('rmPrompt').classList.remove('rm-hide');
+                    el('rmMix').classList.remove('rm-hide');
                 }, 500);
             }, 1500);
         }
@@ -3020,6 +3033,7 @@
             S.walking = false;
             var ch = CH[S.chapter];
             el('rmPrompt').classList.add('rm-hide');
+            el('rmMix').classList.add('rm-hide');
             // Arriving at a stop's own place, not just a text card over the walk —
             // the location's real banner art as a backdrop behind the same story
             // text/choices. Purely presentational: CH[]'s text, choices and
@@ -3071,6 +3085,7 @@
         };
 
         function resolve(c) {
+            var preConn = S.conn; // PRESENCE carried in from earlier chapters, before this one's own delta
             S.energy = clamp(S.energy + c.e, 0, 100);
             S.sound = clamp(S.sound + c.s, 0, 100);
             S.conn = clamp(S.conn + c.c, 0, 100);
@@ -3089,6 +3104,12 @@
             var castBeing = BEINGS.cast[S.chapter];
             if (castBeing && BEINGS.seen[castBeing.id] && BEING_AFTERMATH[castBeing.id]) {
                 out += ' ' + BEING_AFTERMATH[castBeing.id];
+            }
+            // A tangible payoff for care carried in from earlier chapters,
+            // not just this one choice: only surfaces when Presence was
+            // already high AND the caring choice was the one taken here.
+            if (c.helps && preConn >= 65) {
+                out += " Ingrid remembers this later — not the view, not the set. Just that he did it without being asked.";
             }
             el('rmStoryTxt').textContent = out;
             var box = el('rmStoryChoices');
@@ -3132,6 +3153,8 @@
                 body += ' The gloves and the bags stayed in the pack this time. ' +
                     'They will not on the day.';
             }
+
+            body += ' The music travelled through Bergen. We travelled through one another.';
 
             el('rmStoryTag').textContent = title;
             el('rmStoryTxt').textContent = body;
@@ -3332,6 +3355,17 @@
             if (b) closeFind(b.dataset.k);
         });
 
+        // One live nudge on the mix, not a slider: loud brings excitement
+        // (audioStep's instrument layers) but crowds folklore out
+        // (BEINGS.update's noticing rate); quiet does the opposite. Toggles
+        // around the midpoint rather than accumulating, matching the small,
+        // bounded scope of a HUD button over a full mixing desk.
+        el('rmMix').addEventListener('click', function () {
+            if (S.phase !== 'walk') return;
+            S.sound = clamp(S.sound + (S.sound >= 50 ? -15 : 15), 0, 100);
+            syncHud();
+        });
+
         el('rmSound').addEventListener('click', audioToggle);
         el('rmReset').addEventListener('click', function () {
             hide('rmTitle'); hide('rmChap');
@@ -3402,6 +3436,12 @@
                 var speed = 76 * (0.82 + (S.energy / 100) * 0.36);
                 S.dist += speed * dt;
                 S.cam += speed * dt;
+                // Moving fast has a real cost: sustained walking measurably
+                // costs PRESENCE, the same way stillness measurably raises
+                // it just below — the pair can't both climb at once.
+                S.conn = clamp(S.conn - dt * 1.2, 0, 100);
+                S.walkSync += dt;
+                if (S.walkSync > 0.2) { S.walkSync = 0; syncHud(); }
             } else if (S.phase === 'walk' && !S.walking) {
                 // stillness is a move: attention accrues when you stop
                 S.still += dt;
