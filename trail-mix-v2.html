@@ -1856,6 +1856,50 @@
             }
         };
 
+        // A companion that actually walks WITH Jack and Ingrid, not a
+        // background figure — reuses AMBIENT's own art (same 3 files,
+        // no second fetch) and the same STOP_NPC density that already
+        // decides how populated a stop's background is, so the walking
+        // line fills in exactly where the ambient trail already does:
+        // never at Sandviken sykehus or the forest, more often as the
+        // route approaches Fløyen. Purely visual, joins for one
+        // chapter's walk and peels off once the story opens — no stat
+        // changes, same restraint as the ambient system it borrows from.
+        var PARTY = {
+            joined: null,
+            maybeJoin: function (chapter) {
+                this.joined = null;
+                var npcs = STOP_NPC[STOP_IDS[chapter]];
+                if (!npcs || !npcs.length) return;
+                var chance = Math.min(0.75, npcs.length * 0.28);
+                if (Math.random() < chance) {
+                    var npc = npcs[Math.floor(Math.random() * npcs.length)];
+                    this.joined = { npc: npc };
+                    S.pops.push({
+                        x: Math.round(W * 0.74), y: GROUND - 60, a: 1, big: true,
+                        text: NPC_JOIN_LABEL[npc] || 'SOMEONE JOINS FOR THE STRETCH'
+                    });
+                }
+            },
+            leave: function () { this.joined = null; },
+            draw: function () {
+                if (!this.joined) return;
+                var im = AMBIENT.art[this.joined.npc];
+                if (!im || !im.complete || !im.naturalWidth) return;
+                var footY = GROUND + 8;
+                var h = ACT_H * 0.72;
+                var w = h * (im.naturalWidth / im.naturalHeight);
+                var x = Math.round(W * 0.74);
+                ctx.drawImage(im, Math.round(x - w / 2), Math.round(footY - h), Math.round(w), Math.round(h));
+            }
+        };
+
+        var NPC_JOIN_LABEL = {
+            'hikers-pair': 'A HIKING PAIR JOINS FOR THE STRETCH',
+            'hikers-group': 'A HIKING GROUP JOINS FOR THE STRETCH',
+            'hikers-family': 'A FAMILY JOINS FOR THE STRETCH'
+        };
+
         function archNoteBeing(b) {
             var a = archRead();
             a.beings = a.beings || [];
@@ -1919,6 +1963,7 @@
             S.nextItem = 40 + Math.random() * 50;
             BEINGS.seed(S.chapter);
             AMBIENT.seed(S.chapter);
+            PARTY.maybeJoin(S.chapter);
         }
 
         function spawnItem() {
@@ -2550,6 +2595,7 @@
             BEINGS.draw();
             drawItems();
             drawActors();
+            PARTY.draw();
             drawForeground(ch);
             drawParticles(ch);
             drawSparks();
@@ -3034,6 +3080,7 @@
             var ch = CH[S.chapter];
             el('rmPrompt').classList.add('rm-hide');
             el('rmMix').classList.add('rm-hide');
+            PARTY.leave();
             // Arriving at a stop's own place, not just a text card over the walk —
             // the location's real banner art as a backdrop behind the same story
             // text/choices. Purely presentational: CH[]'s text, choices and
