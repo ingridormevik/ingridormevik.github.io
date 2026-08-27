@@ -1,6 +1,6 @@
 # Trail Mix — prosjektbeskrivelse
 
-*Status: grunnlagsdokument, sist oppdatert 2026-08-19. Skrevet for å kunne
+*Status: grunnlagsdokument, sist oppdatert 2026-08-27. Skrevet for å kunne
 brukes som utgangspunkt for flere ulike søknader, ikke for én bestemt
 utlysning. Tilpass avsnittene merket `[Ingrid: ...]` til hver konkrete
 søknad — resten av teksten står som den er, direkte sjekket mot det som
@@ -8,25 +8,44 @@ faktisk er bygget i prosjektets kildekode.*
 
 ---
 
-## Kort om prosjektet
+## Poenget
 
 Trail Mix er en stedsbasert fortelling langs den virkelige ruten fra
-Sandviken sykehus til Fløyen i Bergen, der en spillbar digital prototype og
-en fysisk sti med trykte QR-koder deler ett og samme arkiv. Prosjektet er
-signert Mount Media × Preem Cast. Målet er ikke å komme til topps raskest
-mulig — det er å lære å legge merke til Bergen: stedets historie, det som
-vokser og beveger seg langs veien, og det man selv velger å plukke opp
-underveis.
+Sandviken sykehus til Fløyen i Bergen. En spillbar digital prototype og en
+fysisk sti med trykte QR-koder deler ett og samme arkiv. Målet er ikke å
+komme til topps raskest mulig — det er å lære å legge merke til Bergen:
+stedets historie, det som vokser og beveger seg langs veien, og det man
+selv velger å plukke opp underveis. Prosjektet er signert Mount Media ×
+Preem Cast.
 
-## Konsept og format
+## Dette vil vi gjøre
+
+Vi vil ta en fungerende, kildesikret digital prototype og gjøre den til en
+dokumentert og trygg pilotvandring som gjennomføres med et faktisk
+publikum — samme rute, samme historier, samme regler, men nå som en reell
+fysisk hendelse med Jacks DJ-sett som del av opplevelsen, ikke bare noe man
+spiller på en skjerm.
+
+## Hvorfor
+
+Fordi stedsbasert fortelling først betyr noe når noen faktisk går den. Det
+digitale spillet beviser at formatet fungerer og at kildene holder; det
+gjør ikke jobben en fysisk vandring gjør — å samle mennesker på et sted, la
+dem legge merke til det sammen, og la dem gå derfra med både en opplevelse
+og litt mindre søppel på fjellet enn de kom til. Og fordi feil historisk
+eller folkloristisk informasjon om et reelt sted er en skade, ikke en
+detalj — se «Kildesikring som metode» under for hvordan det håndteres helt
+konkret, ikke bare som en hensikt.
+
+## Hvordan
 
 Trail Mix finnes i to former som er bygget til å være to dører inn til det
 samme:
 
-- **Et spillbart digitalt hovedspill** (`trail-mix-v2.html`), seks kapitler
-  langs ruten — Sandviken sykehus, Sandviksbatteriet, Sandvikspilen, inn i
-  skogen, Fløyen, og hjemturen i solnedgang — med en musikkdrevet
-  DJ-fortelling og enkle valg som farger turen videre.
+- **Et spillbart digitalt hovedspill** (`trail-mix-v2.html`), syv kapitler
+  langs ruten — Sandviken sykehus, Munkebotn, Sandviksbatteriet,
+  Sandvikspilen, inn i skogen, Fløyen, og hjemturen i solnedgang — med en
+  musikkdrevet DJ-fortelling og enkle valg som farger turen videre.
 - **En fysisk sti med trykte kort**, ett per stopp, hver med en QR-kode som
   åpner samme sted digitalt (`tools/build-trail.py` genererer disse sidene
   fra strukturerte data, ikke for hånd).
@@ -36,9 +55,12 @@ på enheten (`localStorage`) — noe man låser opp i spillet venter i det
 trykte arkivet på fjellet, og omvendt. Nettsiden har også offline-støtte via
 en service worker som forhåndslagrer hele stien, nettopp fordi mobildekningen
 er upålitelig akkurat i skogpartiet mellom Sandviksbatteriet og
-Sandvikspilen — der en vandrer trenger siden mest.
+Sandvikspilen — der en vandrer trenger siden mest. Spillet støtter også en
+valgfri GPS-modus: er man faktisk ute og går den ekte ruten, kan et kapittel
+åpne seg av seg selv når man er fysisk nær det virkelige stedet, i tillegg
+til (ikke i stedet for) den vanlige spillmekanikken.
 
-## Hva som er bygget og testet nå
+### Hva som er bygget og testet nå
 
 Dette er ikke en idé på tegnebrettet. Følgende er reell, kjørende kode i
 prosjektets repository, ikke planer:
@@ -48,20 +70,22 @@ prosjektets repository, ikke planer:
   Spilleren vet alltid om noe er et faktum, noe de selv la merke til, eller
   Mount Medias egen tolkning.
 - **"Jeg fant noe"-mekanikken** — spilleren navngir selv det de la merke
-  til (plante, fugl, sopp, stein, lyd), og "jeg vet ikke hva det var" er et
-  reelt, telt svar i arkivet — ikke et nederlag eller noe spillet retter på.
+  til (plante, fugl, sopp, stein, lyd, utsikt, noe de gjorde for å hjelpe),
+  og "jeg vet ikke hva det var" er et reelt, telt svar i arkivet — ikke et
+  nederlag eller noe spillet retter på.
 - **En avfallsmekanikk begrenset til det trygge** — fire typer vanlig,
   ufarlig søppel kan plukkes opp langs veien (plastflaske, boks,
   emballasje, engangskopp). Spillet ber aldri om at noen håndterer noe
   farlig.
-- **Huldra**, det ene vesenet som opptrer på denne ruten, i skogpartiet.
-  Hun kan observeres, følges et stykke, og forsvinner — hun jages aldri og
-  er aldri en fiende eller et mål.
+- **Fem folkloristiske vesener** langs ruten (blant annet Huldra i
+  skogpartiet), hver tydelig merket som Mount Medias egen kunstneriske
+  tolkning. De kan observeres og følges et stykke — de jages aldri og er
+  aldri en fiende eller et mål.
 - **Fjorten automatiserte tester** (`tools/verify-trail.py`) som beviser at
   disse reglene faktisk holder ved hver ny bygging av nettsiden — ikke bare
   hevdes å holde.
 
-## Kildesikring som metode, ikke pynt
+### Kildesikring som metode, ikke pynt
 
 Trail Mix har en innebygd regel: **ingen historisk eller folkloristisk
 påstand vises med mindre den har en verifisert kilde.** Dette er ikke en
@@ -98,7 +122,7 @@ bekreftet gjennom nettsøk mot institusjonenes egne nettsider, men ikke
 lest i sin helhet av et menneske — anbefalt å åpne hver lenke selv én gang
 før sitering i en konkret søknad.)*
 
-## Tilgjengelighet
+## Accessibility / Tilgjengelighet
 
 Trail Mix har en fungerende tilgjengelighetsmodul i det digitale spillet,
 med reelle, lagrede innstillinger som virker med både tastatur og berøring:
@@ -116,8 +140,12 @@ finnes også en valgfri startskjerm der spilleren kan velge en ferdig
 kombinasjon (for eksempel "lite bevegelse", "tekst først" eller "høy
 kontrast") før turen starter, uten at dette er påkrevd — "BEGIN THE
 JOURNEY" fungerer akkurat som før for den som ikke åpner den skjermen.
-Tilgjengelighet er tenkt som en forutsetning for formatet, ikke et
-tillegg lagt til i etterkant.
+**Tilgjengelighet er tenkt som en forutsetning for formatet, ikke et
+tillegg lagt til i etterkant** — det gjelder både den digitale prototypen
+og, når den fysiske vandringen planlegges konkret, selve ruten og
+gjennomføringen. *[Ingrid: fyll inn hva som er avklart om fysisk
+tilgjengelighet på selve ruten — f.eks. hvor stor del av traseen som er
+rullestol-/rullator-vennlig, og hva som eventuelt ikke er det.]*
 
 ## Sikkerhet
 
@@ -133,6 +161,25 @@ egen avfallsmekanikk allerede er avgrenset:
 - **Utstyr en organisert gåtur trenger på stedet**: hansker og gripere,
   poser eller beholdere, et avtalt innleveringspunkt, førstehjelpsutstyr,
   og en hendelseslogg som føres fortløpende.
+
+## Utstyr
+
+Konkret utstyrsbehov for å gjennomføre og dokumentere piloten — listet uten
+beløp, samme prinsipp som resten av dette dokumentets åpne felt; ingen tall
+er oppgitt et sted i prosjektets dokumentasjon per nå, så ingen er diktet
+opp her heller:
+
+- **Prosjektor** — for å vise/presentere den digitale prototypen ved
+  visninger og møter med samarbeidspartnere og bidragsytere, ikke bare på
+  en bærbar skjerm.
+- **PC** — til utviklingsarbeidet på selve spillet/nettsiden, redigering av
+  materiale fra piloten, og presentasjoner.
+- **GoPro** — for å dokumentere selve vandringen: ruten, stoppene og DJ-
+  settet som faktisk skjer på fjellet, til arkiv, videre søknader og formidling
+  av at «alt i spillet er ekte utenom pikslene».
+
+*[Ingrid: legg til flere konkrete utstyrsposter og eventuelle
+kostnadsoverslag etter hvert som de foreligger.]*
 
 ## Team og samarbeid
 
@@ -153,12 +200,18 @@ markert som ugjort:
 - [ ] Trykte QR-kort produsert i fysisk format og satt ut på selve ruten
 - [ ] Gjennomføring av selve gåturen som en organisert pilot, med Jacks
       DJ-sett som del av opplevelsen
-- [ ] *[Ingrid: fyll inn hva den konkrete søknaden skal dekke — for
+- [ ] Utstyret over (prosjektor, PC, GoPro) anskaffet
+- [ ] *[Ingrid: fyll inn hva mer den konkrete søknaden skal dekke — for
       eksempel flere stopp, flere vesener, samarbeid med Fløibanen eller
       Bergen kommune, materialer til de trykte kortene, honorar til
       samarbeidspartnere, eller annet budsjettbehov]*
 
 ---
+
+Dette er ikke en idé som leter etter en retning. Det er en fungerende
+prototype som leter etter ressursene til å bli den fysiske vandringen den
+alltid var tenkt å være. Vi vil gjerne ha støtten deres til å ta det siste
+steget.
 
 *Dette dokumentet er skrevet som et felles utgangspunkt for flere søknader.
 Der noe er markert `[Ingrid: ...]`, er det bevisst latt åpent fremfor å
