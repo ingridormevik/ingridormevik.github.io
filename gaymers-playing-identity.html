@@ -649,7 +649,10 @@ function paintSprite(canvas,opts){
  ctx.fillStyle="#15171a"; ctx.fillRect(6,54,10,2); ctx.fillRect(16,54,10,2);
  ctx.fillStyle=outfit; ctx.fillRect(4,24,24,22); ctx.fillRect(0,24,4,18); ctx.fillRect(28,24,4,18);
  ctx.fillStyle=skin; ctx.fillRect(0,38,4,4); ctx.fillRect(28,38,4,4);
- if(tie){ctx.fillStyle=tie; ctx.fillRect(14,24,4,18)}
+ if(tie){
+   ctx.fillStyle=tie; ctx.fillRect(14,24,4,18);
+   if(opts.stripedTie){ctx.fillStyle="#e8e4da"; ctx.fillRect(14,29,4,2); ctx.fillRect(14,37,4,2)}
+ }
  ctx.fillStyle=skin; ctx.fillRect(12,20,8,4);
  if(opts.faceImg){
    try{ctx.drawImage(opts.faceImg,6,0,20,20)}catch(e){ctx.fillStyle=skin;ctx.fillRect(6,0,20,20)}
@@ -662,8 +665,8 @@ function paintSprite(canvas,opts){
  if(opts.shades){ctx.fillStyle="#0b0c0e"; ctx.fillRect(6,8,20,4)}
 }
 function repaintPlayerSprite(){
- paintSprite($("playerCanvas"),{outfit:"#111318",tie:"#e0559e",hair:"#241a16",shades:true,faceImg:state.faceImg});
- paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#e0559e",hair:"#241a16",shades:true,faceImg:state.faceImg});
+ paintSprite($("playerCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceImg:state.faceImg});
+ paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceImg:state.faceImg});
 }
 
 /* ================= winding overworld path ================= */
@@ -973,7 +976,7 @@ $("closeBtn").onclick=()=>{sndClick();toast("GAYMERS","This is a browser tab, no
 /* ================= CAS (character creator) ================= */
 let selfStream=null, pendingPhoto=null, pendingImg=null;
 function paintPending(){
- if(pendingImg) paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#e0559e",hair:"#241a16",shades:true,faceImg:pendingImg});
+ if(pendingImg) paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceImg:pendingImg});
 }
 $("pronounRow").addEventListener("click",e=>{
  const b=e.target.closest(".pronounBtn"); if(!b)return; sndClick();
@@ -1066,6 +1069,12 @@ function loadProfile(){
  }catch(e){return false}
 }
 
+function loadDefaultIdentity(){
+ state.name="INGRID"; state.pronoun="she/they"; state.photoData="assets/player/ingrid-portrait.jpg";
+ loadImageFromData(state.photoData,img=>{state.faceImg=img;applyIdentity()});
+ applyIdentity();
+}
+
 /* ================= welcome dialog ================= */
 $("skipWelcomeBtn").onclick=()=>{sndClick();closeWin("welcomeWindow")};
 $("startCasBtn").onclick=()=>{sndClick();closeWin("welcomeWindow");openWin("casWindow")};
@@ -1077,6 +1086,7 @@ placeEl($("player"),state.x,state.y);
 renderNeeds(); updateMood(); renderRelationships(); renderInventory(); applyIdentity();
 tickClock();
 const hadProfile=loadProfile();
+if(!hadProfile) loadDefaultIdentity();
 if(hadProfile) closeWin("welcomeWindow");
 
 requestAnimationFrame(walkTick);
