@@ -640,6 +640,35 @@ const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 const $=id=>document.getElementById(id);
 
 /* ================= pixel sprite rendering ================= */
+function makeFaceThumb(img,size){
+ size=size||20;
+ const srcW=img.naturalWidth||img.width, srcH=img.naturalHeight||img.height;
+ if(!srcW||!srcH)return null;
+ const side=Math.min(srcW,srcH);
+ const sx=(srcW-side)/2, sy=Math.max(0,(srcH-side)*0.28);
+ let cur=document.createElement("canvas");
+ cur.width=side; cur.height=side;
+ cur.getContext("2d").drawImage(img,sx,sy,side,side,0,0,side,side);
+ let curSize=side;
+ while(curSize/2>=size){
+   const nextSize=Math.max(size,Math.floor(curSize/2));
+   const next=document.createElement("canvas");
+   next.width=nextSize; next.height=nextSize;
+   const nctx=next.getContext("2d");
+   nctx.imageSmoothingEnabled=true; nctx.imageSmoothingQuality="high";
+   nctx.drawImage(cur,0,0,curSize,curSize,0,0,nextSize,nextSize);
+   cur=next; curSize=nextSize;
+ }
+ if(curSize!==size){
+   const final=document.createElement("canvas");
+   final.width=size; final.height=size;
+   const fctx=final.getContext("2d");
+   fctx.imageSmoothingEnabled=true; fctx.imageSmoothingQuality="high";
+   fctx.drawImage(cur,0,0,curSize,curSize,0,0,size,size);
+   cur=final;
+ }
+ return cur;
+}
 function paintSprite(canvas,opts){
  const ctx=canvas.getContext("2d");
  ctx.imageSmoothingEnabled=false;
@@ -654,8 +683,10 @@ function paintSprite(canvas,opts){
    if(opts.stripedTie){ctx.fillStyle="#e8e4da"; ctx.fillRect(14,29,4,2); ctx.fillRect(14,37,4,2)}
  }
  ctx.fillStyle=skin; ctx.fillRect(12,20,8,4);
- if(opts.faceImg){
-   try{ctx.drawImage(opts.faceImg,6,0,20,20)}catch(e){ctx.fillStyle=skin;ctx.fillRect(6,0,20,20)}
+ if(opts.faceThumb){
+   try{ctx.drawImage(opts.faceThumb,0,0,opts.faceThumb.width,opts.faceThumb.height,6,0,20,20)}catch(e){ctx.fillStyle=skin;ctx.fillRect(6,0,20,20)}
+ }else if(opts.faceImg){
+   try{ctx.drawImage(makeFaceThumb(opts.faceImg,20),0,0,20,20,6,0,20,20)}catch(e){ctx.fillStyle=skin;ctx.fillRect(6,0,20,20)}
  }else{
    ctx.fillStyle=skin; ctx.fillRect(6,0,20,20);
    ctx.fillStyle="#2a2a2a"; ctx.fillRect(10,8,3,3); ctx.fillRect(19,8,3,3);
@@ -665,8 +696,9 @@ function paintSprite(canvas,opts){
  if(opts.shades){ctx.fillStyle="#0b0c0e"; ctx.fillRect(6,8,20,4)}
 }
 function repaintPlayerSprite(){
- paintSprite($("playerCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceImg:state.faceImg});
- paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceImg:state.faceImg});
+ if(state.faceImg) state.faceThumb=makeFaceThumb(state.faceImg,20);
+ paintSprite($("playerCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceThumb:state.faceThumb});
+ paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceThumb:state.faceThumb});
 }
 
 /* ================= winding overworld path ================= */
