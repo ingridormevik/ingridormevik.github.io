@@ -268,6 +268,15 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #landingProfileName{font-family:"Caveat",cursive;font-size:28px;line-height:1}
 #landingProfilePron{font-size:10px;letter-spacing:.08em;opacity:.85;margin-top:2px}
 
+#landingNowPlaying{position:absolute;top:296px;right:22px;width:190px;z-index:2;padding:10px;display:flex;gap:9px;align-items:center}
+#npPlayBtn{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.14);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center}
+.npInfo{min-width:0;flex:1;color:#fff}
+#npTrack{font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#npArtist{font-size:9px;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.npBarWrap{height:3px;border-radius:2px;background:rgba(255,255,255,.2);margin-top:6px;overflow:hidden}
+#npBar{height:100%;width:0;background:#6ee06e;border-radius:2px;transition:width 1s linear}
+.npTime{font-size:8px;opacity:.65;margin-top:3px}
+
 #landingNav{position:absolute;left:30px;top:146px;z-index:2;display:flex;flex-direction:column;gap:8px;width:186px}
 .navItem{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:10px;color:#fff;font-size:12px;font-weight:700;letter-spacing:.03em;text-align:left;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07)}
 .navItem .navIco{width:15px;height:15px;flex:0 0 auto}
@@ -275,7 +284,9 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .navItem:active{transform:translateY(1px)}
 
 #landingStage{position:absolute;left:50%;top:52%;transform:translate(-50%,-46%);z-index:1;text-align:center}
-#landingStage canvas{width:150px;height:262px;image-rendering:pixelated;filter:drop-shadow(0 14px 10px rgba(0,0,0,.5))}
+#landingStage canvas{width:150px;height:262px;image-rendering:pixelated;filter:drop-shadow(0 14px 10px rgba(0,0,0,.5));transform-origin:50% 100%}
+#landingStage canvas.dancing{animation:danceWiggle .5s ease-in-out 3}
+@keyframes danceWiggle{0%,100%{transform:rotate(0) translateY(0)}25%{transform:rotate(-6deg) translateY(-5px)}50%{transform:rotate(0) translateY(-10px)}75%{transform:rotate(6deg) translateY(-5px)}}
 #landingStage .plumb{position:absolute;left:50%;top:-34px;width:26px;height:40px;transform:translateX(-50%);animation:plumbfloat 1.6s ease-in-out infinite}
 #landingStage .plumb:before,#landingStage .plumb:after{content:"";position:absolute;left:50%;transform:translateX(-50%);border-left:13px solid transparent;border-right:13px solid transparent}
 #landingStage .plumb:before{top:0;border-bottom:20px solid #8eea6e}
@@ -326,6 +337,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
   #landingBrand{left:16px;top:max(14px,env(safe-area-inset-top))}
   #landingTitle{font-size:26px}#landingSubtitle{font-size:16px;margin-top:-4px}
   #landingWeather{display:none}
+  #landingNowPlaying{display:none}
   #landingProfileCard{top:max(14px,env(safe-area-inset-top));right:14px;width:78px;padding:3px}
   #landingProfileText{left:8px;right:8px;bottom:6px}
   #landingProfileName{font-size:16px}#landingProfilePron{font-size:7px}
@@ -365,6 +377,16 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
     <div id="landingProfileText">
       <div id="landingProfileName">Ingrid</div>
       <div id="landingProfilePron">SHE / HER</div>
+    </div>
+  </div>
+
+  <div id="landingNowPlaying" class="glassCard">
+    <button id="npPlayBtn">▶</button>
+    <div class="npInfo">
+      <div id="npTrack">Mount Media</div>
+      <div id="npArtist">Signal Unknown</div>
+      <div class="npBarWrap"><div id="npBar"></div></div>
+      <div class="npTime"><span id="npElapsed">0:00</span> / <span id="npTotal">3:40</span></div>
     </div>
   </div>
 
@@ -1307,6 +1329,87 @@ function enterGame(){
  $("desktop").classList.remove("hidden");
  state.lastManual=Date.now();
 }
+const TALK_LINES=[
+ ["Jax","you coming to the dancefloor?","maybe in a bit","c1"],
+ ["Meli","your fit is fire","thank you, found it at the thrift","c2"],
+ ["Rae","reggae + food tomorrow?","say less, i'm in","c4"],
+ ["Jax","who's playing tonight?","some local DJ i think, it's good","c1"],
+ ["Meli","this song though","right?? turn it up","c2"],
+ ["Rae","you good?","yeah. really good, actually","c4"]
+];
+let talkIdx=0;
+function doTalk(){
+ const [npc,line,reply,cls]=TALK_LINES[talkIdx%TALK_LINES.length];
+ talkIdx++;
+ addLandingChatLine(npc,line,cls);
+ $("landingSpeechText").textContent=line;
+ setTimeout(()=>{
+   addLandingChatLine(state.name||"INGRID",reply,"c3");
+   $("landingSpeechText").textContent=reply;
+ },900);
+ state.needs.social=clamp(state.needs.social+8);
+ renderNeeds(); updateMood();
+}
+function doDance(){
+ const canvas=$("landingPlayerCanvas");
+ canvas.classList.remove("dancing"); void canvas.offsetWidth; canvas.classList.add("dancing");
+ setTimeout(()=>canvas.classList.remove("dancing"),1500);
+ $("landingSpeechText").textContent="dancefloor's calling.";
+ sndPickup();
+ state.needs.fun=clamp(state.needs.fun+10); state.needs.energy=clamp(state.needs.energy-4);
+ renderNeeds(); updateMood();
+}
+
+const NP_TRACKS=[["Mount Media","Signal Unknown",220],["Chosen Family","Interlude",198],["Landmark Nights","Demo Tape",260]];
+let npIdx=0, npPlaying=false, npElapsed=0, npTickTimer=null, ambientLoop=null;
+function fmtNpTime(s){return Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0")}
+function loadNpTrack(i){
+ npIdx=((i%NP_TRACKS.length)+NP_TRACKS.length)%NP_TRACKS.length;
+ const [name,artist,dur]=NP_TRACKS[npIdx];
+ $("npTrack").textContent=name; $("npArtist").textContent=artist; $("npTotal").textContent=fmtNpTime(dur);
+ npElapsed=0; updateNpBar();
+}
+function updateNpBar(){
+ const dur=NP_TRACKS[npIdx][2];
+ $("npBar").style.width=Math.min(100,npElapsed/dur*100)+"%";
+ $("npElapsed").textContent=fmtNpTime(npElapsed);
+}
+function startAmbientLoop(){
+ const c=ac(); if(!c)return;
+ stopAmbientLoop();
+ const notes=[220,261.6,293.7,329.6,392,440];
+ const master=c.createGain(); master.gain.value=.05; master.connect(c.destination);
+ const iv=setInterval(()=>{
+   if(muted)return;
+   const o=c.createOscillator(), g=c.createGain();
+   o.type="sine"; o.frequency.value=notes[Math.floor(Math.random()*notes.length)];
+   g.gain.value=0; o.connect(g); g.connect(master);
+   const t=c.currentTime;
+   g.gain.linearRampToValueAtTime(.6,t+.7);
+   g.gain.linearRampToValueAtTime(0,t+2.4);
+   o.start(t); o.stop(t+2.5);
+ },1450);
+ ambientLoop={master,iv};
+}
+function stopAmbientLoop(){
+ if(ambientLoop){ clearInterval(ambientLoop.iv); try{ambientLoop.master.disconnect()}catch(e){} ambientLoop=null }
+}
+function setNpPlaying(on){
+ npPlaying=on;
+ $("npPlayBtn").textContent=npPlaying?"❚❚":"▶";
+ clearInterval(npTickTimer);
+ if(npPlaying){
+   startAmbientLoop();
+   npTickTimer=setInterval(()=>{
+     npElapsed++;
+     if(npElapsed>=NP_TRACKS[npIdx][2]) loadNpTrack(npIdx+1);
+     updateNpBar();
+   },1000);
+ } else stopAmbientLoop();
+}
+$("npPlayBtn").onclick=()=>{ sndClick(); setNpPlaying(!npPlaying) };
+loadNpTrack(0);
+
 document.querySelectorAll("#landingNav .navItem").forEach(btn=>{
  btn.addEventListener("click",()=>{
    const nav=btn.getAttribute("data-nav");
@@ -1314,10 +1417,13 @@ document.querySelectorAll("#landingNav .navItem").forEach(btn=>{
    document.querySelectorAll("#landingNav .navItem").forEach(b=>b.classList.remove("active"));
    btn.classList.add("active");
    sndClick();
-   if(nav==="talk"){ addLandingChatLine("Ingrid","just vibing here.","c3"); $("landingSpeechText").textContent="just vibing here."; }
-   else if(nav==="dance"){ $("landingSpeechText").textContent="dancefloor's calling."; sndPickup(); }
+   if(nav==="talk"){ doTalk(); }
+   else if(nav==="dance"){ doDance(); }
    else if(nav==="photo"){ openWin("casWindow"); }
-   else if(nav==="music"){ toast("QUEUE MUSIC","Track queued for the next set."); }
+   else if(nav==="music"){
+     if(!npPlaying) setNpPlaying(true);
+     else { loadNpTrack(npIdx+1); toast("QUEUE MUSIC","Now playing: "+NP_TRACKS[npIdx][0]); }
+   }
    else if(nav==="leave"){ toast("GAYMERS","This is a browser tab, not a real door — but nice try."); }
    setTimeout(()=>{document.querySelectorAll("#landingNav .navItem").forEach(b=>b.classList.remove("active"));document.querySelector('#landingNav [data-nav="explore"]').classList.add("active")},1400);
  });
