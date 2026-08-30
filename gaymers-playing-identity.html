@@ -7,7 +7,7 @@
 <title>GAYMERS // PLAYING IDENTITY — Sims 1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --face:#c0c0c0; --faceLo:#808080; --faceHi:#fff; --faceDk:#000;
@@ -17,10 +17,11 @@
   --ink:#101318;
 }
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--desktop1);font-family:Tahoma,"MS Sans Serif",Geneva,Arial,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none;touch-action:none;background:var(--desktop1);font-family:Tahoma,"MS Sans Serif",Geneva,Arial,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}
 button{font:inherit;cursor:pointer}
 img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .pxfont{font-family:"Press Start 2P",Tahoma,monospace}
+.handfont{font-family:"Caveat",cursive}
 
 #desktop{position:fixed;inset:0;background:
   repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 4px),
@@ -110,7 +111,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .speechBubble.show{opacity:1;transform:translate(-50%,0)}
 
 /* ---------- side panel ---------- */
-#sidePanel{width:260px;flex:0 0 auto;background:var(--face);display:flex;flex-direction:column;gap:8px;padding:8px;overflow-y:auto}
+#sidePanel{width:260px;flex:0 0 auto;background:var(--face);display:flex;flex-direction:column;gap:8px;padding:8px;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain}
 .panelBox{border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:var(--face)}
 .panelHead{background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff;font-size:9px;font-weight:900;padding:4px 7px;letter-spacing:.03em}
 .panelBody{padding:7px}
@@ -151,13 +152,13 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #panelActions .btn98 b{font-size:14px}
 #panelActions .btn98 span{font-size:7px}
 
-#eventLog{max-height:96px;overflow-y:auto;font-size:8px;padding:6px;line-height:1.5;color:#333}
+#eventLog{max-height:96px;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain;font-size:8px;padding:6px;line-height:1.5;color:#333}
 #eventLog div{border-bottom:1px dotted #aaa;padding:2px 0}
 
 /* ---------- floating windows ---------- */
 .floatWin{position:absolute;z-index:200;display:none;min-width:220px}
 .floatWin.open{display:block}
-.floatBody{padding:9px}
+.floatBody{padding:9px;max-height:78vh;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain}
 
 #relList .relRow{display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #d3d3d3}
 #relList .relRow:last-child{border-bottom:0}
@@ -200,7 +201,6 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .casFooter{display:flex;justify-content:flex-end;gap:6px;padding:9px;border-top:2px solid;border-color:var(--faceHi) transparent transparent}
 
 /* welcome dialog */
-#welcomeWindow{width:min(420px,92vw)}
 
 /* taskbar */
 #taskbar{position:absolute;left:0;right:0;bottom:0;height:34px;display:flex;align-items:center;gap:5px;padding:3px 5px;background:var(--face);border-top:2px solid var(--faceHi);z-index:300}
@@ -234,10 +234,196 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
   #casWindow{width:96vw}
   #camWrap{height:180px}
 }
+
+/* ================= landing screen ================= */
+#desktop.hidden{display:none}
+#landingScreen{position:fixed;inset:0;z-index:50;background:#0a0a0d;overflow:hidden}
+#landingScreen.hidden{display:none}
+#landingCam,#landingFallbackBg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#landingCam{background:#0a0a0d}
+#landingFallbackBg{display:none;background:
+  radial-gradient(circle at 30% 20%,rgba(120,90,200,.35),transparent 55%),
+  radial-gradient(circle at 75% 70%,rgba(200,90,150,.3),transparent 55%),
+  linear-gradient(160deg,#17171d,#0a0a0d)}
+#landingTint{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.4),rgba(0,0,0,.1) 35%,rgba(0,0,0,.15) 60%,rgba(0,0,0,.6))}
+
+.glassCard{background:rgba(16,16,20,.6);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);border:1px solid rgba(255,255,255,.14);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+
+#landingBrand{position:absolute;left:30px;top:22px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6);z-index:2}
+#landingTitle{font-size:42px;line-height:1;font-weight:700}
+#landingTitle .sparkle{color:#f4d35e;font-size:22px;vertical-align:top}
+#landingSubtitle{font-size:24px;margin-top:-8px;opacity:.92}
+
+#landingWeather{position:absolute;top:22px;right:22px;z-index:2;display:flex;align-items:center;gap:12px;padding:8px 14px;color:#fff;font-size:11px;font-weight:600;letter-spacing:.02em}
+#landingWeather span{white-space:nowrap}
+#landingWeather button{margin-left:2px;width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff}
+
+#landingProfileCard{position:absolute;top:66px;right:22px;width:190px;z-index:2;overflow:hidden;padding:5px}
+#landingProfileImg{width:100%;aspect-ratio:.86;object-fit:cover;border-radius:10px;display:block}
+#landingProfileCard .plumbTiny{position:absolute;top:12px;right:12px;width:18px;height:26px}
+#landingProfileCard .plumbTiny:before,#landingProfileCard .plumbTiny:after{content:"";position:absolute;left:50%;transform:translateX(-50%);border-left:9px solid transparent;border-right:9px solid transparent}
+#landingProfileCard .plumbTiny:before{top:0;border-bottom:13px solid #8eea6e}
+#landingProfileCard .plumbTiny:after{bottom:0;border-top:13px solid #3bb73c}
+#landingProfileText{position:absolute;left:14px;right:14px;bottom:12px;color:#fff}
+#landingProfileName{font-family:"Caveat",cursive;font-size:28px;line-height:1}
+#landingProfilePron{font-size:10px;letter-spacing:.08em;opacity:.85;margin-top:2px}
+
+#landingNav{position:absolute;left:30px;top:146px;z-index:2;display:flex;flex-direction:column;gap:8px;width:186px}
+.navItem{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:10px;color:#fff;font-size:12px;font-weight:700;letter-spacing:.03em;text-align:left;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07)}
+.navItem .navIco{width:15px;height:15px;flex:0 0 auto}
+.navItem.active{background:#fff;color:#15161a;border-color:#fff}
+.navItem:active{transform:translateY(1px)}
+
+#landingStage{position:absolute;left:50%;top:52%;transform:translate(-50%,-46%);z-index:1;text-align:center}
+#landingStage canvas{width:150px;height:262px;image-rendering:pixelated;filter:drop-shadow(0 14px 10px rgba(0,0,0,.5))}
+#landingStage .plumb{position:absolute;left:50%;top:-34px;width:26px;height:40px;transform:translateX(-50%);animation:plumbfloat 1.6s ease-in-out infinite}
+#landingStage .plumb:before,#landingStage .plumb:after{content:"";position:absolute;left:50%;transform:translateX(-50%);border-left:13px solid transparent;border-right:13px solid transparent}
+#landingStage .plumb:before{top:0;border-bottom:20px solid #8eea6e}
+#landingStage .plumb:after{bottom:0;border-top:20px solid #3bb73c}
+#landingSpeech{position:absolute;left:58%;top:6%;transform:translateX(0);opacity:1;background:rgba(20,20,24,.85);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:7px 12px;font-size:12px;font-weight:600;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+#landingSpeech:before{display:none}
+#landingSpeech .heartIco{color:#ff6b8a;margin-right:4px}
+
+#landingWidgets{position:absolute;left:30px;bottom:22px;z-index:2;width:300px;display:flex;flex-direction:column;gap:10px}
+#landingMinimap{padding:10px}
+.miniHead{display:flex;justify-content:space-between;color:#fff;font-size:10px;opacity:.75;margin-bottom:6px}
+.miniBody{position:relative;height:130px;border-radius:9px;overflow:hidden;background:linear-gradient(160deg,#1b2420,#11201a)}
+.miniDot{position:absolute;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.miniDot.d1{left:18%;top:22%;background:#d6567e}
+.miniDot.d2{left:82%;top:24%;background:#6a4fc4}
+.miniDot.d3{left:78%;top:70%;background:#c48a2f}
+.miniPlayer{position:absolute;left:38%;top:50%;width:34px;height:34px;border-radius:50%;overflow:hidden;border:2px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.5)}
+.miniPlayer img{width:100%;height:100%;object-fit:cover}
+.miniFoot{display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:10px;margin-top:7px}
+.miniFoot b{font-size:12px}
+.miniFoot .liveDot{color:#ff5f6d;font-weight:900}
+
+#landingCasPanel{padding:14px;text-align:center}
+.casPanelTitle{color:#fff;font-size:20px;text-align:left;margin-bottom:8px}
+#landingQr{width:96px;height:96px;background:#fff;border-radius:8px;padding:5px;display:block;margin:0 auto}
+.casPanelNote{color:rgba(255,255,255,.8);font-size:14px;line-height:1.3;margin-top:8px}
+#landingOpenCas{margin-top:10px;width:100%;padding:9px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em}
+
+#landingRightStack{position:absolute;right:22px;bottom:22px;z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+#landingChat{width:320px;padding:12px}
+.chatLine{display:flex;gap:7px;font-size:12px;margin:5px 0;color:#e8e8ea}
+.chatLine b{flex:0 0 auto}
+.chatLine .c1{color:#f2b84a}.chatLine .c2{color:#6fd67f}.chatLine .c3{color:#e0698f}.chatLine .c4{color:#7fb8e0}
+#landingChatLines{max-height:110px;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain}
+.chatInputRow{display:flex;gap:6px;margin-top:8px}
+.chatInputRow input{flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:7px 10px;color:#fff;font-size:11px}
+.chatInputRow input::placeholder{color:rgba(255,255,255,.4)}
+.chatInputRow button{width:32px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.12);color:#fff}
+
+#landingNotes{display:flex;gap:12px}
+.sticky{width:130px;padding:10px;border-radius:3px;box-shadow:0 8px 16px rgba(0,0,0,.35);font-size:16px;line-height:1.15;color:#332b1a}
+.sticky:nth-child(1){background:#f4e6a8;transform:rotate(-4deg)}
+.sticky:nth-child(2){background:#fff;padding:8px;transform:rotate(3deg);color:#222;font-size:12px}
+.sticky .heart{color:#c4506e;margin-left:3px}
+.sticky img{width:100%;border-radius:2px;display:block;margin-bottom:6px}
+
+@media(max-width:820px){
+  #landingBrand{left:16px;top:max(14px,env(safe-area-inset-top))}
+  #landingTitle{font-size:26px}#landingSubtitle{font-size:16px;margin-top:-4px}
+  #landingWeather{display:none}
+  #landingProfileCard{top:max(14px,env(safe-area-inset-top));right:14px;width:78px;padding:3px}
+  #landingProfileText{left:8px;right:8px;bottom:6px}
+  #landingProfileName{font-size:16px}#landingProfilePron{font-size:7px}
+  #landingNav{left:0;right:0;top:auto;bottom:0;flex-direction:row;width:100%;padding:8px max(8px,env(safe-area-inset-bottom)) calc(8px + env(safe-area-inset-bottom));gap:5px;border-radius:0;background:rgba(10,10,13,.78);backdrop-filter:blur(14px);border:0;border-top:1px solid rgba(255,255,255,.14);justify-content:space-between}
+  .navItem{flex:1;flex-direction:column;gap:3px;padding:7px 2px;text-align:center;font-size:7px;border-radius:8px;background:transparent;border:0}
+  .navItem.active{background:rgba(255,255,255,.16);color:#fff}
+  .navItem .navIco{width:16px;height:16px}
+  #landingStage{top:44%}
+  #landingStage canvas{width:110px;height:192px}
+  #landingSpeech{left:50%;top:8%;transform:translateX(-50%);font-size:10px;white-space:normal;max-width:70vw;text-align:center}
+  #landingWidgets{display:none}
+  #landingRightStack{display:none}
+}
 </style>
 </head>
 <body>
-<div id="desktop">
+<div id="landingScreen">
+  <video id="landingCam" autoplay muted playsinline></video>
+  <div id="landingFallbackBg"></div>
+  <div id="landingTint"></div>
+
+  <div id="landingBrand" class="handfont">
+    <div id="landingTitle">GAYMERS // <span class="sparkle">✦</span></div>
+    <div id="landingSubtitle">playing identity</div>
+  </div>
+
+  <div id="landingWeather" class="glassCard">
+    <span id="landingCity">Bergen</span>
+    <span id="landingTempRow">☁ <span id="landingTemp">7°C</span></span>
+    <span id="landingDateRow">SAT <span id="landingClock">23:47</span></span>
+    <button id="landingSettingsBtn" title="Sound">♪</button>
+  </div>
+
+  <div id="landingProfileCard" class="glassCard">
+    <img id="landingProfileImg" src="assets/player/ingrid-portrait.jpg" alt="">
+    <div class="plumbTiny"></div>
+    <div id="landingProfileText">
+      <div id="landingProfileName">Ingrid</div>
+      <div id="landingProfilePron">SHE / HER</div>
+    </div>
+  </div>
+
+  <div id="landingNav">
+    <button class="navItem active" data-nav="explore"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>EXPLORE</button>
+    <button class="navItem" data-nav="talk"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg>TALK</button>
+    <button class="navItem" data-nav="dance"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="18" r="3"/><path d="M10 18V4l9 2v2"/></svg>DANCE</button>
+    <button class="navItem" data-nav="photo"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.4"/></svg>TAKE PHOTO</button>
+    <button class="navItem" data-nav="music"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-2l14-3v2M3 16a2.4 2.4 0 1 0 4 0 2.4 2.4 0 1 0-4 0zM17 13a2.4 2.4 0 1 0 4 0 2.4 2.4 0 1 0-4 0z"/></svg>QUEUE MUSIC</button>
+    <button class="navItem" data-nav="leave"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4H5v16h5M14 8l4 4-4 4M18 12H9"/></svg>LEAVE</button>
+  </div>
+
+  <div id="landingStage">
+    <div class="plumb"></div>
+    <canvas id="landingPlayerCanvas" width="32" height="56"></canvas>
+    <div id="landingSpeech" class="handfont" style="font-family:Tahoma,Arial,sans-serif"><span class="heartIco">♥</span><span id="landingSpeechText">Reggae + food tomorrow?</span></div>
+  </div>
+
+  <div id="landingWidgets">
+    <div id="landingMinimap" class="glassCard">
+      <div class="miniHead"><span>N</span><span>+ −</span></div>
+      <div class="miniBody">
+        <div class="miniDot d1">♪</div><div class="miniDot d2">✦</div><div class="miniDot d3">☺</div>
+        <div class="miniPlayer"><img src="assets/player/ingrid-portrait.jpg" alt=""></div>
+      </div>
+      <div class="miniFoot"><b>LANDMARK</b><span><span class="liveDot">●</span> LIVE · <span id="miniCount">24</span> people</span></div>
+    </div>
+    <div id="landingCasPanel" class="glassCard">
+      <div class="casPanelTitle handfont">Create your sim</div>
+      <img id="landingQr" alt="QR code for this page">
+      <div class="casPanelNote handfont">Scan to enter camera + make your sim</div>
+      <button id="landingOpenCas">OPEN CAMERA</button>
+    </div>
+  </div>
+
+  <div id="landingRightStack">
+    <div id="landingChat" class="glassCard">
+      <div id="landingChatLines">
+        <div class="chatLine"><b class="c1">Jax</b><span>you coming to the dancefloor?</span></div>
+        <div class="chatLine"><b class="c2">Meli</b><span>your fit is fire</span></div>
+        <div class="chatLine"><b class="c4">Rae</b><span>reggae + food tomorrow? 😅</span></div>
+      </div>
+      <div class="chatInputRow">
+        <input id="landingChatInput" placeholder="Type a response…" maxlength="80">
+        <button id="landingChatSend">➤</button>
+      </div>
+    </div>
+
+    <div id="landingNotes">
+      <div class="sticky handfont">Nothing needs to be performative<span class="heart">♡</span></div>
+      <div class="sticky">
+        <img src="assets/locations/landmark-exterior.jpg" alt="">
+        <span class="handfont">See u outside?</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="desktop" class="hidden">
 
   <section id="gameWindow" class="win98">
     <div class="titlebar">
@@ -455,111 +641,99 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
     </div>
   </section>
 
-  <!-- Relationships window -->
-  <section id="relWindow" class="floatWin win98" style="left:8%;top:12%">
-    <div class="titlebar" data-drag="relWindow">
-      <div class="titleleft"><span class="titleicon"></span><span>Relationships</span></div>
-      <div class="titlebtns"><button class="wbtn" data-close="relWindow">×</button></div>
-    </div>
-    <div class="floatBody" id="relList"></div>
-  </section>
-
-  <!-- Inventory window -->
-  <section id="invWindow" class="floatWin win98" style="left:60%;top:14%">
-    <div class="titlebar" data-drag="invWindow">
-      <div class="titleleft"><span class="titleicon"></span><span>Inventory</span></div>
-      <div class="titlebtns"><button class="wbtn" data-close="invWindow">×</button></div>
-    </div>
-    <div class="floatBody"><div id="invGrid"></div></div>
-  </section>
-
-  <!-- Help window -->
-  <section id="helpWindow" class="floatWin win98" style="left:30%;top:20%;width:min(380px,92vw)">
-    <div class="titlebar" data-drag="helpWindow">
-      <div class="titleleft"><span class="titleicon"></span><span>How To Play</span></div>
-      <div class="titlebtns"><button class="wbtn" data-close="helpWindow">×</button></div>
-    </div>
-    <div class="floatBody" style="font-size:9px;line-height:1.6">
-      Click any building to send your Sim there — <b>Club</b>, <b>Community Center</b>, <b>Thrift</b>, <b>Safe Space</b>, <b>Chat Zone</b> or <b>Waterfront</b>.<br><br>
-      Every place changes your needs differently. Let them run low too long and mood drops.<br><br>
-      Turn <b>Free Will</b> on and your Sim decides for herself when you stop clicking.<br><br>
-      <b>Thrift</b> sometimes hands you a random item. <b>Club</b>, <b>Chat Zone</b> and <b>Community</b> build relationships with the people who hang out there.<br><br>
-      Use <b>MAKE YOUR CHARACTER</b> to set your name, pronouns and photo — it becomes your portrait and your pixel face in the room.
-    </div>
-  </section>
-
-  <!-- Character creator -->
-  <section id="casWindow" class="floatWin win98" style="left:50%;top:50%;transform:translate(-50%,-50%)">
-    <div class="titlebar" data-drag="casWindow">
-      <div class="titleleft"><span class="titleicon"></span><span>Create A Sim</span></div>
-      <div class="titlebtns"><button class="wbtn" data-close="casWindow">×</button></div>
-    </div>
-    <div class="casStep">
-      <h3 class="pxfont" style="font-size:11px">WHO ARE YOU TODAY?</h3>
-      <p>Your name, your pronouns, your face. This is saved on this device so the room remembers you.</p>
-
-      <div class="casField">
-        <label>NAME</label>
-        <input type="text" id="nameInput" maxlength="18" placeholder="Your Sim name">
-      </div>
-      <div class="casField">
-        <label>PRONOUNS</label>
-        <div class="pronounRow" id="pronounRow">
-          <button class="btn98 pronounBtn" data-p="she/her">she/her</button>
-          <button class="btn98 pronounBtn" data-p="he/him">he/him</button>
-          <button class="btn98 pronounBtn" data-p="they/them">they/them</button>
-          <button class="btn98 pronounBtn" data-p="custom">custom…</button>
-        </div>
-      </div>
-
-      <div class="casField">
-        <label>PHOTO</label>
-        <div id="camWrap">
-          <video id="selfCam" autoplay muted playsinline></video>
-          <img id="selfPreview" alt="">
-          <div class="faceGuide"></div>
-        </div>
-        <div class="casBtnRow">
-          <label class="btn98" style="text-align:center">TAKE / CHOOSE PHOTO
-            <input id="selfieFileInput" class="captureInput" type="file" accept="image/*" capture="user">
-          </label>
-          <button class="btn98" id="openSelfCamBtn">LIVE CAMERA</button>
-          <button class="btn98" id="snapSelfieBtn">SNAP</button>
-        </div>
-        <div id="pixPreviewWrap">
-          <canvas id="pixPreviewCanvas" width="32" height="56"></canvas>
-          <span>This is how you'll look walking around the room — the same photo, pixelated.</span>
-        </div>
-        <div id="casStatus">Upload or snap a photo, then finish below.</div>
-      </div>
-    </div>
-    <div class="casFooter">
-      <button class="btn98" data-close="casWindow">CANCEL</button>
-      <button class="btn98 pressed" id="finishCasBtn" style="background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff">BECOME THIS SIM</button>
-    </div>
-  </section>
-
-  <!-- Welcome dialog -->
-  <section id="welcomeWindow" class="floatWin win98 open" style="left:50%;top:50%;transform:translate(-50%,-50%);z-index:500">
-    <div class="titlebar"><div class="titleleft"><span class="titleicon"></span><span>Welcome</span></div></div>
-    <div class="floatBody" style="padding:16px">
-      <h3 class="pxfont" style="font-size:13px;margin:0 0 8px">GAYMERS // PLAYING IDENTITY</h3>
-      <p style="font-size:9px;line-height:1.6;color:#333;margin:0 0 14px">A small life-sim about the rooms where you get to be yourself. Make your Sim — your real photo becomes their pixel face — then send them out into a town with a Club, a Community Center, a Thrift store, a Safe Space, a Chat Zone and a Waterfront. Free Will is on: if you stop choosing, your Sim will.</p>
-      <div style="display:flex;gap:8px;justify-content:flex-end">
-        <button class="btn98" id="skipWelcomeBtn">JUST EXPLORE</button>
-        <button class="btn98 pressed" id="startCasBtn" style="background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff">MAKE YOUR CHARACTER</button>
-      </div>
-    </div>
-  </section>
-
-  <div id="toastWrap"></div>
-
   <div id="taskbar">
     <button class="btn98" id="startBtn"><span class="titleicon"></span>GAYMERS</button>
     <div id="taskbarItems"></div>
     <div id="trayClock">7:00 AM</div>
   </div>
 </div>
+
+<!-- Floating windows live outside #desktop so they also work over the landing screen -->
+<!-- Relationships window -->
+<section id="relWindow" class="floatWin win98" style="left:8%;top:12%">
+  <div class="titlebar" data-drag="relWindow">
+    <div class="titleleft"><span class="titleicon"></span><span>Relationships</span></div>
+    <div class="titlebtns"><button class="wbtn" data-close="relWindow">×</button></div>
+  </div>
+  <div class="floatBody" id="relList"></div>
+</section>
+
+<!-- Inventory window -->
+<section id="invWindow" class="floatWin win98" style="left:60%;top:14%">
+  <div class="titlebar" data-drag="invWindow">
+    <div class="titleleft"><span class="titleicon"></span><span>Inventory</span></div>
+    <div class="titlebtns"><button class="wbtn" data-close="invWindow">×</button></div>
+  </div>
+  <div class="floatBody"><div id="invGrid"></div></div>
+</section>
+
+<!-- Help window -->
+<section id="helpWindow" class="floatWin win98" style="left:30%;top:20%;width:min(380px,92vw)">
+  <div class="titlebar" data-drag="helpWindow">
+    <div class="titleleft"><span class="titleicon"></span><span>How To Play</span></div>
+    <div class="titlebtns"><button class="wbtn" data-close="helpWindow">×</button></div>
+  </div>
+  <div class="floatBody" style="font-size:9px;line-height:1.6">
+    Click any building to send your Sim there — <b>Club</b>, <b>Community Center</b>, <b>Thrift</b>, <b>Safe Space</b>, <b>Chat Zone</b> or <b>Waterfront</b>.<br><br>
+    Every place changes your needs differently. Let them run low too long and mood drops.<br><br>
+    Turn <b>Free Will</b> on and your Sim decides for herself when you stop clicking.<br><br>
+    <b>Thrift</b> sometimes hands you a random item. <b>Club</b>, <b>Chat Zone</b> and <b>Community</b> build relationships with the people who hang out there.<br><br>
+    Use <b>MAKE YOUR CHARACTER</b> to set your name, pronouns and photo — it becomes your portrait and your pixel face in the room.
+  </div>
+</section>
+
+<!-- Character creator -->
+<section id="casWindow" class="floatWin win98" style="left:50%;top:50%;transform:translate(-50%,-50%)">
+  <div class="titlebar" data-drag="casWindow">
+    <div class="titleleft"><span class="titleicon"></span><span>Create A Sim</span></div>
+    <div class="titlebtns"><button class="wbtn" data-close="casWindow">×</button></div>
+  </div>
+  <div class="casStep">
+    <h3 class="pxfont" style="font-size:11px">WHO ARE YOU TODAY?</h3>
+    <p>Your name, your pronouns, your face. This is saved on this device so the room remembers you.</p>
+
+    <div class="casField">
+      <label>NAME</label>
+      <input type="text" id="nameInput" maxlength="18" placeholder="Your Sim name">
+    </div>
+    <div class="casField">
+      <label>PRONOUNS</label>
+      <div class="pronounRow" id="pronounRow">
+        <button class="btn98 pronounBtn" data-p="she/her">she/her</button>
+        <button class="btn98 pronounBtn" data-p="he/him">he/him</button>
+        <button class="btn98 pronounBtn" data-p="they/them">they/them</button>
+        <button class="btn98 pronounBtn" data-p="custom">custom…</button>
+      </div>
+    </div>
+
+    <div class="casField">
+      <label>PHOTO</label>
+      <div id="camWrap">
+        <video id="selfCam" autoplay muted playsinline></video>
+        <img id="selfPreview" alt="">
+        <div class="faceGuide"></div>
+      </div>
+      <div class="casBtnRow">
+        <label class="btn98" style="text-align:center">TAKE / CHOOSE PHOTO
+          <input id="selfieFileInput" class="captureInput" type="file" accept="image/*" capture="user">
+        </label>
+        <button class="btn98" id="openSelfCamBtn">LIVE CAMERA</button>
+        <button class="btn98" id="snapSelfieBtn">SNAP</button>
+      </div>
+      <div id="pixPreviewWrap">
+        <canvas id="pixPreviewCanvas" width="32" height="56"></canvas>
+        <span>This is how you'll look walking around the room — the same photo, pixelated.</span>
+      </div>
+      <div id="casStatus">Upload or snap a photo, then finish below.</div>
+    </div>
+  </div>
+  <div class="casFooter">
+    <button class="btn98" data-close="casWindow">CANCEL</button>
+    <button class="btn98 pressed" id="finishCasBtn" style="background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff">BECOME THIS SIM</button>
+  </div>
+</section>
+
+<div id="toastWrap"></div>
 
 <script>
 (()=>{
@@ -1069,14 +1243,16 @@ $("finishCasBtn").onclick=()=>{
  logEvent("Character created: "+state.name+" · "+state.pronoun);
  if(selfStream){selfStream.getTracks().forEach(t=>t.stop());selfStream=null}
  closeWin("casWindow");
- closeWin("welcomeWindow");
 };
 function applyIdentity(){
  $("simNameLbl").textContent=state.name;
  $("simPronounLbl").textContent="pronouns: "+state.pronoun;
  $("playerTag").textContent=state.name;
- if(state.photoData) $("portraitImg").src=state.photoData;
+ if(state.photoData){ $("portraitImg").src=state.photoData; $("landingProfileImg").src=state.photoData; }
+ $("landingProfileName").textContent=state.name.charAt(0)+state.name.slice(1).toLowerCase();
+ $("landingProfilePron").textContent=state.pronoun.toUpperCase();
  repaintPlayerSprite();
+ if(typeof repaintLandingSprite==="function") repaintLandingSprite();
 }
 
 /* ================= persistence ================= */
@@ -1107,9 +1283,75 @@ function loadDefaultIdentity(){
  applyIdentity();
 }
 
-/* ================= welcome dialog ================= */
-$("skipWelcomeBtn").onclick=()=>{sndClick();closeWin("welcomeWindow")};
-$("startCasBtn").onclick=()=>{sndClick();closeWin("welcomeWindow");openWin("casWindow")};
+/* ================= landing screen ================= */
+let landingStream=null;
+async function startLandingCamera(){
+ try{
+   landingStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}},audio:false});
+   const v=$("landingCam"); v.srcObject=landingStream; await v.play();
+   v.style.display="block"; $("landingFallbackBg").style.display="none";
+ }catch(e){
+   $("landingCam").style.display="none"; $("landingFallbackBg").style.display="block";
+ }
+}
+function stopLandingCamera(){
+ if(landingStream){ landingStream.getTracks().forEach(t=>t.stop()); landingStream=null; }
+}
+function repaintLandingSprite(){
+ paintSprite($("landingPlayerCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceThumb:state.faceThumb});
+}
+function enterGame(){
+ sndClick();
+ stopLandingCamera();
+ $("landingScreen").classList.add("hidden");
+ $("desktop").classList.remove("hidden");
+ state.lastManual=Date.now();
+}
+document.querySelectorAll("#landingNav .navItem").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+   const nav=btn.getAttribute("data-nav");
+   if(nav==="explore"){ enterGame(); return; }
+   document.querySelectorAll("#landingNav .navItem").forEach(b=>b.classList.remove("active"));
+   btn.classList.add("active");
+   sndClick();
+   if(nav==="talk"){ addLandingChatLine("Ingrid","just vibing here.","c3"); $("landingSpeechText").textContent="just vibing here."; }
+   else if(nav==="dance"){ $("landingSpeechText").textContent="dancefloor's calling."; sndPickup(); }
+   else if(nav==="photo"){ openWin("casWindow"); }
+   else if(nav==="music"){ toast("QUEUE MUSIC","Track queued for the next set."); }
+   else if(nav==="leave"){ toast("GAYMERS","This is a browser tab, not a real door — but nice try."); }
+   setTimeout(()=>{document.querySelectorAll("#landingNav .navItem").forEach(b=>b.classList.remove("active"));document.querySelector('#landingNav [data-nav="explore"]').classList.add("active")},1400);
+ });
+});
+function addLandingChatLine(name,text,cls){
+ const wrap=$("landingChatLines");
+ const row=document.createElement("div");
+ row.className="chatLine";
+ row.innerHTML='<b class="'+(cls||"c3")+'">'+name+'</b><span></span>';
+ row.querySelector("span").textContent=text;
+ wrap.appendChild(row);
+ wrap.scrollTop=wrap.scrollHeight;
+}
+$("landingChatSend").onclick=()=>{
+ const inp=$("landingChatInput"); const v=inp.value.trim();
+ if(!v)return;
+ addLandingChatLine(state.name||"INGRID",v,"c3");
+ inp.value="";
+ sndClick();
+};
+$("landingChatInput").addEventListener("keydown",e=>{ if(e.key==="Enter") $("landingChatSend").click(); });
+$("landingOpenCas").onclick=()=>{sndClick();openWin("casWindow")};
+$("landingSettingsBtn").onclick=()=>{ if(typeof toggleSound==="function") toggleSound(); };
+function setLandingQr(){
+ const img=$("landingQr");
+ const href=location.href;
+ const hosted=/^https?:/i.test(href) && !/^(localhost|127\.0\.0\.1)$/i.test(location.hostname||"");
+ if(hosted) img.src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=2&data="+encodeURIComponent(href);
+ else img.style.display="none";
+}
+function tickLandingClock(){
+ const d=new Date();
+ $("landingClock").textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+}
 
 /* ================= boot ================= */
 buildTrail();
@@ -1119,7 +1361,11 @@ renderNeeds(); updateMood(); renderRelationships(); renderInventory(); applyIden
 tickClock();
 const hadProfile=loadProfile();
 if(!hadProfile) loadDefaultIdentity();
-if(hadProfile) closeWin("welcomeWindow");
+repaintLandingSprite();
+setLandingQr();
+tickLandingClock();
+setInterval(tickLandingClock,15000);
+startLandingCamera();
 
 requestAnimationFrame(walkTick);
 setInterval(tickNeeds,1000);
