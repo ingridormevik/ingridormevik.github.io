@@ -73,6 +73,17 @@
         .rm.rm-largetext .rm-btn { font-size: clamp(13px, 3.8cqmin, 17px); }
         .rm.rm-largetext .rm-chapter-tag { font-size: clamp(11px, 3.4cqmin, 15px); }
 
+        /* FIELD mode: GPS on and physically at the stop. Quiets the
+           collectible-economy chrome — stats, the mix nudge, the
+           hold-to-walk prompt — so the place does more of the work than
+           the screen does. Archive/Map/Accessibility/GPS status stay,
+           since noticing and orientation stay relevant here, not less. */
+        .rm.rm-field .rm-hud .rm-stat,
+        .rm.rm-field #rmMix,
+        .rm.rm-field .rm-prompt {
+            display: none;
+        }
+
         .rm * { box-sizing: border-box; }
 
         /* Fullscreen keeps the exact same layout - the panel just fills the
@@ -544,6 +555,32 @@
             margin: 1em 0;
         }
 
+        .rm-eighth-wrap {
+            margin: 1.4em 0 .4em;
+            border-top: 2px solid var(--rm-edge);
+            padding-top: 1em;
+        }
+
+        /* Padding-box ratio trick instead of the `aspect-ratio` property —
+           inside .rm-stage's container-query context (container-type:size),
+           `aspect-ratio` on this canvas measured ~2x too tall in testing;
+           this old technique sidesteps that interaction entirely. */
+        .rm-eighth-frame {
+            position: relative;
+            width: 100%;
+            padding-top: 25%; /* 120 / 480 */
+        }
+
+        .rm-eighth {
+            display: block;
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
         .rm-map-node {
             display: flex;
             flex-direction: column;
@@ -969,6 +1006,17 @@
                                 you've already reached to see what you found there.</p>
                             <p class="rm-arch-lead" id="rmMapReal"></p>
                             <div class="rm-map-route" id="rmMapRoute"></div>
+                            <!-- The Eighth Mountain: not on the schematic route above,
+                                 not a progress bar. Starts almost absent and gains
+                                 contour lines as the archive fills in — what becomes
+                                 visible only through walking, drawn from what was
+                                 actually noticed rather than stated in words. -->
+                            <div class="rm-eighth-wrap">
+                                <div class="rm-chapter-tag">THE EIGHTH MOUNTAIN</div>
+                                <div class="rm-eighth-frame">
+                                    <canvas class="rm-eighth" id="rmEighth" width="480" height="120" aria-hidden="true"></canvas>
+                                </div>
+                            </div>
                             <div class="rm-choices">
                                 <button class="rm-btn rm-go" id="rmMapClose">← BACK TO THE TRAIL</button>
                             </div>
@@ -1040,7 +1088,7 @@
                         <span class="rm-stat-lab">BAGGED</span>
                         <span class="rm-count" id="rmBag">0</span>
                     </div>
-                    <button class="rm-icobtn" id="rmFindBtn" title="I found something">◎ I FOUND SOMETHING</button>
+                    <button class="rm-icobtn" id="rmFindBtn" title="I noticed something">◎ I NOTICED SOMETHING</button>
                     <button class="rm-icobtn rm-hide" id="rmMix" title="Loud brings excitement and hides the landscape. Quiet reveals it.">🔊 TURN IT UP</button>
                     <span class="rm-icobtn rm-hide" id="rmGpsStatus" style="cursor:default" aria-live="polite"></span>
                     <div class="rm-spacer"></div>
@@ -1522,7 +1570,7 @@
             phase: 'load', chapter: 0, dist: 0, walking: false,
             energy: 60, sound: 40, conn: 50,
             t: 0, cam: 0, fired: false, sparks: [], notes: [],
-            items: [], picked: 0, litter: 0, pops: [], nextItem: 0, still: 0, walkSync: 0,
+            items: [], picked: 0, litter: 0, pops: [], nextItem: 0, still: 0, walkSync: 0, inField: false,
             beatCount: 0, combo: 0, comboAt: 0, best: 0, shake: 0
         };
 
@@ -1558,16 +1606,28 @@
 
         var SCALE = [220, 261.63, 293.66, 349.23, 392, 440, 523.25];
 
+        // 0 below lo, 1 at/above hi, a straight ramp between — turns each
+        // instrument layer's old hard on/off threshold into a fade-in
+        // window instead of a pop.
+        function rampGain(lvl, lo, hi) {
+            if (lvl <= lo) return 0;
+            if (lvl >= hi) return 1;
+            return (lvl - lo) / (hi - lo);
+        }
+
         function audioStep() {
             if (!AU.on || !AU.ctxA) return;
             var s = AU.step % 16;
             var lvl = S.sound / 100;
             if (s % 4 === 0) blip('kick', 110, 0.22, 0.9, 'sine');
-            if (lvl > 0.25 && s % 4 === 2) blip('hat', 7200, 0.03, 0.14, 'square');
-            if (lvl > 0.45 && s % 8 === 6) blip('bass', 82.41, 0.3, 0.5, 'triangle');
-            if (lvl > 0.6 && (s === 0 || s === 6 || s === 11)) {
+            var hatGain = rampGain(lvl, 0.20, 0.30);
+            if (hatGain > 0 && s % 4 === 2) blip('hat', 7200, 0.03, 0.14 * hatGain, 'square');
+            var bassGain = rampGain(lvl, 0.40, 0.50);
+            if (bassGain > 0 && s % 8 === 6) blip('bass', 82.41, 0.3, 0.5 * bassGain, 'triangle');
+            var leadGain = rampGain(lvl, 0.55, 0.65);
+            if (leadGain > 0 && (s === 0 || s === 6 || s === 11)) {
                 var note = SCALE[(AU.step / 3 | 0) % SCALE.length];
-                blip('lead', note, 0.35, 0.1, 'triangle');
+                blip('lead', note, 0.35, 0.1 * leadGain, 'triangle');
             }
             AU.step++;
         }
@@ -2881,6 +2941,56 @@
                 }
             });
             el('rmMapRoute').innerHTML = html;
+            drawEighthMountain(a);
+        }
+
+        // The seven mountains can be mapped before you arrive. The eighth
+        // can only exist after you have walked. Not a progress bar: a
+        // fraction (how much of the archive is yours) plus a seed drawn
+        // from WHICH stops/beings you actually engaged with, not just how
+        // many — two players at the same fraction get visibly different
+        // contours, because they didn't notice the same things.
+        function eighthMountainFraction(a) {
+            var visitedFrac = Object.keys(a.scanned || {}).length / STOP_IDS.length;
+            var totalBeings = (BEINGS.all && BEINGS.all.length) || 5;
+            var beingsFrac = Math.min(1, (a.beings || []).length / totalBeings);
+            var findsFrac = Math.min(1, (a.finds || []).length / 10);
+            return clamp(visitedFrac * 0.4 + beingsFrac * 0.3 + findsFrac * 0.3, 0, 1);
+        }
+
+        function eighthMountainSeed(a) {
+            var keys = Object.keys(a.scanned || {}).sort()
+                .concat((a.beings || []).slice().sort()).join('|');
+            var h = 0;
+            for (var i = 0; i < keys.length; i++) { h = (h * 31 + keys.charCodeAt(i)) >>> 0; }
+            return h || 1;
+        }
+
+        function drawEighthMountain(a) {
+            var cv2 = el('rmEighth');
+            if (!cv2) return;
+            var g = cv2.getContext('2d');
+            var w = cv2.width, h = cv2.height;
+            g.clearRect(0, 0, w, h);
+            var frac = eighthMountainFraction(a);
+            if (frac <= 0.02) return; // almost absent — nothing to trace yet
+            var r = rng(eighthMountainSeed(a));
+            g.strokeStyle = getComputedStyle(document.documentElement)
+                .getPropertyValue('--rm-gold').trim() || '#d4a758';
+            g.lineWidth = 1;
+            var lines = Math.max(1, Math.round(frac * 6));
+            for (var L = 0; L < lines; L++) {
+                var baseY = h * (0.85 - L * (0.6 / 6));
+                g.globalAlpha = (0.22 + 0.55 * frac) * (1 - L / 7);
+                g.beginPath();
+                for (var x = 0; x <= w; x += 14) {
+                    var jitter = (r() - 0.5) * 10 * frac;
+                    var y = baseY + jitter - Math.sin((x / w) * Math.PI) * (10 + L * 6) * frac;
+                    if (x === 0) g.moveTo(x, y); else g.lineTo(x, y);
+                }
+                g.stroke();
+            }
+            g.globalAlpha = 1;
         }
 
         // The real walking distance/time, exactly as Ingrid read it off Google
@@ -3298,16 +3408,41 @@
         var theme = el('rmTheme');
         var themeOn = false, themeArmed = false;
 
+        // A volume ramp, not a jump — starting/stopping the theme (and
+        // muting) crossfades instead of popping. Cancels any fade already
+        // in flight on the same element so rapid toggling never fights
+        // itself.
+        function fadeAudioEl(node, target, ms) {
+            if (!node) return;
+            if (node._fadeRaf) cancelAnimationFrame(node._fadeRaf);
+            var start = node.volume, t0 = performance.now();
+            (function step(now) {
+                // rAF's own timestamp can land a hair before this t0 on the
+                // very first tick (frame-start time vs. performance.now()
+                // read moments later in the same script) — clamp both ends
+                // or that shows up as a negative volume and a thrown error.
+                var f = Math.max(0, Math.min(1, (now - t0) / ms));
+                node.volume = Math.max(0, Math.min(1, start + (target - start) * f));
+                if (f < 1) {
+                    node._fadeRaf = requestAnimationFrame(step);
+                } else {
+                    node._fadeRaf = null;
+                    if (target === 0) node.pause();
+                }
+            })(t0);
+        }
+
         function themeSet(on) {
             if (!theme) return;
             themeOn = on;
             var btn = el('rmMusic');
             if (on) {
-                theme.volume = SET.muted ? 0 : 0.42;
+                theme.volume = 0;
                 var p = theme.play();
                 if (p && p.catch) p.catch(function () { themeOn = false; paintMusicBtn(); });
+                fadeAudioEl(theme, SET.muted ? 0 : 0.42, 550);
             } else {
-                theme.pause();
+                fadeAudioEl(theme, 0, 550);
             }
             paintMusicBtn();
         }
@@ -3500,14 +3635,33 @@
             } else if (S.phase !== 'walk') {
                 S.cam += 4 * dt;
             }
+            // FIELD mode: physically at this stop's real coordinate, GPS on.
+            // Deliberately NOT gated to S.phase === 'walk' — it needs to
+            // outlast the instant the chapter auto-opens (walk and the
+            // open fire in the very same frame once in range), so it stays
+            // true through the story overlay too, for as long as the
+            // player is actually still standing there. Only the transition
+            // (not every frame) touches the DOM/pops.
+            var nearStop = SET.gpsMode && GEO.status === 'active' && GEO.nearCurrentStop();
+            if (nearStop !== S.inField) {
+                S.inField = nearStop;
+                var root = document.querySelector('.rm');
+                if (root) root.classList.toggle('rm-field', nearStop);
+                if (nearStop) {
+                    var stopName = ((CH[S.chapter] || {}).t || '').toUpperCase();
+                    S.pops.push({
+                        x: Math.round(W * 0.5), y: GROUND - 60, a: 1, big: true,
+                        text: (stopName ? stopName + ' · ' : '') + 'SIGNAL WITHIN RANGE'
+                    });
+                }
+            }
             // Two independent ways a chapter can open: walked far enough
             // (the simulated distance, always available), or — GPS mode only
             // — physically near this stop's real coordinate, checked whether
             // or not the player is currently holding the walk input. Either
             // one is enough; neither is required if the other fires first.
             if (S.phase === 'walk' && !S.fired &&
-                (S.dist >= CH[S.chapter].dist ||
-                    (SET.gpsMode && GEO.status === 'active' && GEO.nearCurrentStop()))) {
+                (S.dist >= CH[S.chapter].dist || nearStop)) {
                 S.fired = true;
                 openStory();
             }
