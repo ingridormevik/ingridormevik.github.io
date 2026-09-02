@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Running in the Mountains Pt. 2 — a pixel-art hiking game about carrying a DJ set up a Bergen mountain. Mount Media.">
-    <title>Running in the Mountains Pt. 2 — Ingrid Ormevik</title>
+    <meta name="description" content="Trail Mix by Mount Media &amp; Preem Cast — play the hike, then come and walk it. A moving DJ set from Sandviken to Fløyen, with performances along the route.">
+    <title>Trail Mix — Mount Media &amp; Preem Cast</title>
     <link rel="stylesheet" href="style.css">
     <style>
         /* ============================================
-           RUNNING IN THE MOUNTAINS PT.2
+           TRAIL MIX - Mount Media & Preem Cast
            Self-contained pixel-art narrative hike
            ============================================ */
 
@@ -36,7 +36,66 @@
             user-select: none;
         }
 
+        /* High Contrast overrides the same custom properties every component
+           is already built against, so cards/HUD/overlays all switch at once
+           with no per-component rework. */
+        .rm.rm-hicontrast {
+            --rm-ink: #000000;
+            --rm-panel: #000000;
+            --rm-panel-hi: #14141a;
+            --rm-edge: #ffffff;
+            --rm-edge-hi: #ffffff;
+            --rm-gold: #ffe14d;
+            --rm-cream: #ffffff;
+            --rm-dim: #d8d8d8;
+            --rm-red: #ff7a68;
+            --rm-green: #8bff68;
+            --rm-blue: #73c2ff;
+            --rm-purple: #d9a6ff;
+        }
+        .rm.rm-hicontrast .rm-card,
+        .rm.rm-hicontrast .rm-btn,
+        .rm.rm-hicontrast .rm-icobtn,
+        .rm.rm-hicontrast .rm-prompt,
+        .rm.rm-hicontrast .rm-route,
+        .rm.rm-hicontrast .rm-tag { border-width: 3px; }
+
+        /* Large Text targets the reading surfaces, not the pixel canvas or the
+           tight HUD labels — those would just break layout for no benefit. */
+        .rm.rm-largetext .rm-text,
+        .rm.rm-largetext .rm-arch-e,
+        .rm.rm-largetext .rm-arch-lead,
+        .rm.rm-largetext .rm-invite,
+        .rm.rm-largetext .rm-facts li {
+            font-size: clamp(14px, 4.4cqmin, 20px);
+            line-height: 1.7;
+        }
+        .rm.rm-largetext .rm-btn { font-size: clamp(13px, 3.8cqmin, 17px); }
+        .rm.rm-largetext .rm-chapter-tag { font-size: clamp(11px, 3.4cqmin, 15px); }
+
         .rm * { box-sizing: border-box; }
+
+        /* Fullscreen keeps the exact same layout - the panel just fills the
+           screen and the canvas re-fits to the new aspect. Nothing moves. */
+        .rm:fullscreen,
+        .rm:-webkit-full-screen {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            border: 0;
+        }
+
+        .rm:fullscreen .rm-stage,
+        .rm:-webkit-full-screen .rm-stage {
+            flex: 1 1 auto;
+            aspect-ratio: auto;
+            min-height: 0;
+        }
+
+        .rm:fullscreen .rm-cap,
+        .rm:-webkit-full-screen .rm-cap { display: none; }
 
         /* --- Stage --- */
         .rm-stage {
@@ -56,8 +115,7 @@
             display: block;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
-            object-fit: contain;
-            object-position: center top;
+            object-fit: fill;
         }
 
         /* --- Overlays --- */
@@ -108,6 +166,24 @@
             background: linear-gradient(180deg, rgba(10, 8, 18, .5), rgba(10, 8, 18, .86));
         }
 
+        /* The actual title screen gets the hero painting; the mode-select screen
+           behind it (#rmMode, same .rm-title class) keeps the plain dark card so
+           the two don't compete for attention. */
+        #rmTitle {
+            background:
+                linear-gradient(180deg, rgba(9, 7, 14, .38) 0%, rgba(9, 7, 14, .58) 55%, rgba(9, 7, 14, .94) 100%),
+                url('assets/hero/trail-mix-hero.jpg') center 40% / cover no-repeat;
+        }
+
+        /* The mode picker's button list can be taller than the stage on a
+           short viewport — plain centering then clips both ends with no way
+           to reach them (BACK included). Scroll within the stage instead;
+           "safe center" keeps it dead-centered whenever it actually fits. */
+        #rmMode {
+            overflow-y: auto;
+            justify-content: safe center;
+        }
+
         .rm-brand {
             font-size: clamp(.5rem, 1.5vw, .72rem);
             letter-spacing: .34em;
@@ -135,16 +211,32 @@
         }
 
         /* Story card */
+        /* The story is told on the way, not on another screen. The ribbon sits at
+           the foot of the stage; the trail keeps rendering and moving above it,
+           so a chapter break never feels like leaving the walk. */
         .rm-story {
             flex-direction: column;
-            padding: 3%;
-            overflow-y: auto;
-            background: linear-gradient(180deg, transparent 12%, rgba(10, 8, 18, .82) 62%);
+            justify-content: flex-end;
+            padding: 0 2% 2%;
+            overflow: hidden;
+            background: linear-gradient(180deg, transparent 46%, rgba(10, 8, 18, .55) 100%);
+            background-size: cover;
+            background-position: center;
         }
 
+        /* Carved-frame chrome: doubled rule, gilded inner line, corner studs.
+           Heavier and more made than a flat panel — the weight is the point. */
         .rm-card {
-            border: 2px solid var(--rm-edge);
-            background: rgba(22, 18, 28, .95);
+            position: relative;
+            border: 2px solid var(--rm-edge-hi);
+            outline: 2px solid var(--rm-ink);
+            outline-offset: 2px;
+            box-shadow:
+                inset 0 0 0 1px rgba(212, 167, 88, .38),
+                inset 0 2px 0 0 rgba(212, 167, 88, .12),
+                0 10px 34px rgba(0, 0, 0, .66);
+            background:
+                linear-gradient(180deg, rgba(48, 36, 30, .96) 0, rgba(22, 18, 28, .97) 42%);
             padding: clamp(9px, 3.1cqmin, 18px);
             max-width: 780px;
             width: 100%;
@@ -152,6 +244,160 @@
             overflow-y: auto;
             margin: auto auto 0;
             flex: none;
+        }
+
+        /* Corner studs, drawn rather than imported. */
+        .rm-card::before,
+        .rm-card::after {
+            content: "";
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            border: 2px solid var(--rm-gold);
+            opacity: .5;
+            pointer-events: none;
+        }
+
+        .rm-card::before {
+            top: 3px;
+            left: 3px;
+            border-right: 0;
+            border-bottom: 0;
+        }
+
+        .rm-card::after {
+            bottom: 3px;
+            right: 3px;
+            border-left: 0;
+            border-top: 0;
+        }
+
+        /* Illuminated capital, the way a painted panel opens. */
+        .rm-text.rm-illum::first-letter {
+            float: left;
+            font-size: 2.7em;
+            line-height: .82;
+            padding: .06em .16em 0 0;
+            color: var(--rm-gold);
+            text-shadow: 0 2px 0 rgba(0, 0, 0, .55);
+        }
+
+        /* A face beside the words. Portrait for a folklore encounter, the
+           location plate otherwise. */
+        .rm-portrait {
+            float: right;
+            width: clamp(46px, 15cqmin, 92px);
+            margin: 0 0 .5em .8em;
+            border: 2px solid var(--rm-edge-hi);
+            box-shadow: inset 0 0 0 1px rgba(212, 167, 88, .3);
+            image-rendering: pixelated;
+        }
+
+        .rm-story-body::after { content: ""; display: block; clear: both; }
+
+        /* Archive — same card chrome as the story overlay, so it reads as a screen
+           of the game rather than a document bolted onto it. */
+        .rm-arch-card { max-height: 84cqh; }
+
+        .rm-folk {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+            gap: .55em;
+            margin: 0 0 1em;
+        }
+
+        .rm-folk figure {
+            margin: 0;
+            border: 2px solid var(--rm-edge);
+            background: var(--rm-panel-hi);
+            padding: 3px;
+            text-align: center;
+        }
+
+        .rm-folk img {
+            width: 100%;
+            display: block;
+            image-rendering: pixelated;
+        }
+
+        .rm-folk figcaption {
+            font-size: clamp(7px, 2cqmin, 10px);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--rm-gold);
+            margin-top: .35em;
+        }
+
+        .rm-folk .unseen { opacity: .3; filter: grayscale(1); }
+        .rm-folk .unseen figcaption { color: var(--rm-dim); }
+
+        .rm-arch-lead {
+            color: var(--rm-dim);
+            font-size: clamp(9px, 2.5cqmin, 13px);
+            margin: 0 0 1em;
+        }
+
+        .rm-arch-lead a { color: var(--rm-gold); }
+
+        .rm-arch-legend {
+            font-size: clamp(9px, 2.3cqmin, 12px);
+            letter-spacing: .06em;
+            color: var(--rm-dim);
+            border: 1px solid var(--rm-edge);
+            padding: .5em .8em;
+            margin: 0 0 .9em;
+            display: inline-block;
+        }
+
+        .rm-arch-stop { margin: 0 0 1.1em; }
+
+        .rm-arch-stop h4 {
+            font-size: clamp(9px, 2.4cqmin, 12px);
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--rm-gold);
+            border-bottom: 1px solid var(--rm-edge);
+            padding-bottom: .35em;
+            margin: 0 0 .6em;
+            display: flex;
+            justify-content: space-between;
+            gap: 1em;
+        }
+
+        .rm-arch-stop h4 span {
+            color: var(--rm-dim);
+            letter-spacing: .06em;
+            text-transform: none;
+        }
+
+        .rm-arch-e {
+            border-left: 3px solid var(--rm-green);
+            padding: .1em 0 .1em .7em;
+            margin: 0 0 .7em;
+            font-size: clamp(9px, 2.5cqmin, 13px);
+        }
+
+        .rm-arch-e.locked {
+            border-left-color: var(--rm-edge);
+            color: var(--rm-dim);
+        }
+
+        .rm-arch-e.warn { border-left-color: var(--rm-red); }
+        .rm-arch-e.warn em { color: var(--rm-red); }
+        .rm-arch-e b { color: var(--rm-gold); margin-right: .5em; }
+
+        .rm-arch-e em {
+            display: block;
+            font-style: normal;
+            color: var(--rm-cream);
+            margin-top: .3em;
+        }
+
+        .rm-arch-e span {
+            display: block;
+            color: var(--rm-dim);
+            font-size: .86em;
+            margin-top: .3em;
         }
 
         .rm-chapter-tag {
@@ -263,6 +509,13 @@
             color: var(--rm-dim);
         }
 
+        .rm-count {
+            font-size: clamp(.52rem, 1.25vw, .72rem);
+            letter-spacing: .1em;
+            color: var(--rm-gold);
+            min-width: 1.4em;
+        }
+
         .rm-spacer { flex: 1 1 auto; }
 
         .rm-icobtn {
@@ -279,13 +532,106 @@
         .rm-icobtn:hover { color: var(--rm-cream); border-color: var(--rm-gold); }
         .rm-icobtn[aria-pressed="true"] { color: var(--rm-gold); border-color: var(--rm-gold); }
 
+        /* Trail map — six stop nodes joined by a route line, in the same carved
+           chrome as the rest of the HUD rather than a separate illustration
+           style. A node is a button so keyboard/touch work the same as
+           everywhere else; only visited stops are enabled. */
+        .rm-map-route {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0;
+            margin: 1em 0;
+        }
+
+        .rm-map-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .3em;
+            width: clamp(72px, 15.5cqmin, 110px);
+            background: var(--rm-panel-hi);
+            border: 2px solid var(--rm-edge);
+            padding: .5em .4em .6em;
+            font-family: inherit;
+            color: var(--rm-cream);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .rm-map-node:disabled { cursor: default; opacity: .42; }
+
+        .rm-map-node:not(:disabled):hover,
+        .rm-map-node:not(:disabled):focus-visible {
+            border-color: var(--rm-gold);
+            outline: none;
+        }
+
+        .rm-map-node img,
+        .rm-map-noart {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            display: block;
+            object-fit: cover;
+            image-rendering: pixelated;
+            border: 1px solid var(--rm-edge);
+        }
+
+        .rm-map-noart {
+            background: repeating-linear-gradient(45deg, #1c1622, #1c1622 4px, #241c2c 4px, #241c2c 8px);
+        }
+
+        .rm-map-node b {
+            font-size: clamp(8px, 2cqmin, 10px);
+            color: var(--rm-gold);
+            letter-spacing: .1em;
+        }
+
+        .rm-map-node span {
+            font-size: clamp(7px, 1.9cqmin, 9px);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        .rm-map-node em {
+            font-style: normal;
+            font-size: clamp(6px, 1.6cqmin, 8px);
+            letter-spacing: .08em;
+            color: var(--rm-dim);
+        }
+
+        .rm-map-current { border-color: var(--rm-gold); box-shadow: 0 0 0 2px rgba(212, 167, 88, .28); }
+        .rm-map-current em { color: var(--rm-gold); }
+
+        .rm-map-link {
+            flex: 0 0 clamp(10px, 2.4cqmin, 20px);
+            align-self: center;
+            height: 2px;
+            background: var(--rm-edge);
+        }
+
+        .rm-map-link.d { background: var(--rm-gold); }
+
+        /* Accessibility Hub — same .rm-icobtn look, stacked full-width as a
+           settings list rather than inline in a toolbar. */
+        .rm-acc-list { display: grid; gap: 8px; margin: 1em 0; }
+        .rm-acc-toggle {
+            width: 100%;
+            text-align: left;
+            font-size: clamp(9px, 2.6cqmin, 12px);
+            letter-spacing: .08em;
+            padding: .75em 1em;
+        }
+        .rm-acc-toggle::before { content: "☐  "; }
+        .rm-acc-toggle[aria-pressed="true"]::before { content: "☑  "; }
+
         /* Floating name tags */
         .rm-tags { position: absolute; inset: 0; pointer-events: none; }
 
         .rm-tag {
             position: absolute;
-            top: 25cqw;
-            transform: translateX(-50%);
+            top: 52%;
+            transform: translate(-50%, -100%);
             font-size: clamp(.42rem, 1.15vw, .6rem);
             letter-spacing: .14em;
             color: var(--rm-gold);
@@ -311,7 +657,7 @@
         .rm-prompt {
             position: absolute;
             left: 50%;
-            top: 48cqw;
+            bottom: 4%;
             transform: translateX(-50%);
             font-size: clamp(.5rem, 1.4vw, .68rem);
             letter-spacing: .18em;
@@ -328,7 +674,7 @@
         /* Route progress */
         .rm-route {
             position: absolute;
-            top: 2.4cqw;
+            top: 4%;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -370,16 +716,42 @@
         }
 
         @media (max-width: 620px) {
-            .rm-stage.tall { aspect-ratio: 3 / 4; }
+            .rm-stage { aspect-ratio: 3 / 4; }
             .rm-title, .rm-chapcard { justify-content: flex-start; padding-top: 12%; }
             .rm-stat-lab { display: none; }
             .rm-cap { justify-content: center; text-align: center; }
+            /* The three-part walk prompt is too long to force onto one line
+               at the smallest allowed font size without running past the
+               stage edges — let it wrap instead of clipping. */
+            .rm-prompt { white-space: normal; text-align: center; max-width: 90%; line-height: 1.5; }
         }
 
         @media (prefers-reduced-motion: reduce) {
             .rm-prompt { animation: none; opacity: .9; }
             .rm-btn { transition: none; }
         }
+
+        .rm-flag {
+            border-left: 3px solid #d4a758;
+            background: rgba(212, 167, 88, .07);
+            padding: 1em 1.2em;
+            margin-bottom: 1.6em;
+        }
+
+        .rm-facts { margin: 1.4em 0 2em 1.4em; }
+        .rm-facts li { margin-bottom: .7em; }
+
+        .rm-invite {
+            margin-top: 1.2em;
+            padding: .9em 1em;
+            border: 2px solid var(--rm-gold);
+            background: rgba(212, 167, 88, .08);
+            color: var(--rm-cream);
+            font-size: clamp(9px, 3cqmin, 13px);
+            line-height: 1.5;
+        }
+
+        .rm-invite b { color: var(--rm-gold); }
 
         .tagline {
             font-size: 1.1em;
@@ -412,42 +784,125 @@
 
     <main>
         <article>
-            <h2>Running in the Mountains Pt. 2</h2>
-            <p class="tagline">A guided journey through sound &amp; landscape</p>
-            <span class="game-meta">Mount Media | Pixel-Art Narrative Hike | Bergen, 2026</span>
+            <h2>Trail Mix</h2>
+            <p class="tagline">Sandviken to Fløyen — a moving DJ set, and an invitation to the real one</p>
+            <span class="game-meta">Mount Media &amp; Preem Cast | Play the hike, then come and walk it | Bergen, 2026</span>
 
-            <p>This started as an actual hike. Jack a few steps ahead with a DJ controller he insisted on carrying up a mountain, me behind him with a speaker strapped to my pack like an oversized snail shell. Somewhere around the second switchback it became obvious this was happening at the top whether the trail agreed to it or not.</p>
+            <p class="rm-flag"><strong>This is happening for real.</strong> A hike from Sandviken sykehus up
+            to Fløyen, with a DJ set that walks with us and performances along the way. Play the route
+            first. Then come and walk it.</p>
 
-            <p>So I turned us into characters. Jack is the Trail DJ — he drops the soundtrack and reads the path the way he reads a room. I'm the Sound Carrier — I walk behind, carry the vibe, and keep the battery percentage in my head at all times.</p>
+            <p>Jack goes in front with a DJ controller he insists on carrying up a mountain. I follow with
+            a speaker on my back, and — less romantically — a roll of bin bags and a pair of plastic gloves
+            packed in beside it. Everyone else walks with us. That's the format: not an audience standing
+            in front of a stage, but a group moving through a place while the music moves with it.</p>
 
-            <p>Six chapters, from the car park to the dark walk down. Hold to walk. The mountain does the rest.</p>
+            <p>The route is real and it is specific: <strong>Sandviken sykehus → Sandviksbatteriet →
+            Sandvikspilen → the forest → Fløyen → back down in the dark.</strong> Six stretches, each with
+            its own character, each with somewhere to stop.</p>
+
+            <h3>It isn't about reaching Fløyen</h3>
+
+            <p>It's about learning to notice Bergen. That's the actual premise, and it's why the game
+            doesn't score you on speed.</p>
+
+            <p>There are three things the game pays attention to instead. <strong>Curiosity</strong> — did
+            you look at anything. <strong>Care</strong> — did you leave the place better. <strong>Presence</strong>
+            — did you stop. Stand still on the trail and Presence climbs on its own; the game is quietly
+            telling you that stopping is a move. None of them is a score to max out. Walking fast raises one
+            and starves another, and a good walk is a changing balance rather than a full bar.</p>
+
+            <h3>Pick things up on the way</h3>
+
+            <p>The bin bags are not a gesture. Bergen's trails carry other people's rubbish, and a group of
+            forty walking the same route is forty pairs of eyes. If you see something, pick it up — gloves
+            and bags come out of my pack and we carry it down. It costs nothing and it is the one part of
+            the evening that leaves the mountain measurably better than we found it.</p>
+
+            <p>That's why it's in the game. Tap anything you spot on the trail — a bottle, a can, a
+            wrapper — and it goes in the bag. Tap a harebell or a flat stone and nothing goes in the bag;
+            you just noticed it, and the game counts that too.</p>
+
+            <h3>The mountain is the character</h3>
+
+            <p>Not Jack, not me. The idea I keep coming back to is that a place can become a character
+            through your attention to it — that it responds to how you move through it rather than
+            following a script. Walk Sandvikspilen once and the forest is a forest. Walk it repeatedly and
+            it starts recognising you: the same raven on the same stone, somebody waving because they
+            remember you, a story you only get told the fourth time.</p>
+
+            <p>There is no single correct Bergen. One person's is birds, another's is the battery's
+            stonework, another's is what Sandviken sykehus says about how we've treated mental illness,
+            another's is the litter. The place stays historically and ecologically accurate; the
+            relationship is yours.</p>
+
+            <p>That's also the research question I keep circling at the <a
+            href="https://www4.uib.no/en/research/research-centres/center-for-digital-narrative"
+            target="_blank" rel="noopener noreferrer">Center for Digital Narrative</a>, where I've been a
+            research intern. CDN works on algorithmic narrativity, electronic literature, game studies and
+            what it calls extended digital narrative — stories that leave the screen and happen in rooms,
+            landscapes and bodies. A hike with a route, chapters, a soundtrack and a set of choices about
+            pace and attention is exactly that: a narrative you walk rather than read, with the mountain
+            as co-author and the weather as an unreliable one.</p>
+
+            <p>So this page is doing two jobs. It's an invitation, and it's the argument for the format —
+            a playable pitch for the kind of work I want to keep making, and want funded.</p>
+
+            <p>Six chapters, Sandviken to Fløyen and back down. Hold to walk. Tap what you find. Stop when
+            something is worth stopping for. About seven minutes.</p>
 
             <div class="rm">
                 <div class="rm-stage">
+                    <audio id="rmTheme" loop preload="none" title="Trail Mix Theme Song"
+                           src="assets/audio/trail-mix-theme.mp3"></audio>
                     <canvas id="rmCanvas" width="480" height="270" role="img"
                             aria-label="Pixel-art scene of two hikers walking a Bergen mountain trail at sunset, one carrying a DJ controller, one carrying a speaker backpack."></canvas>
 
                     <div class="rm-route rm-hide" id="rmRoute" aria-hidden="true"></div>
                     <div class="rm-tags rm-hide" id="rmTags" aria-hidden="true">
-                        <span class="rm-tag" style="left:60.8%">JACK<b></b></span>
-                        <span class="rm-tag" style="left:40.8%">INGRID<b></b></span>
+                        <span class="rm-tag" style="left:60%">INGRID<b></b></span>
+                        <span class="rm-tag" style="left:40%">JACK<b></b></span>
                     </div>
-                    <div class="rm-prompt rm-hide" id="rmPrompt">HOLD → OR TAP TO WALK</div>
+                    <div class="rm-prompt rm-hide" id="rmPrompt">HOLD TO WALK · STOP TO NOTICE · TAP ON THE BEAT TO BAG IT</div>
 
                     <!-- Loading -->
                     <div class="rm-layer rm-load on" id="rmLoad">
-                        <div class="rm-brand">MOUNT MEDIA</div>
+                        <div class="rm-brand">MOUNT MEDIA &amp; PREEM CAST</div>
                         <div class="rm-load-bar"><div class="rm-load-fill" id="rmLoadFill"></div></div>
                         <div class="rm-stat-lab" id="rmLoadTxt">DRAWING SPRITES…</div>
                     </div>
 
                     <!-- Title -->
                     <div class="rm-layer rm-title rm-hide" id="rmTitle">
-                        <div class="rm-brand">MOUNT MEDIA PRESENTS</div>
-                        <h3>RUNNING IN THE<br>MOUNTAINS PT. 2</h3>
+                        <div class="rm-brand">MOUNT MEDIA &amp; PREEM CAST</div>
+                        <h3>TRAIL MIX</h3>
                         <p class="rm-sub">A GUIDED JOURNEY THROUGH SOUND &amp; LANDSCAPE</p>
+                        <p class="rm-sub" style="margin-top:.5em;border-color:#d4a758;color:#d4a758">SANDVIKEN → FLØYEN · A MOVING DJ SET · WALK IT WITH US</p>
                         <div class="rm-choices" style="margin-top:1.4em;min-width:min(280px,80%)">
                             <button class="rm-btn rm-go" id="rmStart">BEGIN THE JOURNEY →</button>
+                            <button class="rm-btn" id="rmModeBtn">⚙ HOW DO YOU WANT TO WALK?</button>
+                        </div>
+                    </div>
+
+                    <!-- Pre-start mode selector: quick accessibility presets in front of
+                         the title screen. Entirely optional — BEGIN THE JOURNEY above
+                         works exactly as it always has if a player never opens this. -->
+                    <div class="rm-layer rm-title rm-hide" id="rmMode">
+                        <div class="rm-brand">MOUNT MEDIA &amp; PREEM CAST</div>
+                        <h3 style="font-size:clamp(.85rem,3.2vw,1.5rem)">HOW DO YOU WANT TO WALK?</h3>
+                        <p class="rm-sub">PICK A STARTING MODE — CHANGE ANYTHING LATER FROM ♿ ACCESSIBILITY</p>
+                        <div class="rm-choices" id="rmModeChoices" style="margin-top:1.2em;min-width:min(320px,86%)">
+                            <button class="rm-btn rm-go" data-mode="full">FULL TRAIL</button>
+                            <button class="rm-btn" data-mode="lowmotion">LOW MOTION</button>
+                            <button class="rm-btn" data-mode="textfirst">TEXT FIRST</button>
+                            <button class="rm-btn" data-mode="audiofirst">AUDIO FIRST</button>
+                            <button class="rm-btn" data-mode="noaudio">NO AUDIO</button>
+                            <button class="rm-btn" data-mode="highcontrast">HIGH CONTRAST</button>
+                            <button class="rm-btn" data-mode="largetext">LARGE TEXT</button>
+                            <button class="rm-btn" data-mode="gps">🛰 I'M WALKING THE REAL TRAIL</button>
+                        </div>
+                        <div class="rm-choices" style="margin-top:.6em;min-width:min(320px,86%)">
+                            <button class="rm-btn" id="rmModeBack">← BACK</button>
                         </div>
                     </div>
 
@@ -465,37 +920,181 @@
                             <div class="rm-choices" id="rmStoryChoices"></div>
                         </div>
                     </div>
+
+                    <!-- I FOUND SOMETHING: the epistemic-restraint mechanic. The
+                         player names what they noticed, not what the game told
+                         them to look for. UNKNOWN is a real, counted answer, not
+                         a failure — the game has no ecology data verified for
+                         this route (see data/sources.json research_queue), so
+                         pretending to identify species would be exactly the
+                         invention rule 18 forbids. Naming genus/species is the
+                         player's own act of noticing, filed as OBSERVED. -->
+                    <div class="rm-layer rm-story rm-hide" id="rmFind">
+                        <div class="rm-card">
+                            <div class="rm-chapter-tag">◎ OBSERVED — WHAT DID YOU SEE?</div>
+                            <p class="rm-text">Not what the game pointed at. What you noticed.</p>
+                            <div class="rm-choices" id="rmFindChoices">
+                                <button class="rm-btn" data-k="plant">plant</button>
+                                <button class="rm-btn" data-k="bird">bird</button>
+                                <button class="rm-btn" data-k="fungus">fungus</button>
+                                <button class="rm-btn" data-k="geology">rock / geology</button>
+                                <button class="rm-btn" data-k="sound">a sound</button>
+                                <button class="rm-btn" data-k="unknown">◇ I don't know what it was</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Archive: the same collection the QR trail writes to.
+                         Scan a code on the mountain, it is waiting here. -->
+                    <div class="rm-layer rm-story rm-hide" id="rmArch">
+                        <div class="rm-card rm-arch-card">
+                            <div class="rm-chapter-tag">TRAIL ARCHIVE</div>
+                            <div id="rmArchBody"></div>
+                            <div class="rm-choices">
+                                <button class="rm-btn rm-go" id="rmArchClose">← BACK TO THE TRAIL</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trail map: a progress view of the six stops, not a level-select.
+                         The walk stays one way — a stop only opens once you've actually
+                         reached it, and opening one reopens what you found there rather
+                         than jumping the story. -->
+                    <div class="rm-layer rm-story rm-hide" id="rmMap">
+                        <div class="rm-card rm-map-card">
+                            <div class="rm-chapter-tag">TRAIL MAP</div>
+                            <p class="rm-text">Sandviken sykehus → Fløyen. Tap a stop
+                                you've already reached to see what you found there.</p>
+                            <p class="rm-arch-lead" id="rmMapReal"></p>
+                            <div class="rm-map-route" id="rmMapRoute"></div>
+                            <div class="rm-choices">
+                                <button class="rm-btn rm-go" id="rmMapClose">← BACK TO THE TRAIL</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location Scene: revisiting a stop from the map opens this place
+                         specifically — its real banner art full-bleed, its own history
+                         and any being glimpsed here — instead of the whole multi-stop
+                         archive scrolled to a position. Same data, same rule-18 gate
+                         (entryListHtml), just entered as its own room. -->
+                    <div class="rm-layer rm-story rm-hide" id="rmScene">
+                        <div class="rm-card">
+                            <div class="rm-chapter-tag" id="rmSceneTag"></div>
+                            <div id="rmSceneBody"></div>
+                            <div class="rm-choices">
+                                <button class="rm-btn" id="rmSceneMap">← BACK TO THE MAP</button>
+                                <button class="rm-btn rm-go" id="rmSceneClose">← BACK TO THE TRAIL</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accessibility Hub: High Contrast, Reduce Motion, Large Text, Read
+                         Aloud and Mute All, each one a real toggle that saves immediately
+                         and applies immediately — same overlay family as Find/Archive. -->
+                    <div class="rm-layer rm-story rm-hide" id="rmAcc">
+                        <div class="rm-card">
+                            <div class="rm-chapter-tag">♿ ACCESSIBILITY</div>
+                            <p class="rm-text">Every setting below saves on this device and
+                                applies right away. Tab and Enter/Space work the same as
+                                anywhere else in Trail Mix.</p>
+                            <div class="rm-acc-list">
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccContrast" aria-pressed="false">HIGH CONTRAST</button>
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccMotion" aria-pressed="false">REDUCE MOTION</button>
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccText" aria-pressed="false">LARGE TEXT</button>
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccRead" aria-pressed="false">READ ALOUD</button>
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccMute" aria-pressed="false">MUTE ALL</button>
+                                <button class="rm-icobtn rm-acc-toggle" id="rmAccGps" aria-pressed="false">🛰 GPS — REAL TRAIL</button>
+                            </div>
+                            <p class="rm-text" style="margin-top:.6em">GPS mode opens each chapter when you're
+                                physically near that real stop, on top of walking there in-game. Off by
+                                default — turning it on will ask your browser to share your location.</p>
+                            <div class="rm-choices">
+                                <button class="rm-btn rm-go" id="rmAccClose">← BACK TO THE TRAIL</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- HUD -->
                 <div class="rm-hud">
                     <div class="rm-stat">
                         <svg class="rm-stat-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="#c74a3c" d="M8 14 2 8.5C.5 7 .5 4.5 2.5 3.2 4 2.2 6 2.6 7 4l1 1.2L9 4c1-1.4 3-1.8 4.5-.8 2 1.3 2 3.8.5 5.3z"/></svg>
-                        <span class="rm-stat-lab">ENERGY</span>
+                        <span class="rm-stat-lab">CURIOSITY</span>
                         <span class="rm-pips" id="rmPipEnergy" style="--pip:#c74a3c"></span>
                     </div>
                     <div class="rm-stat">
                         <svg class="rm-stat-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="#9a6ac7" stroke-width="1.6" d="M3 10V8a5 5 0 0 1 10 0v2"/><rect x="1.5" y="9.5" width="3.5" height="5" fill="#9a6ac7"/><rect x="11" y="9.5" width="3.5" height="5" fill="#9a6ac7"/></svg>
-                        <span class="rm-stat-lab">SOUND</span>
+                        <span class="rm-stat-lab">CARE</span>
                         <span class="rm-pips" id="rmPipSound" style="--pip:#9a6ac7"></span>
                     </div>
                     <div class="rm-stat">
                         <svg class="rm-stat-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="#6aa84a" d="M8 14 2 8.5C.5 7 .5 4.5 2.5 3.2 4 2.2 6 2.6 7 4l1 1.2L9 4c1-1.4 3-1.8 4.5-.8 2 1.3 2 3.8.5 5.3z"/></svg>
-                        <span class="rm-stat-lab">CONNECTION</span>
+                        <span class="rm-stat-lab">PRESENCE</span>
                         <span class="rm-pips" id="rmPipConn" style="--pip:#6aa84a"></span>
                     </div>
+                    <div class="rm-stat">
+                        <svg class="rm-stat-ico" viewBox="0 0 16 16" aria-hidden="true"><path fill="#6aa84a" d="M3 5h10l-1 9H4z"/><path fill="none" stroke="#e8dcc0" stroke-width="1.4" d="M6 5V3.6A2 2 0 0 1 10 3.6V5"/></svg>
+                        <span class="rm-stat-lab">BAGGED</span>
+                        <span class="rm-count" id="rmBag">0</span>
+                    </div>
+                    <button class="rm-icobtn" id="rmFindBtn" title="I found something">◎ I FOUND SOMETHING</button>
+                    <span class="rm-icobtn rm-hide" id="rmGpsStatus" style="cursor:default" aria-live="polite"></span>
                     <div class="rm-spacer"></div>
+                    <button class="rm-icobtn" id="rmArchBtn" title="Trail Archive">▤ ARCHIVE <span id="rmArchN">0</span></button>
+                    <button class="rm-icobtn" id="rmMapBtn" title="Trail Map">🗺 MAP</button>
+                    <button class="rm-icobtn" id="rmAccBtn" title="Accessibility settings" aria-pressed="false">♿ ACCESSIBILITY</button>
+                    <button class="rm-icobtn" id="rmFull" title="Fullscreen">⛶ FULLSCREEN</button>
+                    <button class="rm-icobtn" id="rmMusic" aria-pressed="false" title="Trail Mix Theme Song">♫ THEME OFF</button>
                     <button class="rm-icobtn" id="rmSound" aria-pressed="false">♪ SOUND OFF</button>
                     <button class="rm-icobtn" id="rmReset">↺ RESTART</button>
                 </div>
 
                 <div class="rm-cap">
                     <span>FLØYEN TRAIL · BERGEN, NORWAY</span>
+                    <span>TRAIL MIX · MOUNT MEDIA &amp; PREEM CAST</span>
                     <span>WE DON'T CHASE SUMMITS. WE CHASE MOMENTS THAT STAY.</span>
                 </div>
             </div>
 
-            <p>It's a true story, mostly — the mountain, the gear, the two of us. The choices and the meters are the game. The part where it turns out fine no matter what you pick is not a difficulty setting. That part's just how the actual hike went.</p>
+            <h3 id="join">Come and do it properly</h3>
+
+            <p>Everything in the game is real except the pixels. The trail is real, the gear is real, the
+            two people carrying it up are real, the performances along the way are real, and the set at the
+            top is going to happen with or without an audience — though it is significantly better with one.</p>
+
+            <p>You don't need to be fit and you don't need to know anything about music. The pace in the game
+            is the pace on the day: steady, chatty, stopping whenever the view earns it or somebody has
+            something to play. Bring shoes you don't mind getting muddy, a jacket for when the light goes,
+            and something to drink. We'll bring the sound, the gloves and the bags.</p>
+
+            <ul class="rm-facts">
+                <li><strong>The route</strong> — Sandviken sykehus, up past Sandviksbatteriet, the climb
+                    at Sandvikspilen, through the forest to Fløyen, and back down as the light goes.</li>
+                <li><strong>How it runs</strong> — we walk together, the set moves with us, and there are
+                    stops along the route where people perform. No stage, no barrier, no queue.</li>
+                <li><strong>How long</strong> — a few hours up, a set at the top, and a slow descent. No
+                    summit-bagging, no rush.</li>
+                <li><strong>What it costs</strong> — nothing. It's a walk with a soundtrack.</li>
+                <li><strong>What you carry down</strong> — whatever litter you spotted on the way up.</li>
+                <li><strong>Who it's for</strong> — anyone who wants to come. Bring people.</li>
+                <li><strong>What it isn't</strong> — a race, a guided tour, or a gig you stand still at.</li>
+            </ul>
+
+            <h3>Want to perform on the way up?</h3>
+
+            <p>There are slots along the route for anyone who wants one — a track, a poem, a field recording,
+            something you've been making and haven't shown anyone. It doesn't have to be loud and it doesn't
+            have to be finished. Tell me roughly what you'd do and roughly how long, and I'll find you a bend
+            in the trail to do it on.</p>
+
+            <p><strong>Want in?</strong> Mail me at
+            <a href="mailto:ingrid@bergenpride.no?subject=Trail%20Mix%20-%20count%20me%20in">ingrid@bergenpride.no</a>
+            with "count me in" and I'll send the date, the meeting point and the trailhead. Say if you're
+            bringing anyone, so we know how loud to make it — and say if you want a slot.</p>
+
+            <p><em>We don't chase summits. We chase moments that stay. Come and get one.</em></p>
+
         </article>
     </main>
 
@@ -514,8 +1113,134 @@
         var ctx = cv.getContext('2d');
         ctx.imageSmoothingEnabled = false;
 
-        var W = 480, H = 270, GROUND = 222;
+        // The canvas is resized to the panel's true aspect ratio so the scene
+        // always fills it - no letterbox bars, whatever shape the panel is.
+        var H = 270, W = 480, GROUND = 222;
+
+        function fitCanvas() {
+            var box = cv.parentNode.getBoundingClientRect();
+            if (!box.width || !box.height) return;
+            var aspect = box.width / box.height;
+
+            // Match the panel's aspect exactly: the scene fills it edge to edge
+            // with no bars and no stretching, whatever shape the panel takes.
+            var nw, nh;
+            if (aspect >= 1) {
+                nh = 270;
+                nw = Math.max(320, Math.min(960, Math.round(nh * aspect)));
+            } else {
+                nw = 320;
+                nh = Math.max(270, Math.min(620, Math.round(nw / aspect)));
+            }
+
+            // On a tall panel the horizon sits high, so the pair stay clear of
+            // the story card and the trail below them stays full of scenery.
+            var groundFrac = aspect >= 1.35 ? 0.822 : 0.46;
+            var ng = Math.round(nh * groundFrac);
+
+            // Only redo the canvas when the shape actually changed, but always
+            // reposition the tags: on first run the size already matches the
+            // defaults, and an early return here left them unplaced.
+            if (nw !== W || nh !== H || ng !== GROUND || cv.width !== W) {
+                W = nw; H = nh; GROUND = ng;
+                cv.width = W;
+                cv.height = H;
+                ctx.imageSmoothingEnabled = false;
+            }
+            placeTags();
+        }
         var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ---------- accessibility settings ----------
+           Sibling store to the archive's own trailmix.archive.v1 key, same
+           read/write/try-catch shape. reduceMotion above is already checked
+           live at every render call site each frame — setApply() just
+           reassigns that one variable, so none of those call sites change. */
+        var SETTINGS_KEY = 'trailmix.settings.v1';
+        var DEFAULT_SET = {
+            highContrast: false, reduceMotion: reduceMotion,
+            largeText: false, readAloud: false, muted: false, gpsMode: false
+        };
+        var SET = {
+            highContrast: false, reduceMotion: reduceMotion,
+            largeText: false, readAloud: false, muted: false, gpsMode: false
+        };
+        var MODE_PRESETS = {
+            full: DEFAULT_SET,
+            lowmotion: { reduceMotion: true },
+            textfirst: { readAloud: false, reduceMotion: true, muted: true },
+            audiofirst: { readAloud: true },
+            noaudio: { muted: true },
+            highcontrast: { highContrast: true },
+            largetext: { largeText: true },
+            gps: { gpsMode: true }
+        };
+
+        function setRead() {
+            try { return JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}'); }
+            catch (e) { return {}; }
+        }
+        function setWrite() {
+            try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(SET)); } catch (e) { }
+        }
+        Object.assign(SET, setRead());
+        reduceMotion = SET.reduceMotion;
+
+        var PRE_MUTE = null;
+        function applyMute(mute) {
+            var sBtn = el('rmSound');
+            if (mute) {
+                if (PRE_MUTE === null) PRE_MUTE = { theme: typeof themeOn !== 'undefined' && themeOn, sound: AU.on };
+                if (AU.master) AU.master.gain.value = 0;
+                if (typeof themeOn !== 'undefined' && themeOn) themeSet(false);
+                if (AU.on) { AU.on = false; clearInterval(AU.timer); }
+                if (sBtn) { sBtn.textContent = '♪ SOUND OFF'; sBtn.setAttribute('aria-pressed', 'false'); }
+            } else {
+                if (AU.master) AU.master.gain.value = 0.16;
+                if (PRE_MUTE) {
+                    if (PRE_MUTE.theme) themeSet(true);
+                    if (PRE_MUTE.sound) {
+                        AU.on = true; AU.step = 0; AU.timer = setInterval(audioStep, 125);
+                        if (sBtn) { sBtn.textContent = '♪ SOUND ON'; sBtn.setAttribute('aria-pressed', 'true'); }
+                    }
+                }
+                PRE_MUTE = null;
+            }
+        }
+
+        function readCurrentText() {
+            if (!SET.readAloud || !window.speechSynthesis) return;
+            var ids = ['rmStory', 'rmArch', 'rmFind', 'rmMap', 'rmScene', 'rmAcc'], node = null;
+            for (var i = 0; i < ids.length; i++) {
+                var n = el(ids[i]);
+                if (n && n.classList.contains('on')) { node = n; break; }
+            }
+            var text = node && node.innerText;
+            if (!text) return;
+            speechSynthesis.cancel();
+            speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+        }
+
+        function paintAccButtons() {
+            [['rmAccContrast', SET.highContrast], ['rmAccMotion', SET.reduceMotion],
+             ['rmAccText', SET.largeText], ['rmAccRead', SET.readAloud],
+             ['rmAccMute', SET.muted], ['rmAccGps', SET.gpsMode]].forEach(function (pair) {
+                var b = el(pair[0]);
+                if (b) b.setAttribute('aria-pressed', pair[1] ? 'true' : 'false');
+            });
+        }
+
+        function setApply() {
+            var root = document.querySelector('.rm');
+            if (root) {
+                root.classList.toggle('rm-hicontrast', !!SET.highContrast);
+                root.classList.toggle('rm-largetext', !!SET.largeText);
+            }
+            reduceMotion = !!SET.reduceMotion;
+            applyMute(!!SET.muted);
+            paintAccButtons();
+            GEO.sync();
+        }
 
         /* ---------- helpers ---------- */
         function el(id) { return document.getElementById(id); }
@@ -556,59 +1281,76 @@
            Real pixel art, sliced from the Mount Media reference sheet and
            served from assets/sprites/. Frame boxes are foot-aligned, so a
            sprite can be swapped without touching the walk code.            */
-        var SPRW = 76, SPRH = 112;
-        var SHEET = {
-            ingrid: { idle: 4, walk: 6, look: 4 },
-            jack:   { idle: 4, walk: 6, mix: 3 }
+        var SPRW = 128, SPRH = 128;
+        var SPR_FOOT = 120, SPR_HEAD = 20;   // baseline and head row inside the frame
+
+        // Which manifest animation drives each on-screen state. The pair walk
+        // to the RIGHT, so the *_right strips are the travelling frames.
+        var ANIM_MAP = {
+            ingrid: { walk: 'walk_right', idle: 'idle', look: 'looking_out', rest: 'listen_rest' },
+            jack:   { walk: 'walk_right', idle: 'idle', look: 'signal_lead',  rest: 'idle' }
         };
+
         var SPR = { ingrid: {}, jack: {} };
+        var FPS = { ingrid: {}, jack: {} };
 
         function loadSprites(done) {
-            var jobs = [];
-            Object.keys(SHEET).forEach(function (who) {
-                Object.keys(SHEET[who]).forEach(function (anim) {
-                    SPR[who][anim] = [];
-                    for (var i = 0; i < SHEET[who][anim]; i++) {
-                        jobs.push([who, anim, i]);
-                    }
-                });
-            });
+            fetch('assets/sprites-pack/manifest.json')
+                .then(function (r) { return r.json(); })
+                .then(function (man) {
+                    SPRW = man.frame.width;
+                    SPRH = man.frame.height;
+                    SPR_FOOT = man.frame.footY || 120;
 
-            var left = jobs.length, failed = 0;
-            if (!left) { done(false); return; }
+                    var jobs = [];
+                    Object.keys(ANIM_MAP).forEach(function (who) {
+                        var have = (man.characters[who] || {}).animations || {};
+                        Object.keys(ANIM_MAP[who]).forEach(function (state) {
+                            var anim = ANIM_MAP[who][state];
+                            var info = have[anim] || have.idle;
+                            if (!info) return;
+                            SPR[who][state] = [];
+                            FPS[who][state] = info.fps;
+                            for (var i = 0; i < info.frames; i++) {
+                                jobs.push([who, state, i, have[anim] ? anim : 'idle']);
+                            }
+                        });
+                    });
 
-            jobs.forEach(function (j) {
-                var who = j[0], anim = j[1], i = j[2];
-                var img = new Image();
-                img.onload = function () {
-                    SPR[who][anim][i] = img;
-                    if (--left === 0) done(failed > 0);
-                };
-                img.onerror = function () {
-                    failed++;
-                    if (--left === 0) done(true);
-                };
-                img.src = 'assets/sprites/' + who + '/' + anim + '_' +
-                          (i < 10 ? '0' + i : i) + '.png';
-            });
+                    if (!jobs.length) { done(true); return; }
+                    var left = jobs.length, failed = 0;
+                    jobs.forEach(function (j) {
+                        var who = j[0], state = j[1], i = j[2], anim = j[3];
+                        var img = new Image();
+                        img.onload = function () {
+                            SPR[who][state][i] = img;
+                            if (--left === 0) done(failed > 0);
+                        };
+                        img.onerror = function () {
+                            failed++;
+                            if (--left === 0) done(true);
+                        };
+                        img.src = 'assets/sprites-pack/' + who + '/' + anim + '_' +
+                                  (i < 10 ? '0' + i : i) + '.png';
+                    });
+                })
+                .catch(function () { done(true); });
         }
 
-        // Fallback silhouettes, only used if the PNGs cannot be fetched.
+        // Only used if the manifest or the PNGs cannot be fetched at all.
         function stubSprites() {
-            Object.keys(SHEET).forEach(function (who) {
-                Object.keys(SHEET[who]).forEach(function (anim) {
-                    for (var i = 0; i < SHEET[who][anim]; i++) {
-                        if (SPR[who][anim][i]) continue;
-                        var m = make(SPRW, SPRH), g = m.g;
-                        var body = who === 'jack' ? '#d9a02c' : '#22222a';
-                        g.fillStyle = body;
-                        g.fillRect(28, 34, 20, 40);
-                        g.fillStyle = who === 'jack' ? '#d9a077' : '#e0a880';
-                        g.fillRect(30, 16, 16, 18);
-                        g.fillRect(30, 74, 6, 30);
-                        g.fillRect(40, 74, 6, 30);
-                        SPR[who][anim][i] = m.c;
-                    }
+            Object.keys(ANIM_MAP).forEach(function (who) {
+                Object.keys(ANIM_MAP[who]).forEach(function (state) {
+                    if (SPR[who][state] && SPR[who][state][0]) return;
+                    var m = make(SPRW, SPRH), g = m.g;
+                    g.fillStyle = who === 'jack' ? '#d9a02c' : '#22222a';
+                    g.fillRect(52, 46, 24, 44);
+                    g.fillStyle = who === 'jack' ? '#d9a077' : '#e0a880';
+                    g.fillRect(54, 26, 20, 20);
+                    g.fillRect(54, 90, 7, 30);
+                    g.fillRect(67, 90, 7, 30);
+                    SPR[who][state] = [m.c];
+                    FPS[who][state] = 4;
                 });
             });
         }
@@ -680,10 +1422,10 @@
         /* ---------- chapters ---------- */
         var CH = [
             {
-                n: 'CHAPTER ONE', t: 'The Call',
+                n: 'CHAPTER ONE', t: 'Sandviken sykehus',
                 sky: ['#38537d', '#7b8fb2', '#c0a898', '#e8bf8c'],
                 sun: '#ffe6b8', sunY: 168, fog: 0.06, stars: 0.08, city: 0.5, dist: 520,
-                tag: 'CHAPTER ONE · THE CALL · 40M',
+                tag: 'CHAPTER ONE · SANDVIKEN SYKEHUS · WHAT WAS HERE · 20M',
                 text: "The car park empties out onto gravel, then dirt, then nothing but trail. Jack has the controller out of the van before the doors are properly shut, testing a rhythm under his breath with no source for it yet. Ingrid swings the speaker onto her back and adjusts it until it stops arguing with her spine.",
                 choices: [
                     { label: '▸ Start the first track here, at the bottom', e: -5, s: 18, c: 10,
@@ -693,10 +1435,23 @@
                 ]
             },
             {
-                n: 'CHAPTER TWO', t: 'Into the Woods',
+                n: 'CHAPTER TWO', t: 'Munkebotn',
+                sky: ['#3c5f88', '#7f96b8', '#ba9f8f', '#e0ba86'],
+                sun: '#ffe0a8', sunY: 162, fog: 0.09, stars: 0.05, city: 0.35, dist: 480,
+                tag: 'CHAPTER TWO · MUNKEBOTN · THE OLD VALLEY · 45M',
+                text: "The road narrows into a valley that used to be the edge of everything. A stream ran here once — Gunnhildarå, the old boundary — and for centuries this was where Bergen stopped and the rest of the world began. None of that is signposted. It just sits under the path, waiting to be the kind of thing you notice or don't.",
+                choices: [
+                    { label: '▸ Follow the old stream line, not the trail', e: 8, s: 5, c: 18,
+                      out: "They leave the gravel for a stretch and follow where the water used to run instead. Nothing is marked. It doesn't need to be — the valley remembers its own shape even where the map has stopped drawing it." },
+                    { label: '▸ Keep to the path. Let the valley stay quiet.', e: 5, s: -3, c: 10,
+                      out: "They keep the pace and let the valley pass the way most people let it pass — as scenery, not history. Whatever else is still here waits for someone slower." }
+                ]
+            },
+            {
+                n: 'CHAPTER THREE', t: 'Sandviksbatteriet',
                 sky: ['#3f74a0', '#7ba3c6', '#accbd0', '#d6d3ae'],
                 sun: '#fff4d0', sunY: 144, fog: 0.14, stars: 0, city: 0.25, dist: 560,
-                tag: 'CHAPTER TWO · INTO THE WOODS · 120M',
+                tag: 'CHAPTER THREE · SANDVIKSBATTERIET · THE CITY RECEDES · 90M',
                 text: "The city noise thins out and then stops mattering. Trees close over the path. Somewhere behind them Bergen is still doing whatever Bergen does on a Saturday, and it has stopped being relevant. The walking has found its own tempo and neither of them set it.",
                 choices: [
                     { label: '▸ Let the forest set the tempo', e: 10, s: 8, c: 15,
@@ -706,10 +1461,10 @@
                 ]
             },
             {
-                n: 'CHAPTER THREE', t: 'The Climb',
+                n: 'CHAPTER FOUR', t: 'Sandvikspilen',
                 sky: ['#2e2a4a', '#6b4a63', '#b06a52', '#d99a5e'],
                 sun: '#f2b45e', sunY: 132, fog: 0.18, stars: 0.1, city: 0.2, dist: 600,
-                tag: 'CHAPTER THREE · THE CLIMB · 220M',
+                tag: 'CHAPTER FOUR · SANDVIKSPILEN · WHAT LIVES HERE · 230M',
                 text: "The trail folds back on itself and stops pretending to be friendly. Conversation turns into breathing. Jack is still in front, setting a pace that is really a dare, and the speaker on Ingrid's back has started to feel like it is negotiating with gravity on its own terms.",
                 choices: [
                     { label: '▸ Take the speaker off her back for a stretch', e: 18, s: -5, c: 20,
@@ -719,10 +1474,10 @@
                 ]
             },
             {
-                n: 'CHAPTER FOUR', t: 'The View',
+                n: 'CHAPTER FIVE', t: 'Into the Forest',
                 sky: ['#241a3a', '#7a2f4a', '#d15a34', '#f09048'],
                 sun: '#ffd27a', sunY: 144, fog: 0.1, stars: 0.35, city: 1, dist: 560,
-                tag: 'CHAPTER FOUR · THE VIEW · 320M',
+                tag: 'CHAPTER FIVE · THE FOREST · WHAT WE IMAGINE · 300M',
                 text: "The trees give up first. The path opens onto bare rock and suddenly there is a horizon where the branches were — the fjord going gold, the city laid out below in a grid of small lights, seven mountains holding all of it. It is the kind of view that makes people stop talking. Jack does not stop talking. He is already describing what the drop is going to sound like from up here.",
                 choices: [
                     { label: '▸ Play for the landscape', e: -8, s: 22, c: 12,
@@ -732,10 +1487,10 @@
                 ]
             },
             {
-                n: 'CHAPTER FIVE', t: 'The Flow',
+                n: 'CHAPTER SIX', t: 'Fløyen',
                 sky: ['#150f2a', '#3a1f45', '#7a2f45', '#b04a3a'],
                 sun: '#e8703a', sunY: 174, fog: 0.14, stars: 0.6, city: 1, dist: 580, night: true,
-                tag: 'CHAPTER FIVE · THE FLOW · 380M',
+                tag: 'CHAPTER SIX · FLØYEN · EVERYONE ARRIVES DIFFERENTLY · 400M',
                 text: "Flat ground at the top, roughly the size of a dance floor, which nobody planned and everybody accepts. Jack unclips the controller before his pack is off. Ingrid sets the speaker on a rock, checks the charge, and counts him in. Whatever this is, it is happening now.",
                 choices: [
                     { label: '▸ Go all in. Full set, full volume.', e: -15, s: 25, c: 15,
@@ -745,10 +1500,10 @@
                 ]
             },
             {
-                n: 'CHAPTER SIX', t: "What's Next",
+                n: 'CHAPTER SEVEN', t: 'Sunset Return',
                 sky: ['#0a0818', '#141230', '#241f42', '#3a2f50'],
                 sun: '#8a9ac0', sunY: 195, fog: 0.2, stars: 1, city: 1, dist: 620, night: true,
-                tag: 'CHAPTER SIX · WHAT\'S NEXT · DESCENT',
+                tag: 'CHAPTER SEVEN · SUNSET RETURN · DESCENT',
                 text: "The light goes and the trail changes character completely. Same path, different mountain. They walk down with one head-torch between them and the speaker running on whatever percentage is left, and the descent takes longer than the climb because neither of them is trying to be anywhere.",
                 choices: [
                     { label: '▸ Run the last track all the way down', e: -8, s: 18, c: 18,
@@ -763,7 +1518,9 @@
         var S = {
             phase: 'load', chapter: 0, dist: 0, walking: false,
             energy: 60, sound: 40, conn: 50,
-            t: 0, cam: 0, fired: false, sparks: [], notes: []
+            t: 0, cam: 0, fired: false, sparks: [], notes: [],
+            items: [], picked: 0, litter: 0, pops: [], nextItem: 0, still: 0,
+            beatCount: 0, combo: 0, comboAt: 0, best: 0, shake: 0
         };
 
         /* ---------- audio ---------- */
@@ -816,6 +1573,7 @@
             var btn = el('rmSound');
             if (!AU.on) {
                 if (!audioInit()) { btn.textContent = '♪ NO AUDIO'; btn.disabled = true; return; }
+                if (SET.muted) AU.master.gain.value = 0;
                 if (AU.ctxA.state === 'suspended') AU.ctxA.resume();
                 AU.on = true;
                 AU.step = 0;
@@ -828,6 +1586,603 @@
                 btn.textContent = '♪ SOUND OFF';
                 btn.setAttribute('aria-pressed', 'false');
             }
+        }
+
+        /* ---------- things on the trail ----------
+           Litter to bag, and small things worth stopping for. Tap one, or
+           press E / Space when the pair are alongside it.                */
+        var ITEMS = [
+            { id: 'bottle', kind: 'litter', label: 'plastic bottle' },
+            { id: 'can',    kind: 'litter', label: 'crushed can' },
+            { id: 'wrap',   kind: 'litter', label: 'crisp packet' },
+            { id: 'cup',    kind: 'litter', label: 'coffee cup' },
+            { id: 'flower', kind: 'find',   label: 'late harebell' },
+            { id: 'stone',  kind: 'find',   label: 'a good flat stone' },
+            { id: 'berry',  kind: 'find',   label: 'blueberries, still going' }
+        ];
+
+        /* ---------- folklore beings ----------
+           Huldra's rule in data/folklore.json is that she is only ever glimpsed
+           sideways, encountered by noticing rather than searching, and never a
+           threat. So a being is not a pickup and cannot be chased: it stands back
+           in the treeline, and it stays a little longer if you STOP walking. Keep
+           marching and it is gone before you reach it.
+
+           Where a being may stand is decided by data, not here. route.json carries
+           folklore_permitted per stop and folklore.json carries cast_at, so the
+           hospital and Fløibanen can never host one. */
+        var BEINGS = {
+            cast: {},      // chapter index -> being record
+            live: [],      // beings currently in the world
+            seen: {},
+            art: {},
+
+            metAt: function (chapter) {
+                var b = this.cast[chapter];
+                return b && this.seen[b.id] ? b : null;
+            },
+
+            load: function () {
+                var self = this;
+                fetch('data/folklore.json').then(function (r) { return r.json(); })
+                    .then(function (f) {
+                        fetch('data/pack-v2.json').then(function (r) { return r.json(); })
+                            .then(function (p) {
+                                p.folklore.forEach(function (a) {
+                                    var im = new Image();
+                                    im.src = a.asset;
+                                    self.art[a.id] = im;
+                                });
+                            }).catch(function () { });
+                        f.beings.forEach(function (b) {
+                            var i = STOP_IDS.indexOf(b.cast_at);
+                            if (i >= 0) self.cast[i] = b;
+                        });
+                        self.all = f.beings;
+                    }).catch(function () { });
+            },
+
+            flash: 0,
+
+            seed: function (chapter) {
+                this.live = [];
+                var b = this.cast[chapter];
+                if (!b) return;
+                // Two chances to notice per chapter, one to each side of the
+                // path so neither ever stands where the party actually walks
+                // (Jack ~W*0.40, Ingrid ~W*0.60). Both sit well clear of the
+                // chapter's own end — the second used to land at 0.72, close
+                // enough to the story-card trigger that noticing her (which
+                // needs the player to stop and hold still for the alpha to
+                // rise) felt rushed, sometimes cut off before it landed.
+                var len = CH[chapter].dist;
+                this.live.push(this.make(b, len * 0.26, -1));
+                this.live.push(this.make(b, len * 0.55, 1));
+            },
+
+            make: function (b, at, side) {
+                return {
+                    being: b, world: at, a: 0, phase: 'wait', side: side,
+                    depth: 0.5 + Math.random() * 0.12,
+                    off: (Math.random() - 0.5) * 20,
+                    // A per-instance drift, not a fixed cutout — she should feel
+                    // like she is standing among the trees, not pasted over them.
+                    sway: Math.random() * Math.PI * 2,
+                    swaySpeed: 0.3 + Math.random() * 0.22
+                };
+            },
+
+            update: function (dt) {
+                var self = this;
+                this.flash = Math.max(0, this.flash - dt * 0.85);
+                this.live.forEach(function (g) {
+                    var near = Math.abs(g.world - S.dist) < 120;
+                    if (!near) { g.a = Math.max(0, g.a - dt * 0.8); return; }
+                    if (g.phase === 'wait') { g.phase = 'here'; }
+                    if (g.phase === 'here') {
+                        // stillness holds her; walking on lets her go
+                        var pull = S.walking ? -0.32 : 0.75;
+                        g.a = Math.max(0, Math.min(0.92, g.a + pull * dt));
+                        if (!S.walking && g.a > 0.5 && !self.seen[g.being.id]) {
+                            self.seen[g.being.id] = true;
+                            self.flash = 1;
+                            S.conn = clamp(S.conn + 3, 0, 100);   // Presence
+                            syncHud();
+                            archNoteBeing(g.being);
+                            S.pops.push({
+                                x: self.screenX(g), y: GROUND - 40, a: 1, big: true,
+                                text: (g.being.display_name_en || g.being.id).toUpperCase()
+                            });
+                            // A soft chime, not a jingle — the moment gets a sound as
+                            // well as a sight, same restraint as everywhere else here.
+                            if (AU.ctxA) {
+                                blip('lead', 660, 0.5, 0.1, 'sine');
+                                blip('lead', 990, 0.7, 0.06, 'sine');
+                            }
+                        }
+                    }
+                });
+            },
+
+            screenX: function (g) {
+                // The sway grows in with her presence: barely-sensed is still,
+                // fully noticed drifts gently, like standing among moving trees.
+                var sway = reduceMotion ? 0 :
+                    Math.sin(S.t * g.swaySpeed + g.sway) * 5 * g.a;
+                // Off to one side of the path, in the trees — not where Jack
+                // (~W*0.40) or Ingrid (~W*0.60) actually walk. She was previously
+                // anchored at W*0.62, which put her almost on top of Ingrid.
+                var anchor = g.side < 0 ? W * 0.16 : W * 0.87;
+                return (g.world - S.dist) * g.depth + anchor + g.off + sway;
+            },
+
+            draw: function () {
+                var self = this;
+                this.live.forEach(function (g) {
+                    // A wide, faint pre-glow before she is visible at all — the
+                    // forest noticing before the player does. Never a shape,
+                    // never something to walk toward.
+                    if (g.phase === 'here' && g.a > 0.02 && g.a < 0.5) {
+                        var hx = Math.round(self.screenX(g));
+                        if (hx > -120 && hx < W + 120) {
+                            ctx.save();
+                            ctx.globalCompositeOperation = 'lighter';
+                            ctx.globalAlpha = (0.5 - g.a) * 0.1 * (0.5 + BEAT.pulse * 0.5);
+                            ctx.fillStyle = '#c9a8e0';
+                            var hh = Math.round((GROUND - 18) * 0.30 * g.depth + 34);
+                            ctx.fillRect(hx - hh * 0.5, GROUND - hh - 6, hh, hh + 20);
+                            ctx.restore();
+                        }
+                    }
+                    if (g.a <= 0.01) return;
+                    var x = Math.round(self.screenX(g));
+                    if (x < -60 || x > W + 60) return;
+                    var h = Math.round((GROUND - 18) * 0.30 * g.depth + 34);
+                    var im = self.art[g.being.id];
+                    var y = Math.round(GROUND - h + 6);
+                    ctx.save();
+                    ctx.globalAlpha = g.a * 0.9;
+                    if (im && im.complete && im.naturalWidth) {
+                        var w = Math.round(h * (im.naturalWidth / im.naturalHeight));
+                        ctx.drawImage(im, Math.round(x - w / 2), y, w, h);
+                    } else {
+                        // silhouette until the portrait loads - never a blank
+                        ctx.fillStyle = '#0b1410';
+                        ctx.fillRect(Math.round(x - h * 0.14), y, Math.round(h * 0.28), h);
+                    }
+                    // she is lit from behind, not by us — the glow warms as she
+                    // is more fully noticed, rather than snapping to full strength.
+                    ctx.globalCompositeOperation = 'lighter';
+                    ctx.globalAlpha = g.a * (0.1 + g.a * 0.12) * (0.6 + BEAT.pulse * 0.6);
+                    ctx.fillStyle = '#9a6ac7';
+                    ctx.fillRect(Math.round(x - h * 0.22), y - 4,
+                        Math.round(h * 0.44), h + 8);
+                    ctx.restore();
+                });
+            }
+        };
+
+        // Ambient background life — tourists and hikers passing at a distance.
+        // Pure decoration: no interaction, nothing to find, nothing written to
+        // the archive. Density per stop mirrors data/route.json's own
+        // npc_density field. Sandviken sykehus stays empty on purpose — that
+        // stop is folklore_permitted:false for the same asylum-horror-trope
+        // reason, and cheerful tourists would work against the MEMORY theme
+        // the same way a cast being would. The forest is also left empty even
+        // though its density is "sparse", so a passer-by is never mistaken
+        // for Huldra, who uses the same off-to-the-side treatment there.
+        // Each list is ordered by how many figures should populate that
+        // stretch — sparse stops get one, "hikers" gets two, "busy" (Fløyen,
+        // Fløibanen) gets three staggered across the walk, so presence
+        // actually reads as concentrated at the tourist hub instead of one
+        // random figure appearing with equal odds everywhere.
+        var STOP_NPC = {
+            'sandviken-sykehus': [],
+            'munkebotn': ['hikers-pair'],
+            'sandviksbatteriet': ['hikers-pair'],
+            'sandvikspilen': ['hikers-group', 'hikers-pair'],
+            'forest-transition': [],
+            'floyen': ['hikers-family', 'hikers-group', 'hikers-pair'],
+            'floibanen': ['hikers-family', 'hikers-group']
+        };
+
+        var AMBIENT = {
+            live: [], art: {},
+            load: function () {
+                var self = this;
+                ['hikers-pair', 'hikers-group', 'hikers-family'].forEach(function (id) {
+                    var im = new Image();
+                    im.src = 'assets/npcs/' + id + '.png';
+                    self.art[id] = im;
+                });
+            },
+            seed: function (chapter) {
+                this.live = [];
+                var npcs = STOP_NPC[STOP_IDS[chapter]];
+                if (!npcs || !npcs.length) return;
+                var len = CH[chapter].dist;
+                var self = this;
+                npcs.forEach(function (npc, i) {
+                    // Slot each figure into its own share of the walk (with
+                    // a little jitter) so a busy stop's three figures spread
+                    // out along the whole stretch instead of clumping.
+                    var slot = (i + 0.5) / npcs.length;
+                    self.live.push({
+                        npc: npc, a: 0,
+                        world: len * (0.12 + slot * 0.72 + (Math.random() - 0.5) * 0.08),
+                        depth: 0.3 + Math.random() * 0.1,
+                        side: i % 2 === 0 ? -1 : 1
+                    });
+                });
+            },
+            update: function (dt) {
+                this.live.forEach(function (g) {
+                    var near = Math.abs(g.world - S.dist) < 220;
+                    // Ambient life never reaches full strength — it stays
+                    // clearly background, whether or not the player stops.
+                    g.a = clamp(g.a + (near ? 1 : -1) * dt * 0.6, 0, 0.5);
+                });
+            },
+            screenX: function (g) {
+                var anchor = g.side < 0 ? W * 0.08 : W * 0.94;
+                return (g.world - S.dist) * g.depth + anchor;
+            },
+            draw: function () {
+                var self = this;
+                this.live.forEach(function (g) {
+                    if (g.a <= 0.01) return;
+                    var im = self.art[g.npc];
+                    if (!im || !im.complete || !im.naturalWidth) return;
+                    var x = Math.round(self.screenX(g));
+                    var h = Math.round((GROUND - 18) * 0.24 * g.depth + 22);
+                    var w = Math.round(h * (im.naturalWidth / im.naturalHeight));
+                    if (x + w / 2 < -40 || x - w / 2 > W + 40) return;
+                    var y = Math.round(GROUND - h + 4);
+                    ctx.save();
+                    ctx.globalAlpha = g.a;
+                    ctx.drawImage(im, Math.round(x - w / 2), y, w, h);
+                    ctx.restore();
+                });
+            }
+        };
+
+        function archNoteBeing(b) {
+            var a = archRead();
+            a.beings = a.beings || [];
+            if (a.beings.indexOf(b.id) < 0) a.beings.push(b.id);
+            archWrite(a);
+        }
+
+        // A find is the player's own note, kind:'observed' unless they chose
+        // 'unknown' — in which case it is still logged, still counted, and shown
+        // in the archive exactly as UNKNOWN. Not knowing is also information.
+        function archAddFind(kind) {
+            var a = archRead();
+            a.finds = a.finds || [];
+            a.finds.push({
+                kind: kind, unknown: kind === 'unknown',
+                chapter: S.chapter, at: new Date().toISOString()
+            });
+            archWrite(a);
+            archCount();
+            S.conn = clamp(S.conn + (kind === 'unknown' ? 3 : 2), 0, 100); // Presence
+            syncHud();
+            S.pops.push({
+                x: W * 0.5, y: GROUND - 30, a: 1, big: true,
+                text: kind === 'unknown' ? 'UNKNOWN +1' : (kind.toUpperCase() + ' OBSERVED')
+            });
+        }
+
+        function openFind() {
+            // The HUD sits outside the stage, so its buttons stay reachable
+            // even while an overlay is open — a real device can end up with
+            // Find and Archive both shown at once, both eating every tap.
+            // Close whatever else is open first.
+            hide('rmArch'); hide('rmAcc'); hide('rmMap'); hide('rmScene');
+            var wasWalking = S.walking;
+            setWalk(false);
+            show('rmFind');
+            el('rmFind').dataset.resume = wasWalking ? '1' : '';
+            readCurrentText();
+        }
+
+        function closeFind(kind) {
+            hide('rmFind');
+            if (kind) archAddFind(kind);
+        }
+
+        function storyPortrait(being) {
+            var host = el('rmStoryTxt');
+            var old = host.parentNode.querySelector('.rm-portrait');
+            if (old) old.remove();
+            var src = being && BEINGS.art[being.id] && BEINGS.art[being.id].src;
+            if (!src) return;
+            var im = document.createElement('img');
+            im.className = 'rm-portrait';
+            im.src = src;
+            im.alt = (being.display_name_en || being.id) + ', artistic interpretation';
+            host.parentNode.insertBefore(im, host);
+        }
+
+        function seedItems() {
+            S.items = [];
+            S.nextItem = 40 + Math.random() * 50;
+            BEINGS.seed(S.chapter);
+            AMBIENT.seed(S.chapter);
+        }
+
+        function spawnItem() {
+            var litterBias = Math.random() < 0.62;
+            var pool = ITEMS.filter(function (i) {
+                return litterBias ? i.kind === 'litter' : i.kind === 'find';
+            });
+            var def = pool[Math.floor(Math.random() * pool.length)];
+            S.items.push({
+                def: def,
+                world: S.dist + W * 0.46 + Math.random() * 40,
+                dy: Math.random() * 10,
+                taken: 0
+            });
+            S.nextItem = S.dist + 95 + Math.random() * 95;
+        }
+
+        function itemScreenX(it) { return it.world - S.dist + W * 0.60; }
+
+        function drawItem(it) {
+            var x = Math.round(itemScreenX(it));
+            var y = Math.round(GROUND + 6 + it.dy);
+            var g = ctx;
+
+            if (it.taken) {                      // shrink and fade on pickup
+                var k = 1 - it.taken;
+                g.globalAlpha = k;
+                y -= (1 - k) * 22;
+            }
+
+            switch (it.def.id) {
+                case 'bottle':
+                    g.fillStyle = '#9fd8e0'; g.fillRect(x, y - 9, 4, 9);
+                    g.fillStyle = '#cfeef4'; g.fillRect(x, y - 9, 1, 9);
+                    g.fillStyle = '#6aa0aa'; g.fillRect(x + 1, y - 11, 2, 2);
+                    break;
+                case 'can':
+                    g.fillStyle = '#b8483a'; g.fillRect(x, y - 6, 7, 6);
+                    g.fillStyle = '#d9d4c8'; g.fillRect(x, y - 6, 7, 1);
+                    g.fillStyle = '#8a3128'; g.fillRect(x + 2, y - 4, 3, 2);
+                    break;
+                case 'wrap':
+                    g.fillStyle = '#d8c24a'; g.fillRect(x, y - 4, 8, 4);
+                    g.fillStyle = '#f0e08a'; g.fillRect(x + 1, y - 3, 3, 1);
+                    break;
+                case 'cup':
+                    g.fillStyle = '#e6e0d4'; g.fillRect(x, y - 8, 6, 8);
+                    g.fillStyle = '#b8433a'; g.fillRect(x, y - 8, 6, 2);
+                    break;
+                case 'flower':
+                    g.fillStyle = '#3f6b3a'; g.fillRect(x + 2, y - 7, 1, 7);
+                    g.fillStyle = '#a97fd8'; g.fillRect(x + 1, y - 10, 3, 3);
+                    g.fillStyle = '#d3b6f0'; g.fillRect(x + 2, y - 9, 1, 1);
+                    break;
+                case 'stone':
+                    g.fillStyle = '#7d7a72'; g.fillRect(x, y - 4, 9, 4);
+                    g.fillStyle = '#9b978c'; g.fillRect(x + 1, y - 5, 6, 2);
+                    g.fillStyle = '#5c5a54'; g.fillRect(x, y - 1, 9, 1);
+                    break;
+                case 'berry':
+                    g.fillStyle = '#2f5230'; g.fillRect(x, y - 5, 7, 5);
+                    g.fillStyle = '#3b4fa0'; g.fillRect(x + 1, y - 6, 2, 2);
+                    g.fillStyle = '#4a63c8'; g.fillRect(x + 4, y - 5, 2, 2);
+                    break;
+            }
+            g.globalAlpha = 1;
+
+            // a soft marker so it reads as interactive
+            if (!it.taken && !reduceMotion) {
+                // the marker breathes on the beat, so pickups read as rhythmic
+                var b = 0.3 + BEAT.pulse * 0.7;
+                g.globalAlpha = b;
+                g.fillStyle = it.def.kind === 'litter' ? '#e8a13c' : '#7fd8a0';
+                var r = 2 + Math.round(BEAT.pulse * 2);
+                g.fillRect(x + 1 - (r >> 1), y - 16 - (r >> 1), r, r);
+                g.globalAlpha = b * 0.35;
+                g.fillRect(x - 2, y - 3, 8, 1);
+                g.globalAlpha = 1;
+            }
+        }
+
+        function drawItems() {
+            S.items.forEach(function (it) {
+                var x = itemScreenX(it);
+                if (x < -30 || x > W + 30) return;
+                drawItem(it);
+            });
+        }
+
+        function collect(it) {
+            if (it.taken) return;
+            it.taken = 0.001;
+            S.picked++;
+            if (it.def.kind === 'litter') {
+                S.litter++;
+                S.sound = clamp(S.sound + 5, 0, 100);       // Care
+                S.conn = clamp(S.conn + 1, 0, 100);
+            } else {
+                S.energy = clamp(S.energy + 4, 0, 100);     // Curiosity
+                S.conn = clamp(S.conn + 2, 0, 100);
+            }
+            // on-beat pickups chain into a combo
+            var onBeat = (S.t - BEAT.last) < 0.28 || BEAT.pulse > 0.45;
+            if (S.t - S.comboAt < 2.6) S.combo++; else S.combo = 1;
+            S.comboAt = S.t;
+            if (onBeat) S.combo++;
+            if (S.combo > S.best) S.best = S.combo;
+            S.shake = onBeat ? 3 : 1.6;
+
+            syncHud();
+            S.pops.push({
+                x: itemScreenX(it), y: GROUND - 4, a: 1, big: onBeat,
+                text: (it.def.kind === 'litter' ? '+ bagged' : '+ noticed') +
+                      (S.combo > 1 ? '  x' + S.combo : '') + (onBeat ? '  ON BEAT' : '')
+            });
+            for (var k = 0; k < (onBeat ? 12 : 6); k++) {
+                S.sparks.push({
+                    x: itemScreenX(it) + 2, y: GROUND - 2,
+                    vx: (Math.random() - 0.5) * 60, vy: -20 - Math.random() * 60,
+                    a: 1, c: it.def.kind === 'litter' ? '#e8c05c' : '#8fe8b0'
+                });
+            }
+        }
+
+        // nearest un-taken item within reach of the pair
+        function reachable() {
+            var best = null, bestD = 1e9;
+            for (var i = 0; i < S.items.length; i++) {
+                var it = S.items[i];
+                if (it.taken) continue;
+                var d = Math.abs(itemScreenX(it) - W * 0.60);
+                if (d < 70 && d < bestD) { bestD = d; best = it; }
+            }
+            return best;
+        }
+
+        function tryCollectAt(px, py) {
+            var hit = null;
+            S.items.forEach(function (it) {
+                if (it.taken) return;
+                var x = itemScreenX(it);
+                if (Math.abs(px - x) < 16 && Math.abs(py - (GROUND + it.dy)) < 26) hit = it;
+            });
+            if (hit) { collect(hit); return true; }
+            return false;
+        }
+
+        function updateItems(dt) {
+            S.items.forEach(function (it) {
+                if (it.taken) it.taken = Math.min(1, it.taken + dt * 2.2);
+            });
+            S.items = S.items.filter(function (it) {
+                return it.taken < 1 && itemScreenX(it) > -80;
+            });
+            S.pops.forEach(function (p) { p.y -= dt * 26; p.a -= dt * 0.9; });
+            S.pops = S.pops.filter(function (p) { return p.a > 0; });
+
+            S.sparks.forEach(function (k) {
+                k.x += k.vx * dt; k.y += k.vy * dt; k.vy += 150 * dt; k.a -= dt * 1.5;
+            });
+            S.sparks = S.sparks.filter(function (k) { return k.a > 0; });
+            S.shake = Math.max(0, S.shake - dt * 9);
+            if (S.t - S.comboAt > 2.6) S.combo = 0;
+        }
+
+        function drawSparks() {
+            S.sparks.forEach(function (k) {
+                ctx.globalAlpha = clamp(k.a, 0, 1);
+                ctx.fillStyle = k.c;
+                ctx.fillRect(k.x | 0, k.y | 0, 2, 2);
+            });
+            ctx.globalAlpha = 1;
+        }
+
+        function drawCombo() {
+            if (S.combo < 2) return;
+            var scale = 1 + BEAT.pulse * 0.25;
+            ctx.save();
+            ctx.translate(W * 0.5, H * 0.30);
+            ctx.scale(scale, scale);
+            ctx.font = 'bold 13px ui-monospace, monospace';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#0d0a12';
+            ctx.fillText('x' + S.combo, 1, 1);
+            ctx.fillStyle = S.combo >= 6 ? '#f3d6ff' : '#d4a758';
+            ctx.fillText('x' + S.combo, 0, 0);
+            ctx.restore();
+            ctx.textAlign = 'left';
+        }
+
+        function drawPops() {
+            if (!S.pops.length) return;
+            ctx.font = '9px ui-monospace, monospace';
+            ctx.textAlign = 'center';
+            S.pops.forEach(function (p) {
+                ctx.globalAlpha = clamp(p.a, 0, 1);
+                ctx.fillStyle = '#0d0a12';
+                ctx.fillText(p.text, (p.x + 1) | 0, (p.y + 1) | 0);
+                ctx.fillStyle = p.big ? '#f3d6ff' : '#e8dcc0';
+                ctx.fillText(p.text, p.x | 0, p.y | 0);
+            });
+            ctx.globalAlpha = 1;
+            ctx.textAlign = 'left';
+        }
+
+        /* ---------- beat tracking ----------
+           The theme drives the game: bass energy is watched for onsets, and
+           everything worth picking up is placed and pulsed on those beats. */
+        var BEAT = {
+            ctx: null, analyser: null, data: null,
+            level: 0, avg: 0, pulse: 0, last: 0, interval: 0.5, at: 0, ready: false
+        };
+
+        function beatInit(mediaEl) {
+            if (BEAT.ready || !mediaEl) return;
+            try {
+                var AC = window.AudioContext || window.webkitAudioContext;
+                if (!AC) return;
+                BEAT.ctx = AU.ctxA || new AC();
+                var src = BEAT.ctx.createMediaElementSource(mediaEl);
+                BEAT.analyser = BEAT.ctx.createAnalyser();
+                BEAT.analyser.fftSize = 1024;
+                BEAT.analyser.smoothingTimeConstant = 0.72;
+                BEAT.data = new Uint8Array(BEAT.analyser.frequencyBinCount);
+                // through the analyser and on to the speakers, or it goes silent
+                src.connect(BEAT.analyser);
+                BEAT.analyser.connect(BEAT.ctx.destination);
+                BEAT.ready = true;
+            } catch (e) { BEAT.ready = false; }
+        }
+
+        function beatUpdate(dt) {
+            BEAT.pulse = Math.max(0, BEAT.pulse - dt * 3.4);
+
+            // Watchdog: if nothing has registered as a beat for a while - muted
+            // theme, silent passage, analyser unavailable - keep a pulse going
+            // so the trail never runs dry.
+            BEAT.since = (BEAT.since || 0) + dt;
+            if (BEAT.since > 1.1) {
+                BEAT.since = 0;
+                BEAT.pulse = 1;
+                onBeat();
+                return;
+            }
+
+            if (!BEAT.ready || !themeOn) {
+                // no analyser (or muted): fall back to a steady 120bpm pulse so
+                // the rhythm of the placement survives with the sound off
+                BEAT.at += dt;
+                if (BEAT.at >= 0.5) { BEAT.at = 0; BEAT.pulse = 1; BEAT.since = 0; onBeat(); }
+                return;
+            }
+
+            BEAT.analyser.getByteFrequencyData(BEAT.data);
+            var sum = 0, n = 14;                       // low bins ~ kick + bass
+            for (var i = 1; i <= n; i++) sum += BEAT.data[i];
+            BEAT.level = sum / n / 255;
+            BEAT.avg = BEAT.avg * 0.92 + BEAT.level * 0.08;
+
+            var since = S.t - BEAT.last;
+            if (BEAT.level > BEAT.avg * 1.32 && BEAT.level > 0.16 && since > 0.24) {
+                if (BEAT.last) BEAT.interval = BEAT.interval * 0.8 + Math.min(since, 1.2) * 0.2;
+                BEAT.last = S.t;
+                BEAT.pulse = 1;
+                BEAT.since = 0;
+                onBeat();
+            }
+        }
+
+        // one beat = one thing worth noticing, spaced so they arrive in time
+        function onBeat() {
+            if (S.phase !== 'walk') return;
+            S.beatCount++;
+            if (S.items.length < 5) spawnItem();
         }
 
         /* ---------- rendering ---------- */
@@ -857,7 +2212,7 @@
             // sun / moon
             ctx.fillStyle = ch.sun;
             ctx.globalAlpha = 0.9;
-            var sx = 336, sy = ch.sunY;
+            var sx = Math.round(W * 0.70), sy = ch.sunY;
             ctx.fillRect(sx - 9, sy - 3, 19, 7);
             ctx.fillRect(sx - 6, sy - 7, 13, 16);
             ctx.fillRect(sx - 3, sy - 9, 7, 20);
@@ -887,7 +2242,7 @@
                 var w = 18 - i;
                 var yy = y + 2 + i * 2;
                 var wob = reduceMotion ? 0 : Math.round(Math.sin(S.t * 1.4 + i) * 3);
-                ctx.fillRect(336 - w / 2 + wob, yy, w, 2);
+                ctx.fillRect(Math.round(W * 0.70) - w / 2 + wob, yy, w, 2);
             }
             ctx.globalAlpha = 1;
             // city lights along the shore
@@ -904,17 +2259,38 @@
         }
 
         function drawGround(ch) {
-            ctx.fillStyle = '#2a2119';
-            ctx.fillRect(0, GROUND, W, H - GROUND);
+            var below = H - GROUND;
+            ctx.fillStyle = '#221b14';
+            ctx.fillRect(0, GROUND, W, below);
             ctx.fillStyle = '#3a2f26';
-            ctx.fillRect(0, GROUND, W, 15);
+            ctx.fillRect(0, GROUND, W, Math.min(26, below));
             ctx.fillStyle = '#4a3d30';
             ctx.fillRect(0, GROUND, W, 4);
+            // verge below the trail: graded, so a tall panel is not a flat slab
+            var vTop = GROUND + Math.min(26, below);
+            if (below > 26) {
+                var grad = ctx.createLinearGradient(0, vTop, 0, H);
+                grad.addColorStop(0, '#2b3a1d');
+                grad.addColorStop(0.35, '#1d2916');
+                grad.addColorStop(0.72, '#141d10');
+                grad.addColorStop(1, '#0b110b');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, vTop, W, H - vTop);
+                // broken edge where the trail meets the growth
+                var re = rng(4477);
+                for (var e = 0; e < W + 8; e += 3) {
+                    var ex = ((e - S.cam * 1.4) % LAYW + LAYW) % LAYW;
+                    var eh = 2 + Math.round(re() * 5);
+                    ctx.fillStyle = '#2b3820';
+                    ctx.fillRect(e, vTop - eh + Math.round(Math.sin(ex * 0.4) * 2), 3, eh + 2);
+                }
+            }
 
             // trail texture — scrolls with camera
             var r = rng(31415);
-            for (var i = 0; i < 230; i++) {
-                var bx = r() * LAYW, by = GROUND + 2 + r() * (H - GROUND - 4);
+            var texN = Math.round(230 * Math.max(1, (H - GROUND) / 48));
+            for (var i = 0; i < texN; i++) {
+                var bx = r() * LAYW, by = GROUND + 2 + r() * Math.min(24, H - GROUND - 4);
                 var x = ((bx - S.cam * 1.25) % LAYW + LAYW) % LAYW;
                 if (x > W) continue;
                 var tone = r();
@@ -924,8 +2300,9 @@
 
             // heather / flowers in the foreground
             var r2 = rng(2718);
-            for (var k = 0; k < 70; k++) {
-                var bx2 = r2() * LAYW, by2 = GROUND + 9 + r2() * 33;
+            var scrubN = Math.round(70 * Math.max(1, (H - GROUND) / 48));
+            for (var k = 0; k < scrubN; k++) {
+                var bx2 = r2() * LAYW, by2 = GROUND + 12 + r2() * Math.max(33, H - GROUND - 12);
                 var x2 = ((bx2 - S.cam * 1.35) % LAYW + LAYW) % LAYW;
                 if (x2 > W) continue;
                 ctx.fillStyle = '#1d2a1c';
@@ -939,7 +2316,7 @@
 
         function drawSign() {
             // a trail sign appears once per chapter, drifting past
-            var sx = 450 - (S.dist % CH[S.chapter].dist) * 0.62;
+            var sx = (W + 60) - (S.dist % CH[S.chapter].dist) * 0.62;
             if (sx < -45 || sx > W + 15) return;
             var base = GROUND + 9;
             ctx.fillStyle = '#4a3a26';
@@ -972,21 +2349,44 @@
 
         function drawParticles(ch) {
             // music notes rising from the speaker when sound is high
-            if (S.sound > 30 && !reduceMotion) {
-                if (S.notes.length < 14 && Math.random() < 0.06) {
-                    S.notes.push({ x: 178, y: GROUND - 52, vy: -0.28 - Math.random() * 0.2, a: 1, sw: Math.random() * 6 });
+            if (S.sound > 12 && !reduceMotion) {
+                var want = 0.02 + (S.sound / 100) * 0.10;
+                if (S.notes.length < 16 && Math.random() < want) {
+                    // lifting off the speaker on Ingrid's back
+                    S.notes.push({
+                        x: Math.round(W * 0.555) + (Math.random() * 6 - 3),
+                        y: GROUND - 34 - Math.random() * 10,
+                        vy: -0.30 - Math.random() * 0.26,
+                        a: 1,
+                        sw: 7 + Math.random() * 14,
+                        ph: Math.random() * Math.PI * 2,
+                        drift: (Math.random() - 0.35) * 0.22,
+                        big: Math.random() > 0.55
+                    });
                 }
             }
             S.notes.forEach(function (n) {
-                n.y += n.vy; n.a -= 0.006;
-                var x = n.x + Math.sin(n.y * 0.09) * n.sw;
-                ctx.globalAlpha = clamp(n.a, 0, 1) * 0.85;
-                ctx.fillStyle = '#c9a6f0';
-                ctx.fillRect(x | 0, n.y | 0, 3, 2);
-                ctx.fillRect((x + 2) | 0, (n.y - 4) | 0, 1, 5);
-                ctx.fillRect((x + 3) | 0, (n.y - 4) | 0, 2, 1);
+                n.y += n.vy;
+                n.x += n.drift;
+                n.a -= 0.0058;
+                var x = n.x + Math.sin(n.y * 0.055 + n.ph) * n.sw;
+                var al = clamp(n.a, 0, 1);
+                ctx.globalAlpha = al * 0.35;
+                ctx.fillStyle = '#2a1c3a';
+                ctx.fillRect((x + 1) | 0, (n.y + 1) | 0, 4, 3);       // soft shadow
+                ctx.globalAlpha = al;
+                ctx.fillStyle = n.big ? '#f3d6ff' : '#c9a6f0';
+                if (n.big) {                                          // quaver
+                    ctx.fillRect(x | 0, n.y | 0, 4, 3);
+                    ctx.fillRect((x + 3) | 0, (n.y - 7) | 0, 2, 8);
+                    ctx.fillRect((x + 5) | 0, (n.y - 7) | 0, 2, 3);
+                } else {                                              // beam
+                    ctx.fillRect(x | 0, n.y | 0, 3, 3);
+                    ctx.fillRect((x + 2) | 0, (n.y - 6) | 0, 2, 7);
+                    ctx.fillRect((x + 4) | 0, (n.y - 6) | 0, 3, 2);
+                }
             });
-            S.notes = S.notes.filter(function (n) { return n.a > 0 && n.y > 30; });
+            S.notes = S.notes.filter(function (n) { return n.a > 0 && n.y > 18; });
             ctx.globalAlpha = 1;
 
             // fireflies / embers at night
@@ -1004,6 +2404,23 @@
             }
         }
 
+        // The one moment a folklore encounter gets to feel like a moment — a
+        // soft bloom across the whole scene when a being is first fully
+        // noticed, not a jump-scare flash. Under Reduce Motion it still
+        // shows, just as a gentler, un-animated wash rather than a pulse.
+        function drawBeingFlash() {
+            var f = BEINGS.flash;
+            if (f <= 0.01) return;
+            var eased = reduceMotion ? Math.min(f, 0.4) : f;
+            ctx.save();
+            var rg = ctx.createRadialGradient(W / 2, H * 0.42, 4, W / 2, H * 0.42, W * 0.8);
+            rg.addColorStop(0, 'rgba(224, 196, 255,' + (0.22 * eased) + ')');
+            rg.addColorStop(1, 'rgba(224, 196, 255, 0)');
+            ctx.fillStyle = rg;
+            ctx.fillRect(0, 0, W, H);
+            ctx.restore();
+        }
+
         function drawVignette() {
             var g = ctx.createRadialGradient(W / 2, H / 2, 90, W / 2, H / 2, 285);
             g.addColorStop(0, 'rgba(0,0,0,0)');
@@ -1018,9 +2435,11 @@
             return 'idle';
         }
 
-        var ACT = 0.82;                       // sprites are ~96px tall natively
+        var ACT = 0.75;                       // 128px frame box -> ~95px character
         var ACT_W = SPRW * ACT, ACT_H = SPRH * ACT;
 
+        // Facing is baked into the frames by tools/build-sprites.py, so nothing
+        // is flipped here - everything already walks to the right.
         function actor(img, centerX, footY) {
             if (!img) return;
             ctx.drawImage(img, 0, 0, SPRW, SPRH,
@@ -1028,15 +2447,19 @@
                 Math.round(ACT_W), Math.round(ACT_H));
         }
 
-        function frameOf(who, anim, offset) {
-            var set = SPR[who][anim] && SPR[who][anim].length ? SPR[who][anim] : SPR[who].idle;
-            var fps = S.walking ? 8 : 3.5;
+        function frameOf(who, state, offset) {
+            var set = SPR[who][state];
+            if (!set || !set.length) { state = 'idle'; set = SPR[who].idle; }
+            if (!set || !set.length) return null;
+            var fps = FPS[who][state] || 6;
             return set[Math.floor(S.t * fps + offset) % set.length];
         }
 
         function drawActors() {
             // Jack leads the way, Ingrid follows with the speaker
-            var jcx = 292, icx = 196, footY = GROUND + 8;
+            // Ingrid out front with the speaker, Jack a few steps behind
+            var icx = Math.round(W * 0.60), jcx = Math.round(W * 0.40);
+            var footY = GROUND + 8;
 
             ctx.globalAlpha = 0.3;
             ctx.fillStyle = '#000000';
@@ -1050,18 +2473,42 @@
 
         // Low scrub drawn in front of the hikers' feet for depth
         function drawForeground(ch) {
-            var r = rng(9091);
-            for (var i = 0; i < 105; i++) {
-                var bx = r() * LAYW;
-                var x = ((bx - S.cam * 1.5) % LAYW + LAYW) % LAYW;
-                if (x > W) continue;
-                var h = 6 + r() * 11;
-                var y = H - h - r() * 9;
-                ctx.fillStyle = ch.stars > 0.5 ? '#0b120d' : '#111c12';
-                ctx.fillRect(x | 0, y | 0, 3, h | 0);
-                ctx.fillRect((x - 3) | 0, (y + 3) | 0, 3, h - 3);
-                ctx.fillRect((x + 3) | 0, (y + 4) | 0, 3, h - 4);
+            var below = H - GROUND;
+            var bands = below > 90 ? 3 : 1;
+            for (var band = 0; band < bands; band++) {
+                var r = rng(9091 + band * 733);
+                var depth = (band + 1) / bands;              // 0..1, 1 = nearest
+                var speed = 1.15 + band * 0.4;
+                var count = Math.round((120 + band * 50) * Math.max(1, below / 60));
+                var scale = 4 + depth * (below > 90 ? 18 : 6);
+                var top = GROUND + 24 + (below - 24) * (band * 0.24);
+                var tone = ch.stars > 0.5
+                    ? ['#131c14', '#0d150e', '#080d09'][band]
+                    : ['#1a2718', '#132012', '#0c150d'][band];
+                for (var i = 0; i < count; i++) {
+                    var x = ((r() * LAYW - S.cam * speed) % LAYW + LAYW) % LAYW;
+                    if (x > W) continue;
+                    var h = scale * (0.5 + r() * 0.9);
+                    var y = top + r() * Math.max(1, (H - top) * 0.92) - h * 0.4;
+                    ctx.fillStyle = tone;
+                    ctx.fillRect(x | 0, y | 0, 3, h | 0);
+                    ctx.fillRect((x - 3) | 0, (y + h * 0.28) | 0, 3, h * 0.75);
+                    ctx.fillRect((x + 3) | 0, (y + h * 0.36) | 0, 3, h * 0.68);
+                }
             }
+        }
+
+        function placeTags() {
+            var tags = el('rmTags');
+            if (!tags) return;
+            var kids = tags.children;
+            // The sprite sits inside a padded 128px box, so the head is well
+            // above the frame's top edge. Anchor on the real head, and let the
+            // tag hang by its own bottom edge (translateY(-100%)).
+            var headY = (GROUND + 8) - (SPR_FOOT - SPR_HEAD) * ACT;
+            var top = Math.max(6, (headY / H) * 100 - 1);
+            if (kids[0]) { kids[0].style.left = '60%'; kids[0].style.top = top + '%'; }
+            if (kids[1]) { kids[1].style.left = '40%'; kids[1].style.top = top + '%'; }
         }
 
         function syncNameTags() {
@@ -1072,6 +2519,13 @@
         function render() {
             var ch = CH[S.chapter];
             ctx.clearRect(0, 0, W, H);
+
+            // the frame breathes with the track and kicks on a pickup
+            var shook = !reduceMotion && S.shake > 0.05;
+            if (shook) {
+                ctx.save();
+                ctx.translate((Math.random() - 0.5) * S.shake, (Math.random() - 0.5) * S.shake);
+            }
             drawSky(ch, S.dist / ch.dist);
 
             tile(tintCache('far', ch.night ? '#191634' : '#3d3358'), -S.cam * 0.08, 0.85);
@@ -1079,13 +2533,29 @@
             tile(tintCache('mid', '#241d38'), -S.cam * 0.18, 0.95);
             tile(tintCache('treeFar', '#141d18'), -S.cam * 0.42);
             drawFog(ch);
+            AMBIENT.draw();
             tile(tintCache('treeNear', '#0d140f'), -S.cam * 0.9);
             drawGround(ch);
             drawSign();
+            BEINGS.draw();
+            drawItems();
             drawActors();
             drawForeground(ch);
             drawParticles(ch);
+            drawSparks();
+            drawPops();
+            drawCombo();
             drawVignette();
+            drawBeingFlash();
+
+            // a soft light lift on the beat - the world nods along
+            if (BEAT.pulse > 0.02 && !reduceMotion) {
+                ctx.globalAlpha = BEAT.pulse * 0.07;
+                ctx.fillStyle = '#ffe6c0';
+                ctx.fillRect(0, 0, W, H);
+                ctx.globalAlpha = 1;
+            }
+            if (shook) ctx.restore();
         }
 
         var TINTS = {};
@@ -1104,6 +2574,8 @@
         }
 
         function syncHud() {
+            var bag = el('rmBag');
+            if (bag) bag.textContent = S.litter;
             pips(el('rmPipEnergy'), S.energy);
             pips(el('rmPipSound'), S.sound);
             pips(el('rmPipConn'), S.conn);
@@ -1114,7 +2586,7 @@
             for (var i = 0; i < CH.length; i++) {
                 html += '<i class="' + (i < S.chapter ? 'd' : i === S.chapter ? 'c' : '') + '"></i>';
             }
-            var alt = [40, 120, 220, 320, 380, 200][S.chapter];
+            var alt = [20, 45, 90, 230, 300, 400, 180][S.chapter];
             html += '<span class="rm-alt">' + alt + 'M</span>';
             el('rmRoute').innerHTML = html;
         }
@@ -1122,12 +2594,404 @@
         function show(id) { el(id).classList.remove('rm-hide'); el(id).classList.add('on'); }
         function hide(id) { el(id).classList.add('rm-hide'); el(id).classList.remove('on'); }
 
+        /* ---------- the archive ----------
+           The game and the QR trail are one system with two doors. Both read and
+           write trailmix.archive.v1 on this origin, so a code scanned at
+           Sandviksbatteriet is waiting in here that evening, and an entry found
+           in the game opens unlocked on the mountain.
+
+           Rendering repeats the trail builder's rule 18 gate rather than trusting
+           it: an entry shows facts only when it is verified AND names a source
+           that is itself verified. The gate has to hold in both doors or it does
+           not hold at all. */
+        // Four kinds of knowledge, one symbol each, shown everywhere something
+        // is presented as a fact, a sighting, a note or a story. The symbol is
+        // load-bearing, not decorative: it is how a player tells the difference
+        // between a citation and an invention at a glance.
+        var SYM = { documented: '●', observed: '◎', remembered: '◇', imagined: '✦' };
+
+        var ARCH = { key: 'trailmix.archive.v1', data: null, loaded: false };
+
+        function archRead() {
+            try { return JSON.parse(localStorage.getItem(ARCH.key) || '{}'); }
+            catch (e) { return {}; }
+        }
+
+        function archWrite(a) {
+            try { localStorage.setItem(ARCH.key, JSON.stringify(a)); } catch (e) { }
+        }
+
+        function archAdd(ids, where) {
+            var a = archRead();
+            a.entries = a.entries || []; a.scanned = a.scanned || {}; a.walks = a.walks || 0;
+            var added = 0;
+            ids.forEach(function (id) {
+                if (a.entries.indexOf(id) < 0) { a.entries.push(id); added++; }
+            });
+            if (where && !a.scanned[where]) a.scanned[where] = new Date().toISOString();
+            archWrite(a);
+            archCount();
+            return added;
+        }
+
+        function archCount() {
+            var a = archRead();
+            el('rmArchN').textContent = (a.entries || []).length;
+        }
+
+        function archLoad(then) {
+            if (ARCH.loaded) return then();
+            // loaded is only set on SUCCESS. A single dropped fetch on a
+            // mobile connection used to mark this loaded forever with
+            // ARCH.data staying null — "could not be loaded" for the rest of
+            // the session, even after signal came back. Now every reopen of
+            // the archive retries until it actually gets the data.
+            Promise.all([
+                fetch('data/history.json').then(function (r) { return r.json(); }),
+                fetch('data/sources.json').then(function (r) { return r.json(); }),
+                fetch('data/route.json').then(function (r) { return r.json(); })
+            ]).then(function (r) {
+                ARCH.data = { history: r[0], sources: r[1], route: r[2] };
+                ARCH.loaded = true;
+                then();
+            }).catch(function () { ARCH.data = null; then(); });
+        }
+
+        function archEsc(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        // Shared by the full Archive (every stop) and the single-stop Scene: the
+        // rule 18 gate has to hold in every door it's rendered behind, so it lives
+        // once, not copied.
+        function entryListHtml(list, have, ok) {
+            var html = '';
+            list.forEach(function (e) {
+                var found = have.indexOf(e.id) >= 0;
+                var gated = !(e.status === 'verified' && ok[e.source]);
+                if (!found) {
+                    html += '<div class="rm-arch-e locked">▢ not yet found — ' +
+                        archEsc(e.era || 'at this stop') + '</div>';
+                } else if (gated) {
+                    html += '<div class="rm-arch-e warn">▣ ' +
+                        archEsc(e.display_name_en || e.id) +
+                        '<em>RESEARCH REQUIRED — no verified source, so no facts ' +
+                        'are shown.</em></div>';
+                } else {
+                    html += '<div class="rm-arch-e"><b>' + SYM.documented + ' ' +
+                        archEsc(e.era) + '</b> ' +
+                        archEsc(e.display_name_en) + '<em>' +
+                        archEsc(e.educational_text_en) + '</em><span>' +
+                        archEsc(ok[e.source].title) + ', ' +
+                        archEsc(ok[e.source].publisher) + '</span></div>';
+                }
+            });
+            return html;
+        }
+
+        function archRender() {
+            var body = el('rmArchBody');
+            var a = archRead();
+            var have = a.entries || [];
+
+            if (!ARCH.data) {
+                // Usually a dropped connection, not a protocol problem — this
+                // used to unconditionally blame file:// even when the page
+                // was already served correctly over https.
+                body.innerHTML = '<p class="rm-text">Could not reach the archive data ' +
+                    '— probably a dropped connection. Check your signal and try ' +
+                    'again.</p><div class="rm-choices"><button class="rm-btn rm-go" ' +
+                    'id="rmArchRetry">↺ TRY AGAIN</button></div>';
+                var retryBtn = document.getElementById('rmArchRetry');
+                if (retryBtn) retryBtn.addEventListener('click', function () { archOpen(); });
+                return;
+            }
+
+            var ok = {};
+            ARCH.data.sources.sources.forEach(function (s) { if (s.verified) ok[s.id] = s; });
+
+            var stopName = {};
+            ARCH.data.route.stops.forEach(function (s) {
+                stopName[s.id] = s.title_no || s.title_en;
+            });
+
+            var byStop = {}, total = ARCH.data.history.entries.length;
+            ARCH.data.history.entries.forEach(function (e) {
+                (byStop[e.stop] = byStop[e.stop] || []).push(e);
+            });
+
+            var html = '<p class="rm-arch-legend">' +
+                SYM.documented + ' documented &nbsp; ' +
+                SYM.observed + ' observed &nbsp; ' +
+                SYM.remembered + ' remembered &nbsp; ' +
+                SYM.imagined + ' imagined</p>' +
+                '<p class="rm-text rm-arch-lead">' + have.length + ' of ' + total +
+                ' entries found. Scan the codes on the real route to fill the rest — ' +
+                'what you collect out there appears in here.</p>';
+
+            ARCH.data.route.stops.forEach(function (st) {
+                var list = byStop[st.id] || [];
+                if (!list.length) return;
+                var when = (a.scanned || {})[st.id];
+                html += '<div class="rm-arch-stop" id="rmArchStop-' + st.id + '"><h4>' + archEsc(stopName[st.id]) +
+                    (when ? '<span>visited ' + when.slice(0, 10) + '</span>' : '') + '</h4>' +
+                    entryListHtml(list, have, ok) + '</div>';
+            });
+
+            var finds = a.finds || [];
+            if (finds.length) {
+                var byKind = {};
+                finds.forEach(function (f) { byKind[f.kind] = (byKind[f.kind] || 0) + 1; });
+                html += '<div class="rm-arch-stop"><h4>' + SYM.observed +
+                    ' Things you noticed<span>' + finds.length + ' logged</span></h4>';
+                Object.keys(byKind).forEach(function (k) {
+                    var sym = k === 'unknown' ? SYM.remembered : SYM.observed;
+                    html += '<div class="rm-arch-e"><b>' + sym + ' ' + byKind[k] + '×</b> ' +
+                        archEsc(k === 'unknown' ? 'unknown — not knowing is also information'
+                            : k) + '</div>';
+                });
+                html += '</div>';
+            }
+
+            if (BEINGS.all) {
+                var met = archRead().beings || [];
+                html += '<div class="rm-arch-stop"><h4>' + SYM.imagined + ' Folklore<span>' + met.length +
+                    ' of ' + BEINGS.all.length + ' glimpsed</span></h4><div class="rm-folk">';
+                BEINGS.all.forEach(function (b) {
+                    var seen = met.indexOf(b.id) >= 0;
+                    var art = BEINGS.art[b.id];
+                    html += '<figure class="' + (seen ? '' : 'unseen') + '">' +
+                        (art ? '<img src="' + art.src + '" alt="">' : '') +
+                        '<figcaption>' + archEsc(seen ? (b.display_name_en || b.id)
+                            : '???') + '</figcaption></figure>';
+                });
+                html += '</div><p class="rm-arch-lead">Artistic interpretation, ' +
+                    'inspired by Norwegian folklore. None of these beings is ' +
+                    'attested at a Trail Mix location — where one appears at all, ' +
+                    'it is Mount Media\'s reading, not a record. Stand still on ' +
+                    'the trail to notice one; walk on and it is gone.</p></div>';
+            }
+
+            html += '<p class="rm-text rm-arch-lead">Every stop has a QR code on the ' +
+                'route. <a href="trail/" target="_blank" rel="noopener">Open the ' +
+                'folklore trail →</a></p>';
+            body.innerHTML = html;
+        }
+
+        function archOpen(scrollToStop) {
+            hide('rmFind'); hide('rmAcc'); hide('rmMap'); hide('rmScene');
+            archLoad(function () {
+                archRender();
+                show('rmArch');
+                readCurrentText();
+                if (scrollToStop) {
+                    var target = el('rmArchStop-' + scrollToStop);
+                    if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+                }
+            });
+        }
+
+        var MAP_ART = {
+            'sandviken-sykehus': 'assets/locations/sandviken-sykehus.png',
+            'munkebotn': null,
+            'sandviksbatteriet': null,
+            'sandvikspilen': 'assets/locations/sandvikspilen.png',
+            'forest-transition': 'assets/locations/trail-forest.png',
+            'floyen': 'assets/locations/floyen.png',
+            'floibanen': 'assets/locations/floibanen-top.png'
+        };
+
+        function mapRender() {
+            var a = archRead();
+            var scanned = a.scanned || {};
+            var curStop = STOP_IDS[S.chapter];
+            var html = '';
+            STOP_IDS.forEach(function (id, i) {
+                var visited = !!scanned[id];
+                var current = id === curStop && S.phase !== 'end';
+                var state = current ? 'current' : visited ? 'visited' : 'locked';
+                var art = MAP_ART[id];
+                html += '<button class="rm-map-node rm-map-' + state + '" data-stop="' + id + '"' +
+                    (state === 'locked' ? ' disabled' : '') + '>' +
+                    (art ? '<img src="' + art + '" alt="">' : '<span class="rm-map-noart"></span>') +
+                    '<b>' + (i + 1) + '</b><span>' + archEsc(CH[i].t) + '</span>' +
+                    '<em>' + (state === 'locked' ? 'NOT YET WALKED' :
+                        state === 'current' ? 'YOU ARE HERE' : 'WALKED') + '</em></button>';
+                if (i < STOP_IDS.length - 1) {
+                    html += '<i class="rm-map-link' + (visited ? ' d' : '') + '"></i>';
+                }
+            });
+            el('rmMapRoute').innerHTML = html;
+        }
+
+        // The real walking distance/time, exactly as Ingrid read it off Google
+        // Maps — not modelled, not estimated. Loaded separately from the node
+        // list so opening the map never has to wait on a fetch: the schematic
+        // route shows instantly, this line fills in if/when the data arrives,
+        // and is left blank rather than guessed at if it doesn't.
+        function mapRenderReal() {
+            var real = ARCH.data && ARCH.data.route && ARCH.data.route.real_route;
+            if (!real) { el('rmMapReal').textContent = ''; return; }
+            var h = Math.floor(real.duration_min / 60), m = real.duration_min % 60;
+            var time = (h ? h + 'H ' : '') + m + 'MIN';
+            el('rmMapReal').textContent = real.distance_km + ' KM · ABOUT ' + time +
+                ' ON FOOT, START TO FLØYEN';
+        }
+
+        function openMap() {
+            hide('rmFind'); hide('rmArch'); hide('rmAcc'); hide('rmScene');
+            setWalk(false);
+            mapRender();
+            mapRenderReal();
+            show('rmMap');
+            readCurrentText();
+            if (!ARCH.loaded) archLoad(mapRenderReal);
+        }
+
+        // Real GPS, opt-in only (SET.gpsMode, off by default). Never replaces
+        // the simulated hold-to-walk system — it only adds one more way a
+        // chapter's story can open: being physically near that stop's real
+        // coordinate (data/route.json's stops[].geo), on top of the existing
+        // "walked far enough" check. A stop with no geo (forest-transition —
+        // not a named landmark, nothing to check proximity against) simply
+        // never fires from GPS and always waits on the simulated walk, same
+        // as every player who never turns GPS mode on at all.
+        var GEO = {
+            watchId: null, pos: null,
+            status: 'idle', // idle | requesting | active | denied | unsupported | error
+            start: function () {
+                if (!('geolocation' in navigator)) { this.status = 'unsupported'; this.paintStatus(); return; }
+                if (!ARCH.loaded) archLoad(function () {});
+                this.status = 'requesting';
+                this.paintStatus();
+                var self = this;
+                this.watchId = navigator.geolocation.watchPosition(
+                    function (p) { self.status = 'active'; self.pos = p.coords; self.paintStatus(); },
+                    function (err) { self.status = (err && err.code === 1) ? 'denied' : 'error'; self.paintStatus(); },
+                    { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
+                );
+            },
+            stop: function () {
+                if (this.watchId != null) navigator.geolocation.clearWatch(this.watchId);
+                this.watchId = null; this.status = 'idle'; this.pos = null;
+                this.paintStatus();
+            },
+            // On, off, and every setApply() in between — mirrors the rest of
+            // SET's toggles (SET.gpsMode is the single source of truth,
+            // persisted the same way as highContrast/reduceMotion/etc.).
+            sync: function () {
+                var on = !!SET.gpsMode;
+                var badge = el('rmGpsStatus');
+                if (badge) badge.classList.toggle('rm-hide', !on);
+                if (on) { if (this.status === 'idle') this.start(); }
+                else if (this.watchId != null) { this.stop(); }
+                this.paintStatus();
+            },
+            paintStatus: function () {
+                var badge = el('rmGpsStatus');
+                if (!badge) return;
+                badge.textContent = {
+                    requesting: '🛰 FINDING YOU…', active: '🛰 GPS ACTIVE',
+                    denied: '🛰 GPS OFF — PERMISSION DENIED', unsupported: '🛰 GPS NOT SUPPORTED HERE',
+                    error: '🛰 GPS SIGNAL LOST'
+                }[this.status] || '';
+            },
+            haversine: function (lat1, lng1, lat2, lng2) {
+                var R = 6371000, toRad = Math.PI / 180;
+                var dLat = (lat2 - lat1) * toRad, dLng = (lng2 - lng1) * toRad;
+                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * toRad) * Math.cos(lat2 * toRad) *
+                    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            },
+            nearCurrentStop: function () {
+                if (!this.pos || !ARCH.data || !ARCH.data.route) return false;
+                var stopId = STOP_IDS[S.chapter];
+                var stop = ARCH.data.route.stops.filter(function (s) { return s.id === stopId; })[0];
+                if (!stop || !stop.geo) return false;
+                var d = this.haversine(this.pos.latitude, this.pos.longitude, stop.geo.lat, stop.geo.lng);
+                return d <= (stop.geo.radius_m || 80);
+            }
+        };
+
+        // What a single stop has to show: its own history entries (same rule-18
+        // gate as the Archive), any being cast there and whether it's been
+        // glimpsed, and how many things were noticed here. Entering a place
+        // again, not re-reading a scrolled list of every place at once.
+        function sceneEntries(stopId) {
+            if (!ARCH.data) return '<p class="rm-text">Could not reach the archive data — check your signal.</p>';
+            var a = archRead();
+            var have = a.entries || [];
+            var ok = {};
+            ARCH.data.sources.sources.forEach(function (s) { if (s.verified) ok[s.id] = s; });
+            var list = ARCH.data.history.entries.filter(function (e) { return e.stop === stopId; });
+            var html = entryListHtml(list, have, ok);
+
+            var castHere = (BEINGS.all || []).filter(function (b) { return b.cast_at === stopId; });
+            if (castHere.length) {
+                var met = a.beings || [];
+                html += '<div class="rm-folk">';
+                castHere.forEach(function (b) {
+                    var seen = met.indexOf(b.id) >= 0;
+                    var art = BEINGS.art[b.id];
+                    html += '<figure class="' + (seen ? '' : 'unseen') + '">' +
+                        (art ? '<img src="' + art.src + '" alt="">' : '') +
+                        '<figcaption>' + archEsc(seen ? (b.display_name_en || b.id) : '???') +
+                        '</figcaption></figure>';
+                });
+                html += '</div><p class="rm-arch-lead">Artistic interpretation, inspired ' +
+                    'by Norwegian folklore — not attested at this location as fact.</p>';
+            }
+
+            var chapterIdx = STOP_IDS.indexOf(stopId);
+            var findsHere = (a.finds || []).filter(function (f) { return f.chapter === chapterIdx; });
+            if (findsHere.length) {
+                html += '<p class="rm-arch-lead">' + SYM.observed + ' ' + findsHere.length +
+                    ' thing' + (findsHere.length === 1 ? '' : 's') + ' you noticed here.</p>';
+            }
+            return html || '<p class="rm-text">Nothing recorded here yet.</p>';
+        }
+
+        function sceneRender(stopId) {
+            var art = MAP_ART[stopId];
+            el('rmScene').style.backgroundImage = art ?
+                'linear-gradient(180deg, rgba(9, 7, 14, .22) 0%, rgba(9, 7, 14, .6) 55%, rgba(9, 7, 14, .95) 100%), url(' + art + ')' : '';
+            var idx = STOP_IDS.indexOf(stopId);
+            el('rmSceneTag').textContent = (idx >= 0 ? CH[idx].t : stopId).toUpperCase() + ' · REVISITED';
+            el('rmSceneBody').innerHTML = sceneEntries(stopId);
+        }
+
+        function openScene(stopId) {
+            hide('rmFind'); hide('rmArch'); hide('rmAcc'); hide('rmMap');
+            setWalk(false);
+            archLoad(function () {
+                sceneRender(stopId);
+                show('rmScene');
+                readCurrentText();
+            });
+        }
+
+        function openAcc() {
+            hide('rmFind'); hide('rmArch'); hide('rmMap'); hide('rmScene');
+            setWalk(false);
+            show('rmAcc');
+            readCurrentText();
+            // The overlay's controls sit earlier in the DOM than the HUD button
+            // that opens it, so a forward Tab from that button would otherwise
+            // skip past them. Move focus in, same as any modal dialog would.
+            var first = el('rmAccContrast');
+            if (first) first.focus();
+        }
+
         /* ---------- flow ---------- */
         function startChapter(i) {
             S.chapter = i;
             S.dist = 0;
             S.fired = false;
             S.notes = [];
+            S.pops = [];
+            seedItems();
             syncRoute();
 
             var ch = CH[i];
@@ -1156,8 +3020,18 @@
             S.walking = false;
             var ch = CH[S.chapter];
             el('rmPrompt').classList.add('rm-hide');
+            // Arriving at a stop's own place, not just a text card over the walk —
+            // the location's real banner art as a backdrop behind the same story
+            // text/choices. Purely presentational: CH[]'s text, choices and
+            // resolve() are untouched. Falls back to the plain gradient (already
+            // the class default) where no location art exists, e.g. Sandviksbatteriet.
+            var art = MAP_ART[STOP_IDS[S.chapter]];
+            el('rmStory').style.backgroundImage = art ?
+                'linear-gradient(180deg, rgba(9, 7, 14, .2) 0%, rgba(9, 7, 14, .5) 45%, rgba(9, 7, 14, .93) 100%), url(' + art + ')' : '';
             el('rmStoryTag').textContent = ch.tag;
             el('rmStoryTxt').textContent = ch.text;
+            el('rmStoryTxt').classList.add('rm-illum');
+            storyPortrait(BEINGS.metAt(S.chapter));
 
             var box = el('rmStoryChoices');
             box.innerHTML = '';
@@ -1168,9 +3042,33 @@
                 b.addEventListener('click', function () { resolve(c); });
                 box.appendChild(b);
             });
-            cv.parentNode.classList.add('tall');
+            // Deliberately no 'tall' switch here. Resizing the stage for the story
+            // is what made a chapter break feel like a different screen.
             show('rmStory');
+            readCurrentText();
         }
+
+        // Chapter index maps 1:1 onto the seven physical stops in data/route.json.
+        // Finishing a chapter in the game unlocks that stop's entries, exactly as
+        // scanning its code on the mountain does — the two doors stay symmetrical.
+        // Munkebotn (added 2026-08-22) sits between Sandviken sykehus and
+        // Sandviksbatteriet — promoted from a pure walking transition to a real
+        // stop, without touching the wording of any chapter that already existed.
+        var STOP_IDS = ['sandviken-sykehus', 'munkebotn', 'sandviksbatteriet', 'sandvikspilen',
+            'forest-transition', 'floyen', 'floibanen'];
+
+        // A short, dry-toned line for the chapter's own outcome text to carry,
+        // only when that chapter's being was actually noticed — the story
+        // acknowledging what happened, instead of a glimpse nobody mentions
+        // again. Never confirms what was seen; matches each being's own
+        // never_enemy/ambiguous care note in data/folklore.json.
+        var BEING_AFTERMATH = {
+            huldra: "Neither of them mentions the shape that was watching from the trees. Some things you don't confirm by naming them.",
+            troll: "Jack swears the rock by the viewpoint moved when he wasn't looking at it. It didn't. Probably.",
+            munken: "For a moment the light made the old stone look like it was kneeling. Then it was just a rock again.",
+            mare: "Something pressed at the edge of the evening back there, gone before either of them could say what it was.",
+            nisse: "Ingrid could swear the old wall had someone standing at it a moment ago. Jack didn't see anything. Neither of them brings it up again."
+        };
 
         function resolve(c) {
             S.energy = clamp(S.energy + c.e, 0, 100);
@@ -1178,7 +3076,21 @@
             S.conn = clamp(S.conn + c.c, 0, 100);
             syncHud();
 
-            el('rmStoryTxt').textContent = c.out;
+            archLoad(function () {
+                if (!ARCH.data) return;
+                var stop = STOP_IDS[S.chapter];
+                var ids = ARCH.data.history.entries.filter(function (e) {
+                    return e.stop === stop;
+                }).map(function (e) { return e.id; });
+                archAdd(ids, stop);
+            });
+
+            var out = c.out;
+            var castBeing = BEINGS.cast[S.chapter];
+            if (castBeing && BEINGS.seen[castBeing.id] && BEING_AFTERMATH[castBeing.id]) {
+                out += ' ' + BEING_AFTERMATH[castBeing.id];
+            }
+            el('rmStoryTxt').textContent = out;
             var box = el('rmStoryChoices');
             box.innerHTML = '';
             var b = document.createElement('button');
@@ -1212,10 +3124,27 @@
                 body = "They got everything down intact — the gear, the legs, most of the battery. It was never really about the set surviving the climb. It was about finding out whether the idea did. It did. Jack is already describing the next one before they reach the car park, and Ingrid is already doing the maths on battery against elevation.";
             }
 
+            if (S.litter > 0) {
+                body += ' You came down carrying ' + S.litter + ' piece' +
+                    (S.litter === 1 ? '' : 's') + ' of somebody else\'s rubbish, ' +
+                    'which is the part of the evening nobody photographs.';
+            } else {
+                body += ' The gloves and the bags stayed in the pack this time. ' +
+                    'They will not on the day.';
+            }
+
             el('rmStoryTag').textContent = title;
             el('rmStoryTxt').textContent = body;
             var box = el('rmStoryChoices');
             box.innerHTML = '';
+
+            var invite = document.createElement('div');
+            invite.className = 'rm-invite';
+            invite.innerHTML = '<b>NOW DO IT FOR REAL.</b> Same mountain, same gear, same set — and ' +
+                'everyone walks it together, with performances along the route and the bags coming ' +
+                'out whenever somebody spots litter. Scroll down for the details, or mail ' +
+                '<b>ingrid@bergenpride.no</b> with &quot;count me in&quot;.';
+            box.appendChild(invite);
             var b = document.createElement('button');
             b.className = 'rm-btn rm-go';
             b.textContent = '↺ WALK IT AGAIN';
@@ -1227,6 +3156,8 @@
         function reset() {
             hide('rmStory');
             S.energy = 60; S.sound = 40; S.conn = 50;
+            S.litter = 0; S.picked = 0; S.items = []; S.pops = [];
+            S.combo = 0; S.best = 0; S.sparks = []; S.beatCount = 0;
             S.cam = 0;
             syncHud();
             startChapter(0);
@@ -1239,9 +3170,25 @@
         }
 
         var stage = cv.parentNode;
+
+        // pointer position -> canvas coordinates
+        function toCanvas(e) {
+            var r = cv.getBoundingClientRect();
+            var pt = e.touches && e.touches[0] ? e.touches[0] : e;
+            return {
+                x: (pt.clientX - r.left) / r.width * W,
+                y: (pt.clientY - r.top) / r.height * H
+            };
+        }
+
         ['mousedown', 'touchstart'].forEach(function (ev) {
             stage.addEventListener(ev, function (e) {
-                if (S.phase === 'walk') { e.preventDefault(); setWalk(true); }
+                if (S.phase !== 'walk') return;
+                e.preventDefault();
+                var p = toCanvas(e);
+                // a tap on something on the trail bags it instead of walking
+                if (tryCollectAt(p.x, p.y)) return;
+                setWalk(true);
             }, { passive: false });
         });
         ['mouseup', 'mouseleave', 'touchend', 'touchcancel'].forEach(function (ev) {
@@ -1249,8 +3196,22 @@
         });
 
         document.addEventListener('keydown', function (e) {
+            if (e.key === 'e' || e.key === 'E') {
+                if (S.phase === 'walk') {
+                    var it = reachable();
+                    if (it) { e.preventDefault(); collect(it); }
+                }
+                return;
+            }
             if (e.key === 'ArrowRight' || e.key === 'd' || e.key === ' ') {
-                if (S.phase === 'walk') { e.preventDefault(); setWalk(true); }
+                if (S.phase !== 'walk') return;
+                e.preventDefault();
+                // space doubles as pick-up when something is within reach
+                if (e.key === ' ') {
+                    var near = reachable();
+                    if (near) { collect(near); return; }
+                }
+                setWalk(true);
             }
         });
         document.addEventListener('keyup', function (e) {
@@ -1258,18 +3219,172 @@
         });
 
         el('rmStart').addEventListener('click', function () {
+            armTheme();
             hide('rmTitle');
             startChapter(0);
         });
+        // Theme song, looped. Browsers block autoplay until a gesture, so it
+        // starts on the first interaction rather than on load.
+        var theme = el('rmTheme');
+        var themeOn = false, themeArmed = false;
+
+        function themeSet(on) {
+            if (!theme) return;
+            themeOn = on;
+            var btn = el('rmMusic');
+            if (on) {
+                theme.volume = SET.muted ? 0 : 0.42;
+                var p = theme.play();
+                if (p && p.catch) p.catch(function () { themeOn = false; paintMusicBtn(); });
+            } else {
+                theme.pause();
+            }
+            paintMusicBtn();
+        }
+
+        function paintMusicBtn() {
+            var btn = el('rmMusic');
+            if (!btn) return;
+            btn.textContent = themeOn ? '♫ TRAIL MIX THEME' : '♫ THEME OFF';
+            btn.setAttribute('aria-pressed', themeOn ? 'true' : 'false');
+        }
+
+        if (theme) {
+            theme.addEventListener('error', function () {
+                var btn = el('rmMusic');
+                if (btn) { btn.textContent = '♫ NO THEME'; btn.disabled = true; }
+            });
+            el('rmMusic').addEventListener('click', function () {
+                beatInit(theme);
+                if (BEAT.ctx && BEAT.ctx.state === 'suspended') BEAT.ctx.resume();
+                themeSet(!themeOn);
+            });
+        }
+
+        // first press of Begin starts the theme
+        function armTheme() {
+            if (themeArmed) return;
+            themeArmed = true;
+            beatInit(theme);
+            if (BEAT.ctx && BEAT.ctx.state === 'suspended') BEAT.ctx.resume();
+            themeSet(true);
+        }
+
+        // Fullscreen. Layout is untouched - the panel fills the screen and
+        // fitCanvas re-fits the scene to whatever aspect that turns out to be.
+        var shell = cv.parentNode.parentNode;
+        function fullBtn() { return el('rmFull'); }
+
+        function toggleFull() {
+            var d = document;
+            var on = d.fullscreenElement || d.webkitFullscreenElement;
+            if (on) {
+                (d.exitFullscreen || d.webkitExitFullscreen || function () {}).call(d);
+            } else {
+                var req = shell.requestFullscreen || shell.webkitRequestFullscreen;
+                if (req) req.call(shell);
+            }
+        }
+
+        function syncFullBtn() {
+            var on = !!(document.fullscreenElement || document.webkitFullscreenElement);
+            var b = fullBtn();
+            if (b) b.textContent = on ? '⛶ EXIT FULLSCREEN' : '⛶ FULLSCREEN';
+            setTimeout(fitCanvas, 60);
+            setTimeout(fitCanvas, 260);
+        }
+
+        if (fullBtn()) {
+            if (!(shell.requestFullscreen || shell.webkitRequestFullscreen)) {
+                fullBtn().disabled = true;
+                fullBtn().textContent = '⛶ N/A';
+            } else {
+                fullBtn().addEventListener('click', toggleFull);
+                document.addEventListener('fullscreenchange', syncFullBtn);
+                document.addEventListener('webkitfullscreenchange', syncFullBtn);
+            }
+        }
+
+        BEINGS.load();
+        AMBIENT.load();
+
+        el('rmArchBtn').addEventListener('click', function () { archOpen(); });
+        el('rmArchClose').addEventListener('click', function () { hide('rmArch'); });
+        archCount();
+
+        /* ---------- map & scene wiring ---------- */
+        el('rmMapBtn').addEventListener('click', openMap);
+        el('rmMapClose').addEventListener('click', function () { hide('rmMap'); });
+        el('rmMapRoute').addEventListener('click', function (e) {
+            var b = e.target.closest('.rm-map-node');
+            if (!b || b.disabled) return;
+            openScene(b.dataset.stop);
+        });
+        el('rmSceneClose').addEventListener('click', function () { hide('rmScene'); });
+        el('rmSceneMap').addEventListener('click', function () { hide('rmScene'); openMap(); });
+
+        el('rmFindBtn').addEventListener('click', function () {
+            if (S.phase !== 'walk') return;
+            openFind();
+        });
+        el('rmFindChoices').addEventListener('click', function (e) {
+            var b = e.target.closest('button[data-k]');
+            if (b) closeFind(b.dataset.k);
+        });
+
         el('rmSound').addEventListener('click', audioToggle);
         el('rmReset').addEventListener('click', function () {
             hide('rmTitle'); hide('rmChap');
             reset();
         });
 
+        /* ---------- accessibility wiring ---------- */
+        el('rmAccBtn').addEventListener('click', openAcc);
+        el('rmAccClose').addEventListener('click', function () { hide('rmAcc'); });
+
+        function wireAccToggle(id, field, onChange) {
+            var b = el(id);
+            if (!b) return;
+            b.addEventListener('click', function () {
+                SET[field] = !SET[field];
+                setApply();
+                setWrite();
+                if (onChange) onChange();
+            });
+        }
+        wireAccToggle('rmAccContrast', 'highContrast');
+        wireAccToggle('rmAccMotion', 'reduceMotion');
+        wireAccToggle('rmAccText', 'largeText');
+        wireAccToggle('rmAccRead', 'readAloud', function () {
+            if (SET.readAloud) readCurrentText();
+            else if (window.speechSynthesis) speechSynthesis.cancel();
+        });
+        wireAccToggle('rmAccMute', 'muted');
+        wireAccToggle('rmAccGps', 'gpsMode');
+
+        el('rmModeBtn').addEventListener('click', function () { hide('rmTitle'); show('rmMode'); });
+        el('rmModeBack').addEventListener('click', function () { hide('rmMode'); show('rmTitle'); });
+        el('rmModeChoices').addEventListener('click', function (e) {
+            var b = e.target.closest('button[data-mode]');
+            if (!b) return;
+            var preset = MODE_PRESETS[b.dataset.mode];
+            if (preset) Object.assign(SET, preset);
+            setApply();
+            setWrite();
+            hide('rmMode');
+            show('rmTitle');
+        });
+
+        setApply();
+
         /* ---------- loop ---------- */
         var last = 0, paused = false;
-        document.addEventListener('visibilitychange', function () { paused = document.hidden; });
+        document.addEventListener('visibilitychange', function () {
+            paused = document.hidden;
+            if (theme && themeOn) { if (document.hidden) theme.pause(); else theme.play().catch(function () {}); }
+        });
+        window.addEventListener('resize', fitCanvas);
+        if (window.ResizeObserver) new ResizeObserver(fitCanvas).observe(cv.parentNode);
 
         function frame(now) {
             requestAnimationFrame(frame);
@@ -1278,17 +3393,38 @@
             last = now;
             S.t += dt;
 
+            beatUpdate(dt);
+            updateItems(dt);
+            BEINGS.update(dt);
+            AMBIENT.update(dt);
+
             if (S.phase === 'walk' && S.walking) {
                 var speed = 76 * (0.82 + (S.energy / 100) * 0.36);
                 S.dist += speed * dt;
                 S.cam += speed * dt;
-                if (S.dist >= CH[S.chapter].dist && !S.fired) {
-                    S.fired = true;
-                    openStory();
+            } else if (S.phase === 'walk' && !S.walking) {
+                // stillness is a move: attention accrues when you stop
+                S.still += dt;
+                if (S.still > 1.2) {
+                    S.still = 0;
+                    S.conn = clamp(S.conn + 1, 0, 100);
+                    syncHud();
                 }
             } else if (S.phase !== 'walk') {
                 S.cam += 4 * dt;
             }
+            // Two independent ways a chapter can open: walked far enough
+            // (the simulated distance, always available), or — GPS mode only
+            // — physically near this stop's real coordinate, checked whether
+            // or not the player is currently holding the walk input. Either
+            // one is enough; neither is required if the other fires first.
+            if (S.phase === 'walk' && !S.fired &&
+                (S.dist >= CH[S.chapter].dist ||
+                    (SET.gpsMode && GEO.status === 'active' && GEO.nearCurrentStop()))) {
+                S.fired = true;
+                openStory();
+            }
+            if (S.walking) S.still = 0;
 
             render();
         }
@@ -1302,7 +3438,7 @@
                 tintCache('treeFar', '#141d18');
                 tintCache('treeNear', '#0d140f');
             }],
-            ['READY', function () { syncHud(); syncRoute(); }]
+            ['READY', function () { fitCanvas(); syncHud(); syncRoute(); }]
         ];
 
         var si = 0;

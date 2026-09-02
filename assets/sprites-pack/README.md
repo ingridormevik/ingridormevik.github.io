@@ -7,8 +7,8 @@ overwritten on every build.
     python3 tools/build-sprites.py
 
 `manifest.json` lists each animation with its frame count and recommended
-FPS. Review at `sprite-preview.html`; play at `trail-mix.html`.
+FPS. Review at `sprite-preview.html`; play at `trail-mix-v2.html`.
 
-The live game at `trail-mix-v2.html` uses the older set in `assets/sprites/`
+The live game at `trail-mix.html` uses the older set in `assets/sprites/`
 and is deliberately left alone, so this set can be changed without any
 risk to the published game.
