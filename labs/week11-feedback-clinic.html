@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 11 — Final Assessment Feedback</title>
+<style>
+:root {
+  --accent: #a98df7;
+  --bg: #07080d;
+  --bg2: #0d0f17;
+  --panel: rgba(14,16,25,.6);
+  --fg: #f4f1ec;
+  --fg-dim: #b9b5bd;
+  --fg-dimmer: #777380;
+  --rule: rgba(255,255,255,.1);
+  --rule2: rgba(255,255,255,.18);
+  --violet: #a98df7;
+  --pink: #f29bcd;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  background: var(--bg); color: var(--fg);
+  font-family: var(--sans);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(169,141,247,.09), transparent 32%),
+    radial-gradient(circle at 85% 18%, rgba(242,155,205,.06), transparent 28%),
+    linear-gradient(180deg, var(--bg), var(--bg2));
+}
+.bg-fx .grid {
+  position: absolute; inset: 0; opacity: .1;
+  background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+                     linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+.deck { position: relative; z-index: 1; width: 100vw; height: 100vh; }
+.slide {
+  position: absolute; inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 7vh 10vw 9vh;
+  opacity: 0;
+  overflow-y: auto;
+}
+.slide.active { display: flex; opacity: 1; animation: fadeUp .6s cubic-bezier(.22,.61,.36,1) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+.kicker {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  font-size: clamp(.66rem, .95vw, .8rem);
+  font-weight: 600;
+  color: var(--violet);
+  margin: 0 0 1.3rem 0;
+}
+h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(2.6rem, 6vw, 5.6rem);
+  line-height: .98;
+  margin: 0 0 .7rem 0;
+  letter-spacing: -.03em;
+}
+h2 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.8rem, 3.6vw, 2.9rem);
+  line-height: 1.08;
+  margin: 0 0 1.4rem 0;
+  color: var(--fg);
+  letter-spacing: -.01em;
+}
+.subtitle {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+  color: var(--fg-dim);
+  max-width: 46em;
+  margin: 0;
+  line-height: 1.5;
+}
+.statement {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 3.1rem);
+  line-height: 1.28;
+  font-weight: 400;
+  max-width: 23em;
+  margin: 0;
+}
+.statement em, .mantra em {
+  color: var(--violet);
+  font-style: italic;
+}
+.mantra {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 5.4vw, 4.4rem);
+  line-height: 1.12;
+  font-weight: 400;
+  max-width: 19em;
+  margin: 0;
+}
+
+ul.list {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex; flex-direction: column;
+  gap: .65em;
+  font-size: clamp(1.05rem, 1.7vw, 1.4rem);
+  max-width: 40em;
+  font-family: var(--sans);
+}
+ul.list.tight { font-size: clamp(.95rem, 1.35vw, 1.15rem); gap: .5em; }
+ul.list li { padding-left: 1.3em; position: relative; color: var(--fg); }
+ul.list li::before { content: "—"; position: absolute; left: 0; color: var(--violet); }
+ul.list.plain li::before { content: ""; }
+ul.list.plain li { padding-left: 0; }
+
+.columns { display: grid; gap: 2.4rem; margin-top: 1rem; }
+.columns.two { grid-template-columns: 1fr 1fr; }
+.columns.three { grid-template-columns: 1fr 1fr 1fr; }
+.col { border-top: 1px solid var(--rule2); padding-top: 1.1rem; }
+.col h3 {
+  font-family: var(--sans);
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 600;
+  color: var(--violet);
+  margin: 0 0 .8rem 0;
+}
+.col ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .5em; }
+.col ul li { font-size: clamp(.95rem, 1.35vw, 1.1rem); font-family: var(--sans); color: var(--fg-dim); }
+
+.diagram {
+  font-family: var(--mono);
+  font-size: clamp(.88rem, 1.4vw, 1.15rem);
+  line-height: 1.85;
+  color: var(--fg);
+  white-space: pre;
+  background: var(--panel);
+  border-left: 2px solid var(--violet);
+  padding: 1.6rem 2rem;
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.diagram .hi { color: var(--pink); }
+
+.card {
+  background: var(--panel);
+  border-left: 2px solid var(--pink);
+  padding: 1.4rem 1.8rem;
+  font-family: var(--mono);
+  font-size: clamp(.95rem, 1.45vw, 1.2rem);
+  line-height: 1.65;
+  max-width: 44em;
+  white-space: pre-wrap;
+  color: var(--fg);
+}
+.card .blank { display: inline-block; min-width: 6em; border-bottom: 1px solid var(--violet); }
+
+.dialogue { display: flex; flex-direction: column; gap: .55rem; max-width: 42em; font-family: var(--sans); }
+.dialogue .line { padding: .55rem 1rem; font-size: clamp(.86rem, 1.3vw, 1.05rem); line-height: 1.4; max-width: 88%; border-radius: 3px; }
+.dialogue .line b { display: block; font-size: .64rem; text-transform: uppercase; letter-spacing: .12em; margin-bottom: .2em; color: var(--fg-dimmer); font-weight: 600; }
+.dialogue .line.student { align-self: flex-start; background: var(--panel); border-left: 2px solid var(--rule2); }
+.dialogue .line.you { align-self: flex-end; background: rgba(169,141,247,.1); border-right: 2px solid var(--violet); text-align: right; }
+.dialogue .line.you b { text-align: right; }
+
+.ide-label {
+  font-family: var(--sans); font-size: .72rem; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--fg-dimmer); font-style: italic; margin: 0 0 .6rem 0;
+}
+.ide-mock {
+  display: grid; grid-template-columns: 190px 1fr; max-width: 46em;
+  border: 1px solid #3c3c3c; border-radius: 6px; overflow: hidden;
+  font-family: var(--mono); font-size: .78rem;
+  box-shadow: 0 30px 70px -30px rgba(0,0,0,.6);
+}
+.ide-side { background: #252526; color: #cccccc; padding: .9rem 0; }
+.ide-side .ide-head { padding: 0 1rem .6rem; text-transform: uppercase; letter-spacing: .08em; font-size: .68rem; color: #969696; }
+.ide-file { padding: .35rem 1rem; display: flex; justify-content: space-between; color: #cccccc; }
+.ide-file .m { color: #e2c08d; }
+.ide-file .a { color: #73c991; }
+.ide-main { background: #1e1e1e; color: #d4d4d4; }
+.ide-main .ide-toolbar { background: #2d2d2d; padding: .5rem 1rem; color: #969696; border-bottom: 1px solid #3c3c3c; }
+.ide-main .ide-body { padding: 1rem; }
+.ide-commitbox { background: #3c3c3c; border: 1px solid #007acc; border-radius: 3px; padding: .55rem .7rem; color: #d4d4d4; margin: .6rem 0; }
+.ide-btn-row { display: flex; gap: .5rem; }
+.ide-btn { background: #0e639c; color: #fff; padding: .4rem .9rem; border-radius: 3px; font-family: var(--sans); font-size: .78rem; }
+.ide-btn.ghost { background: transparent; border: 1px solid #5f6366; color: #cccccc; }
+.ide-term { background: #1e1e1e; color: #d4d4d4; padding: .9rem 1rem; }
+.ide-term .prompt { color: #73c991; }
+.ide-term .out { color: #969696; }
+
+.tag {
+  display: inline-block; font-family: var(--sans); font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .12em; font-weight: 600; color: var(--violet);
+  border: 1px solid var(--rule2); padding: .3em .8em; border-radius: 999px; margin-bottom: 1rem;
+}
+
+.footer-note {
+  position: absolute; bottom: 2.6rem; left: 10vw;
+  font-family: var(--sans); font-size: .85rem; font-style: italic;
+  color: var(--fg-dimmer); max-width: 58em; line-height: 1.5;
+}
+
+.progress-track { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 21; background: var(--rule); }
+.progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: linear-gradient(90deg, var(--violet), var(--pink));
+  width: 0%; transition: width .3s ease; z-index: 22;
+}
+.hud {
+  position: fixed; bottom: 1.6rem; right: 2rem;
+  font-family: var(--sans); font-size: .72rem; letter-spacing: .08em;
+  color: var(--fg-dimmer); z-index: 20; user-select: none;
+}
+.hud .idx { color: var(--fg); }
+.deckname {
+  position: fixed; bottom: 1.6rem; left: 2rem;
+  font-family: var(--sans); font-size: .68rem; letter-spacing: .16em;
+  color: var(--fg-dimmer); text-transform: uppercase; z-index: 20;
+}
+.navzone { position: fixed; top: 0; bottom: 0; width: 12%; z-index: 10; cursor: pointer; }
+.navzone.left { left: 0; }
+.navzone.right { right: 0; }
+
+@media (max-width: 720px) {
+  .columns.two, .columns.three { grid-template-columns: 1fr; gap: 1.4rem; }
+  .slide { padding: 9vh 7vw; }
+}
+</style>
+</head>
+<body>
+<div class="bg-fx"><div class="grid"></div></div>
+<div class="progress-track"></div>
+<div class="progress"></div>
+<div class="deck">
+<section class="slide ">
+<p class="kicker">Week 11 · Lab</p><h1>What Are You Actually Trying to Make Someone Experience?</h1><p class="subtitle">Final project feedback</p>
+</section>
+<section class="slide ">
+<p class="kicker">First 10 minutes · project diagnosis</p><h2>Everyone writes, before anything else</h2><div class="card">I AM MAKING:
+<span class="blank">________________</span>
+
+FOR:
+<span class="blank">________________</span>
+
+I WANT THE PERSON USING IT TO
+FEEL / NOTICE / UNDERSTAND / QUESTION:
+<span class="blank">________________</span>
+
+THE MOST IMPORTANT INTERACTION IS:
+<span class="blank">________________</span></div><p class="footer-note">If they cannot answer the last line, that is where feedback starts. Underneath all four: <em>what does this make someone do that they would not have done in an ordinary conversation?</em></p>
+</section>
+<section class="slide ">
+<p class="kicker">Feedback priority — work in this order</p><ul class="list"><li>1 · Concept — what is it?</li>
+<li>2 · Experience — what does the user actually do?</li>
+<li>3 · Form — why HTML / Construct / audio / whatever technology?</li>
+<li>4 · Scope — can they realistically finish?</li>
+<li>5 · Technical problem — what needs fixing?</li>
+<li>6 · Polish — only after everything else.</li></ul>
+</section>
+<section class="slide ">
+<p class="kicker">Your most useful intervention: scope</p><div class="columns two"><div class="col"><h3>Too large</h3><ul><li>“I want to make an RPG about climate change with eight worlds.”</li></ul></div><div class="col"><h3>Same idea, stronger prototype</h3><ul><li>“One room where every object the player takes makes the landscape less habitable.”</li></ul></div></div><p class="footer-note">Be ruthless about scope while remaining encouraging.</p>
+</section>
+<section class="slide ">
+<p class="kicker">Questions to use, repeatedly</p><ul class="list tight"><li>What is the strongest part of this?</li>
+<li>What can you remove?</li>
+<li>What does the user actually do?</li>
+<li>Why does that interaction matter?</li>
+<li>What happens if the user does nothing?</li>
+<li>What is the first thing they see?</li>
+<li>How do they know what to do?</li>
+<li>What is your ending? Does it need one?</li>
+<li>Why are you using this technology?</li>
+<li>What is currently decoration rather than meaning?</li>
+<li>What can realistically be finished?</li></ul>
+</section>
+<section class="slide ">
+<p class="kicker">Accessibility check, before finishing</p><ul class="list"><li>Can I read it? Can I navigate it?</li>
+<li>Does it work without sound?</li>
+<li>Is important information communicated only through colour?</li>
+<li>Does motion need an alternative?</li>
+<li>Do I understand what is clickable?</li>
+<li>Does it work at a reasonable browser size?</li></ul><p class="footer-note">Not every beginner project needs perfect WCAG compliance. You are introducing design responsibility.</p>
+</section>
+<section class="slide ">
+<p class="kicker">Optional Week 12 · open studio</p><span class="tag">BUILD / TEST / BREAK / FIX</span><ul class="list"><li>Pair students. Person A uses Person B's work — no explanation.</li>
+<li>The creator stays silent for the first 3–5 minutes.</li>
+<li>Where does the tester click? What do they misunderstand? What breaks? What surprises them?</li>
+<li>Switch, then write:</li></ul><div class="card">THE USER DID:
+<span class="blank">________</span>
+I EXPECTED:
+<span class="blank">________</span>
+THEREFORE I WILL CHANGE:
+<span class="blank">________</span></div>
+</section>
+<section class="slide ">
+<p class="kicker">The semester arc</p><div class="diagram">WEEK 6   AI can write the code. Who makes the decisions?
+   ↓
+WEEK 7   What is an interaction?
+   ↓
+WEEK 8   The rules stay conventional — what if the images don't?
+   ↓
+WEEK 10  What happens when we refuse the software's defaults?
+   ↓
+WEEK 11  <span class="hi">What are you actually trying to make someone experience?</span></div>
+</section>
+<section class="slide ">
+<p class="kicker">What this was always building toward</p><p class="statement">“Don't make meaningless shooter games.”</p><p class="statement">Instead: <em>Why am I shooting anything in the first place?</em></p>
+</section>
+</div>
+<div class="navzone left" aria-label="previous slide"></div>
+<div class="navzone right" aria-label="next slide"></div>
+<div class="deckname">Week 11 — Final Assessment Feedback</div>
+<div class="hud"><span class="idx">1</span> / <span class="total"></span></div>
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  var progress = document.querySelector('.progress');
+  var idxEl = document.querySelector('.hud .idx');
+  var totalEl = document.querySelector('.hud .total');
+  totalEl.textContent = slides.length;
+
+  function show(n) {
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) {
+      s.classList.toggle('active', k === n);
+    });
+    i = n;
+    idxEl.textContent = i + 1;
+    progress.style.width = ((i + 1) / slides.length * 100) + '%';
+    location.hash = 's' + (i + 1);
+  }
+
+  function next() { show(i + 1); }
+  function prev() { show(i - 1); }
+
+  document.addEventListener('keydown', function (e) {
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].indexOf(e.key) > -1) { next(); e.preventDefault(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].indexOf(e.key) > -1) { prev(); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  document.querySelector('.navzone.left').addEventListener('click', prev);
+  document.querySelector('.navzone.right').addEventListener('click', next);
+
+  var startX = null;
+  document.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; });
+  document.addEventListener('touchend', function (e) {
+    if (startX === null) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    if (dx > 40) prev(); else if (dx < -40) next();
+    startX = null;
+  });
+
+  var hashMatch = location.hash.match(/s(\d+)/);
+  show(hashMatch ? parseInt(hashMatch[1], 10) - 1 : 0);
+})();
+</script>
+</body>
+</html>
