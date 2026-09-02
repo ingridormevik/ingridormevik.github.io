@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inngang C eksisterer ikke — For Freddie</title>
+<!-- social + icons -->
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="canonical" href="https://ingridormevik.github.io/posts/2026-02-22-inngang-c.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ingrid Ormevik">
+<meta property="og:title" content="Inngang C eksisterer ikke — For Freddie">
+<meta property="og:url" content="https://ingridormevik.github.io/posts/2026-02-22-inngang-c.html">
+<meta property="og:image" content="https://ingridormevik.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ingrid Ormevik — Digital narratives with a pulse.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inngang C eksisterer ikke — For Freddie">
+<meta name="twitter:image" content="https://ingridormevik.github.io/og-image.png">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600&family=Bebas+Neue&family=IBM+Plex+Mono:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -345,6 +359,9 @@ p .sting { color: var(--red); font-style: italic; }
   margin-left: -50vw;
   margin-right: -50vw;
   width: 100vw;
+  /* the decorative FREDDIE watermark sits at right:-20px and would
+     otherwise push the whole page sideways */
+  overflow: hidden;
 
   padding: 80px 0;
   background: var(--freddie-bg);
@@ -494,6 +511,22 @@ footer {
   background: linear-gradient(90deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787);
   position: relative;
   z-index: 10;
+}
+
+/* Small screens: the hero is a flex column, so the title could not shrink
+   below its own text width and pushed the page sideways. */
+@media (max-width: 640px) {
+  .hero {
+    padding: 0 22px 60px;
+  }
+
+  h1 {
+    font-size: clamp(44px, 12.5vw, 96px);
+    letter-spacing: 1px;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
 }
 </style>
 </head>
