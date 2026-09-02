@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#c0c0c0">
+<meta name="theme-color" content="#2b2233">
 <title>GAYMERS // PLAYING IDENTITY — Sims 1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 :root{
-  --face:#c0c0c0; --faceLo:#808080; --faceHi:#fff; --faceDk:#000;
-  --titleA:#08246a; --titleB:#1e5fb0; --titleC:#3f8cdc;
-  --desktop1:#d8d3c2; --desktop2:#b7b09a;
-  --red:#c9453a; --orange:#e08a2e; --yellow:#e0c62e; --green:#5aa83a;
-  --ink:#101318;
+  --face:#2b2233; --faceLo:#150f1c; --faceHi:#5c4a6b; --faceDk:#000;
+  --titleA:#ff2e88; --titleB:#a239ea; --titleC:#35d0e0;
+  --desktop1:#241a2e; --desktop2:#120c18;
+  --red:#ff4d6d; --orange:#ff9d3d; --yellow:#f5e663; --green:#4de8a0;
+  --ink:#f1e6ff;
 }
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none;touch-action:none;background:var(--desktop1);font-family:Tahoma,"MS Sans Serif",Geneva,Arial,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent}
@@ -33,17 +33,17 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .titleleft{display:flex;align-items:center;gap:6px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .titleicon{width:14px;height:14px;flex:0 0 auto;background:linear-gradient(#8eea6e,#3bb73c);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);box-shadow:0 0 0 1px #1f6b1f}
 .titlebtns{display:flex;gap:2px}
-.wbtn{width:17px;height:16px;background:var(--face);border:1px solid;border-color:var(--faceHi) var(--faceDk) var(--faceDk) var(--faceHi);font-size:9px;line-height:1;display:flex;align-items:center;justify-content:center;color:#000;font-weight:900;padding:0}
+.wbtn{width:17px;height:16px;background:var(--face);border:1px solid;border-color:var(--faceHi) var(--faceDk) var(--faceDk) var(--faceHi);font-size:9px;line-height:1;display:flex;align-items:center;justify-content:center;color:var(--ink);font-weight:900;padding:0}
 .wbtn:active{border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk)}
 .wbtn.off{color:#c33;border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk)}
 .menubar{height:20px;display:flex;align-items:center;gap:14px;padding:0 8px;font-size:10px;border-bottom:1px solid var(--faceLo);background:var(--face)}
 .menuitem{padding:1px 5px;border-radius:1px}
 .menuitem:hover{background:var(--titleB);color:#fff}
 .statusbar{height:20px;display:flex;align-items:center;gap:1px;padding:2px;background:var(--face);border-top:1px solid var(--faceHi)}
-.statusseg{flex:1;height:100%;display:flex;align-items:center;padding:0 6px;font-size:9px;color:#333;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.statusseg{flex:1;height:100%;display:flex;align-items:center;padding:0 6px;font-size:9px;color:var(--ink);border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .statusseg.grow{flex:2}
 
-.btn98{background:var(--face);border:2px solid;border-color:var(--faceHi) var(--faceDk) var(--faceDk) var(--faceHi);padding:5px 9px;font-size:10px;font-weight:700;color:#1a2027}
+.btn98{background:var(--face);border:2px solid;border-color:var(--faceHi) var(--faceDk) var(--faceDk) var(--faceHi);padding:5px 9px;font-size:10px;font-weight:700;color:var(--ink)}
 .btn98:active,.btn98.pressed{border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk);transform:translate(1px,1px)}
 .btn98:disabled{color:#8a8a8a;cursor:default}
 .well{border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff}
@@ -55,6 +55,10 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
   radial-gradient(ellipse at 50% 20%,#69b25f,#4f9752 55%,#3d8248 100%)
   ;border-right:2px solid var(--faceLo)}
 #skyStrip{position:absolute;left:0;right:0;top:0;height:16%;background:linear-gradient(180deg,#7fc6e2,#c3ecf1);border-bottom:3px solid #2f6b3a;overflow:hidden}
+#waterStrip{position:absolute;left:0;right:0;bottom:0;height:12%;background:linear-gradient(180deg,#2f7ec4,#1c5590);border-top:3px solid #163f6b;overflow:hidden;z-index:1}
+#waterStrip .wave{position:absolute;left:-10%;right:-10%;height:6px;background:rgba(255,255,255,.25);border-radius:50%}
+#waterStrip .wave{top:22%}
+#waterStrip .wave.w2{top:58%;background:rgba(255,255,255,.15)}
 #dayNightTint{position:absolute;inset:0;pointer-events:none;background:rgba(10,15,40,0);transition:background 2s linear}
 #sidewalkPattern{display:none}
 
@@ -104,7 +108,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .sprite.walking canvas{animation:bob .3s ease-in-out infinite alternate}
 @keyframes bob{to{transform:translateY(-2px)}}
 
-.speechBubble{position:absolute;left:50%;top:-58px;transform:translate(-50%,4px);background:#fff;border:2px solid #000;border-radius:6px;padding:4px 7px;font-size:8px;font-weight:700;white-space:nowrap;opacity:0;transition:.18s;pointer-events:none;box-shadow:2px 2px 0 rgba(0,0,0,.25)}
+.speechBubble{position:absolute;left:50%;top:-58px;transform:translate(-50%,4px);background:#fff;color:#221833;border:2px solid #000;border-radius:6px;padding:4px 7px;font-size:8px;font-weight:700;white-space:nowrap;opacity:0;transition:.18s;pointer-events:none;box-shadow:2px 2px 0 rgba(0,0,0,.25)}
 .speechBubble:after{content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);border:5px solid transparent;border-top-color:#000}
 .speechBubble:before{content:"";position:absolute;left:50%;bottom:-4.5px;transform:translateX(-50%);border:4px solid transparent;border-top-color:#fff;z-index:1}
 .speechBubble.show{opacity:1;transform:translate(-50%,0)}
@@ -120,7 +124,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #portraitFrame img{width:100%;height:100%;object-fit:cover;display:block}
 #portraitInfo{min-width:0}
 #simNameLbl{font-size:12px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#simPronounLbl{font-size:8px;color:#4a4a4a}
+#simPronounLbl{font-size:8px;color:#c9b6dc}
 #moodWordLbl{font-size:9px;font-weight:900;margin-top:3px}
 
 #moodGaugeWrap{padding:8px 6px 4px;text-align:center}
@@ -129,13 +133,13 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #moodNeedle{position:absolute;bottom:2px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid #1a1a1a;transform:translateX(-50%);transition:left .5s ease}
 #moodFace{flex:0 0 auto;width:28px;height:28px}
 #moodFace svg{display:block}
-#moodPct{font-size:8px;margin-top:4px;font-weight:700;color:#333}
+#moodPct{font-size:8px;margin-top:4px;font-weight:700;color:var(--ink)}
 
 .need{display:grid;grid-template-columns:15px 50px 1fr 26px;gap:6px;align-items:center;margin:5px 0}
-.need .nico{width:14px;height:14px;color:#3a4a52;display:flex;align-items:center;justify-content:center}
+.need .nico{width:14px;height:14px;color:#c9b6dc;display:flex;align-items:center;justify-content:center}
 .need .nico svg{display:block}
-.need .nlbl{font-size:8px;font-weight:900;color:#333}
-.need .nval{font-size:8px;text-align:right;color:#555}
+.need .nlbl{font-size:8px;font-weight:900;color:var(--ink)}
+.need .nval{font-size:8px;text-align:right;color:#c9b6dc}
 .track98{height:11px;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff;overflow:hidden}
 .track98 i{display:block;height:100%;background:repeating-linear-gradient(90deg,#4f9a3c 0 6px,#63b84e 6px 8px)}
 .track98 i.low{background:repeating-linear-gradient(90deg,#c9453a 0 6px,#e0655a 6px 8px)}
@@ -144,26 +148,26 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #speedRow{display:flex;gap:4px;padding:6px;justify-content:space-between}
 #speedRow .btn98{flex:1;padding:6px 0}
 #freeWillRow{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;font-size:9px;font-weight:700}
-#clockRow{display:flex;justify-content:space-between;padding:2px 8px 6px;font-size:9px;color:#333}
+#clockRow{display:flex;justify-content:space-between;padding:2px 8px 6px;font-size:9px;color:var(--ink)}
 
 #panelActions{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px}
 #panelActions .btn98{padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:2px}
 #panelActions .btn98 b{font-size:14px}
 #panelActions .btn98 span{font-size:7px}
 
-#eventLog{max-height:96px;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain;font-size:8px;padding:6px;line-height:1.5;color:#333}
-#eventLog div{border-bottom:1px dotted #aaa;padding:2px 0}
+#eventLog{max-height:96px;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain;font-size:8px;padding:6px;line-height:1.5;color:var(--ink)}
+#eventLog div{border-bottom:1px dotted #6b5a7a;padding:2px 0}
 
 /* ---------- floating windows ---------- */
 .floatWin{position:absolute;z-index:200;display:none;min-width:220px}
 .floatWin.open{display:block}
 .floatBody{padding:9px;max-height:78vh;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain}
 
-#relList .relRow{display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #d3d3d3}
+#relList .relRow{display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #4a3a58}
 #relList .relRow:last-child{border-bottom:0}
 .relDot{width:26px;height:26px;border:2px solid #1a1a1a}
-.relName{font-size:10px;font-weight:900}
-.relTier{font-size:7px;color:#555;margin:2px 0 3px}
+.relName{font-size:10px;font-weight:900;color:var(--ink)}
+.relTier{font-size:7px;color:#c9b6dc;margin:2px 0 3px}
 .relBarWrap{height:8px;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff}
 .relBarWrap i{display:block;height:100%;background:linear-gradient(90deg,#d4569a,#f0a0c9)}
 .relUnknown{opacity:.45}
@@ -179,10 +183,10 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #casWindow{width:min(560px,94vw)}
 .casStep{padding:13px}
 .casStep h3{margin:0 0 4px;font-size:14px}
-.casStep p{margin:0 0 10px;font-size:9px;color:#444;line-height:1.4}
+.casStep p{margin:0 0 10px;font-size:9px;color:#d8c9e8;line-height:1.4}
 .casField{margin-bottom:10px}
-.casField label{display:block;font-size:8px;font-weight:900;margin-bottom:3px;color:#333}
-.casField input[type=text]{width:100%;padding:6px 7px;font-size:11px;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo)}
+.casField label{display:block;font-size:8px;font-weight:900;margin-bottom:3px;color:var(--ink)}
+.casField input[type=text]{width:100%;padding:6px 7px;font-size:11px;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff;color:#221833}
 .pronounRow{display:flex;gap:5px;flex-wrap:wrap}
 .pronounBtn{padding:6px 9px;font-size:8px}
 .pronounBtn.sel{background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff;border-color:#000}
@@ -192,11 +196,11 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .faceGuide{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:52%;aspect-ratio:.8;border:2px dashed rgba(255,255,255,.85);border-radius:46%;pointer-events:none}
 #pixPreviewWrap{display:flex;align-items:center;gap:9px;margin-bottom:8px}
 #pixPreviewWrap canvas{width:64px;height:112px;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#e8e3d4}
-#pixPreviewWrap span{font-size:8px;color:#555;line-height:1.4}
+#pixPreviewWrap span{font-size:8px;color:#c9b6dc;line-height:1.4}
 .casBtnRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 .casBtnRow .btn98{flex:1}
 .captureInput{position:absolute;width:1px;height:1px;opacity:0}
-#casStatus{font-size:8px;color:#555;min-height:12px}
+#casStatus{font-size:8px;color:#c9b6dc;min-height:12px}
 .casFooter{display:flex;justify-content:flex-end;gap:6px;padding:9px;border-top:2px solid;border-color:var(--faceHi) transparent transparent}
 
 /* welcome dialog */
@@ -208,13 +212,13 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #taskbarItems{flex:1;display:flex;gap:4px;overflow-x:auto}
 .taskItem{padding:4px 10px;font-size:9px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .taskItem.active{border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk)}
-#trayClock{padding:4px 9px;font-size:9px;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff}
+#trayClock{padding:4px 9px;font-size:9px;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff;color:#221833}
 
 #toastWrap{position:absolute;right:12px;top:48px;z-index:400;display:flex;flex-direction:column;gap:6px;pointer-events:none}
 .toast98{width:250px;background:var(--face);border:2px solid;border-color:var(--faceHi) var(--faceDk) var(--faceDk) var(--faceHi);box-shadow:3px 3px 8px rgba(0,0,0,.3);opacity:0;transform:translateX(14px);transition:.25s;pointer-events:auto}
 .toast98.show{opacity:1;transform:translateX(0)}
 .toast98 .tHead{background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff;font-size:8px;font-weight:900;padding:3px 6px;display:flex;justify-content:space-between}
-.toast98 .tBody{padding:6px 7px;font-size:8px;color:#333;line-height:1.4}
+.toast98 .tBody{padding:6px 7px;font-size:8px;color:var(--ink);line-height:1.4}
 .toast98 .tBody.withImg{display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:center;padding:6px}
 .toast98 .tBody.withImg img{width:52px;height:52px;object-fit:cover;border-radius:6px;border:2px solid #1c1f24}
 
@@ -236,17 +240,18 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 
 /* ================= landing screen ================= */
 #desktop.hidden{display:none}
-#landingScreen{position:fixed;inset:0;z-index:50;background:#171310;overflow:hidden}
+#landingScreen{position:fixed;inset:0;z-index:50;background:#120c18;overflow:hidden}
 #landingScreen.hidden{display:none}
 #landingCam,#landingFallbackBg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#landingCam{background:#171310}
+#landingCam{background:#120c18}
 #landingFallbackBg{display:none;background:
   repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 2px,transparent 2px 4px),
-  linear-gradient(160deg,#2b241c,#171310)}
+  linear-gradient(160deg,var(--desktop1),var(--desktop2))}
 #landingTint{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.32),rgba(0,0,0,.05) 35%,rgba(0,0,0,.1) 60%,rgba(0,0,0,.45))}
 
 #landingBrand{position:absolute;left:20px;top:18px;z-index:2;width:auto}
 #landingBrand .titlebar{cursor:default;white-space:nowrap}
+#landingBrand:after{content:"";display:block;height:3px;background:linear-gradient(90deg,#ff4d6d,#ff9d3d,#f5e663,#4de8a0,#4d9dff,#a239ea)}
 
 #landingWeather{position:absolute;top:18px;right:20px;z-index:2;display:flex;align-items:center;gap:10px;padding:7px 12px;font-family:Tahoma,Arial,sans-serif;font-size:10px;font-weight:700;color:var(--ink)}
 #landingWeather span{white-space:nowrap}
@@ -259,22 +264,25 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #landingProfileCard .plumbTiny:after{bottom:0;border-top:12px solid #3bb73c}
 #landingProfileText{padding:6px 3px 1px;font-family:Tahoma,Arial,sans-serif}
 #landingProfileName{font-size:13px;font-weight:900;color:var(--ink)}
-#landingProfilePron{font-size:8px;letter-spacing:.03em;color:#5c6169;margin-top:2px}
+#landingProfilePron{font-size:8px;letter-spacing:.03em;color:#c9b6dc;margin-top:2px}
 
 #landingNowPlaying{position:absolute;top:280px;right:20px;width:184px;z-index:2}
 #landingNpBody{padding:8px;display:flex;gap:8px;align-items:center}
+#landingSpotifyJam{position:absolute;top:366px;right:20px;width:184px;z-index:2}
+#joinJamLink{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;text-align:center;text-decoration:none;background:#1db954;color:#03170a;border-color:#7bf0a3 #0a3319 #0a3319 #7bf0a3}
+#joinJamLink:active{border-color:#0a3319 #7bf0a3 #7bf0a3 #0a3319;transform:translate(1px,1px)}
 #npPlayBtn{flex:0 0 auto;width:26px;height:26px;padding:0;border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center}
 .npInfo{min-width:0;flex:1;font-family:Tahoma,Arial,sans-serif}
 #npTrack{font-size:10px;font-weight:900;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#npArtist{font-size:8px;color:#5c6169;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#npArtist{font-size:8px;color:#c9b6dc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .npBarWrap{height:8px;margin-top:5px;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff;overflow:hidden}
 #npBar{height:100%;width:0;background:repeating-linear-gradient(90deg,#4f9a3c 0 5px,#63b84e 5px 7px);transition:width 1s linear}
-.npTime{font-size:7px;color:#5c6169;margin-top:3px}
+.npTime{font-size:7px;color:#c9b6dc;margin-top:3px}
 
 #landingNav{position:absolute;left:20px;top:132px;z-index:2;display:flex;flex-direction:column;gap:6px;width:176px}
 .navItem{display:flex;align-items:center;gap:9px;text-align:left;width:100%;padding:9px 11px}
 .navItem .navIco{width:14px;height:14px;flex:0 0 auto}
-.navItem.active{border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk);background:#cdf0b8}
+.navItem.active{border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk);background:#4a2a5c;box-shadow:inset 0 0 0 1px #ff6fd0}
 
 #landingStage{position:absolute;left:50%;top:52%;transform:translate(-50%,-46%);z-index:1;text-align:center}
 #landingStage canvas{width:150px;height:262px;image-rendering:pixelated;filter:drop-shadow(0 14px 10px rgba(0,0,0,.5));transform-origin:50% 100%}
@@ -284,12 +292,12 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #landingStage .plumb:before,#landingStage .plumb:after{content:"";position:absolute;left:50%;transform:translateX(-50%);border-left:13px solid transparent;border-right:13px solid transparent}
 #landingStage .plumb:before{top:0;border-bottom:20px solid #8eea6e}
 #landingStage .plumb:after{bottom:0;border-top:20px solid #3bb73c}
-#landingSpeech{position:absolute;left:58%;top:6%;background:rgba(251,254,254,.96);color:var(--ink);border:2px solid #1c1f24;border-radius:9px;padding:6px 11px;font-family:Tahoma,Arial,sans-serif;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:2px 3px 0 rgba(0,0,0,.3)}
+#landingSpeech{position:absolute;left:58%;top:6%;background:rgba(251,254,254,.96);color:#221833;border:2px solid #1c1f24;border-radius:9px;padding:6px 11px;font-family:Tahoma,Arial,sans-serif;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:2px 3px 0 rgba(0,0,0,.3)}
 #landingSpeech .heartIco{color:#c4506e;margin-right:4px}
 
 #landingWidgets{position:absolute;left:20px;bottom:20px;z-index:2;width:284px;display:flex;flex-direction:column;gap:10px}
 #landingMinimapBody{padding:9px}
-.miniHead{display:flex;justify-content:space-between;font-family:Tahoma,Arial,sans-serif;font-size:9px;color:#5c6169;margin-bottom:6px}
+.miniHead{display:flex;justify-content:space-between;font-family:Tahoma,Arial,sans-serif;font-size:9px;color:#c9b6dc;margin-bottom:6px}
 .miniBody{position:relative;height:118px;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);overflow:hidden;background:radial-gradient(ellipse at 50% 20%,#69b25f,#4f9752 55%,#3d8248 100%)}
 .miniDot{position:absolute;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;border:1px solid #1c1f24}
 .miniDot.d1{left:18%;top:22%;background:#c4384f}
@@ -303,7 +311,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 
 #landingCasBody{padding:12px;text-align:center}
 #landingQr{width:88px;height:88px;background:#fff;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);padding:4px;display:block;margin:0 auto}
-.casPanelNote{font-family:Tahoma,Arial,sans-serif;font-size:9px;color:#5c6169;line-height:1.4;margin-top:8px}
+.casPanelNote{font-family:Tahoma,Arial,sans-serif;font-size:9px;color:#c9b6dc;line-height:1.4;margin-top:8px}
 #landingOpenCas{margin-top:10px;width:100%}
 
 #landingRightStack{position:absolute;right:20px;bottom:20px;z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
@@ -313,7 +321,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .chatLine .c1{color:#a5522f}.chatLine .c2{color:#2f8a6f}.chatLine .c3{color:#c4384f}.chatLine .c4{color:#2f6b9a}
 #landingChatLines{max-height:100px;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain}
 .chatInputRow{display:flex;gap:5px;margin-top:7px}
-.chatInputRow input{flex:1;background:#fff;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);padding:5px 7px;font-family:Tahoma,Arial,sans-serif;font-size:10px;color:var(--ink)}
+.chatInputRow input{flex:1;background:#fff;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);padding:5px 7px;font-family:Tahoma,Arial,sans-serif;font-size:10px;color:#221833}
 .chatInputRow button{width:28px}
 
 #landingNotes{display:flex;gap:12px}
@@ -328,6 +336,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
   #landingBrand .titleleft span:last-child{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   #landingWeather{display:none}
   #landingNowPlaying{display:none}
+  #landingSpotifyJam{display:none}
   #landingProfileCard{top:max(10px,env(safe-area-inset-top));right:10px;width:74px;padding:3px}
   #landingProfileText{padding:4px 2px 0}
   #landingProfileName{font-size:10px}#landingProfilePron{font-size:6px}
@@ -379,6 +388,11 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
         <div class="npTime"><span id="npElapsed">0:00</span> / <span id="npTotal">3:40</span></div>
       </div>
     </div>
+  </div>
+
+  <div id="landingSpotifyJam">
+    <!-- placeholder target — swap for the real Spotify Jam share link -->
+    <a id="joinJamLink" class="btn98" href="https://open.spotify.com/" target="_blank" rel="noopener">🎧 JOIN THE JAM</a>
   </div>
 
   <div id="landingNav">
@@ -468,6 +482,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
         <div id="skyStrip">
           <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
         </div>
+        <div id="waterStrip"><div class="wave"></div><div class="wave w2"></div></div>
         <div id="sidewalkPattern"></div>
         <div id="dayNightTint"></div>
         <div id="trailLayer"></div>
@@ -505,26 +520,14 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
           </svg>
           <div class="signPlaque"><b>TOGETHER</b><span>Community Space</span></div>
         </div>
-        <div id="bThrift" class="building" data-loc="thrift" style="left:13%;top:74%">
-          <svg class="bIllus" viewBox="0 0 160 160" width="132" height="132">
-            <ellipse cx="80" cy="150" rx="56" ry="8" fill="#000" opacity=".22"/>
-            <rect x="28" y="66" width="104" height="82" rx="3" fill="#256b58" stroke="#12352b" stroke-width="3"/>
-            <rect x="28" y="58" width="104" height="10" fill="#1c5646" stroke="#12352b" stroke-width="2"/>
-            <path d="M30 66 L44 66 L40 84 L26 84 Z" fill="#f2ede0"/>
-            <path d="M44 66 L58 66 L56 84 L40 84 Z" fill="#256b58"/>
-            <path d="M58 66 L72 66 L72 84 L56 84 Z" fill="#f2ede0"/>
-            <path d="M72 66 L86 66 L88 84 L72 84 Z" fill="#256b58"/>
-            <path d="M86 66 L100 66 L104 84 L88 84 Z" fill="#f2ede0"/>
-            <path d="M100 66 L114 66 L120 84 L104 84 Z" fill="#256b58"/>
-            <path d="M114 66 L130 66 L136 84 L120 84 Z" fill="#f2ede0"/>
-            <rect x="40" y="92" width="80" height="30" fill="#0f382e" stroke="#12352b" stroke-width="2"/>
-            <line x1="46" y1="96" x2="114" y2="96" stroke="#8fb8ab" stroke-width="2"/>
-            <path d="M52 96v6M58 96v6M64 96v6" stroke="#e0d0a0" stroke-width="4" stroke-linecap="round"/>
-            <path d="M74 96v6M80 96v6M86 96v6" stroke="#d68fbc" stroke-width="4" stroke-linecap="round"/>
-            <path d="M96 96v6M102 96v6M108 96v6" stroke="#8fc4d6" stroke-width="4" stroke-linecap="round"/>
-            <rect x="66" y="124" width="28" height="24" fill="#12352b" stroke="#0a201a" stroke-width="2"/>
-          </svg>
-          <div class="signPlaque"><b>THRIFT</b><span>Thrift &amp; Wardrobe</span></div>
+        <div id="bFincken" class="building" data-loc="fincken" style="left:13%;top:74%">
+          <div class="bIllus photoBuilding">
+            <div class="photoGlow"></div>
+            <img class="photoFrame" src="assets/locations/fincken-exterior.jpg" alt="Fincken, Bergen">
+            <div class="miniDisco"></div>
+            <div class="miniSign">FINCKEN</div>
+          </div>
+          <div class="signPlaque"><b>FINCKEN</b><span>Bergen's Queer Bar Since '92</span></div>
         </div>
         <div id="bSafe" class="building" data-loc="safe" style="left:50%;top:50%">
           <svg class="bIllus" viewBox="0 0 160 160" width="132" height="132">
@@ -695,10 +698,10 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
     <div class="titlebtns"><button class="wbtn" data-close="helpWindow">×</button></div>
   </div>
   <div class="floatBody" style="font-size:9px;line-height:1.6">
-    Click any building to send your Sim there — <b>Club</b>, <b>Community Center</b>, <b>Thrift</b>, <b>Safe Space</b>, <b>Chat Zone</b> or <b>Waterfront</b>.<br><br>
+    Click any building to send your Sim there — <b>Club</b>, <b>Community Center</b>, <b>Fincken</b>, <b>Safe Space</b>, <b>Chat Zone</b> or <b>Waterfront</b>.<br><br>
     Every place changes your needs differently. Let them run low too long and mood drops.<br><br>
     Turn <b>Free Will</b> on and your Sim decides for herself when you stop clicking.<br><br>
-    <b>Thrift</b> sometimes hands you a random item. <b>Club</b>, <b>Chat Zone</b> and <b>Community</b> build relationships with the people who hang out there.<br><br>
+    <b>Fincken</b> sometimes hands you a random item. <b>Club</b>, <b>Chat Zone</b> and <b>Community</b> build relationships with the people who hang out there.<br><br>
     Use <b>MAKE YOUR CHARACTER</b> to set your name, pronouns and photo — it becomes your portrait and your pixel face in the room.
   </div>
 </section>
@@ -785,8 +788,8 @@ const LOCATIONS={
    lines:["Teal carpet, a curved wood bar, red light spilling over the plants.","The bassline finds your feet before you decide to dance.","Track lights and neon — nobody here is asking you to explain yourself."]},
  community:{el:"bCommunity",label:"COMMUNITY CENTER",x:74,y:28,deltas:{social:14,identity:16,comfort:10},npc:"theo",
    lines:["Someone remembers your name from last time.","A flyer wall, a coffee pot, a room that keeps its promises."]},
- thrift:{el:"bThrift",label:"THRIFT",x:13,y:74,deltas:{fun:12,identity:14,comfort:4},npc:"mia",giveItem:true,
-   lines:["The racks smell like other people's closets and possibility.","You try something on that isn't quite you yet — but could be."]},
+ fincken:{el:"bFincken",label:"FINCKEN",x:13,y:74,deltas:{fun:12,identity:14,comfort:4},npc:"mia",giveItem:true,
+   lines:["Right on the party street, doors open since '92 — Bergen's oldest queer hangout.","You do you, and do it fiercely — nobody here is checking.","Saturday mornings it's Kafé Fincken: coffee, pastries, the night before still on everyone's breath."]},
  safe:{el:"bSafe",label:"SAFE HERE",x:50,y:50,deltas:{comfort:20,identity:12,energy:14,social:2},npc:"rowan",
    lines:["Nothing is required of you here. That's the whole point.","You exhale a breath you didn't know you were holding."]},
  chat:{el:"bChat",label:"CHAT ZONE",x:84,y:70,deltas:{social:20,fun:10},npc:"noor",
@@ -797,7 +800,7 @@ const LOCATIONS={
 const NPCS={
  sasha:{name:"Sasha",pron:"they/them",outfit:"#7a2f66",tie:null,hair:"#20141c",loc:"club",known:false,score:6},
  theo:{name:"Theo",pron:"he/him",outfit:"#c47a2e",tie:null,hair:"#2b1c10",loc:"community",known:false,score:6},
- mia:{name:"Mia",pron:"she/her",outfit:"#2f8a6f",tie:null,hair:"#3a2418",loc:"thrift",known:false,score:6},
+ mia:{name:"Mia",pron:"she/her",outfit:"#2f8a6f",tie:null,hair:"#3a2418",loc:"fincken",known:false,score:6},
  rowan:{name:"Rowan",pron:"they/them",outfit:"#5470c4",tie:null,hair:"#171a22",loc:"safe",known:false,score:6},
  noor:{name:"Noor",pron:"she/her",outfit:"#c4508f",tie:null,hair:"#241318",loc:"chat",known:false,score:6},
  kai:{name:"Kai",pron:"he/him",outfit:"#2f7ec4",tie:null,hair:"#1c1c1c",loc:"waterfront",known:false,score:6}
@@ -902,8 +905,8 @@ function buildTrail(){
  const d="M13,74 Q30,66 50,50 Q35,40 18,34 Q45,25 74,28 Q88,45 84,70 Q68,80 50,84";
  layer.innerHTML=
    '<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">'+
-   '<path d="'+d+'" fill="none" stroke="#8a6a3c" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>'+
-   '<path d="'+d+'" fill="none" stroke="#e8d5a3" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>'+
+   '<path d="'+d+'" fill="none" stroke="#8a6a3c" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>'+
+   '<path d="'+d+'" fill="none" stroke="#e8d5a3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>'+
    '</svg>';
 }
 
@@ -973,7 +976,7 @@ function arrive(key){
  const line=loc.lines[Math.floor(Math.random()*loc.lines.length)];
  say(line);
  logEvent(loc.label+": "+Object.entries(loc.deltas).map(([k,v])=>(v>0?"+":"")+v+" "+k).join(", "));
- toast(loc.label,line,key==="club"?"assets/locations/landmark-exterior.jpg":null);
+ toast(loc.label,line,key==="club"?"assets/locations/landmark-exterior.jpg":key==="fincken"?"assets/locations/fincken-exterior.jpg":null);
  $("statusText").textContent="At "+loc.label+". "+line;
 
  if(loc.giveItem && Math.random()<.7) giveRandomItem();
@@ -1029,7 +1032,7 @@ function freeWillTick(){
  const scores={
    club:(100-n.fun)*.7+(100-n.social)*.3,
    community:(100-n.social)*.5+(100-n.identity)*.5,
-   thrift:(100-n.identity)*.6+(100-n.fun)*.3,
+   fincken:(100-n.identity)*.6+(100-n.fun)*.3,
    safe:(100-n.comfort)*.6+(100-n.identity)*.3,
    chat:(100-n.social)*.75,
    waterfront:(100-n.energy)*.55+(100-n.comfort)*.35
@@ -1055,14 +1058,14 @@ function renderRelationships(){
  $("relList").innerHTML = state.relOrder.map(key=>{
    const n=NPCS[key];
    if(!n.known) return '<div class="relRow relUnknown"><div class="relDot" style="background:#999"></div><div><div class="relName">???</div><div class="relTier">Not met yet — visit '+LOCATIONS[n.loc].label+'</div></div></div>';
-   return '<div class="relRow"><div class="relDot" style="background:'+n.outfit+'"></div><div><div class="relName">'+n.name+' <span style="font-weight:400;color:#666">· '+n.pron+'</span></div><div class="relTier">'+tierFor(n.score)+' · '+LOCATIONS[n.loc].label+'</div><div class="relBarWrap"><i style="width:'+Math.round(n.score)+'%"></i></div></div></div>';
+   return '<div class="relRow"><div class="relDot" style="background:'+n.outfit+'"></div><div><div class="relName">'+n.name+' <span style="font-weight:400;color:#c9b6dc">· '+n.pron+'</span></div><div class="relTier">'+tierFor(n.score)+' · '+LOCATIONS[n.loc].label+'</div><div class="relBarWrap"><i style="width:'+Math.round(n.score)+'%"></i></div></div></div>';
  }).join("");
 }
 function giveRandomItem(){
  const item=ITEM_POOL[Math.floor(Math.random()*ITEM_POOL.length)];
  state.inventory.push(item);
  sndPickup();
- toast("THRIFT FIND",'You found: "'+item.name+'"');
+ toast("FINCKEN FIND",'You found: "'+item.name+'"');
  logEvent("Inventory + "+item.name);
  renderInventory();
 }
@@ -1330,7 +1333,7 @@ function enterGame(){
 }
 const TALK_LINES=[
  ["Jax","you coming to the dancefloor?","maybe in a bit","c1"],
- ["Meli","your fit is fire","thank you, found it at the thrift","c2"],
+ ["Meli","your fit is fire","thank you, found it at Fincken","c2"],
  ["Rae","reggae + food tomorrow?","say less, i'm in","c4"],
  ["Jax","who's playing tonight?","some local DJ i think, it's good","c1"],
  ["Meli","this song though","right?? turn it up","c2"],
