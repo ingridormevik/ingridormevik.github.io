@@ -98,14 +98,19 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 
 .sprite{position:absolute;z-index:3;transform:translate(-50%,-100%);transition:left .05s linear,top .05s linear;pointer-events:none}
 .sprite .shadow{width:26px;height:8px;border-radius:50%;background:rgba(0,0,0,.32);margin:0 auto;filter:blur(1px)}
-.sprite canvas{display:block;image-rendering:pixelated}
+.avatarBubble{border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.45);background:#3a2e46}
+.avatarBubble img{width:100%;height:100%;object-fit:cover;display:block}
+.avatarBubble .initial{color:#fff;font-weight:900;font-family:Tahoma,Arial,sans-serif}
+.sprite .avatarBubble{width:52px;height:52px}
+.sprite .avatarBubble .initial{font-size:20px}
+#player .avatarBubble{width:60px;height:60px;border-color:#ff6fd0}
 .sprite .plumb{position:absolute;left:50%;top:-30px;width:22px;height:34px;transform:translateX(-50%);animation:plumbfloat 1.6s ease-in-out infinite}
 .sprite .plumb:before,.sprite .plumb:after{content:"";position:absolute;left:50%;transform:translateX(-50%);border-left:11px solid transparent;border-right:11px solid transparent}
 .sprite .plumb:before{top:0;border-bottom:17px solid #8eea6e}
 .sprite .plumb:after{bottom:0;border-top:17px solid #3bb73c}
 @keyframes plumbfloat{50%{transform:translateX(-50%) translateY(-5px)}}
 .sprite .tag{position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);background:rgba(255,255,255,.92);border:1px solid #000;padding:1px 5px;font-size:7px;font-weight:900;white-space:nowrap;color:#222}
-.sprite.walking canvas{animation:bob .3s ease-in-out infinite alternate}
+.sprite.walking .avatarBubble{animation:bob .3s ease-in-out infinite alternate}
 @keyframes bob{to{transform:translateY(-2px)}}
 
 .speechBubble{position:absolute;left:50%;top:-58px;transform:translate(-50%,4px);background:#fff;color:#221833;border:2px solid #000;border-radius:6px;padding:4px 7px;font-size:8px;font-weight:700;white-space:nowrap;opacity:0;transition:.18s;pointer-events:none;box-shadow:2px 2px 0 rgba(0,0,0,.25)}
@@ -190,12 +195,17 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .pronounRow{display:flex;gap:5px;flex-wrap:wrap}
 .pronounBtn{padding:6px 9px;font-size:8px}
 .pronounBtn.sel{background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff;border-color:#000}
+.traitRow{display:flex;gap:5px;flex-wrap:wrap}
+.traitBtn{padding:6px 9px;font-size:8px}
+.traitBtn.sel{background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff;border-color:#000}
+.traitPills{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px}
+.traitPill{background:linear-gradient(90deg,var(--titleA),var(--titleC));color:#fff;font-size:6.5px;font-weight:900;letter-spacing:.03em;padding:2px 7px;border-radius:9px;white-space:nowrap}
 #camWrap{position:relative;width:100%;height:230px;background:#111;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);overflow:hidden;margin-bottom:8px}
 #selfCam,#selfPreview{width:100%;height:100%;object-fit:cover;display:block;transform:scaleX(-1)}
 #selfPreview{position:absolute;inset:0;display:none;transform:none}
 .faceGuide{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:52%;aspect-ratio:.8;border:2px dashed rgba(255,255,255,.85);border-radius:46%;pointer-events:none}
 #pixPreviewWrap{display:flex;align-items:center;gap:9px;margin-bottom:8px}
-#pixPreviewWrap canvas{width:64px;height:112px;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#e8e3d4}
+#pixPreviewWrap .avatarBubble{width:56px;height:56px;flex:0 0 auto;border-color:#ff6fd0}
 #pixPreviewWrap span{font-size:8px;color:#c9b6dc;line-height:1.4}
 .casBtnRow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
 .casBtnRow .btn98{flex:1}
@@ -285,8 +295,11 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .navItem.active{border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk);background:#4a2a5c;box-shadow:inset 0 0 0 1px #ff6fd0}
 
 #landingStage{position:absolute;left:50%;top:52%;transform:translate(-50%,-46%);z-index:1;text-align:center}
-#landingStage canvas{width:150px;height:262px;image-rendering:pixelated;filter:drop-shadow(0 14px 10px rgba(0,0,0,.5));transform-origin:50% 100%}
-#landingStage canvas.dancing{animation:danceWiggle .5s ease-in-out 3}
+#landingStage .avatarWrap{position:relative;width:128px;height:128px;margin:0 auto}
+#landingStage .avatarBubble{width:100%;height:100%;border-color:#ff6fd0;filter:drop-shadow(0 14px 10px rgba(0,0,0,.5));transform-origin:50% 100%}
+#landingStage .pulseRing{position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(255,111,208,.65);animation:pulseRing 2.4s ease-out infinite;pointer-events:none}
+@keyframes pulseRing{0%{transform:scale(.88);opacity:.85}100%{transform:scale(1.28);opacity:0}}
+#landingStage .avatarBubble.dancing{animation:danceWiggle .5s ease-in-out 3}
 @keyframes danceWiggle{0%,100%{transform:rotate(0) translateY(0)}25%{transform:rotate(-6deg) translateY(-5px)}50%{transform:rotate(0) translateY(-10px)}75%{transform:rotate(6deg) translateY(-5px)}}
 #landingStage .plumb{position:absolute;left:50%;top:-34px;width:26px;height:40px;transform:translateX(-50%);animation:plumbfloat 1.6s ease-in-out infinite}
 #landingStage .plumb:before,#landingStage .plumb:after{content:"";position:absolute;left:50%;transform:translateX(-50%);border-left:13px solid transparent;border-right:13px solid transparent}
@@ -344,7 +357,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
   .navItem{flex:1;flex-direction:column;gap:3px;padding:6px 1px;text-align:center;font-size:6.5px}
   .navItem .navIco{width:15px;height:15px}
   #landingStage{top:44%}
-  #landingStage canvas{width:110px;height:192px}
+  #landingStage .avatarWrap{width:96px;height:96px}
   #landingSpeech{left:50%;top:8%;transform:translateX(-50%);font-size:10px;white-space:normal;max-width:70vw;text-align:center}
   #landingWidgets{display:none}
   #landingRightStack{display:none}
@@ -374,6 +387,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
     <div id="landingProfileText">
       <div id="landingProfileName">INGRID</div>
       <div id="landingProfilePron">pronouns: she/her</div>
+      <div class="traitPills" id="landingTraitPills"></div>
     </div>
   </div>
 
@@ -405,8 +419,11 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
   </div>
 
   <div id="landingStage">
-    <div class="plumb"></div>
-    <canvas id="landingPlayerCanvas" width="32" height="56"></canvas>
+    <div class="avatarWrap">
+      <div class="plumb"></div>
+      <div class="pulseRing"></div>
+      <div class="avatarBubble"><img id="landingAvatarImg" alt=""></div>
+    </div>
     <div id="landingSpeech"><span class="heartIco">♥</span><span id="landingSpeechText">Reggae + food tomorrow?</span></div>
   </div>
 
@@ -417,7 +434,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
         <div class="miniHead"><span>N</span><span>+ −</span></div>
         <div class="miniBody">
           <div class="miniDot d1">♪</div><div class="miniDot d2">♦</div><div class="miniDot d3">☺</div>
-          <div class="miniPlayer"><img src="assets/player/ingrid-portrait.jpg" alt=""></div>
+          <div class="miniPlayer"><img id="miniPlayerImg" src="assets/player/ingrid-portrait.jpg" alt=""></div>
         </div>
         <div class="miniFoot"><b>LANDMARK</b><span><span class="liveDot">●</span> LIVE · <span id="miniCount">24</span> people</span></div>
       </div>
@@ -589,7 +606,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
         <div id="player" class="sprite">
           <div class="speechBubble" id="playerBubble"></div>
           <div class="plumb"></div>
-          <canvas id="playerCanvas" width="32" height="56" style="width:72px;height:126px"></canvas>
+          <div class="avatarBubble"><img id="playerAvatarImg" alt=""></div>
           <div class="shadow"></div>
           <div class="tag" id="playerTag">YOU</div>
         </div>
@@ -603,6 +620,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
               <div id="simNameLbl">YOU</div>
               <div id="simPronounLbl">pronouns: —</div>
               <div id="moodWordLbl">OKAY</div>
+              <div class="traitPills" id="simTraitPills"></div>
             </div>
           </div>
         </div>
@@ -702,7 +720,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
     Every place changes your needs differently. Let them run low too long and mood drops.<br><br>
     Turn <b>Free Will</b> on and your Sim decides for herself when you stop clicking.<br><br>
     <b>Fincken</b> sometimes hands you a random item. <b>Club</b>, <b>Chat Zone</b> and <b>Community</b> build relationships with the people who hang out there.<br><br>
-    Use <b>MAKE YOUR CHARACTER</b> to set your name, pronouns and photo — it becomes your portrait and your pixel face in the room.
+    Use <b>MAKE YOUR CHARACTER</b> to set your name, pronouns, photo and traits — it becomes your portrait and your avatar bubble in the room.
   </div>
 </section>
 
@@ -729,6 +747,20 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
         <button class="btn98 pronounBtn" data-p="custom">custom…</button>
       </div>
     </div>
+    <div class="casField">
+      <label>LEANING — pick up to 3</label>
+      <div class="traitRow" id="traitRow">
+        <button class="btn98 traitBtn" data-t="PLAYFUL">playful</button>
+        <button class="btn98 traitBtn" data-t="LOUD">loud</button>
+        <button class="btn98 traitBtn" data-t="MISCHIEVOUS">mischievous</button>
+        <button class="btn98 traitBtn" data-t="SOFT">soft</button>
+        <button class="btn98 traitBtn" data-t="GENTLE">gentle</button>
+        <button class="btn98 traitBtn" data-t="BOLD">bold</button>
+        <button class="btn98 traitBtn" data-t="FIERCE">fierce</button>
+        <button class="btn98 traitBtn" data-t="DREAMY">dreamy</button>
+        <button class="btn98 traitBtn" data-t="CHAOTIC">chaotic</button>
+      </div>
+    </div>
 
     <div class="casField">
       <label>PHOTO</label>
@@ -745,8 +777,8 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
         <button class="btn98" id="snapSelfieBtn">SNAP</button>
       </div>
       <div id="pixPreviewWrap">
-        <canvas id="pixPreviewCanvas" width="32" height="56"></canvas>
-        <span>This is how you'll look walking around the room — the same photo, pixelated.</span>
+        <div class="avatarBubble"><img id="pixPreviewImg" alt=""></div>
+        <span>This is your map avatar — your photo, cropped to a circle.</span>
       </div>
       <div id="casStatus">Upload or snap a photo, then finish below.</div>
     </div>
@@ -827,7 +859,7 @@ const FLAVOR_EVENTS=[
 
 /* ================= state ================= */
 const state={
- name:"YOU", pronoun:"she/her", photoData:null, faceImg:null,
+ name:"YOU", pronoun:"she/her", photoData:null, traits:[],
  needs:{energy:78,social:70,fun:74,hunger:66,comfort:72,identity:60},
  x:63,y:60,target:null,walking:false,
  freeWill:true, paused:false, speed:1, lastManual:Date.now(),
@@ -837,66 +869,11 @@ const state={
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 const $=id=>document.getElementById(id);
 
-/* ================= pixel sprite rendering ================= */
-function makeFaceThumb(img,size){
- size=size||20;
- const srcW=img.naturalWidth||img.width, srcH=img.naturalHeight||img.height;
- if(!srcW||!srcH)return null;
- const side=Math.min(srcW,srcH);
- const sx=(srcW-side)/2, sy=Math.max(0,(srcH-side)*0.28);
- let cur=document.createElement("canvas");
- cur.width=side; cur.height=side;
- cur.getContext("2d").drawImage(img,sx,sy,side,side,0,0,side,side);
- let curSize=side;
- while(curSize/2>=size){
-   const nextSize=Math.max(size,Math.floor(curSize/2));
-   const next=document.createElement("canvas");
-   next.width=nextSize; next.height=nextSize;
-   const nctx=next.getContext("2d");
-   nctx.imageSmoothingEnabled=true; nctx.imageSmoothingQuality="high";
-   nctx.drawImage(cur,0,0,curSize,curSize,0,0,nextSize,nextSize);
-   cur=next; curSize=nextSize;
- }
- if(curSize!==size){
-   const final=document.createElement("canvas");
-   final.width=size; final.height=size;
-   const fctx=final.getContext("2d");
-   fctx.imageSmoothingEnabled=true; fctx.imageSmoothingQuality="high";
-   fctx.drawImage(cur,0,0,curSize,curSize,0,0,size,size);
-   cur=final;
- }
- return cur;
-}
-function paintSprite(canvas,opts){
- const ctx=canvas.getContext("2d");
- ctx.imageSmoothingEnabled=false;
- ctx.clearRect(0,0,32,56);
- const outfit=opts.outfit||"#111318", tie=opts.tie, skin=opts.skin||"#e8bd93", hair=opts.hair||"#3a2b23";
- ctx.fillStyle=outfit; ctx.fillRect(8,46,6,8); ctx.fillRect(18,46,6,8);
- ctx.fillStyle="#15171a"; ctx.fillRect(6,54,10,2); ctx.fillRect(16,54,10,2);
- ctx.fillStyle=outfit; ctx.fillRect(4,24,24,22); ctx.fillRect(0,24,4,18); ctx.fillRect(28,24,4,18);
- ctx.fillStyle=skin; ctx.fillRect(0,38,4,4); ctx.fillRect(28,38,4,4);
- if(tie){
-   ctx.fillStyle=tie; ctx.fillRect(14,24,4,18);
-   if(opts.stripedTie){ctx.fillStyle="#e8e4da"; ctx.fillRect(14,29,4,2); ctx.fillRect(14,37,4,2)}
- }
- ctx.fillStyle=skin; ctx.fillRect(12,20,8,4);
- if(opts.faceThumb){
-   try{ctx.drawImage(opts.faceThumb,0,0,opts.faceThumb.width,opts.faceThumb.height,6,0,20,20)}catch(e){ctx.fillStyle=skin;ctx.fillRect(6,0,20,20)}
- }else if(opts.faceImg){
-   try{ctx.drawImage(makeFaceThumb(opts.faceImg,20),0,0,20,20,6,0,20,20)}catch(e){ctx.fillStyle=skin;ctx.fillRect(6,0,20,20)}
- }else{
-   ctx.fillStyle=skin; ctx.fillRect(6,0,20,20);
-   ctx.fillStyle="#2a2a2a"; ctx.fillRect(10,8,3,3); ctx.fillRect(19,8,3,3);
-   ctx.fillStyle="#8a5040"; ctx.fillRect(12,15,8,2);
- }
- ctx.fillStyle=hair; ctx.fillRect(6,0,20,4); ctx.fillRect(6,0,4,12); ctx.fillRect(22,0,4,12);
- if(opts.shades){ctx.fillStyle="#0b0c0e"; ctx.fillRect(6,8,20,4)}
-}
+/* ================= avatar bubble rendering ================= */
+const DEFAULT_AVATAR="assets/player/ingrid-portrait.jpg";
 function repaintPlayerSprite(){
- if(state.faceImg) state.faceThumb=makeFaceThumb(state.faceImg,20);
- paintSprite($("playerCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceThumb:state.faceThumb});
- paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceThumb:state.faceThumb});
+ const src=state.photoData||DEFAULT_AVATAR;
+ $("playerAvatarImg").src=src;
 }
 
 /* ================= winding overworld path ================= */
@@ -919,9 +896,8 @@ function buildNpcLayer(){
    const loc=LOCATIONS[n.loc];
    const wrap=document.createElement("div");
    wrap.className="sprite"; wrap.id="npc_"+key;
-   wrap.innerHTML='<canvas width="32" height="56" style="width:52px;height:91px"></canvas><div class="shadow" style="width:20px;height:6px"></div>';
+   wrap.innerHTML='<div class="avatarBubble" style="background:'+n.outfit+'"><span class="initial">'+n.name.charAt(0)+'</span></div><div class="shadow" style="width:20px;height:6px"></div>';
    layer.appendChild(wrap);
-   paintSprite(wrap.querySelector("canvas"),{outfit:n.outfit,hair:n.hair});
    const home={x:loc.x,y:clamp(loc.y+13,20,95)};
    npcEls[key]={el:wrap,x:home.x+(Math.random()*8-4),y:home.y+(Math.random()*4-2),tx:home.x,ty:home.y,home:home};
    placeEl(wrap,npcEls[key].x,npcEls[key].y);
@@ -1025,6 +1001,12 @@ function tickNeeds(){
 }
 
 /* ================= free will ================= */
+const TRAIT_BONUS={
+ PLAYFUL:{club:8,fincken:8}, LOUD:{club:6,chat:6}, MISCHIEVOUS:{fincken:8,club:4},
+ SOFT:{safe:8}, GENTLE:{safe:8,community:4},
+ BOLD:{chat:6,community:6}, FIERCE:{club:6,chat:4},
+ DREAMY:{waterfront:8}, CHAOTIC:{fincken:6,club:6}
+};
 function freeWillTick(){
  if(state.paused || !state.freeWill || state.target) return;
  if(Date.now()-state.lastManual < 6500*(1/state.speed)) return;
@@ -1037,6 +1019,10 @@ function freeWillTick(){
    chat:(100-n.social)*.75,
    waterfront:(100-n.energy)*.55+(100-n.comfort)*.35
  };
+ state.traits.forEach(t=>{
+   const bonus=TRAIT_BONUS[t]; if(!bonus)return;
+   Object.entries(bonus).forEach(([loc,v])=>scores[loc]+=v);
+ });
  const best=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
  state.target=best;
  $("statusText").textContent="Free Will chose: "+LOCATIONS[best].label+".";
@@ -1204,9 +1190,10 @@ $("maxBtn").onclick=()=>{const el=document.documentElement;if(!document.fullscre
 $("closeBtn").onclick=()=>{sndClick();toast("GAYMERS","This is a browser tab, not a real window — but nice try.")};
 
 /* ================= CAS (character creator) ================= */
-let selfStream=null, pendingPhoto=null, pendingImg=null;
+let selfStream=null, pendingPhoto=null;
+const MAX_TRAITS=3;
 function paintPending(){
- if(pendingImg) paintSprite($("pixPreviewCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceImg:pendingImg});
+ if(pendingPhoto) $("pixPreviewImg").src=pendingPhoto;
 }
 $("pronounRow").addEventListener("click",e=>{
  const b=e.target.closest(".pronounBtn"); if(!b)return; sndClick();
@@ -1217,18 +1204,23 @@ $("pronounRow").addEventListener("click",e=>{
    b.textContent=v||"custom…"; b.dataset.customValue=v||"";
  }
 });
-function loadImageFromData(data,cb){
- const img=new Image();
- img.onload=()=>cb(img);
- img.src=data;
-}
+$("traitRow").addEventListener("click",e=>{
+ const b=e.target.closest(".traitBtn"); if(!b)return;
+ const selected=document.querySelectorAll(".traitBtn.sel");
+ if(!b.classList.contains("sel") && selected.length>=MAX_TRAITS){
+   $("casStatus").textContent="Pick up to "+MAX_TRAITS+" — deselect one first.";
+   return;
+ }
+ sndClick();
+ b.classList.toggle("sel");
+});
 $("selfieFileInput").addEventListener("change",e=>{
  const f=e.target.files&&e.target.files[0]; if(!f)return;
  const r=new FileReader();
  r.onload=()=>{
    pendingPhoto=r.result;
    $("selfPreview").src=pendingPhoto; $("selfPreview").style.display="block"; $("selfPreview").style.transform="none";
-   loadImageFromData(pendingPhoto,img=>{pendingImg=img;paintPending()});
+   paintPending();
    $("casStatus").textContent="Photo loaded. Pick pronouns and press BECOME THIS SIM.";
  };
  r.readAsDataURL(f);
@@ -1253,7 +1245,7 @@ $("snapSelfieBtn").onclick=()=>{
  ctx.drawImage(v,sx,sy,sw,sh,0,0,cw,ch);
  pendingPhoto=c.toDataURL("image/jpeg",.9);
  $("selfPreview").src=pendingPhoto; $("selfPreview").style.display="block";
- loadImageFromData(pendingPhoto,img=>{pendingImg=img;paintPending()});
+ paintPending();
  $("casStatus").textContent="Photo captured. Press BECOME THIS SIM.";
 };
 $("finishCasBtn").onclick=()=>{
@@ -1261,20 +1253,27 @@ $("finishCasBtn").onclick=()=>{
  if(nm) state.name=nm.toUpperCase().slice(0,18);
  const selP=document.querySelector(".pronounBtn.sel");
  if(selP) state.pronoun = selP.getAttribute("data-p")==="custom" ? (selP.dataset.customValue||"custom") : selP.getAttribute("data-p");
- if(pendingPhoto){ state.photoData=pendingPhoto; state.faceImg=pendingImg; }
+ state.traits=Array.from(document.querySelectorAll(".traitBtn.sel")).map(b=>b.getAttribute("data-t"));
+ if(pendingPhoto){ state.photoData=pendingPhoto; }
  applyIdentity(); saveProfile();
  toast("SIM CREATED","Welcome, "+state.name+".");
  logEvent("Character created: "+state.name+" · "+state.pronoun);
  if(selfStream){selfStream.getTracks().forEach(t=>t.stop());selfStream=null}
  closeWin("casWindow");
 };
+function traitPillsHtml(){
+ return state.traits.map(t=>'<span class="traitPill">'+t+'</span>').join("");
+}
 function applyIdentity(){
  $("simNameLbl").textContent=state.name;
  $("simPronounLbl").textContent="pronouns: "+state.pronoun;
  $("playerTag").textContent=state.name;
- if(state.photoData){ $("portraitImg").src=state.photoData; $("landingProfileImg").src=state.photoData; }
+ const photo=state.photoData||DEFAULT_AVATAR;
+ $("portraitImg").src=photo; $("landingProfileImg").src=photo; $("miniPlayerImg").src=photo;
  $("landingProfileName").textContent=state.name.charAt(0)+state.name.slice(1).toLowerCase();
  $("landingProfilePron").textContent=state.pronoun.toUpperCase();
+ $("simTraitPills").innerHTML=traitPillsHtml();
+ $("landingTraitPills").innerHTML=traitPillsHtml();
  repaintPlayerSprite();
  if(typeof repaintLandingSprite==="function") repaintLandingSprite();
 }
@@ -1282,7 +1281,7 @@ function applyIdentity(){
 /* ================= persistence ================= */
 function saveProfile(){
  try{
-   localStorage.setItem("gaymersProfile", JSON.stringify({name:state.name,pronoun:state.pronoun,photo:state.photoData}));
+   localStorage.setItem("gaymersProfile", JSON.stringify({name:state.name,pronoun:state.pronoun,photo:state.photoData,traits:state.traits}));
  }catch(e){}
 }
 function loadProfile(){
@@ -1292,18 +1291,15 @@ function loadProfile(){
    const d=JSON.parse(raw);
    if(d.name)state.name=d.name;
    if(d.pronoun)state.pronoun=d.pronoun;
-   if(d.photo){
-     state.photoData=d.photo;
-     loadImageFromData(d.photo,img=>{state.faceImg=img;applyIdentity()});
-   }
+   if(d.photo)state.photoData=d.photo;
+   if(Array.isArray(d.traits))state.traits=d.traits;
    applyIdentity();
    return true;
  }catch(e){return false}
 }
 
 function loadDefaultIdentity(){
- state.name="INGRID"; state.pronoun="she/her"; state.photoData="assets/player/ingrid-portrait.jpg";
- loadImageFromData(state.photoData,img=>{state.faceImg=img;applyIdentity()});
+ state.name="INGRID"; state.pronoun="she/her"; state.photoData=DEFAULT_AVATAR;
  applyIdentity();
 }
 
@@ -1322,7 +1318,7 @@ function stopLandingCamera(){
  if(landingStream){ landingStream.getTracks().forEach(t=>t.stop()); landingStream=null; }
 }
 function repaintLandingSprite(){
- paintSprite($("landingPlayerCanvas"),{outfit:"#111318",tie:"#1c1c1c",stripedTie:true,hair:"#0f0d0c",shades:true,faceThumb:state.faceThumb});
+ $("landingAvatarImg").src=state.photoData||DEFAULT_AVATAR;
 }
 function enterGame(){
  sndClick();
@@ -1353,9 +1349,9 @@ function doTalk(){
  renderNeeds(); updateMood();
 }
 function doDance(){
- const canvas=$("landingPlayerCanvas");
- canvas.classList.remove("dancing"); void canvas.offsetWidth; canvas.classList.add("dancing");
- setTimeout(()=>canvas.classList.remove("dancing"),1500);
+ const bubble=document.querySelector("#landingStage .avatarBubble");
+ bubble.classList.remove("dancing"); void bubble.offsetWidth; bubble.classList.add("dancing");
+ setTimeout(()=>bubble.classList.remove("dancing"),1500);
  $("landingSpeechText").textContent="dancefloor's calling.";
  sndPickup();
  state.needs.fun=clamp(state.needs.fun+10); state.needs.energy=clamp(state.needs.energy-4);
