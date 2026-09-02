@@ -861,7 +861,7 @@ const FLAVOR_EVENTS=[
 const state={
  name:"YOU", pronoun:"she/her", photoData:null, traits:[],
  needs:{energy:78,social:70,fun:74,hunger:66,comfort:72,identity:60},
- x:63,y:60,target:null,walking:false,
+ x:63,y:60,target:null,walking:false,lastLoc:null,pathQueue:[],
  freeWill:true, paused:false, speed:1, lastManual:Date.now(),
  mood:20, minutes:7*60, day:1,
  inventory:[], relOrder:["sasha","theo","mia","rowan","noor","kai"]
@@ -912,17 +912,33 @@ function wanderNpcs(){
  });
 }
 
+/* ================= real-world routes ================= */
+/* Fincken (Nygårdsgaten 2A) → Landmark: up Christies gate, corner at Lars
+   Hilles gate, then along the lake — matches the actual Bergen walk, not a
+   straight cut across the block. */
+const ROUTES={"fincken|club":[{x:13,y:38}]};
+function computeRoute(from,to){
+ if(!from||!to)return [];
+ if(ROUTES[from+"|"+to])return ROUTES[from+"|"+to].slice();
+ if(ROUTES[to+"|"+from])return ROUTES[to+"|"+from].slice().reverse();
+ return [];
+}
+
 /* ================= movement ================= */
 function placeEl(el,x,y){el.style.left=x+"%";el.style.top=y+"%"}
 function walkTick(){
  const player=$("player");
  if(!state.paused && state.target){
-   const loc=LOCATIONS[state.target];
-   const dx=loc.x-state.x,dy=loc.y-state.y,dd=Math.hypot(dx,dy);
+   const viaWaypoint=state.pathQueue.length>0;
+   const aim=viaWaypoint?state.pathQueue[0]:LOCATIONS[state.target];
+   const dx=aim.x-state.x,dy=aim.y-state.y,dd=Math.hypot(dx,dy);
    const step=.28*state.speed;
    state.walking=true;
-   if(dd<step){state.x=loc.x;state.y=loc.y;arrive(state.target);state.target=null;state.walking=false}
-   else{state.x+=dx/dd*step;state.y+=dy/dd*step}
+   if(dd<step){
+     state.x=aim.x;state.y=aim.y;
+     if(viaWaypoint)state.pathQueue.shift();
+     else{arrive(state.target);state.target=null;state.walking=false}
+   }else{state.x+=dx/dd*step;state.y+=dy/dd*step}
    placeEl(player,state.x,state.y);
  }
  player.classList.toggle("walking",state.walking && !state.paused);
@@ -941,11 +957,13 @@ function highlightNearBuilding(){
 }
 
 function goTo(key){
+ state.pathQueue=computeRoute(state.lastLoc,key);
  state.target=key; state.lastManual=Date.now();
  $("statusText").textContent="Walking to "+LOCATIONS[key].label+"…";
 }
 function arrive(key){
  const loc=LOCATIONS[key];
+ state.lastLoc=key;
  sndArrive();
  Object.entries(loc.deltas).forEach(([k,v])=>state.needs[k]=clamp(state.needs[k]+v));
  renderNeeds(); updateMood();
@@ -1024,6 +1042,7 @@ function freeWillTick(){
    Object.entries(bonus).forEach(([loc,v])=>scores[loc]+=v);
  });
  const best=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
+ state.pathQueue=computeRoute(state.lastLoc,best);
  state.target=best;
  $("statusText").textContent="Free Will chose: "+LOCATIONS[best].label+".";
  logEvent("Free Will → "+LOCATIONS[best].label);
