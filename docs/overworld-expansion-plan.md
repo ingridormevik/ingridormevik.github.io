@@ -140,7 +140,7 @@ doesn't exist yet.
 
 ## 8–9. Files
 
-**Modified**, in any first real step: `trail-mix-v2.html` (new phase, new
+**Modified**, in any first real step: `trail-mix.html` (new phase, new
 render path — this is a substantial addition, not a small diff),
 `data/route.json` (if per-stop "chunk" metadata is wanted).
 
@@ -148,7 +148,7 @@ render path — this is a substantial addition, not a small diff),
 `assets/pack-v2/`) once art exists to cut, and a matching build script if
 the pack-v2 pattern is followed. The project has deliberately stayed
 single-file so far; a genuinely large new render mode is the first thing
-in this project's history that would make splitting `trail-mix-v2.html`'s
+in this project's history that would make splitting `trail-mix.html`'s
 script into modules worth reconsidering — flagged, not decided here.
 
 ## 10. A realistic staged plan

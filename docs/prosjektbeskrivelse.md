@@ -23,7 +23,7 @@ underveis.
 Trail Mix finnes i to former som er bygget til å være to dører inn til det
 samme:
 
-- **Et spillbart digitalt hovedspill** (`trail-mix-v2.html`), seks kapitler
+- **Et spillbart digitalt hovedspill** (`trail-mix.html`), seks kapitler
   langs ruten — Sandviken sykehus, Sandviksbatteriet, Sandvikspilen, inn i
   skogen, Fløyen, og hjemturen i solnedgang — med en musikkdrevet
   DJ-fortelling og enkle valg som farger turen videre.

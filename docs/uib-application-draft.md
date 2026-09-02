@@ -15,7 +15,7 @@ et fysisk gåtur og et digitalt spill deler ett arkiv.
 
 Prototypen omfatter i dag:
 
-- **Et spillbart hovedspill** (`trail-mix-v2.html`) i seks kapitler langs
+- **Et spillbart hovedspill** (`trail-mix.html`) i seks kapitler langs
   ruten, med en levende musikkdrevet DJ-fortelling, en gjenstand-plukk-mekanikk
   og et vesen (Huldra) som viser seg i skogholtet — aldri jaget, bare lagt
   merke til.
@@ -83,7 +83,7 @@ prosjektets eget prinsipp om ikke å hevde mer enn det som er sant:
 ## How this draft was checked
 
 Before writing this, every feature description was checked line-for-line
-against the actual repository (`trail-mix-v2.html`, `tools/`, `data/`) rather
+against the actual repository (`trail-mix.html`, `tools/`, `data/`) rather
 than assumed. An earlier draft — pasted into this conversation from a
 different chat session — described a substantially more advanced prototype
 (GPS positioning, camera capture, a per-quarter "renhet" decay stat, a
