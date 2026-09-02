@@ -7,7 +7,7 @@
 <title>GAYMERS // PLAYING IDENTITY — Sims 1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 :root{
   --face:#c0c0c0; --faceLo:#808080; --faceHi:#fff; --faceDk:#000;
@@ -21,7 +21,6 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:no
 button{font:inherit;cursor:pointer}
 img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .pxfont{font-family:"Press Start 2P",Tahoma,monospace}
-.handfont{font-family:"Caveat",cursive}
 
 #desktop{position:fixed;inset:0;background:
   repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 4px),
@@ -237,51 +236,45 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 
 /* ================= landing screen ================= */
 #desktop.hidden{display:none}
-#landingScreen{position:fixed;inset:0;z-index:50;background:#0a0a0d;overflow:hidden}
+#landingScreen{position:fixed;inset:0;z-index:50;background:#171310;overflow:hidden}
 #landingScreen.hidden{display:none}
 #landingCam,#landingFallbackBg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#landingCam{background:#0a0a0d}
+#landingCam{background:#171310}
 #landingFallbackBg{display:none;background:
-  radial-gradient(circle at 30% 20%,rgba(120,90,200,.35),transparent 55%),
-  radial-gradient(circle at 75% 70%,rgba(200,90,150,.3),transparent 55%),
-  linear-gradient(160deg,#17171d,#0a0a0d)}
-#landingTint{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.4),rgba(0,0,0,.1) 35%,rgba(0,0,0,.15) 60%,rgba(0,0,0,.6))}
+  repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 2px,transparent 2px 4px),
+  linear-gradient(160deg,#2b241c,#171310)}
+#landingTint{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.32),rgba(0,0,0,.05) 35%,rgba(0,0,0,.1) 60%,rgba(0,0,0,.45))}
 
-.glassCard{background:rgba(16,16,20,.6);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);border:1px solid rgba(255,255,255,.14);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#landingBrand{position:absolute;left:20px;top:18px;z-index:2;width:auto}
+#landingBrand .titlebar{cursor:default;white-space:nowrap}
 
-#landingBrand{position:absolute;left:30px;top:22px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6);z-index:2}
-#landingTitle{font-size:42px;line-height:1;font-weight:700}
-#landingTitle .sparkle{color:#f4d35e;font-size:22px;vertical-align:top}
-#landingSubtitle{font-size:24px;margin-top:-8px;opacity:.92}
-
-#landingWeather{position:absolute;top:22px;right:22px;z-index:2;display:flex;align-items:center;gap:12px;padding:8px 14px;color:#fff;font-size:11px;font-weight:600;letter-spacing:.02em}
+#landingWeather{position:absolute;top:18px;right:20px;z-index:2;display:flex;align-items:center;gap:10px;padding:7px 12px;font-family:Tahoma,Arial,sans-serif;font-size:10px;font-weight:700;color:var(--ink)}
 #landingWeather span{white-space:nowrap}
-#landingWeather button{margin-left:2px;width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff}
 
-#landingProfileCard{position:absolute;top:66px;right:22px;width:190px;z-index:2;overflow:hidden;padding:5px}
-#landingProfileImg{width:100%;aspect-ratio:.86;object-fit:cover;border-radius:10px;display:block}
-#landingProfileCard .plumbTiny{position:absolute;top:12px;right:12px;width:18px;height:26px}
-#landingProfileCard .plumbTiny:before,#landingProfileCard .plumbTiny:after{content:"";position:absolute;left:50%;transform:translateX(-50%);border-left:9px solid transparent;border-right:9px solid transparent}
-#landingProfileCard .plumbTiny:before{top:0;border-bottom:13px solid #8eea6e}
-#landingProfileCard .plumbTiny:after{bottom:0;border-top:13px solid #3bb73c}
-#landingProfileText{position:absolute;left:14px;right:14px;bottom:12px;color:#fff}
-#landingProfileName{font-family:"Caveat",cursive;font-size:28px;line-height:1}
-#landingProfilePron{font-size:10px;letter-spacing:.08em;opacity:.85;margin-top:2px}
+#landingProfileCard{position:absolute;top:60px;right:20px;width:184px;z-index:2;padding:6px}
+#landingProfileImg{width:100%;aspect-ratio:.86;object-fit:cover;display:block;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo)}
+#landingProfileCard .plumbTiny{position:absolute;top:14px;right:14px;width:16px;height:24px}
+#landingProfileCard .plumbTiny:before,#landingProfileCard .plumbTiny:after{content:"";position:absolute;left:50%;transform:translateX(-50%);border-left:8px solid transparent;border-right:8px solid transparent}
+#landingProfileCard .plumbTiny:before{top:0;border-bottom:12px solid #8eea6e}
+#landingProfileCard .plumbTiny:after{bottom:0;border-top:12px solid #3bb73c}
+#landingProfileText{padding:6px 3px 1px;font-family:Tahoma,Arial,sans-serif}
+#landingProfileName{font-size:13px;font-weight:900;color:var(--ink)}
+#landingProfilePron{font-size:8px;letter-spacing:.03em;color:#5c6169;margin-top:2px}
 
-#landingNowPlaying{position:absolute;top:296px;right:22px;width:190px;z-index:2;padding:10px;display:flex;gap:9px;align-items:center}
-#npPlayBtn{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.14);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center}
-.npInfo{min-width:0;flex:1;color:#fff}
-#npTrack{font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#npArtist{font-size:9px;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.npBarWrap{height:3px;border-radius:2px;background:rgba(255,255,255,.2);margin-top:6px;overflow:hidden}
-#npBar{height:100%;width:0;background:#6ee06e;border-radius:2px;transition:width 1s linear}
-.npTime{font-size:8px;opacity:.65;margin-top:3px}
+#landingNowPlaying{position:absolute;top:280px;right:20px;width:184px;z-index:2}
+#landingNpBody{padding:8px;display:flex;gap:8px;align-items:center}
+#npPlayBtn{flex:0 0 auto;width:26px;height:26px;padding:0;border-radius:50%;font-size:9px;display:flex;align-items:center;justify-content:center}
+.npInfo{min-width:0;flex:1;font-family:Tahoma,Arial,sans-serif}
+#npTrack{font-size:10px;font-weight:900;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#npArtist{font-size:8px;color:#5c6169;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.npBarWrap{height:8px;margin-top:5px;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff;overflow:hidden}
+#npBar{height:100%;width:0;background:repeating-linear-gradient(90deg,#4f9a3c 0 5px,#63b84e 5px 7px);transition:width 1s linear}
+.npTime{font-size:7px;color:#5c6169;margin-top:3px}
 
-#landingNav{position:absolute;left:30px;top:146px;z-index:2;display:flex;flex-direction:column;gap:8px;width:186px}
-.navItem{display:flex;align-items:center;gap:10px;padding:10px 13px;border-radius:10px;color:#fff;font-size:12px;font-weight:700;letter-spacing:.03em;text-align:left;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07)}
-.navItem .navIco{width:15px;height:15px;flex:0 0 auto}
-.navItem.active{background:#fff;color:#15161a;border-color:#fff}
-.navItem:active{transform:translateY(1px)}
+#landingNav{position:absolute;left:20px;top:132px;z-index:2;display:flex;flex-direction:column;gap:6px;width:176px}
+.navItem{display:flex;align-items:center;gap:9px;text-align:left;width:100%;padding:9px 11px}
+.navItem .navIco{width:14px;height:14px;flex:0 0 auto}
+.navItem.active{border-color:var(--faceDk) var(--faceHi) var(--faceHi) var(--faceDk);background:#cdf0b8}
 
 #landingStage{position:absolute;left:50%;top:52%;transform:translate(-50%,-46%);z-index:1;text-align:center}
 #landingStage canvas{width:150px;height:262px;image-rendering:pixelated;filter:drop-shadow(0 14px 10px rgba(0,0,0,.5));transform-origin:50% 100%}
@@ -291,60 +284,56 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #landingStage .plumb:before,#landingStage .plumb:after{content:"";position:absolute;left:50%;transform:translateX(-50%);border-left:13px solid transparent;border-right:13px solid transparent}
 #landingStage .plumb:before{top:0;border-bottom:20px solid #8eea6e}
 #landingStage .plumb:after{bottom:0;border-top:20px solid #3bb73c}
-#landingSpeech{position:absolute;left:58%;top:6%;transform:translateX(0);opacity:1;background:rgba(20,20,24,.85);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:7px 12px;font-size:12px;font-weight:600;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.4)}
-#landingSpeech:before{display:none}
-#landingSpeech .heartIco{color:#ff6b8a;margin-right:4px}
+#landingSpeech{position:absolute;left:58%;top:6%;background:rgba(251,254,254,.96);color:var(--ink);border:2px solid #1c1f24;border-radius:9px;padding:6px 11px;font-family:Tahoma,Arial,sans-serif;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:2px 3px 0 rgba(0,0,0,.3)}
+#landingSpeech .heartIco{color:#c4506e;margin-right:4px}
 
-#landingWidgets{position:absolute;left:30px;bottom:22px;z-index:2;width:300px;display:flex;flex-direction:column;gap:10px}
-#landingMinimap{padding:10px}
-.miniHead{display:flex;justify-content:space-between;color:#fff;font-size:10px;opacity:.75;margin-bottom:6px}
-.miniBody{position:relative;height:130px;border-radius:9px;overflow:hidden;background:linear-gradient(160deg,#1b2420,#11201a)}
-.miniDot{position:absolute;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.4)}
-.miniDot.d1{left:18%;top:22%;background:#d6567e}
-.miniDot.d2{left:82%;top:24%;background:#6a4fc4}
-.miniDot.d3{left:78%;top:70%;background:#c48a2f}
-.miniPlayer{position:absolute;left:38%;top:50%;width:34px;height:34px;border-radius:50%;overflow:hidden;border:2px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.5)}
+#landingWidgets{position:absolute;left:20px;bottom:20px;z-index:2;width:284px;display:flex;flex-direction:column;gap:10px}
+#landingMinimapBody{padding:9px}
+.miniHead{display:flex;justify-content:space-between;font-family:Tahoma,Arial,sans-serif;font-size:9px;color:#5c6169;margin-bottom:6px}
+.miniBody{position:relative;height:118px;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);overflow:hidden;background:radial-gradient(ellipse at 50% 20%,#69b25f,#4f9752 55%,#3d8248 100%)}
+.miniDot{position:absolute;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;border:1px solid #1c1f24}
+.miniDot.d1{left:18%;top:22%;background:#c4384f}
+.miniDot.d2{left:82%;top:24%;background:#5470c4}
+.miniDot.d3{left:78%;top:70%;background:#c47a2e}
+.miniPlayer{position:absolute;left:38%;top:50%;width:28px;height:28px;border-radius:50%;overflow:hidden;border:2px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.4)}
 .miniPlayer img{width:100%;height:100%;object-fit:cover}
-.miniFoot{display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:10px;margin-top:7px}
-.miniFoot b{font-size:12px}
-.miniFoot .liveDot{color:#ff5f6d;font-weight:900}
+.miniFoot{display:flex;justify-content:space-between;align-items:center;font-family:Tahoma,Arial,sans-serif;font-size:9px;color:var(--ink);margin-top:7px}
+.miniFoot b{font-size:10px}
+.miniFoot .liveDot{color:#c9453a;font-weight:900}
 
-#landingCasPanel{padding:14px;text-align:center}
-.casPanelTitle{color:#fff;font-size:20px;text-align:left;margin-bottom:8px}
-#landingQr{width:96px;height:96px;background:#fff;border-radius:8px;padding:5px;display:block;margin:0 auto}
-.casPanelNote{color:rgba(255,255,255,.8);font-size:14px;line-height:1.3;margin-top:8px}
-#landingOpenCas{margin-top:10px;width:100%;padding:9px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em}
+#landingCasBody{padding:12px;text-align:center}
+#landingQr{width:88px;height:88px;background:#fff;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);padding:4px;display:block;margin:0 auto}
+.casPanelNote{font-family:Tahoma,Arial,sans-serif;font-size:9px;color:#5c6169;line-height:1.4;margin-top:8px}
+#landingOpenCas{margin-top:10px;width:100%}
 
-#landingRightStack{position:absolute;right:22px;bottom:22px;z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:14px}
-#landingChat{width:320px;padding:12px}
-.chatLine{display:flex;gap:7px;font-size:12px;margin:5px 0;color:#e8e8ea}
+#landingRightStack{position:absolute;right:20px;bottom:20px;z-index:2;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+#landingChatBody{padding:9px}
+.chatLine{display:flex;gap:6px;font-family:Tahoma,Arial,sans-serif;font-size:10px;margin:5px 0;color:var(--ink)}
 .chatLine b{flex:0 0 auto}
-.chatLine .c1{color:#f2b84a}.chatLine .c2{color:#6fd67f}.chatLine .c3{color:#e0698f}.chatLine .c4{color:#7fb8e0}
-#landingChatLines{max-height:110px;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain}
-.chatInputRow{display:flex;gap:6px;margin-top:8px}
-.chatInputRow input{flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:7px 10px;color:#fff;font-size:11px}
-.chatInputRow input::placeholder{color:rgba(255,255,255,.4)}
-.chatInputRow button{width:32px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.12);color:#fff}
+.chatLine .c1{color:#a5522f}.chatLine .c2{color:#2f8a6f}.chatLine .c3{color:#c4384f}.chatLine .c4{color:#2f6b9a}
+#landingChatLines{max-height:100px;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain}
+.chatInputRow{display:flex;gap:5px;margin-top:7px}
+.chatInputRow input{flex:1;background:#fff;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);padding:5px 7px;font-family:Tahoma,Arial,sans-serif;font-size:10px;color:var(--ink)}
+.chatInputRow button{width:28px}
 
 #landingNotes{display:flex;gap:12px}
-.sticky{width:130px;padding:10px;border-radius:3px;box-shadow:0 8px 16px rgba(0,0,0,.35);font-size:16px;line-height:1.15;color:#332b1a}
+.sticky{width:120px;padding:9px;border-radius:2px;box-shadow:0 6px 14px rgba(0,0,0,.35);font-family:"Segoe Print","Bradley Hand","Comic Sans MS",cursive;font-size:12px;line-height:1.25;color:#332b1a}
 .sticky:nth-child(1){background:#f4e6a8;transform:rotate(-4deg)}
-.sticky:nth-child(2){background:#fff;padding:8px;transform:rotate(3deg);color:#222;font-size:12px}
+.sticky:nth-child(2){background:#fff;padding:7px;transform:rotate(3deg);color:#222;font-size:10px;font-family:Tahoma,Arial,sans-serif}
 .sticky .heart{color:#c4506e;margin-left:3px}
-.sticky img{width:100%;border-radius:2px;display:block;margin-bottom:6px}
+.sticky img{width:100%;border-radius:1px;display:block;margin-bottom:5px}
 
 @media(max-width:820px){
-  #landingBrand{left:16px;top:max(14px,env(safe-area-inset-top))}
-  #landingTitle{font-size:26px}#landingSubtitle{font-size:16px;margin-top:-4px}
+  #landingBrand{left:10px;top:max(10px,env(safe-area-inset-top))}
+  #landingBrand .titleleft span:last-child{max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   #landingWeather{display:none}
   #landingNowPlaying{display:none}
-  #landingProfileCard{top:max(14px,env(safe-area-inset-top));right:14px;width:78px;padding:3px}
-  #landingProfileText{left:8px;right:8px;bottom:6px}
-  #landingProfileName{font-size:16px}#landingProfilePron{font-size:7px}
-  #landingNav{left:0;right:0;top:auto;bottom:0;flex-direction:row;width:100%;padding:8px max(8px,env(safe-area-inset-bottom)) calc(8px + env(safe-area-inset-bottom));gap:5px;border-radius:0;background:rgba(10,10,13,.78);backdrop-filter:blur(14px);border:0;border-top:1px solid rgba(255,255,255,.14);justify-content:space-between}
-  .navItem{flex:1;flex-direction:column;gap:3px;padding:7px 2px;text-align:center;font-size:7px;border-radius:8px;background:transparent;border:0}
-  .navItem.active{background:rgba(255,255,255,.16);color:#fff}
-  .navItem .navIco{width:16px;height:16px}
+  #landingProfileCard{top:max(10px,env(safe-area-inset-top));right:10px;width:74px;padding:3px}
+  #landingProfileText{padding:4px 2px 0}
+  #landingProfileName{font-size:10px}#landingProfilePron{font-size:6px}
+  #landingNav{left:0;right:0;top:auto;bottom:0;flex-direction:row;width:100%;padding:6px max(6px,env(safe-area-inset-bottom)) calc(6px + env(safe-area-inset-bottom));gap:4px;justify-content:space-between;border-width:2px 0 0 0}
+  .navItem{flex:1;flex-direction:column;gap:3px;padding:6px 1px;text-align:center;font-size:6.5px}
+  .navItem .navIco{width:15px;height:15px}
   #landingStage{top:44%}
   #landingStage canvas{width:110px;height:192px}
   #landingSpeech{left:50%;top:8%;transform:translateX(-50%);font-size:10px;white-space:normal;max-width:70vw;text-align:center}
@@ -359,87 +348,97 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
   <div id="landingFallbackBg"></div>
   <div id="landingTint"></div>
 
-  <div id="landingBrand" class="handfont">
-    <div id="landingTitle">GAYMERS // <span class="sparkle">✦</span></div>
-    <div id="landingSubtitle">playing identity</div>
+  <div id="landingBrand" class="win98">
+    <div class="titlebar"><div class="titleleft"><span class="titleicon"></span><span>GAYMERS — Playing Identity.exe</span></div></div>
   </div>
 
-  <div id="landingWeather" class="glassCard">
+  <div id="landingWeather" class="win98">
     <span id="landingCity">Bergen</span>
-    <span id="landingTempRow">☁ <span id="landingTemp">7°C</span></span>
+    <span id="landingTempRow">Cloudy <span id="landingTemp">7°C</span></span>
     <span id="landingDateRow">SAT <span id="landingClock">23:47</span></span>
-    <button id="landingSettingsBtn" title="Sound">♪</button>
+    <button id="landingSettingsBtn" class="wbtn" title="Sound">♪</button>
   </div>
 
-  <div id="landingProfileCard" class="glassCard">
+  <div id="landingProfileCard" class="win98">
     <img id="landingProfileImg" src="assets/player/ingrid-portrait.jpg" alt="">
     <div class="plumbTiny"></div>
     <div id="landingProfileText">
-      <div id="landingProfileName">Ingrid</div>
-      <div id="landingProfilePron">SHE / HER</div>
+      <div id="landingProfileName">INGRID</div>
+      <div id="landingProfilePron">pronouns: she/her</div>
     </div>
   </div>
 
-  <div id="landingNowPlaying" class="glassCard">
-    <button id="npPlayBtn">▶</button>
-    <div class="npInfo">
-      <div id="npTrack">Mount Media</div>
-      <div id="npArtist">Signal Unknown</div>
-      <div class="npBarWrap"><div id="npBar"></div></div>
-      <div class="npTime"><span id="npElapsed">0:00</span> / <span id="npTotal">3:40</span></div>
+  <div id="landingNowPlaying" class="win98">
+    <div class="panelHead">NOW PLAYING</div>
+    <div id="landingNpBody">
+      <button id="npPlayBtn" class="btn98">▶</button>
+      <div class="npInfo">
+        <div id="npTrack">Mount Media</div>
+        <div id="npArtist">Signal Unknown</div>
+        <div class="npBarWrap"><div id="npBar"></div></div>
+        <div class="npTime"><span id="npElapsed">0:00</span> / <span id="npTotal">3:40</span></div>
+      </div>
     </div>
   </div>
 
   <div id="landingNav">
-    <button class="navItem active" data-nav="explore"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>EXPLORE</button>
-    <button class="navItem" data-nav="talk"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg>TALK</button>
-    <button class="navItem" data-nav="dance"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="18" r="3"/><path d="M10 18V4l9 2v2"/></svg>DANCE</button>
-    <button class="navItem" data-nav="photo"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.4"/></svg>TAKE PHOTO</button>
-    <button class="navItem" data-nav="music"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-2l14-3v2M3 16a2.4 2.4 0 1 0 4 0 2.4 2.4 0 1 0-4 0zM17 13a2.4 2.4 0 1 0 4 0 2.4 2.4 0 1 0-4 0z"/></svg>QUEUE MUSIC</button>
-    <button class="navItem" data-nav="leave"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4H5v16h5M14 8l4 4-4 4M18 12H9"/></svg>LEAVE</button>
+    <button class="navItem btn98 active" data-nav="explore"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>EXPLORE</button>
+    <button class="navItem btn98" data-nav="talk"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg>TALK</button>
+    <button class="navItem btn98" data-nav="dance"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="18" r="3"/><path d="M10 18V4l9 2v2"/></svg>DANCE</button>
+    <button class="navItem btn98" data-nav="photo"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.4"/></svg>TAKE PHOTO</button>
+    <button class="navItem btn98" data-nav="music"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-2l14-3v2M3 16a2.4 2.4 0 1 0 4 0 2.4 2.4 0 1 0-4 0zM17 13a2.4 2.4 0 1 0 4 0 2.4 2.4 0 1 0-4 0z"/></svg>QUEUE MUSIC</button>
+    <button class="navItem btn98" data-nav="leave"><svg class="navIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4H5v16h5M14 8l4 4-4 4M18 12H9"/></svg>LEAVE</button>
   </div>
 
   <div id="landingStage">
     <div class="plumb"></div>
     <canvas id="landingPlayerCanvas" width="32" height="56"></canvas>
-    <div id="landingSpeech" class="handfont" style="font-family:Tahoma,Arial,sans-serif"><span class="heartIco">♥</span><span id="landingSpeechText">Reggae + food tomorrow?</span></div>
+    <div id="landingSpeech"><span class="heartIco">♥</span><span id="landingSpeechText">Reggae + food tomorrow?</span></div>
   </div>
 
   <div id="landingWidgets">
-    <div id="landingMinimap" class="glassCard">
-      <div class="miniHead"><span>N</span><span>+ −</span></div>
-      <div class="miniBody">
-        <div class="miniDot d1">♪</div><div class="miniDot d2">✦</div><div class="miniDot d3">☺</div>
-        <div class="miniPlayer"><img src="assets/player/ingrid-portrait.jpg" alt=""></div>
+    <div id="landingMinimap" class="win98">
+      <div class="panelHead">MINIMAP</div>
+      <div id="landingMinimapBody">
+        <div class="miniHead"><span>N</span><span>+ −</span></div>
+        <div class="miniBody">
+          <div class="miniDot d1">♪</div><div class="miniDot d2">♦</div><div class="miniDot d3">☺</div>
+          <div class="miniPlayer"><img src="assets/player/ingrid-portrait.jpg" alt=""></div>
+        </div>
+        <div class="miniFoot"><b>LANDMARK</b><span><span class="liveDot">●</span> LIVE · <span id="miniCount">24</span> people</span></div>
       </div>
-      <div class="miniFoot"><b>LANDMARK</b><span><span class="liveDot">●</span> LIVE · <span id="miniCount">24</span> people</span></div>
     </div>
-    <div id="landingCasPanel" class="glassCard">
-      <div class="casPanelTitle handfont">Create your sim</div>
-      <img id="landingQr" alt="QR code for this page">
-      <div class="casPanelNote handfont">Scan to enter camera + make your sim</div>
-      <button id="landingOpenCas">OPEN CAMERA</button>
+    <div id="landingCasPanel" class="win98">
+      <div class="panelHead">CREATE YOUR SIM</div>
+      <div id="landingCasBody">
+        <img id="landingQr" alt="QR code for this page">
+        <div class="casPanelNote">Scan to enter camera + make your sim</div>
+        <button id="landingOpenCas" class="btn98">OPEN CAMERA</button>
+      </div>
     </div>
   </div>
 
   <div id="landingRightStack">
-    <div id="landingChat" class="glassCard">
-      <div id="landingChatLines">
-        <div class="chatLine"><b class="c1">Jax</b><span>you coming to the dancefloor?</span></div>
-        <div class="chatLine"><b class="c2">Meli</b><span>your fit is fire</span></div>
-        <div class="chatLine"><b class="c4">Rae</b><span>reggae + food tomorrow? 😅</span></div>
-      </div>
-      <div class="chatInputRow">
-        <input id="landingChatInput" placeholder="Type a response…" maxlength="80">
-        <button id="landingChatSend">➤</button>
+    <div id="landingChat" class="win98">
+      <div class="panelHead">CHAT</div>
+      <div id="landingChatBody">
+        <div id="landingChatLines">
+          <div class="chatLine"><b class="c1">Jax</b><span>you coming to the dancefloor?</span></div>
+          <div class="chatLine"><b class="c2">Meli</b><span>your fit is fire</span></div>
+          <div class="chatLine"><b class="c4">Rae</b><span>reggae + food tomorrow?</span></div>
+        </div>
+        <div class="chatInputRow">
+          <input id="landingChatInput" placeholder="Type a response…" maxlength="80">
+          <button id="landingChatSend" class="btn98">➤</button>
+        </div>
       </div>
     </div>
 
     <div id="landingNotes">
-      <div class="sticky handfont">Nothing needs to be performative<span class="heart">♡</span></div>
+      <div class="sticky">Nothing needs to be performative<span class="heart">♡</span></div>
       <div class="sticky">
         <img src="assets/locations/landmark-exterior.jpg" alt="">
-        <span class="handfont">See u outside?</span>
+        <span>See u outside?</span>
       </div>
     </div>
   </div>
