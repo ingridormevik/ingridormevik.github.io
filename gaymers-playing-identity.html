@@ -343,7 +343,6 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 #landingChatBody{padding:9px}
 .chatLine{display:flex;gap:6px;font-family:Tahoma,Arial,sans-serif;font-size:10px;margin:5px 0;color:var(--ink)}
 .chatLine b{flex:0 0 auto}
-.chatLine .c1{color:#a5522f}.chatLine .c2{color:#2f8a6f}.chatLine .c3{color:#c4384f}.chatLine .c4{color:#2f6b9a}
 #landingChatLines{max-height:100px;overflow-y:auto;touch-action:pan-y;overscroll-behavior:contain}
 .chatInputRow{display:flex;gap:5px;margin-top:7px}
 .chatInputRow input{flex:1;background:#fff;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);padding:5px 7px;font-family:Tahoma,Arial,sans-serif;font-size:10px;color:#221833}
@@ -434,7 +433,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
       <div class="plumb"></div>
       <div class="avatarBubble"><img id="landingAvatarImg" alt=""></div>
     </div>
-    <div id="landingSpeech"><span id="landingSpeechText">Reggae + food tomorrow?</span></div>
+    <div id="landingSpeech"><span id="landingSpeechText">just got here.</span></div>
   </div>
 
   <div id="landingWidgets">
@@ -464,9 +463,9 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
       <div class="panelHead">CHAT</div>
       <div id="landingChatBody">
         <div id="landingChatLines">
-          <div class="chatLine"><b class="c1">Jax</b><span>you coming to the dancefloor?</span></div>
-          <div class="chatLine"><b class="c2">Meli</b><span>your fit is fire</span></div>
-          <div class="chatLine"><b class="c4">Rae</b><span>reggae + food tomorrow?</span></div>
+          <div class="chatLine"><b style="color:#7a2f66">Sasha</b><span>you coming to the dancefloor?</span></div>
+          <div class="chatLine"><b style="color:#2f8a6f">Mia</b><span>Kafé Fincken this Saturday — you in?</span></div>
+          <div class="chatLine"><b style="color:#c4508f">Noor</b><span>this is way better than scrolling</span></div>
         </div>
         <div class="chatInputRow">
           <input id="landingChatInput" placeholder="Type a response…" maxlength="80">
@@ -922,16 +921,24 @@ function buildTrail(){
 
 /* ================= NPC ambient sprites ================= */
 const npcEls={};
+/* Fixed per-NPC angle so several sims sharing a building (e.g. at night, when
+   friends migrate to Fincken/Club) spread out around it instead of stacking
+   exactly on the same point. */
+const NPC_ANGLE={sasha:0,theo:60,mia:120,rowan:180,noor:240,kai:300};
+function homeFor(key,locKey){
+ const loc=LOCATIONS[locKey];
+ const ang=(NPC_ANGLE[key]||0)*Math.PI/180;
+ return {x:clamp(loc.x+Math.cos(ang)*4.5,5,95), y:clamp(loc.y+13+Math.sin(ang)*2.6,20,95)};
+}
 function buildNpcLayer(){
  const layer=$("npcLayer");
  layer.innerHTML="";
  Object.entries(NPCS).forEach(([key,n])=>{
-   const loc=LOCATIONS[n.loc];
    const wrap=document.createElement("div");
    wrap.className="sprite"; wrap.id="npc_"+key;
    wrap.innerHTML='<div class="avatarBubble" style="background:'+n.outfit+'"><span class="initial">'+n.name.charAt(0)+'</span></div><div class="shadow" style="width:20px;height:6px"></div>';
    layer.appendChild(wrap);
-   const home={x:loc.x,y:clamp(loc.y+13,20,95)};
+   const home=homeFor(key,n.loc);
    npcEls[key]={el:wrap,x:home.x+(Math.random()*8-4),y:home.y+(Math.random()*4-2),tx:home.x,ty:home.y,home:home,
      scheduleLoc:n.loc,traveling:false,pathQueue:[],jitter:Math.floor(Math.random()*20)-10};
    placeEl(wrap,npcEls[key].x,npcEls[key].y);
@@ -973,8 +980,7 @@ function updateNpcSchedules(){
    if(target===n.scheduleLoc)return;
    const from=n.scheduleLoc;
    n.scheduleLoc=target;
-   const loc=LOCATIONS[target];
-   n.home={x:loc.x,y:clamp(loc.y+13,20,95)};
+   n.home=homeFor(key,target);
    n.pathQueue=computeRoute(from,target);
    n.traveling=true;
  });
@@ -1471,24 +1477,32 @@ function leaveGame(){
  startLandingCamera();
 }
 $("backToLiveBtn").onclick=leaveGame;
-const TALK_LINES=[
- ["Jax","you coming to the dancefloor?","maybe in a bit","c1"],
- ["Meli","your fit is fire","thank you, found it at Fincken","c2"],
- ["Rae","reggae + food tomorrow?","say less, i'm in","c4"],
- ["Jax","who's playing tonight?","some local DJ i think, it's good","c1"],
- ["Meli","this song though","right?? turn it up","c2"],
- ["Rae","you good?","yeah. really good, actually","c4"]
-];
-let talkIdx=0;
+/* Lines belong to the real NPCs who live on the map — not stand-ins. */
+const TALK_LINES={
+ sasha:[{line:"you coming to the dancefloor?",reply:"maybe in a bit"},{line:"who's playing tonight?",reply:"some local DJ, it's good"}],
+ mia:[{line:"Kafé Fincken this Saturday — you in?",reply:"say less, i'm in"},{line:"found anything good lately?",reply:"still looking"}],
+ noor:[{line:"this is way better than scrolling",reply:"right? nobody's watching here"},{line:"tell me something true",reply:"okay — i'm actually having a good time"}],
+ theo:[{line:"the flyer wall got a new one, come see",reply:"on my way"}],
+ rowan:[{line:"you don't have to perform anything in here",reply:"yeah. i know. it helps"}],
+ kai:[{line:"the fjord's doing that thing again, quiet and gold",reply:"i needed that today"}]
+};
+function pickTalkNpc(){
+ const keys=Object.keys(NPCS);
+ const known=keys.filter(k=>NPCS[k].known);
+ const pool = known.length && Math.random()<0.7 ? known : keys;
+ return pool[Math.floor(Math.random()*pool.length)];
+}
 function doTalk(){
- const [npc,line,reply,cls]=TALK_LINES[talkIdx%TALK_LINES.length];
- talkIdx++;
- addLandingChatLine(npc,line,cls);
- $("landingSpeechText").textContent=line;
+ const npcKey=pickTalkNpc();
+ const n=NPCS[npcKey];
+ const pair=TALK_LINES[npcKey][Math.floor(Math.random()*TALK_LINES[npcKey].length)];
+ addLandingChatLine(n.name,pair.line,n.outfit);
+ $("landingSpeechText").textContent=pair.line;
  setTimeout(()=>{
-   addLandingChatLine(state.name||"INGRID",reply,"c3");
-   $("landingSpeechText").textContent=reply;
+   addLandingChatLine(state.name||"INGRID",pair.reply,"#ff6fd0");
+   $("landingSpeechText").textContent=pair.reply;
  },900);
+ bumpRelationship(npcKey);
  state.needs.social=clamp(state.needs.social+8);
  renderNeeds(); updateMood();
 }
@@ -1570,11 +1584,13 @@ document.querySelectorAll("#landingNav .navItem").forEach(btn=>{
    setTimeout(()=>{document.querySelectorAll("#landingNav .navItem").forEach(b=>b.classList.remove("active"));document.querySelector('#landingNav [data-nav="explore"]').classList.add("active")},1400);
  });
 });
-function addLandingChatLine(name,text,cls){
+function addLandingChatLine(name,text,color){
  const wrap=$("landingChatLines");
  const row=document.createElement("div");
  row.className="chatLine";
- row.innerHTML='<b class="'+(cls||"c3")+'">'+name+'</b><span></span>';
+ row.innerHTML='<b></b><span></span>';
+ row.querySelector("b").style.color=color||"#ff6fd0";
+ row.querySelector("b").textContent=name;
  row.querySelector("span").textContent=text;
  wrap.appendChild(row);
  wrap.scrollTop=wrap.scrollHeight;
@@ -1582,7 +1598,7 @@ function addLandingChatLine(name,text,cls){
 $("landingChatSend").onclick=()=>{
  const inp=$("landingChatInput"); const v=inp.value.trim();
  if(!v)return;
- addLandingChatLine(state.name||"INGRID",v,"c3");
+ addLandingChatLine(state.name||"INGRID",v,"#ff6fd0");
  inp.value="";
  sndClick();
 };
