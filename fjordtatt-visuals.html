@@ -26,12 +26,20 @@
 <meta name="twitter:image" content="https://ingridormevik.github.io/salttatt_preview.jpg">
 
 <!-- Theme color -->
-<meta name="theme-color" content="#000408">
+<meta name="theme-color" content="#07080d">
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400;700&family=Courier+Prime&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400;700&family=Courier+Prime&display=swap" rel="stylesheet">
 <style>
+:root{
+  --bg:#07080d; --bg2:#0d0f17; --panel:rgba(14,16,25,.78);
+  --text:#f4f1ec; --soft:#b9b5bd; --dim:#777380;
+  --line:rgba(255,255,255,.1); --line2:rgba(255,255,255,.18);
+  --violet:#a98df7; --pink:#f29bcd;
+  --serif:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#000;overflow:hidden;width:100vw;height:100vh;cursor:none;}
+body{background:var(--bg);overflow:hidden;width:100vw;height:100vh;cursor:none;}
 canvas{position:fixed;inset:0;pointer-events:none;}
 #c-bg{z-index:0;}
 #c-mount{z-index:1;}
@@ -57,106 +65,70 @@ canvas{position:fixed;inset:0;pointer-events:none;}
 #c-text{z-index:20;}
 
 @keyframes flicker{0%,100%{opacity:0.85}50%{opacity:1}60%{opacity:0.9}80%{opacity:0.95}}
-@keyframes roseGlow{0%,100%{text-shadow:0 0 24px rgba(255,120,90,0.34),0 0 48px rgba(255,80,60,0.12)}50%{text-shadow:0 0 36px rgba(255,160,100,0.46),0 0 72px rgba(255,100,70,0.20)}}
-@keyframes goldPulse{0%,100%{box-shadow:0 0 18px rgba(40,180,100,0.06),inset 0 0 12px rgba(40,180,100,0.02)}50%{box-shadow:0 0 34px rgba(40,180,100,0.10),inset 0 0 22px rgba(40,180,100,0.04)}}
-@keyframes dampromPulse{0%,100%{box-shadow:0 0 22px rgba(200,120,40,0.08),inset 0 0 16px rgba(160,80,20,0.03)}50%{box-shadow:0 0 42px rgba(255,160,60,0.12),inset 0 0 28px rgba(200,120,40,0.05)}}
-@keyframes dampromGlow{0%,100%{text-shadow:0 0 24px rgba(255,160,60,0.40),0 0 48px rgba(200,100,20,0.18)}50%{text-shadow:0 0 42px rgba(255,200,80,0.55),0 0 84px rgba(220,130,30,0.25)}}
 
 #startcard.damprom-mode{
-  border-color:rgba(200,120,40,0.25);
-  background:rgba(12,6,2,0.92);
-  animation:dampromPulse 5s ease infinite;
+  border-color:rgba(200,120,40,0.32);
+  background:var(--bg2);
 }
-#startcard.damprom-mode .sc-title{animation:dampromGlow 4s ease infinite;color:#fff8e8;letter-spacing:0.55em;}
-.btn.damprom{border-color:rgba(200,120,40,0.5);color:rgba(255,180,80,0.9);}
-.btn.damprom[data-mode="salt"],.btn.damprom.salt-active{border-color:rgba(255,20,180,0.6);color:rgba(255,100,220,0.9);}
-.btn.damprom:hover,.btn.damprom.active{border-color:rgba(255,160,60,0.9);color:#fff8e8;background:rgba(200,120,40,0.08);box-shadow:0 0 22px rgba(200,120,40,0.18);}
-.damprom-sub{font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.24em;color:rgba(255,180,80,0.55);margin-top:4px;}
-#bpm-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.22em;color:rgba(255,180,80,0.45);pointer-events:none;}
+#startcard.damprom-mode .sc-title{color:#fff8e8;letter-spacing:0.55em;}
+.damprom-sub{font-family:var(--sans);font-size:10px;letter-spacing:0.24em;color:rgba(255,180,80,0.6);margin-top:4px;}
+#bpm-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-family:var(--sans);font-size:8px;letter-spacing:0.22em;color:rgba(255,180,80,0.45);pointer-events:none;}
 
 #startcard.oslo-mode{
-  border-color:rgba(40,180,100,0.2);
-  background:rgba(0,4,10,0.90);
-  animation:goldPulse 4s ease infinite;
+  border-color:rgba(40,180,100,0.28);
+  background:var(--bg2);
 }
 #startcard.oslo-mode .sc-title{
   font-size:clamp(16px,3.8vw,28px);
   letter-spacing:0.6em;
-  animation:roseGlow 3s ease infinite;
   color:#e0f8ff;
 }
-.btn.oslo{border-color:rgba(40,180,100,0.5);color:rgba(100,220,160,0.9);}
-.btn.oslo:hover,.btn.oslo.active{border-color:rgba(80,220,160,0.9);color:#e8fff2;background:rgba(40,180,100,0.08);box-shadow:0 0 20px rgba(40,180,100,0.15);}
-.oslo-sub{font-family:'Courier Prime',monospace;font-size:10px;letter-spacing:0.24em;color:rgba(80,200,130,0.55);margin-top:4px;}
+.oslo-sub{font-family:var(--sans);font-size:10px;letter-spacing:0.24em;color:rgba(80,200,130,0.6);margin-top:4px;}
 
 #beat-flash{position:fixed;inset:0;z-index:15;pointer-events:none;background:transparent;transition:background 0.04s;}
-#rotate-nudge{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.92);display:none;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.3em;text-align:center;gap:16px;}
+#rotate-nudge{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.92);display:none;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);font-family:var(--serif);font-size:13px;letter-spacing:0.3em;text-align:center;gap:16px;}
 #rotate-nudge svg{opacity:0.5;}
-#cursor{position:fixed;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,rgba(255,45,109,0.9),transparent 70%);box-shadow:0 0 20px rgba(255,45,109,0.5);pointer-events:none;z-index:999;transform:translate(-50%,-50%);mix-blend-mode:screen;}
+#cursor{position:fixed;width:14px;height:14px;border-radius:50%;background:rgba(169,141,247,0.85);pointer-events:none;z-index:999;transform:translate(-50%,-50%);mix-blend-mode:screen;}
 
-@keyframes auroraShift {
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
-}
-
-#ui{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;}
+#ui{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 #startcard{
-  border:1px solid rgba(255,255,255,0.14);
+  border:1px solid var(--line2);
   padding:38px 36px 36px;
   text-align:center;
-  background:rgba(0,3,6,0.90);
-  backdrop-filter:blur(8px);
+  background:var(--panel);
   max-width:440px;
   width:90%;
+  max-height:94vh;
+  overflow-y:auto;
   display:flex;
   flex-direction:column;
   align-items:center;
   position:relative;
-  overflow:hidden;
-}
-#startcard::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg,
-    rgba(228,3,3,0.025) 0%,
-    rgba(255,140,0,0.025) 16%,
-    rgba(255,237,0,0.025) 33%,
-    rgba(0,160,60,0.03) 50%,
-    rgba(0,100,220,0.03) 66%,
-    rgba(120,10,180,0.025) 83%,
-    rgba(228,3,3,0.025) 100%
-  );
-  background-size:300% 300%;
-  animation:auroraShift 8s ease infinite;
-  pointer-events:none;
 }
 .sc-title{
-  font-family:'Cinzel',serif;
+  font-family:var(--serif);
   font-size:clamp(16px,3.8vw,28px);
   letter-spacing:0.6em;
-  color:#fff;
+  color:var(--text);
   margin-bottom:8px;
   position:relative;
-  text-shadow:0 0 16px rgba(100,220,160,0.22);
 }
-.sc-sub{font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:0.24em;color:rgba(255,255,255,0.46);margin-bottom:28px;position:relative;}
-.sc-label{font-family:'Cinzel',serif;font-size:8px;letter-spacing:0.35em;color:rgba(255,255,255,0.28);margin-bottom:9px;margin-top:16px;position:relative;}
+.sc-sub{font-family:var(--sans);font-size:11px;letter-spacing:0.24em;color:var(--soft);margin-bottom:28px;position:relative;}
+.sc-label{font-family:var(--sans);font-size:8px;letter-spacing:0.35em;color:var(--dim);margin-bottom:9px;margin-top:16px;position:relative;}
 .row{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:4px;position:relative;}
-.btn{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;padding:0;width:120px;height:38px;text-align:center;border:1px solid rgba(255,255,255,0.22);background:transparent;color:rgba(255,255,255,0.65);cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;justify-content:center;}
-.btn:hover,.btn.active{border-color:rgba(255,255,255,0.75);color:#fff;background:rgba(255,255,255,0.05);}
-.btn-play{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.28em;padding:13px 36px;border:1px solid rgba(100,220,160,0.36);background:transparent;color:rgba(200,255,220,0.94);cursor:pointer;margin-top:22px;transition:all 0.2s;position:relative;text-shadow:0 0 8px rgba(100,220,160,0.22);}
-.btn-play:hover{background:rgba(100,220,160,0.05);box-shadow:0 0 18px rgba(100,220,160,0.08);}
+.btn{font-family:var(--sans);font-size:10px;letter-spacing:0.1em;padding:0;width:120px;height:38px;text-align:center;border:1px solid var(--line2);background:transparent;color:var(--soft);cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;justify-content:center;}
+.btn:hover,.btn.active{border-color:var(--violet);color:var(--text);background:rgba(169,141,247,0.08);}
+.btn-play{font-family:var(--sans);font-weight:600;font-size:14px;letter-spacing:0.2em;padding:13px 36px;border:1px solid var(--line2);background:transparent;color:var(--text);cursor:pointer;margin-top:22px;transition:all 0.2s;position:relative;}
+.btn-play:hover{border-color:var(--violet);background:rgba(169,141,247,0.08);}
 
 #hud{position:fixed;z-index:50;width:100%;height:100%;display:none;pointer-events:none;}
-#hud-stats{position:absolute;top:20px;left:24px;font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:0.16em;color:rgba(255,255,255,0.28);line-height:1.8;}
-#chapter-name{position:absolute;top:20px;right:24px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.28em;color:rgba(255,255,255,0.30);text-align:right;line-height:1.9;}
+#hud-stats{position:absolute;top:20px;left:24px;font-family:var(--sans);font-size:11px;letter-spacing:0.16em;color:var(--dim);line-height:1.8;}
+#chapter-name{position:absolute;top:20px;right:24px;font-family:var(--sans);font-size:10px;letter-spacing:0.28em;color:var(--dim);text-align:right;line-height:1.9;}
 #hud-ctrl{position:absolute;bottom:130px;right:24px;display:flex;flex-direction:column;gap:8px;align-items:flex-end;pointer-events:all;transition:opacity 0.35s ease,transform 0.35s ease,filter 0.35s ease;}
 #hud-ctrl.auto-hidden{opacity:0;transform:translateX(8px);filter:blur(1px);pointer-events:none;}
-.hbtn{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;padding:7px 14px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;}
-.hbtn:hover,.hbtn.active{border-color:rgba(255,255,255,0.7);color:#fff;}
-#mic-badge{font-family:'Cinzel',serif;font-size:8px;letter-spacing:0.3em;color:rgba(255,80,120,0.8);display:none;padding:4px 10px;border:1px solid rgba(255,80,120,0.3);}
+.hbtn{font-family:var(--sans);font-size:10px;letter-spacing:0.1em;padding:7px 14px;border:1px solid var(--line2);background:transparent;color:var(--soft);cursor:pointer;transition:all 0.2s;}
+.hbtn:hover,.hbtn.active{border-color:var(--violet);color:var(--text);}
+#mic-badge{font-family:var(--sans);font-size:8px;letter-spacing:0.3em;color:rgba(242,155,205,0.85);display:none;padding:4px 10px;border:1px solid rgba(242,155,205,0.3);}
 body.preview-mode{cursor:default;}
 body.preview-mode #ui,
 body.preview-mode #hud,
@@ -169,9 +141,9 @@ body.preview-mode #beat-flash{display:none!important;}
   justify-content:center;
   flex-direction:column;
   height:100vh;
-  background:#000;
-  color:#fff;
-  font-family:'Cinzel',serif;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--serif);
   text-align:center;
 }
 .preview-end h2{
@@ -250,17 +222,17 @@ body.preview-mode #beat-flash{display:none!important;}
       <button class="btn active" data-mode="pride">OSLO</button>
       <button class="btn" data-mode="damprom">ÁRDNA</button>
       <button class="btn" data-mode="lengsel">SIRENE</button>
-      <button class="btn oslo" data-mode="lutvann">LUTVANN</button>
-      <button class="btn damprom" data-mode="salt">SALT</button>
-      <button class="btn damprom" data-mode="saltritual" style="border-color:rgba(255,154,86,0.5);color:rgba(255,180,120,0.9);">RITUAL</button>
-      <button class="btn" data-mode="folklore" style="border-color:rgba(90,200,130,0.5);color:rgba(150,240,190,0.9);">FOLKLORE</button>
-      <button class="btn" data-mode="chosenfamily" style="border-color:rgba(180,60,220,0.5);color:rgba(210,130,255,0.9);">KRETSEN</button>
-      <button class="btn" data-mode="digital" style="border-color:rgba(0,255,180,0.5);color:rgba(0,255,180,0.9);">DIGITAL</button>
+      <button class="btn" data-mode="lutvann">LUTVANN</button>
+      <button class="btn" data-mode="salt">SALT</button>
+      <button class="btn" data-mode="saltritual">RITUAL</button>
+      <button class="btn" data-mode="folklore">FOLKLORE</button>
+      <button class="btn" data-mode="chosenfamily">KRETSEN</button>
+      <button class="btn" data-mode="digital">DIGITAL</button>
     </div>
     <button class="btn-play" id="btn-play">&#9733; ENTER THE DRAMAQUEEN VOID</button>
     <div id="bpm-hint"></div>
-    <button class="btn" id="btn-perf-mode" style="font-size:9px;letter-spacing:0.15em;border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.35);margin-top:10px;">PERFORMANCE MODE</button>
-    <div id="perf-hint" style="font-family:'Courier Prime',monospace;font-size:8px;letter-spacing:0.18em;color:rgba(255,255,255,0.25);margin-top:5px;min-height:12px;"></div>
+    <button class="btn" id="btn-perf-mode" style="font-size:9px;letter-spacing:0.1em;width:auto;padding:8px 14px;margin-top:10px;">PERFORMANCE MODE</button>
+    <div id="perf-hint" style="font-family:var(--sans);font-size:8px;letter-spacing:0.1em;color:var(--dim);margin-top:5px;min-height:12px;"></div>
   </div>
 </div>
 
@@ -279,12 +251,12 @@ body.preview-mode #beat-flash{display:none!important;}
       <button class="hbtn active" data-mode="pride">OSLO</button>
       <button class="hbtn" data-mode="damprom">ÁRDNA</button>
       <button class="hbtn" data-mode="lengsel">SIRENE</button>
-      <button class="hbtn" data-mode="lutvann" style="border-color:rgba(40,180,100,0.4);color:rgba(80,220,160,0.7);">LUTVANN</button>
-      <button class="hbtn" data-mode="salt" style="border-color:rgba(200,220,255,0.5);color:rgba(200,220,255,0.8);">SALT</button>
-      <button class="hbtn" data-mode="saltritual" style="border-color:rgba(255,154,86,0.4);color:rgba(255,180,120,0.8);">RITUAL</button>
-      <button class="hbtn" data-mode="folklore" style="border-color:rgba(90,200,130,0.4);color:rgba(150,240,190,0.8);">FOLKLORE</button>
-      <button class="hbtn" data-mode="chosenfamily" style="border-color:rgba(180,60,220,0.4);color:rgba(210,130,255,0.8);">KRETSEN</button>
-      <button class="hbtn" data-mode="digital" style="border-color:rgba(0,255,180,0.4);color:rgba(0,255,180,0.8);">DIGITAL</button>
+      <button class="hbtn" data-mode="lutvann">LUTVANN</button>
+      <button class="hbtn" data-mode="salt">SALT</button>
+      <button class="hbtn" data-mode="saltritual">RITUAL</button>
+      <button class="hbtn" data-mode="folklore">FOLKLORE</button>
+      <button class="hbtn" data-mode="chosenfamily">KRETSEN</button>
+      <button class="hbtn" data-mode="digital">DIGITAL</button>
     </div>
     <button class="hbtn" id="btn-shuffle" title="shuffle filter">&#x21BB;</button>
     <button class="hbtn" id="btn-auto" title="auto filter: reads the room">AUTO</button>
@@ -1084,8 +1056,7 @@ function doShuffle(){
   if(currentMode==='lutvann')arr=OSLO_NARRATIVE;
   else if(currentMode==='damprom')arr=DAMPROM_NARRATIVE;
   else if(currentMode==='salt')arr=SALT_NARRATIVE;
-  else if(currentMode==='magical')arr=MAGICAL_NARRATIVE;
-  else if(currentMode==='lengsel')arr=SIRENE_NARRATIVE;
+  else if(currentMode==='lengsel')arr=LENGSEL_NARRATIVE;
   else if(currentMode==='digital')arr=DIGITAL_NARRATIVE;
   else if(currentMode==='chosenfamily')arr=CHOSEN_FAMILY_NARRATIVE;
   if(!arr||!arr.length){shufflePending=false;return;}
@@ -1243,74 +1214,6 @@ const SALT_NARRATIVE=[
   {main:'kald/varm: the Norwegian theory of everything',sub:'',ch:3},
   {main:'this is the Oslo we built',sub:'one queer night at a time',ch:3},
   {main:'tonight this city belongs to DRAMAQUEEN',sub:'',ch:3},
-];
-
-// ── MAGICAL — queer coded Oslo archetypes ──
-const MAGICAL_NARRATIVE=[
-  {main:'dampånden lives between shapes',sub:'choosing a new one each night',ch:0},
-  {main:'the water holds every form you have ever been',sub:'',ch:0},
-  {main:'her voice sounds like the thing you want most',sub:'',ch:0},
-  {main:'every river that runs to the sea is looking for something',sub:'so is she',ch:0},
-  {main:'the boundary between her world and yours is already thin',sub:'',ch:0},
-  {main:'what the water shows you',sub:'keep it',ch:0},
-  {main:'dampånden does not change for anyone',sub:'she changes because she wants to',ch:0},
-  {main:'the mirror has never lied',sub:'not once',ch:0},
-  {main:'some call it enchantment',sub:'she calls it recognition',ch:0},
-  {main:'she is still there',sub:'just below the surface / still singing',ch:0},
-  {main:'what she offers is not safe',sub:'it is necessary',ch:0},
-  {main:'her love was too large for the world that rejected it',sub:'the water kept it',ch:0},
-
-  {main:'akerselva rises because she was never given the words',sub:'',ch:1},
-  {main:'the half-boat carries everything that was refused burial',sub:'',ch:1},
-  {main:'she haunts because she refuses to stay gone',sub:'',ch:1},
-  {main:'they called it a curse',sub:'she calls it loyalty',ch:1},
-  {main:'the sea held her when the land would not',sub:'',ch:1},
-  {main:'every ghost is just someone who was not allowed to finish',sub:'',ch:1},
-  {main:'her body is salt and fury',sub:'and she is beautiful',ch:1},
-  {main:'she did not choose to rise',sub:'the water would not keep her down',ch:1},
-  {main:'she does not haunt this coast',sub:'she owns it',ch:1},
-  {main:'the sea brought her back',sub:'the sea always brings us back',ch:1},
-  {main:'what they called monstrous',sub:'was just the truth they feared',ch:1},
-  {main:'none of us stay gone',sub:'',ch:1},
-
-  {main:'nesodden has been in this landscape since before the city had a name',sub:'',ch:2},
-  {main:'her love is measured in centuries',sub:'not years',ch:2},
-  {main:'she turned to stone once',sub:'she turned back / she always turns back',ch:2},
-  {main:'the troll who loved the wrong person',sub:'there is no such thing',ch:2},
-  {main:'every crack in the granite is where something beautiful tried to get out',sub:'',ch:2},
-  {main:'her patience is not weakness',sub:'it is the weight of everything she has survived',ch:2},
-  {main:'nesodden does not need you to understand her',sub:'only to stand here',ch:2},
-  {main:'the mountain remembers every prayer',sub:'every longing / every name',ch:2},
-  {main:'she is still here',sub:'she will still be here',ch:2},
-  {main:'they threw stones at the mountain',sub:'the mountain is still there',ch:2},
-  {main:'her hands have held this landscape since the ice retreated',sub:'',ch:2},
-  {main:'the mountain loves slowly',sub:'and completely',ch:2},
-
-  {main:'fjordbruden is the fjord letting itself be desired',sub:'',ch:3},
-  {main:'her tail is not a flaw',sub:'it is a signature',ch:3},
-  {main:'she chose this form',sub:'she chooses it every time',ch:3},
-  {main:'they wanted her beautiful and obedient',sub:'she kept the tail',ch:3},
-  {main:'her song does not trick',sub:'it offers',ch:3},
-  {main:'the hollow in her back is where she keeps what she will not give away',sub:'',ch:3},
-  {main:'she moves through the forest like she invented it',sub:'she did',ch:3},
-  {main:'fjordbruden takes nothing that is not freely given',sub:'and it is always freely given',ch:3},
-  {main:'her desire is not dangerous',sub:'yours was just unprepared for it',ch:3},
-  {main:'she peeks from behind the tree',sub:'because she decides when she steps out',ch:3},
-  {main:'she belongs to herself',sub:'first / always',ch:3},
-  {main:'every creature in this wood has felt her pass',sub:'',ch:3},
-
-  {main:'danseren moves at the water\'s edge and plays what cannot be said',sub:'',ch:4},
-  {main:'she will teach you her music',sub:'the price is that you feel everything',ch:4},
-  {main:'every note is something someone could not hold inside anymore',sub:'',ch:4},
-  {main:'the fiddle knows what the throat cannot carry',sub:'',ch:4},
-  {main:'the strings vibrate with every colour',sub:'the rainbow was her idea',ch:4},
-  {main:'danseren does not dance for audiences',sub:'she plays for the ones who need it',ch:4},
-  {main:'the waterfall plays without stopping',sub:'she plays without stopping',ch:4},
-  {main:'every queer dancer who ever moved contains her',sub:'',ch:4},
-  {main:'the music never stops',sub:'',ch:4},
-  {main:'she is still there at the water',sub:'you can hear her if you listen',ch:4},
-  {main:'her music is older than the words for what she is',sub:'',ch:4},
-  {main:'what the fiddle plays tonight',sub:'outlasts everything',ch:4},
 ];
 
 // ── LENGSEL — past lovers, Oslo scenery, no clichés ──
@@ -1573,10 +1476,8 @@ function _getNarArray(mode){
   if(mode==='salt')return SALT_NARRATIVE;
   if(mode==='saltritual')return SALT_RITUAL_NARRATIVE;
   if(mode==='folklore')return FOLKLORE_LOVER_NARRATIVE;
-  if(mode==='magical')return MAGICAL_NARRATIVE;
-  if(mode==='lengsel')return SIRENE_NARRATIVE;
+  if(mode==='lengsel')return LENGSEL_NARRATIVE;
   if(mode==='digital')return DIGITAL_NARRATIVE;
-  if(mode==='witch')return WITCH_NARRATIVE;
   if(mode==='chosenfamily')return CHOSEN_FAMILY_NARRATIVE;
   return NARRATIVE;
 }
@@ -4837,8 +4738,7 @@ function randomizeNarrativeStartOnLoad(){
   if(currentMode==='lutvann')arr=OSLO_NARRATIVE;
   else if(currentMode==='damprom')arr=DAMPROM_NARRATIVE;
   else if(currentMode==='salt')arr=SALT_NARRATIVE;
-  else if(currentMode==='magical')arr=MAGICAL_NARRATIVE;
-  else if(currentMode==='lengsel')arr=SIRENE_NARRATIVE;
+  else if(currentMode==='lengsel')arr=LENGSEL_NARRATIVE;
   else if(currentMode==='digital')arr=DIGITAL_NARRATIVE;
   if(!arr||!arr.length)return;
 
