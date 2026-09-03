@@ -932,16 +932,51 @@ function buildNpcLayer(){
    wrap.innerHTML='<div class="avatarBubble" style="background:'+n.outfit+'"><span class="initial">'+n.name.charAt(0)+'</span></div><div class="shadow" style="width:20px;height:6px"></div>';
    layer.appendChild(wrap);
    const home={x:loc.x,y:clamp(loc.y+13,20,95)};
-   npcEls[key]={el:wrap,x:home.x+(Math.random()*8-4),y:home.y+(Math.random()*4-2),tx:home.x,ty:home.y,home:home};
+   npcEls[key]={el:wrap,x:home.x+(Math.random()*8-4),y:home.y+(Math.random()*4-2),tx:home.x,ty:home.y,home:home,
+     scheduleLoc:n.loc,traveling:false,pathQueue:[],jitter:Math.floor(Math.random()*20)-10};
    placeEl(wrap,npcEls[key].x,npcEls[key].y);
  });
 }
 function wanderNpcs(){
- Object.values(npcEls).forEach(n=>{
-   const dx=n.tx-n.x,dy=n.ty-n.y,dd=Math.hypot(dx,dy);
-   if(dd<1.2){n.tx=clamp(n.home.x+(Math.random()*10-5),8,92);n.ty=clamp(n.home.y+(Math.random()*6-2),20,95)}
-   else{n.x+=dx/dd*.045;n.y+=dy/dd*.045}
+ Object.entries(npcEls).forEach(([key,n])=>{
+   if(n.traveling){
+     const aim=n.pathQueue.length?n.pathQueue[0]:n.home;
+     const dx=aim.x-n.x,dy=aim.y-n.y,dd=Math.hypot(dx,dy);
+     if(dd<.6){
+       n.x=aim.x;n.y=aim.y;
+       if(n.pathQueue.length)n.pathQueue.shift();
+       else{n.traveling=false;n.tx=n.home.x;n.ty=n.home.y}
+     }else{n.x+=dx/dd*.09;n.y+=dy/dd*.09}
+   }else{
+     const dx=n.tx-n.x,dy=n.ty-n.y,dd=Math.hypot(dx,dy);
+     if(dd<1.2){n.tx=clamp(n.home.x+(Math.random()*10-5),8,92);n.ty=clamp(n.home.y+(Math.random()*6-2),20,95)}
+     else{n.x+=dx/dd*.045;n.y+=dy/dd*.045}
+   }
    placeEl(n.el,n.x,n.y);
+ });
+}
+
+/* ================= day/night NPC migration ================= */
+/* After ~22:00 (staggered a little per-NPC) the friends who don't already
+   live at a nightlife spot head over to Fincken or Club; they come home
+   again in the small hours. Real Fincken<->Club moves take the real
+   corner route via computeRoute(); every other pair just walks straight
+   there, same as today's ambient wander. */
+const NIGHT_MIGRATION={theo:"fincken",noor:"fincken",rowan:"club",kai:"club"};
+function updateNpcSchedules(){
+ const minuteOfDay=state.minutes%1440;
+ Object.entries(npcEls).forEach(([key,n])=>{
+   const dest=NIGHT_MIGRATION[key]; if(!dest)return;
+   const nightStart=22*60+n.jitter, nightEnd=2*60+n.jitter;
+   const isNight = minuteOfDay>=nightStart || minuteOfDay<nightEnd;
+   const target = isNight ? dest : NPCS[key].loc;
+   if(target===n.scheduleLoc)return;
+   const from=n.scheduleLoc;
+   n.scheduleLoc=target;
+   const loc=LOCATIONS[target];
+   n.home={x:loc.x,y:clamp(loc.y+13,20,95)};
+   n.pathQueue=computeRoute(from,target);
+   n.traveling=true;
  });
 }
 
@@ -1158,6 +1193,7 @@ function tickClock(){
  const night = h24<6||h24>=20;
  const dusk = h24===6||h24===19;
  $("dayNightTint").style.background = night?"rgba(8,10,35,.55)": dusk?"rgba(60,30,60,.28)":"rgba(10,15,40,0)";
+ updateNpcSchedules();
 }
 
 /* ================= window management ================= */
