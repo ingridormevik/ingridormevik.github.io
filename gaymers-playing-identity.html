@@ -186,6 +186,19 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .slot.empty{opacity:.3}
 .slot.empty:before{content:"";width:60%;height:1px;background:#bbb}
 
+#memAddRow{display:flex;gap:6px;margin-bottom:9px}
+#memAddRow input{flex:1;background:#fff;color:#221833;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);padding:5px 7px;font-family:Tahoma,Arial,sans-serif;font-size:10px}
+#memoriesList{display:flex;flex-direction:column;gap:8px}
+.memEntry{display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:start;padding:6px 0;border-bottom:1px solid #4a3a58}
+.memEntry:last-child{border-bottom:0}
+.memEntry .memAvatar{width:30px;height:30px;border-radius:50%;overflow:hidden;border:2px solid var(--accent);flex:0 0 auto}
+.memEntry .memAvatar img{width:100%;height:100%;object-fit:cover;display:block}
+.memEntry .memBody{min-width:0}
+.memEntry .memMeta{font-size:7px;color:#c9b6dc;margin-bottom:2px}
+.memEntry .memCaption{font-size:9px;line-height:1.35;color:var(--ink)}
+.memEntry .memDel{background:none;border:none;color:#c9b6dc;font-size:11px;cursor:pointer;padding:0 2px}
+#memEmpty{font-size:9px;color:#c9b6dc;line-height:1.4;padding:6px 0}
+
 /* CAS wizard */
 #casWindow{width:min(560px,94vw)}
 .casStep{padding:13px}
@@ -669,6 +682,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
           <div id="panelActions">
             <button class="btn98" id="openRelBtn"><b>♥</b><span>RELATIONSHIPS</span></button>
             <button class="btn98" id="openInvBtn"><b>▤</b><span>INVENTORY</span></button>
+            <button class="btn98" id="openMemBtn" style="grid-column:1/3"><b>✎</b><span>MEMORIES</span></button>
             <button class="btn98" id="openCasBtn" style="grid-column:1/3"><b>☺</b><span>MAKE YOUR CHARACTER</span></button>
           </div>
         </div>
@@ -711,6 +725,21 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
     <div class="titlebtns"><button class="wbtn" data-close="invWindow">×</button></div>
   </div>
   <div class="floatBody"><div id="invGrid"></div></div>
+</section>
+
+<!-- Memories window -->
+<section id="memoriesWindow" class="floatWin win98" style="left:34%;top:12%;width:min(320px,92vw)">
+  <div class="titlebar" data-drag="memoriesWindow">
+    <div class="titleleft"><span class="titleicon"></span><span>Memories</span></div>
+    <div class="titlebtns"><button class="wbtn" data-close="memoriesWindow">×</button></div>
+  </div>
+  <div class="floatBody">
+    <div id="memAddRow">
+      <input type="text" id="memInput" maxlength="140" placeholder="What just happened?">
+      <button class="btn98" id="memSaveBtn">SAVE</button>
+    </div>
+    <div id="memoriesList"></div>
+  </div>
 </section>
 
 <!-- Help window -->
@@ -1195,7 +1224,15 @@ $("freeWillBtn").onclick=()=>{sndClick();state.freeWill=!state.freeWill;$("freeW
 
 $("openRelBtn").onclick=()=>{sndClick();openWin("relWindow")};
 $("openInvBtn").onclick=()=>{sndClick();openWin("invWindow")};
+$("openMemBtn").onclick=()=>{sndClick();openWin("memoriesWindow");renderMemories()};
 $("openCasBtn").onclick=()=>{sndClick();openWin("casWindow")};
+$("memSaveBtn").onclick=()=>{addMemory($("memInput").value);$("memInput").value=""};
+$("memInput").addEventListener("keydown",e=>{if(e.key==="Enter"){addMemory($("memInput").value);$("memInput").value=""}});
+$("memoriesList").addEventListener("click",e=>{
+ const b=e.target.closest(".memDel"); if(!b)return;
+ memories.splice(parseInt(b.getAttribute("data-i"),10),1);
+ saveMemories(); renderMemories();
+});
 $("menuHelp").onclick=$("helpMenuBtn").onclick=()=>{sndClick();openWin("helpWindow")};
 $("menuGame").onclick=()=>{sndClick();toast("GAME","Autosaves your Sim's look to this browser only.")};
 $("menuSim").onclick=()=>{sndClick();openWin("casWindow")};
@@ -1324,6 +1361,47 @@ function loadProfile(){
 function loadDefaultIdentity(){
  state.name="INGRID"; state.pronoun="she/her"; state.photoData=DEFAULT_AVATAR;
  applyIdentity();
+}
+
+/* ================= memories archive (local diary, per device — not a shared feed) ================= */
+let memories=[];
+function loadMemories(){
+ try{ const raw=localStorage.getItem("gaymersMemories"); memories=raw?JSON.parse(raw):[]; }
+ catch(e){ memories=[]; }
+}
+function saveMemories(){
+ try{ localStorage.setItem("gaymersMemories", JSON.stringify(memories)); }catch(e){}
+}
+function relTime(ts){
+ const s=Math.max(0,Math.floor((Date.now()-ts)/1000));
+ if(s<60)return "just now";
+ const m=Math.floor(s/60); if(m<60)return m+"m ago";
+ const h=Math.floor(m/60); if(h<24)return h+"h ago";
+ return Math.floor(h/24)+"d ago";
+}
+function renderMemories(){
+ const list=$("memoriesList");
+ if(!memories.length){
+   list.innerHTML='<div id="memEmpty">Nothing saved yet — visit somewhere, then write down what happened.</div>';
+   return;
+ }
+ const ordered=memories.slice().reverse();
+ list.innerHTML=ordered.map((m,idx)=>{
+   const i=memories.length-1-idx;
+   return '<div class="memEntry"><div class="memAvatar"><img src="'+(m.photo||DEFAULT_AVATAR)+'" alt=""></div>'+
+     '<div class="memBody"><div class="memMeta">'+(m.locLabel||"Somewhere in Bergen")+' · '+relTime(m.ts)+'</div>'+
+     '<div class="memCaption"></div></div>'+
+     '<button class="memDel" data-i="'+i+'" title="Delete">×</button></div>';
+ }).join("");
+ list.querySelectorAll(".memCaption").forEach((el,idx)=>{ el.textContent=ordered[idx].caption; });
+}
+function addMemory(caption){
+ caption=caption.trim();
+ if(!caption)return;
+ memories.push({ts:Date.now(), loc:state.lastLoc, locLabel:state.lastLoc?LOCATIONS[state.lastLoc].label:null, photo:state.photoData||DEFAULT_AVATAR, caption:caption.slice(0,140)});
+ saveMemories(); renderMemories();
+ sndPickup();
+ toast("MEMORY SAVED","Added to your archive.");
 }
 
 /* ================= landing screen ================= */
@@ -1495,6 +1573,7 @@ renderNeeds(); updateMood(); renderRelationships(); renderInventory(); applyIden
 tickClock();
 const hadProfile=loadProfile();
 if(!hadProfile) loadDefaultIdentity();
+loadMemories();
 repaintLandingSprite();
 setLandingQr();
 tickLandingClock();
