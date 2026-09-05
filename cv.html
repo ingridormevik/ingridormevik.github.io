@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ingrid Ormevik — CV</title>
+<meta name="description" content="CV og spillbare arbeider. Stedsbaserte spill, lydreaktive systemer og interaktive fortellinger under navnet Mount Media.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --desk:#0E7C7B;
+  --desk-2:#08514F;
+  --face:#D8D4CB;
+  --face-2:#C6C1B6;
+  --hi:#FFFFFF;
+  --lo:#7C776D;
+  --lo-2:#43403A;
+  --ink:#1A1815;
+  --bar:#2B2440;
+  --bar-2:#463A63;
+  --hot:#D4145A;
+  --link:#1B34C4;
+  --px:"Pixelify Sans",monospace;
+  --ui:"IBM Plex Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:var(--ui);
+  font-size:14px;
+  line-height:1.5;
+  color:var(--ink);
+  background:var(--desk);
+  background-image:
+    radial-gradient(ellipse at 25% -10%, rgba(255,255,255,.12), transparent 55%),
+    linear-gradient(180deg,var(--desk),var(--desk-2));
+  background-attachment:fixed;
+  min-height:100vh;
+  padding:1.25rem 1.25rem 4.5rem;
+}
+a{color:var(--link)}
+a:hover{color:var(--hot)}
+:focus-visible{outline:2px dotted #fff;outline-offset:2px}
+
+.out{
+  background:var(--face);
+  border:1px solid var(--lo-2);
+  box-shadow:inset 1px 1px 0 var(--hi),inset -1px -1px 0 var(--lo),4px 4px 0 rgba(0,0,0,.3);
+}
+.in{
+  background:#F2F0EA;
+  border:1px solid var(--lo);
+  box-shadow:inset 1px 1px 0 rgba(0,0,0,.2),inset -1px -1px 0 var(--hi);
+}
+
+.desktop{display:grid;grid-template-columns:6.75rem minmax(0,1fr);gap:1.25rem;max-width:80rem;margin:0 auto;align-items:start}
+.icons{display:grid;gap:.9rem;position:sticky;top:1.25rem}
+.icon{display:block;text-align:center;text-decoration:none;color:#fff;font-size:11px;line-height:1.25;text-shadow:1px 1px 0 rgba(0,0,0,.6)}
+.icon svg{display:block;margin:0 auto .3rem;image-rendering:pixelated}
+.icon:hover{color:#fff}
+.icon:hover svg rect.bg{fill:#fff}
+
+.win{margin-bottom:1.25rem}
+.title{display:flex;align-items:center;gap:.5rem;background:linear-gradient(90deg,var(--bar),var(--bar-2));color:#fff;padding:.3rem .45rem;font-family:var(--px);font-size:15px;margin:2px}
+.title .dots{margin-left:auto;display:flex;gap:3px}
+.title .dots i{width:15px;height:14px;display:block;background:var(--face);border:1px solid var(--lo-2);box-shadow:inset 1px 1px 0 var(--hi)}
+.body{padding:.85rem}
+
+.tabs{display:flex;flex-wrap:wrap;gap:2px;padding:0 .5rem;margin-top:.25rem}
+.tab{font-family:var(--px);font-size:14px;background:var(--face-2);color:var(--ink);border:1px solid var(--lo-2);border-bottom:none;box-shadow:inset 1px 1px 0 var(--hi);padding:.3rem .8rem .25rem;cursor:pointer;position:relative;top:1px}
+.tab[aria-selected="true"]{background:#F2F0EA;top:0;padding-bottom:.4rem;z-index:2}
+.panel{display:none}
+.panel.on{display:block}
+
+h1{font-family:var(--px);font-size:clamp(2.2rem,6.5vw,3.6rem);line-height:1;margin:0 0 .3rem}
+.tagline{font-size:15px;font-weight:600;color:var(--lo-2);margin:0 0 .9rem}
+.lead{max-width:62ch;margin:0 0 1rem}
+
+h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2rem;border-bottom:2px solid var(--lo)}
+.panel h2:first-child{margin-top:.25rem}
+
+/* key figures */
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:.6rem;margin:1rem 0}
+.fig{padding:.6rem .7rem}
+.fig b{display:block;font-family:var(--px);font-size:24px;line-height:1.1;color:var(--hot)}
+.fig span{font-size:12px;color:var(--lo-2)}
+
+.entry{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:.15rem 1rem;padding:.7rem 0;border-top:1px dotted var(--lo)}
+.entry:first-of-type{border-top:none}
+.when{font-family:var(--px);font-size:14px;color:var(--lo-2);white-space:nowrap}
+.entry h3{margin:0;font-size:14px;font-weight:700}
+.org{margin:0 0 .3rem;color:var(--hot);font-weight:600;font-size:13px}
+.entry ul{margin:0;padding-left:1.1rem;max-width:62ch}
+.entry li{padding:.05rem 0}
+.now{color:var(--hot)}
+
+/* playable */
+.play{margin-bottom:1rem}
+.play .title{font-size:14px}
+.stage{position:relative;background:#0B0B12;border:1px solid var(--lo);margin:2px;aspect-ratio:16/10}
+.stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.stage .cover{position:absolute;inset:0;display:grid;place-content:center;gap:.6rem;text-align:center;color:#fff;padding:1rem}
+.stage .cover p{margin:0;font-size:13px;max-width:38ch;color:#CFCBD8}
+.launch{font-family:var(--px);font-size:16px;padding:.4rem 1.1rem;background:var(--face);color:var(--ink);border:1px solid var(--lo-2);box-shadow:inset 1px 1px 0 var(--hi),inset -1px -1px 0 var(--lo);cursor:pointer;justify-self:center}
+.launch:hover{background:#fff}
+.play .foot{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:baseline;padding:.5rem .7rem;font-size:13px}
+.play .foot .tech{font-family:var(--px);font-size:12px;color:var(--lo-2);margin-left:auto}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.7rem}
+.card{padding:.7rem .8rem}
+.card h3{margin:0 0 .1rem;font-size:14px;font-weight:700}
+.card h3 a{text-decoration:none}
+.card .yr{font-family:var(--px);font-size:13px;color:var(--lo-2)}
+.card p{margin:.25rem 0 .45rem;font-size:13px}
+.card .tech{font-family:var(--px);font-size:12px;color:var(--lo-2)}
+
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1rem}
+.cols ul{margin:.2rem 0 0;padding-left:1.1rem}
+.cols li{padding:.03rem 0}
+
+.taskbar{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;gap:.5rem;padding:.3rem .5rem;background:var(--face);border-top:1px solid var(--hi);box-shadow:0 -2px 0 rgba(0,0,0,.25);font-size:12px;z-index:50;flex-wrap:wrap}
+.taskbar .btn{font-family:var(--px);font-size:14px;padding:.2rem .6rem;background:var(--face);border:1px solid var(--lo-2);box-shadow:inset 1px 1px 0 var(--hi),inset -1px -1px 0 var(--lo);text-decoration:none;color:var(--ink)}
+.taskbar .btn:hover{background:#fff;color:var(--ink)}
+.taskbar .clock{margin-left:auto;font-family:var(--px);font-size:13px;padding:.2rem .55rem}
+
+@media (max-width:760px){
+  body{padding:.75rem .75rem 5.5rem}
+  .desktop{grid-template-columns:1fr}
+  .icons{position:static;grid-template-columns:repeat(3,1fr);gap:.6rem}
+  .entry{grid-template-columns:1fr;gap:.1rem}
+  .stage{aspect-ratio:4/5}
+  .taskbar .clock{display:none}
+}
+@media print{
+  body{background:#fff;padding:0}
+  .icons,.taskbar,.tabs,.title,.stage,.figs{display:none}
+  .panel{display:block!important}
+  .out,.in{box-shadow:none;border:none}
+}
+</style>
+</head>
+<body>
+
+<div class="desktop">
+
+  <nav class="icons" aria-label="Arbeider">
+    <a class="icon" href="https://ingridormevik.github.io/gaymers-playing-identity.html">
+      <svg width="42" height="38" viewBox="0 0 21 19" aria-hidden="true"><rect class="bg" x="0" y="0" width="21" height="19" fill="#D8D4CB" stroke="#43403A"/><rect x="3" y="4" width="15" height="9" fill="#0E7C7B"/><rect x="5" y="6" width="3" height="3" fill="#D4145A"/><rect x="13" y="6" width="3" height="3" fill="#D4145A"/><rect x="7" y="10" width="7" height="2" fill="#F2F0EA"/></svg>
+      GAYMERS</a>
+    <a class="icon" href="https://ingridormevik.github.io/trail-mix-v2.html">
+      <svg width="42" height="38" viewBox="0 0 21 19" aria-hidden="true"><rect class="bg" x="0" y="0" width="21" height="19" fill="#D8D4CB" stroke="#43403A"/><path d="M3 15 L8 6 L11 10 L14 5 L19 15 Z" fill="#2B2440"/><rect x="7" y="5" width="2" height="2" fill="#F2F0EA"/><rect x="13" y="4" width="2" height="2" fill="#F2F0EA"/></svg>
+      Trail Mix</a>
+    <a class="icon" href="https://ingridormevik.github.io/touch%20game.html">
+      <svg width="42" height="38" viewBox="0 0 21 19" aria-hidden="true"><rect class="bg" x="0" y="0" width="21" height="19" fill="#D8D4CB" stroke="#43403A"/><rect x="4" y="4" width="13" height="11" fill="#1A1815"/><rect x="6" y="6" width="2" height="2" fill="#D4145A"/><rect x="9" y="6" width="2" height="2" fill="#D4145A"/><rect x="12" y="6" width="2" height="2" fill="#D4145A"/><rect x="6" y="10" width="9" height="1" fill="#0E7C7B"/><rect x="6" y="12" width="6" height="1" fill="#0E7C7B"/></svg>
+      Turing Test</a>
+    <a class="icon" href="https://ingridormevik.github.io/trail/">
+      <svg width="42" height="38" viewBox="0 0 21 19" aria-hidden="true"><rect class="bg" x="0" y="0" width="21" height="19" fill="#D8D4CB" stroke="#43403A"/><rect x="9" y="10" width="3" height="5" fill="#43403A"/><path d="M10.5 3 L15 10 L6 10 Z" fill="#0E7C7B"/><path d="M10.5 6 L14 12 L7 12 Z" fill="#0A5F5E"/></svg>
+      Folklore</a>
+    <a class="icon" href="https://ingridormevik.github.io/blog.html">
+      <svg width="42" height="38" viewBox="0 0 21 19" aria-hidden="true"><rect class="bg" x="0" y="0" width="21" height="19" fill="#D8D4CB" stroke="#43403A"/><rect x="5" y="3" width="11" height="13" fill="#F2F0EA" stroke="#43403A"/><rect x="7" y="6" width="7" height="1" fill="#1A1815"/><rect x="7" y="8" width="7" height="1" fill="#1A1815"/><rect x="7" y="10" width="4" height="1" fill="#D4145A"/></svg>
+      Skriving</a>
+    <a class="icon" href="https://github.com/ingridormevik">
+      <svg width="42" height="38" viewBox="0 0 21 19" aria-hidden="true"><rect class="bg" x="0" y="0" width="21" height="19" fill="#D8D4CB" stroke="#43403A"/><path d="M7 6 L4 9.5 L7 13" stroke="#1A1815" stroke-width="1.4" fill="none"/><path d="M14 6 L17 9.5 L14 13" stroke="#1A1815" stroke-width="1.4" fill="none"/><rect x="10" y="5" width="1.4" height="9" fill="#D4145A" transform="rotate(12 10.7 9.5)"/></svg>
+      GitHub</a>
+  </nav>
+
+  <div>
+
+    <!-- PLAYABLE WINDOW -->
+    <div class="play win out">
+      <div class="title">
+        <span id="playName">trail_mix.exe</span>
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      </div>
+      <div class="stage">
+        <div class="cover" id="cover">
+          <p>Kjør et av arbeidene mine her i vinduet, eller åpne det i full størrelse.</p>
+          <button class="launch" id="launch">Start Trail Mix</button>
+        </div>
+      </div>
+      <div class="foot">
+        <span>Trail Mix — vandrende DJ-sett fra Sandviken til Fløyen. Spill turen først, gå den etterpå.</span>
+        <a href="https://ingridormevik.github.io/trail-mix-v2.html">Åpne i fullskjerm</a>
+        <span class="tech">HTML5 · JavaScript · Web Audio · Geolokasjon</span>
+      </div>
+    </div>
+
+    <!-- CV WINDOW -->
+    <div class="win out">
+      <div class="title">
+        <span>ingrid_ormevik.cv</span>
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" aria-controls="p1" id="t1">Om</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p2" id="t2">Arbeider</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p3" id="t3">Erfaring</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p4" id="t4">Utdanning</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p5" id="t5">Verktøy</button>
+      </div>
+
+      <div class="body in">
+
+        <div class="panel on" id="p1" role="tabpanel" aria-labelledby="t1">
+          <h1>Ingrid Ormevik</h1>
+          <p class="tagline">Digital kultur og kreativ teknologi · Bergen</p>
+          <p class="lead">Jeg lager stedsbaserte spill, lyd og interaktive fortellinger under navnet Mount Media, og koder arbeidene selv i nettleseren. Jeg jobber med kommunikasjon for skeive organisasjoner i Bergen og med forskning på hvordan digitale systemer klassifiserer mennesker.</p>
+
+          <div class="figs">
+            <div class="fig in"><b>330 000</b><span>visninger på festivalkontoen, opp fra 273 000</span></div>
+            <div class="fig in"><b>1.</b><span>plass i elektronisk litteratur, Digitalkulturprisen</span></div>
+            <div class="fig in"><b>7</b><span>arrangementer i Skeiv Jul, finansiert fra bunnen</span></div>
+            <div class="fig in"><b>6</b><span>spillbare arbeider publisert i nettleseren</span></div>
+          </div>
+
+          <h2>Kontakt</h2>
+          <div class="cols">
+            <div><a href="mailto:ingrid.ormevik@student.uib.no">ingrid.ormevik@student.uib.no</a></div>
+            <div><a href="https://github.com/ingridormevik">github.com/ingridormevik</a></div>
+          </div>
+        </div>
+
+        <div class="panel" id="p2" role="tabpanel" aria-labelledby="t2">
+          <h2>Arbeider</h2>
+          <div class="cards">
+            <article class="card in">
+              <h3><a href="https://ingridormevik.github.io/gaymers-playing-identity.html">GAYMERS // Playing Identity</a></h3>
+              <span class="yr">2026</span>
+              <p>Livssimulator i et beige skrivebordsskall. Lag figuren din fra et ekte foto og send den ut i en by med klubb, bruktbutikk, safe space og kaifront. Under arbeid.</p>
+              <div class="tech">HTML5 · JavaScript · CSS</div>
+            </article>
+            <article class="card in">
+              <h3><a href="https://ingridormevik.github.io/trail-mix-v2.html">Trail Mix</a></h3>
+              <span class="yr">2026</span>
+              <p>Vandrende DJ-sett fra Sandviken til Fløyen. Spill turen først, gå den etterpå. Laget med Preem Cast.</p>
+              <div class="tech">HTML5 · JavaScript · Web Audio · Geolokasjon</div>
+            </article>
+            <article class="card in">
+              <h3><a href="https://ingridormevik.github.io/touch%20game.html">The Turing Test</a></h3>
+              <span class="yr">2025–2026</span>
+              <p>Interaktiv fortelling om KI-skjevhet mot norske skeive organisasjoner. Førsteplass i elektronisk litteratur under Digitalkulturprisen.</p>
+              <div class="tech">Twine · CSS</div>
+            </article>
+            <article class="card in">
+              <h3><a href="https://ingridormevik.github.io/trail/">Folkloreløypa</a></h3>
+              <span class="yr">2026</span>
+              <p>Stedsbasert folklorelag til Trail Mix, der norsk folketro møter ruten opp fjellet.</p>
+              <div class="tech">HTML5 · JavaScript</div>
+            </article>
+            <article class="card in">
+              <h3><a href="https://ingridormevik.github.io/bergtatt-visuals.html">Bergtatt</a> og <a href="https://ingridormevik.github.io/fjordtatt-visuals.html">Fjordtatt</a></h3>
+              <span class="yr">2026</span>
+              <p>Lydreaktivt visuelt system for live musikk og klubbrom, vist på Regnbuenatt i Marinehagen og på SALT under Oslo Pride.</p>
+              <div class="tech">Canvas · Web Audio API</div>
+            </article>
+            <article class="card in">
+              <h3><a href="https://ingridormevik.github.io/pride-park-spill-2026.html">Pride Park</a></h3>
+              <span class="yr">2026</span>
+              <p>Stedsbasert spill i Nygårdsparken der norsk folketro, skeiv tilhørighet og festivalrom møtes.</p>
+              <div class="tech">HTML5 · JavaScript</div>
+            </article>
+          </div>
+
+          <h2>Skriving</h2>
+          <p class="lead">Jeg skriver om digital kultur, etikk og aktivisme på <a href="https://ingridormevik.github.io/blog.html">bloggen min</a>, blant annet om algoritmisk feilkjønning, Mount Media som følelsesrom og skeiv tilhørighet i spillverdener.</p>
+        </div>
+
+        <div class="panel" id="p3" role="tabpanel" aria-labelledby="t3">
+          <h2>Erfaring</h2>
+
+          <div class="entry"><span class="when">2026 – <span class="now">nå</span></span><div>
+            <h3>Undervisningsassistent</h3><p class="org">Universitetet i Bergen, DIKULT105 Creating Digital Culture</p>
+            <ul><li>Underviser i Construct 3 og Visual Studio Code på emnets laber</li>
+            <li>Veileder studenter fram mot et interaktivt medieprosjekt med tilhørende tekst</li></ul></div></div>
+
+          <div class="entry"><span class="when">2026 – <span class="now">nå</span></span><div>
+            <h3>Kunstnerisk leder og utvikler</h3><p class="org">Mount Media</p>
+            <ul><li>Driver eget kunstnerisk virke innen stedsbaserte spill, lyd og interaktive fortellinger</li>
+            <li>Koder verkene i HTML5, JavaScript og CSS, og produserer lyd, tekst og arkivmateriale</li>
+            <li>Utvikler sanntidssystemer der lyd, kamera og bevegelse styrer det visuelle i live-rom</li>
+            <li>Søker og forvalter prosjektstøtte, og samarbeider med musikere, arrangører og institusjoner</li></ul></div></div>
+
+          <div class="entry"><span class="when">2023 – <span class="now">nå</span></span><div>
+            <h3>Digital mediestrateg</h3><p class="org">Regnbuedagene i Bergen</p>
+            <ul><li>Har hovedansvar for sosiale medier og innholdsproduksjon for festivalen</li>
+            <li>Økte rekkevidden på festivalkontoen fra 273 000 til over 330 000 visninger</li>
+            <li>Koordinerer frivillige fotografer gjennom festivaluka</li></ul></div></div>
+
+          <div class="entry"><span class="when">2023 – <span class="now">nå</span></span><div>
+            <h3>Innhold og konseptutvikling</h3><p class="org">KIM</p>
+            <ul><li>Konseptutvikling, booking, visuell kommunikasjon og arrangementsarbeid</li></ul></div></div>
+
+          <div class="entry"><span class="when">2026</span><div>
+            <h3>Forskningspraktikant, SurvivingSOGICE</h3><p class="org">Center for Digital Narrative, Universitetet i Bergen</p>
+            <ul><li>Kartla norske nettverk knyttet til konverteringspraksiser</li>
+            <li>Utviklet interaktive nettverkskart og dokumentasjonsmateriale</li></ul></div></div>
+
+          <div class="entry"><span class="when">2025</span><div>
+            <h3>Prosjektleder, Skeiv Jul</h3><p class="org">Regnbuedagene, FRI Vestland og Skeiv Verden Vest</p>
+            <ul><li>Tok initiativ til prosjektet og hentet inn finansiering fra Vestland fylkeskommune og private sponsorer</li>
+            <li>Gjennomførte et program med sju arrangementer i samarbeid mellom organisasjonene</li></ul></div></div>
+
+          <div class="entry"><span class="when">2023 – 2025</span><div>
+            <h3>Kommunikasjonsansvarlig</h3><p class="org">FRI Vestland</p>
+            <ul><li>Hadde ansvar for organisasjonens kommunikasjon og synlighet i regionen</li>
+            <li>Tilpasset nasjonalt materiale til lokal kontekst og produserte eget innhold</li></ul></div></div>
+
+          <div class="entry"><span class="when">2018 – 2024</span><div>
+            <h3>Grunnlegger</h3><p class="org">Queer Fashion of Scandinavia</p>
+            <ul><li>Drev en digital plattform for skeiv representasjon med samtykkebasert dokumentasjon</li></ul></div></div>
+
+          <div class="entry"><span class="when">2020 – 2022</span><div>
+            <h3>Streamingtekniker</h3><p class="org">Bergen Kjøtt</p>
+            <ul><li>Direktesending, flerkameraproduksjon og intervjuer for kulturarrangementer</li></ul></div></div>
+
+          <div class="entry"><span class="when">2010–2015, 2023–2025</span><div>
+            <h3>Bartender og dørvakt</h3><p class="org">Fincken</p>
+            <ul><li>Publikumsarbeid, vertskap og sikkerhet i utelivs- og kulturmiljø</li></ul></div></div>
+
+          <div class="entry"><span class="when">2015 – 2018</span><div>
+            <h3>Barsjef</h3><p class="org">Rockefeller Music Hall, John Dee og Sentrum Scene</p>
+            <ul><li>Drift, bemanning, vareflyt, publikumshåndtering og sikkerhet</li></ul></div></div>
+        </div>
+
+        <div class="panel" id="p4" role="tabpanel" aria-labelledby="t4">
+          <h2>Utdanning</h2>
+          <div class="entry"><span class="when">2024 – 2027</span><div>
+            <h3>Bachelor i digital kultur</h3><p class="org">Universitetet i Bergen</p>
+            <ul><li>Fordypning i elektronisk litteratur, digitale spill og kritiske teknologistudier</li>
+            <li>Medlem av Fagutvalget for digital kultur, 2024–2025</li></ul></div></div>
+
+          <h2>Verv</h2>
+          <div class="entry"><span class="when">2023 – <span class="now">nå</span></span><div>
+            <h3>Styremedlem</h3><p class="org">FRI Vestland</p>
+            <ul><li>Deltar i styrets behandling av saker, budsjett og vedtak for organisasjonen</li></ul></div></div>
+
+          <h2>Utmerkelser</h2>
+          <div class="entry"><span class="when">2025</span><div>
+            <h3>Førsteplass i elektronisk litteratur</h3><p class="org">Digitalkulturprisen</p>
+            <ul><li>For The Turing Test: Fragments of a Life Saved by Pixels</li></ul></div></div>
+
+          <h2>Sertifiseringer og språk</h2>
+          <div class="cols">
+            <div><strong>Sertifiseringer</strong><ul><li>Droneoperatør</li><li>Ansvarlig skjenking</li><li>Ansvarlig vertskap</li></ul></div>
+            <div><strong>Språk</strong><ul><li>Norsk, morsmål</li><li>Engelsk, flytende</li></ul></div>
+          </div>
+        </div>
+
+        <div class="panel" id="p5" role="tabpanel" aria-labelledby="t5">
+          <h2>Verktøy</h2>
+          <div class="cols">
+            <div><strong>Kode</strong><ul><li>HTML5</li><li>JavaScript</li><li>CSS</li><li>Python</li><li>Git og GitHub</li><li>Visual Studio Code</li><li>Claude Code</li><li>Codex</li></ul></div>
+            <div><strong>Spill og fortelling</strong><ul><li>Construct 3</li><li>Twine</li><li>Canvas</li><li>Web Audio API</li></ul></div>
+            <div><strong>Produksjon</strong><ul><li>Premiere Pro</li><li>Photoshop</li><li>DaVinci Resolve</li><li>OBS og flerkamera</li><li>Blackmagic Studio</li><li>Canva</li></ul></div>
+            <div><strong>Interesser</strong><ul><li>Fjell og friluftsliv</li><li>Dataspill og spillkultur</li><li>Elektronisk musikk</li><li>Lys- og romdesign</li></ul></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="taskbar">
+  <a class="btn" href="mailto:ingrid.ormevik@student.uib.no">Send e-post</a>
+  <a class="btn" href="https://github.com/ingridormevik">GitHub</a>
+  <a class="btn" href="https://ingridormevik.github.io/blog.html">Blogg</a>
+  <span class="clock in" id="clock">--:--</span>
+</div>
+
+<script>
+(function(){
+  var tabs = [].slice.call(document.querySelectorAll('.tab'));
+  function show(tab){
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      document.getElementById(t.getAttribute('aria-controls')).classList.toggle('on', on);
+    });
+  }
+  tabs.forEach(function(t,i){
+    t.addEventListener('click', function(){ show(t); });
+    t.addEventListener('keydown', function(e){
+      if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft') return;
+      e.preventDefault();
+      var n=(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length;
+      tabs[n].focus(); show(tabs[n]);
+    });
+  });
+
+  document.getElementById('launch').addEventListener('click', function(){
+    var f = document.createElement('iframe');
+    f.src = 'https://ingridormevik.github.io/trail-mix-v2.html';
+    f.title = 'Trail Mix';
+    f.loading = 'lazy';
+    document.querySelector('.stage').appendChild(f);
+    document.getElementById('cover').remove();
+  });
+
+  var clock = document.getElementById('clock');
+  function tick(){
+    var d = new Date();
+    clock.textContent = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  }
+  tick(); setInterval(tick, 20000);
+})();
+</script>
+
+</body>
+</html>
