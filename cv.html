@@ -123,6 +123,7 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
 .taskbar{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;gap:.5rem;padding:.3rem .5rem;background:var(--face);border-top:1px solid var(--hi);box-shadow:0 -2px 0 rgba(0,0,0,.25);font-size:12px;z-index:50;flex-wrap:wrap}
 .taskbar .btn{font-family:var(--px);font-size:14px;padding:.2rem .6rem;background:var(--face);border:1px solid var(--lo-2);box-shadow:inset 1px 1px 0 var(--hi),inset -1px -1px 0 var(--lo);text-decoration:none;color:var(--ink)}
 .taskbar .btn:hover{background:#fff;color:var(--ink)}
+.taskbar .btn#langBtn{font-weight:700;cursor:pointer}
 .taskbar .clock{margin-left:auto;font-family:var(--px);font-size:13px;padding:.2rem .55rem}
 
 @media (max-width:760px){
@@ -160,7 +161,7 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
       Folklore</a>
     <a class="icon" href="https://ingridormevik.github.io/blog.html">
       <svg width="42" height="38" viewBox="0 0 21 19" aria-hidden="true"><rect class="bg" x="0" y="0" width="21" height="19" fill="#D8D4CB" stroke="#43403A"/><rect x="5" y="3" width="11" height="13" fill="#F2F0EA" stroke="#43403A"/><rect x="7" y="6" width="7" height="1" fill="#1A1815"/><rect x="7" y="8" width="7" height="1" fill="#1A1815"/><rect x="7" y="10" width="4" height="1" fill="#D4145A"/></svg>
-      Skriving</a>
+      <span data-en="Writing">Skriving</span></a>
     <a class="icon" href="https://github.com/ingridormevik">
       <svg width="42" height="38" viewBox="0 0 21 19" aria-hidden="true"><rect class="bg" x="0" y="0" width="21" height="19" fill="#D8D4CB" stroke="#43403A"/><path d="M7 6 L4 9.5 L7 13" stroke="#1A1815" stroke-width="1.4" fill="none"/><path d="M14 6 L17 9.5 L14 13" stroke="#1A1815" stroke-width="1.4" fill="none"/><rect x="10" y="5" width="1.4" height="9" fill="#D4145A" transform="rotate(12 10.7 9.5)"/></svg>
       GitHub</a>
@@ -176,14 +177,14 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
       </div>
       <div class="stage">
         <div class="cover" id="cover">
-          <p>Kjør et av arbeidene mine her i vinduet, eller åpne det i full størrelse.</p>
+          <p data-en="Run one of my works here in the window, or open it full-size.">Kjør et av arbeidene mine her i vinduet, eller åpne det i full størrelse.</p>
           <button class="launch" id="launch">Start Trail Mix</button>
         </div>
       </div>
       <div class="foot">
-        <span>Trail Mix — vandrende DJ-sett fra Sandviken til Fløyen. Spill turen først, gå den etterpå.</span>
-        <a href="https://ingridormevik.github.io/trail-mix-v2.html">Åpne i fullskjerm</a>
-        <span class="tech">HTML5 · JavaScript · Web Audio · Geolokasjon</span>
+        <span data-en="Trail Mix — a walking DJ set from Sandviken to Fløyen: play the route first, walk it after.">Trail Mix — et vandrende DJ-sett fra Sandviken til Fløyen: spill turen først, gå den etterpå.</span>
+        <a href="https://ingridormevik.github.io/trail-mix-v2.html" data-en="Open fullscreen">Åpne i fullskjerm</a>
+        <span class="tech" data-en="HTML5 · JavaScript · Web Audio · Geolocation">HTML5 · JavaScript · Web Audio · Geolokasjon</span>
       </div>
     </div>
 
@@ -195,28 +196,28 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
       </div>
 
       <div class="tabs" role="tablist">
-        <button class="tab" role="tab" aria-selected="true" aria-controls="p1" id="t1">Om</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="p2" id="t2">Arbeider</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="p3" id="t3">Erfaring</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="p4" id="t4">Utdanning</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="p5" id="t5">Verktøy</button>
+        <button class="tab" role="tab" aria-selected="true" aria-controls="p1" id="t1" data-en="About">Om</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p2" id="t2" data-en="Work">Arbeider</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p3" id="t3" data-en="Experience">Erfaring</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p4" id="t4" data-en="Education">Utdanning</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p5" id="t5" data-en="Tools">Verktøy</button>
       </div>
 
       <div class="body in">
 
         <div class="panel on" id="p1" role="tabpanel" aria-labelledby="t1">
           <h1>Ingrid Ormevik</h1>
-          <p class="tagline">Digital kultur og kreativ teknologi · Bergen</p>
-          <p class="lead">Jeg lager stedsbaserte spill, lyd og interaktive fortellinger under navnet Mount Media, og koder arbeidene selv i nettleseren. Jeg jobber med kommunikasjon for skeive organisasjoner i Bergen og med forskning på hvordan digitale systemer klassifiserer mennesker.</p>
+          <p class="tagline" data-en="Digital culture and creative technology · Bergen">Digital kultur og kreativ teknologi · Bergen</p>
+          <p class="lead" data-en="I make place-based games, sound and interactive stories under the name Mount Media, and code everything myself in the browser. I also work on communications for queer organisations in Bergen, and research how digital systems classify people.">Jeg lager stedsbaserte spill, lyd og interaktive fortellinger under navnet Mount Media, og koder alt selv i nettleseren. I tillegg jobber jeg med kommunikasjon for skeive organisasjoner i Bergen, og forsker på hvordan digitale systemer klassifiserer mennesker.</p>
 
           <div class="figs">
-            <div class="fig in"><b>330 000</b><span>visninger på festivalkontoen, opp fra 273 000</span></div>
-            <div class="fig in"><b>1.</b><span>plass i elektronisk litteratur, Digitalkulturprisen</span></div>
-            <div class="fig in"><b>7</b><span>arrangementer i Skeiv Jul, finansiert fra bunnen</span></div>
-            <div class="fig in"><b>6</b><span>spillbare arbeider publisert i nettleseren</span></div>
+            <div class="fig in"><b>330 000</b><span data-en="views on the festival account, up from 273,000">visninger på festivalkontoen, opp fra 273 000</span></div>
+            <div class="fig in"><b>1.</b><span data-en="place in electronic literature, the Digital Culture Award">plass i elektronisk litteratur, Digitalkulturprisen</span></div>
+            <div class="fig in"><b>7</b><span data-en="events for Skeiv Jul (Queer Christmas), funded from scratch">arrangementer i Skeiv Jul, finansiert fra bunnen</span></div>
+            <div class="fig in"><b>6</b><span data-en="playable works published in the browser">spillbare arbeider publisert i nettleseren</span></div>
           </div>
 
-          <h2>Kontakt</h2>
+          <h2 data-en="Contact">Kontakt</h2>
           <div class="cols">
             <div><a href="mailto:ingrid.ormevik@student.uib.no">ingrid.ormevik@student.uib.no</a></div>
             <div><a href="https://github.com/ingridormevik">github.com/ingridormevik</a></div>
@@ -224,138 +225,138 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
         </div>
 
         <div class="panel" id="p2" role="tabpanel" aria-labelledby="t2">
-          <h2>Arbeider</h2>
+          <h2 data-en="Work">Arbeider</h2>
           <div class="cards">
             <article class="card in">
               <h3><a href="https://ingridormevik.github.io/gaymers-playing-identity.html">GAYMERS // Playing Identity</a></h3>
               <span class="yr">2026</span>
-              <p>Livssimulator i et beige skrivebordsskall. Lag figuren din fra et ekte foto og send den ut i en by med klubb, bruktbutikk, safe space og kaifront. Under arbeid.</p>
+              <p data-en="A life simulator in a beige desktop shell. Build your character from a real photo and send them out into a city with a club, thrift store, safe space and waterfront. Still in progress.">En livssimulator i et beige skrivebordsskall. Lag figuren din fra et ekte foto og send den ut i en by med klubb, bruktbutikk, safe space og kaifront. Fortsatt under arbeid.</p>
               <div class="tech">HTML5 · JavaScript · CSS</div>
             </article>
             <article class="card in">
               <h3><a href="https://ingridormevik.github.io/trail-mix-v2.html">Trail Mix</a></h3>
               <span class="yr">2026</span>
-              <p>Vandrende DJ-sett fra Sandviken til Fløyen. Spill turen først, gå den etterpå. Laget med Preem Cast.</p>
-              <div class="tech">HTML5 · JavaScript · Web Audio · Geolokasjon</div>
+              <p data-en="A walking DJ set from Sandviken to Fløyen. Play the route first, walk it after. Made together with Preem Cast.">Et vandrende DJ-sett fra Sandviken til Fløyen. Spill turen først, gå den etterpå. Laget sammen med Preem Cast.</p>
+              <div class="tech" data-en="HTML5 · JavaScript · Web Audio · Geolocation">HTML5 · JavaScript · Web Audio · Geolokasjon</div>
             </article>
             <article class="card in">
               <h3><a href="https://ingridormevik.github.io/touch%20game.html">The Turing Test</a></h3>
               <span class="yr">2025–2026</span>
-              <p>Interaktiv fortelling om KI-skjevhet mot norske skeive organisasjoner. Førsteplass i elektronisk litteratur under Digitalkulturprisen.</p>
+              <p data-en="An interactive story about AI bias directed at Norwegian queer organisations. First place in electronic literature at the Digital Culture Award.">En interaktiv fortelling om KI-skjevhet rettet mot norske skeive organisasjoner. Førsteplass i elektronisk litteratur under Digitalkulturprisen.</p>
               <div class="tech">Twine · CSS</div>
             </article>
             <article class="card in">
               <h3><a href="https://ingridormevik.github.io/trail/">Folkloreløypa</a></h3>
               <span class="yr">2026</span>
-              <p>Stedsbasert folklorelag til Trail Mix, der norsk folketro møter ruten opp fjellet.</p>
+              <p data-en="A place-based folklore layer for Trail Mix, where Norwegian folklore meets the route up the mountain.">Et stedsbasert folklorelag til Trail Mix, der norsk folketro møter ruten opp fjellet.</p>
               <div class="tech">HTML5 · JavaScript</div>
             </article>
             <article class="card in">
-              <h3><a href="https://ingridormevik.github.io/bergtatt-visuals.html">Bergtatt</a> og <a href="https://ingridormevik.github.io/fjordtatt-visuals.html">Fjordtatt</a></h3>
+              <h3><a href="https://ingridormevik.github.io/bergtatt-visuals.html">Bergtatt</a> <span data-en="and">og</span> <a href="https://ingridormevik.github.io/fjordtatt-visuals.html">Fjordtatt</a></h3>
               <span class="yr">2026</span>
-              <p>Lydreaktivt visuelt system for live musikk og klubbrom, vist på Regnbuenatt i Marinehagen og på SALT under Oslo Pride.</p>
+              <p data-en="A sound-reactive visual system for live music and club spaces, shown at Regnbuenatt in Marinehagen and at SALT during Oslo Pride.">Et lydreaktivt visuelt system for live musikk og klubbrom, vist på Regnbuenatt i Marinehagen og på SALT under Oslo Pride.</p>
               <div class="tech">Canvas · Web Audio API</div>
             </article>
             <article class="card in">
               <h3><a href="https://ingridormevik.github.io/pride-park-spill-2026.html">Pride Park</a></h3>
               <span class="yr">2026</span>
-              <p>Stedsbasert spill i Nygårdsparken der norsk folketro, skeiv tilhørighet og festivalrom møtes.</p>
+              <p data-en="A place-based game in Nygårdsparken where Norwegian folklore, queer belonging and festival space meet.">Et stedsbasert spill i Nygårdsparken der norsk folketro, skeiv tilhørighet og festivalrom møtes.</p>
               <div class="tech">HTML5 · JavaScript</div>
             </article>
           </div>
 
-          <h2>Skriving</h2>
-          <p class="lead">Jeg skriver om digital kultur, etikk og aktivisme på <a href="https://ingridormevik.github.io/blog.html">bloggen min</a>, blant annet om algoritmisk feilkjønning, Mount Media som følelsesrom og skeiv tilhørighet i spillverdener.</p>
+          <h2 data-en="Writing">Skriving</h2>
+          <p class="lead"><span data-en="I write about digital culture, ethics and activism on my">Jeg skriver om digital kultur, etikk og aktivisme på</span> <a href="https://ingridormevik.github.io/blog.html" data-en="blog">bloggen min</a><span data-en=", including algorithmic misgendering, Mount Media as an emotional space, and queer belonging in game worlds.">, blant annet om algoritmisk feilkjønning, Mount Media som følelsesrom og skeiv tilhørighet i spillverdener.</span></p>
         </div>
 
         <div class="panel" id="p3" role="tabpanel" aria-labelledby="t3">
-          <h2>Erfaring</h2>
+          <h2 data-en="Experience">Erfaring</h2>
 
-          <div class="entry"><span class="when">2026 – <span class="now">nå</span></span><div>
-            <h3>Undervisningsassistent</h3><p class="org">Universitetet i Bergen, DIKULT105 Creating Digital Culture</p>
-            <ul><li>Underviser i Construct 3 og Visual Studio Code på emnets laber</li>
-            <li>Veileder studenter fram mot et interaktivt medieprosjekt med tilhørende tekst</li></ul></div></div>
+          <div class="entry"><span class="when">2026 – <span class="now" data-en="present">nå</span></span><div>
+            <h3 data-en="Teaching Assistant">Undervisningsassistent</h3><p class="org">Universitetet i Bergen, DIKULT105 Creating Digital Culture</p>
+            <ul><li data-en="Teach Construct 3 and Visual Studio Code in the course's lab sessions">Underviser i Construct 3 og Visual Studio Code på emnets laber</li>
+            <li data-en="Supervise students toward an interactive media project with an accompanying text">Veileder studenter fram mot et interaktivt medieprosjekt med tilhørende tekst</li></ul></div></div>
 
-          <div class="entry"><span class="when">2026 – <span class="now">nå</span></span><div>
-            <h3>Kunstnerisk leder og utvikler</h3><p class="org">Mount Media</p>
-            <ul><li>Driver eget kunstnerisk virke innen stedsbaserte spill, lyd og interaktive fortellinger</li>
-            <li>Koder verkene i HTML5, JavaScript og CSS, og produserer lyd, tekst og arkivmateriale</li>
-            <li>Utvikler sanntidssystemer der lyd, kamera og bevegelse styrer det visuelle i live-rom</li>
-            <li>Søker og forvalter prosjektstøtte, og samarbeider med musikere, arrangører og institusjoner</li></ul></div></div>
+          <div class="entry"><span class="when">2026 – <span class="now" data-en="present">nå</span></span><div>
+            <h3 data-en="Artistic Director and Developer">Kunstnerisk leder og utvikler</h3><p class="org">Mount Media</p>
+            <ul><li data-en="Run my own artistic practice within place-based games, sound and interactive stories">Driver eget kunstnerisk virke innen stedsbaserte spill, lyd og interaktive fortellinger</li>
+            <li data-en="Code the works in HTML5, JavaScript and CSS, and produce sound, text and archival material">Koder verkene i HTML5, JavaScript og CSS, og produserer lyd, tekst og arkivmateriale</li>
+            <li data-en="Build real-time systems where sound, camera and movement drive the visuals in live spaces">Utvikler sanntidssystemer der lyd, kamera og bevegelse styrer det visuelle i live-rom</li>
+            <li data-en="Apply for and manage project funding, and collaborate with musicians, organisers and institutions">Søker og forvalter prosjektstøtte, og samarbeider med musikere, arrangører og institusjoner</li></ul></div></div>
 
-          <div class="entry"><span class="when">2023 – <span class="now">nå</span></span><div>
-            <h3>Digital mediestrateg</h3><p class="org">Regnbuedagene i Bergen</p>
-            <ul><li>Har hovedansvar for sosiale medier og innholdsproduksjon for festivalen</li>
-            <li>Økte rekkevidden på festivalkontoen fra 273 000 til over 330 000 visninger</li>
-            <li>Koordinerer frivillige fotografer gjennom festivaluka</li></ul></div></div>
+          <div class="entry"><span class="when">2023 – <span class="now" data-en="present">nå</span></span><div>
+            <h3 data-en="Digital Media Strategist">Digital mediestrateg</h3><p class="org" data-en="Regnbuedagene i Bergen (Bergen Pride)">Regnbuedagene i Bergen</p>
+            <ul><li data-en="Hold main responsibility for the festival's social media and content production">Har hovedansvar for festivalens sosiale medier og innholdsproduksjon</li>
+            <li data-en="Grew the festival account's reach from 273,000 to over 330,000 views">Økte rekkevidden på festivalkontoen fra 273 000 til over 330 000 visninger</li>
+            <li data-en="Coordinate volunteer photographers throughout festival week">Koordinerer frivillige fotografer gjennom festivaluka</li></ul></div></div>
 
-          <div class="entry"><span class="when">2023 – <span class="now">nå</span></span><div>
-            <h3>Innhold og konseptutvikling</h3><p class="org">KIM</p>
-            <ul><li>Konseptutvikling, booking, visuell kommunikasjon og arrangementsarbeid</li></ul></div></div>
+          <div class="entry"><span class="when">2023 – <span class="now" data-en="present">nå</span></span><div>
+            <h3 data-en="Content and Concept Development">Innhold og konseptutvikling</h3><p class="org">KIM</p>
+            <ul><li data-en="Concept development, booking, visual communication and event work">Konseptutvikling, booking, visuell kommunikasjon og arrangementsarbeid</li></ul></div></div>
 
           <div class="entry"><span class="when">2026</span><div>
-            <h3>Forskningspraktikant, SurvivingSOGICE</h3><p class="org">Center for Digital Narrative, Universitetet i Bergen</p>
-            <ul><li>Kartla norske nettverk knyttet til konverteringspraksiser</li>
-            <li>Utviklet interaktive nettverkskart og dokumentasjonsmateriale</li></ul></div></div>
+            <h3 data-en="Research Intern, SurvivingSOGICE">Forskningspraktikant, SurvivingSOGICE</h3><p class="org" data-en="Center for Digital Narrative, University of Bergen">Center for Digital Narrative, Universitetet i Bergen</p>
+            <ul><li data-en="Mapped Norwegian networks connected to conversion practices">Kartla norske nettverk knyttet til konverteringspraksiser</li>
+            <li data-en="Developed interactive network maps and documentation material">Utviklet interaktive nettverkskart og dokumentasjonsmateriale</li></ul></div></div>
 
           <div class="entry"><span class="when">2025</span><div>
-            <h3>Prosjektleder, Skeiv Jul</h3><p class="org">Regnbuedagene, FRI Vestland og Skeiv Verden Vest</p>
-            <ul><li>Tok initiativ til prosjektet og hentet inn finansiering fra Vestland fylkeskommune og private sponsorer</li>
-            <li>Gjennomførte et program med sju arrangementer i samarbeid mellom organisasjonene</li></ul></div></div>
+            <h3 data-en="Project Lead, Skeiv Jul (Queer Christmas)">Prosjektleder, Skeiv Jul</h3><p class="org" data-en="Regnbuedagene (Bergen Pride), FRI Vestland and Skeiv Verden Vest">Regnbuedagene, FRI Vestland og Skeiv Verden Vest</p>
+            <ul><li data-en="Initiated the project and secured funding from Vestland County Council and private sponsors">Tok initiativ til prosjektet og hentet inn finansiering fra Vestland fylkeskommune og private sponsorer</li>
+            <li data-en="Ran a programme of seven events in collaboration between the three organisations">Gjennomførte et program med sju arrangementer i samarbeid mellom de tre organisasjonene</li></ul></div></div>
 
           <div class="entry"><span class="when">2023 – 2025</span><div>
-            <h3>Kommunikasjonsansvarlig</h3><p class="org">FRI Vestland</p>
-            <ul><li>Hadde ansvar for organisasjonens kommunikasjon og synlighet i regionen</li>
-            <li>Tilpasset nasjonalt materiale til lokal kontekst og produserte eget innhold</li></ul></div></div>
+            <h3 data-en="Communications Manager">Kommunikasjonsansvarlig</h3><p class="org" data-en="FRI Vestland (Norway's LGBTQ+ organisation, Vestland chapter)">FRI Vestland</p>
+            <ul><li data-en="Responsible for the organisation's communications and visibility in the region">Hadde ansvar for organisasjonens kommunikasjon og synlighet i regionen</li>
+            <li data-en="Adapted national material to a local context and produced original content">Tilpasset nasjonalt materiale til lokal kontekst og produserte eget innhold</li></ul></div></div>
 
           <div class="entry"><span class="when">2018 – 2024</span><div>
-            <h3>Grunnlegger</h3><p class="org">Queer Fashion of Scandinavia</p>
-            <ul><li>Drev en digital plattform for skeiv representasjon med samtykkebasert dokumentasjon</li></ul></div></div>
+            <h3 data-en="Founder">Grunnlegger</h3><p class="org">Queer Fashion of Scandinavia</p>
+            <ul><li data-en="Ran a digital platform for queer representation with consent-based documentation">Drev en digital plattform for skeiv representasjon med samtykkebasert dokumentasjon</li></ul></div></div>
 
           <div class="entry"><span class="when">2020 – 2022</span><div>
-            <h3>Streamingtekniker</h3><p class="org">Bergen Kjøtt</p>
-            <ul><li>Direktesending, flerkameraproduksjon og intervjuer for kulturarrangementer</li></ul></div></div>
+            <h3 data-en="Livestream Technician">Streamingtekniker</h3><p class="org" data-en="Bergen Kjøtt (a Bergen cultural venue)">Bergen Kjøtt</p>
+            <ul><li data-en="Live broadcasting, multi-camera production and interviews for cultural events">Direktesending, flerkameraproduksjon og intervjuer for kulturarrangementer</li></ul></div></div>
 
           <div class="entry"><span class="when">2010–2015, 2023–2025</span><div>
-            <h3>Bartender og dørvakt</h3><p class="org">Fincken</p>
-            <ul><li>Publikumsarbeid, vertskap og sikkerhet i utelivs- og kulturmiljø</li></ul></div></div>
+            <h3 data-en="Bartender and Door Security">Bartender og dørvakt</h3><p class="org" data-en="Fincken (Bergen's queer bar)">Fincken</p>
+            <ul><li data-en="Guest relations, hosting and security in nightlife and cultural venues">Publikumsarbeid, vertskap og sikkerhet i utelivs- og kulturmiljø</li></ul></div></div>
 
           <div class="entry"><span class="when">2015 – 2018</span><div>
-            <h3>Barsjef</h3><p class="org">Rockefeller Music Hall, John Dee og Sentrum Scene</p>
-            <ul><li>Drift, bemanning, vareflyt, publikumshåndtering og sikkerhet</li></ul></div></div>
+            <h3 data-en="Bar Manager">Barsjef</h3><p class="org" data-en="Rockefeller Music Hall, John Dee and Sentrum Scene">Rockefeller Music Hall, John Dee og Sentrum Scene</p>
+            <ul><li data-en="Operations, staffing, stock flow, guest handling and security">Drift, bemanning, vareflyt, publikumshåndtering og sikkerhet</li></ul></div></div>
         </div>
 
         <div class="panel" id="p4" role="tabpanel" aria-labelledby="t4">
-          <h2>Utdanning</h2>
+          <h2 data-en="Education">Utdanning</h2>
           <div class="entry"><span class="when">2024 – 2027</span><div>
-            <h3>Bachelor i digital kultur</h3><p class="org">Universitetet i Bergen</p>
-            <ul><li>Fordypning i elektronisk litteratur, digitale spill og kritiske teknologistudier</li>
-            <li>Medlem av Fagutvalget for digital kultur, 2024–2025</li></ul></div></div>
+            <h3 data-en="Bachelor's in Digital Culture">Bachelor i digital kultur</h3><p class="org" data-en="University of Bergen">Universitetet i Bergen</p>
+            <ul><li data-en="Specialisation in electronic literature, digital games and critical technology studies">Fordypning i elektronisk litteratur, digitale spill og kritiske teknologistudier</li>
+            <li data-en="Member of the Student Committee for Digital Culture, 2024–2025">Medlem av Fagutvalget for digital kultur, 2024–2025</li></ul></div></div>
 
-          <h2>Verv</h2>
-          <div class="entry"><span class="when">2023 – <span class="now">nå</span></span><div>
-            <h3>Styremedlem</h3><p class="org">FRI Vestland</p>
-            <ul><li>Deltar i styrets behandling av saker, budsjett og vedtak for organisasjonen</li></ul></div></div>
+          <h2 data-en="Positions of Trust">Verv</h2>
+          <div class="entry"><span class="when">2023 – <span class="now" data-en="present">nå</span></span><div>
+            <h3 data-en="Board Member">Styremedlem</h3><p class="org" data-en="FRI Vestland (Norway's LGBTQ+ organisation, Vestland chapter)">FRI Vestland</p>
+            <ul><li data-en="Take part in the board's work on matters, budget and resolutions">Deltar i styrets arbeid med saker, budsjett og vedtak</li></ul></div></div>
 
-          <h2>Utmerkelser</h2>
+          <h2 data-en="Awards">Utmerkelser</h2>
           <div class="entry"><span class="when">2025</span><div>
-            <h3>Førsteplass i elektronisk litteratur</h3><p class="org">Digitalkulturprisen</p>
+            <h3 data-en="First Place in Electronic Literature">Førsteplass i elektronisk litteratur</h3><p class="org" data-en="Digitalkulturprisen (Digital Culture Award)">Digitalkulturprisen</p>
             <ul><li>For The Turing Test: Fragments of a Life Saved by Pixels</li></ul></div></div>
 
-          <h2>Sertifiseringer og språk</h2>
+          <h2 data-en="Certifications and Languages">Sertifiseringer og språk</h2>
           <div class="cols">
-            <div><strong>Sertifiseringer</strong><ul><li>Droneoperatør</li><li>Ansvarlig skjenking</li><li>Ansvarlig vertskap</li></ul></div>
-            <div><strong>Språk</strong><ul><li>Norsk, morsmål</li><li>Engelsk, flytende</li></ul></div>
+            <div><strong data-en="Certifications">Sertifiseringer</strong><ul><li data-en="Drone Operator">Droneoperatør</li><li data-en="Responsible Alcohol Service">Ansvarlig skjenking</li><li data-en="Responsible Hosting">Ansvarlig vertskap</li></ul></div>
+            <div><strong data-en="Languages">Språk</strong><ul><li data-en="Norwegian, native">Norsk, morsmål</li><li data-en="English, fluent">Engelsk, flytende</li></ul></div>
           </div>
         </div>
 
         <div class="panel" id="p5" role="tabpanel" aria-labelledby="t5">
-          <h2>Verktøy</h2>
+          <h2 data-en="Tools">Verktøy</h2>
           <div class="cols">
-            <div><strong>Kode</strong><ul><li>HTML5</li><li>JavaScript</li><li>CSS</li><li>Python</li><li>Git og GitHub</li><li>Visual Studio Code</li><li>Claude Code</li><li>Codex</li></ul></div>
-            <div><strong>Spill og fortelling</strong><ul><li>Construct 3</li><li>Twine</li><li>Canvas</li><li>Web Audio API</li></ul></div>
-            <div><strong>Produksjon</strong><ul><li>Premiere Pro</li><li>Photoshop</li><li>DaVinci Resolve</li><li>OBS og flerkamera</li><li>Blackmagic Studio</li><li>Canva</li></ul></div>
-            <div><strong>Interesser</strong><ul><li>Fjell og friluftsliv</li><li>Dataspill og spillkultur</li><li>Elektronisk musikk</li><li>Lys- og romdesign</li></ul></div>
+            <div><strong data-en="Code">Kode</strong><ul><li>HTML5</li><li>JavaScript</li><li>CSS</li><li>Python</li><li data-en="Git and GitHub">Git og GitHub</li><li>Visual Studio Code</li><li>Claude Code</li><li>Codex</li></ul></div>
+            <div><strong data-en="Games and Storytelling">Spill og fortelling</strong><ul><li>Construct 3</li><li>Twine</li><li>Canvas</li><li>Web Audio API</li></ul></div>
+            <div><strong data-en="Production">Produksjon</strong><ul><li>Premiere Pro</li><li>Photoshop</li><li>DaVinci Resolve</li><li data-en="OBS and multi-camera">OBS og flerkamera</li><li>Blackmagic Studio</li><li>Canva</li></ul></div>
+            <div><strong data-en="Interests">Interesser</strong><ul><li data-en="Mountains and outdoor life">Fjell og friluftsliv</li><li data-en="Video games and game culture">Dataspill og spillkultur</li><li data-en="Electronic music">Elektronisk musikk</li><li data-en="Lighting and spatial design">Lys- og romdesign</li></ul></div>
           </div>
         </div>
 
@@ -365,9 +366,10 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
 </div>
 
 <div class="taskbar">
-  <a class="btn" href="mailto:ingrid.ormevik@student.uib.no">Send e-post</a>
+  <a class="btn" href="mailto:ingrid.ormevik@student.uib.no" data-en="Send email">Send e-post</a>
   <a class="btn" href="https://github.com/ingridormevik">GitHub</a>
-  <a class="btn" href="https://ingridormevik.github.io/blog.html">Blogg</a>
+  <a class="btn" href="https://ingridormevik.github.io/blog.html" data-en="Blog">Blogg</a>
+  <button class="btn" id="langBtn" type="button" aria-label="Switch language">ENG</button>
   <span class="clock in" id="clock">--:--</span>
 </div>
 
@@ -406,6 +408,30 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
     clock.textContent = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
   }
   tick(); setInterval(tick, 20000);
+
+  // NOR/ENG toggle
+  var htmlEl = document.documentElement;
+  var langBtn = document.getElementById('langBtn');
+  var nodes = [].slice.call(document.querySelectorAll('[data-en]'));
+  nodes.forEach(function(n){ n.dataset.no = n.textContent; });
+
+  function applyLang(lang){
+    nodes.forEach(function(n){
+      n.textContent = lang === 'en' ? n.dataset.en : n.dataset.no;
+    });
+    htmlEl.lang = lang === 'en' ? 'en' : 'nb';
+    langBtn.textContent = lang === 'en' ? 'NOR' : 'ENG';
+    langBtn.setAttribute('aria-label', lang === 'en' ? 'Bytt til norsk' : 'Switch to English');
+    try{ localStorage.setItem('cvLang', lang); }catch(e){}
+  }
+
+  var saved = 'no';
+  try{ saved = localStorage.getItem('cvLang') || 'no'; }catch(e){}
+  applyLang(saved);
+
+  langBtn.addEventListener('click', function(){
+    applyLang(htmlEl.lang === 'en' ? 'no' : 'en');
+  });
 })();
 </script>
 
