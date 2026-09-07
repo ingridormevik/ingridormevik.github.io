@@ -43,6 +43,12 @@ word-break:break-all;color:#222}
 border:.4mm dashed #999;border-radius:1mm}
 .blank{font-size:8pt;color:#777;font-style:italic}
 @media screen{body{padding:8mm 0}}
+/* The card is A6 in real millimetres so it prints at the right physical
+   size. On a narrow phone that is wider than the viewport, so let the
+   on-screen preview reflow. Print output is untouched. */
+@media screen and (max-width: 430px){
+  .card{width:100%;height:auto;min-height:0}
+}
 </style></head>
 <body><section class="card">
 <div class="rub"></div>
