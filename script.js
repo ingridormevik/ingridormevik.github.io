@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, observerOptions);
     
     // Observe post previews and sections
-    document.querySelectorAll('.post-preview, section').forEach(el => {
+    document.querySelectorAll('.post-preview, .gameplay-entry, section').forEach(el => {
         observer.observe(el);
     });
     
