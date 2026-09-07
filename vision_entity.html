@@ -5,6 +5,20 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Vision Entity Live</title>
+<!-- social + icons -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="canonical" href="https://ingridormevik.github.io/vision_entity.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ingrid Ormevik">
+<meta property="og:title" content="Vision Entity Live">
+<meta property="og:url" content="https://ingridormevik.github.io/vision_entity.html">
+<meta property="og:image" content="https://ingridormevik.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ingrid Ormevik: essays, games and artistic research.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vision Entity Live">
+<meta name="twitter:image" content="https://ingridormevik.github.io/og-image.png">
 <style>
 :root{
   --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
@@ -90,7 +104,7 @@ p{margin:0 0 14px;font-family:var(--sans);color:var(--soft);line-height:1.45}
   <div id="keybar" style="position:absolute;bottom:110px;left:0;right:0;z-index:23;padding:0 14px">
     <input id="apiKeyInput" type="password" placeholder="Paste API key (sk-ant-...) then tap Scan Now"
       style="width:100%;padding:11px 16px;border-radius:4px;background:rgba(7,8,13,.85);
-      border:1px solid var(--line2);color:var(--text);font-size:13px;outline:none;font-family:var(--mono)"/>
+      border:1px solid var(--line2);color:var(--text);font-size:16px;outline:none;font-family:var(--mono)"/>
   </div>
   <div class="controls">
     <button id="voiceBtn">voice on</button>
@@ -267,9 +281,9 @@ function getKey(){
 
 function ensureKey(){
   const k = getKey();
-  if(!k){ 
-    alert('Paste your Anthropic API key (sk-ant-...) into the pink field at the bottom of the screen, then tap Scan Now again.');
-    return false; 
+  if(!k){
+    setStatus('paste your API key below, then tap scan now');
+    return false;
   }
   return true;
 }
@@ -286,7 +300,7 @@ async function doScan(){
   if(scanning) return;
   document.getElementById('debug').innerHTML='';
   const key=getKey();
-  dbg('key: '+(key?key.slice(0,12)+'...':'MISSING'));
+  dbg('key: '+(key?'present':'MISSING'));
   if(!ensureKey()) return;
   const frame = captureFrame();
   dbg('frame: '+(frame?frame.length:'null'));
@@ -349,8 +363,7 @@ async function doScan(){
       setStatus('nothing detected');
     }
   }catch(err){
-    alert('ERROR: ' + err.message);
-    setStatus(err.message.slice(0,60));
+    setStatus('error: ' + err.message.slice(0,60));
     console.error(err);
   }
 
@@ -424,7 +437,7 @@ function loop(now){
 
 // ── EVENTS ────────────────────────────────────────────────
 document.getElementById('startBtn').addEventListener('click', startCamera);
-document.getElementById('spawnBtn').addEventListener('click', ()=>{ lastScan=0; doScan(); });
+document.getElementById('spawnBtn').addEventListener('click', ()=>{ document.getElementById('apiKeyInput').blur(); lastScan=0; doScan(); });
 document.getElementById('clearBtn').addEventListener('click', ()=>{ objects=[]; layer.innerHTML=''; setStatus('cleared'); });
 document.getElementById('cinemaBtn').addEventListener('click', ()=>setCinema(!cinemaOn));
 document.getElementById('voiceBtn').addEventListener('click', function(){
