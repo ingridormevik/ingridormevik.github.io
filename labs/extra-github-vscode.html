@@ -265,10 +265,10 @@ ul.list.plain li { padding-left: 0; }
 username, email, password → verify the email</div><p class="footer-note">That's it. No settings to configure yet.</p>
 </section>
 <section class="slide ">
-<p class="kicker">The loop</p><div class="diagram">EDIT → SAVE → <span class="hi">STAGE</span> → <span class="hi">COMMIT</span> → <span class="hi">PUSH</span></div><p class="footer-note">PULL runs the other way: it brings down changes made somewhere else — another machine, a collaborator, an earlier you.</p>
+<p class="kicker">The loop</p><div class="diagram">EDIT → SAVE → <span class="hi">STAGE</span> → <span class="hi">COMMIT</span> → <span class="hi">PUSH</span></div><p class="footer-note">PULL runs the other way: it brings down changes made somewhere else: another machine, a collaborator, an earlier you.</p>
 </section>
 <section class="slide ">
-<p class="kicker">VS Code, labeled</p><p class="ide-label">Illustrative recreation of the interface — not a screen capture.</p><div class="ide-mock">
+<p class="kicker">VS Code, labeled</p><p class="ide-label">Illustrative recreation of the interface, not a screen capture.</p><div class="ide-mock">
       <div class="ide-side">
         <div class="ide-head">Explorer</div>
         <div class="ide-file">index.html</div>
@@ -277,13 +277,13 @@ username, email, password → verify the email</div><p class="footer-note">That'
         <div class="ide-file">new-post.html <span class="a">A</span></div>
       </div>
       <div class="ide-main">
-        <div class="ide-toolbar">index.html — your-project</div>
+        <div class="ide-toolbar">index.html · your-project</div>
         <div class="ide-body">&lt;h1&gt;Hello&lt;/h1&gt;</div>
       </div>
-    </div><p class="footer-note">Left: every file, always. Middle: where you type. M = modified, A = added — both waiting to be staged.</p>
+    </div><p class="footer-note">Left: every file, always. Middle: where you type. M = modified, A = added, both waiting to be staged.</p>
 </section>
 <section class="slide ">
-<p class="kicker">Source Control panel</p><p class="ide-label">Illustrative recreation of the interface — not a screen capture.</p><div class="ide-mock">
+<p class="kicker">Source Control panel</p><p class="ide-label">Illustrative recreation of the interface, not a screen capture.</p><div class="ide-mock">
       <div class="ide-side">
         <div class="ide-head">Source Control</div>
         <div class="ide-file">style.css <span class="m">M</span></div>
@@ -301,7 +301,7 @@ username, email, password → verify the email</div><p class="footer-note">That'
 <section class="slide ">
 <p class="kicker">Or the terminal, if you prefer typing</p><div class="card">git add .
 git commit -m "describe what changed, briefly"
-git push</div><p class="footer-note">Same three steps as the panel — stage, commit, push. Neither way is more correct.</p>
+git push</div><p class="footer-note">Same three steps as the panel: stage, commit, push. Neither way is more correct.</p>
 </section>
 <section class="slide ">
 <p class="kicker">The everyday loop</p><ul class="list"><li>Pull before you start</li>
@@ -309,7 +309,7 @@ git push</div><p class="footer-note">Same three steps as the panel — stage, co
 <li>Push before you close the laptop</li></ul>
 </section>
 <section class="slide ">
-<p class="kicker">Copilot is a collaborator, not an author</p><p class="statement">Copilot suggests.<br><em>You decide what stays.</em></p><p class="footer-note">Same question as Week 6 — now inside the editor instead of a chat window.</p>
+<p class="kicker">Copilot is a collaborator, not an author</p><p class="statement">Copilot suggests.<br><em>You decide what stays.</em></p><p class="footer-note">Same question as Week 6, now inside the editor instead of a chat window.</p>
 </section>
 <section class="slide ">
 <p class="kicker">When it goes wrong</p><div class="columns three"><div class="col"><h3>Merge conflict</h3><ul><li>Read both versions. Keep what you want. Commit.</li></ul></div><div class="col"><h3>Forgot to pull</h3><ul><li>Pull now. If it complains, commit first, then pull.</li></ul></div><div class="col"><h3>Committed something huge</h3><ul><li>Stop. Ask before you force anything.</li></ul></div></div>
@@ -317,7 +317,7 @@ git push</div><p class="footer-note">Same three steps as the panel — stage, co
 <section class="slide ">
 <p class="kicker">Practice</p><ul class="list"><li>Change one visible thing.</li>
 <li>Stage it, commit it, push it.</li>
-<li>Find it on GitHub. That's proof — not “it looks right locally.”</li></ul>
+<li>Find it on GitHub. That's proof, not “it looks right locally.”</li></ul>
 </section>
 <section class="slide ">
 <p class="kicker">Carry this with you</p><p class="statement">Git doesn't ask if your code is good.<br>It just remembers what you did.<br><em>That part is still yours.</em></p>
