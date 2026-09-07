@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#2b2233">
-<title>GAYMERS // PLAYING IDENTITY — Sims 1</title>
+<title>GAYMERS // PLAYING IDENTITY: Sims 1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -174,6 +174,12 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .relBarWrap{height:8px;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff}
 .relBarWrap i{display:block;height:100%;background:linear-gradient(90deg,#d4569a,#f0a0c9)}
 .relUnknown{opacity:.45}
+.relNeed{font-size:6.5px;color:#c9b6dc;margin-top:4px}
+.npcNeedBar{display:flex;gap:2px;height:16px;margin-top:4px}
+.npcNeedBar .seg{width:7px;height:100%;border:1px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff;display:flex;align-items:flex-end;overflow:hidden}
+.npcNeedBar .seg i{display:block;width:100%;background:#63b84e}
+.npcNeedBar .seg i.low{background:#e0655a}
+.npcNeedBar .seg i.mid{background:#e0a83e}
 
 #invGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .slot{aspect-ratio:1;border:2px solid;border-color:var(--faceLo) var(--faceHi) var(--faceHi) var(--faceLo);background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:3px;position:relative}
@@ -194,6 +200,9 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 .memEntry .memCaption{font-size:9px;line-height:1.35;color:var(--ink)}
 .memEntry .memDel{background:none;border:none;color:#c9b6dc;font-size:11px;cursor:pointer;padding:0 2px}
 #memEmpty{font-size:9px;color:#c9b6dc;line-height:1.4;padding:6px 0}
+#storyBtnRow{margin-bottom:9px}
+#storyBtnRow .btn98{width:100%}
+#storyRecap{font-size:9px;line-height:1.55;color:var(--ink);margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid #4a3a58}
 
 /* CAS wizard */
 #casWindow{width:min(560px,94vw)}
@@ -387,7 +396,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
   <div id="landingTint"></div>
 
   <div id="landingBrand" class="win98">
-    <div class="titlebar brand"><div class="titleleft"><span class="titleicon"></span><span>GAYMERS — Playing Identity.exe</span></div></div>
+    <div class="titlebar brand"><div class="titleleft"><span class="titleicon"></span><span>GAYMERS: Playing Identity.exe</span></div></div>
   </div>
 
   <div id="landingWeather" class="win98">
@@ -421,7 +430,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
   </div>
 
   <div id="landingSpotifyJam">
-    <!-- placeholder target — swap for the real Spotify Jam share link -->
+    <!-- placeholder target, swap for the real Spotify Jam share link -->
     <a id="joinJamLink" class="btn98" href="https://open.spotify.com/" target="_blank" rel="noopener">JOIN THE JAM</a>
   </div>
 
@@ -470,7 +479,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
       <div id="landingChatBody">
         <div id="landingChatLines">
           <div class="chatLine"><b style="color:#7a2f66">Sasha</b><span>you coming to the dancefloor?</span></div>
-          <div class="chatLine"><b style="color:#2f8a6f">Mia</b><span>Kafé Fincken this Saturday — you in?</span></div>
+          <div class="chatLine"><b style="color:#2f8a6f">Mia</b><span>Kafé Fincken this Saturday, you in?</span></div>
           <div class="chatLine"><b style="color:#c4508f">Noor</b><span>this is way better than scrolling</span></div>
         </div>
         <div class="chatInputRow">
@@ -500,7 +509,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 
   <section id="gameWindow" class="win98">
     <div class="titlebar brand">
-      <div class="titleleft"><span class="titleicon"></span><span>GAYMERS — Playing Identity.exe</span></div>
+      <div class="titleleft"><span class="titleicon"></span><span>GAYMERS: Playing Identity.exe</span></div>
       <div class="titlebtns">
         <button class="wbtn" id="backToLiveBtn" title="Back to live room">←</button>
         <button class="wbtn" id="soundBtn" title="Sound">♪</button>
@@ -513,6 +522,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
       <span class="menuitem" id="menuGame">Game</span>
       <span class="menuitem" id="menuSim">Sim</span>
       <span class="menuitem" id="menuOptions">Options</span>
+      <span class="menuitem" id="menuAbout">About</span>
       <span class="menuitem" id="menuHelp">Help</span>
     </div>
 
@@ -633,7 +643,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
             <div id="portraitFrame"><img id="portraitImg" alt="Your Sim" src=""></div>
             <div id="portraitInfo">
               <div id="simNameLbl">YOU</div>
-              <div id="simPronounLbl">pronouns: —</div>
+              <div id="simPronounLbl">pronouns: …</div>
               <div id="moodWordLbl">OKAY</div>
               <div class="traitPills" id="simTraitPills"></div>
             </div>
@@ -694,7 +704,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
 
     <div class="statusbar">
       <div class="statusseg grow" id="statusText">Click a building to walk your Sim there.</div>
-      <div class="statusseg" id="statusZone">—</div>
+      <div class="statusseg" id="statusZone">…</div>
       <div class="statusseg" id="statusFps">Sims 1 mode</div>
     </div>
   </section>
@@ -732,11 +742,27 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
     <div class="titlebtns"><button class="wbtn" data-close="memoriesWindow">×</button></div>
   </div>
   <div class="floatBody">
+    <div id="storyBtnRow"><button class="btn98" id="storyBtn">STORY SO FAR</button></div>
+    <div id="storyRecap" style="display:none"></div>
     <div id="memAddRow">
       <input type="text" id="memInput" maxlength="140" placeholder="What just happened?">
       <button class="btn98" id="memSaveBtn">SAVE</button>
     </div>
     <div id="memoriesList"></div>
+  </div>
+</section>
+
+<!-- About window -->
+<section id="aboutWindow" class="floatWin win98" style="left:24%;top:16%;width:min(420px,92vw)">
+  <div class="titlebar" data-drag="aboutWindow">
+    <div class="titleleft"><span class="titleicon"></span><span>About This Piece</span></div>
+    <div class="titlebtns"><button class="wbtn" data-close="aboutWindow">×</button></div>
+  </div>
+  <div class="floatBody" style="font-size:9px;line-height:1.65">
+    GAYMERS: Playing Identity treats a browser window as a small queer commons. Landmark, the cafe and event space inside Bergen Kunsthall, and Fincken, Bergen's oldest queer bar, open on Nygårdsgaten since 1992, are real places grafted onto a Sims style map, so that visiting them here is a small rehearsal for visiting them in person.<br><br>
+    The avatar you build in <b>Create A Sim</b> is the point. Every other character on this map is a colored bubble with an initial. You are the only one rendered as yourself. That asymmetry is intentional: this is not a game about watching a simulated life, it is about placing your actual image inside a space built around safety, so that showing up as yourself becomes the interaction.<br><br>
+    Needs, mood and Free Will are borrowed from The Sims, but repurposed here to model something more specific than hunger and hygiene: energy, social contact, fun, comfort and a felt sense of identity, the resources that make a queer space feel safe or unsafe. The people who live on this map plan their own moves through town the same way you do, deciding where to go based on what they currently lack, so the town keeps living whether or not you are watching it.<br><br>
+    This project has no server and no login. Everything it remembers, your Sim, your Memories archive, your relationships, lives only in this browser, on this device. That is a limit worth naming rather than hiding: it is a diary, not a shared room, even though it is built to feel like one.
   </div>
 </section>
 
@@ -747,11 +773,11 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
     <div class="titlebtns"><button class="wbtn" data-close="helpWindow">×</button></div>
   </div>
   <div class="floatBody" style="font-size:9px;line-height:1.6">
-    Click any building to send your Sim there — <b>Club</b>, <b>Community Center</b>, <b>Fincken</b>, <b>Safe Space</b>, <b>Chat Zone</b> or <b>Waterfront</b>.<br><br>
+    Click any building to send your Sim there: <b>Club</b>, <b>Community Center</b>, <b>Fincken</b>, <b>Safe Space</b>, <b>Chat Zone</b> or <b>Waterfront</b>.<br><br>
     Every place changes your needs differently. Let them run low too long and mood drops.<br><br>
     Turn <b>Free Will</b> on and your Sim decides for herself when you stop clicking.<br><br>
     <b>Fincken</b> sometimes hands you a random item. <b>Club</b>, <b>Chat Zone</b> and <b>Community</b> build relationships with the people who hang out there.<br><br>
-    Use <b>MAKE YOUR CHARACTER</b> to set your name, pronouns, photo and traits — it becomes your portrait and your avatar bubble in the room.
+    Use <b>MAKE YOUR CHARACTER</b> to set your name, pronouns, photo and traits. It becomes your portrait and your avatar bubble in the room.
   </div>
 </section>
 
@@ -779,7 +805,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
       </div>
     </div>
     <div class="casField">
-      <label>LEANING — pick up to 3</label>
+      <label>LEANING (pick up to 3)</label>
       <div class="traitRow" id="traitRow">
         <button class="btn98 traitBtn" data-t="PLAYFUL">playful</button>
         <button class="btn98 traitBtn" data-t="LOUD">loud</button>
@@ -809,7 +835,7 @@ img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
       </div>
       <div id="pixPreviewWrap">
         <div class="avatarBubble"><img id="pixPreviewImg" alt=""></div>
-        <span>This is your map avatar — your photo, cropped to a circle.</span>
+        <span>This is your map avatar: your photo, cropped to a circle.</span>
       </div>
       <div id="casStatus">Upload or snap a photo, then finish below.</div>
     </div>
@@ -854,11 +880,11 @@ function sndRel(){blip(440,.08,"sine",.045);setTimeout(()=>blip(660,.14,"sine",.
 /* ================= locations ================= */
 const LOCATIONS={
  club:{el:"bClub",label:"CLUB",x:18,y:34,deltas:{fun:20,social:16,energy:-14,identity:6},npc:"sasha",
-   lines:["Teal carpet, a curved wood bar, red light spilling over the plants.","The bassline finds your feet before you decide to dance.","Track lights and neon — nobody here is asking you to explain yourself."]},
+   lines:["Teal carpet, a curved wood bar, red light spilling over the plants.","The bassline finds your feet before you decide to dance.","Track lights and neon, nobody here is asking you to explain yourself."]},
  community:{el:"bCommunity",label:"COMMUNITY CENTER",x:74,y:28,deltas:{social:14,identity:16,comfort:10},npc:"theo",
    lines:["Someone remembers your name from last time.","A flyer wall, a coffee pot, a room that keeps its promises."]},
  fincken:{el:"bFincken",label:"FINCKEN",x:13,y:74,deltas:{fun:12,identity:14,comfort:4},npc:"mia",giveItem:true,
-   lines:["Right on the party street, doors open since '92 — Bergen's oldest queer hangout.","You do you, and do it fiercely — nobody here is checking.","Saturday mornings it's Kafé Fincken: coffee, pastries, the night before still on everyone's breath."]},
+   lines:["Right on the party street, doors open since '92, Bergen's oldest queer hangout.","You do you, and do it fiercely, nobody here is checking.","Saturday mornings it's Kafé Fincken: coffee, pastries, the night before still on everyone's breath."]},
  safe:{el:"bSafe",label:"SAFE HERE",x:50,y:50,deltas:{comfort:20,identity:12,energy:14,social:2},npc:"rowan",
    lines:["Nothing is required of you here. That's the whole point.","You exhale a breath you didn't know you were holding."]},
  chat:{el:"bChat",label:"CHAT ZONE",x:84,y:70,deltas:{social:20,fun:10},npc:"noor",
@@ -901,7 +927,8 @@ const state={
  x:63,y:60,target:null,walking:false,lastLoc:null,pathQueue:[],
  freeWill:true, paused:false, speed:1, lastManual:Date.now(),
  mood:20, minutes:7*60, day:1,
- inventory:[], relOrder:["sasha","theo","mia","rowan","noor","kai"]
+ inventory:[], relOrder:["sasha","theo","mia","rowan","noor","kai"],
+ jamJoined:false
 };
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 const $=id=>document.getElementById(id);
@@ -975,7 +1002,7 @@ function wanderNpcs(){
 
 /* ================= needs-driven NPC planning ================= */
 /* Each NPC has their own needs, decaying like the player's, and picks
-   their next destination the same way the player's Free Will does —
+   their next destination the same way the player's Free Will does:
    scoring reachable locations against what they currently need, rather
    than a fixed clock schedule. Real Fincken<->Club moves take the real
    corner route via computeRoute(); every other pair just walks straight
@@ -1001,7 +1028,7 @@ function updateNpcSchedules(){
 
 /* ================= real-world routes ================= */
 /* Fincken (Nygårdsgaten 2A) → Landmark: up Christies gate, corner at Lars
-   Hilles gate, then along the lake — matches the actual Bergen walk, not a
+   Hilles gate, then along the lake, matching the actual Bergen walk, not a
    straight cut across the block. */
 const ROUTES={"fincken|club":[{x:13,y:38}]};
 function computeRoute(from,to){
@@ -1040,7 +1067,7 @@ function highlightNearBuilding(){
    document.getElementById(l.el).classList.toggle("near",dd<9);
    if(dd<bd){bd=dd;nearest=k}
  });
- $("statusZone").textContent = bd<9 ? LOCATIONS[nearest].label : "—";
+ $("statusZone").textContent = bd<9 ? LOCATIONS[nearest].label : "…";
 }
 
 function goTo(key){
@@ -1068,7 +1095,7 @@ function finishArrival(key){
  if(loc.npc && Math.random()<.6) bumpRelationship(loc.npc);
 }
 /* One deliberately cinematic arrival, for the venue this whole project
-   centers on — not all six locations, just this one. */
+   centers on, not all six locations, just this one. */
 function cinematicArrival(cb){
  const ov=$("cinematicOverlay");
  ov.classList.add("show");
@@ -1129,7 +1156,7 @@ const TRAIT_BONUS={
  BOLD:{chat:6,community:6}, FIERCE:{club:6,chat:4},
  DREAMY:{waterfront:8}, CHAOTIC:{fincken:6,club:6}
 };
-/* Shared by the player's Free Will and NPC planning — same "which location
+/* Shared by the player's Free Will and NPC planning: same "which location
    best serves these needs right now" scoring either way. */
 function locationScores(n,traits){
  const scores={
@@ -1165,14 +1192,31 @@ function bumpRelationship(key){
  n.known=true;
  n.score=clamp(n.score+(4+Math.random()*9),0,100);
  sndRel();
- if(first){toast("NEW CONNECTION",n.name+" ("+n.pron+") — "+tierFor(n.score));logEvent("Met "+n.name)}
+ if(first){toast("NEW CONNECTION",n.name+" ("+n.pron+"), "+tierFor(n.score));logEvent("Met "+n.name)}
  renderRelationships();
+}
+const NPC_NEED_ORDER=["energy","social","fun","comfort","identity"];
+function npcNeedsBarHtml(key){
+ const n=npcEls[key];
+ if(!n)return "";
+ return '<div class="npcNeedBar">'+NPC_NEED_ORDER.map(k=>{
+   const v=Math.round(n.needs[k]);
+   const cls=v<30?"low":v<55?"mid":"";
+   return '<div class="seg" title="'+k+': '+v+'"><i class="'+cls+'" style="height:'+v+'%"></i></div>';
+ }).join("")+'</div>';
+}
+function npcLowestNeed(key){
+ const n=npcEls[key];
+ if(!n)return null;
+ return Object.entries(n.needs).sort((a,b)=>a[1]-b[1])[0][0];
 }
 function renderRelationships(){
  $("relList").innerHTML = state.relOrder.map(key=>{
    const n=NPCS[key];
-   if(!n.known) return '<div class="relRow relUnknown"><div class="relDot" style="background:#999"></div><div><div class="relName">???</div><div class="relTier">Not met yet — visit '+LOCATIONS[n.loc].label+'</div></div></div>';
-   return '<div class="relRow"><div class="relDot" style="background:'+n.outfit+'"></div><div><div class="relName">'+n.name+' <span style="font-weight:400;color:#c9b6dc">· '+n.pron+'</span></div><div class="relTier">'+tierFor(n.score)+' · '+LOCATIONS[n.loc].label+'</div><div class="relBarWrap"><i style="width:'+Math.round(n.score)+'%"></i></div></div></div>';
+   if(!n.known) return '<div class="relRow relUnknown"><div class="relDot" style="background:#999"></div><div><div class="relName">???</div><div class="relTier">Not met yet, visit '+LOCATIONS[n.loc].label+'</div></div></div>';
+   const lowest=npcLowestNeed(key);
+   const currentLoc=npcEls[key]?LOCATIONS[npcEls[key].scheduleLoc].label:LOCATIONS[n.loc].label;
+   return '<div class="relRow"><div class="relDot" style="background:'+n.outfit+'"></div><div><div class="relName">'+n.name+' <span style="font-weight:400;color:#c9b6dc">· '+n.pron+'</span></div><div class="relTier">'+tierFor(n.score)+' · '+currentLoc+'</div><div class="relBarWrap"><i style="width:'+Math.round(n.score)+'%"></i></div>'+(lowest?'<div class="relNeed">LOW ON '+lowest.toUpperCase()+'</div>':'')+npcNeedsBarHtml(key)+'</div></div>';
  }).join("");
 }
 function giveRandomItem(){
@@ -1213,6 +1257,7 @@ function say(text){
  b.textContent=text; b.classList.add("show");
  clearTimeout(b._t); b._t=setTimeout(()=>b.classList.remove("show"),3200);
 }
+let eventLogEntries=[];
 function logEvent(text){
  const log=$("eventLog");
  const row=document.createElement("div");
@@ -1220,6 +1265,36 @@ function logEvent(text){
  row.textContent="["+String(t).padStart(2,"0")+":"+String(m).padStart(2,"0")+"] "+text;
  log.prepend(row);
  while(log.children.length>40) log.removeChild(log.lastChild);
+ eventLogEntries.push({day:state.day,text:text});
+ if(eventLogEntries.length>300) eventLogEntries.shift();
+}
+
+/* ================= story so far (TAILOR-style: same event log, generated prose) ================= */
+function toTitle(s){return s.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase())}
+function narrateEvent(text){
+ for(const loc of Object.values(LOCATIONS)){
+   if(text.startsWith(loc.label+":")) return "spent time at "+toTitle(loc.label);
+ }
+ if(text.indexOf("Free Will")===0){
+   const dest=text.split("→")[1];
+   return "let Free Will decide, and ended up at "+(dest?toTitle(dest.trim()):"somewhere new");
+ }
+ if(text.indexOf("Met ")===0) return text.charAt(0).toLowerCase()+text.slice(1);
+ if(text.indexOf("Inventory + ")===0) return "picked up "+text.replace("Inventory + ","");
+ if(text.indexOf("Character created")===0) return "stepped into the room as a new Sim";
+ if(text.indexOf("Joined the Spotify Jam")===0) return "joined the Spotify Jam";
+ return text.charAt(0).toLowerCase()+text.slice(1);
+}
+const STORY_CONNECTORS=["Then","After that","A little later","Not long after","Eventually","From there"];
+function generateStory(){
+ if(!eventLogEntries.length) return "Nothing has happened yet. Go visit somewhere on the map.";
+ const recent=eventLogEntries.slice(-14);
+ const parts=recent.map(e=>narrateEvent(e.text));
+ let out="Day "+recent[0].day+": you "+parts[0]+". ";
+ for(let i=1;i<parts.length;i++){
+   out+=STORY_CONNECTORS[(i-1)%STORY_CONNECTORS.length]+", you "+parts[i]+". ";
+ }
+ return out.trim();
 }
 
 /* ================= clock ================= */
@@ -1235,6 +1310,7 @@ function tickClock(){
  const dusk = h24===6||h24===19;
  $("dayNightTint").style.background = night?"rgba(8,10,35,.55)": dusk?"rgba(60,30,60,.28)":"rgba(10,15,40,0)";
  updateNpcSchedules();
+ if($("relWindow").classList.contains("open")) renderRelationships();
 }
 
 /* ================= window management ================= */
@@ -1251,7 +1327,7 @@ function openWin(id){
 function closeWin(id){$(id).classList.remove("open");syncTaskbar()}
 function syncTaskbar(){
  const items=$("taskbarItems");
- const wins=[["relWindow","Relationships"],["invWindow","Inventory"],["helpWindow","How To Play"],["casWindow","Create A Sim"]];
+ const wins=[["relWindow","Relationships"],["invWindow","Inventory"],["memoriesWindow","Memories"],["aboutWindow","About This Piece"],["helpWindow","How To Play"],["casWindow","Create A Sim"]];
  items.innerHTML="";
  wins.forEach(([id,label])=>{
    if(!$(id).classList.contains("open"))return;
@@ -1302,6 +1378,15 @@ $("freeWillBtn").onclick=()=>{sndClick();state.freeWill=!state.freeWill;$("freeW
 $("openRelBtn").onclick=()=>{sndClick();openWin("relWindow")};
 $("openInvBtn").onclick=()=>{sndClick();openWin("invWindow")};
 $("openMemBtn").onclick=()=>{sndClick();openWin("memoriesWindow");renderMemories()};
+$("storyBtn").onclick=()=>{
+ sndClick();
+ const box=$("storyRecap");
+ const showing=box.style.display!=="none";
+ if(showing){ box.style.display="none"; return; }
+ box.textContent=generateStory();
+ box.style.display="block";
+};
+$("menuAbout").onclick=()=>{sndClick();openWin("aboutWindow")};
 $("openCasBtn").onclick=()=>{sndClick();openWin("casWindow")};
 $("memSaveBtn").onclick=()=>{addMemory($("memInput").value);$("memInput").value=""};
 $("memInput").addEventListener("keydown",e=>{if(e.key==="Enter"){addMemory($("memInput").value);$("memInput").value=""}});
@@ -1324,7 +1409,7 @@ $("menuOptions").onclick=toggleSound;
 $("soundBtn").onclick=toggleSound;
 $("startBtn").onclick=()=>{sndClick();openWin("helpWindow")};
 $("maxBtn").onclick=()=>{const el=document.documentElement;if(!document.fullscreenElement)el.requestFullscreen?.().catch(()=>{});else document.exitFullscreen?.()};
-$("closeBtn").onclick=()=>{sndClick();toast("GAYMERS","This is a browser tab, not a real window — but nice try.")};
+$("closeBtn").onclick=()=>{sndClick();toast("GAYMERS","This is a browser tab, not a real window, but nice try.")};
 
 /* ================= CAS (character creator) ================= */
 let selfStream=null, pendingPhoto=null;
@@ -1345,7 +1430,7 @@ $("traitRow").addEventListener("click",e=>{
  const b=e.target.closest(".traitBtn"); if(!b)return;
  const selected=document.querySelectorAll(".traitBtn.sel");
  if(!b.classList.contains("sel") && selected.length>=MAX_TRAITS){
-   $("casStatus").textContent="Pick up to "+MAX_TRAITS+" — deselect one first.";
+   $("casStatus").textContent="Pick up to "+MAX_TRAITS+", deselect one first.";
    return;
  }
  sndClick();
@@ -1368,8 +1453,8 @@ $("openSelfCamBtn").onclick=async()=>{
    selfStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:640},height:{ideal:800}},audio:false});
    const v=$("selfCam"); v.srcObject=selfStream; await v.play();
    $("selfPreview").style.display="none";
-   $("casStatus").textContent="Camera live — frame your face, then press SNAP.";
- }catch(e){ $("casStatus").textContent="Camera blocked here — use TAKE / CHOOSE PHOTO instead."; }
+   $("casStatus").textContent="Camera live, frame your face, then press SNAP.";
+ }catch(e){ $("casStatus").textContent="Camera blocked here, use TAKE / CHOOSE PHOTO instead."; }
 };
 $("snapSelfieBtn").onclick=()=>{
  const v=$("selfCam"); if(!v.videoWidth){$("casStatus").textContent="Open LIVE CAMERA first.";return}
@@ -1418,7 +1503,7 @@ function applyIdentity(){
 /* ================= persistence ================= */
 function saveProfile(){
  try{
-   localStorage.setItem("gaymersProfile", JSON.stringify({name:state.name,pronoun:state.pronoun,photo:state.photoData,traits:state.traits}));
+   localStorage.setItem("gaymersProfile", JSON.stringify({name:state.name,pronoun:state.pronoun,photo:state.photoData,traits:state.traits,jamJoined:state.jamJoined}));
  }catch(e){}
 }
 function loadProfile(){
@@ -1430,7 +1515,9 @@ function loadProfile(){
    if(d.pronoun)state.pronoun=d.pronoun;
    if(d.photo)state.photoData=d.photo;
    if(Array.isArray(d.traits))state.traits=d.traits;
+   if(d.jamJoined)state.jamJoined=true;
    applyIdentity();
+   syncJamButton();
    return true;
  }catch(e){return false}
 }
@@ -1440,7 +1527,7 @@ function loadDefaultIdentity(){
  applyIdentity();
 }
 
-/* ================= memories archive (local diary, per device — not a shared feed) ================= */
+/* ================= memories archive (local diary, per device, not a shared feed) ================= */
 let memories=[];
 function loadMemories(){
  try{ const raw=localStorage.getItem("gaymersMemories"); memories=raw?JSON.parse(raw):[]; }
@@ -1459,7 +1546,7 @@ function relTime(ts){
 function renderMemories(){
  const list=$("memoriesList");
  if(!memories.length){
-   list.innerHTML='<div id="memEmpty">Nothing saved yet — visit somewhere, then write down what happened.</div>';
+   list.innerHTML='<div id="memEmpty">Nothing saved yet, visit somewhere, then write down what happened.</div>';
    return;
  }
  const ordered=memories.slice().reverse();
@@ -1512,25 +1599,70 @@ function leaveGame(){
  startLandingCamera();
 }
 $("backToLiveBtn").onclick=leaveGame;
-/* Lines belong to the real NPCs who live on the map — not stand-ins. */
+/* Lines belong to the real NPCs who live on the map, not stand-ins. */
+/* Each NPC's dialogue is tagged by context: base lines always apply, the
+   rest only enter the pool when that condition is actually true right now
+   (their most deficient need, whether they've traveled from home, whether
+   it's night), so chat reflects the same needs/planning state that drives
+   their movement instead of a fixed round robin. */
 const TALK_LINES={
- sasha:[{line:"you coming to the dancefloor?",reply:"maybe in a bit"},{line:"who's playing tonight?",reply:"some local DJ, it's good"}],
- mia:[{line:"Kafé Fincken this Saturday — you in?",reply:"say less, i'm in"},{line:"found anything good lately?",reply:"still looking"}],
- noor:[{line:"this is way better than scrolling",reply:"right? nobody's watching here"},{line:"tell me something true",reply:"okay — i'm actually having a good time"}],
- theo:[{line:"the flyer wall got a new one, come see",reply:"on my way"}],
- rowan:[{line:"you don't have to perform anything in here",reply:"yeah. i know. it helps"}],
- kai:[{line:"the fjord's doing that thing again, quiet and gold",reply:"i needed that today"}]
+ sasha:{
+   base:[{line:"you coming to the dancefloor?",reply:"maybe in a bit"},{line:"who's playing tonight?",reply:"some local DJ, it's good"}],
+   needy:[{line:"i've been standing still too long, dance with me",reply:"okay, twist my arm"}],
+   night:[{line:"it's a good night to not go home yet",reply:"say more"}],
+   away:[{line:"funny running into you over here",reply:"small town like that"}]
+ },
+ theo:{
+   base:[{line:"the flyer wall got a new one, come see",reply:"on my way"}],
+   needy:[{line:"do you ever wonder if you actually belong somewhere, or just fit in",reply:"more than i'd like to admit"}],
+   away:[{line:"i don't usually end up down here",reply:"me neither, honestly"}]
+ },
+ mia:{
+   base:[{line:"Kafé Fincken this Saturday, you in?",reply:"say less, i'm in"},{line:"found anything good lately?",reply:"still looking"}],
+   needy:[{line:"long night, i could use a quiet minute",reply:"take your time"}],
+   night:[{line:"the night before is still on everyone's breath in here",reply:"i can tell"}]
+ },
+ rowan:{
+   base:[{line:"you don't have to perform anything in here",reply:"yeah, i know, it helps"}],
+   needy:[{line:"it's okay to just sit with it for a second",reply:"thank you for saying that"}]
+ },
+ noor:{
+   base:[{line:"this is way better than scrolling",reply:"right? nobody's watching here"}],
+   needy:[{line:"tell me something true",reply:"okay, i'm actually having a good time"}],
+   away:[{line:"i needed to get out of the chat zone for once",reply:"good, come sit"}]
+ },
+ kai:{
+   base:[{line:"the fjord's doing that thing again, quiet and gold",reply:"i needed that today"}],
+   needy:[{line:"i'm running on empty today, mind if we just stand here",reply:"not at all"}]
+ }
 };
+/* One deficient need per NPC maps to the tonally-relevant "needy" pool
+   above, matching what actually pulls each of them across town. */
+const NPC_NEEDY_KEY={sasha:"fun",theo:"identity",mia:"comfort",rowan:"comfort",noor:"social",kai:"energy"};
 function pickTalkNpc(){
  const keys=Object.keys(NPCS);
  const known=keys.filter(k=>NPCS[k].known);
  const pool = known.length && Math.random()<0.7 ? known : keys;
  return pool[Math.floor(Math.random()*pool.length)];
 }
+function pickTalkLine(npcKey){
+ const pools=TALK_LINES[npcKey];
+ const npc=npcEls[npcKey];
+ const h24=Math.floor(state.minutes/60)%24;
+ const night=h24<6||h24>=21;
+ const candidates=pools.base.slice();
+ if(npc){
+   const watchKey=NPC_NEEDY_KEY[npcKey];
+   if(pools.needy && npc.needs[watchKey]<45) candidates.push(...pools.needy,...pools.needy);
+   if(pools.away && npc.scheduleLoc!==NPCS[npcKey].loc) candidates.push(...pools.away);
+ }
+ if(night && pools.night) candidates.push(...pools.night);
+ return candidates[Math.floor(Math.random()*candidates.length)];
+}
 function doTalk(){
  const npcKey=pickTalkNpc();
  const n=NPCS[npcKey];
- const pair=TALK_LINES[npcKey][Math.floor(Math.random()*TALK_LINES[npcKey].length)];
+ const pair=pickTalkLine(npcKey);
  addLandingChatLine(n.name,pair.line,n.outfit);
  $("landingSpeechText").textContent=pair.line;
  setTimeout(()=>{
@@ -1541,6 +1673,26 @@ function doTalk(){
  state.needs.social=clamp(state.needs.social+8);
  renderNeeds(); updateMood();
 }
+/* Join the Jam as a light one-time quest rather than a plain outbound link:
+   the first click grants a small, honest, permanent reward. */
+function syncJamButton(){
+ $("joinJamLink").textContent = state.jamJoined ? "JAM JOINED" : "JOIN THE JAM";
+}
+function claimJamQuest(){
+ if(state.jamJoined)return;
+ state.jamJoined=true;
+ saveProfile();
+ syncJamButton();
+ state.needs.social=clamp(state.needs.social+10);
+ state.needs.identity=clamp(state.needs.identity+6);
+ renderNeeds(); updateMood();
+ state.inventory.push({name:"Mixtape, Side B",color:"#2f7ec4",shape:"circle"});
+ renderInventory();
+ sndPickup();
+ toast("QUEST COMPLETE","Joined the Jam. Found a Mixtape, Side B in your inventory.");
+ logEvent("Joined the Spotify Jam");
+}
+$("joinJamLink").addEventListener("click",claimJamQuest);
 function doDance(){
  const bubble=document.querySelector("#landingStage .avatarBubble");
  bubble.classList.remove("dancing"); void bubble.offsetWidth; bubble.classList.add("dancing");
@@ -1615,7 +1767,7 @@ document.querySelectorAll("#landingNav .navItem").forEach(btn=>{
      if(!npPlaying) setNpPlaying(true);
      else { loadNpTrack(npIdx+1); toast("QUEUE MUSIC","Now playing: "+NP_TRACKS[npIdx][0]); }
    }
-   else if(nav==="leave"){ toast("GAYMERS","This is a browser tab, not a real door — but nice try."); }
+   else if(nav==="leave"){ toast("GAYMERS","This is a browser tab, not a real door, but nice try."); }
    setTimeout(()=>{document.querySelectorAll("#landingNav .navItem").forEach(b=>b.classList.remove("active"));document.querySelector('#landingNav [data-nav="explore"]').classList.add("active")},1400);
  });
 });
