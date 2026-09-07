@@ -46,8 +46,6 @@ html, body {
 
 .bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(circle at 18% 8%, rgba(169,141,247,.09), transparent 32%),
-    radial-gradient(circle at 85% 18%, rgba(242,155,205,.06), transparent 28%),
     linear-gradient(180deg, var(--bg), var(--bg2));
 }
 .bg-fx .grid {
@@ -198,7 +196,6 @@ ul.list.plain li { padding-left: 0; }
   display: grid; grid-template-columns: 190px 1fr; max-width: 46em;
   border: 1px solid #3c3c3c; border-radius: 6px; overflow: hidden;
   font-family: var(--mono); font-size: .78rem;
-  box-shadow: 0 30px 70px -30px rgba(0,0,0,.6);
 }
 .ide-side { background: #252526; color: #cccccc; padding: .9rem 0; }
 .ide-side .ide-head { padding: 0 1rem .6rem; text-transform: uppercase; letter-spacing: .08em; font-size: .68rem; color: #969696; }
@@ -219,7 +216,7 @@ ul.list.plain li { padding-left: 0; }
 .tag {
   display: inline-block; font-family: var(--sans); font-size: .72rem; text-transform: uppercase;
   letter-spacing: .12em; font-weight: 600; color: var(--violet);
-  border: 1px solid var(--rule2); padding: .3em .8em; border-radius: 999px; margin-bottom: 1rem;
+  border: 1px solid var(--rule2); padding: .3em .8em; border-radius: 4px; margin-bottom: 1rem;
 }
 
 .footer-note {
