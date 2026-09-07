@@ -186,12 +186,7 @@ h1 {
 h1 .red { color: var(--red); }
 
 h1 .gold {
-  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 3s linear infinite;
+  color: var(--gold);
 }
 
 .hero-sub {
@@ -359,6 +354,9 @@ p .sting { color: var(--red); font-style: italic; }
   margin-left: -50vw;
   margin-right: -50vw;
   width: 100vw;
+  /* the decorative FREDDIE watermark sits at right:-20px and would
+     otherwise push the whole page sideways */
+  overflow: hidden;
 
   padding: 80px 0;
   background: var(--freddie-bg);
@@ -508,6 +506,21 @@ footer {
   background: linear-gradient(90deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787);
   position: relative;
   z-index: 10;
+}
+/* Small screens: the hero is a flex column, so the title could not shrink
+   below its own text width and pushed the page sideways. */
+@media (max-width: 640px) {
+  .hero {
+    padding: 0 22px 60px;
+  }
+
+  h1 {
+    font-size: clamp(44px, 12.5vw, 96px);
+    letter-spacing: 1px;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
 }
 </style>
 </head>
