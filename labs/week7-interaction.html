@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 7 — What Is an Interaction?</title>
+<style>
+:root {
+  --accent: #a98df7;
+  --bg: #07080d;
+  --bg2: #0d0f17;
+  --panel: rgba(14,16,25,.6);
+  --fg: #f4f1ec;
+  --fg-dim: #b9b5bd;
+  --fg-dimmer: #777380;
+  --rule: rgba(255,255,255,.1);
+  --rule2: rgba(255,255,255,.18);
+  --violet: #a98df7;
+  --pink: #f29bcd;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  background: var(--bg); color: var(--fg);
+  font-family: var(--sans);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(169,141,247,.09), transparent 32%),
+    radial-gradient(circle at 85% 18%, rgba(242,155,205,.06), transparent 28%),
+    linear-gradient(180deg, var(--bg), var(--bg2));
+}
+.bg-fx .grid {
+  position: absolute; inset: 0; opacity: .1;
+  background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+                     linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+.deck { position: relative; z-index: 1; width: 100vw; height: 100vh; }
+.slide {
+  position: absolute; inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 7vh 10vw 9vh;
+  opacity: 0;
+  overflow-y: auto;
+}
+.slide.active { display: flex; opacity: 1; animation: fadeUp .6s cubic-bezier(.22,.61,.36,1) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+.kicker {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  font-size: clamp(.66rem, .95vw, .8rem);
+  font-weight: 600;
+  color: var(--violet);
+  margin: 0 0 1.3rem 0;
+}
+h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(2.6rem, 6vw, 5.6rem);
+  line-height: .98;
+  margin: 0 0 .7rem 0;
+  letter-spacing: -.03em;
+}
+h2 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.8rem, 3.6vw, 2.9rem);
+  line-height: 1.08;
+  margin: 0 0 1.4rem 0;
+  color: var(--fg);
+  letter-spacing: -.01em;
+}
+.subtitle {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+  color: var(--fg-dim);
+  max-width: 46em;
+  margin: 0;
+  line-height: 1.5;
+}
+.statement {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 3.1rem);
+  line-height: 1.28;
+  font-weight: 400;
+  max-width: 23em;
+  margin: 0;
+}
+.statement em, .mantra em {
+  color: var(--violet);
+  font-style: italic;
+}
+.mantra {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 5.4vw, 4.4rem);
+  line-height: 1.12;
+  font-weight: 400;
+  max-width: 19em;
+  margin: 0;
+}
+
+ul.list {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex; flex-direction: column;
+  gap: .65em;
+  font-size: clamp(1.05rem, 1.7vw, 1.4rem);
+  max-width: 40em;
+  font-family: var(--sans);
+}
+ul.list.tight { font-size: clamp(.95rem, 1.35vw, 1.15rem); gap: .5em; }
+ul.list li { padding-left: 1.3em; position: relative; color: var(--fg); }
+ul.list li::before { content: "—"; position: absolute; left: 0; color: var(--violet); }
+ul.list.plain li::before { content: ""; }
+ul.list.plain li { padding-left: 0; }
+
+.columns { display: grid; gap: 2.4rem; margin-top: 1rem; }
+.columns.two { grid-template-columns: 1fr 1fr; }
+.columns.three { grid-template-columns: 1fr 1fr 1fr; }
+.col { border-top: 1px solid var(--rule2); padding-top: 1.1rem; }
+.col h3 {
+  font-family: var(--sans);
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 600;
+  color: var(--violet);
+  margin: 0 0 .8rem 0;
+}
+.col ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .5em; }
+.col ul li { font-size: clamp(.95rem, 1.35vw, 1.1rem); font-family: var(--sans); color: var(--fg-dim); }
+
+.diagram {
+  font-family: var(--mono);
+  font-size: clamp(.88rem, 1.4vw, 1.15rem);
+  line-height: 1.85;
+  color: var(--fg);
+  white-space: pre;
+  background: var(--panel);
+  border-left: 2px solid var(--violet);
+  padding: 1.6rem 2rem;
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.diagram .hi { color: var(--pink); }
+
+.card {
+  background: var(--panel);
+  border-left: 2px solid var(--pink);
+  padding: 1.4rem 1.8rem;
+  font-family: var(--mono);
+  font-size: clamp(.95rem, 1.45vw, 1.2rem);
+  line-height: 1.65;
+  max-width: 44em;
+  white-space: pre-wrap;
+  color: var(--fg);
+}
+.card .blank { display: inline-block; min-width: 6em; border-bottom: 1px solid var(--violet); }
+
+.dialogue { display: flex; flex-direction: column; gap: .55rem; max-width: 42em; font-family: var(--sans); }
+.dialogue .line { padding: .55rem 1rem; font-size: clamp(.86rem, 1.3vw, 1.05rem); line-height: 1.4; max-width: 88%; border-radius: 3px; }
+.dialogue .line b { display: block; font-size: .64rem; text-transform: uppercase; letter-spacing: .12em; margin-bottom: .2em; color: var(--fg-dimmer); font-weight: 600; }
+.dialogue .line.student { align-self: flex-start; background: var(--panel); border-left: 2px solid var(--rule2); }
+.dialogue .line.you { align-self: flex-end; background: rgba(169,141,247,.1); border-right: 2px solid var(--violet); text-align: right; }
+.dialogue .line.you b { text-align: right; }
+
+.ide-label {
+  font-family: var(--sans); font-size: .72rem; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--fg-dimmer); font-style: italic; margin: 0 0 .6rem 0;
+}
+.ide-mock {
+  display: grid; grid-template-columns: 190px 1fr; max-width: 46em;
+  border: 1px solid #3c3c3c; border-radius: 6px; overflow: hidden;
+  font-family: var(--mono); font-size: .78rem;
+  box-shadow: 0 30px 70px -30px rgba(0,0,0,.6);
+}
+.ide-side { background: #252526; color: #cccccc; padding: .9rem 0; }
+.ide-side .ide-head { padding: 0 1rem .6rem; text-transform: uppercase; letter-spacing: .08em; font-size: .68rem; color: #969696; }
+.ide-file { padding: .35rem 1rem; display: flex; justify-content: space-between; color: #cccccc; }
+.ide-file .m { color: #e2c08d; }
+.ide-file .a { color: #73c991; }
+.ide-main { background: #1e1e1e; color: #d4d4d4; }
+.ide-main .ide-toolbar { background: #2d2d2d; padding: .5rem 1rem; color: #969696; border-bottom: 1px solid #3c3c3c; }
+.ide-main .ide-body { padding: 1rem; }
+.ide-commitbox { background: #3c3c3c; border: 1px solid #007acc; border-radius: 3px; padding: .55rem .7rem; color: #d4d4d4; margin: .6rem 0; }
+.ide-btn-row { display: flex; gap: .5rem; }
+.ide-btn { background: #0e639c; color: #fff; padding: .4rem .9rem; border-radius: 3px; font-family: var(--sans); font-size: .78rem; }
+.ide-btn.ghost { background: transparent; border: 1px solid #5f6366; color: #cccccc; }
+.ide-term { background: #1e1e1e; color: #d4d4d4; padding: .9rem 1rem; }
+.ide-term .prompt { color: #73c991; }
+.ide-term .out { color: #969696; }
+
+.tag {
+  display: inline-block; font-family: var(--sans); font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .12em; font-weight: 600; color: var(--violet);
+  border: 1px solid var(--rule2); padding: .3em .8em; border-radius: 999px; margin-bottom: 1rem;
+}
+
+.footer-note {
+  position: absolute; bottom: 2.6rem; left: 10vw;
+  font-family: var(--sans); font-size: .85rem; font-style: italic;
+  color: var(--fg-dimmer); max-width: 58em; line-height: 1.5;
+}
+
+.progress-track { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 21; background: var(--rule); }
+.progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: linear-gradient(90deg, var(--violet), var(--pink));
+  width: 0%; transition: width .3s ease; z-index: 22;
+}
+.hud {
+  position: fixed; bottom: 1.6rem; right: 2rem;
+  font-family: var(--sans); font-size: .72rem; letter-spacing: .08em;
+  color: var(--fg-dimmer); z-index: 20; user-select: none;
+}
+.hud .idx { color: var(--fg); }
+.deckname {
+  position: fixed; bottom: 1.6rem; left: 2rem;
+  font-family: var(--sans); font-size: .68rem; letter-spacing: .16em;
+  color: var(--fg-dimmer); text-transform: uppercase; z-index: 20;
+}
+.navzone { position: fixed; top: 0; bottom: 0; width: 12%; z-index: 10; cursor: pointer; }
+.navzone.left { left: 0; }
+.navzone.right { right: 0; }
+
+@media (max-width: 720px) {
+  .columns.two, .columns.three { grid-template-columns: 1fr; gap: 1.4rem; }
+  .slide { padding: 9vh 7vw; }
+}
+</style>
+</head>
+<body>
+<div class="bg-fx"><div class="grid"></div></div>
+<div class="progress-track"></div>
+<div class="progress"></div>
+<div class="deck">
+<section class="slide ">
+<p class="kicker">Week 7 · Lab</p><h1>What Is an Interaction?</h1><p class="subtitle">An introduction to Construct 3</p>
+</section>
+<section class="slide ">
+<p class="kicker">Before any tutorial</p><div class="diagram">PLAYER DOES SOMETHING
+        ↓
+<span class="hi">SYSTEM RESPONDS</span>
+        ↓
+PLAYER UNDERSTANDS SOMETHING
+        ↓
+PLAYER ACTS AGAIN</div><p class="footer-note">That loop is interaction. Everything in Construct is built on top of it.</p>
+</section>
+<section class="slide ">
+<p class="kicker">The one sentence that matters most</p><p class="mantra">Construct is a tool for building<br>interactive systems.<br><em>Not an order to make a specific kind of game.</em></p><p class="footer-note">Almost the entire pedagogy of this lab is that one line. Repeat it every time someone asks “how do I make a game where—”.</p>
+</section>
+<section class="slide ">
+<p class="kicker">Ask this instead</p><p class="statement">Not: <em>“What do you want the player to see?”</em></p><p class="statement">Instead: <em>“What do you want the player to have to <em>do</em> here?”</em></p><p class="footer-note">That single swap pulls them out of graphics and genre and into interaction design — before you've mentioned a single Construct feature.</p>
+</section>
+<section class="slide ">
+<p class="kicker">Then push once more</p><p class="statement">What must the player do here that they <em>wouldn't</em> do if this were just a piece of text?</p><p class="footer-note">A question that works equally well for game studies and for electronic literature. Bring it back for every idea, all semester.</p>
+</section>
+<section class="slide ">
+<p class="kicker">Demystify Construct</p><h2>Sprites, collisions, scores and platforms are examples. Not requirements.</h2><ul class="list"><li>An event sheet is really just a rule: <em style='color:var(--accent);font-style:normal'>if this happens, then this happens</em></li>
+<li>That can describe a jump</li>
+<li>It can just as easily describe waiting, silence, negotiation, refusal, or memory</li></ul><p class="footer-note">Say this out loud in the lab. It costs nothing and it changes what students think the software is for.</p>
+</section>
+<section class="slide ">
+<p class="kicker">You should come away understanding</p><ul class="list"><li>layout</li>
+<li>objects</li>
+<li>behaviours</li>
+<li>events</li>
+<li>conditions</li>
+<li>actions</li>
+<li>variables, if time permits</li>
+<li>basic input → response logic</li></ul>
+</section>
+<section class="slide ">
+<p class="kicker">Think in rules before effects</p><h2>Before “how do I make this animation?” — ask “what is the rule?”</h2><div class="diagram">IF player touches object          → add score
+IF player stays still for 20s     → reveal text
+IF player refuses                 → change narrative state
+IF sound stops                    → environment changes</div><p class="footer-note">All four are the same shape: a condition and a consequence. Only the first one is a “game mechanic.”</p>
+</section>
+<section class="slide ">
+<p class="kicker">Borrow a lens before you build</p><h2>Analyse a game you already know — before touching Construct</h2><ul class="list"><li>What do the rules make <em style='color:var(--accent);font-style:normal'>possible</em>?</li>
+<li>What do the rules make <em style='color:var(--accent);font-style:normal'>impossible</em>?</li>
+<li>What am I forced to <em style='color:var(--accent);font-style:normal'>perform</em>?</li>
+<li>What story emerges here that no one — not even the designer — wrote in advance?</li></ul><p class="footer-note">Borrowed from game studies / electronic literature: rules & mechanics, agency, roleplay, emergent narrative. Same four questions come back in Week 10 — aimed at Trail Mix, a real interactive walk, instead of a generic game.</p>
+</section>
+<section class="slide ">
+<p class="kicker">First 10–15 minutes</p><h2>Build the ugliest possible tiny prototype</h2><ul class="list"><li>A square.</li>
+<li>Press arrow key.</li>
+<li>Square moves.</li></ul><div class="card">IF player touches object
+→ object disappears</div><p class="footer-note">“This is already an interactive system. Not because it has graphics, but because an action has a rule and a consequence.”</p>
+</section>
+<section class="slide ">
+<p class="kicker">Show one weird demo. Not ten.</p><h2>Nothing happens when you click. Wait ten seconds.</h2><div class="card">IF player does nothing for 10 seconds
+→ reveal text</div><p class="footer-note">Then show them the event sheet. Three lines. That's the moment they realise electronic literature and game design don't require a huge technical system.</p>
+</section>
+<section class="slide ">
+<p class="kicker">Build together</p><ul class="list"><li>Player</li>
+<li>Object</li>
+<li>Solid / platform</li>
+<li>Keyboard control</li>
+<li>Collision</li>
+<li>Simple event</li></ul><div class="card">WHEN this happens
+DO this</div><p class="footer-note">Construct events almost as English — this makes the tool much less intimidating.</p>
+</section>
+<section class="slide ">
+<p class="kicker">Tiny interaction experiments</p><h2>Before making anything bigger, make three interactions</h2><div class="columns three"><div class="col"><h3>1 · Touch something</h3><ul><li>Something changes.</li></ul></div><div class="col"><h3>2 · Press something</h3><ul><li>Something responds.</li></ul></div><div class="col"><h3>3 · Change a variable</h3><ul><li>mood = mood + 1</li><li>score = score + 1</li></ul></div></div>
+</section>
+<section class="slide ">
+<p class="kicker">What else could this variable represent?</p><h2>Besides “score”…</h2><ul class="list tight"><li>trust</li>
+<li>fear</li>
+<li>distance</li>
+<li>memory</li>
+<li>noise</li>
+<li>pollution</li>
+<li>attention</li>
+<li>time</li>
+<li>belonging</li></ul><p class="footer-note">This is where your pedagogical approach starts entering very naturally.</p>
+</section>
+<section class="slide ">
+<p class="kicker">The method, in one exchange · pedagogy → rhetoric → programming</p><h2>A student wants to make something about loneliness</h2><div class="dialogue"><div class="line student"><b>Student</b>“I want to make something about loneliness.”</div><div class="line you"><b>You</b>“Ok. What should the player actually do that makes them feel or understand something about loneliness?”</div><div class="line student"><b>Student</b>“Maybe the characters disappear.”</div><div class="line you"><b>You</b>“Good. When do they disappear? What's the condition?”</div><div class="line student"><b>Student</b>“When I walk toward them.”</div><div class="line you"><b>You</b>“Perfect — that's a rule: <span class="hi">distance(player, character)</span>. We're already in Construct.”</div></div>
+</section>
+<section class="slide ">
+<p class="kicker">Let their idea drive the technique</p><p class="statement">If someone wants a completely ordinary platformer — great.</p><p class="footer-note">Don't make experimentation a new norm they have to follow instead of the old one. You're opening the option space, not swapping one right answer for another.</p>
+</section>
+<section class="slide ">
+<p class="kicker">End challenge</p><p class="statement">Make one interaction that communicates something<br><em>without text.</em></p><ul class="list tight"><li>object runs away from player</li>
+<li>world gets darker</li>
+<li>sound becomes louder</li>
+<li>objects appear when approached</li>
+<li>movement slows down</li>
+<li>something follows you</li>
+<li>something refuses interaction</li></ul><p class="footer-note">Ask afterward: what does this make the player <em>do</em> that a sentence describing the same idea would not?</p>
+</section>
+<section class="slide ">
+<p class="kicker">When something breaks</p><p class="statement">Don't just hand them the fix.<br>Ask: <em>“What does Construct think the state is right now?”</em></p><p class="footer-note">That question teaches events, conditions, state and causality. The fix alone teaches nothing.</p>
+</section>
+<section class="slide ">
+<p class="kicker">When it finally works</p><p class="statement">Don't stop at <em>“it works.”</em></p><p class="statement">Ask: <em>what does this rule do to the experience?</em></p><p class="footer-note">That's the question that moves them from programming to design.</p>
+</section>
+<section class="slide ">
+<p class="kicker">Next week</p><p class="statement">What happens when the rules stay the same but the <em>images</em> don't?</p>
+</section>
+<section class="slide ">
+<p class="kicker">Carry this into every Construct lab</p><p class="mantra">Don't start with what Construct can make.<br>Start with what you want the <em>interaction</em> to do.</p>
+</section>
+</div>
+<div class="navzone left" aria-label="previous slide"></div>
+<div class="navzone right" aria-label="next slide"></div>
+<div class="deckname">Week 7 — What Is an Interaction?</div>
+<div class="hud"><span class="idx">1</span> / <span class="total"></span></div>
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  var progress = document.querySelector('.progress');
+  var idxEl = document.querySelector('.hud .idx');
+  var totalEl = document.querySelector('.hud .total');
+  totalEl.textContent = slides.length;
+
+  function show(n) {
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) {
+      s.classList.toggle('active', k === n);
+    });
+    i = n;
+    idxEl.textContent = i + 1;
+    progress.style.width = ((i + 1) / slides.length * 100) + '%';
+    location.hash = 's' + (i + 1);
+  }
+
+  function next() { show(i + 1); }
+  function prev() { show(i - 1); }
+
+  document.addEventListener('keydown', function (e) {
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].indexOf(e.key) > -1) { next(); e.preventDefault(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].indexOf(e.key) > -1) { prev(); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  document.querySelector('.navzone.left').addEventListener('click', prev);
+  document.querySelector('.navzone.right').addEventListener('click', next);
+
+  var startX = null;
+  document.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; });
+  document.addEventListener('touchend', function (e) {
+    if (startX === null) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    if (dx > 40) prev(); else if (dx < -40) next();
+    startX = null;
+  });
+
+  var hashMatch = location.hash.match(/s(\d+)/);
+  show(hashMatch ? parseInt(hashMatch[1], 10) - 1 : 0);
+})();
+</script>
+</body>
+</html>

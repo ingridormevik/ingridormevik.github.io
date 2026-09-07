@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 10 — Construct 3 Against Construct 3</title>
+<style>
+:root {
+  --accent: #f29bcd;
+  --bg: #07080d;
+  --bg2: #0d0f17;
+  --panel: rgba(14,16,25,.6);
+  --fg: #f4f1ec;
+  --fg-dim: #b9b5bd;
+  --fg-dimmer: #777380;
+  --rule: rgba(255,255,255,.1);
+  --rule2: rgba(255,255,255,.18);
+  --violet: #a98df7;
+  --pink: #f29bcd;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  background: var(--bg); color: var(--fg);
+  font-family: var(--sans);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(169,141,247,.09), transparent 32%),
+    radial-gradient(circle at 85% 18%, rgba(242,155,205,.06), transparent 28%),
+    linear-gradient(180deg, var(--bg), var(--bg2));
+}
+.bg-fx .grid {
+  position: absolute; inset: 0; opacity: .1;
+  background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+                     linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+.deck { position: relative; z-index: 1; width: 100vw; height: 100vh; }
+.slide {
+  position: absolute; inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 7vh 10vw 9vh;
+  opacity: 0;
+  overflow-y: auto;
+}
+.slide.active { display: flex; opacity: 1; animation: fadeUp .6s cubic-bezier(.22,.61,.36,1) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+.kicker {
+  font-family: var(--sans);
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  font-size: clamp(.66rem, .95vw, .8rem);
+  font-weight: 600;
+  color: var(--violet);
+  margin: 0 0 1.3rem 0;
+}
+h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(2.6rem, 6vw, 5.6rem);
+  line-height: .98;
+  margin: 0 0 .7rem 0;
+  letter-spacing: -.03em;
+}
+h2 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.8rem, 3.6vw, 2.9rem);
+  line-height: 1.08;
+  margin: 0 0 1.4rem 0;
+  color: var(--fg);
+  letter-spacing: -.01em;
+}
+.subtitle {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+  color: var(--fg-dim);
+  max-width: 46em;
+  margin: 0;
+  line-height: 1.5;
+}
+.statement {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 3.1rem);
+  line-height: 1.28;
+  font-weight: 400;
+  max-width: 23em;
+  margin: 0;
+}
+.statement em, .mantra em {
+  color: var(--violet);
+  font-style: italic;
+}
+.mantra {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 5.4vw, 4.4rem);
+  line-height: 1.12;
+  font-weight: 400;
+  max-width: 19em;
+  margin: 0;
+}
+
+ul.list {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex; flex-direction: column;
+  gap: .65em;
+  font-size: clamp(1.05rem, 1.7vw, 1.4rem);
+  max-width: 40em;
+  font-family: var(--sans);
+}
+ul.list.tight { font-size: clamp(.95rem, 1.35vw, 1.15rem); gap: .5em; }
+ul.list li { padding-left: 1.3em; position: relative; color: var(--fg); }
+ul.list li::before { content: "—"; position: absolute; left: 0; color: var(--violet); }
+ul.list.plain li::before { content: ""; }
+ul.list.plain li { padding-left: 0; }
+
+.columns { display: grid; gap: 2.4rem; margin-top: 1rem; }
+.columns.two { grid-template-columns: 1fr 1fr; }
+.columns.three { grid-template-columns: 1fr 1fr 1fr; }
+.col { border-top: 1px solid var(--rule2); padding-top: 1.1rem; }
+.col h3 {
+  font-family: var(--sans);
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 600;
+  color: var(--violet);
+  margin: 0 0 .8rem 0;
+}
+.col ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .5em; }
+.col ul li { font-size: clamp(.95rem, 1.35vw, 1.1rem); font-family: var(--sans); color: var(--fg-dim); }
+
+.diagram {
+  font-family: var(--mono);
+  font-size: clamp(.88rem, 1.4vw, 1.15rem);
+  line-height: 1.85;
+  color: var(--fg);
+  white-space: pre;
+  background: var(--panel);
+  border-left: 2px solid var(--violet);
+  padding: 1.6rem 2rem;
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.diagram .hi { color: var(--pink); }
+
+.card {
+  background: var(--panel);
+  border-left: 2px solid var(--pink);
+  padding: 1.4rem 1.8rem;
+  font-family: var(--mono);
+  font-size: clamp(.95rem, 1.45vw, 1.2rem);
+  line-height: 1.65;
+  max-width: 44em;
+  white-space: pre-wrap;
+  color: var(--fg);
+}
+.card .blank { display: inline-block; min-width: 6em; border-bottom: 1px solid var(--violet); }
+
+.dialogue { display: flex; flex-direction: column; gap: .55rem; max-width: 42em; font-family: var(--sans); }
+.dialogue .line { padding: .55rem 1rem; font-size: clamp(.86rem, 1.3vw, 1.05rem); line-height: 1.4; max-width: 88%; border-radius: 3px; }
+.dialogue .line b { display: block; font-size: .64rem; text-transform: uppercase; letter-spacing: .12em; margin-bottom: .2em; color: var(--fg-dimmer); font-weight: 600; }
+.dialogue .line.student { align-self: flex-start; background: var(--panel); border-left: 2px solid var(--rule2); }
+.dialogue .line.you { align-self: flex-end; background: rgba(169,141,247,.1); border-right: 2px solid var(--violet); text-align: right; }
+.dialogue .line.you b { text-align: right; }
+
+.ide-label {
+  font-family: var(--sans); font-size: .72rem; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--fg-dimmer); font-style: italic; margin: 0 0 .6rem 0;
+}
+.ide-mock {
+  display: grid; grid-template-columns: 190px 1fr; max-width: 46em;
+  border: 1px solid #3c3c3c; border-radius: 6px; overflow: hidden;
+  font-family: var(--mono); font-size: .78rem;
+  box-shadow: 0 30px 70px -30px rgba(0,0,0,.6);
+}
+.ide-side { background: #252526; color: #cccccc; padding: .9rem 0; }
+.ide-side .ide-head { padding: 0 1rem .6rem; text-transform: uppercase; letter-spacing: .08em; font-size: .68rem; color: #969696; }
+.ide-file { padding: .35rem 1rem; display: flex; justify-content: space-between; color: #cccccc; }
+.ide-file .m { color: #e2c08d; }
+.ide-file .a { color: #73c991; }
+.ide-main { background: #1e1e1e; color: #d4d4d4; }
+.ide-main .ide-toolbar { background: #2d2d2d; padding: .5rem 1rem; color: #969696; border-bottom: 1px solid #3c3c3c; }
+.ide-main .ide-body { padding: 1rem; }
+.ide-commitbox { background: #3c3c3c; border: 1px solid #007acc; border-radius: 3px; padding: .55rem .7rem; color: #d4d4d4; margin: .6rem 0; }
+.ide-btn-row { display: flex; gap: .5rem; }
+.ide-btn { background: #0e639c; color: #fff; padding: .4rem .9rem; border-radius: 3px; font-family: var(--sans); font-size: .78rem; }
+.ide-btn.ghost { background: transparent; border: 1px solid #5f6366; color: #cccccc; }
+.ide-term { background: #1e1e1e; color: #d4d4d4; padding: .9rem 1rem; }
+.ide-term .prompt { color: #73c991; }
+.ide-term .out { color: #969696; }
+
+.tag {
+  display: inline-block; font-family: var(--sans); font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .12em; font-weight: 600; color: var(--violet);
+  border: 1px solid var(--rule2); padding: .3em .8em; border-radius: 999px; margin-bottom: 1rem;
+}
+
+.footer-note {
+  position: absolute; bottom: 2.6rem; left: 10vw;
+  font-family: var(--sans); font-size: .85rem; font-style: italic;
+  color: var(--fg-dimmer); max-width: 58em; line-height: 1.5;
+}
+
+.progress-track { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 21; background: var(--rule); }
+.progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: linear-gradient(90deg, var(--violet), var(--pink));
+  width: 0%; transition: width .3s ease; z-index: 22;
+}
+.hud {
+  position: fixed; bottom: 1.6rem; right: 2rem;
+  font-family: var(--sans); font-size: .72rem; letter-spacing: .08em;
+  color: var(--fg-dimmer); z-index: 20; user-select: none;
+}
+.hud .idx { color: var(--fg); }
+.deckname {
+  position: fixed; bottom: 1.6rem; left: 2rem;
+  font-family: var(--sans); font-size: .68rem; letter-spacing: .16em;
+  color: var(--fg-dimmer); text-transform: uppercase; z-index: 20;
+}
+.navzone { position: fixed; top: 0; bottom: 0; width: 12%; z-index: 10; cursor: pointer; }
+.navzone.left { left: 0; }
+.navzone.right { right: 0; }
+
+@media (max-width: 720px) {
+  .columns.two, .columns.three { grid-template-columns: 1fr; gap: 1.4rem; }
+  .slide { padding: 9vh 7vw; }
+}
+</style>
+</head>
+<body>
+<div class="bg-fx"><div class="grid"></div></div>
+<div class="progress-track"></div>
+<div class="progress"></div>
+<div class="deck">
+<section class="slide ">
+<p class="kicker">Week 10 · Lab</p><span class="tag">Lecture theme: Digital media on a dying planet</span><h1>Construct 3 Against Construct 3</h1>
+</section>
+<section class="slide ">
+<p class="kicker">Main question</p><p class="statement">What happens when we refuse what<br>the software expects us to make?</p>
+</section>
+<section class="slide ">
+<p class="kicker">Remember the reframe from Week 7</p><p class="statement">An event sheet doesn't know what a “game” is.<br>It only knows <em>conditions, actions and states.</em></p><p class="footer-note">A game engine can make us believe we're supposed to build things that already resemble games. The event sheet doesn't care about genre. That's the whole opening this lab needs.</p>
+</section>
+<section class="slide ">
+<p class="kicker">The task&#x27;s own words</p><span class="tag">Obligatory Task 7</span><p class="statement">“What you are creating today <em>cannot be a game or gamified in any way.</em>”</p><ul class="list"><li>Violate the <em style='color:var(--accent);font-style:normal'>visual appearance</em> of games software — this is named as the most important thing to break.</li>
+<li>Also violate the <em style='color:var(--accent);font-style:normal'>rules and goals</em> typical of games.</li>
+<li>The legal forms: a simple interactive artwork, a poem, or a narrative story.</li></ul>
+</section>
+<section class="slide ">
+<p class="kicker">Start here</p><h2>Open the Construct 3 homepage. What does it advertise?</h2><ul class="list tight"><li>games</li>
+<li>levels</li>
+<li>characters</li>
+<li>action</li>
+<li>scores</li>
+<li>platformers</li>
+<li>commercial products</li>
+<li>polished entertainment</li></ul><p class="footer-note">Write their observations down. Then: “Today we are going to use the same software incorrectly.”</p>
+</section>
+<section class="slide ">
+<p class="kicker">Not this</p><p class="statement">Not: <em>make a weird game.</em></p><p class="statement">Instead: <em>identify one assumption in the software and refuse it.</em></p>
+</section>
+<section class="slide ">
+<p class="kicker">Possible directions</p><ul class="list tight"><li>A piece with no winning — the visitor explores indefinitely</li>
+<li>A piece where collecting makes things worse — every object damages the environment</li>
+<li>A piece where nothing wants to be clicked — objects escape the cursor</li>
+<li>A piece where standing still is the mechanic — movement destroys something</li>
+<li>A digital poem — walking reveals fragments of text</li>
+<li>A memory — objects trigger fragments rather than points</li></ul>
+</section>
+<section class="slide ">
+<p class="kicker">Possible directions, continued</p><ul class="list tight"><li>A sound environment — movement changes audio rather than progression</li>
+<li>A protest poster you can walk through — no conventional gameplay</li>
+<li>A landscape that notices you — the environment responds to presence</li>
+<li>A piece that slowly removes itself — every action deletes part of the world</li>
+<li>A piece about refusal — the interface keeps asking you to play, and you can refuse</li></ul><p class="footer-note">These demonstrate possibility without forcing a political topic.</p>
+</section>
+<section class="slide ">
+<p class="kicker">This is not hypothetical</p><span class="tag">Case study: Trail Mix</span><h2>A shipped example of refusing Construct's defaults</h2><ul class="list"><li>“It is not a game about defeating the mountain.”</li>
+<li>“A narrative you walk rather than read, with the mountain as co-author and the weather as an unreliable one.”</li></ul><p class="footer-note">Trail Mix, framed via the Center for Digital Narrative's “extended digital narrative” — stories that leave the screen and happen in rooms, landscapes and bodies. From trail-mix-v2.html.</p>
+</section>
+<section class="slide ">
+<p class="kicker">Same lens, aimed at your own refusal</p><h2>The four questions from Week 7 — now on your own work</h2><ul class="list"><li>What do your rules make possible? What do they make impossible?</li>
+<li>What must the visitor <em style='color:var(--accent);font-style:normal'>perform</em> here — not just read?</li>
+<li>What story or feeling emerges that no one, not even you, wrote in advance?</li></ul><p class="footer-note">This is what makes it a refusal rather than a theme: the world has to <em>arise through action</em>, not just be about something. Trail Mix's weather, pace, and who's present on the day are exactly that — ergodic literature; emergent narrative.</p>
+</section>
+<section class="slide ">
+<p class="kicker">Fill this in before you build</p><div class="card">CONSTRUCT EXPECTS ME TO MAKE:
+<span class="blank">________________</span>
+
+I AM USING IT TO MAKE:
+<span class="blank">________________</span>
+
+THE EXPECTATION I AM BREAKING IS:
+<span class="blank">________________</span></div>
+</section>
+<section class="slide ">
+<p class="kicker">Connect to the lecture, without forcing it</p><h2>Does your work need endless accumulation?</h2><div class="columns two"><div class="col"><h3>Typical games reward</h3><ul><li>MORE</li><li>FASTER</li><li>BIGGER</li><li>HIGHER SCORE</li><li>MORE ITEMS</li><li>MORE LEVELS</li></ul></div><div class="col"><h3>What if the system values</h3><ul><li>LESS</li><li>WAITING</li><li>CARE</li><li>REPAIR</li><li>OBSERVATION</li><li>RETURN / SHARING / REFUSAL</li></ul></div></div>
+</section>
+<section class="slide ">
+<p class="kicker">Obligatory Task 7 — submission</p><div class="card">Construct 3 normally encourages <span class="blank">______</span>.
+
+My work instead <span class="blank">______</span>.
+
+I made this decision because <span class="blank">______</span>.</div><p class="footer-note">Take screenshots, upload to the MittUiB Discussion Board under Obligatory Task 7, with a brief explanation and an analysis of how your work goes against Construct 3's own homepage advertising.</p>
+</section>
+</div>
+<div class="navzone left" aria-label="previous slide"></div>
+<div class="navzone right" aria-label="next slide"></div>
+<div class="deckname">Week 10 — Construct 3 Against Construct 3</div>
+<div class="hud"><span class="idx">1</span> / <span class="total"></span></div>
+<script>
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  var progress = document.querySelector('.progress');
+  var idxEl = document.querySelector('.hud .idx');
+  var totalEl = document.querySelector('.hud .total');
+  totalEl.textContent = slides.length;
+
+  function show(n) {
+    n = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) {
+      s.classList.toggle('active', k === n);
+    });
+    i = n;
+    idxEl.textContent = i + 1;
+    progress.style.width = ((i + 1) / slides.length * 100) + '%';
+    location.hash = 's' + (i + 1);
+  }
+
+  function next() { show(i + 1); }
+  function prev() { show(i - 1); }
+
+  document.addEventListener('keydown', function (e) {
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].indexOf(e.key) > -1) { next(); e.preventDefault(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].indexOf(e.key) > -1) { prev(); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  document.querySelector('.navzone.left').addEventListener('click', prev);
+  document.querySelector('.navzone.right').addEventListener('click', next);
+
+  var startX = null;
+  document.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; });
+  document.addEventListener('touchend', function (e) {
+    if (startX === null) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    if (dx > 40) prev(); else if (dx < -40) next();
+    startX = null;
+  });
+
+  var hashMatch = location.hash.match(/s(\d+)/);
+  show(hashMatch ? parseInt(hashMatch[1], 10) - 1 : 0);
+})();
+</script>
+</body>
+</html>
