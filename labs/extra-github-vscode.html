@@ -4,6 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VS Code &amp; GitHub for Creatives</title>
+<!-- social + icons -->
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="canonical" href="https://ingridormevik.github.io/labs/extra-github-vscode.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ingrid Ormevik">
+<meta property="og:title" content="VS Code &amp; GitHub for Creatives">
+<meta property="og:url" content="https://ingridormevik.github.io/labs/extra-github-vscode.html">
+<meta property="og:image" content="https://ingridormevik.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ingrid Ormevik: essays, games and artistic research.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VS Code &amp; GitHub for Creatives">
+<meta name="twitter:image" content="https://ingridormevik.github.io/og-image.png">
 <style>
 :root {
   --accent: #f29bcd;
@@ -32,8 +46,6 @@ html, body {
 
 .bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(circle at 18% 8%, rgba(169,141,247,.09), transparent 32%),
-    radial-gradient(circle at 85% 18%, rgba(242,155,205,.06), transparent 28%),
     linear-gradient(180deg, var(--bg), var(--bg2));
 }
 .bg-fx .grid {
@@ -184,7 +196,6 @@ ul.list.plain li { padding-left: 0; }
   display: grid; grid-template-columns: 190px 1fr; max-width: 46em;
   border: 1px solid #3c3c3c; border-radius: 6px; overflow: hidden;
   font-family: var(--mono); font-size: .78rem;
-  box-shadow: 0 30px 70px -30px rgba(0,0,0,.6);
 }
 .ide-side { background: #252526; color: #cccccc; padding: .9rem 0; }
 .ide-side .ide-head { padding: 0 1rem .6rem; text-transform: uppercase; letter-spacing: .08em; font-size: .68rem; color: #969696; }
@@ -205,7 +216,7 @@ ul.list.plain li { padding-left: 0; }
 .tag {
   display: inline-block; font-family: var(--sans); font-size: .72rem; text-transform: uppercase;
   letter-spacing: .12em; font-weight: 600; color: var(--violet);
-  border: 1px solid var(--rule2); padding: .3em .8em; border-radius: 999px; margin-bottom: 1rem;
+  border: 1px solid var(--rule2); padding: .3em .8em; border-radius: 4px; margin-bottom: 1rem;
 }
 
 .footer-note {
@@ -254,10 +265,10 @@ ul.list.plain li { padding-left: 0; }
 username, email, password → verify the email</div><p class="footer-note">That's it. No settings to configure yet.</p>
 </section>
 <section class="slide ">
-<p class="kicker">The loop</p><div class="diagram">EDIT → SAVE → <span class="hi">STAGE</span> → <span class="hi">COMMIT</span> → <span class="hi">PUSH</span></div><p class="footer-note">PULL runs the other way: it brings down changes made somewhere else — another machine, a collaborator, an earlier you.</p>
+<p class="kicker">The loop</p><div class="diagram">EDIT → SAVE → <span class="hi">STAGE</span> → <span class="hi">COMMIT</span> → <span class="hi">PUSH</span></div><p class="footer-note">PULL runs the other way: it brings down changes made somewhere else: another machine, a collaborator, an earlier you.</p>
 </section>
 <section class="slide ">
-<p class="kicker">VS Code, labeled</p><p class="ide-label">Illustrative recreation of the interface — not a screen capture.</p><div class="ide-mock">
+<p class="kicker">VS Code, labeled</p><p class="ide-label">Illustrative recreation of the interface, not a screen capture.</p><div class="ide-mock">
       <div class="ide-side">
         <div class="ide-head">Explorer</div>
         <div class="ide-file">index.html</div>
@@ -266,13 +277,13 @@ username, email, password → verify the email</div><p class="footer-note">That'
         <div class="ide-file">new-post.html <span class="a">A</span></div>
       </div>
       <div class="ide-main">
-        <div class="ide-toolbar">index.html — your-project</div>
+        <div class="ide-toolbar">index.html · your-project</div>
         <div class="ide-body">&lt;h1&gt;Hello&lt;/h1&gt;</div>
       </div>
-    </div><p class="footer-note">Left: every file, always. Middle: where you type. M = modified, A = added — both waiting to be staged.</p>
+    </div><p class="footer-note">Left: every file, always. Middle: where you type. M = modified, A = added, both waiting to be staged.</p>
 </section>
 <section class="slide ">
-<p class="kicker">Source Control panel</p><p class="ide-label">Illustrative recreation of the interface — not a screen capture.</p><div class="ide-mock">
+<p class="kicker">Source Control panel</p><p class="ide-label">Illustrative recreation of the interface, not a screen capture.</p><div class="ide-mock">
       <div class="ide-side">
         <div class="ide-head">Source Control</div>
         <div class="ide-file">style.css <span class="m">M</span></div>
@@ -290,7 +301,7 @@ username, email, password → verify the email</div><p class="footer-note">That'
 <section class="slide ">
 <p class="kicker">Or the terminal, if you prefer typing</p><div class="card">git add .
 git commit -m "describe what changed, briefly"
-git push</div><p class="footer-note">Same three steps as the panel — stage, commit, push. Neither way is more correct.</p>
+git push</div><p class="footer-note">Same three steps as the panel: stage, commit, push. Neither way is more correct.</p>
 </section>
 <section class="slide ">
 <p class="kicker">The everyday loop</p><ul class="list"><li>Pull before you start</li>
@@ -298,7 +309,7 @@ git push</div><p class="footer-note">Same three steps as the panel — stage, co
 <li>Push before you close the laptop</li></ul>
 </section>
 <section class="slide ">
-<p class="kicker">Copilot is a collaborator, not an author</p><p class="statement">Copilot suggests.<br><em>You decide what stays.</em></p><p class="footer-note">Same question as Week 6 — now inside the editor instead of a chat window.</p>
+<p class="kicker">Copilot is a collaborator, not an author</p><p class="statement">Copilot suggests.<br><em>You decide what stays.</em></p><p class="footer-note">Same question as Week 6, now inside the editor instead of a chat window.</p>
 </section>
 <section class="slide ">
 <p class="kicker">When it goes wrong</p><div class="columns three"><div class="col"><h3>Merge conflict</h3><ul><li>Read both versions. Keep what you want. Commit.</li></ul></div><div class="col"><h3>Forgot to pull</h3><ul><li>Pull now. If it complains, commit first, then pull.</li></ul></div><div class="col"><h3>Committed something huge</h3><ul><li>Stop. Ask before you force anything.</li></ul></div></div>
@@ -306,7 +317,7 @@ git push</div><p class="footer-note">Same three steps as the panel — stage, co
 <section class="slide ">
 <p class="kicker">Practice</p><ul class="list"><li>Change one visible thing.</li>
 <li>Stage it, commit it, push it.</li>
-<li>Find it on GitHub. That's proof — not “it looks right locally.”</li></ul>
+<li>Find it on GitHub. That's proof, not “it looks right locally.”</li></ul>
 </section>
 <section class="slide ">
 <p class="kicker">Carry this with you</p><p class="statement">Git doesn't ask if your code is good.<br>It just remembers what you did.<br><em>That part is still yours.</em></p>
