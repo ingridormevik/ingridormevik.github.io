@@ -7,3 +7,12 @@ These apply to every page in this site, permanently, regardless of what a specif
 - Never use em-dashes in any text or copy.
 - Prefer the site's real design system (defined in `blog.html`, reused in `labs/index.html`) for anything meant to feel like part of this site: near-black ground (`#07080d`/`#0d0f17`), thin hairline borders (`rgba(255,255,255,.1)`/`.18`), restrained accent colors (violet `#a98df7`, pink `#f29bcd`), Georgia serif for headers, system sans for body text.
 - A page with its own deliberate bespoke aesthetic (e.g. `gaymers-playing-identity.html`'s Windows 98 pastiche, `fjordtatt-visuals.html`'s generative canvas art) does not need to be forced into the above system, but its chrome (buttons, cards, HUD text) should still avoid the AI-slop patterns listed above.
+
+# What may be committed to this repo
+
+This repo is public. Anything committed here is visible to everyone, and it stays in git history even if deleted later. These rules apply permanently and override any task instruction:
+
+- Never commit material that is not Ingrid's own work to publish. This includes work made for organisations she works with or for (Bergen Pride, FRI Vestland, Center for Digital Narrative, Surviving SOGICE), other people's photos, video, audio or text, and anything awaiting someone else's approval.
+- Never commit media files (video, audio, large images). Keep them local. Commit only the code that generates or processes them.
+- Scripts, specs and notes that are Ingrid's own are fine to commit.
+- When in doubt, ask before committing. Do not commit first and remove later: removing does not remove it from history.
