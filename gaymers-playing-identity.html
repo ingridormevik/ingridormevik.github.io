@@ -959,7 +959,8 @@ function buildNpcLayer(){
    layer.appendChild(wrap);
    const home=homeFor(key,n.loc);
    npcEls[key]={el:wrap,x:home.x+(Math.random()*8-4),y:home.y+(Math.random()*4-2),tx:home.x,ty:home.y,home:home,
-     scheduleLoc:n.loc,traveling:false,pathQueue:[],jitter:Math.floor(Math.random()*20)-10};
+     scheduleLoc:n.loc,traveling:false,pathQueue:[],jitter:Math.floor(Math.random()*4000),lastDecision:0,
+     needs:{energy:60+Math.random()*25,social:55+Math.random()*25,fun:55+Math.random()*25,comfort:60+Math.random()*25,identity:55+Math.random()*25}};
    placeEl(wrap,npcEls[key].x,npcEls[key].y);
  });
 }
@@ -971,7 +972,11 @@ function wanderNpcs(){
      if(dd<.6){
        n.x=aim.x;n.y=aim.y;
        if(n.pathQueue.length)n.pathQueue.shift();
-       else{n.traveling=false;n.tx=n.home.x;n.ty=n.home.y}
+       else{
+         n.traveling=false;n.tx=n.home.x;n.ty=n.home.y;
+         const arrivedLoc=LOCATIONS[n.scheduleLoc];
+         Object.entries(arrivedLoc.deltas).forEach(([k,v])=>{ if(n.needs[k]!==undefined) n.needs[k]=clamp(n.needs[k]+v); });
+       }
      }else{n.x+=dx/dd*.09;n.y+=dy/dd*.09}
    }else{
      const dx=n.tx-n.x,dy=n.ty-n.y,dd=Math.hypot(dx,dy);
@@ -982,25 +987,28 @@ function wanderNpcs(){
  });
 }
 
-/* ================= day/night NPC migration ================= */
-/* After ~22:00 (staggered a little per-NPC) the friends who don't already
-   live at a nightlife spot head over to Fincken or Club; they come home
-   again in the small hours. Real Fincken<->Club moves take the real
+/* ================= needs-driven NPC planning ================= */
+/* Each NPC has their own needs, decaying like the player's, and picks
+   their next destination the same way the player's Free Will does —
+   scoring reachable locations against what they currently need, rather
+   than a fixed clock schedule. Real Fincken<->Club moves take the real
    corner route via computeRoute(); every other pair just walks straight
-   there, same as today's ambient wander. */
-const NIGHT_MIGRATION={theo:"fincken",noor:"fincken",rowan:"club",kai:"club"};
+   there, same as before. */
+const NPC_DECAY={energy:.02,social:.035,fun:.035,comfort:.015,identity:.015};
 function updateNpcSchedules(){
- const minuteOfDay=state.minutes%1440;
+ const s=state.speed;
  Object.entries(npcEls).forEach(([key,n])=>{
-   const dest=NIGHT_MIGRATION[key]; if(!dest)return;
-   const nightStart=22*60+n.jitter, nightEnd=2*60+n.jitter;
-   const isNight = minuteOfDay>=nightStart || minuteOfDay<nightEnd;
-   const target = isNight ? dest : NPCS[key].loc;
-   if(target===n.scheduleLoc)return;
+   Object.keys(NPC_DECAY).forEach(k=>{ n.needs[k]=clamp(n.needs[k]-NPC_DECAY[k]*s); });
+   if(n.traveling)return;
+   if(Date.now()-n.lastDecision < 8000+n.jitter)return;
+   n.lastDecision=Date.now();
+   const scores=locationScores(n.needs);
+   const best=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
+   if(best===n.scheduleLoc)return;
    const from=n.scheduleLoc;
-   n.scheduleLoc=target;
-   n.home=homeFor(key,target);
-   n.pathQueue=computeRoute(from,target);
+   n.scheduleLoc=best;
+   n.home=homeFor(key,best);
+   n.pathQueue=computeRoute(from,best);
    n.traveling=true;
  });
 }
@@ -1135,10 +1143,9 @@ const TRAIT_BONUS={
  BOLD:{chat:6,community:6}, FIERCE:{club:6,chat:4},
  DREAMY:{waterfront:8}, CHAOTIC:{fincken:6,club:6}
 };
-function freeWillTick(){
- if(state.paused || !state.freeWill || state.target) return;
- if(Date.now()-state.lastManual < 6500*(1/state.speed)) return;
- const n=state.needs;
+/* Shared by the player's Free Will and NPC planning — same "which location
+   best serves these needs right now" scoring either way. */
+function locationScores(n,traits){
  const scores={
    club:(100-n.fun)*.7+(100-n.social)*.3,
    community:(100-n.social)*.5+(100-n.identity)*.5,
@@ -1147,10 +1154,16 @@ function freeWillTick(){
    chat:(100-n.social)*.75,
    waterfront:(100-n.energy)*.55+(100-n.comfort)*.35
  };
- state.traits.forEach(t=>{
+ if(traits)traits.forEach(t=>{
    const bonus=TRAIT_BONUS[t]; if(!bonus)return;
    Object.entries(bonus).forEach(([loc,v])=>scores[loc]+=v);
  });
+ return scores;
+}
+function freeWillTick(){
+ if(state.paused || !state.freeWill || state.target) return;
+ if(Date.now()-state.lastManual < 6500*(1/state.speed)) return;
+ const scores=locationScores(state.needs,state.traits);
  const best=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
  state.pathQueue=computeRoute(state.lastLoc,best);
  state.target=best;
