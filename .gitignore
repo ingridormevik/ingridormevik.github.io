@@ -1,3 +1,7 @@
 
 # Print exports: regenerate with tools/build-pack-v2.py --print
 assets/print/
+
+# HAGEN test renders: 4K stills the loader test writes on each run
+hagen/source/v23_3_garden.png
+hagen/source/v23_3_inner.png
