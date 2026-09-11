@@ -192,6 +192,11 @@ embedded = source.replace('</script', '<\\/script')
 assert embedded in html
 html = html.replace(embedded, engine.replace('</script', '<\\/script') + '\nglobalThis.HAGEN_ENGINE_233.start(runtime);\n')
 html = html.replace('Garden and Mycelium · V23.1', 'Garden and Mycelium · V23.3')
+# Unlisted, not private: the repo is public, so the page is only kept out of
+# search results and linked from nowhere on the site. See /robots.txt.
+viewport = '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
+assert html.count(viewport) == 1
+html = html.replace(viewport, viewport + '<meta name="robots" content="noindex, nofollow">')
 (dist / 'HAGEN_V23_3_GARDEN.html').write_text(html)
 
 print(json.dumps({'engine_bytes': len(engine.encode()), 'event_bytes': len(loader.encode()),
