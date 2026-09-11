@@ -1,0 +1,179 @@
+{
+  "eventBytes": 1613,
+  "eventLines": 30,
+  "concurrentTicks": {
+    "pending": 500,
+    "ready": 250,
+    "loads": 1,
+    "starts": 1,
+    "ticks": 250
+  },
+  "missing-file": {
+    "loads": 1,
+    "logs": 1,
+    "alerts": 1,
+    "noRepeatedLoad": true
+  },
+  "wrong-version": {
+    "loads": 1,
+    "logs": 1,
+    "alerts": 1,
+    "noRepeatedLoad": true
+  },
+  "worker": {
+    "loads": 0,
+    "logs": 1,
+    "alerts": 0,
+    "noRepeatedLoad": true
+  },
+  "initialization-error": {
+    "loads": 1,
+    "logs": 1,
+    "alerts": 1,
+    "noRepeatedLoad": true
+  },
+  "graphicsDefaults": {
+    "ceiling": [
+      3840,
+      2160
+    ],
+    "pixelRatio": 2,
+    "texel": 3,
+    "antialias": false,
+    "css": [
+      1920,
+      1080
+    ],
+    "quality": 1,
+    "buffer": [
+      3840,
+      2160
+    ],
+    "webglTarget": [
+      3840,
+      2160
+    ],
+    "canvasTarget": [
+      2442,
+      1374
+    ],
+    "canvasBudgetMB": 192,
+    "canvasMaxRatio": 2,
+    "canvasLayers": 15
+  },
+  "garden": {
+    "version": 233,
+    "phase": "garden",
+    "lang": "en",
+    "frames": 13,
+    "quality": 1,
+    "buffer": [
+      3840,
+      2160
+    ],
+    "drawingBuffer": [
+      3840,
+      2160
+    ],
+    "cssSize": [
+      1920,
+      1080
+    ],
+    "textSprite": [
+      3072,
+      576
+    ],
+    "texel": 3,
+    "groundTexture": null
+  },
+  "encounter": {
+    "phase": "segment",
+    "layers": 18,
+    "canvasCount": 1,
+    "position": {
+      "x": -4.3919218534750835,
+      "z": -7.8,
+      "yaw": 0,
+      "pitch": -0.035
+    },
+    "pixelWeight": 14.652,
+    "composite": [
+      2471,
+      1390
+    ],
+    "buffer": [
+      2471,
+      1390
+    ],
+    "canvasMB": 192,
+    "budgetMB": 192
+  },
+  "returnedAndFreed": true,
+  "adaptive": {
+    "start": 1,
+    "loaded": 0.4,
+    "floor": 0.4,
+    "recovered": 0.9,
+    "capped": 1,
+    "frozenWhenDisabled": 1,
+    "minQuality": 0.4
+  },
+  "presets": {
+    "battery": {
+      "ceiling": [
+        1280,
+        720
+      ],
+      "webglTarget": [
+        1280,
+        720
+      ],
+      "drawingBuffer": [
+        1280,
+        720
+      ],
+      "texel": 1
+    },
+    "balanced": {
+      "ceiling": [
+        2560,
+        1440
+      ],
+      "webglTarget": [
+        2560,
+        1440
+      ],
+      "drawingBuffer": [
+        2560,
+        1440
+      ],
+      "texel": 2
+    },
+    "4k": {
+      "ceiling": [
+        3840,
+        2160
+      ],
+      "webglTarget": [
+        3840,
+        2160
+      ],
+      "drawingBuffer": [
+        3840,
+        2160
+      ],
+      "texel": 3
+    }
+  },
+  "presetRejected": "HAGEN graphics preset must be one of 4k, balanced, battery",
+  "standardDensity": {
+    "drawingBuffer": [
+      1280,
+      800
+    ],
+    "pixelRatio": 1,
+    "antialias": true,
+    "texel": 1
+  },
+  "errors": []
+}
