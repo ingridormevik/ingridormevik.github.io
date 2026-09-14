@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>HAGEN · Cinema</title>
+<style>
+:root{
+  --bg:#07080d; --bg2:#0d0f17; --text:#f4f1ec; --soft:#b9b5bd; --dim:#777380;
+  --line:rgba(255,255,255,.1); --line2:rgba(255,255,255,.18);
+  --violet:#a98df7; --pink:#f29bcd;
+  --serif:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+*,*:before,*:after{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050b15;color:var(--text);font-family:var(--sans)}
+
+/* The film overlay. The engine mounts its world at z-index 2147482900, so the
+   overlay has to sit above that to be seen at all. It never takes pointer events. */
+#film{position:fixed;inset:0;z-index:2147483000;pointer-events:none}
+
+/* Setup console. Removed from the document once the film starts. */
+#console{position:fixed;inset:0;z-index:2147483646;overflow:auto;
+  background:linear-gradient(180deg,var(--bg),var(--bg2));
+  padding:clamp(40px,7vw,86px) 24px}
+#console[hidden]{display:none}
+.wrap{width:min(720px,100%);margin:auto}
+.eyebrow{margin:0 0 16px;color:var(--violet);font-size:.68rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase}
+h1{margin:0 0 18px;font-family:var(--serif);font-weight:400;font-size:clamp(2.4rem,7vw,3.7rem);line-height:.96;letter-spacing:-.04em}
+.lede{margin:0 0 30px;color:var(--soft);font-family:var(--serif);font-size:1.06rem;line-height:1.65}
+
+.step{border-top:1px solid var(--line);padding:22px 0 6px}
+.step h2{margin:0 0 12px;color:var(--soft);font-family:var(--sans);font-size:.66rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.step p{margin:0 0 14px;color:var(--dim);font-size:.9rem;line-height:1.7}
+
+#drop{display:block;border:1px solid var(--line2);padding:26px 22px;cursor:pointer;
+  color:var(--soft);font-size:.95rem;line-height:1.6;transition:border-color .16s,color .16s}
+#drop:hover,#drop.over{border-color:var(--violet);color:var(--text)}
+#drop b{display:block;font-family:var(--serif);font-size:1.12rem;color:var(--text);margin-bottom:6px;font-weight:400}
+#file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 14px}
+button,.btn{appearance:none;background:transparent;border:1px solid var(--line2);color:var(--text);
+  padding:12px 20px;font-family:var(--sans);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  cursor:pointer;transition:border-color .16s,color .16s}
+button:hover:not(:disabled){border-color:var(--violet)}
+button:disabled{color:var(--dim);border-color:var(--line);cursor:default}
+button[data-on="true"]{border-color:var(--violet);color:var(--violet)}
+
+select{appearance:none;background:transparent;border:1px solid var(--line2);color:var(--text);
+  padding:11px 14px;font-family:var(--sans);font-size:.78rem;cursor:pointer}
+select option{background:#0d0f17;color:#f4f1ec}
+label.field{display:inline-flex;flex-direction:column;gap:7px;color:var(--dim);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase}
+
+table.cut{width:100%;border-collapse:collapse;margin:0 0 6px;font-size:.84rem}
+table.cut th{text-align:left;color:var(--dim);font-weight:600;font-size:.62rem;letter-spacing:.18em;
+  text-transform:uppercase;padding:0 12px 9px 0;border-bottom:1px solid var(--line)}
+table.cut td{padding:9px 12px 9px 0;border-bottom:1px solid var(--line);color:var(--soft);vertical-align:top}
+table.cut td.t{color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
+table.cut td.n{color:var(--dim)}
+
+.note{margin:26px 0 0;padding-top:20px;border-top:1px solid var(--line);color:var(--dim);font-size:.8rem;line-height:1.8}
+.note code{color:var(--soft);font-size:.92em}
+#status{margin:14px 0 0;color:var(--pink);font-size:.85rem;line-height:1.6;min-height:1.4em}
+
+/* Small recording readout, visible during the film but outside the frame you capture
+   if you record the tab region. Kept deliberately plain. */
+#hud{position:fixed;left:16px;bottom:14px;z-index:2147483001;color:var(--dim);font-size:.64rem;
+  letter-spacing:.16em;text-transform:uppercase;font-variant-numeric:tabular-nums;pointer-events:none}
+#hud[hidden]{display:none}
+#hud b{color:var(--pink);font-weight:600}
+
+/* While the film runs the engine's standing act title is suppressed. It does
+   not change across a 77 second cut, so on screen it reads as a stuck label
+   rather than a title. The title cards on the overlay do that work instead. */
+body.filming #hagen-act-title{display:none !important}
+</style>
+</head>
+<body>
+
+<canvas id="film"></canvas>
+<div id="hud" hidden></div>
+
+<section id="console">
+<div class="wrap">
+  <p class="eyebrow">Mount Media · HAGEN V23.3</p>
+  <h1>Cinema</h1>
+  <p class="lede">A scripted 77 second cut of the garden, driven by the track you load. The audio goes through the same spectrum and envelope analysers the installation uses for a microphone or a shared tab, so what you see is the real reactivity, not a re-creation of it.</p>
+
+  <div class="step">
+    <h2>1 · The track</h2>
+    <p>Nothing is uploaded and nothing is stored. The file is read in the browser and released when you close the page.</p>
+    <label id="drop" for="file">
+      <b>Drop an audio file here, or click to choose one</b>
+      Built and timed for Glacial Dunes (Remastered), 3:38. Another track will play, but the cut points below will fall in the wrong places.
+    </label>
+    <input id="file" type="file" accept="audio/*">
+  </div>
+
+  <div class="step">
+    <h2>2 · The cut</h2>
+    <p>Four segments of the source, joined by 1.2 second crossfades. Two audio decks play in turn so no join clicks.</p>
+    <table class="cut">
+      <thead><tr><th>In film</th><th>From track</th><th>What it carries</th></tr></thead>
+      <tbody id="cutbody"></tbody>
+    </table>
+  </div>
+
+  <div class="step">
+    <h2>3 · Quality</h2>
+    <div class="row">
+      <label class="field">Render ceiling
+        <select id="preset">
+          <option value="4k">4K · 3840 by 2160</option>
+          <option value="balanced" selected>Balanced · 2560 by 1440</option>
+          <option value="battery">Battery · 1280 by 720</option>
+        </select>
+      </label>
+      <label class="field">Reading language
+        <select id="lang">
+          <option value="en" selected>English</option>
+          <option value="no">Norsk</option>
+        </select>
+      </label>
+      <label class="field">Reactivity
+        <select id="trim">
+          <option value="subtle">Subtle</option>
+          <option value="balanced" selected>Balanced</option>
+          <option value="strong">Strong</option>
+        </select>
+      </label>
+      <label class="field">Analysis overlay
+        <select id="overlay">
+          <option value="burst" selected>In bursts</option>
+          <option value="always">Always on</option>
+          <option value="never">Never</option>
+        </select>
+      </label>
+    </div>
+    <p>Pick the ceiling your machine actually holds. If frames start arriving late the engine drops quality on its own and climbs back, which is visible in a recording. Balanced is the safe choice for a first take.</p>
+  </div>
+
+  <div class="step">
+    <h2>4 · Roll</h2>
+    <div class="row">
+      <button id="play" disabled>Preview the cut</button>
+      <button id="record" disabled>Record and download</button>
+    </div>
+    <p><b>Preview</b> runs the film so you can watch it. <b>Record</b> runs the same film and captures it: the browser asks which surface to share, and you choose <b>this tab</b>. The picture comes from that capture, the sound is taken straight from the audio graph rather than from your speakers, so the recording is clean even if your volume is down.</p>
+    <p>Press <b>F</b> for fullscreen before you record. Escape or <b>Q</b> stops the film early.</p>
+    <p id="status"></p>
+  </div>
+
+  <p class="note">
+    The recording is WebM, VP9 and Opus, which YouTube accepts directly. For an exact 1920 by 1080 upload from a screen that is not 16:9:<br>
+    <code>ffmpeg -i hagen-cinema.webm -vf "scale=1920:-2,crop=1920:1080" -c:v libx264 -crf 17 -preset slow -c:a aac -b:a 320k hagen-cinema.mp4</code>
+  </p>
+</div>
+</section>
+
+<script src="hagen-engine-v23-3.js"></script>
+<script>
+(() => {
+"use strict";
+
+/* ------------------------------------------------------------------ *
+ * The cut. Times are seconds into the source track.
+ * ------------------------------------------------------------------ */
+const FADE = 1.2;
+const SEGMENTS = [
+  { in:   2.0, out:  22.0, note: "Sparse opening. The bass accent at 0:21 lands on the first title." },
+  { in:  41.0, out:  60.0, note: "The groove enters at 0:43. The garden starts moving with it." },
+  { in: 146.0, out: 165.0, note: "The fragmented build, then the hardest re-entry in the track at 2:29." },
+  { in: 195.0, out: 218.0, note: "Climax, the sudden drop at 3:31, the final low hit, fade." }
+];
+
+// Where each segment begins on the film clock, overlapping by one crossfade.
+const startAt = [];
+SEGMENTS.reduce((t, seg, i) => { startAt[i] = t; return t + (seg.out - seg.in) - (i < SEGMENTS.length - 1 ? FADE : 0); }, 0);
+const DURATION = startAt[SEGMENTS.length - 1] + (SEGMENTS.at(-1).out - SEGMENTS.at(-1).in);
+
+const fmt = s => Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
+
+/* ------------------------------------------------------------------ *
+ * Direction. Each cue fires once, in order, when the film clock passes it.
+ * Acts are the engine's own eight readings: 0 Prologue, 1 Mycelium,
+ * 2 Iron, 3 Tin, 4 Longing, 5 Silver, 6 Alloy, 7 Epilogue.
+ * ------------------------------------------------------------------ */
+const CUES = [
+  { t:  0.0, do: s => { s.act(0); s.walk(0.5); s.sens(1.5); } },
+  { t:  2.6, do: s => s.title("HAGEN", "Garden and Mycelium") },
+  { t:  7.4, do: s => s.title(null) },
+  { t: 12.0, do: s => s.walk(0.75) },
+
+  // The groove arrives about two seconds into the second segment.
+  { t: 20.8, do: s => { s.act(1); s.walk(1.5); s.sens(2.1); } },
+  { t: 26.0, do: s => { s.burst(8.0, "spectrum"); s.caption("Thirty two bands, read on every frame"); } },
+  { t: 33.0, do: s => s.walk(1.25) },
+
+  // Third segment. The re-entry at 2:29 is the hardest transient in the track.
+  { t: 36.6, do: s => { s.act(4); s.sens(2.4); } },
+  { t: 38.4, do: s => { s.walk(1.8); s.descend(); } },
+  { t: 44.0, do: s => { s.burst(7.0, "onset"); s.caption("Beats are found in the signal, not counted from a grid"); } },
+  { t: 52.6, do: s => s.ascend() },
+
+  // Fourth segment. Climax from 3:17, the drop at 3:31, the last hit at 3:33.5.
+  { t: 55.4, do: s => { s.act(6); s.walk(2.1); s.sens(2.7); } },
+  { t: 59.0, do: s => { s.burst(7.5, "full"); s.caption("Nothing here is pre rendered"); } },
+  { t: 68.0, do: s => s.walk(1.4) },
+  { t: 71.2, do: s => { s.walk(0.35); s.sens(1.6); s.caption(null); } },
+  { t: 73.4, do: s => { s.act(7); s.flash(); } },
+  { t: 74.6, do: s => s.title("HAGEN", "Mount Media · ingridormevik.github.io", 0.55) },
+  { t: DURATION - 0.6, do: s => s.title(null) }
+];
+
+/* ------------------------------------------------------------------ *
+ * Console wiring
+ * ------------------------------------------------------------------ */
+const $ = id => document.getElementById(id);
+const els = {
+  console: $("console"), drop: $("drop"), file: $("file"), cutbody: $("cutbody"),
+  preset: $("preset"), lang: $("lang"), overlay: $("overlay"), trim: $("trim"),
+  play: $("play"), record: $("record"), status: $("status"),
+  film: $("film"), hud: $("hud")
+};
+
+SEGMENTS.forEach((seg, i) => {
+  const tr = document.createElement("tr");
+  const a = document.createElement("td"); a.className = "t";
+  a.textContent = fmt(startAt[i]) + " to " + fmt(startAt[i] + (seg.out - seg.in));
+  const b = document.createElement("td"); b.className = "t";
+  b.textContent = fmt(seg.in) + " to " + fmt(seg.out);
+  const c = document.createElement("td"); c.className = "n"; c.textContent = seg.note;
+  tr.append(a, b, c); els.cutbody.appendChild(tr);
+});
+
+const say = (text, bad) => { els.status.textContent = text || ""; els.status.style.color = bad ? "#f29bcd" : "#b9b5bd"; };
+
+let trackURL = null, trackName = "";
+function takeFile(file) {
+  if (!file) return;
+  if (!/^audio\//.test(file.type) && !/\.(mp3|wav|ogg|m4a|flac|aac|opus)$/i.test(file.name)) {
+    say("That does not look like an audio file.", true); return;
+  }
+  if (trackURL) URL.revokeObjectURL(trackURL);
+  trackURL = URL.createObjectURL(file);
+  trackName = file.name;
+  els.drop.querySelector("b").textContent = file.name;
+  els.play.disabled = els.record.disabled = false;
+  say("Loaded. " + (/glacial/i.test(file.name) ? "The cut below is timed for this track." : "The cut points are timed for Glacial Dunes and may not suit this track."));
+}
+els.file.addEventListener("change", e => takeFile(e.target.files[0]));
+["dragenter", "dragover"].forEach(t => els.drop.addEventListener(t, e => { e.preventDefault(); els.drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(t => els.drop.addEventListener(t, e => { e.preventDefault(); els.drop.classList.remove("over"); }));
+els.drop.addEventListener("drop", e => takeFile(e.dataTransfer?.files?.[0]));
+
+/* ------------------------------------------------------------------ *
+ * Engine boot. The engine is a Construct 3 project file, so it wants a
+ * runtime object. The standalone garden page supplies the same shim.
+ * ------------------------------------------------------------------ */
+const runtime = { dt: 1 / 60, globalVars: {}, objects: {}, layout: { getLayer: () => null }, destroyMultiple: () => {} };
+let engineReady = false;
+
+function bootEngine() {
+  if (engineReady) return true;
+  if (typeof globalThis.HAGEN_ENGINE_233?.start !== "function") {
+    say("hagen-engine-v23-3.js did not load. Serve this page over http, not from a file:// path.", true);
+    return false;
+  }
+  globalThis.HAGEN_ENGINE_233.start(runtime);
+  let previous = performance.now();
+  (function frame(now) {
+    runtime.dt = Math.min(.05, Math.max(.001, (now - previous) / 1000));
+    previous = now;
+    if (globalThis.HAGEN && !HAGEN.disposed) { HAGEN.tick(runtime); requestAnimationFrame(frame); }
+  })(performance.now());
+  engineReady = true;
+  return true;
+}
+window.addEventListener("pagehide", e => { if (!e.persisted) globalThis.HAGEN?.dispose?.(); });
+
+/* Replicates enterHagen('walk'): the garden runs, no sensor is opened, and the
+   audio object stays ours to fill. */
+function enterWalkMode() {
+  const H = globalThis.HAGEN;
+  H.session.error = "";
+  H.session.uiHidden = false;
+  H.session.cameraEnabled = false;
+  H.session.mode = "walk";
+  if (H.entry) H.entry.hidden = true;
+  if (H.audioControls) H.audioControls.style.display = "none";
+  if (H.restoreControls) H.restoreControls.hidden = true;
+  // Act II narration is written for someone wandering the installation: it
+  // speaks when you walk near something, and otherwise leaves one line standing.
+  // Across a 77 second cut that reads as a frozen subtitle. Turning it off hands
+  // the text back to the act system, which paces the authored lines by how much
+  // energy the audio is delivering, which is what a film wants.
+  if (H.actII) { H.actII.enabled = false; H.actII.events = []; }
+  H.gotoAct?.(0, true);
+  H.refreshInstallation?.();
+}
+
+/* Hides the engine's own chrome so the frame is only the garden. */
+function hideEngineChrome(hidden) {
+  const H = globalThis.HAGEN;
+  if (!H) return;
+  H.session.uiHidden = hidden;
+  document.body.classList.toggle("filming", hidden);
+  H.refreshInstallation?.();
+  H.garden?.refreshControls?.();
+  if (H.audioControls) H.audioControls.style.display = hidden ? "none" : "";
+}
+
+/* ------------------------------------------------------------------ *
+ * Audio. Two decks share one graph so segments can cross over each other.
+ * The analyser pair is built exactly as the engine builds it for a shared
+ * tab: 2048 point spectrum, 512 point envelope, no smoothing, no noise
+ * floor and no calibration, because a file has neither.
+ * ------------------------------------------------------------------ */
+const TRIM = { subtle: 0.05, balanced: 0.09, strong: 0.16 };
+const audio = { ctx: null, decks: [], sum: null, trim: null, recDest: null, spectrum: null, envelope: null, active: 0 };
+
+async function buildAudio() {
+  const Ctx = window.AudioContext || window.webkitAudioContext;
+  if (!Ctx) throw new Error("This browser has no Web Audio.");
+  const ctx = new Ctx({ latencyHint: "playback" });
+  if (ctx.state === "suspended") await ctx.resume();
+
+  const sum = ctx.createGain(); sum.gain.value = 1;
+  const decks = [0, 1].map(() => {
+    const el = new Audio();
+    el.src = trackURL; el.crossOrigin = "anonymous"; el.preload = "auto";
+    const gain = ctx.createGain(); gain.gain.value = 0;
+    const node = ctx.createMediaElementSource(el);
+    node.connect(gain); gain.connect(sum);
+    return { el, gain, node };
+  });
+
+  // The analysers are fed through a trim, not from the full scale signal.
+  // The engine's compressors are referenced to a microphone in a room, where
+  // the level above the noise floor sits near 0.01. A mastered file arrives
+  // about twenty times hotter than that, which pins every band at 1 and makes
+  // loud and quiet look identical. The trim puts the file back in the range
+  // the analysis was designed and calibrated for. It only feeds the analysers,
+  // so neither what you hear nor what is recorded is touched by it.
+  const trim = ctx.createGain(); trim.gain.value = TRIM[els.trim.value] ?? TRIM.balanced;
+  const spectrum = ctx.createAnalyser(); spectrum.fftSize = 2048; spectrum.smoothingTimeConstant = 0;
+  const envelope = ctx.createAnalyser(); envelope.fftSize = 512;  envelope.smoothingTimeConstant = 0;
+  sum.connect(trim); trim.connect(spectrum); trim.connect(envelope);
+  sum.connect(ctx.destination);
+
+  const recDest = ctx.createMediaStreamDestination();
+  sum.connect(recDest);
+
+  // Wait for both decks to be seekable, or the first seek silently lands at 0.
+  await Promise.all(decks.map(d => d.el.readyState >= 1 ? Promise.resolve()
+    : new Promise((ok, fail) => {
+        d.el.addEventListener("loadedmetadata", ok, { once: true });
+        d.el.addEventListener("error", () => fail(new Error("The audio file could not be decoded.")), { once: true });
+      })));
+
+  Object.assign(audio, { ctx, decks, sum, trim, recDest, spectrum, envelope, active: 0 });
+}
+
+/* Hands the analysers to the engine. Everything below is the same set of
+   fields selectAudio() assigns for a tab capture, so configureBands() can
+   size its bins the way it always does. */
+function injectIntoEngine() {
+  const A = globalThis.HAGEN.audio;
+  Object.assign(A, {
+    context: audio.ctx, stream: null, source: audio.sum,
+    analyser: audio.spectrum, envelope: audio.envelope,
+    ready: true, failed: false, starting: false, micError: "",
+    kind: "tab", deviceId: "", label: trackName || "Audio file",
+    fd: new Float32Array(audio.spectrum.frequencyBinCount),
+    td: new Float32Array(audio.envelope.fftSize),
+    sampleRate: audio.ctx.sampleRate, bins: audio.spectrum.frequencyBinCount,
+    cal: true, calStart: performance.now(), calSamples: [], floor: 0,
+    micState: "LIVE", fastLevel: 0, rmsN: 0, rawPeak: 0, rms: 0, gate: 0,
+    low: 0, mid: 0, high: 0, bassN: 0, bassHit: 0, bassAvg: 0,
+    onset: 0, onLow: 0, onMid: 0, onHigh: 0,
+    hitLow: 0, hitMid: 0, hitHigh: 0, beat: 0, previousOnset: 0, kick: 0
+  });
+  A.n.fill(0); A.fine.fill(0); A.fineAvg.fill(0);
+  globalThis.HAGEN.configureBands();
+}
+
+function releaseAudio() {
+  for (const d of audio.decks) { try { d.el.pause(); d.el.src = ""; } catch (_) {} }
+  const A = globalThis.HAGEN?.audio;
+  if (A && A.context === audio.ctx) { A.ready = false; A.micState = "WAITING"; A.analyser = null; A.envelope = null; }
+  try { audio.ctx?.close(); } catch (_) {}
+  audio.decks = []; audio.ctx = null;
+}
+
+/* ------------------------------------------------------------------ *
+ * The film
+ * ------------------------------------------------------------------ */
+const film = {
+  running: false, recording: false, t0: 0, t: 0, raf: 0,
+  cue: 0, scheduled: 0,
+  title: null, caption: null, flashAt: -9,
+  burstUntil: -9, burstFrom: -9, burstKind: "spectrum",
+  targetSpeed: 0.5, yawPhase: Math.random() * 99,
+  recorder: null, chunks: [], display: null, overlayMode: "burst"
+};
+
+const stage = {
+  act: i => globalThis.HAGEN?.gotoAct?.(i, true),
+  walk: v => { film.targetSpeed = v; },
+  sens: v => { globalThis.HAGEN.sensitivity = v; },
+  title: (a, b, scrim) => { film.title = a ? { a, b, at: film.t, scrim: scrim || 0 } : null; },
+  caption: c => { film.caption = c ? { c, at: film.t } : null; },
+  flash: () => { film.flashAt = film.t; },
+  burst: (seconds, kind) => {
+    if (film.overlayMode === "never") return;
+    film.burstFrom = film.t; film.burstUntil = film.t + seconds; film.burstKind = kind || "spectrum";
+  },
+  // The inner scene needs a portal within reach, so this is an attempt, not a
+  // command. If no portal is near the film simply stays above ground.
+  descend: () => { film.descendUntil = film.t + 6; },
+  ascend: () => { film.descendUntil = -9; globalThis.HAGEN?.returnToGarden?.(); }
+};
+
+function startFilm(record) {
+  if (!trackURL) { say("Load a track first.", true); return; }
+  if (film.running) return;
+  film.overlayMode = els.overlay.value;
+
+  (async () => {
+    try {
+      say("Starting the engine …");
+      if (!bootEngine()) return;
+      await new Promise(r => setTimeout(r, 120));           // let the first frame build the garden
+      globalThis.HAGEN.graphics.preset(els.preset.value);
+      globalThis.HAGEN.setTextLanguage?.(els.lang.value);
+
+      say("Preparing audio …");
+      await buildAudio();
+      injectIntoEngine();
+
+      let display = null;
+      if (record) {
+        say("Choose this tab in the picker the browser is about to show.");
+        display = await navigator.mediaDevices.getDisplayMedia({
+          video: { frameRate: 60, displaySurface: "browser" }, audio: false
+        });
+        if (!display.getVideoTracks().length) throw new Error("No picture was shared.");
+      }
+
+      enterWalkMode();
+      const g = globalThis.HAGEN.garden;
+      if (g) { g.auto = true; g.speed = film.targetSpeed; g.keys.clear(); }
+      hideEngineChrome(true);
+      els.console.hidden = true;
+      els.hud.hidden = record;
+
+      if (record) {
+        const mixed = new MediaStream([...display.getVideoTracks(), ...audio.recDest.stream.getAudioTracks()]);
+        const type = ["video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"]
+          .find(t => MediaRecorder.isTypeSupported(t));
+        const rec = new MediaRecorder(mixed, { mimeType: type, videoBitsPerSecond: 16e6, audioBitsPerSecond: 256e3 });
+        film.chunks = [];
+        rec.ondataavailable = e => { if (e.data.size) film.chunks.push(e.data); };
+        rec.onstop = finishRecording;
+        display.getVideoTracks()[0].addEventListener("ended", () => stopFilm("The shared surface was closed."));
+        film.recorder = rec; film.display = display; film.recording = true;
+        rec.start(1000);
+      }
+
+      // First deck, first segment.
+      const d0 = audio.decks[0];
+      d0.el.currentTime = SEGMENTS[0].in;
+      await d0.el.play();
+      d0.gain.gain.setValueAtTime(1, audio.ctx.currentTime);
+      audio.active = 0;
+
+      film.running = true; film.cue = 0; film.scheduled = 1;
+      film.title = null; film.caption = null; film.flashAt = -9;
+      film.burstUntil = -9; film.descendUntil = -9;
+      film.t0 = performance.now();
+      film.raf = requestAnimationFrame(tickFilm);
+      say("");
+    } catch (err) {
+      const message = err?.name === "NotAllowedError" ? "The screen share was declined, so nothing was recorded."
+                    : (err?.message || String(err));
+      say(message, true);
+      els.console.hidden = false; els.hud.hidden = true;
+      hideEngineChrome(false);
+      releaseAudio();
+    }
+  })();
+}
+
+function tickFilm(now) {
+  if (!film.running) return;
+  const t = film.t = (now - film.t0) / 1000;
+
+  // Fire direction cues in order.
+  while (film.cue < CUES.length && t >= CUES[film.cue].t) CUES[film.cue++].do(stage);
+
+  // Crossfade into the next segment.
+  if (film.scheduled < SEGMENTS.length) {
+    const i = film.scheduled, at = startAt[i];
+    const next = audio.decks[(audio.active + 1) % 2];
+    if (!next.armed && t >= at - 0.45) {
+      next.armed = true;
+      next.el.currentTime = SEGMENTS[i].in;
+      next.gain.gain.setValueAtTime(0, audio.ctx.currentTime);
+      next.el.play().catch(() => {});
+    }
+    if (t >= at) {
+      const prev = audio.decks[audio.active], c = audio.ctx.currentTime;
+      prev.gain.gain.setValueAtTime(prev.gain.gain.value, c);
+      prev.gain.gain.linearRampToValueAtTime(0, c + FADE);
+      next.gain.gain.setValueAtTime(0, c);
+      next.gain.gain.linearRampToValueAtTime(1, c + FADE);
+      setTimeout(() => { try { prev.el.pause(); } catch (_) {} prev.armed = false; }, (FADE + 0.15) * 1000);
+      audio.active = (audio.active + 1) % 2;
+      film.scheduled++;
+    }
+  }
+
+  const H = globalThis.HAGEN, g = H?.garden;
+  if (g) {
+    g.speed += (film.targetSpeed - g.speed) * Math.min(1, runtime.dt * 1.6);
+    g.auto = true;
+    // A slow drift across the path, pushed a little by the low end, so the
+    // camera is never perfectly still and never swings.
+    const bass = H.audio?.bassN || 0;
+    g.player.yaw = Math.sin((t + film.yawPhase) * 0.055) * 0.30 + Math.sin(t * 0.021) * 0.11 + bass * 0.012;
+    g.player.pitch = -0.035 + Math.sin(t * 0.037) * 0.022;
+    if (film.descendUntil > t && g.encounter?.phase === "garden") H.enterMycelium?.();
+  }
+
+  drawOverlay(t);
+
+  // The readout is a preview convenience. It must never appear in a take, and a
+  // tab capture would include it, so while recording it stays hidden.
+  if (!film.recording) els.hud.textContent = "Preview · " + fmt(t) + " / " + fmt(DURATION) + " · Q to stop";
+
+  if (t >= DURATION) { stopFilm(); return; }
+  film.raf = requestAnimationFrame(tickFilm);
+}
+
+function stopFilm(message) {
+  if (!film.running) return;
+  film.running = false;
+  cancelAnimationFrame(film.raf);
+  const ctx = els.film.getContext("2d");
+  ctx.clearRect(0, 0, els.film.width, els.film.height);
+  els.hud.hidden = true;
+
+  if (audio.ctx) {
+    const c = audio.ctx.currentTime;
+    for (const d of audio.decks) { d.gain.gain.cancelScheduledValues(c); d.gain.gain.setValueAtTime(d.gain.gain.value, c); d.gain.gain.linearRampToValueAtTime(0, c + 0.5); }
+  }
+
+  if (film.recording && film.recorder?.state !== "inactive") {
+    setTimeout(() => { try { film.recorder.stop(); } catch (_) {} }, 900);
+  } else {
+    setTimeout(() => { releaseAudio(); hideEngineChrome(false); els.console.hidden = false; say(message || ""); }, 700);
+  }
+}
+
+function finishRecording() {
+  for (const track of film.display?.getTracks() || []) track.stop();
+  film.display = null; film.recording = false;
+
+  const blob = new Blob(film.chunks, { type: film.chunks[0]?.type || "video/webm" });
+  film.chunks = [];
+  releaseAudio(); hideEngineChrome(false);
+  els.console.hidden = false;
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "hagen-cinema.webm"; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+  say("Recorded " + (blob.size / 1048576).toFixed(1) + " MB. The download should have started.");
+}
+
+window.addEventListener("keydown", e => {
+  if (!film.running) return;
+  const k = (e.key || "").toLowerCase();
+  if (k === "q" || k === "escape") { e.preventDefault(); stopFilm("Stopped early."); }
+});
+
+els.play.addEventListener("click", () => startFilm(false));
+els.record.addEventListener("click", () => {
+  if (!navigator.mediaDevices?.getDisplayMedia) { say("This browser cannot share a tab, so it cannot record here. Use the preview with OBS instead.", true); return; }
+  startFilm(true);
+});
+
+/* ------------------------------------------------------------------ *
+ * Overlay: titles, the analysis bursts, the final flash.
+ * Thin rules and small letterspaced labels, in the site's own palette.
+ * The band colours match the ones the engine uses in its own meter.
+ * ------------------------------------------------------------------ */
+const canvas = els.film, ctx2d = canvas.getContext("2d");
+let dpr = 1;
+function sizeOverlay() {
+  dpr = Math.min(2, window.devicePixelRatio || 1);
+  canvas.width = Math.round(innerWidth * dpr);
+  canvas.height = Math.round(innerHeight * dpr);
+  canvas.style.width = innerWidth + "px";
+  canvas.style.height = innerHeight + "px";
+}
+sizeOverlay();
+addEventListener("resize", sizeOverlay);
+
+const easeIn  = (t, d) => Math.max(0, Math.min(1, t / d));
+const easeOut = (t, d) => Math.max(0, Math.min(1, t / d));
+
+function drawOverlay(t) {
+  const w = innerWidth, h = innerHeight;
+  ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx2d.clearRect(0, 0, w, h);
+  const A = globalThis.HAGEN?.audio;
+
+  // Final flash, tied to the last low hit in the track.
+  const since = t - film.flashAt;
+  if (since >= 0 && since < 1.1) {
+    ctx2d.save();
+    ctx2d.globalAlpha = 0.5 * Math.pow(1 - since / 1.1, 2.2);
+    ctx2d.fillStyle = "#f4f1ec";
+    ctx2d.fillRect(0, 0, w, h);
+    ctx2d.restore();
+  }
+
+  // Analysis first, then text, so the beat ring never crosses a caption.
+  const on = film.overlayMode === "always" || (t >= film.burstFrom && t <= film.burstUntil);
+  if (on && A) {
+    const into = t - film.burstFrom, left = film.burstUntil - t;
+    const alpha = film.overlayMode === "always" ? 1 : Math.min(easeIn(into, 0.9), easeOut(left, 1.1));
+    drawAnalysis(A, w, h, alpha, film.burstKind, t);
+  }
+
+  if (film.caption) drawCaption(t, w, h);
+  if (film.title) drawTitle(t, w, h);
+}
+
+function drawTitle(t, w, h) {
+  const age = t - film.title.at;
+  const alpha = Math.min(easeIn(age, 1.1), easeOut(DURATION, 1));
+  const out = film.title.at + 4.8 - t;
+  const a = Math.min(alpha, out < 1.2 ? Math.max(0, out / 1.2) : 1);
+  if (a <= 0) return;
+  ctx2d.save();
+  // An end card lands wherever the walk happens to be, which can be directly on
+  // a lit entity. A flat scrim holds the title legible without dimming the take
+  // any earlier than it has to.
+  if (film.title.scrim) {
+    ctx2d.globalAlpha = a * film.title.scrim;
+    ctx2d.fillStyle = "#07080d";
+    ctx2d.fillRect(0, 0, w, h);
+  }
+  ctx2d.globalAlpha = a;
+  ctx2d.textAlign = "center";
+  const size = Math.max(34, Math.min(86, w * 0.058));
+  ctx2d.fillStyle = "#f4f1ec";
+  ctx2d.font = "400 " + size + "px Georgia, 'Times New Roman', serif";
+  ctx2d.fillText(film.title.a, w / 2, h * 0.47);
+  if (film.title.b) {
+    ctx2d.fillStyle = "#b9b5bd";
+    ctx2d.font = "400 " + Math.max(11, size * 0.165) + "px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
+    const y = h * 0.47 + size * 0.62;
+    ctx2d.fillText(film.title.b.toUpperCase().split("").join(" "), w / 2, y);
+    ctx2d.strokeStyle = "rgba(255,255,255,.18)";
+    ctx2d.lineWidth = 1;
+    ctx2d.beginPath();
+    ctx2d.moveTo(w / 2 - size * 1.1, y - size * 0.52);
+    ctx2d.lineTo(w / 2 + size * 1.1, y - size * 0.52);
+    ctx2d.stroke();
+  }
+  ctx2d.restore();
+}
+
+function drawCaption(t, w, h) {
+  const age = t - film.caption.at;
+  const a = Math.min(easeIn(age, 0.8), Math.max(0, (4.2 - age) / 1.0));
+  if (a <= 0) return;
+  ctx2d.save();
+  ctx2d.globalAlpha = a;
+  ctx2d.textAlign = "center";
+  ctx2d.fillStyle = "#b9b5bd";
+  ctx2d.font = "400 " + Math.max(13, Math.min(21, w * 0.0135)) + "px Georgia, 'Times New Roman', serif";
+  ctx2d.fillText(film.caption.c, w / 2, h * 0.72);
+  ctx2d.restore();
+}
+
+/* The reading. Left: the 32 logarithmic bands the engine analyses.
+   Right: the eight macro bands, the onset and the beat count. */
+function drawAnalysis(A, w, h, alpha, kind, t) {
+  const pad = Math.max(22, Math.min(64, w * 0.035));
+  const colFor = i => i < 11 ? "#be926b" : i < 21 ? "#aebfc0" : "#7eacb8";
+  ctx2d.save();
+  ctx2d.globalAlpha = alpha;
+
+  const label = (text, x, y, align) => {
+    ctx2d.textAlign = align || "left";
+    ctx2d.fillStyle = "#777380";
+    ctx2d.font = "600 10px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
+    ctx2d.fillText(text.toUpperCase().split("").join(" "), x, y);
+  };
+  const rule = (x0, x1, y) => {
+    ctx2d.strokeStyle = "rgba(255,255,255,.1)"; ctx2d.lineWidth = 1;
+    ctx2d.beginPath(); ctx2d.moveTo(x0, y + .5); ctx2d.lineTo(x1, y + .5); ctx2d.stroke();
+  };
+
+  // 32 bands, bottom left.
+  const bw = Math.max(2, Math.min(7, w * 0.0042));
+  const gap = Math.max(2, bw * 0.75);
+  const spanW = 32 * (bw + gap) - gap;
+  const baseY = h - pad;
+  const maxH = Math.max(70, Math.min(190, h * 0.19));
+  label("32 bands · 35 Hz to 18 kHz", pad, baseY - maxH - 16);
+  rule(pad, pad + spanW, baseY - maxH - 8);
+  for (let i = 0; i < 32; i++) {
+    const v = Math.max(0, Math.min(1, A.fine[i] || 0));
+    const x = pad + i * (bw + gap);
+    ctx2d.fillStyle = "rgba(255,255,255,.05)";
+    ctx2d.fillRect(x, baseY - maxH, bw, maxH);
+    ctx2d.fillStyle = colFor(i);
+    ctx2d.fillRect(x, baseY - v * maxH, bw, v * maxH);
+  }
+  rule(pad, pad + spanW, baseY + 4);
+
+  if (kind === "spectrum") { ctx2d.restore(); return; }
+
+  // Right column: onset, beat, and the numbers the garden is actually reading.
+  const rx = w - pad;
+  let y = baseY - maxH - 16;
+  label("Reading", rx, y, "right");
+  y += 8; rule(rx - Math.min(280, w * 0.24), rx, y); y += 22;
+
+  const meter = (name, v, colour) => {
+    const width = Math.min(280, w * 0.24);
+    const x0 = rx - width;
+    ctx2d.textAlign = "left";
+    ctx2d.fillStyle = "#b9b5bd";
+    ctx2d.font = "400 11px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
+    ctx2d.fillText(name, x0, y - 6);
+    ctx2d.textAlign = "right";
+    ctx2d.fillStyle = "#777380";
+    ctx2d.fillText((Math.max(0, Math.min(1, v)) * 100).toFixed(0).padStart(3, " ") + " %", rx, y - 6);
+    ctx2d.fillStyle = "rgba(255,255,255,.07)";
+    ctx2d.fillRect(x0, y, width, 2);
+    ctx2d.fillStyle = colour;
+    ctx2d.fillRect(x0, y, width * Math.max(0, Math.min(1, v)), 2);
+    y += 24;
+  };
+
+  meter("Level", A.rmsN || 0, "#a98df7");
+  meter("Onset", A.onset || 0, "#f29bcd");
+  meter("Kick", A.kick || 0, "#be926b");
+
+  if (kind === "full") {
+    meter("Low", A.low || 0, "#be926b");
+    meter("Mid", A.mid || 0, "#aebfc0");
+    meter("High", A.high || 0, "#7eacb8");
+    ctx2d.textAlign = "right";
+    ctx2d.fillStyle = "#777380";
+    ctx2d.font = "400 11px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
+    ctx2d.fillText("beats " + (A.beatSerial || 0) + " · centroid " + ((A.centroid || 0)).toFixed(2), rx, y + 2);
+  }
+
+  // A pulse on the beat, drawn as a hairline ring rather than a glow.
+  const beat = A.beat || 0;
+  if (beat > 0.02) {
+    ctx2d.strokeStyle = "rgba(242,155,205," + (beat * 0.5).toFixed(3) + ")";
+    ctx2d.lineWidth = 1;
+    ctx2d.beginPath();
+    ctx2d.arc(w / 2, h / 2, Math.min(w, h) * (0.16 + (1 - beat) * 0.22), 0, Math.PI * 2);
+    ctx2d.stroke();
+  }
+
+  ctx2d.restore();
+}
+
+})();
+</script>
+</body>
+</html>
