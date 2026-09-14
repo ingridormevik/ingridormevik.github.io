@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SIGNAL: UNKNOWN</title>
+<!-- social + icons -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="canonical" href="https://ingridormevik.github.io/signal-unknown.html">
+<meta name="description" content="Signal: Unknown. Interactive electronic literature in six lexias about being a masculine woman who keeps her breasts, and the words other people place on that body.">
+<meta name="theme-color" content="#07080a">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ingrid Ormevik">
+<meta property="og:title" content="Signal: Unknown">
+<meta property="og:url" content="https://ingridormevik.github.io/signal-unknown.html">
+<meta property="og:image" content="https://ingridormevik.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ingrid Ormevik: essays, games and artistic research.">
+<meta property="og:description" content="Interactive electronic literature in six lexias about being a masculine woman who keeps her breasts, and the words other people place on that body.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Signal: Unknown">
+<meta name="twitter:image" content="https://ingridormevik.github.io/og-image.png">
+<meta name="twitter:description" content="Interactive electronic literature in six lexias about being a masculine woman who keeps her breasts, and the words other people place on that body.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#07080a;
+    --ash:#e9e5dd;
+    --ember:#ff3a16;
+    --cold:#7fe9e4;
+    --violet:#a98bff;
+    --dim:#6a6d74;
+    --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --serif:"Instrument Serif", "Times New Roman", Georgia, serif;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;margin:0;background:var(--void);color:var(--ash);overflow:hidden;}
+  body{font-family:var(--mono);font-weight:300;overscroll-behavior:none;}
+
+  #figureFallback{position:fixed;z-index:0;left:50%;top:46%;width:min(76vw,560px);height:min(78vh,760px);
+    transform:translate(-50%,-50%);overflow:visible;pointer-events:none;opacity:.82;
+    filter:drop-shadow(0 0 22px rgba(127,233,228,.18));transition:opacity .35s ease;}
+  #figureFallback .body-dots{animation:breathe 4.8s ease-in-out infinite;transform-origin:center;}
+  #figureFallback .body-line{fill:none;stroke:rgba(127,233,228,.34);stroke-width:1;stroke-dasharray:2 7;}
+  #figureFallback .label-line{stroke:rgba(233,229,221,.24);stroke-width:.7;}
+  #figureFallback text{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:8px;letter-spacing:1.4px;fill:rgba(233,229,221,.76);}
+  body.js-ready #figureFallback{opacity:.22;}
+  body.body-correcting #figureFallback{opacity:0;}
+  @keyframes breathe{0%,100%{transform:scale(1);opacity:.76}50%{transform:scale(1.012);opacity:1}}
+
+  #field{position:fixed;z-index:1;inset:0;width:100%;height:100%;display:block;touch-action:none;}
+
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.5;
+    background:repeating-linear-gradient(0deg, rgba(255,255,255,.028) 0 1px, transparent 1px 3px);
+    mix-blend-mode:screen;}
+  .vig{position:fixed;inset:0;pointer-events:none;z-index:2;
+    background:radial-gradient(120% 90% at 50% 45%, transparent 35%, rgba(0,0,0,.82) 100%);}
+
+  /* fragments, anchored left */
+  #hud{position:fixed;z-index:4;left:clamp(14px,4vw,42px);top:clamp(56px,12vh,110px);
+    width:min(46vw,260px);font-size:9.5px;line-height:1.75;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);pointer-events:none;white-space:pre-wrap;}
+  #hud b{color:var(--ember);font-weight:500;}
+  #hud i{color:var(--cold);font-style:normal;}
+  #hud .ln{opacity:0;animation:ln .5s forwards;}
+  @keyframes ln{to{opacity:1}}
+
+  /* counter, top right */
+  #meta{position:fixed;z-index:4;right:clamp(14px,4vw,42px);top:clamp(18px,4vh,34px);
+    text-align:right;font-size:9.5px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;}
+  #meta .n{color:var(--ash);}
+
+  /* lexia panel */
+  #lex{position:fixed;z-index:5;left:0;right:0;bottom:0;padding:0 clamp(16px,5vw,48px) clamp(84px,13vh,110px);
+    display:flex;justify-content:center;pointer-events:none;}
+  #lexinner{max-width:52ch;width:100%;}
+  #tag{font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;}
+  #tag em{font-style:normal;color:var(--ember);}
+  #body{font-family:var(--serif);font-size:clamp(20px,4.6vw,29px);line-height:1.32;
+    text-wrap:pretty;text-shadow:0 2px 30px rgba(0,0,0,.85);}
+  #body p{margin:0 0 .55em;}
+  #body .q{font-style:italic;color:#fff;}
+  #body .sm{font-family:var(--mono);font-size:12px;line-height:1.7;letter-spacing:.04em;color:#b9b6b0;text-transform:none;}
+  .fadein{animation:fade .9s ease both;}
+  @keyframes fade{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+
+  /* controls */
+  #bar{position:fixed;z-index:6;left:0;right:0;bottom:0;padding:0 clamp(14px,4vw,42px) clamp(20px,4vh,32px);
+    display:flex;align-items:center;gap:10px;}
+  button{font-family:var(--mono);font-weight:300;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ash);background:transparent;border:1px solid rgba(233,229,221,.28);
+    padding:11px 16px;border-radius:0;cursor:pointer;transition:background .2s,border-color .2s,color .2s,opacity .2s;}
+  button:hover:not(:disabled){background:rgba(233,229,221,.09);border-color:rgba(233,229,221,.6);}
+  button:focus-visible{outline:2px solid var(--cold);outline-offset:3px;}
+  button:disabled{opacity:.3;cursor:default;}
+  #correct{border-color:rgba(255,58,22,.55);color:#ffb4a1;}
+  #correct.on{background:rgba(255,58,22,.2);border-color:var(--ember);color:#fff;}
+  #hint{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-left:auto;text-align:right;max-width:44%;}
+  .spacer{flex:1}
+
+
+  /* plain text reading */
+  #read{position:fixed;inset:0;z-index:9;background:#07080a;overflow:auto;padding:clamp(24px,7vw,80px);display:none;}
+  #read.on{display:block;}
+  #read h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,6vw,44px);margin:0 0 8px;}
+  #read h3{font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin:38px 0 8px;font-weight:500;}
+  #read p{font-family:var(--serif);font-size:19px;line-height:1.45;max-width:56ch;margin:0 0 .5em;}
+  #read .sm{font-family:var(--mono);font-size:12.5px;line-height:1.75;max-width:60ch;color:#b9b6b0;}
+  #read .close{margin-top:44px;}
+
+  @media (max-width:560px){
+    #hud{width:44vw;font-size:8.5px;top:64px;}
+    #lex{padding-bottom:96px;}
+    #hint{display:none;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .fadein,#hud .ln{animation-duration:.01ms;}
+  }
+</style>
+</head>
+<body>
+
+<svg id="figureFallback" viewBox="0 0 400 520" role="img" aria-label="A masculine woman with breasts, built from points of light">
+  <defs>
+    <pattern id="bodyPoints" width="7" height="7" patternUnits="userSpaceOnUse">
+      <circle cx="1.3" cy="1.5" r="1.15" fill="#e9e5dd" opacity=".82"/>
+      <circle cx="5.7" cy="4.9" r=".68" fill="#7fe9e4" opacity=".72"/>
+    </pattern>
+    <radialGradient id="bodyGlow" cx="50%" cy="37%" r="58%">
+      <stop offset="0" stop-color="#a98bff" stop-opacity=".46"/>
+      <stop offset=".55" stop-color="#7fe9e4" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#07080a" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="bodyMask">
+      <rect width="400" height="520" fill="black"/>
+      <g fill="white">
+        <ellipse cx="200" cy="58" rx="30" ry="52"/>
+        <ellipse cx="200" cy="132" rx="132" ry="58"/>
+        <path d="M72 132C64 240 104 330 112 430H288C296 330 336 240 328 132Z"/>
+        <ellipse cx="150" cy="196" rx="52" ry="46"/>
+        <ellipse cx="250" cy="196" rx="52" ry="46"/>
+        <ellipse cx="200" cy="428" rx="102" ry="50"/>
+        <ellipse cx="52" cy="290" rx="26" ry="150" transform="rotate(6 52 290)"/>
+        <ellipse cx="348" cy="290" rx="26" ry="150" transform="rotate(-6 348 290)"/>
+      </g>
+    </mask>
+  </defs>
+  <g class="body-dots" mask="url(#bodyMask)">
+    <rect width="400" height="520" fill="url(#bodyPoints)"/>
+    <rect width="400" height="520" fill="url(#bodyGlow)"/>
+  </g>
+  <path class="body-line" d="M69 132C60 238 103 337 111 431C133 473 267 473 289 431C297 337 340 238 331 132"/>
+  <g aria-hidden="true">
+    <line class="label-line" x1="118" y1="117" x2="44" y2="86"/><text x="8" y="82">WOMAN</text>
+    <line class="label-line" x1="278" y1="163" x2="359" y2="135"/><text x="315" y="128">MASCULINE</text>
+    <line class="label-line" x1="105" y1="306" x2="38" y2="336"/><text x="2" y="351">LESBIAN</text>
+    <line class="label-line" x1="258" y1="201" x2="361" y2="230"/><text x="340" y="246">TITS</text>
+  </g>
+</svg>
+<canvas id="field" aria-label="A masculine woman's body drawn in particles. Touch or drag to remove the words other people place on it."></canvas>
+<div class="vig"></div>
+<div class="grain"></div>
+
+<div id="meta"><span class="n" id="mnum">00</span> / 06 &nbsp;·&nbsp; <span id="mstate">body</span></div>
+<div id="hud"></div>
+
+<div id="lex"><div id="lexinner">
+  <div id="tag">lexia 01 <em>/</em> my body</div>
+  <div id="body">
+    <p>I am a woman. I am masculine. I am a lesbian. I have tits.</p>
+    <p class="sm">Drag across my body. The words other people place on it are easier to move than I am.</p>
+  </div>
+</div></div>
+
+<div id="bar">
+  <button id="prev" aria-label="previous section">back</button>
+  <button id="next">continue</button>
+  <button id="correct" hidden>hold to remove my tits</button>
+  <div class="spacer"></div>
+  <button id="textmode" title="plain text version">text</button>
+  <div id="hint"></div>
+</div>
+
+<div id="read" role="dialog" aria-modal="true" aria-label="plain text version">
+  <h2>Signal: Unknown</h2>
+  <div class="sm">Full text. Six lexias. Mount Media.</div>
+  <div id="readbody"></div>
+  <button class="close" id="closeread">back to the piece</button>
+</div>
+
+<noscript>
+  <style>
+    html,body{height:auto;min-height:100%;overflow:auto;}
+    #field,#meta,#hud,#lex,#bar{display:none;}
+    #figureFallback{position:fixed;opacity:.24;}
+    #staticReading{position:relative;z-index:5;padding:64px 22px 80px;margin:0 auto;max-width:620px;}
+    #staticReading h1{font-family:var(--serif);font-weight:400;font-size:54px;line-height:.9;margin:0 0 48px;}
+    #staticReading h2{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--cold);margin:42px 0 12px;}
+    #staticReading p{font-family:var(--serif);font-size:24px;line-height:1.35;margin:0 0 14px;text-shadow:0 2px 24px #000;}
+    #staticReading .small{font-family:var(--mono);font-size:12px;line-height:1.7;color:#b9b6b0;}
+  </style>
+  <main id="staticReading">
+    <h1>Signal:<br>Unknown</h1>
+    <h2>01 / my body</h2>
+    <p>I am a woman. I am masculine. I am a lesbian. I have tits.</p>
+    <p class="small">The words other people place on my body are easier to move than I am.</p>
+    <h2>02 / what I want</h2>
+    <p>I want to take my shirt off. I want to swim in board shorts and feel the sun on my skin.</p>
+    <p class="small">I do not want surgery. I do not want to hide. But the masculine bodies I see allowed this freedom are almost always flat-chested. Women like me disappear.</p>
+    <h2>03 / what I am expected to change</h2>
+    <p>Cover them. Bind them. Remove them. As if I can only have this freedom after surgery. As if keeping my tits makes my masculinity less real.</p>
+    <h2>04 / made for nursing</h2>
+    <p>Even my gay friends tell me I am “made for nursing.” I am a gold-star lesbian and pregnancy is one of my greatest fears.</p>
+    <p class="small">Still, they see my tits and imagine what they could do for a baby. My tits cannot simply belong to me.</p>
+    <h2>05 / why it is hard to see</h2>
+    <p>Nobody thinks this is discrimination. It arrives as a joke, a compliment, an innocent comment about biology.</p>
+    <p class="small">That is how society keeps its hold on women. The most invisible discrimination is the kind everyone has mistaken for common sense.</p>
+    <h2>06 / mine</h2>
+    <p>I keep my tits. I keep my masculinity. I am still a woman.</p>
+    <p>I do not owe my body to a baby I do not want.</p>
+    <p>I do not have to change myself before I am allowed to feel free.</p>
+    <p>My body belongs to me.</p>
+  </main>
+</noscript>
+
+<script>
+(function(){
+"use strict";
+
+var cv = document.getElementById('field');
+var ctx = cv.getContext('2d', {alpha:false});
+var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+var W=0, H=0, DPR=1;
+var P=[];              // particles
+var LB=[];             // labels
+var pointer={x:-1e5,y:-1e5,ax:-1e5,ay:-1e5,down:false,moved:0};
+var idx=0;             // lexia index, 0 = title
+var correcting=false, corrProgress=0, attempts=0;
+var t0=performance.now();
+var bodyBox={x:0,y:0,w:0,h:0};
+var gateOpenAt=0, gateForced=false;
+
+/* ---------- lexias ---------- */
+var LEX = [
+ {},
+ { tag:'lexia 01 <em>/</em> my body',
+   html:'<p>I am a woman. I am masculine. I am a lesbian. I have tits.</p>'
+       +'<p class="sm">Drag across my body. The words other people place on it are easier to move than I am.</p>',
+   hint:'drag the body' },
+ { tag:'lexia 02 <em>/</em> what I want',
+   html:'<p>I want to take my shirt off. I want to swim in board shorts and feel the sun on my skin.</p>'
+       +'<p class="sm">I do not want surgery. I do not want to hide. But the masculine bodies I see allowed this freedom are almost always flat-chested. Women like me disappear.</p>',
+   hint:'' },
+ { tag:'lexia 03 <em>/</em> what I am expected to change',
+   html:'<p>Cover them. Bind them. Remove them. As if I can only have this freedom after surgery. As if keeping my tits makes my masculinity less real.</p>'
+       +'<p class="sm">I am not against top surgery. I am against the idea that I need it. Hold the button and watch my chest disappear.</p>',
+   hint:'hold to remove my tits' },
+ { tag:'lexia 04 <em>/</em> made for nursing',
+   html:'<p>Even my gay friends tell me I am “made for nursing.” I am a gold-star lesbian and pregnancy is one of my greatest fears.</p>'
+       +'<p class="sm">Still, they see my tits and imagine what they could do for a baby. My tits cannot simply belong to me.</p>',
+   hint:'' },
+ { tag:'lexia 05 <em>/</em> why it is hard to see',
+   html:'<p>Nobody thinks this is discrimination. It arrives as a joke, a compliment, an innocent comment about biology.</p>'
+       +'<p class="sm">That is how society keeps its hold on women. The most invisible discrimination is the kind everyone has mistaken for common sense. Sweep the words off my body.</p>',
+   hint:'sweep the words away' },
+ { tag:'lexia 06 <em>/</em> mine',
+   html:'<p class="q">I keep my tits. I keep my masculinity. I am still a woman.</p>'
+       +'<p class="q">I do not owe my body to a baby I do not want.</p>'
+       +'<p class="q">I do not have to change myself before I am allowed to feel free.</p>'
+       +'<p class="q">My body belongs to me.</p>',
+   hint:'' }
+];
+
+/* ---------- silhouette ---------- */
+function drawSilhouette(c, w, h){
+  var s = Math.min(w/400, h/520);
+  c.save();
+  c.translate((w-400*s)/2, (h-520*s)/2);
+  c.scale(s,s);
+  c.fillStyle='#fff';
+
+  // neck
+  c.beginPath(); c.ellipse(200,58,30,52,0,0,6.2832); c.fill();
+  // shoulders
+  c.beginPath(); c.ellipse(200,132,132,58,0,0,6.2832); c.fill();
+  // trunk, tapering
+  c.beginPath();
+  c.moveTo(72,132); c.bezierCurveTo(64,240,104,330,112,430);
+  c.lineTo(288,430); c.bezierCurveTo(296,330,336,240,328,132);
+  c.closePath(); c.fill();
+  // chest
+  c.beginPath(); c.ellipse(150,196,52,46,0,0,6.2832); c.fill();
+  c.beginPath(); c.ellipse(250,196,52,46,0,0,6.2832); c.fill();
+  // hips
+  c.beginPath(); c.ellipse(200,428,102,50,0,0,6.2832); c.fill();
+  // arms
+  c.save(); c.translate(66,150); c.rotate(0.10);
+  c.beginPath(); c.ellipse(0,140,26,150,0,0,6.2832); c.fill(); c.restore();
+  c.save(); c.translate(334,150); c.rotate(-0.10);
+  c.beginPath(); c.ellipse(0,140,26,150,0,0,6.2832); c.fill(); c.restore();
+
+  c.restore();
+}
+
+function buildTargets(){
+  var bh = Math.min(H*0.74, W*1.28);
+  var bw = bh*(400/520);
+  bodyBox = {x:(W-bw)/2, y:(H-bh)/2 - H*0.02, w:bw, h:bh};
+
+  var oc = document.createElement('canvas');
+  var ow = Math.max(120, Math.round(bw)), oh = Math.max(150, Math.round(bh));
+  oc.width=ow; oc.height=oh;
+  var octx = oc.getContext('2d');
+  drawSilhouette(octx, ow, oh);
+  var data = octx.getImageData(0,0,ow,oh).data;
+
+  var want = reduce ? 2200 : (W*H > 900000 ? 5200 : 3600);
+  var step = Math.max(3, Math.round(Math.sqrt(ow*oh*0.52/want)));
+  var pts=[];
+  for(var y=0;y<oh;y+=step){
+    for(var x=0;x<ow;x+=step){
+      if(data[(y*ow+x)*4+3] > 128){
+        var jx = x + (Math.random()-0.5)*step;
+        var jy = y + (Math.random()-0.5)*step;
+        pts.push([bodyBox.x+jx, bodyBox.y+jy, jy/oh]);
+      }
+    }
+  }
+  return pts;
+}
+
+function seedParticles(){
+  var pts = buildTargets();
+  var old = P;
+  P = [];
+  for(var i=0;i<pts.length;i++){
+    var o = old[i];
+    var chest = pts[i][2] > 0.26 && pts[i][2] < 0.47;
+    P.push({
+      hx:pts[i][0], hy:pts[i][1],
+      x: o ? o.x : pts[i][0] + (Math.random()-0.5)*W*0.9,
+      y: o ? o.y : pts[i][1] + (Math.random()-0.5)*H*0.7,
+      vx:0, vy:0, a:1, seed:Math.random()*6.2832, chest:chest
+    });
+  }
+  placeLabels();
+}
+
+/* ---------- labels ---------- */
+var LABEL_DEFS = [
+  {txt:'woman',          nx:0.16, ny:0.16},
+  {txt:'masculine',      nx:0.84, ny:0.30},
+  {txt:'lesbian',        nx:0.13, ny:0.55},
+  {txt:'tits',           nx:0.87, ny:0.68}
+];
+/* labels are offset outward from the body; on narrow screens that pushes them
+   past the viewport edge, where they cannot be swept off. keep them on screen.
+   wide screens are unaffected: the offset positions already sit well inside. */
+function clampLabelX(x, txt){
+  var half = String(txt).length*3.8 + 8;
+  var lo = half, hi = W - half;
+  if(lo >= hi) return W/2;
+  return Math.max(lo, Math.min(hi, x));
+}
+function placeLabels(){
+  var keep = LB.length === LABEL_DEFS.length;
+  for(var i=0;i<LABEL_DEFS.length;i++){
+    var d = LABEL_DEFS[i];
+    var ax = bodyBox.x + bodyBox.w*(d.nx<0.5?0.30:0.70);
+    var ay = bodyBox.y + bodyBox.h*d.ny;
+    var lx = clampLabelX(bodyBox.x + bodyBox.w*d.nx + (d.nx<0.5 ? -bodyBox.w*0.30 : bodyBox.w*0.16), d.txt);
+    var ly = ay - bodyBox.h*0.05;
+    if(keep){
+      LB[i].ax=ax; LB[i].ay=ay;
+      if(LB[i].attached){ LB[i].hx=lx; LB[i].hy=ly; }
+    } else {
+      LB[i] = {txt:d.txt, ax:ax, ay:ay, hx:lx, hy:ly, x:lx, y:ly, vx:0, vy:0, attached:true, a:0};
+    }
+  }
+}
+function reattachAll(){
+  for(var i=0;i<LB.length;i++){
+    var d = LABEL_DEFS[i], L = LB[i];
+    L.attached = true;
+    L.hx = clampLabelX(bodyBox.x + bodyBox.w*d.nx + (d.nx<0.5 ? -bodyBox.w*0.30 : bodyBox.w*0.16), d.txt);
+    L.hy = L.ay - bodyBox.h*0.05;
+    L.a = 0;
+  }
+}
+function setLabelWords(words){
+  for(var i=0;i<LABEL_DEFS.length;i++){
+    LABEL_DEFS[i].txt = words[i];
+    if(LB[i]) LB[i].txt = words[i];
+  }
+  reattachAll();
+}
+function labelsDetached(){
+  var n=0; for(var i=0;i<LB.length;i++) if(!LB[i].attached) n++;
+  return n;
+}
+
+/* ---------- sizing ---------- */
+function resize(){
+  DPR = Math.min(2, window.devicePixelRatio||1);
+  W = window.innerWidth; H = window.innerHeight;
+  cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+  cv.style.width = W+'px'; cv.style.height = H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  ctx.fillStyle='#07080a'; ctx.fillRect(0,0,W,H);
+  seedParticles();
+}
+window.addEventListener('resize', function(){ clearTimeout(window.__rz); window.__rz=setTimeout(resize,120); });
+
+/* ---------- pointer ---------- */
+function setPointer(e, down){
+  var r = cv.getBoundingClientRect();
+  var pt = e.touches ? e.touches[0] : e;
+  if(!pt) return;
+  var nx = pt.clientX - r.left, ny = pt.clientY - r.top;
+  if(pointer.x > -1e4){ pointer.moved = Math.hypot(nx-pointer.x, ny-pointer.y); }
+  pointer.ax = pointer.x; pointer.ay = pointer.y;
+  pointer.x = nx; pointer.y = ny;
+  if(down !== undefined) pointer.down = down;
+}
+cv.addEventListener('pointerdown', function(e){ setPointer(e,true); });
+cv.addEventListener('pointermove', function(e){ setPointer(e); }, {passive:true});
+cv.addEventListener('pointerup', function(e){ pointer.down=false; });
+cv.addEventListener('pointerleave', function(){ pointer.x=-1e5; pointer.y=-1e5; pointer.down=false; });
+
+/* ---------- hud ---------- */
+var hud = document.getElementById('hud');
+function say(line, cls){
+  var d = document.createElement('div');
+  d.className='ln'; d.innerHTML = line;
+  if(cls) d.style.color = cls;
+  hud.appendChild(d);
+  while(hud.children.length > 13) hud.removeChild(hud.firstChild);
+}
+function clearHud(){ hud.innerHTML=''; }
+
+/* ---------- loop ---------- */
+function frame(now){
+  var t = now - t0;
+
+  ctx.fillStyle = 'rgba(7,8,10,0.30)';
+  ctx.fillRect(0,0,W,H);
+
+  var k = 0.016, damp = 0.90;
+  var cx = bodyBox.x + bodyBox.w*0.5, cy = bodyBox.y + bodyBox.h*0.38;
+
+  for(var i=0;i<P.length;i++){
+    var p=P[i];
+    p.vx += (p.hx-p.x)*k; p.vy += (p.hy-p.y)*k;
+    if(!reduce){
+      p.vx += Math.sin(t*0.00042 + p.seed)*0.030;
+      p.vy += Math.cos(t*0.00055 + p.seed*1.7)*0.030;
+    }
+    if(pointer.x > -1e4){
+      var dx=p.x-pointer.x, dy=p.y-pointer.y, d2=dx*dx+dy*dy;
+      var R = pointer.down ? 130 : 76;
+      if(d2 < R*R && d2 > 0.01){
+        var d=Math.sqrt(d2), f=(1-d/R)*(pointer.down?3.1:1.5);
+        p.vx += dx/d*f; p.vy += dy/d*f;
+      }
+    }
+    if(correcting && p.chest){
+      var ex=p.x-cx, ey=p.y-cy, ed=Math.hypot(ex,ey)||1;
+      p.vx += ex/ed*1.5 + (Math.random()-0.5)*0.8;
+      p.vy += ey/ed*1.0 - 0.9;
+      p.a = Math.max(0.05, p.a-0.035);
+    } else if(p.a < 1){
+      p.a = Math.min(1, p.a+0.02);
+    }
+    p.vx*=damp; p.vy*=damp;
+    p.x+=p.vx; p.y+=p.vy;
+  }
+
+  // three passes so fillStyle changes stay cheap
+  ctx.globalCompositeOperation='lighter';
+  var j, q, sp;
+  ctx.fillStyle='rgba(233,229,221,0.78)';
+  for(j=0;j<P.length;j++){ q=P[j];
+    sp = Math.abs(q.vx)+Math.abs(q.vy);
+    if(sp<=1.1 && !(correcting&&q.chest)){ ctx.globalAlpha=q.a; ctx.fillRect(q.x,q.y,1.65,1.65); }
+  }
+  ctx.fillStyle='rgba(127,233,228,0.85)';
+  for(j=0;j<P.length;j++){ q=P[j];
+    sp = Math.abs(q.vx)+Math.abs(q.vy);
+    if(sp>1.1 && !(correcting&&q.chest)){ ctx.globalAlpha=q.a*Math.min(1,sp*0.4); ctx.fillRect(q.x,q.y,1.8,1.8); }
+  }
+  if(correcting){
+    ctx.fillStyle='rgba(255,58,22,0.9)';
+    for(j=0;j<P.length;j++){ q=P[j];
+      if(q.chest){ ctx.globalAlpha=q.a; ctx.fillRect(q.x,q.y,1.35,1.35); }
+    }
+  }
+  ctx.globalAlpha=1;
+  ctx.globalCompositeOperation='source-over';
+
+  // labels
+  ctx.font = '500 10px "JetBrains Mono", ui-monospace, monospace';
+  if('letterSpacing' in ctx) ctx.letterSpacing = '0.18em';
+  ctx.textBaseline='middle';
+  for(var m=0;m<LB.length;m++){
+    var L=LB[m];
+    L.a = Math.min(1, L.a + 0.02);
+    var lk = L.attached ? 0.05 : 0.004;
+    L.vx += (L.hx-L.x)*lk; L.vy += (L.hy-L.y)*lk;
+    if(pointer.x > -1e4){
+      var lx=L.x-pointer.x, ly=L.y-pointer.y, ld=Math.hypot(lx,ly);
+      if(ld < 74 && ld > 0.01){
+        var lf = (1-ld/74)*(pointer.down?4.6:2.2);
+        L.vx += lx/ld*lf; L.vy += ly/ld*lf;
+        if(idx>=1 && (pointer.down || pointer.moved>2) && L.attached){
+          L.attached=false;
+          L.hx = L.x + (L.x<W/2?-1:1)*W*0.6; L.hy = L.y + (Math.random()-0.5)*H*0.5;
+          onLabelLost();
+        }
+      }
+    }
+    L.vx*=0.9; L.vy*=0.9; L.x+=L.vx; L.y+=L.vy;
+
+    var alpha = L.a * (L.attached ? 1 : Math.max(0, 1 - Math.abs(L.x-W/2)/(W*0.62)));
+    if(alpha<=0.01) continue;
+    ctx.globalAlpha = alpha;
+    if(L.attached){
+      ctx.strokeStyle='rgba(233,229,221,0.30)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(L.x, L.y); ctx.lineTo(L.ax, L.ay); ctx.stroke();
+      ctx.beginPath(); ctx.arc(L.ax, L.ay, 1.9, 0, 6.2832);
+      ctx.fillStyle='rgba(233,229,221,0.75)'; ctx.fill();
+    }
+    ctx.fillStyle = L.attached ? 'rgba(233,229,221,0.92)' : 'rgba(169,139,255,0.9)';
+    var w = ctx.measureText(L.txt.toUpperCase()).width;
+    ctx.fillText(L.txt.toUpperCase(), L.x - w/2, L.y);
+    ctx.globalAlpha=1;
+  }
+  if('letterSpacing' in ctx) ctx.letterSpacing='0px';
+
+  // correction progress
+  if(correcting){
+    corrProgress = Math.min(1, corrProgress + 0.012);
+    if(corrProgress >= 1) endCorrection(true);
+  }
+
+  requestAnimationFrame(frame);
+}
+
+/* ---------- state ---------- */
+var tag=document.getElementById('tag'), bodyEl=document.getElementById('body');
+var nextB=document.getElementById('next'), prevB=document.getElementById('prev');
+var corrB=document.getElementById('correct'), hintEl=document.getElementById('hint');
+var mnum=document.getElementById('mnum'), mstate=document.getElementById('mstate');
+
+function pad(n){ return (n<10?'0':'')+n; }
+
+function goTo(i){
+  idx = i;
+  var L = LEX[i];
+  mnum.textContent = pad(i);
+  tag.innerHTML = L.tag || '';
+  bodyEl.innerHTML = L.html || '';
+  bodyEl.classList.remove('fadein'); void bodyEl.offsetWidth; bodyEl.classList.add('fadein');
+  hintEl.textContent = L.hint || '';
+  prevB.disabled = (i<=1);
+  corrB.hidden = (i!==3);
+  gateOpenAt = performance.now(); gateForced=false;
+  updateGate();
+
+  if(i===1){
+    clearHud();
+    setLabelWords(['woman','masculine','lesbian','tits']);
+    mstate.textContent='my body';
+    say('I AM A WOMAN');
+    say('I AM MASCULINE');
+    say('I AM A LESBIAN');
+    say('I HAVE TITS');
+  }
+  if(i===2){
+    mstate.textContent='what I want';
+    say('I WANT THE WATER');
+    say('I WANT THE SUN');
+    say('I WANT MY BODY');
+  }
+  if(i===3){
+    mstate.textContent='pressure';
+    say('<b>COVER THEM</b>');
+    say('<b>BIND THEM</b>');
+    say('<b>REMOVE THEM</b>');
+    say('NO');
+  }
+  if(i===4){
+    setLabelWords(['made for nursing','future mother','feminine','for a baby']);
+    mstate.textContent='motherhood';
+    say('<b>“MADE FOR NURSING”</b>');
+    say('SAID LIKE A JOKE');
+    say('PREGNANCY IS ONE OF MY BIGGEST FEARS');
+  }
+  if(i===5){
+    reattachAll();
+    updateGate();
+    mstate.textContent='take them off';
+    say('THE WORDS ARE NOT MINE');
+  }
+  if(i===6){
+    mstate.textContent='mine';
+    say('MY BODY BELONGS TO ME');
+  }
+}
+
+function updateGate(){
+  var need = false;
+  if(idx===3) need = attempts < 1;
+  if(idx===5) need = labelsDetached() < LB.length;
+  if(gateForced) need = false;
+  nextB.disabled = need;
+  nextB.textContent = (idx>=6) ? 'read as text' : 'continue';
+}
+setInterval(function(){
+  if(nextB.disabled && performance.now()-gateOpenAt > 24000){ gateForced=true; updateGate(); }
+}, 1000);
+
+function onLabelLost(){
+  if(idx===5){
+    var left = LB.length - labelsDetached();
+    say('WORDS LEFT ON MY BODY &nbsp; ' + left);
+    updateGate();
+  } else {
+    say('A WORD FELL OFF');
+  }
+}
+
+function startCorrection(){
+  if(idx!==3 || correcting) return;
+  correcting=true; corrProgress=0; corrB.classList.add('on');
+  document.body.classList.add('body-correcting');
+  mstate.textContent='removing my tits';
+  say('<b>MY CHEST DISAPPEARS</b>');
+}
+function endCorrection(complete){
+  if(!correcting) return;
+  correcting=false; corrB.classList.remove('on');
+  document.body.classList.remove('body-correcting');
+  if(complete){
+    attempts++;
+    say('MY CHEST IS GONE');
+    setTimeout(function(){
+      say('<i>MY BODY COMES BACK</i>');
+      say('THIS DID NOT FREE ME');
+      mstate.textContent='still mine';
+      updateGate();
+    }, 900);
+  } else {
+    say('I STOPPED');
+  }
+  updateGate();
+}
+['pointerdown'].forEach(function(ev){ corrB.addEventListener(ev, function(e){ e.preventDefault(); startCorrection(); }); });
+['pointerup','pointerleave','pointercancel'].forEach(function(ev){ corrB.addEventListener(ev, function(){ endCorrection(false); }); });
+corrB.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); startCorrection(); }});
+corrB.addEventListener('keyup', function(e){ if(e.key===' '||e.key==='Enter'){ endCorrection(false); }});
+
+nextB.addEventListener('click', function(){
+  if(idx>=6){ openRead(); return; }
+  goTo(idx+1);
+});
+prevB.addEventListener('click', function(){ if(idx>1) goTo(idx-1); });
+document.addEventListener('keydown', function(e){
+  if(e.key==='ArrowRight' && !nextB.disabled && idx<6) goTo(idx+1);
+  if(e.key==='ArrowLeft' && idx>1) goTo(idx-1);
+  if(e.key==='Escape') closeRead();
+});
+
+/* ---------- plain text ---------- */
+var readEl=document.getElementById('read');
+function buildRead(){
+  var out='';
+  for(var i=1;i<LEX.length;i++){
+    out += '<h3>'+LEX[i].tag.replace(/<[^>]+>/g,'')+'</h3>' + LEX[i].html;
+  }
+  document.getElementById('readbody').innerHTML = out;
+}
+function openRead(){ buildRead(); readEl.classList.add('on'); }
+function closeRead(){ readEl.classList.remove('on'); }
+document.getElementById('textmode').addEventListener('click', openRead);
+document.getElementById('closeread').addEventListener('click', closeRead);
+
+/* ---------- boot ---------- */
+document.body.classList.add('js-ready');
+resize();
+goTo(1);
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
