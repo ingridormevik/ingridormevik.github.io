@@ -56,7 +56,7 @@ video,canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 @keyframes beamAnim{0%{top:5%}50%{top:90%}100%{top:5%}}
 .hud{position:absolute;left:0;right:0;top:0;z-index:20;padding:calc(12px + var(--safe-top)) 14px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;background:linear-gradient(180deg, rgba(0,0,0,.68), transparent)}
 .tag,.status{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line2);background:rgba(7,8,13,.85);border-radius:4px;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--alert);box-shadow:0 0 6px var(--alert)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--alert)}
 .status{letter-spacing:.04em;text-transform:none;max-width:58vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .layer{position:absolute;inset:0;z-index:12;pointer-events:none}
 .obj{position:absolute;left:0;top:0;transform:translate(-50%,-50%);will-change:transform,left,top}
@@ -72,7 +72,7 @@ button.primary{background:var(--bg2);border-color:var(--cold2)}
 button.active{border-color:var(--cold2);color:var(--cold2)}
 input[type=file]{display:none}
 .centerCard{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:20px;background:linear-gradient(180deg, rgba(0,0,0,.2), rgba(0,0,0,.55))}
-.card{width:min(92vw,560px);padding:22px;border-radius:6px;border:1px solid var(--line2);background:rgba(13,15,23,.92);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.card{width:min(92vw,560px);padding:22px;border-radius:6px;border:1px solid var(--line2);background:rgba(13,15,23,.92)}
 h1{margin:0 0 10px;font-family:var(--serif);font-size:34px;line-height:1.02;letter-spacing:-.01em}
 h1 em{color:var(--alert);font-style:normal}
 p{margin:0 0 14px;font-family:var(--sans);color:var(--soft);line-height:1.45}
@@ -101,10 +101,9 @@ p{margin:0 0 14px;font-family:var(--sans);color:var(--soft);line-height:1.45}
 
   <div id="layer" class="layer"></div>
 
-  <div id="keybar" style="position:absolute;bottom:110px;left:0;right:0;z-index:23;padding:0 14px">
-    <input id="apiKeyInput" type="password" placeholder="Paste API key (sk-ant-...) then tap Scan Now"
-      style="width:100%;padding:11px 16px;border-radius:4px;background:rgba(7,8,13,.85);
-      border:1px solid var(--line2);color:var(--text);font-size:16px;outline:none;font-family:var(--mono)"/>
+  <div id="keybar" style="position:absolute;bottom:110px;left:0;right:0;z-index:23;padding:0 14px;display:flex;justify-content:center">
+    <input id="apiKeyInput" type="password" placeholder="API key"
+      style="width:min(260px,calc(100% - 28px));padding:10px 14px;border-radius:4px;background:rgba(7,8,13,.85);border:1px solid var(--line);color:var(--soft);font-size:16px;outline:none;font-family:var(--mono);text-align:center;letter-spacing:.08em"/>
   </div>
   <div class="controls">
     <button id="voiceBtn">voice on</button>
