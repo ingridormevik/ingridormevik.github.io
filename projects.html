@@ -1,200 +1,106 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Selected projects by Ingrid Ormevik: electronic literature, interactive fiction, location-based folklore games, generative audiovisual systems and live AI work, shown in Bergen and Oslo.">
-<meta name="theme-color" content="#07080d">
-<title>Projects · Ingrid Ormevik</title>
-<!-- social + icons -->
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="canonical" href="https://ingridormevik.github.io/projects.html">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Ingrid Ormevik">
-<meta property="og:title" content="Projects · Ingrid Ormevik">
-<meta property="og:url" content="https://ingridormevik.github.io/projects.html">
-<meta property="og:image" content="https://ingridormevik.github.io/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Ingrid Ormevik: essays, games and artistic research.">
-<meta property="og:description" content="Selected projects by Ingrid Ormevik: electronic literature, interactive fiction, location-based folklore games, generative audiovisual systems and live AI work, shown in Bergen and Oslo.">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Projects · Ingrid Ormevik">
-<meta name="twitter:image" content="https://ingridormevik.github.io/og-image.png">
-<meta name="twitter:description" content="Selected projects by Ingrid Ormevik: electronic literature, interactive fiction, location-based folklore games, generative audiovisual systems and live AI work, shown in Bergen and Oslo.">
-<script>
-(function(){var t='dark';try{t=localStorage.getItem('ingrid-theme')||'dark';}catch(e){}document.documentElement.setAttribute('data-theme',t);document.documentElement.classList.add('js');})();
-</script>
-<style>
-:root{--bg:#07080d;--bg2:#0d0f17;--panel:rgba(14,16,25,.78);--text:#f4f1ec;--soft:#b9b5bd;--dim:#777380;--line:rgba(255,255,255,.1);--line2:rgba(255,255,255,.18);--violet:#a98df7;--pink:#f29bcd;--serif:Georgia,'Times New Roman',serif;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans}
-html[data-theme='light']{--bg:#f3f1ed;--bg2:#ebe8e2;--panel:rgba(255,255,255,.9);--text:#111218;--soft:#595963;--dim:#888892;--line:rgba(20,20,28,.1);--line2:rgba(20,20,28,.18)}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;background:var(--bg)}
-body{margin:0;min-height:100vh;overflow-x:hidden;color:var(--text);background:linear-gradient(180deg,var(--bg),var(--bg2));font-family:var(--sans);-webkit-font-smoothing:antialiased}
-body:before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.12;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 76%)}
-#network{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.28}
-.shell{position:relative;z-index:2}
-a{color:inherit}
-.site-header{width:min(1180px,calc(100% - 48px));margin:auto;padding:36px 0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
-.identity{text-decoration:none;font-size:.82rem;font-weight:650;letter-spacing:.17em;text-transform:uppercase}
-.site-nav{display:flex;gap:24px;align-items:center}
-.site-nav a{position:relative;text-decoration:none;color:var(--soft);font-size:.76rem;letter-spacing:.12em;text-transform:uppercase}
-.site-nav a:hover,.site-nav a.active{color:var(--text)}
-.site-nav a.active:after{content:'';position:absolute;left:0;right:0;bottom:-10px;height:1px;background:linear-gradient(90deg,var(--violet),var(--pink))}
-.hero{width:min(1180px,calc(100% - 48px));min-height:52vh;margin:auto;padding:clamp(80px,12vw,160px) 0 80px;display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,400px);gap:70px;align-items:end}
-.eyebrow{margin:0 0 20px;color:var(--violet);font-size:.68rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase}
-.hero h1{margin:0;max-width:780px;font-family:var(--serif);font-weight:400;font-size:clamp(3.6rem,10vw,8.4rem);line-height:.86;letter-spacing:-.065em}
-.hero-copy{padding-bottom:8px}
-.hero-copy p{margin:0;font-family:var(--serif);font-size:clamp(1.12rem,1.9vw,1.44rem);line-height:1.65;color:var(--soft)}
-.hero-marker{display:flex;align-items:center;gap:14px;margin-top:38px;color:var(--dim);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase}
-.hero-marker:before{content:'';width:54px;height:1px;background:linear-gradient(90deg,var(--violet),transparent)}
-.archive{width:min(1180px,calc(100% - 48px));margin:auto;padding:0 0 120px}
-.archive-head{display:flex;justify-content:space-between;align-items:center;padding:24px 0;border-top:1px solid var(--line2);border-bottom:1px solid var(--line);color:var(--dim);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase}
-.works{list-style:none;margin:0;padding:0}
-.work{border-bottom:1px solid var(--line);display:grid;grid-template-columns:132px minmax(0,1fr) 210px;gap:34px;padding:46px 0 50px}
-.work-when{color:var(--dim);font-size:.69rem;letter-spacing:.15em;text-transform:uppercase;padding-top:10px}
-.work-main h2{margin:0 0 18px;max-width:760px;font-family:var(--serif);font-size:clamp(1.9rem,4vw,3.5rem);font-weight:400;letter-spacing:-.04em;line-height:1.04}
-.work-main p{margin:0;max-width:720px;color:var(--soft);font-family:var(--serif);font-size:clamp(1rem,1.5vw,1.16rem);line-height:1.65}
-.note{display:inline-block;margin-top:16px;padding:6px 10px;border:1px solid var(--line2);border-radius:4px;color:var(--dim);font-family:var(--sans);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase}
-.work-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
-.work-links a{display:inline-flex;align-items:center;padding:9px 14px;border:1px solid var(--line2);border-radius:4px;text-decoration:none;color:var(--text);font-family:var(--sans);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;transition:border-color .3s ease,color .3s ease}
-.work-links a:hover{border-color:var(--violet);color:var(--violet)}
-.work-meta{display:flex;flex-direction:column;align-items:flex-end;gap:16px;text-align:right}
-.category{color:var(--violet);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase}
-.tags{max-width:210px;color:var(--dim);font-size:.75rem;line-height:1.65}
-.site-footer{width:min(1180px,calc(100% - 48px));margin:auto;padding:38px 0 70px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:30px;color:var(--dim);font-size:.72rem;line-height:1.7}
-.theme-toggle{position:fixed;right:24px;bottom:24px;z-index:20;width:52px;height:52px;border:1px solid var(--line2);border-radius:50%;color:var(--text);background:var(--bg2);display:grid;place-items:center;cursor:pointer}
-.sun{display:none}
-html[data-theme='light'] .moon{display:none}
-html[data-theme='light'] .sun{display:block}
-.reveal{opacity:1;transform:none}
-.js .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
-.js .reveal.visible{opacity:1;transform:none}
-@media(max-width:860px){.site-header{align-items:flex-start;flex-direction:column;gap:24px}.site-nav{width:100%;overflow-x:auto;padding-bottom:8px}.hero{min-height:auto;grid-template-columns:1fr;gap:46px;padding-top:100px}.work{grid-template-columns:1fr;gap:18px;padding:38px 0 42px}.work-when{padding-top:0}.work-meta{align-items:flex-start;text-align:left}.tags{max-width:100%}}
-@media(max-width:560px){.site-header,.hero,.archive,.site-footer{width:min(100% - 32px,1180px)}.site-nav{gap:18px}.site-nav a{font-size:.67rem}.hero h1{font-size:clamp(3rem,18vw,5.4rem)}.site-footer{flex-direction:column;padding-bottom:90px}.theme-toggle{width:48px;height:48px;right:18px;bottom:18px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.js .reveal{opacity:1;transform:none}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive and playable work by Ingrid Ormevik: The Turing Test, Vision Entity, Bergtatt, Pride Park 2026, Fjordtatt, HAGEN, GAYMERS, Trail Mix, Signal: Unknown and BODYLINE.">
+    <title>Projects · Ingrid Ormevik</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+    (function(){var r=document.documentElement,t='dark';
+    try{t=localStorage.getItem('ingrid-theme')||'dark';}catch(e){}
+    r.setAttribute('data-theme',t);
+    try{localStorage.setItem('theme',t);}catch(e){}
+    if(window.MutationObserver)new MutationObserver(function(){
+      var n=r.getAttribute('data-theme');if(!n)return;
+      try{if(localStorage.getItem('ingrid-theme')!==n)localStorage.setItem('ingrid-theme',n);}catch(e){}
+    }).observe(r,{attributes:true,attributeFilter:['data-theme']});})();
+    </script>
 </head>
 <body>
-<canvas id="network" aria-hidden="true"></canvas>
-<div class="shell">
-<header class="site-header"><a class="identity" href="index.html">Ingrid Ormevik</a><nav class="site-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="blog.html">Writing</a><a href="about.html">About</a><a href="projects.html" class="active" aria-current="page">Projects</a></nav></header>
-<main>
-<section class="hero"><div><p class="eyebrow reveal">Selected work / 2026</p><h1 class="reveal">Projects</h1></div><div class="hero-copy reveal"><p>Rhythm games, electronic literature, interactive fiction, location-based folklore games, generative audiovisual systems and live AI work. Shown in Nygårdsparken and Marinehagen in Bergen, and at SALT in Oslo.</p><div class="hero-marker">Oldest first</div></div></section>
+    <header>
+        <h1><a href="index.html">Ingrid Ormevik</a></h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="blog.html">Writing</a>
+            <a href="about.html">About</a>
+            <a href="projects.html" class="active">Projects</a>
+        </nav>
+    </header>
 
-<section class="archive" aria-label="Project archive">
-<div class="archive-head reveal"><span>Ten works</span><span>Oldest first</span></div>
-<ol class="works">
+    <main>
+        <p class="intro">Interactive and playable work: installations, games and audiovisual systems, built and rebuilt across many versions.</p>
 
-<li class="work reveal">
-<time class="work-when">Feb 2026</time>
-<div class="work-main">
-<h2>The Turing Test: Fragments of a Life Saved by Pixels</h2>
-<p>Interactive fiction about AI bias against Norwegian LGBTQ+ organisations, built from documented cases where language models invented crisis resources that do not exist. The interface degrades as the player moves through the failures, so the form carries the argument. First place in Electronic Literature at the Digital Culture Awards, University of Bergen.</p>
-<div class="work-links"><a href="touch%20game.html">Play the Turing Test</a><a href="posts/2026-02-11-digital-culture-awards-university-of-bergen.html">Read about the award</a></div>
-</div>
-<div class="work-meta"><span class="category">Interactive fiction</span><span class="tags">AI bias · Electronic literature · Award</span></div>
-</li>
+        <section class="recent-posts">
+            <h3>All Projects</h3>
 
-<li class="work reveal">
-<time class="work-when">Mar 2026</time>
-<div class="work-main">
-<h2>Vision Entity Live</h2>
-<p>A live camera-vision piece. A model reads the room in real time, draws frames around what it finds, and writes poems over the things it names. A study in how machine description feels when it is pointed at you.</p>
-<span class="note">Needs your own API key to run</span>
-<div class="work-links"><a href="vision_entity.html">Open Vision Entity</a></div>
-</div>
-<div class="work-meta"><span class="category">Live AI</span><span class="tags">Computer vision · Machine poetics</span></div>
-</li>
+            <article class="post-preview">
+                <h4><a href="touch%20game.html">The Turing Test: Fragments of a Life Saved by Pixels</a></h4>
+                <p class="meta"><span class="category">Electronic Literature</span><span class="separator">&middot;</span><span class="tags">Award Winner, Memory, Digital Identity</span></p>
+                <p class="excerpt">An interactive piece about memory, digital identity and being misread by systems. First place in Electronic Literature, Digital Culture Awards, University of Bergen.</p>
+            </article>
 
-<li class="work reveal">
-<time class="work-when">6 Jun 2026 · Marinehagen</time>
-<div class="work-main">
-<h2>Bergtatt</h2>
-<p>A generative audiovisual system built for Regnbuenatt 2026 in Marinehagen, Bergen. Sound, bass and atmosphere awaken a shifting nocturnal ecology of forest, ritual, bodies and queer folklore. Built in two versions, one for screen and one for the venue's LED wall.</p>
-<div class="work-links"><a href="bergtatt-visuals.html">Open Bergtatt</a><a href="Regnbuenatt_LED_final.html">The LED build</a></div>
-</div>
-<div class="work-meta"><span class="category">Audio-reactive system</span><span class="tags">Generative visuals · Live sound · Regnbuenatt</span></div>
-</li>
+            <article class="post-preview">
+                <h4><a href="vision_entity.html">Vision Entity Live</a></h4>
+                <p class="meta"><span class="category">Live AI</span><span class="separator">&middot;</span><span class="tags">Computer Vision, Machine Poetics</span></p>
+                <p class="excerpt">A live camera-vision piece. A model reads the room in real time, draws frames around what it finds, and writes poems over the things it names. Needs your own API key to run.</p>
+            </article>
 
-<li class="work reveal">
-<time class="work-when">Jun 2026 · Bergen Pride</time>
-<div class="work-main">
-<h2>Pride Park 2026</h2>
-<p>A location-based folklore game distributed through Nygårdsparken during Bergen Pride. Six Norwegian folklore beings become queer archetypes, activated through QR codes, sound, haptics and movement through public space. Belonging as playable infrastructure.</p>
-<div class="work-links"><a href="pride-park-spill-2026.html">Play Pride Park</a><a href="posts/2026-06-07-pride-park-2026-the-forest-remembers.html">Read the essay</a></div>
-</div>
-<div class="work-meta"><span class="category">Location-based game</span><span class="tags">Queer game studies · Folklore · Public intervention</span></div>
-</li>
+            <article class="post-preview">
+                <h4><a href="bergtatt-visuals.html">Bergtatt</a></h4>
+                <p class="meta"><span class="category">Audiovisual System</span><span class="separator">&middot;</span><span class="tags">Regnbuenatt, Marinehagen, Generative</span></p>
+                <p class="excerpt">An immersive visual system created for Regnbuenatt in Marinehagen. Sound, bass and atmosphere awaken a shifting nocturnal ecology of forest, ritual, bodies and queer folklore.</p>
+            </article>
 
-<li class="work reveal">
-<time class="work-when">2026 · SALT, Oslo</time>
-<div class="work-main">
-<h2>Fjordtatt</h2>
-<p>The Oslo continuation of Bergtatt, activated at SALT on Langkaia 1. A lesbian sauna ritual built around heat, water, breath, condensation and chosen family, moving folklore from visual iconography into spatial and bodily logic.</p>
-<div class="work-links"><a href="fjordtatt-visuals.html">Open Fjordtatt</a></div>
-</div>
-<div class="work-meta"><span class="category">Expanded installation</span><span class="tags">Queer space · Embodiment · Generative visuals</span></div>
-</li>
+            <article class="post-preview">
+                <h4><a href="pride-park-spill-2026.html">Pride Park 2026</a></h4>
+                <p class="meta"><span class="category">Browser Game</span><span class="separator">&middot;</span><span class="tags">Bergen Pride, Folklore, Queer Archetypes</span></p>
+                <p class="excerpt">A browser-based game distributed through Nygårdsparken during Bergen Pride. Six Norwegian folklore beings became queer archetypes, activated through QR codes, sound, haptics and movement through public space. The project framed belonging as playable infrastructure.</p>
+            </article>
 
-<li class="work reveal">
-<time class="work-when">Since 3 Aug 2026</time>
-<div class="work-main">
-<h2>HAGEN</h2>
-<p>A garden that listens and watches. Twenty-three named versions since 3 August, walkable in three dimensions and reactive to the room's own sound and camera, consent-gated throughout. The build history is the work: each version exists because the one before it failed in a specific way.</p>
-<div class="work-links"><a href="hagen/">Enter HAGEN</a><a href="posts/2026-09-15-twenty-three-versions.html">Read the essay</a></div>
-</div>
-<div class="work-meta"><span class="category">Installation</span><span class="tags">Sound and camera reactive · Folklore · Three.js · V23.3</span></div>
-</li>
+            <article class="post-preview">
+                <h4><a href="fjordtatt-visuals.html">Fjordtatt</a></h4>
+                <p class="meta"><span class="category">Audiovisual System</span><span class="separator">&middot;</span><span class="tags">SALT Oslo, Sauna Ritual, Generative</span></p>
+                <p class="excerpt">The Oslo continuation of Bergtatt: a lesbian sauna ritual built around heat, water, breath, condensation and chosen family, transforming folklore from visual iconography into spatial and bodily logic.</p>
+            </article>
 
-<li class="work reveal">
-<time class="work-when">Aug 2026</time>
-<div class="work-main">
-<h2>GAYMERS // Playing Identity</h2>
-<p>A Sims 1 inspired life sim inside a beige Windows desktop shell. Make your Sim from a real photo, then send them into a town with a club, a community centre, a thrift store, a safe space, a chat zone and a waterfront.</p>
-<div class="work-links"><a href="gaymers-playing-identity.html">Play GAYMERS</a></div>
-</div>
-<div class="work-meta"><span class="category">Life sim</span><span class="tags">Queer game studies · Identity · Win98 pastiche</span></div>
-</li>
+            <article class="post-preview">
+                <h4><a href="hagen/">HAGEN</a></h4>
+                <p class="meta"><span class="category">Installation</span><span class="separator">&middot;</span><span class="tags">Sound and Camera Reactive, Folklore, Three.js, V23.3</span></p>
+                <p class="excerpt">A garden that listens and watches. Twenty-three named versions since 3 August, walkable in three dimensions, reactive to the room's own sound and camera, consent-gated throughout.</p>
+            </article>
 
-<li class="work reveal">
-<time class="work-when">Sep 2026</time>
-<div class="work-main">
-<h2>Trail Mix</h2>
-<p>A moving DJ set from Sandviken to Fløyen, made with Preem Cast under the Mount Media name. Play the hike as a game, then come and walk the real route through the folklore trail.</p>
-<div class="work-links"><a href="trail-mix-v2.html">Play Trail Mix</a><a href="trail/">The folklore trail</a><a href="trail-mix.html">Earlier version</a><a href="posts/2026-09-02-trail-mix.html">Read the essay</a></div>
-</div>
-<div class="work-meta"><span class="category">Game · Public walk</span><span class="tags">Mount Media · Preem Cast · Bergen · Folklore</span></div>
-</li>
+            <article class="post-preview">
+                <h4><a href="gaymers-playing-identity.html">GAYMERS // Playing Identity</a></h4>
+                <p class="meta"><span class="category">Browser Game</span><span class="separator">&middot;</span><span class="tags">Sims 1 Pastiche, Windows 98, Queer Identity</span></p>
+                <p class="excerpt">A Windows 98 and Sims 1 pastiche, played entirely inside a fake desktop window. Identity, play and the operating systems we grew up inside, taken literally.</p>
+            </article>
 
-<li class="work reveal">
-<time class="work-when">Sep 2026</time>
-<div class="work-main">
-<h2>Signal: Unknown</h2>
-<p>Interactive electronic literature in six lexias. A masculine woman's body is drawn in particles, and the words other people place on it are tethered to the skin, so you can drag them off. Hold one button and the chest dissolves, then comes back. On keeping your breasts and your masculinity at the same time, and on the kind of discrimination that arrives as a joke. A plain text version is built in.</p>
-<div class="work-links"><a href="signal-unknown.html">Open Signal: Unknown</a></div>
-</div>
-<div class="work-meta"><span class="category">Electronic literature</span><span class="tags">Mount Media · Lesbian embodiment · Six lexias</span></div>
-</li>
+            <article class="post-preview">
+                <h4><a href="trail-mix-v2.html">Trail Mix</a></h4>
+                <p class="meta"><span class="category">Playable Research</span><span class="separator">&middot;</span><span class="tags">Mount Media, Preem Cast, Bergen, Hiking</span></p>
+                <p class="excerpt">Play the hike, then come and walk it. A moving DJ set from Sandviken to Fløyen, with performances along the route, and a source-verification rule the code itself enforces.</p>
+            </article>
 
-<li class="work reveal">
-<time class="work-when">Sep 2026</time>
-<div class="work-main">
-<h2>BODYLINE</h2>
-<p>A four-lane rhythm descent from Fløyen down into Bergen, made under the Mount Media name. The run plays over real footage of the Fløibanen funicular, muted and sped up, with the archive film credited on the page. Notes fall in four colours and you meet them on the line with D, F, J and K, or four pads on a phone. Original score at 128 BPM, with the chart and the music running off one clock, so the mountain lights up only when you are actually on the beat.</p>
-<div class="work-links"><a href="bodyline/">Play BODYLINE</a></div>
-</div>
-<div class="work-meta"><span class="category">Rhythm game</span><span class="tags">Mount Media · Fløibanen · Web Audio · Archive film</span></div>
-</li>
+            <article class="post-preview">
+                <h4><a href="signal-unknown.html">Signal: Unknown</a></h4>
+                <p class="meta"><span class="category">Electronic Literature</span><span class="separator">&middot;</span><span class="tags">Mount Media, Lesbian Embodiment, Six Lexias</span></p>
+                <p class="excerpt">Six lexias. A masculine woman's body drawn in particles, with the words other people place on it tethered to the skin, so you can drag them off. Hold one button and the chest dissolves, then comes back. A plain text version is built in.</p>
+            </article>
 
-</ol>
-</section>
-</main>
-<footer class="site-footer"><div>&copy; 2026 Ingrid Ormevik<br>Digital culture, artistic research and queer media practice</div><div>University of Bergen · Bergen Pride · FRI Vestland</div></footer>
-</div>
-<button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle colour theme"><svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg><svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
-<script>
-(function(){var root=document.documentElement,toggle=document.getElementById('themeToggle');if(toggle)toggle.addEventListener('click',function(){var n=root.getAttribute('data-theme')==='light'?'dark':'light';root.setAttribute('data-theme',n);try{localStorage.setItem('ingrid-theme',n)}catch(e){}});var items=document.querySelectorAll('.reveal');if('IntersectionObserver'in window){var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.08});items.forEach(function(i){obs.observe(i)})}else items.forEach(function(i){i.classList.add('visible')});window.addEventListener('error',function(){items.forEach(function(i){i.classList.add('visible')})});var c=document.getElementById('network');if(!c||!c.getContext)return;var x=c.getContext('2d'),nodes=[],w=0,h=0,dpr=Math.min(devicePixelRatio||1,2),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;function resize(){w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;c.style.width=w+'px';c.style.height=h+'px';x.setTransform(dpr,0,0,dpr,0,0);nodes=[];var count=Math.max(18,Math.min(42,Math.floor(w/30)));for(var i=0;i<count;i++)nodes.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:.8+Math.random()*1.6})}function draw(){x.clearRect(0,0,w,h);for(var i=0;i<nodes.length;i++){var a=nodes[i];if(!reduced){a.x+=a.vx;a.y+=a.vy;if(a.x<-20)a.x=w+20;if(a.x>w+20)a.x=-20;if(a.y<-20)a.y=h+20;if(a.y>h+20)a.y=-20}for(var j=i+1;j<nodes.length;j++){var b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);if(d<145){x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.strokeStyle='rgba(169,141,247,'+((1-d/145)*.11)+')';x.lineWidth=.6;x.stroke()}}x.beginPath();x.arc(a.x,a.y,a.r,0,Math.PI*2);x.fillStyle='rgba(214,203,255,.34)';x.fill()}if(!reduced)requestAnimationFrame(draw)}resize();draw();addEventListener('resize',resize)})();
-</script>
+            <article class="post-preview">
+                <h4><a href="bodyline/">BODYLINE</a></h4>
+                <p class="meta"><span class="category">Rhythm Game</span><span class="separator">&middot;</span><span class="tags">Mount Media, Fløibanen, Web Audio, Archive Film</span></p>
+                <p class="excerpt">A four-lane rhythm descent from Fløyen down into Bergen, played over real footage of the Fløibanen funicular. Meet the falling colours on the line with D, F, J and K, or four pads on a phone. Original score at 128 BPM.</p>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Ingrid Ormevik | Digital Culture Student, University of Bergen</p>
+        <p>Digital Media Strategist, Bergen Pride | Board Member, FRI Vestland | Research Intern, Centre for Digital Narrative</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
