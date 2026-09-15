@@ -1,0 +1,23 @@
+{
+  "name": "MOUNT MEDIA // BODYLINE",
+  "short_name": "BODYLINE",
+  "description": "Snowboard from Fl\u00f8yen through Bergen as Ingrid.",
+  "start_url": "./",
+  "display": "standalone",
+  "display_override": [
+    "fullscreen",
+    "standalone"
+  ],
+  "background_color": "#090b0d",
+  "theme_color": "#090b0d",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "scope": "./"
+}
