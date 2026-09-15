@@ -19,6 +19,22 @@
 <meta name="twitter:title" content="The Hand and the Track: Posthuman Authorship in AI-Assisted Creation - Ingrid Ormevik">
 <meta name="twitter:image" content="https://ingridormevik.github.io/og-image.png">
     <link rel="stylesheet" href="../style.css">
+    <script>
+    /* The rest of the site stores its theme under ingrid-theme and defaults to dark.
+       script.js reads the key "theme" and defaults to light, so these pages used to
+       open white and the choice did not carry between them. Read the site's key,
+       then mirror it so script.js agrees. */
+    (function(){var r=document.documentElement,t='dark';
+    try{t=localStorage.getItem('ingrid-theme')||'dark';}catch(e){}
+    r.setAttribute('data-theme',t);
+    try{localStorage.setItem('theme',t);}catch(e){}
+    /* script.js builds its own toggle and writes only its own key, so mirror any
+       change it makes back to the site's key. Then one choice holds both ways. */
+    if(window.MutationObserver)new MutationObserver(function(){
+      var n=r.getAttribute('data-theme');if(!n)return;
+      try{if(localStorage.getItem('ingrid-theme')!==n)localStorage.setItem('ingrid-theme',n);}catch(e){}
+    }).observe(r,{attributes:true,attributeFilter:['data-theme']});})();
+    </script>
 </head>
 <body>
     <header>
