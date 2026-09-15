@@ -6,6 +6,16 @@
     <meta name="description" content="About Ingrid Ormevik — digital researcher, artist, activist and creator working across AI, queer theory, electronic literature, games and immersive media.">
     <title>About — Ingrid Ormevik</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+    (function(){var r=document.documentElement,t='dark';
+    try{t=localStorage.getItem('ingrid-theme')||'dark';}catch(e){}
+    r.setAttribute('data-theme',t);
+    try{localStorage.setItem('theme',t);}catch(e){}
+    if(window.MutationObserver)new MutationObserver(function(){
+      var n=r.getAttribute('data-theme');if(!n)return;
+      try{if(localStorage.getItem('ingrid-theme')!==n)localStorage.setItem('ingrid-theme',n);}catch(e){}
+    }).observe(r,{attributes:true,attributeFilter:['data-theme']});})();
+    </script>
 </head>
 <body>
     <header>

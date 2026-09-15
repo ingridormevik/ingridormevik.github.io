@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ingrid Ormevik - Digital Culture & Activism</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+    (function(){var r=document.documentElement,t='dark';
+    try{t=localStorage.getItem('ingrid-theme')||'dark';}catch(e){}
+    r.setAttribute('data-theme',t);
+    try{localStorage.setItem('theme',t);}catch(e){}
+    if(window.MutationObserver)new MutationObserver(function(){
+      var n=r.getAttribute('data-theme');if(!n)return;
+      try{if(localStorage.getItem('ingrid-theme')!==n)localStorage.setItem('ingrid-theme',n);}catch(e){}
+    }).observe(r,{attributes:true,attributeFilter:['data-theme']});})();
+    </script>
 </head>
 <body>
     <header>
@@ -48,6 +58,50 @@
                 <p>A short interactive hiking story. Two characters, one trail, and a DJ set waiting at the summit.</p>
                 <a href="trail-mix.html" class="cta-button">Play & Read More →</a>
             </div>
+
+            <div class="project-card">
+                <h3>HAGEN</h3>
+                <p>A garden that listens and watches. Twenty-three named versions since 3 August, walkable in three dimensions, reactive to the room&rsquo;s own sound and camera, consent-gated throughout.</p>
+                <a href="hagen/" class="cta-button">Enter HAGEN &rarr;</a>
+            </div>
+
+            <div class="project-card">
+                <h3>BODYLINE</h3>
+                <p>A four-lane rhythm descent from Fl&oslash;yen down into Bergen, played over real footage of the Fl&oslash;ibanen funicular. Meet the falling colours on the line with D, F, J and K, or four pads on a phone.</p>
+                <a href="bodyline/" class="cta-button">Play BODYLINE &rarr;</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Signal: Unknown</h3>
+                <p>Six lexias of electronic literature. A masculine woman&rsquo;s body drawn in particles, with the words other people place on it tethered to the skin, so you can drag them off.</p>
+                <a href="signal-unknown.html" class="cta-button">Open Signal: Unknown &rarr;</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Pride Park 2026</h3>
+                <p>A location-based folklore game distributed through Nyg&aring;rdsparken during Bergen Pride. Six Norwegian folklore beings become queer archetypes, activated through QR codes, sound and movement.</p>
+                <a href="https://ingridormevik.github.io/regnbuedagene/pride-park-spill-2026.html" target="_blank" rel="noopener" class="cta-button">Play Pride Park &rarr;</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Bergtatt</h3>
+                <p>A generative audio-reactive system built for Regnbuenatt 2026 in Marinehagen, Bergen. Sound, bass and atmosphere awaken a shifting nocturnal ecology of forest, ritual and queer folklore.</p>
+                <a href="bergtatt-visuals.html" class="cta-button">Open Bergtatt &rarr;</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Fjordtatt</h3>
+                <p>The Oslo continuation of Bergtatt, activated at SALT on Langkaia 1. A lesbian sauna ritual built around heat, water, breath, condensation and chosen family.</p>
+                <a href="fjordtatt-visuals.html" class="cta-button">Open Fjordtatt &rarr;</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Vision Entity Live</h3>
+                <p>A live camera-vision piece. A model reads the room in real time, draws frames around what it finds, and writes poems over the things it names. Needs your own API key to run.</p>
+                <a href="vision_entity.html" class="cta-button">Open Vision Entity &rarr;</a>
+            </div>
+
+            <p class="intro"><a href="projects.html">See all ten projects &rarr;</a></p>
         </section>
 
         <section class="recent-posts">

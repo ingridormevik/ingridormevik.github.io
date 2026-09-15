@@ -6,6 +6,16 @@
     <meta name="description" content="Essays and artistic research by Ingrid Ormevik on AI, queer memory, game studies, digital culture and activism.">
     <title>Writing — Ingrid Ormevik</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+    (function(){var r=document.documentElement,t='dark';
+    try{t=localStorage.getItem('ingrid-theme')||'dark';}catch(e){}
+    r.setAttribute('data-theme',t);
+    try{localStorage.setItem('theme',t);}catch(e){}
+    if(window.MutationObserver)new MutationObserver(function(){
+      var n=r.getAttribute('data-theme');if(!n)return;
+      try{if(localStorage.getItem('ingrid-theme')!==n)localStorage.setItem('ingrid-theme',n);}catch(e){}
+    }).observe(r,{attributes:true,attributeFilter:['data-theme']});})();
+    </script>
 </head>
 <body>
     <header>
