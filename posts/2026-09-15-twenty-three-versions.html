@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twenty-Three Versions: What HAGEN's Build History Says About Authorship - Ingrid Ormevik</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1><a href="../index.html">Ingrid Ormevik</a></h1>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="../blog.html">Writing</a>
+            <a href="../about.html">About</a>
+            <a href="../touch game.html">Projects</a>
+        </nav>
+    </header>
+
+    <main>
+        <article>
+            <h2>Twenty-Three Versions</h2>
+            <span class="date">September 2026</span>
+
+            <p>Did you make this with AI? Yes. Often. Not always. The object doesn't change when I say so, but the question changes how it's received: a shortcut around looking closer, as if AI was involved, so it must have taken less. I'd rather answer a harder question. How was it used. Who decided. What got rejected, checked, accepted only after failing a dozen times. That tells you something. &ldquo;Did you use AI&rdquo; tells you almost nothing.</p>
+
+            <p>Here's a number instead. HAGEN, the sound-and-camera-reactive installation I keep building and rebuilding, is on its twenty-third named version. It started as one garden on 3 August. It is now V23.3, and by my own count it is probably not yet a third of the way to what it's meant to become. A tree ring is a record of a year the tree actually lived through, a wet spring, a hard frost. You can't fake one. I named every ring in HAGEN myself, and I kept the file for each.</p>
+
+            <p>The first file I still have has Huldra waking in fire and Aab-e-Jinn rising in water. Everything after it corrects, extends, or refuses that first direction. Over the next week the eight audio bands I was reading became thirty-two, each learning its own level instead of sharing one threshold, and the camera stopped being a hidden input and became visible evidence: not identity, frame-difference, the frame right now compared to the frame before it. By the time HAGEN moved into Construct, roots and water and figures and narrative had each become a separate named layer, because a build can look &ldquo;finished&rdquo; and still read as grey and wrong, and the fix is tracing which old layer is washing out the field, not repainting it.</p>
+
+            <p>Then came the part that isn't glamorous at all. V23.1 exists because of a real Chrome <em>Out of Memory</em> crash: profiling found GPU buffers piling up every time a garden clearing was replaced, and explicit disposal brought the JavaScript heap down from 39.4&nbsp;MB to 19.2&nbsp;MB. V23.2 exists because the crash wasn't in the piece at all, it was in the editor I build it in: the entire ~1.1&nbsp;MB engine had to be pasted into one Construct event, and the editor choked on it, so I moved the engine into an imported file and the code I actually paste dropped to 30 lines, 1,613 bytes. V23.3, the current one, adds three roots in each garden section that carry a short line of text, legible only if you walk right up and stand there, and it asks once, quietly, for your location, so real local rain and cloud cover can become the piece's own weather. Decline, and nothing changes.</p>
+
+            <p>Twenty-three named editions in five weeks, and the numbers I can point to, the heap size, the byte count, the buffer count, matter because none of them were in the first prompt. I only knew to ask for each one after the version before it had already failed in a specific way. Not yet a third of the way there is not a modest hedge. Here's the actual, less comfortable point: the scope keeps growing faster than the rings close it. Fixing the memory leak exposed how much of the garden still needed a real definition of what a clearing even is. Fixing the editor exposed how tangled the engine still was with the tool it runs inside. Adding weather immediately raised what it should mean for every root and every act to sense a place instead of just a room. Five weeks in, I know more precisely what's wrong with it than I did at version one, and what's wrong keeps getting more specific, not smaller. That isn't a project approaching a finish line. It's a practice that got good enough to see its own edges more clearly the longer it runs. I don't have a version number where this becomes finished instead of merely current, and I'd trust the estimate less if I gave you one.</p>
+
+            <p>I wrote about the deeper version of this argument already, in <a href="the-hand-and-the-track.html">The Hand and the Track</a>: the slot car only moves when the hand, the electricity and the track move together, and the same is true of a language model and me. The track was available. The judgement was not. That judgement didn't start with Claude, either. Fifteen years came before HAGEN: cutting video on deadline, running marketing and social media for real events, researching how platforms actually behave instead of how they say they behave, and designing posters, which mostly meant hours spent nudging one logo a single millimetre at a time until a layout stopped fighting itself. The eye that now catches a wrong proportion in a rendered frame is the same eye that used to catch it in a flyer nobody else would have noticed.</p>
+
+            <p>An editor who rejects a hundred suggestions from an assistant is still an editor. Rejecting things doesn't make anyone an author. If refusal were all I had to point to, that objection would win. But refusal is only the part that's easy to count. I arrive already carrying the question, the material, the world the piece has to exist inside. Every no measures a suggestion against an intention that existed before the conversation started, one no one else has access to. A model finishing my sentence has no such intention, only a most-likely-next-word. The direction has to come from me, every round, because nothing else in the room has one.</p>
+
+            <p>This gets sharper, not softer, the more personal the material is. When a piece carries narration, feeling, something closer to trauma, a memory of being read wrong, a body the training data has no category for, &ldquo;how many prompts did it take&rdquo; stops being a useful question. The honest one is: who knows what's true? A model has never been misread for the wrong reason. It doesn't know why the same misclassification landing again should feel like anything. I do. That's the actual location of authorship: not who typed, but who can tell a technically finished result from a true one. Which is why the conversation needs to change shape. Not &ldquo;was AI involved,&rdquo; soon almost everyone can answer yes, and it will tell you nothing. The better questions: how, why, and what happens to the people the work is about, including the person making it.</p>
+
+            <p>People talk about AI generation as one person, one instruction, one result. My actual logs don't look like that.</p>
+
+            <p>&ldquo;This looks horrible.&rdquo;<br>
+            &ldquo;Horrible A.I.!&rdquo;<br>
+            &ldquo;Gud s&aring; grusomt.&rdquo; Good god, that's awful.<br>
+            &ldquo;Wtf, this is not my game.&rdquo;<br>
+            &ldquo;You broke what was already working.&rdquo;</p>
+
+            <p>Those show up after hours of nothing working. I've said no hundreds of times: no, this doesn't look like the rest of the piece; no, that's not my character; no, you turned a masculine woman into a man; no, you gave me a beard after I wrote &ldquo;no beard&rdquo;; no, the camera doesn't work anymore.</p>
+
+            <p>That beard line isn't a throwaway. In March I ran four self-portrait generations of myself, a masculine-presenting lesbian. Each correction pulled the system's presentation of me further toward a male category. On the fourth pass I wrote, explicitly, no beard. It gave me a beard anyway. If masculinity on a woman's body keeps translating to manhood, the model hasn't invented that; it's repeating a pattern already in the material we produced. I was using my own body to find out how it represents people like me, and the correction itself became research. None of this is visible in a finished file, which is exactly why &ldquo;was AI involved&rdquo; is the wrong axis to measure on.</p>
+
+            <p>Coding takes time. Promotion, applications, video editing, university take time. A job, cooking, training, housework, feelings take time. Everything takes time, and time is the one thing none of us gets an unlimited supply of. A tool can shorten how long it takes to write one function. It doesn't make the rest of the work automatic. The time moves: less spent hunting syntax, more spent testing whether the piece holds together, checking sources, shaping how it feels to be inside it. Saving time isn't the same as being lazy. A tool that lets me realise an idea I didn't have years to train for isn't automatically a surrender. It can just as easily be a decision about where a limited resource goes, as long as I still understand what I'm doing with that saved time. Not the perfect prompt: judgement, and the ability to picture what I'm making before I can tell the machine has missed it.</p>
+
+            <p>Using AI carefully doesn't mean defending every use of it. I'm also the one who spots AI slop immediately: the generic face, the frictionless surface, the detail nothing was checked against. When I know who made it, I say something directly, including in connection with an event for FRI Vestland. Not a public callout, just going to the people responsible. That doesn't make my own use automatically fine. I judge the result, the process, what it costs someone else, including inside my own projects and people I know. Treat every use of AI as the same act, and you lose the difference between handing work to a machine and using a tool to build something you already own the idea for.</p>
+
+            <p>Twenty-three named versions isn't proof I couldn't get it right the first time. It's proof of a practice, the same kind a tree ring is. Each ring exists because the one before it broke something specific. The correction is the authorship. The machine doesn't remember why any of it mattered. I do. So the question isn't whether AI was present. It's who saw, who judged, who said no, and who is still there, version twenty-four whenever it arrives, to answer for what the work does once it meets someone else's life.</p>
+
+            <p>The current build is not a screenshot. It's <a href="../hagen/">walkable, right now, in three dimensions</a>, and it stays exactly as reactive or as still as you leave it. If you want the argument above walked through act by act, in HAGEN's own visual grammar, there's also a <a href="../hagen/prompt-has-a-history.html">short interactive companion piece</a>. Camera and microphone are optional in both, and consent-gated the same way: nothing recorded, uploaded, or kept.</p>
+
+            <hr>
+
+            <h3>References</h3>
+            <p>Barad, K. (2007). <em>Meeting the Universe Halfway: Quantum Physics and the Entanglement of Matter and Meaning</em>. Durham: Duke University Press.</p>
+
+            <p>Haraway, D. J. (2016). <em>Staying with the Trouble: Making Kin in the Chthulucene</em>. Durham: Duke University Press.</p>
+
+            <p>Hayles, N. K. (1999). <em>How We Became Posthuman: Virtual Bodies in Cybernetics, Literature, and Informatics</em>. Chicago: University of Chicago Press.</p>
+
+            <p>Norman, D. A. (1988). <em>The Design of Everyday Things</em>. New York: Basic Books.</p>
+
+            <p>Rettberg, J. W. (2026, August 26). &ldquo;Fem regler for KI-resistent forskning.&rdquo; <em>Khrono</em>.</p>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Ingrid Ormevik | Digital Culture Student, University of Bergen</p>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
