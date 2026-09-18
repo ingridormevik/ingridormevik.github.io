@@ -1,0 +1,6 @@
+# Unlisted work in progress. Not private: the repository is public, so anyone
+# holding a URL under a disallowed path can still open it.
+User-agent: *
+Allow: /
+Disallow: /hagen/
+

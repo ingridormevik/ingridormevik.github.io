@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>The Prompt Has a History · Mount Media</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Space+Mono&family=Amiri:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{width:100%;height:100%;overflow:hidden;background:#000;position:fixed;font-family:'Cormorant Garamond',serif;color:#e8dcc3}
+canvas{position:fixed;top:0;left:0;width:100%;height:100%;display:block}
+#bloom{display:none}
+video{position:fixed;width:1px;height:1px;opacity:0}
+
+/* start */
+#start{position:fixed;inset:0;background:#000;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;transition:opacity 1.6s}
+#start.gone{opacity:0;pointer-events:none}
+#start h1{font-weight:300;font-size:clamp(70px,16vw,190px);letter-spacing:.18em;color:#f2e8d0;animation:br 6s ease-in-out infinite}
+@keyframes br{0%,100%{text-shadow:0 0 60px rgba(242,232,208,.15)}50%{text-shadow:0 0 160px rgba(242,232,208,.5)}}
+#start .ar{font-family:'Amiri',serif;font-size:clamp(20px,4vw,32px);color:rgba(232,220,195,.5);margin:6px 0 26px}
+#start p{font-style:italic;font-size:clamp(15px,2.6vw,21px);color:rgba(232,220,195,.55);max-width:540px;line-height:1.6;margin-bottom:40px}
+.btn{background:transparent;border:1px solid rgba(232,220,195,.35);color:rgba(232,220,195,.9);padding:16px 40px;border-radius:99px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.4em;text-transform:uppercase;cursor:pointer;transition:.5s;margin:5px;min-width:260px}
+.btn:hover,.btn:active{background:rgba(232,220,195,.12);border-color:#f2e8d0;letter-spacing:.52em}
+.btn.sm{font-size:9px;padding:12px 28px;min-width:220px;border-color:rgba(232,220,195,.18);color:rgba(232,220,195,.5)}
+
+/* text overlays */
+#whisper{position:fixed;left:50%;top:39%;transform:translate(-50%,-50%);font-style:italic;font-weight:300;font-size:clamp(23px,4.8vw,58px);color:rgba(240,230,205,.95);text-align:center;max-width:84vw;padding:0 20px;line-height:1.3;opacity:0;transition:opacity 2.6s;pointer-events:none;z-index:6;text-shadow:0 0 40px #000,0 0 16px #000;mix-blend-mode:screen}
+#whisper.on{opacity:1}
+#whisper.ar{font-family:'Amiri',serif;font-style:normal;direction:rtl}
+#whisper.ur{font-family:'Noto Nastaliq Urdu','Amiri',serif;font-style:normal;direction:rtl;line-height:2.2;font-size:clamp(19px,4vw,48px);padding-top:.4em}
+#whisper.loud{font-style:normal;letter-spacing:.28em}
+#narr{position:fixed;left:0;right:0;bottom:13vh;text-align:center;font-weight:300;font-size:clamp(17px,2.9vw,28px);color:rgba(242,232,208,.96);padding:0 26px;opacity:0;transition:opacity 2.4s;pointer-events:none;z-index:6;text-shadow:0 2px 34px #000}
+#narr.on{opacity:1}
+#narr.ar{font-family:'Amiri',serif;direction:rtl}
+#actc{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity 2.6s;pointer-events:none;z-index:7;background:radial-gradient(ellipse at center,transparent,rgba(0,0,0,.7))}
+#actc.on{opacity:1}
+#actc .rn{font-style:italic;font-size:clamp(14px,2.2vw,19px);letter-spacing:.7em;color:rgba(232,220,195,.65);margin-bottom:24px;padding-left:.7em;text-transform:uppercase}
+#actc .nm{font-weight:300;font-size:clamp(52px,11vw,130px);letter-spacing:.14em;color:#f5ecd6;text-shadow:0 0 90px rgba(245,236,214,.4)}
+#actc .aa{font-family:'Amiri',serif;font-size:clamp(20px,3.2vw,33px);color:rgba(232,220,195,.5);margin-top:18px}
+#actc .ln{width:56px;height:1px;background:rgba(232,220,195,.35);margin-top:38px}
+
+/* hud */
+#hud{position:fixed;top:max(env(safe-area-inset-top),12px);left:12px;right:12px;display:flex;justify-content:space-between;z-index:10;pointer-events:none;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(232,220,195,.5);transition:opacity .8s}
+#hud .c{display:flex;flex-direction:column;gap:4px}
+#hud .c.r{align-items:flex-end}
+#hud .v{color:rgba(240,230,205,.9);font-variant-numeric:tabular-nums}
+.row{display:flex;gap:8px;align-items:center}
+#dot{width:7px;height:7px;border-radius:50%;background:#4a5f70;transition:.6s}
+
+/* live meter — proves audio is arriving */
+#meter{position:fixed;left:12px;right:12px;bottom:max(env(safe-area-inset-bottom),68px);height:34px;display:flex;align-items:flex-end;gap:2px;z-index:9;pointer-events:none;opacity:.55;transition:opacity .8s}
+#meter div{flex:1;background:linear-gradient(to top,rgba(232,220,195,.15),rgba(240,200,140,.9));height:2%;border-radius:1px;transition:height .05s linear}
+
+/* controls */
+#voice{position:fixed;right:12px;bottom:max(env(safe-area-inset-bottom),112px);width:264px;display:none;flex-direction:column;gap:7px;z-index:11;padding:12px 13px 11px;border-radius:14px;background:rgba(0,0,0,.52);backdrop-filter:blur(20px);border:1px solid rgba(232,220,195,.13);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,220,195,.5);transition:opacity .8s}
+#voice.open{display:flex}
+#voice canvas{width:100%;height:104px;display:block;border-radius:6px;background:rgba(232,220,195,.028)}
+#voice .vr{display:flex;justify-content:space-between;align-items:baseline}
+#voice .vr .v{color:rgba(240,230,205,.92);font-variant-numeric:tabular-nums;letter-spacing:.1em}
+#voice .vb{display:flex;align-items:center;gap:8px}
+#voice .vb span{width:34px;flex:none;font-size:8px;letter-spacing:.16em}
+#voice .vb i{flex:1;height:2px;background:rgba(232,220,195,.10);border-radius:2px;overflow:hidden;display:block}
+#voice .vb i b{display:block;height:100%;width:0%;border-radius:2px;transition:width .12s linear}
+#voice .vb.i i b{background:rgba(224,132,72,.85)}
+#voice .vb.t i b{background:rgba(150,206,214,.85)}
+#voice .vb.s i b{background:rgba(214,214,224,.85)}
+#voice .vn{font-size:7.5px;letter-spacing:.1em;color:rgba(232,220,195,.28);line-height:1.5;text-transform:none}
+body.hide #voice{opacity:0;pointer-events:none}
+#ctrl{position:fixed;bottom:max(env(safe-area-inset-bottom),12px);left:12px;right:12px;display:flex;justify-content:space-between;gap:6px;z-index:10;transition:opacity .8s}
+.cb{background:rgba(0,0,0,.5);backdrop-filter:blur(20px);border:1px solid rgba(232,220,195,.15);color:rgba(232,220,195,.85);padding:10px 14px;border-radius:99px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:.35s}
+.cb:hover,.cb.on{background:rgba(232,220,195,.13);border-color:rgba(232,220,195,.45)}
+.cb.ic{width:38px;height:38px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px;letter-spacing:0}
+.g{display:flex;gap:6px}
+body.hide #hud,body.hide #ctrl,body.hide #meter{opacity:0;pointer-events:none}
+
+/* calibrating */
+#cal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;z-index:50;opacity:0;transition:opacity 1s;pointer-events:none}
+#cal.on{opacity:1}
+#cal p{font-style:italic;font-size:clamp(17px,3.2vw,24px);color:rgba(240,230,205,.8);margin-bottom:26px}
+#cal .bar{width:240px;height:1px;background:rgba(232,220,195,.15);margin:0 auto;overflow:hidden}
+#cal .fil{height:100%;width:0;background:#f2e8d0;box-shadow:0 0 12px rgba(242,232,208,.5);transition:width .3s}
+</style>
+
+<style id="prompt-history-overrides">
+/* This is intentionally a HAGEN cut, not a new website theme. */
+#hud,#meter,#voice,#bInfo,#bMeter,#bVoice,#bLang{display:none!important}
+#ctrl{justify-content:center;bottom:max(env(safe-area-inset-bottom),18px)}
+#ctrl .g:first-child{gap:12px}
+#ctrl .g:last-child{position:fixed;right:18px;bottom:max(env(safe-area-inset-bottom),18px)}
+#bPrev{display:flex!important}
+.btn,.cb{
+  font-family:'Cormorant Garamond',Georgia,serif!important;
+  text-transform:none!important;
+  letter-spacing:.08em!important;
+  font-size:15px!important;
+  font-weight:300!important;
+}
+.cb{padding:9px 17px}
+.cb.ic{font-family:Georgia,serif!important;font-size:18px!important}
+#start h1{
+  font-size:clamp(54px,11vw,125px)!important;
+  letter-spacing:.08em!important;
+}
+#start .ar{
+  font-family:'Cormorant Garamond',Georgia,serif!important;
+  font-style:italic;
+  direction:ltr;
+  font-size:clamp(22px,4vw,38px)!important;
+  color:rgba(232,220,195,.58)!important;
+}
+#start p{max-width:620px!important}
+#whisper,#narr,#actc{font-family:'Cormorant Garamond',Georgia,serif}
+#actc .rn{
+  font-family:'Cormorant Garamond',Georgia,serif!important;
+  text-transform:none!important;
+  letter-spacing:.15em!important
+}
+#actc .nm{
+  letter-spacing:.03em!important;
+  font-size:clamp(48px,9vw,112px)!important;
+  max-width:90vw;
+  text-align:center;
+}
+#actc .aa{display:none!important}
+#start .privacy-note{
+  margin-top:22px;
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-style:italic;
+  font-size:14px;
+  letter-spacing:.02em;
+  line-height:1.6;
+  color:rgba(232,220,195,.34);
+  max-width:520px;
+}
+#essay-note{
+  position:fixed;
+  left:50%;
+  bottom:max(env(safe-area-inset-bottom),72px);
+  transform:translateX(-50%);
+  z-index:8;
+  width:min(720px,88vw);
+  text-align:center;
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-style:italic;
+  font-size:14px;
+  color:rgba(232,220,195,.32);
+  pointer-events:none;
+  transition:opacity .8s;
+}
+body.hide #essay-note{opacity:0}
+
+#start .enter-modes{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:28px;
+  justify-content:center;
+}
+#start .sensor-note{
+  margin-top:18px;
+  max-width:620px;
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:17px;
+  line-height:1.6;
+  color:rgba(232,220,195,.58);
+}
+#start .sensor-note em{
+  color:rgba(232,220,195,.82);
+  font-style:italic;
+}
+
+</style>
+
+
+<style id="text-legibility-fix">
+#whisper{
+  z-index:14!important;
+  max-width:min(980px,90vw)!important;
+  text-shadow:0 3px 22px rgba(0,0,0,.96),0 0 60px rgba(0,0,0,.88)!important;
+}
+#narr{
+  z-index:14!important;
+  bottom:11vh!important;
+  max-width:980px;
+  margin:0 auto;
+  left:50%!important;
+  right:auto!important;
+  transform:translateX(-50%);
+  width:92vw;
+  line-height:1.45!important;
+  text-shadow:0 3px 24px rgba(0,0,0,.98),0 0 70px rgba(0,0,0,.94)!important;
+}
+#actc{z-index:15!important}
+</style>
+
+
+<style id="sensor-evidence-layer">
+/* These are not simulated displays. They expose the actual local inputs HAGEN is already reading. */
+#vid{
+  display:none;
+  left:auto!important;
+  right:3.5vw!important;
+  top:8vh!important;
+  width:min(31vw,360px)!important;
+  height:auto!important;
+  aspect-ratio:4/3;
+  z-index:5!important;
+  opacity:.24;
+  image-rendering:pixelated;
+  filter:grayscale(1) sepia(.18) contrast(1.6) brightness(.72);
+  mix-blend-mode:screen;
+  pointer-events:none;
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 38%,rgba(0,0,0,.72) 61%,transparent 84%);
+  mask-image:radial-gradient(ellipse at center,#000 38%,rgba(0,0,0,.72) 61%,transparent 84%);
+  transition:opacity 1.8s,filter 1.8s;
+}
+body.cam-live #vid{display:block}
+body.process-act.cam-live #vid{
+  opacity:.52;
+  filter:grayscale(.75) sepia(.26) contrast(1.75) brightness(.82);
+}
+#soundGhost{
+  display:none;
+  z-index:5!important;
+  pointer-events:none;
+  mix-blend-mode:screen;
+  opacity:.42;
+  transition:opacity 1.8s;
+}
+body.audio-live #soundGhost{display:block}
+body.process-act.audio-live #soundGhost{opacity:.72}
+body.hide #vid,body.hide #soundGhost{opacity:0!important}
+@media(max-width:700px),(pointer:coarse){
+  #vid{right:3vw!important;top:7vh!important;width:min(43vw,210px)!important;opacity:.20}
+  body.process-act.cam-live #vid{opacity:.38}
+}
+</style>
+
+</head>
+<body>
+
+<canvas id="c"></canvas>
+<canvas id="bloom"></canvas>
+<canvas id="vid"></canvas>
+<canvas id="soundGhost"></canvas>
+<video id="v" autoplay muted playsinline></video>
+
+<div id="start">
+  <h1>PROMPT</h1>
+  <div class="ar">has a history</div>
+  <p>I use AI inside my practice. The narrative, research, identity, struggle, taste and responsibility remain mine.</p>
+  <div class="enter-modes">
+    <button class="btn" id="bCam">Enter with camera + audio</button>
+    <button class="btn" id="bMic">Enter with audio</button>
+    <button class="btn" id="bDemo">Enter without sensors</button>
+  </div>
+  <div class="sensor-note">Best experienced with <em>camera and room audio</em>. Both stay local in the browser: nothing is recorded, uploaded, or kept after the tab closes. Movement, light, breath, pitch and ambient sound become material, never identity.</div>
+  <div class="privacy-note">A short autobiographical field essay built inside the visual grammar of HAGEN.</div>
+</div>
+
+<div id="cal"><p>lytter til hagen</p><div class="bar"><div class="fil" id="calf"></div></div></div>
+
+<div id="whisper"></div>
+<div id="essay-note">Use ← and Act → to move. Hide controls with ◐.</div>
+<div id="narr"></div>
+<div id="actc"><div class="rn" id="acr">Akt I</div><div class="nm" id="acn">Kallet</div><div class="aa" id="aca">النداء</div><div class="ln"></div></div>
+
+<div id="hud">
+  <div class="c">
+    <div class="row"><span id="dot"></span><span class="v" id="stg">venter</span></div>
+    <div class="row"><span>huldra</span><span class="v" id="hv">0</span></div>
+    <div class="row"><span>tinn</span><span class="v" id="jv">0</span></div>
+    <div class="row"><span>sølv</span><span class="v" id="mev">0</span></div>
+  </div>
+  <div class="c r">
+    <div class="row"><span>akt</span><span class="v" id="av">—</span></div>
+    <div class="row"><span>lyd</span><span class="v" id="lv">0</span></div>
+    <div class="row"><span>bevegelse</span><span class="v" id="mv">0</span></div>
+    <div class="row"><span>lesning</span><span class="v" id="rd">—</span></div>
+  </div>
+</div>
+
+<div id="meter"></div>
+
+<div id="voice">
+  <canvas id="vcv" width="528" height="208"></canvas>
+  <div class="vr"><span>grunntone</span><span class="v" id="vhz">—</span></div>
+  <div class="vb i"><span>jern</span><i><b id="vbi"></b></i></div>
+  <div class="vb t"><span>tinn</span><i><b id="vbt"></b></i></div>
+  <div class="vb s"><span>sølv</span><i><b id="vbs"></b></i></div>
+  <div class="vn">grunntone lest med autokorrelasjon på romlyden<br>utstrekning i rommet · ikke fingersporing</div>
+</div>
+
+<div id="ctrl">
+  <div class="g">
+    <button class="cb ic" id="bPrev" title="Previous">←</button>
+    <button class="cb" id="bAct">Next →</button>
+    <button class="cb ic" id="bInfo" title="Research note" style="opacity:.5">i</button>
+    <button class="cb" id="bMeter">Meter</button>
+    <button class="cb" id="bVoice" style="opacity:.55">Stemme</button>
+    <button class="cb" id="bLang" style="opacity:.28" title="Norsk / English">NO</button>
+  </div>
+  <div class="g">
+    <button class="cb ic" id="bFs">⤢</button>
+    <button class="cb ic" id="bHide">◐</button>
+  </div>
+</div>
+
+<script>
+const $=i=>document.getElementById(i);
+const cv=$('c'),ctx=cv.getContext('2d',{alpha:false});
+const bl=$('bloom'),bx=bl.getContext('2d');
+// ── OPTISK FEEDBACK ──────────────────────────────────────────────
+// A real feedback loop, not a smear. The previous frame is re-projected
+// through its own transform each frame, so light leaves a trail that
+// curves, drifts and disperses instead of just fading in place.
+const fb=document.createElement('canvas');
+const fbx=fb.getContext('2d');
+fbx.imageSmoothingEnabled=true;fbx.imageSmoothingQuality='high';
+const FB={zoom:1,rot:0,driftX:0,driftY:0,gain:.44,taps:3};
+const vc=$('vid'),vx=vc.getContext('2d',{willReadFrequently:true});
+const sg=$('soundGhost'),sgx=sg.getContext('2d');
+const vid=$('v');
+let W,H,DPR;
+function resize(){
+  DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;
+  cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  bl.width=Math.max(1,W>>2);bl.height=Math.max(1,H>>2);
+  fb.width=Math.max(2,(W*DPR)>>1);fb.height=Math.max(2,(H*DPR)>>1);
+  fbx.imageSmoothingEnabled=true;fbx.imageSmoothingQuality='high';
+  fbx.clearRect(0,0,fb.width,fb.height);
+  vc.width=96;vc.height=72;
+  sg.width=W*DPR;sg.height=H*DPR;sg.style.width=W+'px';sg.style.height=H+'px';
+  sgx.setTransform(DPR,0,0,DPR,0,0);
+  buildWorld();
+}
+addEventListener('resize',resize);
+addEventListener('orientationchange',()=>setTimeout(resize,250));
+
+const lerp=(a,b,t)=>a+(b-a)*t;
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+
+/* ═══════ PALETTE ═══════ */
+const PAL={
+  fire:[238,108,48],ember:[206,134,62],gold:[219,182,96],blood:[146,42,42],
+  aqua:[96,190,200],water:[42,108,140],deep:[26,60,96],huld:[104,150,160],
+  bone:[216,205,172],moss:[42,66,46],forest:[10,22,20],mist:[92,112,120],dust:[184,168,142]
+};
+
+/* ═══════════════════════════════════════════
+   AUDIO — with automatic gain so it ALWAYS reacts
+   ═══════════════════════════════════════════ */
+let ac,an,fd,td,BINS=0,listening=false,seeingCam=false;
+const A={
+  raw:new Float32Array(8), n:new Float32Array(8), peak:new Float32Array(8).fill(.05),
+  f:new Float32Array(32), fpeak:new Float32Array(32).fill(.05), fAvg:new Float32Array(32),
+  low:0, mid:0, high:0, centroid:.5, spread:0,
+  onset:0, onLow:0, onMid:0, onHigh:0, onHist:[],
+  hitLow:0, hitMid:0, hitHigh:0,
+  bass:0, bassN:0, bassPeak:.14, bassAvg:0, bassHit:0, kick:0,
+  rms:0, rmsN:0, rmsPeak:.02, gate:1, floor:.01,
+  flux:0, prev:null,
+  beat:0, beatAt:0, bpm:0, beatTimes:[], hist:[],
+  motion:0, motionN:0, motionPeak:.02, mx:.5, my:.5, mValid:0, prevFrame:null,
+  mxFast:.5, myFast:.5, motionBurst:0, occupancy:0,
+  cal:false, calStart:0, calSamples:[],
+  presence:0
+};
+// band edges as fraction of usable spectrum
+const BANDS=[[0,.012],[.012,.035],[.035,.07],[.07,.13],[.13,.24],[.24,.40],[.40,.62],[.62,.90]];
+
+/* ═══════════════════════════════════════════
+   STEMME — a pitch read as material, not as gender
+
+   The reading is an acoustic measurement and nothing more. It reports
+   the fundamental frequency of whatever is sounding near the mic. It
+   does not know, and must not be built to claim, anything about the
+   body that produced it. Low readings pull toward jern, high toward
+   tinn, and the middle band — where the measurement genuinely cannot
+   commit — is not forced to a side. It reads as sølv, which is
+   Mélusine, whose whole nature in this piece is the refusal to be
+   one thing. Ambiguity is a result here, not a failure.
+   ═══════════════════════════════════════════ */
+const VOICE={
+  on:false,
+  hz:0, hzS:0, conf:0,
+  t:.5, iron:0, tin:0, silver:0,
+  quiet:0, word:'—',
+  wave:new Float32Array(160),
+  ext:{x0:.5,y0:.5,x1:.5,y1:.5,v:0,span:0,valid:0}
+};
+const V_LO=85, V_HI=255;   // anchor frequencies for the two metals
+let VC=null;               // correlation scratch, allocated once
+
+// Autocorrelation, run on the buffer the piece already captures.
+// No model and no library: slide the signal against itself and find
+// the lag at which it best agrees with itself. That lag is the period.
+function readVoice(){
+  if(!an||!ac||!A.cal)return;
+  const N=td.length;
+  const buf=new Float32Array(N);
+  let e0=0;
+  for(let i=0;i<N;i++){const x=(td[i]-128)/128;buf[i]=x;e0+=x*x;}
+  const rms=Math.sqrt(e0/N);
+  const wl=VOICE.wave.length;
+  for(let i=0;i<wl;i++)VOICE.wave[i]=buf[((i*N/wl)|0)];
+
+  // below the room's own noise floor there is nothing to read, and the
+  // honest thing is to report nothing rather than a number
+  if(rms<Math.max(.011,A.floor*1.5)){
+    VOICE.quiet++;
+    if(VOICE.quiet>8){
+      VOICE.conf=lerp(VOICE.conf,0,.14);
+      if(VOICE.conf<.06){VOICE.hz=0;VOICE.word='—';}
+    }
+    decayVoice();
+    return;
+  }
+  VOICE.quiet=0;
+
+  const sr=ac.sampleRate;
+  const minLag=Math.max(2,Math.floor(sr/440));
+  const maxLag=Math.min(N-2,Math.floor(sr/65));
+  const norm=(e0/N)||1e-9;
+  if(!VC||VC.length<maxLag+1)VC=new Float32Array(maxLag+1);
+  let best=0;
+  for(let lag=minLag;lag<=maxLag;lag++){
+    let s=0,n=0;
+    for(let i=0;i+lag<N;i+=2){s+=buf[i]*buf[i+lag];n++;}
+    const c=n?(s/n)/norm:0;
+    VC[lag]=c;
+    if(c>best)best=c;
+  }
+  // A periodic signal agrees with itself at every multiple of its
+  // period, so taking the single largest peak lands an octave or two
+  // low at random. Take instead the shortest lag that comes within
+  // reach of the best one: that is the actual period.
+  let bestLag=-1;
+  if(best>0){
+    const thr=best*.90;
+    for(let lag=minLag+1;lag<maxLag;lag++){
+      if(VC[lag]>=thr&&VC[lag]>=VC[lag-1]&&VC[lag]>=VC[lag+1]){bestLag=lag;break;}
+    }
+    if(bestLag<0)for(let lag=minLag;lag<=maxLag;lag++)if(VC[lag]===best){bestLag=lag;break;}
+  }
+  const conf=bestLag>0?clamp(VC[bestLag],0,1):0;
+
+  if(bestLag>0&&conf>.34){
+    // sub-sample the peak so the number does not jitter between bins
+    let lagR=bestLag;
+    if(bestLag>minLag&&bestLag<maxLag){
+      const a=VC[bestLag-1],b=VC[bestLag],d=VC[bestLag+1],den=a-2*b+d;
+      if(den!==0)lagR=bestLag+.5*(a-d)/den;
+    }
+    const hz=sr/lagR;
+    if(hz>60&&hz<460){
+      VOICE.hz=VOICE.hz>0?lerp(VOICE.hz,hz,.28):hz;
+      VOICE.conf=lerp(VOICE.conf,conf,.25);
+    }
+  }else{
+    VOICE.conf=lerp(VOICE.conf,conf*.5,.15);
+    if(VOICE.conf<.06){VOICE.hz=0;VOICE.word='—';}
+  }
+  decayVoice();
+}
+
+function decayVoice(){
+  VOICE.hzS=VOICE.hz>0?lerp(VOICE.hzS||VOICE.hz,VOICE.hz,.2):lerp(VOICE.hzS,0,.08);
+  if(VOICE.hz>0)VOICE.t=lerp(VOICE.t,clamp((VOICE.hz-V_LO)/(V_HI-V_LO),0,1),.18);
+  else VOICE.t=lerp(VOICE.t,.5,.03);
+  // how little the reading commits: near the middle of the range, or
+  // weakly correlated, or both
+  const mid=1-Math.min(1,Math.abs(VOICE.t-.5)*2.3);
+  const unsure=clamp(mid*.72+(1-VOICE.conf)*.42,0,1)*(VOICE.hz>0?1:VOICE.conf);
+  VOICE.silver=lerp(VOICE.silver,unsure,.12);
+  const commit=VOICE.conf*(1-VOICE.silver*.62);
+  VOICE.iron=lerp(VOICE.iron,clamp((1-VOICE.t)*commit,0,1),.14);
+  VOICE.tin =lerp(VOICE.tin ,clamp(VOICE.t*commit,0,1),.14);
+  if(VOICE.hz<=0)VOICE.word='—';
+  else if(VOICE.silver>Math.max(VOICE.iron,VOICE.tin))VOICE.word='sølv';
+  else VOICE.word=VOICE.iron>VOICE.tin?'jern':'tinn';
+}
+
+function initAudio(){
+  ac=new (window.AudioContext||window.webkitAudioContext)();
+  an=ac.createAnalyser();an.fftSize=2048;an.smoothingTimeConstant=.7;
+  BINS=an.frequencyBinCount;fd=new Uint8Array(BINS);td=new Uint8Array(an.fftSize);
+}
+async function startMic(){
+  try{
+    const s=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+    if(!ac)initAudio();
+    if(ac.state==='suspended')await ac.resume();
+    ac.createMediaStreamSource(s).connect(an);
+    listening=true;
+    A.cal=false;A.calSamples=[];A.calStart=performance.now();
+    $('cal').classList.add('on');
+    return true;
+  }catch(e){alert('Fikk ikke tilgang til mikrofonen:\n'+e.message);return false;}
+}
+async function startCam(){
+  try{
+    const s=await navigator.mediaDevices.getUserMedia({video:{width:320,height:240,facingMode:'user'}});
+    vid.srcObject=s;await vid.play();seeingCam=true;return true;
+  }catch(e){console.warn('kamera:',e.message);return false;}
+}
+
+function readAudio(){
+  if(!an)return;
+  an.getByteFrequencyData(fd);
+  an.getByteTimeDomainData(td);
+
+  // time-domain rms
+  let s=0;
+  for(let i=0;i<td.length;i+=2){const x=(td[i]-128)/128;s+=x*x;}
+  A.rms=Math.sqrt(s/(td.length/2));
+
+  // calibration
+  if(!A.cal){
+    const el=performance.now()-A.calStart;
+    $('calf').style.width=Math.min(100,el/3000*100)+'%';
+    A.calSamples.push(A.rms);
+    if(el>=3000){
+      A.calSamples.sort((a,b)=>a-b);
+      const med=A.calSamples[A.calSamples.length>>1];
+      A.floor=Math.max(.004,med*1.35);   // this is what the empty room sounds like
+      A.rmsPeak=Math.max(.03,med*5);
+      A.cal=true;$('cal').classList.remove('on');
+      showTitle(4000);
+    }
+    return;
+  }
+
+  // NOISE GATE — below the room's own floor, the garden hears nothing.
+  // Silence must read as silence, not as amplified hiss.
+  const above=Math.max(0,A.rms-A.floor);
+  const gate=clamp(above/(A.floor*1.6+1e-6),0,1);
+  A.gate=lerp(A.gate,gate,gate>A.gate?.35:.06);   // opens fast, closes slowly
+
+  A.rmsPeak=Math.max(above,A.rmsPeak*.9985,.006);
+  A.rmsN=clamp(above/A.rmsPeak,0,1)*A.gate;
+
+  // bands, auto-gained then gated
+  const usable=Math.floor(BINS*.75);
+  for(let b=0;b<8;b++){
+    const lo=Math.floor(BANDS[b][0]*usable),hi=Math.max(lo+1,Math.floor(BANDS[b][1]*usable));
+    let sum=0;for(let i=lo;i<hi;i++)sum+=fd[i];
+    const v=sum/(hi-lo)/255;
+    A.raw[b]=v;
+    A.peak[b]=Math.max(v,A.peak[b]*.997,.03);
+    A.n[b]=clamp(v/A.peak[b],0,1)*A.gate;
+  }
+
+  // FINE SPECTRUM — 32 log-spaced bands, each with its own auto-gain.
+  // Starts at bin 2: bin 0 is DC and bin 1 is below hearing, and letting
+  // them into the low bands was starving the bass of real content.
+  let cw=0,cs=0,lowSum=0,midSum=0,hiSum=0;
+  for(let k=0;k<32;k++){
+    const lo=2+Math.floor((usable-2)*Math.pow(k/32,1.9));
+    const hi=Math.max(lo+1,2+Math.floor((usable-2)*Math.pow((k+1)/32,1.9)));
+    let sum=0;for(let i=lo;i<hi;i++)sum+=fd[i];
+    const v=sum/(hi-lo)/255;
+    A.fpeak[k]=Math.max(v,A.fpeak[k]*.996,.025);
+    const nv=clamp(v/A.fpeak[k],0,1)*A.gate;
+    A.f[k]=lerp(A.f[k],nv,nv>A.f[k]?.55:.18);
+    cw+=A.f[k]*k;cs+=A.f[k];
+    if(k<11)lowSum+=A.f[k];else if(k<21)midSum+=A.f[k];else hiSum+=A.f[k];
+  }
+  A.low=lowSum/11;A.mid=midSum/10;A.high=hiSum/11;
+  A.centroid=cs>0.001?clamp(cw/cs/31,0,1):.5;
+  A.spread=clamp(cs/32*2.2,0,1);
+
+  // ── BASS, MEASURED PROPERLY ──────────────────────────────────
+  // Read in Hz, not in bin fractions, so it lands on where a kick
+  // actually lives (roughly 35 to 150 Hz) whatever the sample rate is.
+  const binHz=(ac?ac.sampleRate:44100)/an.fftSize;
+  const kLo=Math.max(1,Math.round(35/binHz)),kHi=Math.max(kLo+2,Math.round(150/binHz));
+  let bsum=0;for(let i=kLo;i<kHi;i++)bsum+=fd[i]*fd[i];
+  A.bass=Math.sqrt(bsum/(kHi-kLo))/255;      // energy, not average: punchier
+
+  // Auto-gain with a high floor, so bass keeps its dominance instead of
+  // being flattened up to the level of everything else.
+  A.bassPeak=Math.max(A.bass,A.bassPeak*.9975,.10);
+  A.bassN=clamp(A.bass/A.bassPeak,0,1)*A.gate;
+
+  // Transient: how far above its own recent average this instant sits.
+  // This is what makes a kick read as a hit and a sustained sub not.
+  A.bassAvg=lerp(A.bassAvg,A.bassN,.045);
+  const excess=Math.max(0,A.bassN-A.bassAvg);
+  A.bassHit=Math.max(A.bassHit*.80,clamp(excess*3.4,0,1));
+  A.kick=clamp(A.bassN*.55+A.bassHit*.75,0,1);
+
+  // ── ANSLAG I HELE SPEKTERET ──────────────────────────────────
+  // A kick is only one kind of beat. A snare, a hat, a plucked string,
+  // a breath at the start of a word — each is an onset in its own part
+  // of the spectrum. Every one of the 32 bands is watched for a rise
+  // above its own recent level, so nothing that has an attack is missed.
+  let oL=0,oM=0,oH=0;
+  for(let k=0;k<32;k++){
+    const d=Math.max(0,A.f[k]-A.fAvg[k]);
+    A.fAvg[k]=lerp(A.fAvg[k],A.f[k],A.f[k]>A.fAvg[k]?.08:.05);
+    if(k<11)oL+=d;else if(k<21)oM+=d;else oH+=d;
+  }
+  A.onLow=clamp(oL/11*4.2,0,1);
+  A.onMid=clamp(oM/10*4.6,0,1);
+  A.onHigh=clamp(oH/11*4.4,0,1);
+  A.onset=clamp((oL+oM+oH)/32*4.6,0,1);
+  A.hitLow=Math.max(A.hitLow*.80,A.onLow);
+  A.hitMid=Math.max(A.hitMid*.80,A.onMid);
+  A.hitHigh=Math.max(A.hitHigh*.78,A.onHigh);
+
+  // spectral flux
+  let fx=0;
+  if(A.prev){for(let i=0;i<usable;i+=2){const d=fd[i]/255-A.prev[i];if(d>0)fx+=d;}fx/=(usable/2);}
+  else A.prev=new Float32Array(BINS);
+  for(let i=0;i<usable;i++)A.prev[i]=fd[i]/255;
+  A.flux=fx;
+
+  detectBeat();
+  A.presence=clamp(A.rmsN*.8+A.motionN*.6,0,1);
+}
+
+function detectBeat(){
+  // Adaptive onset threshold over the whole spectrum. Fires on kicks,
+  // snares, hats, plucks and vocal attacks alike — anything with a rise.
+  const o=A.onset;
+  A.onHist.push(o);if(A.onHist.length>45)A.onHist.shift();
+  if(A.onHist.length<12)return;
+  let m=0;for(const v of A.onHist)m+=v;m/=A.onHist.length;
+  let vr=0;for(const v of A.onHist)vr+=(v-m)*(v-m);vr/=A.onHist.length;
+  const th=Math.max(.055,m*1.30+Math.sqrt(vr)*.85);
+  const now=performance.now();
+
+  // a hard kick always counts, even if the rest of the mix is busy
+  const kickHit=A.bassHit>.48;
+  if((o>th||kickHit)&&now-A.beatAt>128){
+    A.beatAt=now;A.beat=1;
+    // strength and colour of the hit, so the two figures answer
+    // whichever part of the spectrum actually struck
+    const str=clamp(Math.max(o/Math.max(th,.001)-1,0)*.8+(kickHit?.55:0)+o*.6,.15,1);
+    const lowShare=clamp(A.onLow+A.bassHit*.8,0,1);
+    const highShare=clamp(A.onHigh+A.onMid*.5,0,1);
+    onBeat(str,lowShare,highShare);
+    // BPM only tracks the low end, where the pulse of a track lives
+    if(kickHit||A.onLow>A.onHigh){
+      A.beatTimes.push(now);if(A.beatTimes.length>14)A.beatTimes.shift();
+      if(A.beatTimes.length>3){
+        const iv=[];for(let i=1;i<A.beatTimes.length;i++)iv.push(A.beatTimes[i]-A.beatTimes[i-1]);
+        iv.sort((x,y)=>x-y);A.bpm=Math.round(60000/iv[iv.length>>1]);
+      }
+    }
+  }
+  A.beat*=.9;
+}
+
+function readMotion(){
+  if(!seeingCam||vid.readyState<2)return;
+  vx.drawImage(vid,0,0,vc.width,vc.height);
+  const cur=vx.getImageData(0,0,vc.width,vc.height).data;
+  if(!A.prevFrame){A.prevFrame=new Uint8ClampedArray(cur);return;}
+  const w=vc.width,h=vc.height;
+  let tot=0,sx=0,sy=0,sw=0;
+  // extent: the bounding box of everything that changed in this frame.
+  // This is frame differencing, not segmentation and not a pose model,
+  // so it can say roughly where and how wide something moving is and
+  // nothing more precise than that.
+  let x0=w,y0=h,x1=0,y1=0,cnt=0;
+  for(let y=0;y<h;y+=2)for(let x=0;x<w;x+=2){
+    const i=(y*w+x)*4;
+    const d=Math.abs(cur[i]-A.prevFrame[i])+Math.abs(cur[i+1]-A.prevFrame[i+1]);
+    if(d>20){
+      tot+=d;sx+=x*d;sy+=y*d;sw+=d;
+      if(d>34){cnt++;if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
+    }
+  }
+  const E=VOICE.ext;
+  if(cnt>36&&x1>x0&&y1>y0){
+    const k=.16;
+    E.x0=lerp(E.x0,1-x1/w,k);E.x1=lerp(E.x1,1-x0/w,k);
+    E.y0=lerp(E.y0,y0/h,k);E.y1=lerp(E.y1,y1/h,k);
+    E.valid=lerp(E.valid,1,.12);
+    E.v=lerp(E.v,clamp(cnt/((w*h)/4)*3.2,0,1),.12);
+  }else E.valid=lerp(E.valid,0,.05);
+  E.span=Math.max(0,E.x1-E.x0)*E.valid;
+  const n=(w*h)/4;
+  A.motion=tot/(n*60);
+  A.motionPeak=Math.max(A.motion,A.motionPeak*.997,.01);
+  A.motionN=clamp(A.motion/A.motionPeak,0,1);
+  if(sw>0){
+    A.mx=lerp(A.mx,1-(sx/sw)/w,.12);
+    A.my=lerp(A.my,(sy/sw)/h,.12);
+    A.mValid=lerp(A.mValid,1,.1);
+  }else A.mValid=lerp(A.mValid,0,.05);
+  A.prevFrame.set(cur);
+}
+
+/* ═══════════════════════════════════════════
+   ACTS — ritual that always keeps moving
+   ═══════════════════════════════════════════ */
+const ACTS=[
+ {rn:'',rnE:'',nm:'Did you make this with AI?',nmE:'Did you make this with AI?',ar:'',stage:.05,pull:.03,dur:26000,lines:[
+   {at:.05,t:'n',x:'Did you make this with AI?',e:'Did you make this with AI?'},
+   {at:.32,t:'n',x:'Yes.',e:'Yes.'},
+   {at:.58,t:'w',x:'A tool is not a life.',e:'A tool is not a life.'},
+   {at:.86,t:'n',x:'The work begins where judgement enters.',e:'The work begins where judgement enters.'}]},
+
+ {rn:'I',rnE:'I',nm:'The hand and the track',nmE:'The hand and the track',ar:'',stage:.22,pull:.08,dur:28000,lines:[
+   {at:.10,t:'n',x:'A track exists before anyone puts a hand to it.',e:'A track exists before anyone puts a hand to it.'},
+   {at:.38,t:'w',x:'The track was available. The judgement was not.',e:'The track was available. The judgement was not.'},
+   {at:.65,t:'n',x:'A tool trains the hand that uses it. The hand still answers for where it goes.',e:'A tool trains the hand that uses it. The hand still answers for where it goes.'},
+   {at:.90,t:'n',x:'A short prompt can be brief because the practice behind it was long.',e:'A short prompt can be brief because the practice behind it was long.'}]},
+
+ {rn:'II',rnE:'II',nm:'The misreading',nmE:'The misreading',ar:'',stage:.46,pull:.20,dur:30000,lines:[
+   {at:.10,t:'n',x:'A model has no lived experience. Only patterns, and a habit of calling the most common one true.',e:'A model has no lived experience. Only patterns, and a habit of calling the most common one true.'},
+   {at:.40,t:'w',x:'The familiar gets mistaken for the correct.',e:'The familiar gets mistaken for the correct.'},
+   {at:.68,t:'n',x:'I return with a correction. Not decoration: a record of exactly where the system was wrong.',e:'I return with a correction. Not decoration: a record of exactly where the system was wrong.'},
+   {at:.92,t:'n',x:'This is where digital ethics enters, as a practice of checking, not a rule to recite.',e:'This is where digital ethics enters, as a practice of checking, not a rule to recite.'}]},
+
+ {rn:'III',rnE:'III',nm:'The archive',nmE:'The archive',ar:'',stage:.62,pull:.38,dur:30000,lines:[
+   {at:.10,t:'n',x:'The archive keeps more than success.',e:'The archive keeps more than success.'},
+   {at:.38,t:'n',x:'The wrong size. The broken host. The fix that broke another fix.',e:'The wrong size. The broken host. The fix that broke another fix.'},
+   {at:.65,t:'n',x:'Pride Park, BERGTATT, HAGEN: each mistake leaves a method behind.',e:'Pride Park, BERGTATT, HAGEN: each mistake leaves a method behind.'},
+   {at:.90,t:'w',x:'Failure becomes infrastructure.',e:'Failure becomes infrastructure.'}]},
+
+ {rn:'IV',rnE:'IV',nm:'Several days',nmE:'Several days',ar:'',stage:.82,pull:.62,dur:52000,lines:[
+   {at:.04,t:'w',x:'HAGEN did not arrive in one prompt.',e:'HAGEN did not arrive in one prompt.'},
+   {at:.18,t:'n',x:'Several days in Claude Code, turning one question into smaller ones: how can a room join a narrative without becoming surveillance?',e:'Several days in Claude Code, turning one question into smaller ones: how can a room join a narrative without becoming surveillance?'},
+   {at:.34,t:'n',x:'First the world: canvas, bodies, roots, mist, light, water.',e:'First the world: canvas, bodies, roots, mist, light, water.'},
+   {at:.48,t:'n',x:'Then the microphone: local only, calibrated to the actual room, never routed anywhere else.',e:'Then the microphone: local only, calibrated to the actual room, never routed anywhere else.'},
+   {at:.62,t:'n',x:'Then the camera: frame differencing, not a face. It can say something moved. It cannot say who.',e:'Then the camera: frame differencing, not a face. It can say something moved. It cannot say who.'},
+   {at:.76,t:'w',x:'Voice became a rough pitch through autocorrelation, nothing that could claim a gender.',e:'Voice became a rough pitch through autocorrelation, nothing that could claim a gender.'},
+   {at:.88,t:'n',x:'Every correction changed the next instruction.',e:'Every correction changed the next instruction.'},
+   {at:.96,t:'n',x:'That is what several days looked like: not asking for HAGEN, but learning to describe it precisely, and responsibly, enough to exist.',e:'That is what several days looked like: not asking for HAGEN, but learning to describe it precisely, and responsibly, enough to exist.'}]},
+
+ {rn:'V',rnE:'V',nm:'The practice',nmE:'The practice',ar:'',stage:.84,pull:.70,dur:28000,lines:[
+   {at:.10,t:'n',x:'When AI codes, I watch.',e:'When AI codes, I watch.'},
+   {at:.40,t:'n',x:'What state remembers. What breaks on mobile. What accessibility changes.',e:'What state remembers. What breaks on mobile. What accessibility changes.'},
+   {at:.68,t:'w',x:'The prompt gets smarter because I do.',e:'The prompt gets smarter because I do.'},
+   {at:.90,t:'n',x:'My agent became a studio because I kept bringing the work back into it.',e:'My agent became a studio because I kept bringing the work back into it.'}]},
+
+ {rn:'VI',rnE:'VI',nm:'The refusal',nmE:'The refusal',ar:'',stage:.94,pull:.84,dur:30000,lines:[
+   {at:.10,t:'n',x:'I use AI, and I still call out AI slop.',e:'I use AI, and I still call out AI slop.'},
+   {at:.38,t:'w',x:'How was it made. Why. What is it trying to do.',e:'How was it made. Why. What is it trying to do.'},
+   {at:.66,t:'n',x:'Ethics, agency and distribution matter more than whether a tool was present.',e:'Ethics, agency and distribution matter more than whether a tool was present.'},
+   {at:.90,t:'w',x:'Consent, not convenience, decides what a sensor is allowed to know.',e:'Consent, not convenience, decides what a sensor is allowed to know.'}]},
+
+ {rn:'VII',rnE:'VII',nm:'The writing',nmE:'The writing',ar:'',stage:1,pull:.98,dur:30000,lines:[
+   {at:.10,t:'n',x:'A friend might use their agent to translate.',e:'A friend might use their agent to translate.'},
+   {at:.40,t:'n',x:'Mine became a studio for research, folklore, code and autobiography.',e:'Mine became a studio for research, folklore, code and autobiography.'},
+   {at:.68,t:'w',x:'The writing is me.',e:'The writing is me.'},
+   {at:.90,t:'w',x:'I lived the story. The machine did not.',e:'I lived the story. The machine did not.'}]},
+
+ {rn:'',rnE:'',nm:'',nmE:'',ar:'',stage:.34,pull:.20,dur:22000,lines:[
+   {at:.15,t:'n',x:'The next project begins differently because this one happened.',e:'The next project begins differently because this one happened.'},
+   {at:.50,t:'n',x:'The mistake remains. The correction remains. The judgement remains.',e:'The mistake remains. The correction remains. The judgement remains.'},
+   {at:.78,t:'w',x:'THE PROMPT HAS A HISTORY',e:'THE PROMPT HAS A HISTORY'},
+   {at:.94,t:'n',x:'Hayles · Barad · Norman · Hutchins · Rettberg · Turing',e:'Hayles · Barad · Norman · Hutchins · Rettberg · Turing'}]}
+];
+const STAGE_NO=['question','wheel','misreading','archive','build','practice','refusal','writing','afterimage'];
+const STAGE_EN=['question','wheel','misreading','archive','build','practice','refusal','writing','afterimage'];
+let LANG='en';
+let act=0,actAt=0,lineI=0,stageStr=0;
+
+function gotoAct(i){
+  act=(i+ACTS.length)%ACTS.length;
+  document.body.classList.toggle('process-act',act===4);
+  actAt=performance.now();lineI=0;
+  NAR.charge=0;queuedLine=null;
+  const a=ACTS[act];
+  const en=LANG==='en';
+  const rn=en?a.rnE:a.rn;
+  $('av').textContent=rn?rn.replace(/^(Akt|Act) /,''):(act===0?(en?'pro':'pro'):'epi');
+  $('stg').textContent=(en?STAGE_EN:STAGE_NO)[act];
+  const cols=['#4a5f70','#7d6a52','#9a7b56','#b17b55','#d09a59','#d4884a','#e07a3c','#ef6c30','#7d6a52'];
+  $('dot').style.background=cols[act];
+  $('dot').style.boxShadow=act>=3?`0 0 ${8+act*4}px ${cols[act]}`:'none';
+  const nm=en?a.nmE:a.nm;
+  if(nm)showAct(rn,nm,a.ar);
+}
+
+// ── NARRATIV ENERGI ──────────────────────────────────────────────
+// The ritual does not run on a clock. It runs on what the room gives it.
+// Intensity charges the act forward, a build accelerates it, a drop can
+// break an act open early, and silence lets it fall back.
+const NAR={charge:0,intensity:0,eFast:0,eSlow:0,build:0,drop:0,dropArmed:0,lastTick:0};
+let queuedLine=null,queuedAt=0;
+
+function updateNarrativeEnergy(now){
+  // every nuance feeds this: loudness, attack density, spectral width,
+  // bodies in the room
+  const E=clamp(A.rmsN*.42+A.onset*.30+A.spread*.22+A.motionN*.30+A.kick*.18,0,1);
+  NAR.eFast=lerp(NAR.eFast,E,.085);
+  NAR.eSlow=lerp(NAR.eSlow,E,.012);
+  NAR.intensity=NAR.eFast;
+  NAR.build=clamp((NAR.eFast-NAR.eSlow)*3.4,0,1);   // energy rising
+  NAR.drop=clamp((NAR.eSlow-NAR.eFast)*3.4,0,1);    // the floor falling out
+  // a drop only counts as a drop if it followed a real high
+  if(NAR.eFast>.55)NAR.dropArmed=1;
+  if(NAR.eFast<.22)NAR.dropArmed*=.985;
+}
+
+function updateActs(now){
+  const a=ACTS[act];
+  const demo=!listening&&!seeingCam;
+  updateNarrativeEnergy(now);
+  const dtMs=Math.min(120,now-(NAR.lastTick||now));
+  NAR.lastTick=now;
+
+  if(!demo&&A.presence<.10){
+    stillSince=stillSince||now;
+    // Quietness now changes the visual energy only.
+    // It never removes or rewinds the text.
+    stageStr=lerp(stageStr,a.stage*.72,.012);
+  }else stillSince=0;
+
+  // How fast the story moves. A quiet room barely advances it. A room
+  // full of sound and movement pushes it. A build shoves it forward.
+  const rate=demo?1:clamp(.72+NAR.intensity*1.35+NAR.build*.65+A.presence*.18,.68,2.8);
+  NAR.charge+=dtMs*rate;
+  const el=NAR.charge;
+
+  // Lines become due on narrative charge, then wait for the next beat so
+  // the words land with the music instead of across it.
+  if(!queuedLine&&lineI<a.lines.length&&el>=a.lines[lineI].at*a.dur){
+    queuedLine=a.lines[lineI];queuedAt=now;lineI++;
+  }
+  if(queuedLine){
+    const onBeatNow=now-A.beatAt<95;
+    if(demo||onBeatNow||now-queuedAt>1100){
+      lastLine=queuedLine;showLine(queuedLine);queuedLine=null;
+    }
+  }
+
+  // A hard drop late in an act tears it open early — the moment the
+  // music falls away is the moment the story turns.
+  const dropBreak=NAR.dropArmed>.5&&NAR.drop>.55&&el>a.dur*.72&&lineI>=a.lines.length-1;
+  if(el>a.dur||dropBreak){NAR.dropArmed=0;gotoAct(act+1);}
+
+  // the stage itself leans on intensity, so a loud act burns hotter
+  stageStr=lerp(stageStr,clamp(a.stage*(.82+NAR.intensity*.30),0,1),.02);
+}
+let stillSince=0,lastActTick=0,lastLine=null;
+
+function lineText(L){return (LANG==='en'&&L.e)?L.e:L.x;}
+function showLine(L){
+  const txt=lineText(L);
+  if(L.t==='n')showNarr(txt);else showWhisper(txt);
+}
+
+// Discreet language toggle. The piece should read as one work in either
+// tongue, and the Arabic and Urdu stay untranslated in both — they are
+// the figures' own voices, not the narrator's.
+function setLang(l){
+  LANG=l;
+  const en=l==='en';
+  const a=ACTS[act];
+  $('bLang').textContent=en?'EN':'NO';
+  $('bLang').style.opacity=.9;
+  setTimeout(()=>{$('bLang').style.opacity=.28;},900);
+  $('bAct').textContent=en?'Act →':'Akt →';
+  $('bMeter').textContent=en?'Meter':'Meter';
+  $('stg').textContent=(en?STAGE_EN:STAGE_NO)[act];
+  const rn=en?a.rnE:a.rn;
+  $('av').textContent=rn?rn.replace(/^(Akt|Act) /,''):(act===0?'pro':'epi');
+  // labels in the HUD
+  const lb=document.querySelectorAll('#hud .row span:first-child');
+  const noL=['','huldra','jinn','akt','lyd','bevegelse'];
+  const enL=['','huldra','jinn','act','sound','motion'];
+  const src=en?enL:noL;
+  let i=0;
+  document.querySelectorAll('#hud .row').forEach(r=>{
+    const s=r.querySelector('span');
+    if(s&&!s.id&&src[i])s.textContent=src[i];
+    i++;
+  });
+  // swap whatever is on screen right now, so the button has an effect
+  // you can actually see instead of waiting for the next cue
+  const card=$('actc');
+  if(card.classList.contains('on')){
+    const nm=en?a.nmE:a.nm;
+    $('acr').textContent=rn||'';
+    if(nm)$('acn').textContent=nm;
+  }
+  if(lastLine){
+    const w=$('whisper'),n=$('narr');
+    if((lastLine.t==='n'&&n.classList.contains('on'))||
+       (lastLine.t!=='n'&&w.classList.contains('on'))){
+      const txt=lineText(lastLine);
+      if(lastLine.t==='n'){
+        n.className='';n.textContent=txt;
+        if(isUr(txt))n.classList.add('ur');else if(isAr(txt))n.classList.add('ar');
+        n.classList.add('on');
+      }else{
+        w.className='';w.textContent=txt;
+        if(isUr(txt))w.classList.add('ur');else if(isAr(txt))w.classList.add('ar');
+        if(isUp(txt))w.classList.add('loud');
+        w.classList.add('on');
+      }
+    }
+  }
+}
+
+
+/* text */
+// Urdu and Arabic share a script block but not a typographic tradition:
+// Urdu wants Nastaliq, Arabic wants Naskh. These letters only occur in Urdu.
+const isUr=s=>/[\u0679\u0688\u0691\u06BA\u06BE\u06C1\u06C2\u06C3\u06CC\u06D2\u0698\u06AF\u0686\u067E]/.test(s);
+const isAr=s=>/[\u0600-\u06FF]/.test(s);
+const isUp=s=>{const a=s.replace(/[^A-ZÆØÅa-zæøå]/g,'');return a&&a===a.toUpperCase();};
+let wT,nT,aT;
+// ── SENTERKØ ─────────────────────────────────────────────────────
+// The act card and the whispers occupy the same space in the middle.
+// Only one may hold it at a time; anything that arrives while it is
+// taken waits its turn instead of stacking on top.
+let centerUntil=0, pending=null;
+function centerFree(now){return now>=centerUntil;}
+function claimCenter(now,ms){centerUntil=now+ms;}
+function flushCenter(now){
+  if(pending&&now>=pending.at){const p=pending;pending=null;showWhisper(p.x);}
+}
+function showWhisper(x){
+  const now=performance.now();
+  if(!centerFree(now)){pending={x,at:centerUntil+500};return;}
+  const e=$('whisper');e.className='';e.textContent=x;
+  if(isUr(x))e.classList.add('ur');else if(isAr(x))e.classList.add('ar');
+  if(isUp(x))e.classList.add('loud');
+  e.classList.add('on');
+  claimCenter(now,5600);
+  clearTimeout(wT);wT=setTimeout(()=>e.classList.remove('on'),5200);
+}
+function showNarr(x){
+  const e=$('narr');e.className='';e.textContent=x;
+  if(isUr(x))e.classList.add('ur');else if(isAr(x))e.classList.add('ar');
+  e.classList.add('on');clearTimeout(nT);nT=setTimeout(()=>e.classList.remove('on'),5600);
+}
+function showAct(r,n,a){
+  const now=performance.now();
+  // an act card always wins the centre: clear whatever is there
+  pending=null;
+  $('whisper').classList.remove('on');
+  $('acr').textContent=r;$('acn').textContent=n;$('aca').textContent=a;
+  $('actc').classList.add('on');
+  claimCenter(now,5800);
+  clearTimeout(aT);aT=setTimeout(()=>$('actc').classList.remove('on'),5200);
+}
+function showTitle(d){
+  const now=performance.now();
+  pending=null;
+  $('whisper').classList.remove('on');
+  $('acr').textContent='';$('acn').textContent='HAGEN';$('aca').textContent='الحديقة';
+  $('actc').classList.add('on');
+  claimCenter(now,d+600);
+  clearTimeout(aT);aT=setTimeout(()=>$('actc').classList.remove('on'),d);
+}
+
+/* ═══════════════════════════════════════════
+   WORLD — everything drifts, always
+   ═══════════════════════════════════════════ */
+let mistF=[],mistN=[],motes=[],embers=[],drops=[],roots=[],shafts=[];
+function buildWorld(){
+  mistF=[];for(let i=0;i<Math.max(8,(W*H/48000)|0);i++)mistF.push(mk(160,300,.05,.03));
+  mistN=[];for(let i=0;i<Math.max(6,(W*H/70000)|0);i++)mistN.push(mk(90,180,.16,.10));
+  motes=[];for(let i=0;i<Math.max(60,(W*H/6000)|0);i++)motes.push({
+    x:Math.random()*W,y:Math.random()*H,a:Math.random()*6.28,sp:.2+Math.random()*.8,
+    s:.4+Math.random()*1.4,tw:Math.random()*6.28,band:(Math.random()*8)|0});
+  embers=[];for(let i=0;i<40;i++)embers.push(mkE());
+  drops=[];for(let i=0;i<34;i++)drops.push(mkD());
+  roots=[];for(let i=0;i<7;i++)roots.push(mkRoot((W/7)*i+Math.random()*(W/7)));
+  shafts=[];for(let i=0;i<3;i++)shafts.push({x:W*(.18+i*.32),w:90+Math.random()*70,a:.13+Math.random()*.12});
+}
+function mk(r0,r1,vx,vy){return{x:Math.random()*W,y:Math.random()*H,r:r0+Math.random()*(r1-r0),
+  vx:(Math.random()-.5)*vx,vy:(Math.random()-.5)*vy,al:.02+Math.random()*.05,
+  ph:Math.random()*6.28,side:Math.random()<.5?0:1};}
+function mkE(){return{x:Math.random()*W*.55,y:H+Math.random()*80,vx:(Math.random()-.5)*.35,
+  vy:-(.3+Math.random()*.9),l:1,s:.7+Math.random()*1.9,f:Math.random()*6.28,d:.0012+Math.random()*.003};}
+function mkD(){return{x:W*.45+Math.random()*W*.55,y:-Math.random()*90,vx:(Math.random()-.5)*.25,
+  vy:.6+Math.random()*1.6,l:1,s:.9+Math.random()*1.9,d:.002+Math.random()*.003};}
+function mkRoot(x){
+  const p=[{x,y:H+20}];let cx=x,cy=H+20,a=-1.57+(Math.random()-.5)*.4;
+  for(let i=0;i<16+((Math.random()*8)|0);i++){
+    const l=14+Math.random()*22;cx+=Math.cos(a)*l;cy+=Math.sin(a)*l;
+    a=clamp(a+(Math.random()-.5)*.55,-2.8,-.35);p.push({x:cx,y:cy});}
+  return{p,th:2.5+Math.random()*4};
+}
+
+/* ═══════ ENTITIES ═══════ */
+function mkEnt(side,pal){return{x:0,y:0,R:60,br:Math.random()*6.28,e:0,core:0,
+  arms:[],hair:[],side,pal,sway:Math.random()*6.28};}
+const HU=mkEnt(0,[[235,105,50],[198,96,54],[150,74,56],[96,52,48]]);
+const JI=mkEnt(1,[[206,214,208],[150,188,192],[96,178,192],[58,104,128]]);
+// Mélusine is silver: cold, pale, moonlit, old stone. She is a
+// reflection before she is a body, so she lives mostly in the mirror.
+const ME=mkEnt(1,[[236,240,250],[196,204,226],[152,162,192],[104,112,142]]);
+ME.mirror=0;
+
+function placeEnts(){
+  const R=Math.min(W,H)*.075;
+  for(const e of [HU,JI,ME]){
+    e.R=R;e.arms=[];
+    const n=26;
+    for(let i=0;i<n;i++)e.arms.push({a:(i/n)*6.28,len:0,w:Math.random()*6.28,
+      ws:.015+Math.random()*.03,curl:(Math.random()-.5)*.5,band:i%8});
+  }
+  ME.R=R*.92;
+  HU.hair=[];for(let i=0;i<9;i++)HU.hair.push({o:(i-4)/4.5,ph:Math.random()*6.28,l:.75+Math.random()*.5});
+  JI.hair=[];for(let i=0;i<7;i++)JI.hair.push({o:(i-3)/3.5,ph:Math.random()*6.28,l:.95+Math.random()*.6});
+  ME.hair=[];for(let i=0;i<11;i++)ME.hair.push({o:(i-5)/5.5,ph:Math.random()*6.28,l:1.05+Math.random()*.7});
+}
+
+let pullT=0,approach=0,startleAt=0;
+function updateEnts(){
+  const live=listening||seeingCam;
+  // camera presence counts far more gently now — 6% instead of 14% —
+  // so a visitor standing quietly still registers, not just motion
+  const mo=A.motionN>.06?A.motionN:0;
+  const bass=A.bassN, hit=A.bassHit, kick=A.kick;
+  let hT,jT;
+  if(live){
+    const sleeping=A.presence<.10;
+    if(sleeping){hT=.09;jT=.06;}
+    else{
+      const tilt=A.centroid;
+      const hSpec=A.low*1.0+A.mid*(.75-tilt*.35)+A.high*.25;
+      const jSpec=A.high*1.0+A.mid*(.40+tilt*.35)+A.low*.20;
+      const detail=A.spread*.25;
+      hT=clamp(stageStr*.20+hSpec*.95+kick*1.15+detail+A.rmsN*.20+mo*.52,0,1);
+      jT=clamp(Math.max(0,stageStr-.15)*.20+jSpec*1.20+kick*.45+detail+A.rmsN*.20+mo*.52,0,1);
+      // the specific pitch of a voice in the room nudges who it wakes —
+      // low toward Huldra's iron, high toward the tin register
+      if(VOICE.hz>0){
+        hT=clamp(hT+(1-VOICE.t)*.10,0,1);
+        jT=clamp(jT+VOICE.t*.10,0,1);
+      }
+    }
+  }else{
+    hT=clamp(stageStr*.8+.15,0,1);
+    jT=clamp(Math.max(0,stageStr-.15)*.85+.1,0,1);
+  }
+  // a camera burst — someone stepping suddenly into frame — snaps them
+  // open the same way a hard beat does
+  const startle=A.motionBurst>.42;
+  HU.e=lerp(HU.e,hT,hT<HU.e?.05:.18+hit*.55+(startle?.3:0));
+  JI.e=lerp(JI.e,jT,jT<JI.e?.05:.16+hit*.25+(startle?.3:0));
+  HU.core=Math.max(HU.core*.90,HU.e*.32,hit*1.0,bass*.62,A.motionBurst*.7);
+  JI.core=Math.max(JI.core*.91,JI.e*.32,hit*.42,bass*.26,A.motionBurst*.5);
+  if(startle&&performance.now()-startleAt>260){
+    startleAt=performance.now();
+    onBeat(.5+A.motionBurst*.5,.5,.5);
+  }
+
+  // ── LENGSEL ──────────────────────────────────────────────
+  const a=ACTS[act];
+  pullT=lerp(pullT,a.pull,.012);
+  const tt=performance.now()*.001;
+  const amp=Math.sin(pullT*Math.PI)*.34;
+  const breathe=Math.sin(tt*.15)*.6+Math.sin(tt*.246+1.3)*.4;
+  const drawn=NAR.build*.30+kick*.22+hit*.12+NAR.intensity*.14;
+  const torn=NAR.drop*.34;
+  approach=clamp(pullT+breathe*amp+drawn-torn,0,1);
+
+  const meet=ease(approach);
+  const cX=W*.5;
+  // the figures lean toward wherever the camera actually sees you,
+  // tracked at the fast rate so it reads as noticing you, not drifting
+  const gz=A.mValid*.30, gx=(A.mxFast-.5)*W*gz, gy=(A.myFast-.5)*H*gz*.45;
+  const yC=H*.56-stageStr*H*.05;
+  const leanH=meet*W*.02, leanJ=-meet*W*.02;
+  const jolt=hit*W*.012;
+  HU.x=lerp(HU.x,W*.26+(cX-W*.26)*meet*.94+gx+leanH+jolt,.06+hit*.2+A.motionBurst*.12);
+  JI.x=lerp(JI.x,W*.74+(cX-W*.74)*meet*.94+gx+leanJ-jolt,.06+hit*.2+A.motionBurst*.12);
+  HU.y=lerp(HU.y,yC+gy+Math.sin(tt*.21)*8-hit*14,.05+hit*.2);
+  JI.y=lerp(JI.y,yC+gy-Math.sin(tt*.19)*10-hit*8,.05+hit*.15);
+
+  // ── MÉLUSINE ─────────────────────────────────────────────
+  const midE=clamp(A.mid*1.15+A.spread*.42+A.onMid*.55,0,1);
+  const actW=act===5?1:(act===6?.62:(act===4?.26:.07));
+  const meT=live?clamp(midE*.80*actW+stageStr*.20*actW+mo*.25*actW+VOICE.silver*.14,0,1)
+                :clamp(actW*.55,0,1);
+  ME.e=lerp(ME.e,meT,meT<ME.e?.035:.10);
+  ME.core=Math.max(ME.core*.94,ME.e*.30,A.hitMid*.55);
+  ME.mirror=lerp(ME.mirror,clamp(.40+ME.e*.85,0,1),.05);
+  ME.br+=.006+A.rmsN*.014;
+  ME.x=lerp(ME.x,(HU.x+JI.x)*.5,.04);
+  ME.y=lerp(ME.y,yC+gy-H*.055+Math.sin(tt*.13)*11,.04);
+}
+
+/* ═══════ BEAT FX ═══════ */
+let waves=[],sparks=[],threads=[],shake=0,flash=0;
+// str = how hard, lowShare/highShare = which end of the spectrum struck.
+// Huldra answers the low and the body of the sound, Aab-e-Jinn answers
+// the bright end, so a hat pattern lights her while a kick lights Huldra.
+function onBeat(str,lowShare,highShare){
+  str=str===undefined?.6:str;
+  lowShare=lowShare===undefined?.6:lowShare;
+  highShare=highShare===undefined?.4:highShare;
+  const s=.35+stageStr*.65;
+  const hAmt=clamp(lowShare*.85+str*.35,0,1);
+  const jAmt=clamp(highShare*.85+str*.35,0,1);
+
+  shake=Math.min(1,shake+lowShare*str*1.1*s);
+  flash=Math.min(1,flash+str*(.28+highShare*.35)*s);
+
+  if(HU.e>.12&&hAmt>.12){
+    HU.core=Math.min(1,HU.core+.45*hAmt+.2*str);
+    waves.push({x:HU.x,y:HU.y,r:HU.R,c:PAL.ember,l:.55+hAmt*.45});
+    const n=(6+s*30*hAmt)|0;
+    for(let i=0;i<n;i++)sparks.push(mkSpark(HU.x,HU.y,PAL.ember,PAL.gold));
+  }
+  if(JI.e>.12&&jAmt>.12){
+    JI.core=Math.min(1,JI.core+.45*jAmt+.2*str);
+    waves.push({x:JI.x,y:JI.y,r:JI.R,c:PAL.aqua,l:.55+jAmt*.45});
+    const n=(6+s*26*jAmt)|0;
+    for(let i=0;i<n;i++)sparks.push(mkSpark(JI.x,JI.y,PAL.aqua,PAL.water));
+  }
+  if(approach>.45&&Math.random()<.25+approach*.5+str*.2)
+    threads.push({l:1,c:Math.random()<.5?PAL.gold:PAL.aqua,w:Math.random()*3.14});
+}
+function mkSpark(x,y,c1,c2){
+  const a=Math.random()*6.28,sp=2+Math.random()*5;
+  return{x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-Math.random()*2,l:1,
+    s:1+Math.random()*2.2,c:Math.random()<.6?c1:c2,d:.011+Math.random()*.016};
+}
+// A heartbeat only when something is actually there. A silent room
+// gets silence: no pulse, no sparks, no shockwaves.
+let autoAt=0;
+function autoPulse(now){
+  const demo=!listening&&!seeingCam;
+  if(!demo&&A.presence<.10)return;          // empty room stays empty
+  if(listening&&A.rmsN>.12)return;          // real audio drives it instead
+  const bpm=58+stageStr*44;
+  if(now-autoAt>60000/bpm){autoAt=now;onBeat();}
+}
+
+/* ═══════ CAMERA ═══════ */
+const cam={x:0,y:0,z:1,b:0};
+function updateCam(t){
+  const sub=(A.f[0]+A.f[1]+A.f[2])/3;
+  cam.b+=.006+A.rmsN*.02;
+  // the whole frame breathes on the low end
+  const zT=1+stageStr*.05+Math.sin(cam.b)*.014+sub*.075+A.rmsN*.02;
+  cam.z=lerp(cam.z,zT,sub>.5?.16:.06);
+  const bias=(HU.e-JI.e)*.5;
+  cam.x=lerp(cam.x,Math.sin(t*.06)*14+bias*30+(A.mx-.5)*40*A.mValid,.02);
+  cam.y=lerp(cam.y,Math.cos(t*.045)*9-stageStr*14-sub*10,.03);
+  shake*=.86;flash*=.9;
+}
+
+/* ═══════ DRAW ═══════ */
+function bg(){
+  // hue drifts constantly, and pushes warm/cool with the two entities
+  const wr=12+HU.e*70,wg=9+HU.e*30,wb=14+HU.e*18;
+  const cr=8+JI.e*24,cg=13+JI.e*58,cb=22+JI.e*72;
+  const g=ctx.createLinearGradient(0,0,W,0);
+  g.addColorStop(0,`rgb(${wr|0},${wg|0},${wb|0})`);
+  g.addColorStop(.5,`rgb(${(wr+cr)/2|0},${(wg+cg)/2|0},${(wb+cb)/2|0})`);
+  g.addColorStop(1,`rgb(${cr|0},${cg|0},${cb|0})`);
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  const v=ctx.createLinearGradient(0,0,0,H);
+  v.addColorStop(0,'rgba(0,0,0,.55)');v.addColorStop(.5,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,.5)');
+  ctx.fillStyle=v;ctx.fillRect(0,0,W,H);
+}
+function drawShafts(t){
+  ctx.globalCompositeOperation='screen';
+  for(const s of shafts){
+    const x=s.x+Math.sin(t*.1+s.x)*34;
+    const g=ctx.createLinearGradient(x,0,x+Math.tan(s.a)*H,H);
+    const i=.04+A.n[6]*.09;
+    g.addColorStop(0,`rgba(120,160,130,${i})`);
+    g.addColorStop(.5,`rgba(${PAL.dust[0]},${PAL.dust[1]},${PAL.dust[2]},${i*.6})`);
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.save();ctx.translate(x,0);ctx.rotate(s.a);
+    ctx.fillStyle=g;ctx.fillRect(-s.w/2,0,s.w,H*1.6);ctx.restore();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+function drawMist(arr,t,par){
+  ctx.globalCompositeOperation='screen';
+  const sp=1+A.rmsN*4;
+  for(const m of arr){
+    m.x+=m.vx*sp;m.y+=m.vy*sp+Math.sin(t*.3+m.ph)*.2;
+    if(m.x<-m.r)m.x=W+m.r;if(m.x>W+m.r)m.x=-m.r;
+    if(m.y<-m.r)m.y=H+m.r;if(m.y>H+m.r)m.y=-m.r;
+    const c=m.side?
+      (JI.e>.4?PAL.aqua:PAL.mist):
+      (HU.e>.4?PAL.ember:PAL.mist);
+    const al=m.al*(1+stageStr*.9+A.rmsN*.6);
+    const x=m.x-cam.x*par,y=m.y-cam.y*par;
+    const g=ctx.createRadialGradient(x,y,0,x,y,m.r);
+    g.addColorStop(0,`rgba(${c[0]},${c[1]},${c[2]},${al})`);
+    g.addColorStop(.6,`rgba(${c[0]},${c[1]},${c[2]},${al*.3})`);
+    g.addColorStop(1,`rgba(${c[0]},${c[1]},${c[2]},0)`);
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,m.r,0,6.283);ctx.fill();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+// motes flow in a field that is itself driven by the spectrum
+function drawMotes(t){
+  ctx.globalCompositeOperation='screen';
+  for(const p of motes){
+    const bandE=A.n[p.band];
+    p.a+=Math.sin(p.x*.004+t*.3)*.03+Math.cos(p.y*.004-t*.25)*.03+bandE*.05;
+    const v=p.sp*(.5+A.rmsN*3.2+bandE*2);
+    p.x+=Math.cos(p.a)*v;p.y+=Math.sin(p.a)*v-.15;
+    p.tw+=.03+bandE*.12;
+    if(p.x<-10)p.x=W+10;if(p.x>W+10)p.x=-10;
+    if(p.y<-10)p.y=H+10;if(p.y>H+10)p.y=-10;
+    const warmSide=p.x<W*.5;
+    const c=warmSide?PAL.ember:PAL.aqua;
+    const br=(Math.sin(p.tw)*.4+.5)*(.25+bandE*.9);
+    ctx.fillStyle=`rgba(${c[0]},${c[1]},${c[2]},${br})`;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.s*(1+bandE*1.6),0,6.283);ctx.fill();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+function drawRoots(t){
+  // where the camera currently sees you, mapped onto the ground: the
+  // mycelium glows warmer underfoot, and a soft ring of light marks the
+  // spot — the link between camera and garden becomes something you can
+  // actually see, not just something you infer from the figures
+  const camActive=A.mValid>.12;
+  const vx=camActive?A.mxFast*W:-99999;
+
+  for(const r of roots){
+    const rootX=r.p[0].x;
+    const near=camActive?clamp(1-Math.abs(rootX-vx)/(W*.22),0,1):0;
+    for(let L=3;L>0;L--){
+      const a=(L===3?.14:L===2?.38:.78)*(1+near*1.3);
+      const c=[10+stageStr*30+near*66|0,22+stageStr*16+near*46|0,20+stageStr*22+near*54|0];
+      ctx.strokeStyle=`rgba(${c[0]},${c[1]},${c[2]},${a})`;
+      ctx.lineWidth=r.th*L*.6;ctx.lineCap='round';ctx.lineJoin='round';
+      ctx.beginPath();
+      for(let i=0;i<r.p.length;i++){
+        const p=r.p[i],s=Math.sin(t*.4+i*.3)*(1.5+A.n[0]*7);
+        i?ctx.lineTo(p.x+s,p.y):ctx.moveTo(p.x+s,p.y);
+      }
+      ctx.stroke();
+    }
+    const tip=r.p[r.p.length-1];
+    if(stageStr>.3||A.n[0]>.4||near>.3){
+      const g=ctx.createRadialGradient(tip.x,tip.y,0,tip.x,tip.y,24);
+      const gl=Math.max(stageStr*.5,A.n[0]*.7,near*.6);
+      g.addColorStop(0,`rgba(${PAL.ember[0]},${PAL.ember[1]},${PAL.ember[2]},${gl})`);
+      g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.globalCompositeOperation='screen';
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(tip.x,tip.y,24,0,6.283);ctx.fill();
+      ctx.globalCompositeOperation='source-over';
+    }
+  }
+
+  // ground-light where the camera sees you standing
+  if(camActive){
+    ctx.globalCompositeOperation='screen';
+    const gy2=H*.9;
+    const pulse=Math.sin(t*2.1)*.5+.5;
+    const r=46+A.motionN*130+pulse*12+A.motionBurst*40;
+    const cc=HU.e>=JI.e?[232,150,92]:[168,208,220];
+    const al=A.mValid*(.05+A.motionN*.10+A.motionBurst*.12);
+    const g=ctx.createRadialGradient(vx,gy2,0,vx,gy2,r);
+    g.addColorStop(0,`rgba(${cc[0]},${cc[1]},${cc[2]},${al})`);
+    g.addColorStop(1,`rgba(${cc[0]},${cc[1]},${cc[2]},0)`);
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(vx,gy2,r,0,6.283);ctx.fill();
+    if(A.motionBurst>.25){
+      ctx.strokeStyle=`rgba(${cc[0]},${cc[1]},${cc[2]},${A.motionBurst*.3})`;
+      ctx.lineWidth=1.4;
+      ctx.beginPath();ctx.arc(vx,gy2,r*1.5,0,6.283);ctx.stroke();
+    }
+    ctx.globalCompositeOperation='source-over';
+  }
+}
+function drawEmbers(t){
+  ctx.globalCompositeOperation='screen';
+  const want=12+HU.e*90;
+  if(embers.length<want&&Math.random()<.4)embers.push(mkE());
+  for(const e of embers){
+    e.x+=e.vx+Math.sin(t+e.f)*.35;e.y+=e.vy*(1+HU.e*1.4);e.f+=.11;e.l-=e.d;
+    if(e.l<=0||e.y<-40){Object.assign(e,mkE());continue;}
+    const fl=Math.sin(e.f)*.3+.7,c=stageStr>.7?PAL.fire:PAL.ember;
+    const al=e.l*fl*(.25+HU.e*.85);
+    const g=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,e.s*5);
+    g.addColorStop(0,`rgba(${c[0]},${c[1]},${c[2]},${al})`);
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(e.x,e.y,e.s*5,0,6.283);ctx.fill();
+    ctx.fillStyle=`rgba(255,222,180,${al})`;
+    ctx.beginPath();ctx.arc(e.x,e.y,e.s,0,6.283);ctx.fill();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+function drawDrops(t){
+  ctx.globalCompositeOperation='screen';
+  const want=12+JI.e*70;
+  if(drops.length<want&&Math.random()<.4)drops.push(mkD());
+  for(const d of drops){
+    d.x+=d.vx;d.y+=d.vy*(1+JI.e*1.4);d.l-=d.d;
+    if(d.l<=0||d.y>H+20){Object.assign(d,mkD());continue;}
+    const c=stageStr>.7?PAL.aqua:PAL.water,al=d.l*(.25+JI.e*.9);
+    const g=ctx.createRadialGradient(d.x,d.y,0,d.x,d.y,d.s*5);
+    g.addColorStop(0,`rgba(${c[0]},${c[1]},${c[2]},${al})`);
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(d.x,d.y,d.s*5,0,6.283);ctx.fill();
+    ctx.fillStyle=`rgba(190,226,242,${al})`;
+    ctx.beginPath();ctx.arc(d.x,d.y,d.s,0,6.283);ctx.fill();
+    ctx.strokeStyle=`rgba(${c[0]},${c[1]},${c[2]},${al*.5})`;ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(d.x,d.y-9);ctx.lineTo(d.x,d.y);ctx.stroke();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+
+// spectrum ring — the clearest "this is listening" signal on screen
+function drawRing(e){
+  if(e.e<.03)return;
+  ctx.globalCompositeOperation='screen';
+  const N=64,R=e.R*(1.6+e.core*.5);
+  const off=e.side?Math.floor(BINS*.30):0;
+  const span=Math.floor(BINS*.34);
+  for(let i=0;i<N;i++){
+    const a=(i/N)*6.283-1.571;
+    const bi=off+Math.floor((i/N)*span);
+    const v=fd?fd[bi]/255:0;
+    const len=R*.18+v*e.R*2.4*(.4+e.e);
+    const x1=e.x+Math.cos(a)*R,y1=e.y+Math.sin(a)*R;
+    const x2=e.x+Math.cos(a)*(R+len),y2=e.y+Math.sin(a)*(R+len);
+    const c=e.pal[Math.min(e.pal.length-1,(v*e.pal.length)|0)];
+    ctx.strokeStyle=`rgba(${c[0]},${c[1]},${c[2]},${.18+v*.75})`;
+    ctx.lineWidth=1+v*3;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+
+function drawArms(e,t){
+  ctx.globalCompositeOperation='screen';
+  const br=Math.sin(e.br)*.5+.5;
+  const R=e.R*(.6+br*.3+e.core*.6);
+  const N=e.arms.length;
+  for(let i=0;i<N;i++){
+    const a=e.arms[i];
+    // Every arm owns its own slice of the spectrum. Both figures span
+    // the whole range, so no frequency goes unrepresented — but Huldra
+    // reads it from the bottom up and Aab-e-Jinn from the top down.
+    const fk=e.side? 31-Math.floor(i/N*32) : Math.floor(i/N*32);
+    const v=A.f[clamp(fk,0,31)];
+    a.w+=a.ws*(1+A.rmsN*2+v*1.5);
+    a.len=lerp(a.len,R*(1.2+v*6.2*(.3+e.e)+e.core*2.2),v>0.5?.34:.16);
+    const ang=a.a+Math.sin(a.w)*(.14+v*.42)+a.curl*Math.sin(a.w*.5);
+    const ex=e.x+Math.cos(ang)*a.len,ey=e.y+Math.sin(ang)*a.len;
+    const mx=e.x+Math.cos(ang+.25)*a.len*.6,my=e.y+Math.sin(ang+.25)*a.len*.6;
+    // colour shifts along the arm's own frequency, not just overall energy
+    const ci=clamp(Math.floor((v*.6+e.e*.4)*e.pal.length),0,e.pal.length-1);
+    const c=e.pal[ci];
+    for(let w=4;w>0;w--){
+      ctx.strokeStyle=`rgba(${c[0]},${c[1]},${c[2]},${(.08+v*.4)*(w/4)*(.4+e.e*.7)})`;
+      ctx.lineWidth=w*(1.4+v*1.6);
+      ctx.beginPath();ctx.moveTo(e.x,e.y);ctx.quadraticCurveTo(mx,my,ex,ey);ctx.stroke();
+    }
+    const g=ctx.createRadialGradient(ex,ey,0,ex,ey,10+v*16);
+    g.addColorStop(0,`rgba(${c[0]},${c[1]},${c[2]},${.35+v*.85})`);
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(ex,ey,10+v*16,0,6.283);ctx.fill();
+  }
+  for(let i=6;i>0;i--){
+    const r=R*(1+i*.42),c=e.pal[Math.min(e.pal.length-1,(e.e*e.pal.length)|0)];
+    const al=.12*(1-i/6)*(.35+e.e*.9);
+    const g=ctx.createRadialGradient(e.x,e.y,R*.8,e.x,e.y,r);
+    g.addColorStop(0,`rgba(${c[0]},${c[1]},${c[2]},${al})`);
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(e.x,e.y,r,0,6.283);ctx.fill();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+
+function drawFigure(e,t,tall){
+  if(e.e<.04)return;
+  e.br+=.008+A.rmsN*.03;
+  const br=Math.sin(e.br)*.5+.5;
+  const R=e.R*(.6+br*.3+e.core*.6);
+  const Ht=R*(tall?6:5);
+  ctx.save();
+  ctx.translate(e.x,e.y+R*.45);
+  e.sway+=.009;
+  if(tall)ctx.translate(0,Math.sin(t*.5+e.sway)*R*.16);
+  else ctx.rotate(Math.sin(t*.4+e.sway)*(1.4+A.rmsN*7)*.004);
+
+  const hw=R*(tall?.4:.52),shY=-Ht*.34,hipY=Ht*.05,botY=Ht*.57,hdY=-Ht*.55,hr=R*(tall?.22:.27);
+  const reach=R*(1+e.e*1.5),elY=shY+Ht*(tall?.15:.18)-(tall?Ht*.06*e.e:0);
+  const wob=Math.sin(t*.65)*(5+A.n[2]*10);
+
+  ctx.beginPath();
+  ctx.moveTo(0,hdY);
+  ctx.bezierCurveTo(hr*.6,hdY,hr*.62,hdY+hr*.45,hr*.35,hdY+hr*.95);
+  ctx.bezierCurveTo(hw*.3,shY-Ht*.04,hw*.5,shY,hw*.68,shY+Ht*.04);
+  ctx.bezierCurveTo(hw*.88+reach*.28,elY,hw+reach*.58,elY,hw+reach*.88,elY+Ht*.04);
+  ctx.bezierCurveTo(hw+reach*1.03,elY+Ht*.07,hw+reach*.94,elY+Ht*.09,hw+reach*.74,elY+Ht*.11);
+  ctx.bezierCurveTo(hw+reach*.36,elY+Ht*.05,hw*.72,shY+Ht*.17,hw*.8,shY+Ht*.22);
+  ctx.bezierCurveTo(hw*.76,shY+Ht*.44,hw*(tall?.72:1.0),hipY,hw*(tall?.66:1.16),hipY+Ht*.14);
+  ctx.bezierCurveTo(hw*(tall?.9:1.4),botY-Ht*.1+wob,hw*(tall?.4:.9),botY+wob,0,botY+(tall?Ht*.05:-Ht*.04));
+  ctx.bezierCurveTo(-hw*(tall?.4:.9),botY-wob,-hw*(tall?.9:1.4),botY-Ht*.1-wob,-hw*(tall?.66:1.16),hipY+Ht*.14);
+  ctx.bezierCurveTo(-hw*(tall?.72:1.0),hipY,-hw*.76,shY+Ht*.44,-hw*.8,shY+Ht*.22);
+  ctx.bezierCurveTo(-hw*.72,shY+Ht*.17,-hw-reach*.36,elY+Ht*.05,-hw-reach*.74,elY+Ht*.11);
+  ctx.bezierCurveTo(-hw-reach*.94,elY+Ht*.09,-hw-reach*1.03,elY+Ht*.07,-hw-reach*.88,elY+Ht*.04);
+  ctx.bezierCurveTo(-hw-reach*.58,elY,-hw*.88-reach*.28,elY,-hw*.68,shY+Ht*.04);
+  ctx.bezierCurveTo(-hw*.5,shY,-hw*.3,shY-Ht*.04,-hr*.35,hdY+hr*.95);
+  ctx.bezierCurveTo(-hr*.62,hdY+hr*.45,-hr*.6,hdY,0,hdY);
+  ctx.closePath();
+
+  const c=e.pal[Math.min(e.pal.length-1,(e.e*e.pal.length)|0)];
+  const g=ctx.createLinearGradient(0,hdY,0,botY);
+  g.addColorStop(0,tall?'rgba(6,10,18,.95)':'rgba(14,7,9,.95)');
+  g.addColorStop(.38,`rgba(${c[0]*.34|0},${c[1]*.34|0},${c[2]*.34|0},.82)`);
+  g.addColorStop(1,`rgba(${c[0]},${c[1]},${c[2]},.36)`);
+  ctx.fillStyle=g;ctx.fill();
+
+  ctx.globalCompositeOperation='screen';
+  ctx.strokeStyle=`rgba(${c[0]},${c[1]},${c[2]},${.35+e.e*.55})`;
+  ctx.lineWidth=1.5;ctx.stroke();
+
+  const hy=shY+Ht*(tall?.22:.28);
+  const hg=ctx.createRadialGradient(0,hy,0,0,hy,R*1.1);
+  const pulse=e.e*.7+e.core*.4+A.n[1]*.3;
+  hg.addColorStop(0,`rgba(${tall?'214,238,255':'255,232,188'},${clamp(pulse,0,1)})`);
+  hg.addColorStop(.4,`rgba(${c[0]},${c[1]},${c[2]},${e.e*.5})`);
+  hg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=hg;ctx.beginPath();ctx.arc(0,hy,R*1.1,0,6.283);ctx.fill();
+
+  // hair / veils, driven by high bands
+  for(const s of e.hair){
+    s.ph+=.02+A.n[6]*.08;
+    const sx=Math.sin(s.o*3.14)*hr*.85,sy=hdY+Math.abs(Math.cos(s.o*3.14))*hr*.5;
+    const len=Ht*(tall?.55:.6)*s.l;
+    ctx.beginPath();
+    for(let i=0;i<=16;i++){
+      const p=i/16,w=Math.sin(s.ph+p*3)*(11+A.n[5]*22)*p;
+      i?ctx.lineTo(sx+w,sy+len*p):ctx.moveTo(sx+w,sy+len*p);
+    }
+    const hc=tall?PAL.aqua:c;
+    ctx.strokeStyle=`rgba(${hc[0]},${hc[1]},${hc[2]},${.22+e.e*.5})`;
+    ctx.lineWidth=1.4+Math.abs(s.o)*1.6;ctx.lineCap='round';ctx.stroke();
+    if(!tall){
+      const tx=sx+Math.sin(s.ph+3)*12,ty=sy+len;
+      const tg=ctx.createRadialGradient(tx,ty,0,tx,ty,13);
+      tg.addColorStop(0,`rgba(255,220,150,${e.e*.85})`);
+      tg.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=tg;ctx.beginPath();ctx.arc(tx,ty,13,0,6.283);ctx.fill();
+    }
+  }
+  ctx.globalCompositeOperation='source-over';
+  ctx.restore();
+}
+
+function drawWaves(){
+  ctx.globalCompositeOperation='screen';
+  waves=waves.filter(w=>{
+    w.r+=15;w.l-=.022;
+    if(w.l<=0||w.r>Math.max(W,H))return false;
+    for(let i=0;i<3;i++){
+      ctx.strokeStyle=`rgba(${w.c[0]},${w.c[1]},${w.c[2]},${w.l*(.55-i*.15)})`;
+      ctx.lineWidth=3-i;
+      ctx.beginPath();ctx.arc(w.x,w.y,w.r+i*9,0,6.283);ctx.stroke();
+    }
+    return true;
+  });
+  ctx.globalCompositeOperation='source-over';
+}
+function drawSparks(){
+  ctx.globalCompositeOperation='screen';
+  sparks=sparks.filter(s=>{
+    s.x+=s.vx;s.y+=s.vy;s.vy+=.09;s.vx*=.98;s.l-=s.d;
+    if(s.l<=0)return false;
+    const g=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.s*6);
+    g.addColorStop(0,`rgba(${s.c[0]},${s.c[1]},${s.c[2]},${s.l*.6})`);
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(s.x,s.y,s.s*6,0,6.283);ctx.fill();
+    ctx.fillStyle=`rgba(255,242,205,${s.l})`;
+    ctx.beginPath();ctx.arc(s.x,s.y,s.s,0,6.283);ctx.fill();
+    return true;
+  });
+  ctx.globalCompositeOperation='source-over';
+}
+function drawThreads(t){
+  if(!threads.length)return;
+  ctx.globalCompositeOperation='screen';
+  threads=threads.filter(th=>{
+    th.l-=.02;if(th.l<=0)return false;
+    ctx.beginPath();
+    for(let i=0;i<=30;i++){
+      const s=i/30;
+      const x=HU.x+(JI.x-HU.x)*s;
+      const y=HU.y+(JI.y-HU.y)*s+Math.sin(s*9.42+t*4+th.w)*34*Math.sin(s*3.14);
+      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    }
+    for(let w=6;w>0;w-=2){
+      ctx.strokeStyle=`rgba(${th.c[0]},${th.c[1]},${th.c[2]},${th.l*.3*(w/6)})`;
+      ctx.lineWidth=w;ctx.stroke();
+    }
+    return true;
+  });
+  ctx.globalCompositeOperation='source-over';
+}
+function drawWater(t){
+  const y0=H*.86;
+  ctx.globalCompositeOperation='multiply';
+  const g=ctx.createLinearGradient(0,y0,0,H);
+  g.addColorStop(0,'rgba(20,30,40,.35)');g.addColorStop(1,'rgba(8,18,28,.8)');
+  ctx.fillStyle=g;ctx.fillRect(0,y0,W,H-y0);
+  ctx.globalCompositeOperation='screen';
+  for(let r=0;r<5;r++){
+    const y=y0+r*18;
+    ctx.strokeStyle=`rgba(${PAL.aqua[0]},${PAL.aqua[1]},${PAL.aqua[2]},${(1-r/5)*.16*(JI.e+A.n[6]*.5)})`;
+    ctx.lineWidth=1;ctx.beginPath();
+    for(let x=0;x<=W;x+=5){
+      const w=Math.sin(x*.02+t*2+r)*(2+JI.e*7+A.n[6]*8);
+      x?ctx.lineTo(x,y+w):ctx.moveTo(x,y+w);
+    }
+    ctx.stroke();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+function post(){
+  // threshold bloom
+  bx.clearRect(0,0,bl.width,bl.height);
+  bx.drawImage(cv,0,0,bl.width,bl.height);
+  bx.globalCompositeOperation='multiply';
+  const th=(clamp(.52-stageStr*.18-A.rmsN*.1,.2,.7)*255)|0;
+  bx.fillStyle=`rgb(${th},${th},${th})`;bx.fillRect(0,0,bl.width,bl.height);
+  bx.globalCompositeOperation='source-over';
+  ctx.globalCompositeOperation='screen';
+  ctx.filter='blur(5px)';ctx.globalAlpha=.55+stageStr*.3+A.rmsN*.2;
+  ctx.drawImage(bl,0,0,W,H);
+  ctx.filter='blur(26px)';ctx.globalAlpha=.3+stageStr*.35+A.n[1]*.25;
+  ctx.drawImage(bl,0,0,W,H);
+  ctx.filter='none';ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
+  // beat flash
+  if(flash>.01){
+    ctx.globalCompositeOperation='screen';
+    ctx.fillStyle=`rgba(255,238,205,${flash*.12})`;ctx.fillRect(0,0,W,H);
+    ctx.globalCompositeOperation='source-over';
+  }
+  // vignette
+  const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.32,W/2,H/2,Math.max(W,H)*.75);
+  g.addColorStop(0,'rgba(0,0,0,0)');
+  g.addColorStop(.7,`rgba(0,0,0,${.38-stageStr*.1})`);
+  g.addColorStop(1,`rgba(0,0,0,${.9-stageStr*.2})`);
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  // grain
+  ctx.fillStyle='rgba(255,240,220,.026)';
+  const n=(W*H/3600)|0;
+  for(let i=0;i<n;i++)ctx.fillRect(Math.random()*W,Math.random()*H,1,1);
+}
+
+/* ═══════ METER ═══════ */
+const meterBars=[];
+(function(){const m=$('meter');for(let i=0;i<40;i++){const d=document.createElement('div');m.appendChild(d);meterBars.push(d);}})();
+let meterOn=true;
+function drawMeter(){
+  if(!meterOn)return;
+  const usable=Math.floor(BINS*.6)||40;
+  for(let i=0;i<40;i++){
+    const v=fd?fd[Math.floor(i/40*usable)]/255:0;
+    meterBars[i].style.height=(2+v*98)+'%';
+  }
+}
+
+/* ── STEMMEPANEL ────────────────────────────────────────────────
+   Draws only what was actually measured: the waveform the reading was
+   taken from, the frequency it resolved to, how far each metal was
+   pulled, and the extent box with its one measured span. Nothing here
+   is inferred about the person in the room. ── */
+const vcv=$('vcv'),vcx=vcv?vcv.getContext('2d'):null;
+function drawVoicePanel(){
+  if(!VOICE.on||!vcx)return;
+  const w=vcv.width,h=vcv.height,waveH=h*.52;
+  vcx.clearRect(0,0,w,h);
+
+  // waveform
+  const wl=VOICE.wave.length;
+  vcx.beginPath();
+  for(let i=0;i<wl;i++){
+    const x=i/(wl-1)*w, y=waveH*.5+VOICE.wave[i]*waveH*.42;
+    i?vcx.lineTo(x,y):vcx.moveTo(x,y);
+  }
+  const tone=VOICE.hz>0
+    ?(VOICE.word==='sølv'?'rgba(214,214,224,.8)':(VOICE.word==='jern'?'rgba(224,132,72,.85)':'rgba(150,206,214,.85)'))
+    :'rgba(232,220,195,.3)';
+  vcx.strokeStyle=tone;vcx.lineWidth=2;vcx.stroke();
+
+  // the period the reading resolved to, marked on the waveform itself
+  if(VOICE.hz>0&&ac){
+    const per=ac.sampleRate/VOICE.hz;
+    const px=per/td.length*w;
+    vcx.strokeStyle='rgba(232,220,195,.22)';vcx.lineWidth=1;
+    for(let x=0;x<w;x+=px){
+      vcx.beginPath();vcx.moveTo(x,waveH*.10);vcx.lineTo(x,waveH*.90);vcx.stroke();
+    }
+  }
+
+  // extent box, drawn in the lower half
+  const E=VOICE.ext, top=waveH+10, bh=h-top-4;
+  vcx.strokeStyle='rgba(232,220,195,.13)';vcx.lineWidth=1;
+  vcx.strokeRect(.5,top+.5,w-1,bh-1);
+  if(E.valid>.05){
+    const bx0=E.x0*w,bx1=E.x1*w,by0=top+E.y0*bh,by1=top+E.y1*bh;
+    vcx.globalAlpha=.25+E.valid*.55;
+    vcx.strokeStyle='rgba(232,220,195,.7)';
+    vcx.setLineDash([3,4]);
+    vcx.strokeRect(bx0,by0,Math.max(2,bx1-bx0),Math.max(2,by1-by0));
+    vcx.setLineDash([]);
+    // corner ticks
+    vcx.fillStyle='rgba(232,220,195,.85)';
+    [[bx0,by0],[bx1,by0],[bx0,by1],[bx1,by1]].forEach(p=>vcx.fillRect(p[0]-2,p[1]-2,4,4));
+    // the one measurement: horizontal span
+    const my=(by0+by1)/2;
+    vcx.strokeStyle='rgba(226,74,58,.9)';vcx.lineWidth=2;
+    vcx.beginPath();vcx.moveTo(bx0,my);vcx.lineTo(bx1,my);vcx.stroke();
+    vcx.globalAlpha=1;
+    vcx.fillStyle='rgba(240,230,205,.85)';
+    vcx.font='11px "Space Mono",monospace';
+    vcx.fillText(((E.x1-E.x0)*100|0)+'%',Math.min(w-34,bx1+6),my+4);
+  }
+  vcx.globalAlpha=1;
+
+  $('vhz').textContent=VOICE.hz>0?((VOICE.hz|0)+' hz · '+VOICE.word):'ingen lesning';
+  $('vbi').style.width=(VOICE.iron*100|0)+'%';
+  $('vbt').style.width=(VOICE.tin*100|0)+'%';
+  $('vbs').style.width=(VOICE.silver*100|0)+'%';
+}
+
+// Re-project the last frame through a slowly evolving transform.
+// Three taps at different scales and rotations, offset against each
+// other so the warm and cool halves of the image separate into colour
+// as the trail ages.
+function drawFeedback(){
+  if(FB.taps<1)return;
+  const sub=(A.f[0]+A.f[1]+A.f[2])/3;
+  // the trail expands on bass and contracts in stillness
+  FB.zoom=lerp(FB.zoom,1.006+sub*.022+stageStr*.004,.08);
+  // rotation direction follows where the spectral energy sits
+  FB.rot=lerp(FB.rot,(A.centroid-.5)*.0042+Math.sin(T*.07)*.0011,.05);
+  FB.driftX=lerp(FB.driftX,(HU.e-JI.e)*3.2,.04);
+  FB.driftY=lerp(FB.driftY,-1.1-stageStr*1.6,.04);
+  const g=FB.gain*(.55+stageStr*.35+A.rmsN*.25);
+
+  ctx.globalCompositeOperation='screen';
+  const taps=[
+    {z:FB.zoom,       r:FB.rot,        a:g,      b:0,  dx:0},
+    {z:1/(FB.zoom*.997), r:-FB.rot*1.6, a:g*.46, b:3,  dx:-1.6-sub*3},
+    {z:FB.zoom*1.021, r:FB.rot*2.2,    a:g*.26*(0.35+sub), b:9, dx:1.9+sub*4}
+  ];
+  for(let i=0;i<Math.min(FB.taps,taps.length);i++){
+    const t=taps[i];
+    if(t.a<.012)continue;
+    ctx.save();
+    ctx.globalAlpha=t.a;
+    ctx.filter=t.b?`blur(${t.b}px)`:'none';
+    ctx.translate(W/2+FB.driftX+t.dx,H/2+FB.driftY);
+    ctx.rotate(t.r);
+    ctx.scale(t.z,t.z);
+    ctx.drawImage(fb,-W/2,-H/2,W,H);
+    ctx.restore();
+  }
+  ctx.filter='none';ctx.globalAlpha=1;
+  ctx.globalCompositeOperation='source-over';
+}
+function captureFeedback(){
+  if(FB.taps<1)return;
+  fbx.globalCompositeOperation='copy';
+  fbx.drawImage(cv,0,0,fb.width,fb.height);
+  fbx.globalCompositeOperation='source-over';
+  // bleed the trail down slightly so it never saturates to white
+  fbx.globalCompositeOperation='multiply';
+  fbx.fillStyle='rgba(238,236,242,1)';
+  fbx.fillRect(0,0,fb.width,fb.height);
+  fbx.globalCompositeOperation='source-over';
+}
+
+// Mélusine is drawn twice. In the water she is whole and clear, because
+// that is where she belongs. Above the surface she is only a suggestion,
+// and she never becomes as solid as the other two.
+function drawMelusine(t,mode){
+  if(ME.e<.015&&ME.mirror<.05)return;
+  const surfY=H*.86;
+
+  if(mode==='mirror'){
+    ctx.save();
+    ctx.beginPath();ctx.rect(0,surfY,W,H-surfY);ctx.clip();
+    // reflect the world around the waterline
+    ctx.translate(0,surfY*2);ctx.scale(1,-1);
+    // the reflection ripples with the same water the tin woman moves
+    const rip=Math.sin(t*1.6)*(1.2+JI.e*3.4+A.onHigh*4);
+    ctx.translate(rip,0);
+    ctx.globalAlpha=clamp(.30+ME.mirror*.55,0,.85);
+    drawArms(ME,t);
+    drawFigure(ME,t,true);
+    ctx.restore();
+
+    // a silvered sheen laid over the surface where she stands
+    if(ME.e>.05){
+      ctx.save();
+      ctx.globalCompositeOperation='screen';
+      const g=ctx.createRadialGradient(ME.x,surfY,0,ME.x,surfY,ME.R*5);
+      g.addColorStop(0,`rgba(228,236,250,${ME.e*.22})`);
+      g.addColorStop(1,'rgba(228,236,250,0)');
+      ctx.fillStyle=g;
+      ctx.fillRect(0,surfY-ME.R,W,H-surfY+ME.R);
+      ctx.restore();
+    }
+    return;
+  }
+
+  // ghost above the water: pale, thin, never fully there
+  if(ME.e<.10)return;
+  ctx.save();
+  ctx.globalAlpha=clamp((ME.e-.10)*.62,0,.42);
+  drawArms(ME,t);
+  drawFigure(ME,t,true);
+  ctx.restore();
+}
+
+
+function drawSoundGhost(){
+  if(!listening||!td||!sg)return;
+  sgx.clearRect(0,0,W,H);
+  sgx.save();
+  sgx.globalCompositeOperation='screen';
+
+  // Breath / waveform line.
+  const y0=H*.84;
+  const amp=18+A.rmsN*76;
+  const x0=W*.07,x1=W*.93;
+  sgx.beginPath();
+  for(let i=0;i<td.length;i+=8){
+    const u=i/(td.length-1);
+    const x=x0+(x1-x0)*u;
+    const v=(td[i]-128)/128;
+    const y=y0+v*amp;
+    if(i===0)sgx.moveTo(x,y);else sgx.lineTo(x,y);
+  }
+  sgx.strokeStyle=`rgba(232,220,195,${.08+A.rmsN*.32})`;
+  sgx.lineWidth=.8+A.rmsN*1.5;
+  sgx.stroke();
+
+  // 32 frequency roots growing upward from the bottom edge.
+  const fine=A.f||[];
+  for(let i=0;i<fine.length;i++){
+    const e=fine[i]||0;
+    const x=W*(.10+.80*(i/(fine.length-1)));
+    const h=(18+e*H*.19);
+    const lean=Math.sin(T*1.3+i*.74)*(4+e*12);
+    sgx.beginPath();
+    sgx.moveTo(x,H*.985);
+    sgx.bezierCurveTo(x+lean,H*.94,x-lean*.7,H*.985-h*.62,x+lean*.25,H*.985-h);
+    const warm=i<9;
+    sgx.strokeStyle=warm
+      ?`rgba(224,132,72,${.025+e*.20})`
+      :`rgba(150,206,214,${.02+e*.16})`;
+    sgx.lineWidth=.45+e*1.15;
+    sgx.stroke();
+  }
+  sgx.restore();
+}
+
+/* ═══════ LOOP ═══════ */
+let last=0,T=0,fr=0,started=false,ftAvg=16;
+function loop(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;fr++;
+  // hold quality up, but never let the piece stutter in a venue
+  ftAvg=ftAvg*.94+(dt*1000)*.06;
+  if(fr%60===0){
+    if(ftAvg>26&&FB.taps>1)FB.taps--;
+    else if(ftAvg<19&&FB.taps<3)FB.taps++;
+  }
+  if(listening)readAudio();
+  if(listening&&fr%3===0)readVoice();
+  if(seeingCam&&fr%2===0)readMotion();
+  if(started&&A.cal)updateActs(now);
+  flushCenter(now);
+  updateEnts();updateCam(T);autoPulse(now);
+
+  bg();
+  drawFeedback();
+  ctx.save();
+  const sx=(Math.random()-.5)*shake*16,sy=(Math.random()-.5)*shake*12;
+  ctx.translate(W/2,H/2);ctx.scale(cam.z,cam.z);
+  ctx.translate(-W/2+cam.x+sx,-H/2+cam.y+sy);
+
+  drawShafts(T);
+  drawMist(mistF,T,.3);
+  drawRoots(T);
+  drawMotes(T);
+  drawEmbers(T);
+  drawDrops(T);
+  drawMelusine(T,'ghost');
+  drawRing(HU);drawRing(JI);
+  drawArms(HU,T);drawArms(JI,T);
+  drawFigure(HU,T,false);
+  drawFigure(JI,T,true);
+  drawThreads(T);
+  drawWaves();drawSparks();
+  drawWater(T);
+  drawMelusine(T,'mirror');
+  drawMist(mistN,T,1.4);
+  ctx.restore();
+
+  captureFeedback();
+  post();
+  drawSoundGhost();
+
+  if(fr%3===0){
+    $('hv').textContent=(HU.e*100)|0;
+    $('jv').textContent=(JI.e*100)|0;
+    $('mev').textContent=(ME.e*100)|0;
+    $('lv').textContent=(A.rmsN*100)|0;
+    $('mv').textContent=(A.motionN*100)|0;
+    $('rd').textContent=VOICE.hz>0?VOICE.word:'—';
+    if(VOICE.on)drawVoicePanel();
+    const a=ACTS[act];
+    const pc=Math.min(99,(NAR.charge/a.dur*100)|0);
+    const en=LANG==='en';
+    const rn=en?a.rnE:a.rn;
+    const label=rn?rn.replace(/^(Akt|Act) /,''):(act===0?'pro':'epi');
+    $('av').textContent=label+' '+pc+'%';
+    drawMeter();
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ═══════ START ═══════ */
+async function begin(mic,cam2){
+  $('start').classList.add('gone');
+  started=true;
+  let audioOk=false,camOk=false;
+  if(mic){
+    audioOk=await startMic();
+    if(!audioOk){A.cal=true;showTitle(4000);}
+  }else{
+    A.cal=true;showTitle(4000);
+  }
+  if(cam2)camOk=await startCam();
+  document.body.classList.toggle('audio-live',audioOk);
+  document.body.classList.toggle('cam-live',camOk);
+  if(audioOk&&camOk){
+    $('essay-note').textContent='The camera and room audio are inside the work. Nothing is uploaded. Move, speak, breathe, stay still.';
+  }else if(audioOk){
+    $('essay-note').textContent='The room audio is inside the work. Speak, breathe, clap or let the room stay quiet.';
+  }else{
+    $('essay-note').textContent='No sensors open. The narrative remains readable without them.';
+  }
+  actAt=performance.now();
+  gotoAct(0);
+}
+if($('bMic')) $('bMic').onclick=()=>begin(true,false);
+if($('bCam')) $('bCam').onclick=()=>begin(true,true);
+$('bDemo').onclick=()=>begin(false,false);
+
+$('bAct').onclick=()=>gotoAct(act+1);
+$('bPrev').onclick=()=>gotoAct(act-1);
+$('bMeter').onclick=e=>{meterOn=!meterOn;$('meter').style.display=meterOn?'flex':'none';e.target.classList.toggle('on',meterOn);};
+$('bFs').onclick=()=>{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{});};
+$('bVoice').onclick=e=>{
+  VOICE.on=!VOICE.on;
+  $('voice').classList.toggle('open',VOICE.on);
+  e.target.classList.toggle('on',VOICE.on);
+  e.target.style.opacity=VOICE.on?1:.55;
+};
+$('bHide').onclick=()=>document.body.classList.toggle('hide');
+addEventListener('keydown',e=>{
+  const k=e.key.toLowerCase();
+  if(k==='f')$('bFs').click();
+  if(k==='h')$('bHide').click();
+  if(k==='m')$('bMeter').click();
+  if(k===' '||k==='arrowright'){e.preventDefault();gotoAct(act+1);}
+});
+let tap=0;
+addEventListener('touchend',e=>{
+  if(!started)return;
+  const n=Date.now();
+  if(n-tap<380){document.body.classList.toggle('hide');e.preventDefault();}
+  tap=n;
+});
+
+resize();placeEnts();gotoAct(0);
+last=performance.now();requestAnimationFrame(loop);
+</script>
+</body>
+</html>
