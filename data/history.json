@@ -17,8 +17,8 @@
       "source": "snl_sandviken_sykehus",
       "display_name_no": "Neevengården sinnssykeasyl åpner",
       "display_name_en": "Neevengården asylum opens",
-      "educational_text_no": "Institusjonen åpnet i 1891 under navnet Neevengården sinnssykeasyl.",
-      "educational_text_en": "The institution opened in 1891 under the name Neevengården sinnssykeasyl.",
+      "educational_text_no": "Institusjonen åpnet i 1891 under navnet Neevengården sinnssykeasyl, det første kommunale sinnssykeasylet som ble bygget i Norge etter sinnssykeloven av 1848.",
+      "educational_text_en": "The institution opened in 1891 under the name Neevengården sinnssykeasyl, the first municipal asylum built in Norway under the Lunacy Act of 1848.",
       "asset": null
     },
     {
@@ -30,8 +30,8 @@
       "source": "snl_sandviken_sykehus",
       "display_name_no": "Neevengården sykehus",
       "display_name_en": "Renamed Neevengården sykehus",
-      "educational_text_no": "I 1927 ble navnet endret til Neevengården sykehus. «Asyl» falt bort.",
-      "educational_text_en": "In 1927 the name changed to Neevengården sykehus. The word for asylum was dropped.",
+      "educational_text_no": "I 1927 ble navnet endret til Neevengården sykehus. «Asyl» falt bort, et av flere navneskifter motivert av et ønske om å fjerne stigmaet knyttet til navnet på institusjonen.",
+      "educational_text_en": "In 1927 the name changed to Neevengården sykehus. The word for asylum was dropped, one of several renamings motivated by a wish to remove the stigma attached to the institution's name.",
       "asset": null
     },
     {
@@ -43,8 +43,8 @@
       "source": "snl_sandviken_sykehus",
       "display_name_no": "Sandviken sykehus",
       "display_name_en": "Renamed Sandviken sykehus",
-      "educational_text_no": "I 1978 fikk sykehuset navnet Sandviken sykehus — et stedsnavn, ikke en diagnose.",
-      "educational_text_en": "In 1978 it became Sandviken sykehus — named for a place rather than for what happened inside it. Three names in eighty-seven years, each one moving further from the last. The building did not change. What we were willing to call it did.",
+      "educational_text_no": "I 1978 fikk sykehuset navnet Sandviken sykehus, et stedsnavn, ikke en diagnose. Samme motivasjon som i 1927: å fjerne stigmaet knyttet til det forrige navnet.",
+      "educational_text_en": "In 1978 it became Sandviken sykehus, named for a place rather than for what happened inside it. Same motivation as 1927: removing the stigma attached to the previous name. Three names in eighty-seven years, each one moving further from the last. The building did not change. What we were willing to call it did.",
       "asset": null
     },
     {
@@ -189,7 +189,7 @@
       "display_name_no": "Fløibanen åpner",
       "display_name_en": "Fløibanen opens",
       "educational_text_no": "Fløibanen åpnet 15. januar 1918.",
-      "educational_text_en": "Fløibanen opened on 15 January 1918. Twenty-three years from idea to opening — and from that day the mountain was something anyone in Bergen could get to, not only those who could climb it.",
+      "educational_text_en": "Fløibanen opened on 15 January 1918. Twenty-three years from idea to opening, and from that day the mountain was something anyone in Bergen could get to, not only those who could climb it.",
       "asset": null
     },
     {

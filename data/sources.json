@@ -46,10 +46,10 @@
     },
     {
       "id": "sandviken_sykehus_detail",
-      "subject": "Neevengården/Sandviken sykehus — architect, opening-day capacity, construction timeline",
-      "why_blocked": "The name-change dates (1891/1927/1978) are already verified via snl_sandviken_sykehus. This is additional detail from a different source — Bergen byarkiv's own oppslagsverket entry — naming architect Ole F. Ebbell (Ole Falk Ebbel, 1839-1919), construction starting autumn 1887, completion 1 April 1891, and capacity for 178 patients across six patient buildings plus admin/economy/mortuary/farm buildings. Corroborated across two independent bergenbyarkiv.no pages, Bergen kommune's own history feature and Norwegian Wikipedia (2026-08-22 search pass), but bergenbyarkiv.no is unreachable from the build environment, so no human here has read the primary page.",
+      "subject": "Neevengården/Sandviken sykehus — architect, opening-day capacity, construction timeline, peak occupancy, building plan",
+      "why_blocked": "The name-change dates (1891/1927/1978) are already verified via snl_sandviken_sykehus. This is additional detail from a different source — Bergen byarkiv's own oppslagsverket entry — naming architect Ole F. Ebbell (Ole Falk Ebbel, 1839-1919), construction starting autumn 1887, completion 1 April 1891, capacity for 178 patients across six patient buildings plus admin/economy/mortuary/farm buildings, a peak of 518 patients reached in 1955, and a pavilion-hospital plan (paviljongsykehus) of separate buildings linked by colonnades (søyleganger). Corroborated across two independent bergenbyarkiv.no pages, Bergen kommune's own history feature, Bergen kommunes kulturminneplan and Norwegian Wikipedia (2026-08-22 and 2026-09-18 search passes), but bergenbyarkiv.no is unreachable from the build environment, so no human here has read the primary page.",
       "candidate_url": "https://www.bergenbyarkiv.no/oppslagsverket/2008/06/12/neevengarden-sykehus/",
-      "try": ["Bergen Byarkiv oppslagsverket", "Bergen byleksikon", "Bergen kommune byarkiv-forteller"],
+      "try": ["Bergen Byarkiv oppslagsverket", "Bergen byleksikon", "Bergen kommune byarkiv-forteller", "Bergen kommunes kulturminneplan (bergen.kommune.no/api/rest/filer/V100841)"],
       "priority": 2,
       "research_required": true
     },
