@@ -1,5 +1,4 @@
-
-<!DOCTYPE html>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,6 +6,9 @@
 <title>The Room Has Been Sorted - Ingrid Ormevik</title>
 <meta name="description" content="Aftermath of Me, Myself and A.I. and The Haunting of the Author at CDN Equinox 2026. Mount Media, Bergen.">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+</head>
+<body></head><body>
 <style>
 :root{
   color-scheme:dark;
@@ -58,6 +60,11 @@ section h2{font-weight:400;font-size:clamp(1.8rem,4vw,3rem);line-height:1.08;let
 p{margin:0 0 1.15em}
 .pull{font-size:clamp(1.5rem,3.4vw,2.4rem);line-height:1.2;color:var(--gold);margin:1.6em 0;text-wrap:balance}
 .thanks{border-top:1px solid var(--hair-gold);border-bottom:1px solid var(--hair-gold);padding-block:1.6rem}
+
+/* event photos */
+.photo{margin:2rem 0 0;border:1px solid var(--hair-gold);background:var(--deep)}
+.photo img{width:100%;max-height:82vh;object-fit:cover;object-position:center 45%}
+.photo figcaption{padding:.8rem 1rem;font:10px/1.5 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border-top:1px solid var(--hair-gold)}
 
 /* turing figure */
 .figure{margin:2rem 0 0;border:1px solid var(--hair);background:var(--deep)}
@@ -144,8 +151,6 @@ footer a{color:var(--gold)}
   .stage img,.beam,.dot,.strip img{transition:none}
 }
 </style>
-</head>
-<body>
 
 <canvas id="field" aria-hidden="true"></canvas>
 <div class="atmosphere" aria-hidden="true"></div>
@@ -166,8 +171,8 @@ footer a{color:var(--gold)}
 
   <section class="col" data-where="01 / Thank you">
     <p class="thanks">First, thank you to the Center for Digital Narrative for having me. Equinox gave me two rooms this time: my own talk, <em>Me, Myself and A.I.</em>, and <em>The Haunting of the Author</em>, the panel I shared with Yagmur Cisem Vik and Hanna Hellesø Lauvli.</p>
-    <figure class="figure">
-      <img src="../assets/equinox-aftermath/on-stage.png" alt="Ingrid at a lectern with a laptop and printed cards, in front of a brick wall, the Me, Myself and A.I. title slide projected beside her" loading="lazy">
+    <figure class="photo">
+      <img src="../assets/equinox-aftermath/on-stage.webp" alt="Ingrid presenting at a standing table, reading from hand-cut script cards, with the title slide Me, Myself and A.I. projected on the brick wall" loading="lazy">
       <figcaption>Me, Myself and A.I. · CDN Equinox 2026</figcaption>
     </figure>
   </section>
@@ -175,10 +180,6 @@ footer a{color:var(--gold)}
   <section class="col" data-where="02 / The haunting">
     <div class="tag">The haunting</div>
     <h2>Hanna spoke right before me, about generative A.I. haunted by its authors.</h2>
-    <figure class="figure" style="margin:0 0 2rem">
-      <img src="../assets/equinox-aftermath/panel.png" alt="Three panelists seated on a rug in front of a brick wall, Ingrid on the right speaking and gesturing" loading="lazy">
-      <figcaption>The Haunting of the Author · with Yagmur Cisem Vik and Hanna Hellesø Lauvli</figcaption>
-    </figure>
     <p>I picked up where she stopped. My haunting is a different one. It isn't a djinn. It's my own face, regenerated again and again by a machine that has no idea it's haunting anyone.</p>
     <p>I started with <em>The Turing Test: Fragments of a Life Saved by Pixels</em>, the piece of electronic literature that won the Digital Culture Awards 2025. I tested language models on Norwegian queer organisations and crisis resources, and they invented organisations and contact information that don't exist. That left me with one question: what happens when a system confidently represents us incorrectly?</p>
     <p class="pull">Then I turned the same question on my own image.</p>
@@ -269,6 +270,10 @@ footer a{color:var(--gold)}
     <div class="tag">The haunting of the author</div>
     <p class="haunt">The machine had authors too. I will never see who they were.</p>
     <p class="after">Not a ghost, not a djinn. Just a machine repeating whatever patterns its authors left behind, with no one left to ask what they meant.</p>
+    <figure class="photo">
+      <img src="../assets/equinox-aftermath/panel.webp" alt="Three panelists seated in front of a lit brick wall during The Haunting of the Author, Ingrid speaking with her hands" loading="lazy">
+      <figcaption>The Haunting of the Author · Panel with Yagmur Cisem Vik and Hanna Hellesø Lauvli</figcaption>
+    </figure>
     <p class="cap" style="margin-top:3rem">I printed my script on cards, cut them out by hand, and still changed half of them the night before. Some things stay analogue.</p>
   </section>
 </main>
@@ -372,5 +377,7 @@ footer a{color:var(--gold)}
   }
 })();
 </script>
+
+</body></html>
 </body>
 </html>
