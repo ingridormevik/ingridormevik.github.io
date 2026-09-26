@@ -1,4 +1,4 @@
-/* Game lobby meets cartoon laboratory. Semantic teaching controls underneath. */
+/* Game lobby, cartoon laboratory and digital systems. */
 @media screen {
  :root{--bg:#0735a4;--panel:#09296c;--ink:#fff;--soft:#e0ecff;--accent:#ffe735;--cyan:#79ecff;--line:#658ce2;--violet:#ffe735;color-scheme:dark}
  .studio{background:radial-gradient(ellipse at 75% 0,#138dff 0,transparent 52%),repeating-linear-gradient(125deg,transparent 0 100px,#ffffff04 100px 102px),linear-gradient(155deg,#0758d4,#10266c 75%);background-attachment:fixed;color:var(--ink)}
@@ -38,6 +38,21 @@
  @media(prefers-reduced-motion:reduce){.studio .route-grid>a:hover{transform:none}}
 }
 
+/* System diagram layer: decoration only, never simulated buttons or status. */
+@media screen {
+ .studio{background-image:linear-gradient(90deg,transparent 49px,#81dcca12 49px,#81dcca12 50px,transparent 50px),linear-gradient(transparent 49px,#81dcca12 49px,#81dcca12 50px,transparent 50px),radial-gradient(ellipse at 85% 8%,#25707280,transparent 52%),linear-gradient(115deg,#163848,#102232);background-size:50px 50px,50px 50px,auto,auto}
+ .studio .eyebrow,.studio .studio-brand span,.studio .lab-nav span,.studio .session-window,.studio .time,.studio .reader-bar label,.studio .programme-controls label{font-family:Consolas,'Courier New',monospace;letter-spacing:.04em}
+ .studio .studio-hero,.studio .intro{background-image:linear-gradient(90deg,transparent 80%,#91d7d01c 80%,#91d7d01c 80.3%,transparent 80.3%),linear-gradient(0deg,transparent 70%,#91d7d01c 70%,#91d7d01c 70.4%,transparent 70.4%)}
+ .studio .route-grid{counter-reset:module}.studio .route-grid>a{position:relative;counter-increment:module;padding-top:50px}
+ .studio .route-grid>a:before{content:'0' counter(module) ' / GUIDE';position:absolute;top:15px;left:24px;font:700 12px/1.4 Consolas,'Courier New',monospace;letter-spacing:.08em;color:#243e49}
+ .studio .route-grid>a:after{content:'';position:absolute;right:19px;top:17px;width:28px;height:10px;background:repeating-linear-gradient(90deg,#243e49 0 3px,transparent 3px 6px);opacity:.65}
+ .studio .lab-title{position:relative;border-bottom:8px solid #101722}.studio .programme-controls,.studio .reader-bar{background-image:linear-gradient(90deg,#ffffff04 1px,transparent 1px);background-size:16px 100%}
+ .studio .step{border-bottom:2px dashed #77aba9;scroll-margin-top:24px}.studio .step>.eyebrow{display:inline-block;border:1px solid #81b4b0;padding:5px 10px;background:#142f3c}
+ .studio .code-heading{font-family:Consolas,'Courier New',monospace;border-top:4px solid #a995cd}.studio pre{box-shadow:inset 5px 0 0 #78d5c6}
+ .studio footer{border-top:3px solid #82b3af;font-family:Consolas,'Courier New',monospace}
+ @media(max-width:600px){.studio .route-grid>a{padding-top:49px}}
+}
+
 /* Cartoon laboratory: ink outlines, equipment panels and paper task sheets. */
 @media screen {
  :root{--bg:#142e3e;--panel:#17384a;--soft:#e6f4f3;--line:#91bbbd;--accent:#ffdf42;--cyan:#9ef2dc}
@@ -66,3 +81,26 @@
  .studio .help-strip{background:#213e50;border-color:#98c5c0}.studio .official-shot img{border:3px solid #111925}.studio.qr-screen .join-v2 img{border:0}
  @media(max-width:600px){.studio .studio-header nav a[aria-current=page]{padding:5px}.studio .lab-title{padding:22px}.studio .agenda-row{padding:18px}.studio .route-grid h3{font-size:28px}}
 }
+
+/* Exhibition scale: real work sets the scene, compact controls support it. */
+@media screen {
+.studio main{max-width:1440px;padding-left:48px;padding-right:48px}
+.studio.page-setup main,.studio.page-construct-guide main,.studio.page-github-guide main,.studio.page-javascript-construct main{max-width:1040px}
+.studio .exhibition-opening{isolation:isolate;position:relative;min-height:620px;min-height:min(780px,85svh);display:flex;flex-direction:column;justify-content:center;margin:0 -48px 52px;padding:70px 64px 90px;overflow:hidden;border:0;background:#101f2c;box-shadow:0 22px 70px #0005}
+.studio .exhibition-opening:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#071824fa 0%,#0a1e2bef 30%,#102b3890 59%,#10233220 100%),linear-gradient(0deg,#081b2bea,transparent 48%)}
+.studio .exhibition-opening:after{display:none}
+.studio .exhibition-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:75% 58%;z-index:-2;filter:saturate(.8)}
+.studio .exhibition-opening h1{font-size:clamp(64px,8.5vw,128px);max-width:9ch;line-height:.94;transform:none;color:#f4f5dc;-webkit-text-stroke:0;text-shadow:0 4px 18px #0008;margin:22px 0 30px}
+.studio .exhibition-opening .lead{max-width:39ch;font-size:clamp(19px,2vw,25px);color:#f2f6f5;line-height:1.55}.studio .exhibition-opening .eyebrow{color:#b6efd8}
+.studio .exhibition-credit{position:absolute;left:64px;bottom:25px;font:12px/1.6 Consolas,monospace;color:#e2f1ec;max-width:calc(100% - 100px)}
+.studio .studio-section{padding:35px 0 65px}.studio .studio-section>h2{font-size:clamp(36px,4vw,58px)}
+.studio .route-grid{gap:28px}.studio .route-grid>a{min-height:235px;padding-bottom:30px;box-shadow:7px 7px 0 #08111b}
+.studio .lab{padding-top:48px;padding-bottom:70px}.studio .lab-title{padding:45px}.studio .lab-title h2{max-width:22ch;font-size:clamp(38px,4.8vw,68px)}
+.studio .agenda{margin-top:35px;gap:18px}.studio .agenda-row{padding:28px;grid-template-columns:150px minmax(0,1fr)}
+.studio .help-banner{margin:50px 0 65px;padding:38px}.studio .lab-switch-controls{margin:26px 0}
+.studio.page-meet-ingrid main{max-width:none;padding:0}.studio.qr-screen main{padding:4vh 4vw}
+@media(min-width:1600px){.studio main{max-width:1560px}.studio .exhibition-opening{min-height:760px}}
+@media(max-width:850px){.studio main{padding-left:26px;padding-right:26px}.studio .exhibition-opening{margin-left:-26px;margin-right:-26px;padding:55px 35px 85px;min-height:580px}.studio .exhibition-credit{left:35px}.studio .agenda-row{grid-template-columns:1fr}.studio .lab-title{padding:28px}}
+@media(max-width:600px){.studio main{padding-left:20px;padding-right:20px}.studio .exhibition-opening{margin-left:-20px;margin-right:-20px;margin-bottom:30px;padding:45px 24px 90px;min-height:560px}.studio .exhibition-opening:before{background:linear-gradient(90deg,#081a29ed,#081a2970),linear-gradient(0deg,#081a29f0,transparent)}.studio .exhibition-opening h1{font-size:clamp(58px,16vw,86px)}.studio .exhibition-credit{left:24px;max-width:calc(100% - 48px)}.studio .exhibition-image{object-position:64% center}.studio .route-grid{gap:20px}.studio .route-grid>a{min-height:0}.studio .agenda-row{padding:20px}.studio .help-banner{padding:24px}.studio .lab-title{padding:24px}}
+}
+@media print{.exhibition-image,.exhibition-credit{display:none!important}}
