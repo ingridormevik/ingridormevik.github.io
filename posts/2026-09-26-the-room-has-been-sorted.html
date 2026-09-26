@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Room Has Been Sorted - Ingrid Ormevik</title>
+<meta name="description" content="Aftermath of Me, Myself and A.I. and The Haunting of the Author at CDN Equinox 2026. Mount Media, Bergen.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<style>
+:root{
+  color-scheme:dark;
+  --void:#05080a;--deep:#071116;--panel:#0a1419;--bone:#e9eff1;--slate:#7f959e;
+  --gold:#d2a857;--cyan:#5ec8de;--cyan-soft:#a8e8f5;--danger:#ff4b45;
+  --hair:rgba(94,200,222,.2);--hair-gold:rgba(210,168,87,.32);
+  --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  --mono:ui-monospace,'SFMono-Regular','Cascadia Code',Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--void)}
+body{margin:0;background:var(--void);color:var(--bone);font-family:var(--serif);font-size:clamp(17px,1.15vw + 12px,20px);line-height:1.62;-webkit-font-smoothing:antialiased;padding-inline:20px;overflow-x:hidden}
+a{color:var(--gold);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+img{max-width:100%;display:block}
+
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;opacity:.5;pointer-events:none}
+.atmosphere{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(circle at 80% 12%,rgba(94,200,222,.1),transparent 30%),
+    radial-gradient(circle at 12% 88%,rgba(210,168,87,.08),transparent 32%),
+    radial-gradient(ellipse at 50% 45%,transparent 35%,rgba(0,0,0,.7) 100%)}
+.atmosphere::before{content:"";position:absolute;inset:-50%;opacity:.035;
+  background-image:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 4px);animation:scanDrift 9s steps(9) infinite}
+@keyframes scanDrift{to{transform:translateY(4px)}}
+
+.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-inline:-20px;padding:14px 20px;display:flex;justify-content:space-between;gap:1rem;
+  font:10px/1.4 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--slate);
+  background:linear-gradient(180deg,rgba(5,8,10,.92),rgba(5,8,10,0))}
+.hud b{color:var(--gold);font-weight:400}
+.hud .progress{position:absolute;left:0;bottom:6px;height:1px;width:0;background:var(--gold);transition:width .1s linear}
+
+main{position:relative;z-index:2;max-width:1100px;margin-inline:auto}
+.col{max-width:64ch;margin-inline:auto}
+
+.tag{font:10px/1.4 var(--mono);letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+.tag.red{color:var(--danger)}
+.cap{font:10px/1.5 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--slate);margin-top:.8rem}
+
+/* hero */
+.hero{padding-block:clamp(56px,11vh,120px) clamp(40px,7vh,80px);display:grid;gap:1.4rem}
+.hero h1{font-weight:400;font-size:clamp(2.8rem,8vw,6.4rem);line-height:.98;letter-spacing:-.025em;margin:0;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.dek{font-size:clamp(1.15rem,2vw,1.55rem);line-height:1.4;max-width:38ch;color:var(--bone);margin:0;text-wrap:balance}
+.byline{display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;font:10px/1.5 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--slate)}
+.byline span:first-child{color:var(--cyan)}
+
+section{padding-block:clamp(48px,8vh,96px)}
+section h2{font-weight:400;font-size:clamp(1.8rem,4vw,3rem);line-height:1.08;letter-spacing:-.015em;margin:.9rem 0 1.4rem;text-wrap:balance}
+p{margin:0 0 1.15em}
+.pull{font-size:clamp(1.5rem,3.4vw,2.4rem);line-height:1.2;color:var(--gold);margin:1.6em 0;text-wrap:balance}
+.thanks{border-top:1px solid var(--hair-gold);border-bottom:1px solid var(--hair-gold);padding-block:1.6rem}
+
+/* turing figure */
+.figure{margin:2rem 0 0;border:1px solid var(--hair);background:var(--deep)}
+.figure img{width:100%}
+.figure figcaption{padding:.8rem 1rem;font:10px/1.5 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--slate);border-top:1px solid var(--hair)}
+
+/* beard scroller */
+.beard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(24px,4vw,56px);align-items:start}
+.stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + 64px);aspect-ratio:4/5;max-height:78vh;width:100%;border:1px solid var(--hair);background:#000;overflow:hidden}
+.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s ease,transform 1.4s ease;transform:scale(1.04)}
+.stage img.on{opacity:1;transform:scale(1)}
+.stage .count{position:absolute;top:12px;right:14px;z-index:2;font:10px/1 var(--mono);letter-spacing:.2em;color:var(--cyan-soft);background:rgba(5,8,10,.6);padding:6px 8px}
+.stage .flag{position:absolute;left:14px;bottom:14px;z-index:2;font:11px/1 var(--mono);letter-spacing:.24em;text-transform:uppercase;color:#fff;background:var(--danger);padding:8px 10px;opacity:0;transition:opacity .4s}
+.stage.flagged .flag{opacity:1;animation:pulse 1s steps(2) infinite}
+@keyframes pulse{50%{opacity:.55}}
+.steps{display:grid;gap:clamp(34vh,42vh,48vh);padding-block:4vh 30vh}
+.step{border-left:1px solid var(--hair);padding:.4rem 0 .4rem 1.2rem;transition:border-color .4s,opacity .4s;opacity:.55}
+.step.active{border-color:var(--gold);opacity:1}
+.step .n{font:10px/1.4 var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--slate)}
+.step blockquote{margin:.6rem 0 0;font-size:clamp(1.1rem,1.8vw,1.35rem);line-height:1.4}
+.step.no .n,.step.no blockquote{color:var(--danger)}
+.step.no blockquote{font-size:clamp(2.2rem,5vw,3.6rem);letter-spacing:.04em;line-height:1}
+
+/* genre strip */
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:2rem}
+.strip figure{margin:0;border:1px solid var(--hair-gold);background:var(--deep);overflow:hidden}
+.strip img{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform 1.2s ease}
+.strip figure:hover img{transform:scale(1.05)}
+.strip figcaption{padding:.55rem .7rem;font:9px/1.4 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+
+/* detector */
+.detector{border:1px solid var(--hair);background:linear-gradient(180deg,rgba(7,17,22,.92),rgba(5,8,10,.96));padding:clamp(22px,4vw,48px);position:relative;overflow:hidden}
+.detector .top{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font:9px/1.4 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--slate)}
+.detector .top .ok{color:var(--cyan)}
+.detector h3{font-weight:400;text-align:center;font-size:clamp(1.9rem,5vw,3.6rem);letter-spacing:-.02em;margin:1.6rem 0 .6rem}
+.readout{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:1rem;margin-top:1.4rem}
+.big{font:700 clamp(3.6rem,13vw,9rem)/.85 var(--mono);letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.big small{font:clamp(10px,1.2vw,13px)/1 var(--mono);letter-spacing:.2em;margin-left:.5rem;vertical-align:baseline}
+.m{color:var(--cyan)} .f{color:var(--gold);text-align:right} .u{text-align:center;color:var(--danger)}
+.u .pct{font:700 clamp(2rem,5vw,3.2rem)/1 var(--mono)}
+.u .lbl{font:11px/1 var(--mono);letter-spacing:.3em;margin-top:.6rem}
+.u .pct{animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{opacity:.35}}
+.beamwrap{position:relative;height:130px;margin:1.6rem 0 1rem}
+.beam{position:absolute;left:4%;right:4%;top:50px;height:3px;border-radius:2px;
+  background:linear-gradient(90deg,var(--cyan) 0 47%,#fff 47% 53%,var(--gold) 53% 100%);
+  transform-origin:50% 50%;transition:transform 1.4s cubic-bezier(.3,1.4,.4,1)}
+.pivot{position:absolute;left:50%;top:52px;width:0;height:0;margin-left:-26px;border-left:26px solid transparent;border-right:26px solid transparent;border-bottom:58px solid rgba(233,239,241,.12)}
+.pivot::after{content:"";position:absolute;left:-7px;top:-10px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 0 18px rgba(255,255,255,.7)}
+.dot{position:absolute;top:-8px;width:18px;height:18px;margin-left:-9px;border-radius:50%;border:1px solid;background:var(--void);transition:transform .5s cubic-bezier(.3,1.5,.5,1),opacity .3s}
+.dot.m{border-color:var(--cyan);box-shadow:0 0 10px rgba(94,200,222,.55)}
+.dot.f{border-color:var(--gold);box-shadow:0 0 10px rgba(210,168,87,.55)}
+.dot.drop{transform:translateY(-90px);opacity:0}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--hair)}
+.stat{padding:1rem 1.2rem;display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap}
+.stat+.stat{border-left:1px solid var(--hair)}
+.stat b{font:700 clamp(1.8rem,4vw,2.8rem)/1 var(--mono);font-variant-numeric:tabular-nums}
+.stat.red b{color:var(--danger)}
+.stat span{font:10px/1.4 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--slate)}
+.never{text-align:center;color:var(--gold);font-style:italic;font-size:clamp(1.05rem,1.8vw,1.3rem);margin:1.4rem 0 0}
+.rerun{display:block;margin:1.2rem auto 0;font:10px/1 var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--bone);background:transparent;border:1px solid var(--hair-gold);padding:10px 14px;cursor:pointer}
+.rerun:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ending */
+.ending{text-align:center;padding-block:clamp(70px,14vh,150px)}
+.ending .haunt{font-size:clamp(1.9rem,5.2vw,4.2rem);line-height:1.08;letter-spacing:-.015em;margin:1.2rem auto 0;max-width:20ch;text-wrap:balance}
+.ending .after{max-width:46ch;margin:2rem auto 0;color:var(--slate)}
+footer{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding-block:30px 60px;border-top:1px solid var(--hair);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font:10px/1.6 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--slate)}
+footer a{color:var(--gold)}
+
+@media (max-width:760px){
+  .beard{grid-template-columns:1fr}
+  .stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + 50px);max-height:52vh;aspect-ratio:auto;height:52vh;z-index:3}
+  .steps{gap:30vh;padding-block:6vh 20vh}
+  .strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .readout{grid-template-columns:1fr 1fr}
+  .u{grid-column:1/-1;order:3}
+  .stats{grid-template-columns:1fr}
+  .stat+.stat{border-left:0;border-top:1px solid var(--hair)}
+  .hud .hide-s{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .atmosphere::before,.u .pct,.stage.flagged .flag{animation:none}
+  .stage img,.beam,.dot,.strip img{transition:none}
+}
+</style>
+</head>
+<body>
+
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="atmosphere" aria-hidden="true"></div>
+
+<div class="hud" role="presentation">
+  <span><a href="../blog.html" style="color:inherit;text-decoration:none">&larr; Writing</a> <b>//</b> <span class="hide-s">CDN Equinox 2026 <b>//</b> </span>Aftermath</span>
+  <span id="where">00 / Opening</span>
+  <i class="progress" id="progress"></i>
+</div>
+
+<main>
+  <header class="hero col">
+    <div class="tag">Aftermath // CDN Equinox 2026</div>
+    <h1>The room has <em>been sorted.</em></h1>
+    <p class="dek">Two rooms, one question. What happens when a system gets to describe you, but you do not get to change its terms?</p>
+    <div class="byline"><span>Ingrid Ormevik</span><span>Mount Media · Bergen</span><span>September 2026</span></div>
+  </header>
+
+  <section class="col" data-where="01 / Thank you">
+    <p class="thanks">First, thank you to the Center for Digital Narrative for having me. Equinox gave me two rooms this time: my own talk, <em>Me, Myself and A.I.</em>, and <em>The Haunting of the Author</em>, the panel I shared with Yagmur Cisem Vik and Hanna Hellesø Lauvli.</p>
+  </section>
+
+  <section class="col" data-where="02 / The haunting">
+    <div class="tag">The haunting</div>
+    <h2>Hanna spoke right before me, about generative A.I. haunted by its authors.</h2>
+    <p>I picked up where she stopped. My haunting is a different one. It isn't a djinn. It's my own face, regenerated again and again by a machine that has no idea it's haunting anyone.</p>
+    <p>I started with <em>The Turing Test: Fragments of a Life Saved by Pixels</em>, the piece of electronic literature that won the Digital Culture Awards 2025. I tested language models on Norwegian queer organisations and crisis resources, and they invented organisations and contact information that don't exist. That left me with one question: what happens when a system confidently represents us incorrectly?</p>
+    <p class="pull">Then I turned the same question on my own image.</p>
+    <figure class="figure">
+      <img src="../assets/equinox-aftermath/turing.png" alt="Title screen of The Turing Test: Fragments of a Life Saved by Pixels, green terminal type on black" loading="lazy">
+      <figcaption>The Turing Test · Electronic literature · Digital Culture Awards 2025</figcaption>
+    </figure>
+  </section>
+
+  <section data-where="03 / Two words">
+    <div class="col">
+      <div class="tag">The prompt sequence</div>
+      <h2>Four prompts. I tried to stop it with two words.</h2>
+    </div>
+    <div class="beard">
+      <div class="stage" id="stage" aria-live="polite">
+        <img src="../assets/equinox-aftermath/p1.webp" alt="Prompt 1: cinematic portrait with floating music interfaces, still recognisably Ingrid" class="on">
+        <img src="../assets/equinox-aftermath/p2.webp" alt="Prompt 2: the portrait reworked around code, systems and networks" loading="lazy">
+        <img src="../assets/equinox-aftermath/p3.webp" alt="Prompt 3: pushed into the programmer look, jaw harder, face longer" loading="lazy">
+        <img src="../assets/equinox-aftermath/p4.jpg" alt="Prompt 4: after asking for no beard, the model added a beard" loading="lazy">
+        <span class="count" id="count">01 / 04</span>
+        <span class="flag">Beard added</span>
+      </div>
+      <div class="steps" id="steps">
+        <div class="step active" data-i="0"><div class="n">Prompt 01</div><blockquote>Floating music interfaces. A sleek digital atmosphere. Very A.I., but still me.</blockquote></div>
+        <div class="step" data-i="1"><div class="n">Prompt 02</div><blockquote>Replace the soft music mood with code, systems and networks.</blockquote></div>
+        <div class="step" data-i="2"><div class="n">Prompt 03</div><blockquote>Push the programmer aesthetic further. The jaw sharpens. The softness goes.</blockquote></div>
+        <div class="step no" data-i="3"><div class="n">Prompt 04</div><blockquote>No beard.</blockquote><p class="cap">It gave me a beard. When in doubt, add a beard.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="col" data-where="04 / The archive">
+    <div class="tag">What the archive showed</div>
+    <h2>Techno made my jaw harder. Ethereal music made me softer.</h2>
+    <p>Mount Media tracks need covers, so over time I've built an archive of my own face in different worlds. Across it, harder genres like techno and drum and bass sharpened my jaw and squared my shoulders. Ethereal genres softened my posture.</p>
+    <p class="pull">I never asked the model to read genre as gender. It did anyway.</p>
+    <div class="strip">
+      <figure><img src="../assets/equinox-aftermath/g-fire.webp" alt="Mount Media cover, Fire Meets Water" loading="lazy"><figcaption>Fire meets water</figcaption></figure>
+      <figure><img src="../assets/equinox-aftermath/g-dale.webp" alt="Mount Media cover, Dale electric" loading="lazy"><figcaption>Dale / electric</figcaption></figure>
+      <figure><img src="../assets/equinox-aftermath/g-siren.webp" alt="Mount Media cover, The Siren Calling" loading="lazy"><figcaption>The siren calling</figcaption></figure>
+      <figure><img src="../assets/equinox-aftermath/g-ocean.webp" alt="Mount Media cover, Ocean Drift" loading="lazy"><figcaption>Ocean drift</figcaption></figure>
+    </div>
+    <p class="cap">One face. Changing genres. Same photo going in.</p>
+  </section>
+
+  <section data-where="05 / The detector">
+    <div class="col">
+      <div class="tag red">The detector</div>
+      <h2>At the end, I let a machine look at the room.</h2>
+      <p>The audience scanned a QR code and pointed their front cameras at their own faces. Nothing visual left their phones. Then the room saw the result together.</p>
+      <p>I built The Detector myself. I chose its two labels, its buttons, and what happened when someone said it was wrong. That makes me one of its authors too.</p>
+    </div>
+    <div class="detector" id="detector">
+      <div class="top"><span>The Detector · CDN Equinox 2026</span><span class="ok">Nothing visual leaves this device</span></div>
+      <div class="tag red" style="text-align:center;margin-top:1.4rem">Live classification // live</div>
+      <h3>The room has been sorted.</h3>
+      <div class="readout">
+        <div class="big m"><span id="mNum">46</span><small>% MALE</small></div>
+        <div class="u"><div class="pct">0%</div><div class="lbl">UNSURE</div></div>
+        <div class="big f"><span id="fNum">54</span><small>% FEMALE</small></div>
+      </div>
+      <div class="beamwrap" aria-hidden="true">
+        <div class="pivot"></div>
+        <div class="beam" id="beam"></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>54</b><span>Faces classified</span></div>
+        <div class="stat red"><b>17</b><span>Said it was wrong</span></div>
+        <div class="stat red"><b>2</b><span>Rejected the two words</span></div>
+      </div>
+      <p class="never">It was never allowed to be unsure.</p>
+      <button class="rerun" id="rerun" type="button">Sort the room again</button>
+    </div>
+    <div class="col" style="margin-top:2.4rem">
+      <p>Zero percent unsure, on the screen. The display had no place for doubt, whatever the model underneath calculated. Seventeen of the fifty four people told it that it was wrong, and two refused the two options altogether. Their disagreement was recorded. The question is whether it could change anything.</p>
+    </div>
+  </section>
+
+  <section class="col" data-where="06 / Taking with me">
+    <div class="tag">What I'm taking with me</div>
+    <h2>Masculinity was never only a cis man's. The model just assumed it.</h2>
+    <p>The reading I'm building on comes from Jack Halberstam's <em>Female Masculinity</em>, Sara Ahmed's <em>Queer Phenomenology</em>, and Jill Walker Rettberg's work on machine vision. This is one situated case, not a claim about every model.</p>
+    <p>People were reading my gender long before I ever opened an image generator. The difference now is scale.</p>
+  </section>
+
+  <section class="ending col" data-where="07 / The haunting of the author">
+    <div class="tag">The haunting of the author</div>
+    <p class="haunt">The machine had authors too. I will never see who they were.</p>
+    <p class="after">Not a ghost, not a djinn. Just a machine repeating whatever patterns its authors left behind, with no one left to ask what they meant.</p>
+    <p class="cap" style="margin-top:3rem">I printed my script on cards, cut them out by hand, and still changed half of them the night before. Some things stay analogue.</p>
+  </section>
+</main>
+
+<footer>
+  <span>Mount Media · Bergen, Norway · 2026</span>
+  <a href="https://ingridormevik.github.io" target="_blank" rel="noopener noreferrer">ingridormevik.github.io</a>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // signal field
+  var c = document.getElementById('field'), x = c.getContext('2d'), W, H, nodes = [];
+  function size(){
+    var d = Math.min(window.devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    c.width = W * d; c.height = H * d; x.setTransform(d, 0, 0, d, 0, 0);
+  }
+  size();
+  for (var i = 0; i < 42; i++) nodes.push({x: Math.random(), y: Math.random(), vx: (Math.random() - .5) * .00018, vy: (Math.random() - .5) * .00018, g: Math.random() < .3});
+  var scrollK = 0;
+  function draw(){
+    x.clearRect(0, 0, W, H);
+    for (var a = 0; a < nodes.length; a++){
+      var n = nodes[a];
+      if (!reduce){ n.x += n.vx; n.y += n.vy; if (n.x < 0 || n.x > 1) n.vx *= -1; if (n.y < 0 || n.y > 1) n.vy *= -1; }
+      var ax = n.x * W, ay = ((n.y + scrollK * (n.g ? .08 : .04)) % 1) * H;
+      for (var b = a + 1; b < nodes.length; b++){
+        var m = nodes[b], bx = m.x * W, by = ((m.y + scrollK * (m.g ? .08 : .04)) % 1) * H, dx = ax - bx, dy = ay - by, dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 170){ x.strokeStyle = (n.g && m.g) ? 'rgba(210,168,87,' + (1 - dist / 170) * .35 + ')' : 'rgba(94,200,222,' + (1 - dist / 170) * .25 + ')'; x.lineWidth = 1; x.beginPath(); x.moveTo(ax, ay); x.lineTo(bx, by); x.stroke(); }
+      }
+      x.fillStyle = n.g ? 'rgba(210,168,87,.8)' : 'rgba(94,200,222,.7)';
+      x.beginPath(); x.arc(ax, ay, 1.6, 0, Math.PI * 2); x.fill();
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  }
+  draw();
+  addEventListener('resize', function(){ size(); if (reduce) draw(); });
+
+  // hud progress + section label
+  var prog = document.getElementById('progress'), where = document.getElementById('where');
+  var secs = Array.prototype.slice.call(document.querySelectorAll('[data-where]'));
+  function onScroll(){
+    var max = document.documentElement.scrollHeight - innerHeight;
+    var k = max > 0 ? scrollY / max : 0;
+    prog.style.width = (k * 100) + '%';
+    scrollK = k;
+    var label = '00 / Opening';
+    secs.forEach(function(s){ if (s.getBoundingClientRect().top < innerHeight * .45) label = s.getAttribute('data-where'); });
+    where.textContent = label;
+  }
+  addEventListener('scroll', onScroll, {passive: true});
+  onScroll();
+
+  // beard sequence
+  var stage = document.getElementById('stage'), imgs = stage.querySelectorAll('img'), count = document.getElementById('count');
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  function setStep(i){
+    imgs.forEach(function(im, k){ im.classList.toggle('on', k === i); });
+    steps.forEach(function(s, k){ s.classList.toggle('active', k === i); });
+    count.textContent = '0' + (i + 1) + ' / 04';
+    stage.classList.toggle('flagged', i === 3);
+  }
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) setStep(+e.target.getAttribute('data-i')); });
+    }, {rootMargin: '-45% 0px -45% 0px'});
+    steps.forEach(function(s){ io.observe(s); });
+  }
+
+  // detector: 54 faces, 25 read as male (46%), 29 as female (54%), none unsure
+  var beam = document.getElementById('beam'), MALE = 25, FEMALE = 29, dots = [];
+  for (var d = 0; d < MALE + FEMALE; d++){
+    var el = document.createElement('i'), isM = d < MALE;
+    el.className = 'dot ' + (isM ? 'm' : 'f');
+    var pos = isM ? 6 + (d / (MALE - 1)) * 38 : 56 + ((d - MALE) / (FEMALE - 1)) * 38;
+    el.style.left = pos + '%';
+    beam.appendChild(el); dots.push(el);
+  }
+  var tilt = ((FEMALE - MALE) / (MALE + FEMALE)) * 14;
+  function settle(){ beam.style.transform = 'rotate(' + tilt.toFixed(2) + 'deg)'; }
+  settle();
+
+  var running = false;
+  function sortRoom(){
+    if (running || reduce) return;
+    running = true;
+    beam.style.transform = 'rotate(0deg)';
+    dots.forEach(function(el){ el.classList.add('drop'); });
+    var order = dots.slice().sort(function(){ return Math.random() - .5; });
+    order.forEach(function(el, k){ setTimeout(function(){ el.classList.remove('drop'); }, 250 + k * 45); });
+    setTimeout(function(){ settle(); running = false; }, 250 + order.length * 45 + 200);
+  }
+  document.getElementById('rerun').addEventListener('click', sortRoom);
+  if ('IntersectionObserver' in window && !reduce){
+    var seen = false;
+    new IntersectionObserver(function(e){ if (e[0].isIntersecting && !seen){ seen = true; sortRoom(); } }, {threshold: .45}).observe(document.getElementById('detector'));
+  }
+})();
+</script>
+</body>
+</html>
