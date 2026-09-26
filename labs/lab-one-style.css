@@ -1,0 +1,11 @@
+body {
+  max-width: 44rem;
+  margin: 3rem auto;
+  padding: 0 1.25rem;
+  font-family: system-ui, sans-serif;
+  line-height: 1.65;
+  color: #18242d;
+  background: #f3f0e8;
+}
+summary { cursor: pointer; }
+summary:focus-visible { outline: 3px solid #215a75; }
