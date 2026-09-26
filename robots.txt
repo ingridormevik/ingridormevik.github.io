@@ -3,4 +3,5 @@
 User-agent: *
 Allow: /
 Disallow: /hagen/
-
+Disallow: /gaymers-playing-identity.html
+Disallow: /signal-unknown.html
