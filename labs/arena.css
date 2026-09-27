@@ -124,3 +124,10 @@
 .studio .lab-nav strong{font-family:'Segoe UI',Arial,sans-serif;font-size:19px;text-transform:none;letter-spacing:normal}.studio .lab-nav span{font-size:13px}
 @media(max-width:750px){.studio .agenda-row{grid-template-columns:1fr;gap:10px;padding:20px}.studio .agenda-row .time{display:flex;flex-wrap:wrap;align-items:baseline;gap:16px}.studio .agenda-row .time .elapsed{margin:0}.studio .agenda-row .activity h4{font-size:21px}}
 }
+
+/* Align disclosure headings with their body content and contain long code. */
+.studio details>h1,.studio details>h2,.studio details>h3,.studio details>h4,.studio details>h5,.studio details>h6{margin:24px 20px 18px;max-width:calc(100% - 40px);overflow-wrap:break-word;transform:none}
+.studio details{min-width:0;max-width:100%}
+.studio details>pre{box-sizing:border-box;min-width:0;width:calc(100% - 40px);max-width:calc(100% - 40px);overflow-x:auto}
+.studio .support-section,.studio .support-detail,.studio .activity{min-width:0}
+@media(max-width:600px){.studio details>h1,.studio details>h2,.studio details>h3,.studio details>h4,.studio details>h5,.studio details>h6{margin:22px 17px 16px;max-width:calc(100% - 34px)}.studio details>pre{margin-left:17px;margin-right:17px;width:calc(100% - 34px);max-width:calc(100% - 34px)}}
