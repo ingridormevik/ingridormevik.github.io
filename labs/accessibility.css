@@ -1,26 +1,55 @@
 :root{--access-text-scale:1}
 .access-skip{position:absolute;left:18px;top:-200px;z-index:1000;background:#fff;color:#17354a;padding:14px;border:3px solid #17354a;font:700 18px/1.5 'Segoe UI',Arial,sans-serif}.access-skip:focus{top:10px}
-/* Quiet utility row; the controls expand in the page, never over the work. */
-.studio .access-bar{box-sizing:border-box;margin:0 auto;max-width:1440px;padding:10px 32px;background:transparent;color:#ecf3ef;font-family:'Segoe UI',Arial,sans-serif}
-.studio .access-bar details{margin:0;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none}
-.studio .access-bar details>summary,.studio .access-bar details[open]>summary{box-sizing:border-box;display:flex;align-items:center;gap:12px;width:fit-content;max-width:100%;min-height:44px;margin:0 0 0 auto;padding:9px 14px;list-style:none;border:1px solid #789299;border-radius:6px;background:#19343f;color:#eff5ef;font:600 15px/1.5 'Segoe UI',Arial,sans-serif;letter-spacing:normal;text-transform:none;cursor:pointer}
-.studio .access-bar summary::-webkit-details-marker{display:none}
-.studio .access-bar summary::after{content:'+';font:400 22px/1 'Segoe UI',sans-serif;color:#b7e3d6}
-.studio .access-bar details[open]>summary::after{content:'?'}
-.studio .access-bar summary:hover{background:#254b55}
-.studio .access-bar .access-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:start;margin:14px 0 0;padding:22px;background:#152e38;border:1px solid #789299;border-bottom:0;border-radius:8px 8px 0 0}
-.studio .access-bar label{display:block;margin:0;color:#ecf3ef;font:600 16px/1.5 'Segoe UI',Arial,sans-serif;max-width:none;min-width:0}
-.studio .access-bar input[type=checkbox]{width:22px;height:22px;vertical-align:middle;margin:0 8px 3px 0;accent-color:#b7e3d6;cursor:pointer}
-.studio .access-bar select{box-sizing:border-box;display:block;width:100%;background:#0e232c;color:#ecf3ef;font:400 16px/1.5 'Segoe UI',Arial,sans-serif;padding:8px 10px;min-height:44px;margin-top:8px;border:1px solid #789299;border-radius:4px}
-.studio .access-bar button{grid-column:1/-1;justify-self:start;background:transparent;color:#d9e9e5;border:1px solid #789299;border-radius:4px;box-shadow:none;font:600 14px/1.5 'Segoe UI',Arial,sans-serif;min-height:44px;padding:9px 12px}
-.studio .access-bar button:hover{background:#254b55;color:#fff}
-.studio .access-bar p,.studio .access-bar small{color:#c4d5d9;font:400 14px/1.6 'Segoe UI',Arial,sans-serif;margin:8px 0}.studio .access-bar small{display:block}
-.studio .access-bar [data-access-status]{box-sizing:border-box;margin:0;padding:0 22px 14px;background:#152e38;border-inline:1px solid #789299}
-.studio .access-bar details>a{display:block;box-sizing:border-box;padding:0 22px 20px;background:#152e38;border:1px solid #789299;border-top:0;border-radius:0 0 8px 8px;color:#b7e3d6;font:400 14px/1.6 'Segoe UI',Arial,sans-serif;text-decoration:underline;text-underline-offset:3px}
-.studio .access-bar :focus-visible{outline:3px solid #c6f1e4;outline-offset:4px}
+.studio .access-bar{box-sizing:border-box;max-width:1440px;margin:18px auto 24px;padding:0 32px;color:#edf5f2;font-family:'Segoe UI',Arial,sans-serif}
+.studio .access-console{margin:0;padding:0;border:1px solid #718e98;border-radius:14px;background:#102630;box-shadow:0 4px 0 #081921,0 14px 35px #04151c45;overflow:hidden}
+.studio .access-console>summary,.studio .access-console[open]>summary{box-sizing:border-box;display:flex;align-items:center;gap:18px;min-height:84px;width:100%;margin:0;padding:16px 24px;border:0;border-radius:0;background:linear-gradient(105deg,#274852,#162d38 70%);color:#edf5f2;list-style:none;cursor:pointer;text-transform:none;letter-spacing:normal}
+.studio .access-console summary::-webkit-details-marker{display:none}
+.studio .access-console>summary:hover{background:linear-gradient(105deg,#315c63,#1c3843 70%)}
+.studio .access-console-icon{display:grid;place-items:center;flex:0 0 46px;width:46px;height:46px;border:1px solid #89b8b1;border-radius:10px;background:#0c252b;box-shadow:inset 0 0 18px #83d7b419}
+.studio .access-console-icon svg{width:28px;height:28px;stroke:#bcedcf;stroke-width:1.8}.studio .access-console-icon circle{fill:#0c252b}
+.studio .access-summary-copy{display:grid;gap:3px;min-width:0}.studio .access-summary-copy small{font:600 10px/1.5 'Segoe UI',Arial,sans-serif;letter-spacing:.14em;color:#b5d1ce}
+.studio .access-summary-copy strong{font:700 19px/1.35 'Segoe UI',Arial,sans-serif;color:#f2f6ee}
+.studio .access-summary-hint{margin-left:auto;font:400 14px/1.5 'Segoe UI',Arial,sans-serif;color:#c5dcd6}
+.studio .access-chevron{display:grid;place-items:center;flex:0 0 32px;height:32px;margin-left:8px;border:1px solid #73948f;border-radius:50%;font:400 24px/1 'Segoe UI',sans-serif;color:#caefab;transition:transform .2s ease}
+.studio .access-console[open] .access-chevron{transform:rotate(45deg)}
+.studio .access-console[open]>summary{border-bottom:1px solid #718e98}
+.studio .access-deck{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(0,1.5fr);gap:28px;padding:30px;background:radial-gradient(ellipse at 0 0,#25475270,transparent 65%),#102630;animation:console-arrive .3s ease-out both}
+@keyframes console-arrive{from{opacity:.3;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.studio .access-intro{padding:2px 6px;min-width:0}.studio .access-bar .access-kicker{margin:0 0 14px;font:600 10px/1.6 'Segoe UI',Arial,sans-serif;letter-spacing:.12em;color:#c2eaaa}
+.studio .access-bar .access-intro h2{margin:0 0 14px;font:750 clamp(28px,3.4vw,46px)/1.06 'Segoe UI',Arial,sans-serif;letter-spacing:-.035em;text-transform:none;color:#f0f5ea;text-shadow:none;transform:none;-webkit-text-stroke:0}
+.studio .access-bar p{margin:10px 0;color:#c1d4d4;font:400 15px/1.65 'Segoe UI',Arial,sans-serif;max-width:44ch}
+.studio .access-specimen{position:relative;display:grid;justify-items:center;gap:9px;max-width:280px;margin:24px 0 18px;padding:18px 20px;border:1px solid #588482;border-radius:8px;background:linear-gradient(#9dd8aa08 1px,transparent 1px),linear-gradient(90deg,#9dd8aa08 1px,transparent 1px),#0a1e25;background-size:16px 16px;box-shadow:inset 0 0 34px #87c9980c;color:#cbf0b4}
+.studio .access-specimen:before,.studio .access-specimen:after{content:'';position:absolute;top:9px;width:4px;height:4px;background:#9fbbb3;border-radius:50%}.studio .access-specimen:before{left:9px}.studio .access-specimen:after{right:9px}
+.studio .access-specimen-label{font:600 9px/1.5 'Segoe UI',Arial,sans-serif;letter-spacing:.1em;color:#b3cec2}.studio .access-type{font:500 76px/1.1 Georgia,serif;color:#d8f6c5;text-shadow:0 0 24px #b3fca426}
+.studio .access-specimen-rule{height:1px;width:100%;background:#59836f}.studio .access-specimen-caption{font:400 13px/1.5 'Segoe UI',Arial,sans-serif;color:#b8d7c5}
+.studio .access-bar .access-keyboard-tip{font-size:12px;color:#b5ccce}
+.studio .access-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-content:start;min-width:0}
+.studio .access-module{box-sizing:border-box;position:relative;min-width:0;padding:22px;border:1px solid #5d7b83;border-top:3px solid #84b7b1;border-radius:9px;background:linear-gradient(145deg,#25434e,#182f3a);box-shadow:inset 0 1px 0 #ffffff09,0 3px 0 #071b23}
+.studio .access-module:has(input:checked){border-top-color:#c7e89b;background:linear-gradient(145deg,#2b4948,#182f38)}
+.studio .access-module-number{display:block;margin-bottom:17px;color:#b2cece;font:600 10px/1.5 'Segoe UI',Arial,sans-serif;letter-spacing:.13em}
+.studio .access-bar label,.studio .access-control-name{color:#f0f5ee;font:650 18px/1.4 'Segoe UI',Arial,sans-serif}
+.studio .access-module p{font-size:14px;margin:12px 0;max-width:none;min-height:3.3em}
+.studio .access-bar select{box-sizing:border-box;width:100%;min-width:0;min-height:48px;margin:4px 0 0;padding:10px 12px;background:#0c242e;color:#e9f3ed;border:1px solid #89aaa9;border-radius:5px;font:600 16px/1.5 'Segoe UI',Arial,sans-serif;color-scheme:dark}
+.studio .access-switch{position:relative;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;min-height:44px;cursor:pointer}
+.studio .access-control-name{flex:1 1 95px}
+.studio .access-switch input{position:absolute;right:0;width:56px;height:44px;margin:0;opacity:0;cursor:pointer;z-index:1}
+.studio .access-rocker{box-sizing:border-box;position:relative;display:block;flex:0 0 56px;width:56px;height:30px;border:1px solid #95adae;border-radius:16px;background:#071a23;box-shadow:inset 0 2px 5px #0005;pointer-events:none}
+.studio .access-rocker:after{content:'';position:absolute;left:4px;top:4px;width:20px;height:20px;background:#bacbcb;border-radius:50%;box-shadow:0 1px 3px #0008;transition:transform .18s ease,background .18s ease}
+.studio .access-switch input:checked+.access-rocker{border-color:#c7e89b;background:#314e40}.studio .access-switch input:checked+.access-rocker:after{transform:translateX(26px);background:#d7f5ae}
+.studio .access-state{display:block;color:#b9cece;font:600 11px/1.5 'Segoe UI',Arial,sans-serif;letter-spacing:.1em}.studio .access-state:after{content:'OFF'}.studio .access-module:has(input:checked) .access-state:after{content:'ON';color:#dcf5b8}.studio .access-module:has(input:disabled:checked) .access-state:after{content:'ON / DEVICE PREFERENCE'}
+.studio .access-bar :focus-visible{outline:3px solid #def7b8;outline-offset:5px}.studio .access-switch:has(input:focus-visible){outline:3px solid #def7b8;outline-offset:6px;border-radius:4px}
+.studio .access-console-footer{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid #53727b}
+.studio .access-bar [data-access-status]{margin:0;max-width:65ch;font-size:13px;flex:1 1 260px}
+.studio .access-bar button{min-height:44px;flex:0 0 auto;padding:10px 16px;border:1px solid #91aaaa;border-radius:5px;background:#203e48;color:#eef5ee;box-shadow:none;font:600 14px/1.5 'Segoe UI',Arial,sans-serif}.studio .access-bar button:hover:not(:disabled){background:#33565c;color:#fff}
+.studio .access-lesson{grid-column:1/-1;display:flex;align-items:center;gap:22px;justify-content:space-between;padding:18px 22px;border:1px solid #65775b;border-left:4px solid #c7e89b;border-radius:6px;background:#c7e89b0b;color:#edf4e7;text-decoration:none}
+.studio .access-lesson>span:first-child{display:grid;gap:5px}.studio .access-lesson small{font:650 10px/1.5 'Segoe UI',Arial,sans-serif;letter-spacing:.12em;color:#cee7b3}.studio .access-lesson strong{font:650 17px/1.4 'Segoe UI',Arial,sans-serif;color:#eff6e6}.studio .access-lesson span span{font:400 14px/1.5 'Segoe UI',Arial,sans-serif;color:#c4d5ce}.studio .access-lesson:hover{background:#c7e89b18;border-color:#c7e89b}.studio .access-lesson-arrow{font:400 30px/1 'Segoe UI',sans-serif;color:#d6ecb8}
 .studio:has(.access-bar) .motion-toggle{display:none}
-.access-large .studio .access-bar .access-controls{grid-template-columns:minmax(0,1fr)}
-@media(max-width:850px){.studio .access-bar .access-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.access-large .studio .access-deck,.access-large .studio .access-controls{grid-template-columns:minmax(0,1fr)}.access-large .studio .access-summary-hint{display:none}
+.access-calm .studio .access-specimen{display:none}.access-calm .studio .access-deck{animation:none;background:#102630}.access-calm .studio .access-console,.access-calm .studio .access-module{box-shadow:none}
+@media(max-width:900px){.studio .access-deck{grid-template-columns:minmax(0,1fr)}.studio .access-specimen{display:none}.studio .access-intro h2 br{display:none}.studio .access-intro h2 br:after{content:' '}.studio .access-summary-hint{display:none}}
+@media(max-width:600px){.studio .access-bar{padding:0 16px;margin:12px auto 20px}.studio .access-console>summary,.studio .access-console[open]>summary{padding:14px;gap:12px}.studio .access-summary-copy small{font-size:9px}.studio .access-summary-copy strong{font-size:16px}.studio .access-chevron{margin-left:auto}.studio .access-deck{padding:18px;gap:20px}.studio .access-controls{grid-template-columns:minmax(0,1fr)}.studio .access-module{padding:18px}.studio .access-module p{min-height:0}.studio .access-console-icon{flex-basis:38px;width:38px;height:38px}.studio .access-lesson{padding:16px}}
+@media(prefers-reduced-motion:reduce){.studio .access-deck{animation:none}.studio .access-chevron,.studio .access-rocker:after{transition:none}}
+
 html .studio .access-scalable{font-size:calc(var(--access-base-font)*var(--access-text-scale))!important}
 .access-large .studio :is(.studio-header,.studio-header nav,.programme-controls,.hero-actions,.journey-next,.mission-buttons,.checkin-buttons,.lab-entry,.join-actions){flex-wrap:wrap;min-width:0}
 .access-large .studio :is(.exhibition-opening,.studio-hero,.lab-title,.route-grid>a,.lab-nav a,.hero-copy){height:auto!important;min-height:0;overflow:visible;max-height:none}
@@ -49,9 +78,11 @@ html .studio .access-scalable{font-size:calc(var(--access-base-font)*var(--acces
 .studio.page-accessibility-lab main{max-width:980px}.studio .ramp-section{margin:32px 0;padding:26px;background:#e8eedf;border:3px solid #173340;color:#19313d}
 .studio .ramp-section :is(h1,h2,h3,p,li,strong){color:#19313d}.studio .ramp-section :is(h1,h2,h3){font-family:'Segoe UI',Arial,sans-serif;text-transform:none;letter-spacing:normal}.studio .ramp-section a{color:#174f80}.studio .ramp-section code{color:inherit}
 .studio .ramp-section pre{background:#142632;color:#eff5e9}.studio .ramp-section pre code{color:#eff5e9}
-@media(max-width:600px){.studio .access-bar{padding:10px 20px}.studio .access-bar .access-controls{display:grid;grid-template-columns:1fr;gap:16px}.studio .access-bar label{max-width:none}}
+
 @media print{.access-bar,.access-skip{display:none!important}}
 
 .access-contrast body :is(button,.primary) *{background-color:inherit!important;color:inherit!important}
 .studio .ramp-section h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.15;overflow-wrap:anywhere;margin:18px 0}
 .studio .ramp-section pre{white-space:pre-wrap;overflow-wrap:anywhere}
+
+.access-contrast .studio .access-rocker:after{background:#111!important}.access-contrast .studio .access-state:after{color:#111!important}.access-contrast .studio .access-console-icon svg{stroke:#111}.access-contrast .studio .access-console-icon circle{fill:white}
