@@ -1,0 +1,10 @@
+.studio details>.project-examples{margin:22px;min-width:0}
+.studio .project-examples>h3{font:750 27px/1.35 'Segoe UI',Arial,sans-serif;text-transform:none;color:#f5f5ed;margin:12px 0 18px;letter-spacing:normal}
+.studio .example-work{background:#eef1e7;color:#1c3541;border:2px solid #112936;border-top:6px solid #a6c689;padding:24px;margin:22px 0;min-width:0}
+.studio .example-work:nth-of-type(2){border-top-color:#b097d4}.studio .example-work:nth-of-type(3){border-top-color:#efb254}
+.studio .example-work h4{font:750 25px/1.35 'Segoe UI',Arial,sans-serif;margin:10px 0;color:#1c3541}
+.studio .example-work p,.studio .example-work strong{color:#1c3541;font-size:17px;line-height:1.65}.studio .example-work .eyebrow{color:#355865;font-size:12px}.studio .example-work .small{font-size:15px}
+.studio .example-work a{color:#164d7d;font-weight:650}.studio .example-work a:focus-visible{outline:3px solid #164d7d;outline-offset:4px}
+.studio .example-work .source-count{padding:16px;background:#dce8d3;border-left:4px solid #608144}
+@media(max-width:600px){.studio details>.project-examples{margin:16px}.studio .example-work{padding:18px}}
+@media print{.studio .project-examples>h3{color:#111}.studio .example-work{background:white;color:#111}}

@@ -1,0 +1,15 @@
+PRIDE PARK 2026 — SOURCE COUNT
+Source URL: https://ingridormevik.github.io/regnbuedagene/pride-park-spill-2026.html
+Retrieved for this count (UTC date): 2026-09-27
+Main HTML file: 21,292 source lines
+Non-empty source lines: 19,720
+Downloaded file size: 5,057,729 bytes
+SHA-256: 58117380e109233f989c0b4bda4429d519e61c8d3270b4329671090895b76df0
+
+Method: decode the published HTML as UTF-8; count str.splitlines().
+Non-empty count excludes lines containing only whitespace.
+Includes HTML, embedded CSS and JavaScript, comments, text and embedded data.
+Does not count separate assets or remote dependencies.
+This is a snapshot of one published file, not a count of unique executable
+statements, a measure of quality, or a target for student projects.
+The live game can change after this snapshot.
