@@ -1,0 +1,35 @@
+/* Cartoon equipment outside; readable, accessible controls inside. */
+.studio .lab-apparatus{position:absolute;right:4%;bottom:65px;width:38%;max-width:490px;filter:drop-shadow(8px 9px 0 #07151c80);pointer-events:none;z-index:-1}
+.studio .lab-entry{display:flex;gap:25px;align-items:center;flex-wrap:wrap;margin-top:15px}
+.studio .exhibition-opening h1{max-width:10ch;font-size:clamp(58px,7.5vw,112px)}
+.studio .exhibition-opening:before{background:linear-gradient(90deg,#081d2bfc 0%,#123b48e8 44%,#10344185 100%),linear-gradient(0deg,#081b2b,transparent 70%)}
+.studio .mission-console{--ink:#182e39;--soft:#39515d;--accent:#174f80;margin:32px 0;border:4px solid #0d202c;border-radius:16px 16px 5px 5px;background:#c6ddd7;box-shadow:8px 9px 0 #081923;overflow:hidden;color:#182e39}
+.studio .console-top{display:flex;justify-content:space-between;gap:15px;align-items:center;background:#b29acd;border-bottom:4px solid #0d202c;padding:15px 25px;color:#192534;font:700 14px/1.5 Consolas,monospace;letter-spacing:.055em}
+.studio .mission-state{background:#f8efba;padding:6px 12px;border:2px solid #172d38;border-radius:4px;letter-spacing:0}
+.studio .console-body{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:30px;padding:30px}
+.studio .mission-brief{position:relative;padding:25px;background:#203f4b;border:3px solid #142c37;box-shadow:inset 0 0 0 4px #50727a;color:#f4f5e7;border-radius:7px}
+.studio .mission-brief .eyebrow{color:#b9ed88;font-size:13px}
+.studio .mission-brief h3{font:800 clamp(29px,3vw,42px)/1.1 'Segoe UI',Arial,sans-serif;color:#fff;text-transform:none;margin:18px 0}
+.studio .mission-brief p{color:#edf5ec;font-size:18px;line-height:1.6}.studio .mission-brief .mission-prompt{padding:18px 0;border-top:1px dashed #91b6ad;border-bottom:1px dashed #91b6ad}
+.studio .mission-brief .primary{background:#ffdd54;color:#1e2c35;margin-top:12px;box-shadow:4px 4px 0 #0e202b;border-color:#0e202b;font-size:16px}
+.studio .mission-console .mission-small,.studio .mission-console .mission-storage{font:15px/1.6 'Segoe UI',Arial,sans-serif;color:#39515d}
+.studio .mission-brief .mission-small{color:#d8e9e3;margin-bottom:0}
+.studio .mission-actions{min-width:0}.studio .mission-actions h4{font:750 23px/1.35 'Segoe UI',Arial,sans-serif;color:#182e39;margin:0 0 10px}
+.studio .mission-actions fieldset{border:0;padding:0;margin:18px 0;min-width:0}
+.studio .mission-check{display:flex;gap:13px;align-items:flex-start;padding:15px;margin:10px 0;background:#fbf9eb;border:2px solid #527078;color:#203841;font:600 17px/1.5 'Segoe UI',Arial,sans-serif;cursor:pointer}
+.studio .mission-check input{width:24px;height:24px;flex:0 0 24px;margin:2px 0 0;accent-color:#25624e}.studio .mission-check.is-done{background:#e3f0ca;border-color:#4d7332}
+.studio .mission-meter{display:flex;gap:15px;align-items:center;flex-wrap:wrap;margin:20px 0}.studio .mission-meter progress{flex:1;min-width:130px;height:20px;margin:0;accent-color:#477d37;border:2px solid #294b4d;border-radius:0;background:#f8f5e7}
+.studio .mission-meter progress::-webkit-progress-bar{background:#f8f5e7}.studio .mission-meter progress::-webkit-progress-value{background:#477d37}.studio .mission-meter progress::-moz-progress-bar{background:#477d37}
+.studio .mission-count{font:700 14px/1.5 Consolas,monospace;color:#203841}
+.studio .mission-note-label{display:block;font:700 17px/1.5 'Segoe UI',Arial,sans-serif;color:#203841;margin:20px 0 8px}
+.studio .mission-console textarea{display:block;width:100%;min-height:110px;resize:vertical;padding:14px;border:2px solid #527078;border-radius:3px;color:#182e39;background:#fbf9eb;font:17px/1.6 'Segoe UI',Arial,sans-serif;box-sizing:border-box}.studio .mission-console textarea::placeholder{color:#54636a;opacity:1}
+.studio .mission-buttons{display:flex;flex-wrap:wrap;gap:14px}.studio .mission-buttons button{font-size:15px}.studio .mission-console [data-reset]{background:#f6f4e9;box-shadow:none;color:#203841;border-color:#527078}
+.studio .mission-reset{padding:18px;border:2px solid #715336;background:#fff0d1;margin-top:18px}.studio .mission-reset p,.studio .mission-feedback{color:#203841;font-size:16px}.studio .mission-reset button{margin:6px 10px 0 0;font-size:15px}
+.studio .mission-console .mission-help{border:0;border-top:3px solid #142c37;margin:0;border-radius:0;background:#e7ede0;color:#203841}.studio .mission-help>summary,.studio .mission-help[open]>summary{font:650 17px/1.5 'Segoe UI',Arial,sans-serif;color:#174f80;padding:18px 25px;border:0}.studio .mission-help p,.studio .mission-help strong{color:#203841;font-size:17px;line-height:1.65}
+.studio .mission-console :focus-visible{outline:3px solid #174f80;outline-offset:4px}.studio .mission-brief a:focus-visible{outline-color:#fff}
+.studio .mission-complete .mission-state{background:#d4efa5}.studio .mission-complete .console-top{background:#a4c89b}
+.studio .lab-nav .mission-nav-status{font:600 12px/1.5 'Segoe UI',Arial,sans-serif;border-top:1px solid #17263255;padding-top:8px;margin-top:10px;margin-bottom:0}
+.mission-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@media(max-width:950px){.studio .console-body{grid-template-columns:1fr;padding:23px}.studio .mission-brief{padding:23px}.studio .lab-apparatus{opacity:.65;right:1%;width:40%;bottom:70px}.studio .exhibition-opening .lab-entry{position:relative}}
+@media(max-width:600px){.studio .console-top{padding:13px 16px;align-items:flex-start;flex-direction:column;gap:8px}.studio .console-body{padding:16px;gap:22px}.studio .mission-brief{padding:20px}.studio .lab-apparatus{position:relative;width:100%;max-width:300px;right:auto;bottom:auto;opacity:1;margin:22px auto 0;z-index:0}.studio .exhibition-opening{height:auto;min-height:0;padding-bottom:85px}.studio .mission-console{box-shadow:4px 5px 0 #081923}.studio .mission-help>summary{padding:16px}.studio .mission-check{padding:12px}}
+@media print{.lab-apparatus,.lab-entry,.mission-buttons,.mission-reset,.mission-feedback,.mission-storage{display:none!important}.studio .mission-console{box-shadow:none;border:1px solid #555;color:#111;background:white;break-inside:avoid}.studio .console-body{display:block;padding:15px}.studio .mission-brief,.studio .console-top,.studio .mission-check,.studio .mission-console textarea{color:#111;background:white;box-shadow:none}.studio .mission-brief p,.studio .mission-brief h3,.studio .mission-brief .eyebrow,.studio .mission-brief .mission-small{color:#111}.studio .mission-brief .primary{display:none}}
