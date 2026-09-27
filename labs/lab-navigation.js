@@ -9,7 +9,7 @@
     const p=Object.fromEntries(dateFormat.formatToParts(new Date()).map(x=>[x.type,x.value]));
     return `${p.year}-${p.month}-${p.day}`;
   }
-  function available(lab){return today()>=lab.dataset.unlockDate;}
+  function available(lab){return lab.dataset.openEarly==='true'||today()>=lab.dataset.unlockDate;}
   function ready(lab){return lab.querySelector('[data-checkin]').dataset.checkinReady==='true';}
   function experimentDone(lab){return [...lab.querySelectorAll('[data-check]')].every(x=>x.checked)&&lab.querySelector('.mission-actions textarea').value.trim().length>=10;}
   function allowed(lab){return !ready(lab)?0:experimentDone(lab)?2:1;}
