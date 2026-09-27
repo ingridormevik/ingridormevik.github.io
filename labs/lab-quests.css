@@ -1,0 +1,8 @@
+.studio .quest-content[hidden],.studio .quest-preview[hidden]{display:none!important}
+.studio .quest-preview{border:3px solid #112a37;border-top:10px solid #ab91c8;background:#e4e8dd;color:#183340;padding:30px;margin:25px 0;box-shadow:5px 5px 0 #081923}
+.studio .quest-preview h3,.studio .quest-preview p,.studio .quest-preview .eyebrow{color:#183340}.studio .quest-preview h3{font:750 27px/1.4 'Segoe UI',Arial,sans-serif}.studio .quest-preview a{color:#174f80}
+.studio .lab-nav a.map-locked{background:#b7c8c9;border-color:#233c47;box-shadow:3px 3px 0 #10232b;transform:none}.studio .lab-nav a.map-locked strong,.studio .lab-nav a.map-locked span{color:#263f49}
+.studio .journey-nav a.step-locked,.studio .journey-next a.step-locked{background:#cad0d1;color:#354955;border-color:#687e86;box-shadow:none;cursor:not-allowed;transform:none}.studio .journey-nav a.step-locked strong,.studio .journey-nav a.step-locked small{color:#354955}.studio .journey-nav a.step-locked>span{background:#536770;color:white}
+.studio .quest-requirements{padding:15px 20px;border:1px solid #a9c6bd;background:#173b48;color:#edf5ea;font-size:16px;line-height:1.6}
+.studio .quest-final-checks{border:2px solid #597570;padding:20px;margin:25px 0;color:#183340}.studio .quest-final-checks legend{font-weight:700}.studio .quest-final-checks label{display:flex;gap:12px;align-items:flex-start;padding:12px 0;font:600 17px/1.6 'Segoe UI',Arial,sans-serif}.studio .quest-final-checks input{width:23px;height:23px;flex:0 0 23px;accent-color:#315e46;margin-top:3px}
+@media print{.studio .quest-content[hidden]{display:none!important}.studio .quest-preview{background:white;color:#111;box-shadow:none}.quest-complete-button{display:none}}

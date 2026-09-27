@@ -11,10 +11,30 @@
     const lab = panel.closest('.lab');
     let snapshot;
     form.querySelector('button').disabled = false;
-    panel.querySelector('.checkin-hint').textContent = 'Complete this one arrival task, then submit the pass. The experiment checklists below are optional learning tools.';
+    panel.querySelector('.checkin-hint').textContent = 'Complete the fields and create your pass to unlock the experiment. Download the card for your MittUiB submission.';
+    const savedKey = () => `dik105-pass-v1-${panel.dataset.checkin}-${group.value}`;
+    const announce = () => document.dispatchEvent(new Event('lab-progress'));
+    function showPass() {
+      card.querySelector('.pass-name').textContent = snapshot.name;
+      card.querySelector('.pass-session').textContent = snapshot.session;
+      card.querySelector('.pass-idea').textContent = snapshot.idea;
+      panel.dataset.checkinReady = 'true';
+      form.hidden = true; result.hidden = false;
+    }
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(savedKey()) || 'null');
+      if (saved && typeof saved.name === 'string' && saved.name.trim() && saved.name.length <= 100 && typeof saved.idea === 'string' && saved.idea.trim().length >= 10 && saved.idea.length <= 280) {
+        name.value = saved.name; idea.value = saved.idea;
+        snapshot = {name:saved.name,idea:saved.idea,session:lab.querySelector('.lab-title .eyebrow').textContent+' · '+lab.querySelector('.session-window').textContent};
+        showPass();
+      }
+    } catch { /* A pass can still be downloaded without storage. */ }
     function invalidate() {
       snapshot = null; result.hidden = true; form.hidden = false;
+      panel.dataset.checkinReady = 'false';
+      try { sessionStorage.removeItem(savedKey()); } catch {}
       feedback.textContent = '';
+      announce();
     }
     [group,duration].forEach(control => control.addEventListener('change', invalidate));
     form.addEventListener('submit', event => {
@@ -23,10 +43,10 @@
       idea.setCustomValidity(idea.value.trim().length >= 10 ? '' : 'Add your observation and what you want to try.');
       if (!form.reportValidity()) return;
       snapshot = {name:name.value.trim(),idea:idea.value.trim(),session:lab.querySelector('.lab-title .eyebrow').textContent+' · '+lab.querySelector('.session-window').textContent};
-      card.querySelector('.pass-name').textContent = snapshot.name;
-      card.querySelector('.pass-session').textContent = snapshot.session;
-      card.querySelector('.pass-idea').textContent = snapshot.idea;
-      form.hidden = true; result.hidden = false; card.focus();
+      showPass();
+      try { sessionStorage.setItem(savedKey(),JSON.stringify({name:snapshot.name,idea:snapshot.idea})); }
+      catch { feedback.textContent='This browser cannot keep your pass while you visit a guide. Download it now; you may need to check in again when returning.'; }
+      announce(); card.focus();
     });
     [name,idea].forEach(input => input.addEventListener('input',()=>input.setCustomValidity('')));
     panel.querySelector('[data-edit-pass]').addEventListener('click',()=>{invalidate();idea.focus();});
