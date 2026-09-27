@@ -1,0 +1,14 @@
+.studio .studio-header .motion-toggle{font:600 12px/1.4 'Segoe UI',Arial,sans-serif;background:transparent;color:#19313d;border:1px solid #425d65;box-shadow:none;padding:8px 10px;min-height:38px;margin-left:8px}
+.lab-motion-status{position:fixed;z-index:100;left:50%;bottom:20px;transform:translateX(-50%);max-width:min(600px,calc(100vw - 36px));background:#e0efcf;border:3px solid #132c37;box-shadow:4px 5px 0 #081b25;padding:14px 20px;color:#19313d;font:650 16px/1.5 'Segoe UI',Arial,sans-serif;opacity:0;pointer-events:none;margin:0;text-align:center}
+.lab-motion-status.show{opacity:1}
+.studio .lab-apparatus{transition:transform .2s ease-out;will-change:transform}
+.studio .lab-motion-status{color:#19313d}
+@media(prefers-reduced-motion:no-preference){
+ .lab-motion-on .lab-motion-status{transition:opacity .18s ease}
+ .lab-motion-on .lab-apparatus circle{animation:instrument-light 4s ease-in-out infinite alternate}
+ .lab-motion-on .lab-apparatus circle:nth-of-type(2n){animation-delay:-2s}
+ .lab-motion-on .mission-meter progress{transition:accent-color .2s ease}
+ @keyframes instrument-light{from{opacity:.65}to{opacity:1}}
+}
+@media(prefers-reduced-motion:reduce){.studio .lab-apparatus{transition:none;will-change:auto}}
+@media print{.motion-toggle,.lab-motion-status{display:none!important}}

@@ -24,11 +24,11 @@
       });
       lab.querySelector('.session-window').textContent = `${groupName} · ${clock(start)}–${clock(start + length)} · ${length} minutes`;
     });
-    document.body.classList.toggle('student-view', view.value === 'student');
+    document.body.classList.add('student-view');
     document.getElementById('schedule-status').textContent = `${groupName}: ${clock(start)}–${clock(start + length)}. ` +
       (length === 120 ? 'The 120-minute version needs 15 minutes beyond the listed slot.' : 'Fits the listed slot. Extra project time is omitted; both breaks and completion evidence time are retained.');
   }
-  [group, duration, view].forEach(control => control.addEventListener('change', update));
+  [group, duration].forEach(control => control.addEventListener('change', update));
   [group, duration].forEach(control => control.addEventListener('change', () => {
     try { sessionStorage.setItem('dik105-session-options', JSON.stringify({group:group.value,duration:duration.value})); } catch {}
   }));
