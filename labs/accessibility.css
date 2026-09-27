@@ -1,0 +1,45 @@
+:root{--access-text-scale:1}
+.access-skip{position:absolute;left:18px;top:-200px;z-index:1000;background:#fff;color:#17354a;padding:14px;border:3px solid #17354a;font:700 18px/1.5 'Segoe UI',Arial,sans-serif}.access-skip:focus{top:10px}
+.studio .access-bar{margin:0 auto;max-width:1440px;padding:14px 32px;background:#eaf0e5;color:#19313d;border-bottom:3px solid #19313d;font-family:'Segoe UI',Arial,sans-serif}
+.studio .access-bar details{margin:0;background:transparent;border:0;border-radius:0}.studio .access-bar details>summary,.studio .access-bar details[open]>summary{padding:10px 0;min-height:44px;color:#19313d;font-size:18px;font-weight:750;border:0}
+.studio .access-bar .access-controls{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;margin:12px 0}
+.studio .access-bar label{display:block;color:#19313d;font-size:16px;line-height:1.5;max-width:290px}
+.studio .access-bar input[type=checkbox]{width:24px;height:24px;vertical-align:middle;margin:0 8px 3px 0;accent-color:#21513f}
+.studio .access-bar select{display:block;background:#fff;color:#19313d;font-size:16px;padding:10px;min-height:46px;margin-top:7px;border:2px solid #44626e;border-radius:3px}
+.studio .access-bar button{background:#19313d;color:white;border:2px solid #19313d;box-shadow:none;font-size:16px;min-height:46px}
+.studio .access-bar p,.studio .access-bar small{color:#344e59;font-size:14px;line-height:1.6;margin:8px 0}.studio .access-bar small{display:block}
+.studio .access-bar a{color:#174f80;font-size:16px;text-decoration:underline}.studio .access-bar :focus-visible{outline:3px solid #174f80;outline-offset:4px}
+html .studio .access-scalable{font-size:calc(var(--access-base-font)*var(--access-text-scale))!important}
+.access-large .studio :is(.studio-header,.studio-header nav,.programme-controls,.hero-actions,.journey-next,.mission-buttons,.checkin-buttons,.lab-entry,.join-actions){flex-wrap:wrap;min-width:0}
+.access-large .studio :is(.exhibition-opening,.studio-hero,.lab-title,.route-grid>a,.lab-nav a,.hero-copy){height:auto!important;min-height:0;overflow:visible;max-height:none}
+.access-large .studio :is(.route-grid,.lab-nav,.journey-nav,.console-body,.agenda-row,.reader-bar,.book-grid,.lab-finish,.join-v2){grid-template-columns:minmax(0,1fr)!important}
+.access-large .studio :is(h1,h2,h3,h4,a,button,label,summary,.studio-brand){overflow-wrap:anywhere;white-space:normal;max-width:100%;transform:none}
+.access-large .studio :is(.reader-bar label,.reader-bar p,.reader-bar button){grid-column:auto!important;grid-row:auto!important}
+.access-large .studio .lab-apparatus{display:none}.access-large .studio .exhibition-credit{position:static;margin-top:22px;max-width:100%}
+.access-large .studio .exhibition-opening{padding-bottom:35px}.access-large .studio :is(input,textarea,select){max-width:100%;min-width:0}
+.access-large .studio .hero{height:auto;min-height:0}.access-large .studio .stage{min-height:0}
+.access-calm .studio{background:#14232e!important}.access-calm .studio :is(h1,h2,h3,h4,.studio-brand){font-family:'Segoe UI',Arial,sans-serif!important;text-transform:none!important;letter-spacing:normal!important;text-shadow:none!important;-webkit-text-stroke:0!important;transform:none!important}
+.access-calm .studio .lab-apparatus,.access-calm .studio .exhibition-image{display:none}
+.access-calm .studio .exhibition-opening{background:#173340;background-image:none;min-height:0;box-shadow:none}
+.access-calm .studio .exhibition-opening:before,.access-calm .studio .exhibition-opening:after{display:none}
+.access-calm .studio :is(.mission-console,.attendance-console,.agenda-row,.route-grid>a,.lab-title,.learning-challenge,.journey-nav a){box-shadow:none!important;border-radius:3px}
+.access-calm .studio :is(p,li,label){line-height:1.8!important}.access-calm .studio :is(.route-grid,.console-body,.book-grid){grid-template-columns:1fr}
+.access-contrast body,.access-contrast body *{color:#111!important;background-color:#fff!important;background-image:none!important;border-color:#111!important;box-shadow:none!important;text-shadow:none!important;-webkit-text-stroke:0!important}
+.access-contrast body a{color:#003b80!important;text-decoration:underline!important}
+.access-contrast body :is(button,.primary){background-color:#111!important;color:#fff!important;border:2px solid #111!important}
+.access-contrast body :is(button:disabled,[aria-disabled=true]){background-color:#e2e2e2!important;color:#333!important;opacity:1!important;border-style:dashed!important}
+.access-contrast body :is(input,textarea,select){background:#fff!important;color:#111!important;border:2px solid #111!important}
+.access-contrast body :is(input,textarea)::placeholder{color:#444!important;opacity:1}
+.access-contrast body :focus-visible{outline:3px solid #003b80!important;outline-offset:4px!important}
+.access-contrast body .exhibition-opening:before,.access-contrast body .exhibition-opening:after{display:none!important}.access-contrast body .exhibition-image{display:none}
+.access-contrast body .mission-meter progress{accent-color:#111}.access-contrast body progress::-webkit-progress-value{background:#111!important}.access-contrast body progress::-moz-progress-bar{background:#111!important}
+.access-no-motion,.access-no-motion *,.access-no-motion *:before,.access-no-motion *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+.studio.page-accessibility-lab main{max-width:980px}.studio .ramp-section{margin:32px 0;padding:26px;background:#e8eedf;border:3px solid #173340;color:#19313d}
+.studio .ramp-section :is(h1,h2,h3,p,li,strong){color:#19313d}.studio .ramp-section :is(h1,h2,h3){font-family:'Segoe UI',Arial,sans-serif;text-transform:none;letter-spacing:normal}.studio .ramp-section a{color:#174f80}.studio .ramp-section code{color:inherit}
+.studio .ramp-section pre{background:#142632;color:#eff5e9}.studio .ramp-section pre code{color:#eff5e9}
+@media(max-width:600px){.studio .access-bar{padding:10px 20px}.studio .access-bar .access-controls{display:grid;grid-template-columns:1fr;gap:16px}.studio .access-bar label{max-width:none}}
+@media print{.access-bar,.access-skip{display:none!important}}
+
+.access-contrast body :is(button,.primary) *{background-color:inherit!important;color:inherit!important}
+.studio .ramp-section h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.15;overflow-wrap:anywhere;margin:18px 0}
+.studio .ramp-section pre{white-space:pre-wrap;overflow-wrap:anywhere}

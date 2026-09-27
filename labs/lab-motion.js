@@ -10,6 +10,8 @@
  let clear;
  const animate=(el,frames,options)=>{if(enabled()&&el?.animate)el.animate(frames,options);};
  function sync(){
+  document.documentElement.classList.toggle('access-no-motion',!enabled());
+  document.dispatchEvent(new CustomEvent('lab-motion-change',{detail:{choice:chosen}}));
   document.body.classList.toggle('lab-motion-on',enabled());
   toggle.textContent=enabled()?'Motion: on':'Motion: off';toggle.setAttribute('aria-pressed',String(enabled()));
   toggle.title=reduced.matches?'Reduced motion is enabled on your device.':'Turn decorative movement on or off';
@@ -19,6 +21,7 @@
   }
  }
  toggle.addEventListener('click',()=>{chosen=enabled()?'off':'on';try{localStorage.setItem('dik105-motion',chosen);}catch{}sync();});
+ document.addEventListener('lab-preferences-change',event=>{chosen=event.detail.choice;sync();});
  reduced.addEventListener('change',sync);sync();
  function unlocked(text){
   status.textContent=text;status.classList.add('show');
