@@ -1,0 +1,13 @@
+.studio .learning-challenge{margin:24px 0;background:#dce8db;border:3px solid #142d37;border-top:9px solid #aa92cf;box-shadow:5px 5px 0 #0d202a;color:#1c3541}
+.studio .learning-challenge>summary,.studio .learning-challenge[open]>summary{color:#213c4b;font:750 19px/1.5 'Segoe UI',Arial,sans-serif;padding:20px;border-bottom-color:#819b91}
+.studio .learning-challenge>.training-content{margin:24px;max-width:900px}.studio .training-content .eyebrow{color:#3c5968}
+.studio .training-content h3{color:#1c3541;font:750 29px/1.3 'Segoe UI',Arial,sans-serif;text-transform:none;margin:15px 0}.studio .training-content h4{color:#1c3541;font:700 21px/1.4 'Segoe UI',Arial,sans-serif}
+.studio .training-content p,.studio .training-content label{color:#1c3541;font-size:18px;line-height:1.65}.studio .training-content pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:18px}
+.studio .training-content fieldset{border:2px solid #69817e;padding:18px;margin:20px 0;background:#f7f6ec}.studio .training-content legend{color:#1c3541;font-weight:700}.studio .training-content label{display:flex;gap:12px;align-items:flex-start;padding:12px 0;cursor:pointer}
+.studio .training-content input{width:22px;height:22px;flex:0 0 22px;accent-color:#315a71;margin-top:5px}
+.studio .training-demo{padding:20px;background:#f7f6ec;border:2px solid #69817e;margin:24px 0}.studio .training-demo button{margin:8px 12px 5px 0;font-size:15px}.studio .training-demo [data-reset-demo]{background:#dce8db;box-shadow:none}
+.studio .training-content .training-sample{padding:20px;border:2px dashed #617f78;background:#203f4b;color:#f3f6ed;min-height:80px;display:flex;align-items:center}
+.studio .training-content details{background:#edf1e3;color:#1c3541;border:1px solid #69817e}.studio .training-content details>summary,.studio .training-content details[open]>summary{color:#174f80;font-weight:600}.studio .training-content details>p{color:#1c3541}
+.studio .training-transfer{border-left:6px solid #547b3c;padding:5px 20px;margin:25px 0;background:#eef2e6}.studio .training-small,.studio .training-attempts{font-size:15px!important}.studio .training-content :focus-visible{outline:3px solid #174f80;outline-offset:4px}
+@media(max-width:600px){.studio .learning-challenge>.training-content{margin:16px}.studio .training-demo{padding:15px}.studio .training-content h3{font-size:25px}}
+@media print{.studio .learning-challenge{background:white;box-shadow:none}.studio .training-content button{display:none}}
