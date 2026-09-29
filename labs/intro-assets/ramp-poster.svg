@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+  <rect width="640" height="360" fill="#ffd23f"/>
+  <rect x="16" y="16" width="608" height="328" fill="none" stroke="#10151f" stroke-width="8"/>
+  <text x="48" y="92" font-family="Arial Black, Arial, sans-serif" font-size="30" font-weight="900" fill="#10151f">IMPORTANT</text>
+  <text x="48" y="168" font-family="Arial Black, Arial, sans-serif" font-size="44" font-weight="900" fill="#10151f">LAB MOVED TO</text>
+  <text x="48" y="236" font-family="Arial Black, Arial, sans-serif" font-size="56" font-weight="900" fill="#b3122e">ROOM 2</text>
+  <text x="48" y="300" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#10151f">Friday 08:15. Bring your laptop.</text>
+  <g transform="translate(470 110)" stroke="#10151f" stroke-width="6" fill="#fff">
+    <rect x="0" y="0" width="120" height="150" rx="6"/>
+    <rect x="30" y="40" width="60" height="110" fill="#6fb7ff"/>
+    <circle cx="80" cy="98" r="6" fill="#10151f"/>
+    <text x="60" y="30" font-family="Arial Black, Arial, sans-serif" font-size="22" text-anchor="middle" fill="#10151f" stroke="none">2</text>
+  </g>
+</svg>

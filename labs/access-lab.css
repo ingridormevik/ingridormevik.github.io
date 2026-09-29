@@ -1,0 +1,140 @@
+/* The access lab: "Build the ramp". Chunky outlines and hard shadows, like the lab missions. */
+.studio.page-accessibility-lab main{max-width:1180px}
+.access-lab{--al-ink:#10151f;color:var(--al-ink)}
+.access-lab :focus-visible{outline:4px solid #1b5fd0;outline-offset:4px}
+.access-lab kbd{font:700 14px Consolas,monospace;padding:1px 7px;border:2px solid var(--al-ink);border-bottom-width:4px;border-radius:4px;background:#fff;color:var(--al-ink)}
+.access-lab code{font:14px Consolas,monospace;padding:1px 5px;background:#e8edf5;border-radius:3px;color:var(--al-ink)}
+
+/* Hero: the scene */
+.ramp-hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);gap:28px;align-items:center;margin:26px 0 18px;padding:30px;background:#171a33;border:5px solid var(--al-ink);border-radius:8px;box-shadow:10px 10px 0 var(--al-ink)}
+.studio .ramp-hero .rh-eyebrow,.studio .access-lab .rh-eyebrow{margin:0;font:800 13px/1.5 Consolas,monospace;letter-spacing:.14em;color:#c6f15b}
+.studio .ramp-hero h1{margin:10px 0 14px;color:#fff;font:900 clamp(40px,6vw,72px)/.95 'Arial Black','Segoe UI',Arial,sans-serif;text-transform:none;letter-spacing:-.02em;-webkit-text-stroke:0;text-shadow:5px 5px 0 var(--al-ink)}
+.studio .ramp-hero .rh-lead{margin:0 0 12px;color:#eef1ff;font-size:19px;line-height:1.55}
+.studio .ramp-hero .rh-meta{margin:0 0 18px;color:#c9d1dc;font:600 14px Consolas,monospace}
+.studio .ramp-hero .rh-start{display:inline-flex;align-items:center;min-height:48px;padding:10px 18px;background:#ffd23f;border:4px solid var(--al-ink);border-radius:4px;box-shadow:5px 5px 0 var(--al-ink);color:var(--al-ink);font:900 17px 'Segoe UI',Arial,sans-serif;text-decoration:none}
+.ramp-scene{display:block;width:100%;height:auto;background:#0e1130;border:4px solid var(--al-ink);border-radius:6px}
+.rs-sky{fill:#1d2250}.rs-stars circle{fill:#fff7c2}
+.rs-building{fill:#5b6b8a;stroke:var(--al-ink);stroke-width:5}
+.rs-sign{fill:#ffd23f;stroke:var(--al-ink);stroke-width:4}.rs-sign-text{font:900 18px 'Arial Black',Arial,sans-serif;fill:var(--al-ink)}
+.rs-window{fill:#ffe9a8;stroke:var(--al-ink);stroke-width:4}
+.rs-doorframe{fill:#2b1f1a;stroke:var(--al-ink);stroke-width:5}
+.rs-door{fill:#b5543c;stroke:var(--al-ink);stroke-width:3;transform-box:fill-box;transform-origin:left center;transition:transform .8s ease .9s}
+.rs-knob{fill:#ffd23f;transition:opacity .3s .9s}
+.rs-stairs{fill:#8aa0b8;stroke:var(--al-ink);stroke-width:5;stroke-linejoin:round}
+.rs-platform{fill:#8aa0b8;stroke:var(--al-ink);stroke-width:5}
+.rs-ground{stroke:var(--al-ink);stroke-width:6}
+.ramp-seg{fill:transparent;stroke:#9aa3c7;stroke-width:3;stroke-dasharray:8 7;transition:fill .5s}
+.ramp-seg.is-built{stroke:var(--al-ink);stroke-width:5;stroke-dasharray:none}
+.ramp-seg[data-seg="1"].is-built{fill:#c6f15b}.ramp-seg[data-seg="2"].is-built{fill:#6fb7ff}.ramp-seg[data-seg="3"].is-built{fill:#f29bcd}.ramp-seg[data-seg="4"].is-built{fill:#ffd23f}
+.rs-rider{transform:translate(40px,320px)}
+.rs-wheel{fill:#fff;stroke:var(--al-ink);stroke-width:5}
+.rs-chair,.rs-body{fill:none;stroke:var(--al-ink);stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.rs-head{fill:#ffd23f;stroke:var(--al-ink);stroke-width:4}
+.rs-done{font:900 20px 'Arial Black',Arial,sans-serif;fill:#c6f15b;stroke:var(--al-ink);stroke-width:1;opacity:0;transition:opacity .5s 2.4s}
+.is-complete .rs-rider{transform:translate(478px,240px)}
+.is-complete .rs-door{transform:scaleX(.12)}
+.is-complete .rs-knob{opacity:0}
+.is-complete .rs-done{opacity:1}
+.ramp-lights{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0 0;padding:0}
+.studio .ramp-lights li{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#232850;border:3px solid var(--al-ink);border-radius:4px;color:#c9d1dc;font:800 13px 'Segoe UI',Arial,sans-serif}
+.ramp-lights b{flex:0 0 16px;height:16px;border:3px solid var(--al-ink);border-radius:50%;background:#394257}
+.studio .ramp-lights li.is-on{background:#fff;color:var(--al-ink)}
+.ramp-lights li.is-on b{background:#c6f15b}
+.studio .ramp-hero .ramp-meter{margin:10px 0 0;color:#c6f15b;font:800 14px Consolas,monospace;letter-spacing:.08em}
+.studio .al-console-tip{margin:0 0 22px;padding:12px 16px;background:#f7fbef;border:3px solid var(--al-ink);border-left:10px solid #c6f15b;border-radius:4px;color:var(--al-ink);font-size:16px}
+
+/* Stations */
+.ramp-stations{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.ramp-station{position:relative;display:flex;flex-direction:column;padding:22px;background:#fff;border:4px solid var(--al-ink);border-top:14px solid var(--st);border-radius:6px;box-shadow:7px 7px 0 var(--al-ink)}
+.ramp-station.is-fixed{box-shadow:7px 7px 0 var(--st),7px 7px 0 3px var(--al-ink)}
+.ramp-station.is-fixed:after{content:'FIXED ✓';position:absolute;top:14px;right:14px;padding:3px 10px;background:var(--st);border:3px solid var(--al-ink);border-radius:3px;font:900 13px Consolas,monospace;color:var(--al-ink)}
+.st-head{display:flex;align-items:center;gap:10px}
+.st-no{padding:2px 9px;background:var(--st);border:3px solid var(--al-ink);border-radius:3px;font:900 16px Consolas,monospace;color:var(--al-ink)}
+.studio .access-lab .st-tag{margin:0;font:800 12px Consolas,monospace;letter-spacing:.14em;color:#4a5560}
+.studio .access-lab .ramp-station h2{margin:10px 0 6px;color:var(--al-ink);font:900 clamp(24px,2.6vw,30px)/1.15 'Arial Black','Segoe UI',Arial,sans-serif;text-transform:none;letter-spacing:-.01em;-webkit-text-stroke:0;text-shadow:none}
+.studio .access-lab :is(p,li,label,summary,strong,em){color:var(--al-ink)}
+.studio .access-lab .st-barrier{margin:0 0 14px;font-size:16px;line-height:1.55}
+.st-play{flex:1}
+.studio .access-lab button{min-height:46px;padding:10px 16px;border:3px solid var(--al-ink);border-radius:4px;background:#ffd23f;color:var(--al-ink);box-shadow:4px 4px 0 var(--al-ink);font:800 15px/1.2 'Segoe UI',Arial,sans-serif;cursor:pointer}
+.studio .access-lab button:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--al-ink)}
+.studio .access-lab button[aria-pressed=true]{background:var(--st,#c6f15b)}
+.st-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin:12px 0 0}
+.studio .access-lab .st-controls label{display:grid;gap:6px;font-weight:800;font-size:15px}
+.st-controls input[type=range]{width:200px;accent-color:var(--al-ink)}
+.studio .access-lab .st-status{margin:14px 0 0;padding:12px 14px;background:var(--al-ink);border-radius:4px;color:#c6f15b!important;font:600 15px/1.5 Consolas,monospace}
+.st-why{margin-top:12px;border-top:2px dashed #b8c0cc;padding-top:6px}
+.studio .access-lab .st-why summary{cursor:pointer;font-weight:800;min-height:40px;display:flex;align-items:center}
+.studio .access-lab .st-why p,.studio .access-lab .st-why li{font-size:15px;line-height:1.6}
+.studio .access-lab .st-why a,.studio .access-lab .ramp-yours a{color:#1b3f8f;font-weight:700}
+
+/* 01 readable */
+.notice-wrap{padding:14px;background:#e3e7ec;border:3px solid var(--al-ink);border-radius:4px}
+.notice{padding:18px;background:rgb(201,206,211);border-radius:3px;transition:filter .3s}
+.notice.in-sun{filter:brightness(1.35) contrast(.55)}
+.studio .access-lab .notice p{color:inherit!important;margin:0}
+.studio .access-lab .notice-kicker{font:900 13px Consolas,monospace!important;letter-spacing:.14em}
+.studio .access-lab .notice-text{font:800 22px/1.3 'Segoe UI',Arial,sans-serif!important}
+.studio .access-lab .contrast-read{margin:10px 0 0;font:800 15px Consolas,monospace}
+.contrast-read[data-level=pass]:before{content:'✓ ';color:#1c7a3e}.contrast-read[data-level=fail]:before{content:'✕ ';color:#b3122e}
+
+/* 02 reachable */
+.studio .access-lab .st-task{font-size:16px}
+.doors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.door-card{display:grid;justify-items:center;gap:8px;min-height:120px;padding:14px;background:#f6f3ff;border:4px solid var(--al-ink);border-radius:4px;font:900 17px 'Segoe UI',Arial,sans-serif;color:var(--al-ink);cursor:pointer;user-select:none}
+.studio .access-lab button.door-card{min-height:120px;background:#f6f3ff;box-shadow:none}
+.door-icon{width:40px;height:56px;border:4px solid var(--al-ink);border-radius:3px;background:#b5543c;transform-origin:left center;transition:transform .4s}
+.door-card.is-open .door-icon{transform:perspective(200px) rotateY(-65deg)}
+.studio .access-lab button.door-card:focus-visible{outline:5px solid #1b5fd0;outline-offset:4px}
+.studio .access-lab .st-repair{margin-top:12px;background:#fff}
+
+/* 03 calm */
+.motion-stage{position:relative;height:150px;overflow:hidden;background:#241d3f;border:3px solid var(--al-ink);border-radius:4px}
+.studio .access-lab .marquee{position:absolute;top:14px;left:0;margin:0;white-space:nowrap;color:#ffd23f!important;font:900 20px 'Arial Black',Arial,sans-serif;animation:al-marquee 6s linear infinite}
+.mover{position:absolute;bottom:18px;width:34px;height:34px;border:3px solid var(--al-ink);border-radius:50%;animation:al-bounce 1s ease-in-out infinite alternate}
+.m1{left:12%;background:#f29bcd}.m2{left:44%;background:#c6f15b;animation-delay:.3s}.m3{left:76%;background:#6fb7ff;animation-delay:.6s}
+.motion-stage.is-paused *{animation-play-state:paused!important}
+.studio .access-lab .st-pause{margin-top:12px}
+@keyframes al-marquee{to{transform:translateX(-50%)}}
+@keyframes al-bounce{to{transform:translateY(-70px)}}
+
+/* 04 described */
+.poster-row{display:grid;gap:10px}
+.poster{display:block;width:100%;height:auto;border:3px solid var(--al-ink);border-radius:4px}
+.sr-box{padding:12px 14px;background:var(--al-ink);border-radius:4px}
+.studio .access-lab .sr-label{margin:0 0 4px;color:#c9d1dc!important;font:800 12px Consolas,monospace;letter-spacing:.12em}
+.studio .access-lab .sr-says{margin:0;color:#fff!important;font:600 17px/1.4 Consolas,monospace}
+.studio .access-lab .alt-label{display:grid;gap:6px;margin-top:12px;font-weight:800;font-size:15px}
+.access-lab textarea{box-sizing:border-box;width:100%;padding:10px 12px;border:3px solid var(--al-ink);border-radius:4px;background:#fff;color:var(--al-ink);font:400 16px/1.5 'Segoe UI',Arial,sans-serif;resize:vertical}
+
+/* Finale + your project */
+.ramp-finale{margin:28px 0 0;padding:26px;background:#c6f15b;border:5px solid var(--al-ink);border-radius:8px;box-shadow:8px 8px 0 var(--al-ink)}
+.studio .access-lab .ramp-finale .rh-eyebrow{color:var(--al-ink)}
+.studio .access-lab .ramp-finale h2{margin:6px 0 8px;color:var(--al-ink);font:900 clamp(30px,4vw,46px)/1 'Arial Black',Arial,sans-serif;text-transform:none;-webkit-text-stroke:0;text-shadow:none}
+.studio .access-lab .ramp-finale p{font-size:18px;line-height:1.6}
+.ramp-yours{margin:28px 0 20px;padding:26px;background:#f7fbef;border:4px solid var(--al-ink);border-radius:8px}
+.studio .access-lab .ramp-yours .rh-eyebrow{color:#2e5a3a}
+.studio .access-lab .ramp-yours h2{margin:6px 0 14px;color:var(--al-ink);font:900 clamp(22px,2.6vw,30px)/1.2 'Segoe UI',Arial,sans-serif;text-transform:none;-webkit-text-stroke:0;text-shadow:none}
+.yours-checks{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:8px}
+.studio .access-lab .yours-checks label{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:#fff;border:2px solid var(--al-ink);border-radius:4px;font-size:16px;line-height:1.5;cursor:pointer}
+.yours-checks input{width:22px;height:22px;flex:0 0 22px;margin-top:2px;accent-color:#1c7a3e}
+.studio .access-lab .yours-note{display:grid;gap:6px;font-weight:800}
+.studio .access-lab .al-ethic{margin:16px 0;padding:12px 16px;border-left:6px solid #f29bcd;background:#fff;font-size:16px}
+.access-lab pre{padding:12px 14px;background:#1e1e1e;border-radius:4px;overflow-x:auto}
+.access-lab pre code{background:none;color:#d4d4d4;padding:0}
+.studio .access-lab .al-back{margin:16px 0 0}
+
+@media(prefers-reduced-motion:no-preference){
+.is-complete .rs-rider{animation:al-roll 2.2s ease-in-out forwards}
+.ramp-station.is-fixed{animation:al-pop .4s ease-out}
+}
+@keyframes al-roll{0%{transform:translate(40px,320px)}62%{transform:translate(352px,242px)}100%{transform:translate(478px,240px)}}
+@keyframes al-pop{50%{transform:scale(1.02)}}
+@media(prefers-reduced-motion:reduce){.marquee,.mover{animation:none}.rs-door,.rs-knob,.rs-done{transition:none}}
+.access-no-motion .access-lab *{animation:none!important;transition:none!important}
+.access-calm .ramp-hero,.access-calm .ramp-station,.access-calm .ramp-finale{box-shadow:none}
+@media(max-width:900px){.ramp-hero,.ramp-stations{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.ramp-hero{padding:18px}.ramp-lights{grid-template-columns:repeat(2,minmax(0,1fr))}.ramp-station{padding:16px}.st-controls input[type=range]{width:100%}.st-controls label{width:100%}.ramp-yours,.ramp-finale{padding:18px}}
+/* The site's generic <details> style is dark; these fold-outs sit on white cards. */
+.studio .access-lab details.st-why{background:#fff!important;border:0;border-top:2px dashed #b8c0cc;border-radius:0;padding:6px 0 0;box-shadow:none}
+.studio .access-lab details.st-why>summary{color:var(--al-ink)!important;background:none!important;padding:0}
+.studio .access-lab .ramp-yours details.st-why{background:#f7fbef!important}
