@@ -1,0 +1,43 @@
+/* The equipment room's lab floor: a cartoon science lab, every machine a guide. */
+.studio .lab-floor{--lf-ink:#10151f;position:relative;margin:28px 0 36px;padding:34px 28px 0;background:#241d3f;background-image:linear-gradient(#ffffff0a 2px,transparent 2px),linear-gradient(90deg,#ffffff0a 2px,transparent 2px);background-size:48px 48px;border:5px solid var(--lf-ink);border-radius:8px;box-shadow:10px 10px 0 var(--lf-ink);overflow:hidden}
+.lf-wall{position:absolute;inset:0 0 auto;height:30px;pointer-events:none}
+.lf-pipe{position:absolute;top:10px;height:14px;background:#8aa0b8;border:3px solid var(--lf-ink);border-radius:8px}
+.lf-pipe.p1{left:-10px;width:44%}.lf-pipe.p2{right:-10px;width:36%}
+.lf-lamp{position:absolute;top:6px;width:18px;height:18px;border:3px solid var(--lf-ink);border-radius:50%}
+.lf-lamp.l1{left:46%;background:#c6f15b}.lf-lamp.l2{left:50%;background:#ffd23f}.lf-lamp.l3{left:54%;background:#ff7a59}
+.studio .lab-floor .lf-tag{position:relative;margin:10px 0 6px;font:800 13px/1.5 Consolas,monospace;letter-spacing:.14em;color:#c6f15b}
+.studio .lab-floor h2{position:relative;margin:0 0 22px;color:#fff;font:900 clamp(26px,3.6vw,40px)/1.1 'Arial Black','Segoe UI',Arial,sans-serif;text-transform:none;letter-spacing:-.01em;-webkit-text-stroke:0;text-shadow:4px 4px 0 var(--lf-ink)}
+.lf-machines{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.studio .lab-machine{position:relative;display:grid;gap:4px;padding:12px 14px 16px;background:#f6f3ff;border:4px solid var(--lf-ink);border-radius:6px;box-shadow:6px 6px 0 var(--lf-ink);color:var(--lf-ink);text-decoration:none;transition:transform .15s,box-shadow .15s}
+.studio .lab-machine:hover{transform:translate(-3px,-5px);box-shadow:9px 11px 0 var(--lf-ink);background:#fff}
+.studio .lab-machine:focus-visible{outline:4px solid #ffd23f;outline-offset:4px}
+.lab-machine:nth-child(4n+1){--lm:#c6f15b}.lab-machine:nth-child(4n+2){--lm:#ffd23f}.lab-machine:nth-child(4n+3){--lm:#6fb7ff}.lab-machine:nth-child(4n+4){--lm:#f29bcd}
+.studio .lab-machine .lm-no{justify-self:start;padding:2px 8px;background:var(--lm);border:3px solid var(--lf-ink);border-radius:3px;font:900 13px Consolas,monospace;color:var(--lf-ink)}
+.lm-art{width:100%;height:auto;max-height:130px}
+.studio .lab-machine strong{font:900 19px/1.2 'Segoe UI',Arial,sans-serif;color:var(--lf-ink)}
+.studio .lab-machine .lm-what{font:600 14px/1.4 'Segoe UI',Arial,sans-serif;color:#3b3552}
+.lf-floor{height:46px;margin:22px -28px 0;border-top:5px solid var(--lf-ink);background:#b7a6e3;background-image:linear-gradient(45deg,#a996dc 25%,transparent 25%,transparent 75%,#a996dc 75%),linear-gradient(45deg,#a996dc 25%,transparent 25%,transparent 75%,#a996dc 75%);background-size:46px 46px;background-position:0 0,23px 23px}
+
+@media(prefers-reduced-motion:no-preference){
+.lf-lamp{animation:lf-blink 1.2s steps(2,end) infinite}.lf-lamp.l2{animation-delay:.4s}.lf-lamp.l3{animation-delay:.8s}
+.m-cursor{animation:lf-blink 1s steps(2,end) infinite}
+.m-arm{transform-origin:80px 112px;animation:lf-arm 3.2s ease-in-out infinite}
+.m-blink{animation:lf-blink 1.4s steps(2,end) infinite}.m-blink.b2{animation-delay:.3s}.m-blink.b3{animation-delay:.6s}
+.m-bubble{animation:lf-bubble 2s linear infinite}
+.m-float{animation:lf-float 2.6s ease-in-out infinite}
+.m-wave{animation:lf-wave 1.6s ease-in-out infinite}.m-wave.w2{animation-delay:.4s}
+.m-glow{animation:lf-blink 2s steps(2,end) infinite}
+.m-roll{transform-box:fill-box;transform-origin:center;animation:lf-roll 3s ease-in-out infinite}
+}
+@keyframes lf-blink{50%{opacity:.2}}
+@keyframes lf-arm{50%{transform:rotate(-14deg)}}
+@keyframes lf-bubble{to{transform:translateX(44px)}}
+@keyframes lf-float{50%{transform:translateY(-8px)}}
+@keyframes lf-wave{50%{opacity:.15}}
+@keyframes lf-roll{50%{transform:translate(78px,-34px) rotate(270deg)}}
+.access-no-motion .lab-floor *{animation:none!important;transition:none!important}
+.access-calm .studio .lab-floor{box-shadow:none}
+.access-contrast .studio .lab-floor{background-image:none}
+@media(max-width:900px){.lf-machines{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.studio .lab-floor{padding:28px 14px 0}.lf-floor{margin:18px -14px 0}.studio .lab-machine strong{font-size:17px}}
+@media(max-width:380px){.lf-machines{grid-template-columns:minmax(0,1fr)}}
