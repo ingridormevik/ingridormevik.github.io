@@ -1,0 +1,27 @@
+/* Course-update panels. Each borrows the palette of its lab's arrival world. */
+.studio .course-panel{--cp-deep:#12343b;--cp-accent:#c6f15b;--cp-bg:#f1f9e3;--cp-ink:#10272c;margin:22px 0 28px;background:var(--cp-bg);color:var(--cp-ink);border:4px solid var(--cp-deep);border-radius:5px;box-shadow:7px 7px 0 var(--cp-deep);overflow:hidden}
+.studio .course-panel.pro-panel{--cp-deep:#1b2a8f;--cp-accent:#ffd23f;--cp-bg:#eef1ff;--cp-ink:#141c55}
+.studio .course-panel :is(p,li,strong,em){color:var(--cp-ink);font-size:18px;line-height:1.7}
+.studio .course-panel a:not(.primary){color:var(--cp-deep);font-weight:700;text-underline-offset:3px}
+.studio .course-panel :focus-visible{outline:3px solid var(--cp-deep);outline-offset:4px}
+.studio .course-panel-head{background:var(--cp-deep);padding:30px 30px 24px}
+.studio .course-panel-head h3{color:#fff;font:400 clamp(28px,3.8vw,42px)/1.15 Georgia,'Times New Roman',serif;text-transform:none;letter-spacing:normal;margin:10px 0 14px}
+.studio .course-panel .course-panel-head p:not(.course-tag){color:#f1f4f2;max-width:62ch;margin:0}
+.studio .course-tag{font:700 13px/1.5 Consolas,monospace!important;letter-spacing:.1em;color:var(--cp-accent,#a23a1e)!important;margin:0}
+.studio .course-steps{margin:0;padding:24px 30px 6px 56px}
+.studio .course-steps li{margin:0 0 12px;padding-left:4px}
+.studio .course-steps li::marker{font:700 16px Consolas,monospace;color:var(--cp-deep)}
+.studio .course-panel>p{margin:0 30px 18px}
+.studio .course-panel .course-choice{padding:14px 18px;background:#fff;border:2px dashed var(--cp-deep);border-radius:3px;font-size:16px}
+.studio .course-panel .course-question{font:400 clamp(21px,2.6vw,27px)/1.35 Georgia,'Times New Roman',serif;padding:16px 20px;border-left:8px solid var(--cp-accent);background:var(--cp-deep);color:#fff}
+.studio .course-panel>p:last-child{margin-bottom:28px}
+
+.studio .course-note{margin:22px 0 0;padding:20px 22px;background:#fff;border:2px solid #3a1d27;border-left:8px solid #ff7a59;border-radius:3px}
+.studio .course-note .course-tag{color:#a23a1e!important}
+.studio .css-studio .course-note h5{font:400 24px/1.25 Georgia,'Times New Roman',serif;margin:6px 0 10px}
+.studio .css-studio .course-note p{font-size:16px;margin:0 0 10px}.studio .css-studio .course-note p:last-child{margin:0}
+
+.access-calm .studio .course-panel{box-shadow:none}
+@media(max-width:600px){.studio .course-panel-head{padding:24px 18px 20px}.studio .course-steps{padding:20px 18px 4px 40px}.studio .course-panel>p{margin:0 18px 16px}}
+@media print{.studio .course-panel{box-shadow:none}}
+.studio .course-panel .ai-actions{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center}

@@ -1,0 +1,126 @@
+/* Lab 1 CSS & colour studio. Dawn-feed palette, shared with the Lab 1 arrival pass. */
+.studio .css-studio{--cs-deep:#3a1d27;--cs-accent:#ff7a59;--cs-bg:#fff3ea;--cs-soft:#ffe0d1;--cs-ink:#2a1510;margin:28px 0;background:var(--cs-bg);color:var(--cs-ink);border:4px solid var(--cs-deep);border-radius:5px;box-shadow:7px 7px 0 var(--cs-deep);overflow:hidden}
+.studio .css-studio :is(p,li,label,h4,h5,strong,em,legend,figcaption){color:var(--cs-ink)}
+.studio .css-studio p,.studio .css-studio li{font-size:18px;line-height:1.7}
+.studio .css-studio a{color:var(--cs-deep);font-weight:700;text-underline-offset:3px}
+.studio .css-studio code{font-family:Consolas,'Courier New',monospace;font-size:.92em;background:#fff;color:var(--cs-deep);border:1px solid #e7c9bb;border-radius:3px;padding:1px 5px}
+.studio .css-studio kbd{font:600 14px Consolas,monospace;border:2px solid var(--cs-deep);border-bottom-width:3px;border-radius:3px;padding:0 6px;background:#fff;color:var(--cs-ink)}
+.studio .css-studio :focus-visible{outline:3px solid var(--cs-deep);outline-offset:4px}
+
+.studio .studio-head{background:var(--cs-deep);padding:34px 32px 28px}
+.studio .studio-head .eyebrow{color:var(--cs-accent);font:700 13px/1.5 Consolas,monospace;letter-spacing:.1em}
+.studio .studio-head h3{color:#fff;font:400 clamp(30px,4.2vw,48px)/1.12 Georgia,'Times New Roman',serif;text-transform:none;letter-spacing:normal;margin:12px 0 16px}
+.studio .studio-head .studio-lead{color:#f4eef0;max-width:62ch;margin:0 0 22px}
+.studio .studio-map{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0;counter-reset:map}
+.studio .studio-map li{counter-increment:map;font-size:15px}
+.studio .studio-map a{display:inline-flex;gap:8px;align-items:center;min-height:40px;padding:6px 12px;border:2px solid var(--cs-accent);border-radius:3px;color:#fff;text-decoration:none;font:600 14px/1.3 'Segoe UI',Arial,sans-serif}
+.studio .studio-map a:before{content:'0' counter(map);font:700 12px Consolas,monospace;color:var(--cs-accent)}
+.studio .studio-map a:hover{background:var(--cs-accent);color:var(--cs-deep)}.studio .studio-map a:hover:before{color:var(--cs-deep)}
+.studio .studio-map a:focus-visible{outline-color:#fff}
+
+.studio .studio-step{padding:34px 32px;border-top:3px solid var(--cs-deep);scroll-margin-top:20px}
+.studio .studio-step:nth-of-type(even){background:#fff}
+.studio .studio-step .step-no{font:700 13px/1.5 Consolas,monospace;letter-spacing:.1em;color:#a23a1e;margin:0}
+.studio .studio-step h4{font:400 clamp(24px,3vw,32px)/1.2 Georgia,'Times New Roman',serif;margin:8px 0 18px}
+.studio .step-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:30px;align-items:start}
+.studio .step-split.even{margin:22px 0}
+.studio .step-note{font-size:16px!important;padding:12px 16px;border-left:4px solid var(--cs-accent);background:var(--cs-soft)}
+.studio .do-list{padding-left:24px}.studio .do-list li{margin:8px 0;padding-left:4px}
+.studio .do-list pre{margin:10px 0;background:#1e1e1e;color:#d4d4d4;padding:14px 16px;border-radius:3px;overflow-x:auto}.studio .do-list pre code{background:none;border:0;color:inherit;padding:0}
+.studio .file-tag{font:700 12px/1.5 Consolas,monospace!important;letter-spacing:.1em;text-transform:uppercase;color:#a23a1e!important;margin:0 0 6px}
+
+/* A drawn VS Code window: recognisable, not a screenshot. */
+.studio .vsc-window{margin:0;border:3px solid var(--cs-deep);border-radius:4px;background:#1e1e1e;box-shadow:5px 5px 0 var(--cs-deep);overflow:hidden}
+.studio .vsc-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#323233}
+.studio .vsc-bar span{width:11px;height:11px;border-radius:50%;background:#6b6b6b}
+.studio .vsc-bar em{margin-left:10px;font:12px/1.3 'Segoe UI',Arial,sans-serif;color:#ccc;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.studio .vsc-body{display:grid;grid-template-columns:140px minmax(0,1fr)}
+.studio .vsc-explorer{background:#252526;padding:10px 0;border-right:1px solid #3c3c3c}
+.studio .css-studio .vsc-explorer p{margin:0;padding:3px 12px;font:12px/1.5 'Segoe UI',Arial,sans-serif;color:#cccccc}
+.studio .css-studio .vsc-explorer p:first-child{font-size:11px;letter-spacing:.08em;color:#bbbbbb}
+.studio .css-studio .vsc-explorer .vsc-folder{font-weight:700}
+.studio .css-studio .vsc-explorer .vsc-file{padding-left:24px}
+.studio .css-studio .vsc-explorer .is-open{background:#37373d;color:#fff;border-left:2px solid var(--cs-accent)}
+.studio .vsc-code{margin:0;padding:12px 10px;background:#1e1e1e;color:#d4d4d4;font:13px/1.7 Consolas,monospace;white-space:pre;overflow-x:auto}
+.studio .vsc-code code{background:none;border:0;color:inherit;padding:0;font-size:13px}
+.studio .vsc-code .ln{display:inline-block;width:22px;color:#858585}
+.studio .tok-sel{color:#d7ba7d}.studio .tok-prop{color:#9cdcfe}.studio .tok-val{color:#ce9178}
+.studio .css-studio .vsc-window figcaption{margin:0;padding:10px 14px;background:var(--cs-soft);font-size:14px;line-height:1.5;border-top:2px solid var(--cs-deep)}
+
+.studio .two-files{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:16px;align-items:center;margin:26px 0 18px}
+.studio .two-files>div:not(.file-cable){padding:16px 18px;border:2px solid var(--cs-deep);border-radius:3px;background:#fff}
+.studio .two-files>div p:last-child{margin:0}
+.studio .file-cable{font:700 28px/1 Consolas,monospace;color:var(--cs-deep)}
+
+/* 02 / Rule anatomy */
+.studio .rule-anatomy{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:22px;background:#1e1e1e;border:3px solid var(--cs-deep);border-radius:4px;font:24px/1 Consolas,monospace}
+.studio .css-studio .rule-anatomy .part{min-height:48px;padding:8px 12px;border:2px dashed #6b6b6b;border-radius:3px;background:transparent;box-shadow:none;font:600 24px/1 Consolas,monospace;cursor:pointer}
+.studio .css-studio .rule-anatomy .part-sel{color:#d7ba7d}.studio .css-studio .rule-anatomy .part-prop{color:#9cdcfe}.studio .css-studio .rule-anatomy .part-val{color:#ce9178}.studio .css-studio .rule-anatomy .part-brace,.studio .css-studio .rule-anatomy .part-semi{color:#d4d4d4}
+.studio .rule-anatomy .part-colon{color:#d4d4d4}
+.studio .css-studio .rule-anatomy .part:hover{border-color:var(--cs-accent)}
+.studio .css-studio .rule-anatomy .part[aria-pressed=true]{border-style:solid;border-color:var(--cs-accent);background:#3a1d27}
+.studio .css-studio .rule-anatomy .part:focus-visible{outline-color:#fff}
+.studio .part-explain{margin:14px 0 20px;padding:16px 20px;background:#fff;border:2px solid var(--cs-deep);border-left:8px solid var(--cs-accent);border-radius:3px;min-height:92px}
+.studio .part-explain p{margin:0}
+.studio .css-studio.is-live .part-glossary{display:none}.studio .part-glossary p{font-size:16px}
+.studio .hex-explain{padding:20px 22px;background:var(--cs-soft);border:2px solid var(--cs-deep);border-radius:3px}
+.studio .css-studio .hex-big{font:700 clamp(30px,5vw,44px)/1.1 Consolas,monospace;margin:4px 0 10px}
+.studio .css-studio .hex-r{color:#b3122e}.studio .css-studio .hex-g{color:#1c7a3e}.studio .css-studio .hex-b{color:#1a5fd0}
+.studio .hex-explain p:last-child{margin:0}
+
+/* 03 / Meaning */
+.studio .meaning-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:22px 0}
+.studio .meaning{padding:0 0 16px;border:2px solid var(--cs-deep);border-radius:3px;background:#fff;overflow:hidden}
+.studio .m-chip{display:block;height:54px;background:var(--m);border-bottom:2px solid var(--cs-deep)}
+.studio .css-studio .meaning h5{font:700 17px/1.3 'Segoe UI',Arial,sans-serif;margin:14px 16px 6px}
+.studio .css-studio .meaning p{font-size:15px;line-height:1.6;margin:0 16px}
+.studio .css-studio .big-question{font:400 clamp(22px,2.8vw,30px)/1.3 Georgia,'Times New Roman',serif;margin:26px 0 0;padding:20px 24px;background:var(--cs-deep);color:#fff;border-left:8px solid var(--cs-accent)}
+
+/* 04 / Colour studio */
+.studio .mood-row{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.studio .css-studio .mood-row button{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:8px 14px;border:2px solid var(--cs-deep);border-radius:3px;background:#fff;color:var(--cs-ink);box-shadow:3px 3px 0 var(--cs-deep);font:600 15px/1.3 'Segoe UI',Arial,sans-serif;cursor:pointer}
+.studio .css-studio .mood-row button:hover{background:var(--cs-soft)}
+.studio .css-studio .mood-row button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--cs-deep)}
+.studio .mood-row button span{width:18px;height:18px;border:2px solid var(--cs-deep);border-radius:2px;background:var(--cs-accent)}
+.studio .studio-bench{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:stretch}
+.studio .css-studio .studio-preview{padding:24px 26px;border:3px solid var(--cs-deep);border-radius:4px;background:var(--pv-bg);min-height:220px;transition:background-color .25s}
+.studio .css-studio .studio-preview :is(p,h5){color:var(--pv-text);transition:color .25s}
+.studio .css-studio .studio-preview .pv-url{font:600 12px/1.4 Consolas,monospace;opacity:.75;margin:0 0 14px}
+.studio .css-studio .studio-preview h5{font:700 30px/1.2 system-ui,'Segoe UI',sans-serif;margin:0 0 12px}
+.studio .css-studio .studio-preview p{font-family:system-ui,'Segoe UI',sans-serif}
+.studio .studio-controls{display:grid;gap:14px;align-content:start}
+.studio .colour-pair{display:flex;gap:14px;flex-wrap:wrap}
+.studio .css-studio .colour-pair label{display:grid;gap:6px;font:650 15px/1.4 'Segoe UI',Arial,sans-serif}
+.studio .css-studio .colour-pair input[type=color]{width:72px;height:46px;padding:3px;border:2px solid var(--cs-deep);border-radius:3px;background:#fff;cursor:pointer}
+.studio .css-studio .colour-pair input[data-hex-for]{width:8.5em;min-height:46px;padding:8px 10px;border:2px solid var(--cs-deep);border-radius:3px;background:#fff;color:var(--cs-ink);font:600 16px Consolas,monospace;text-transform:uppercase}
+.studio .contrast-meter{padding:14px 16px;border:2px solid var(--cs-deep);border-radius:3px;background:#fff}
+.studio .css-studio .contrast-value{font:700 20px/1.3 Consolas,monospace;margin:0 0 8px}
+.studio .css-studio .contrast-value[data-level=pass]:before{content:'✓ ';color:#1c7a3e}
+.studio .css-studio .contrast-value[data-level=large]:before{content:'! ';color:#9a5b00}
+.studio .css-studio .contrast-value[data-level=fail]:before{content:'✕ ';color:#b3122e}
+.studio .contrast-bar{position:relative;height:10px;background:#eee;border:1px solid var(--cs-deep)}
+.studio .contrast-bar span{position:absolute;inset:0 auto 0 0;width:70%;background:var(--cs-deep)}
+.studio .contrast-bar i{position:absolute;top:-4px;bottom:-4px;left:21.4%;width:2px;background:#b3122e}
+.studio .css-studio .contrast-help{font-size:14px;margin:8px 0 0}
+.studio .css-studio .hex-link{font-size:15px;margin:0}.studio .css-studio .hex-link span{font-size:13px}
+.studio .css-output{margin-top:22px;padding:18px 20px;background:#1e1e1e;border:3px solid var(--cs-deep);border-radius:4px}
+.studio .css-studio .css-output .file-tag{color:#ffb59e!important}
+.studio .css-output pre{margin:6px 0 14px;background:none;padding:0;overflow-x:auto}
+.studio .css-output code{background:none;border:0;color:#ce9178;font-size:17px;padding:0}
+.studio .css-studio .css-output .copy-status{color:#f4eef0;font-size:15px;margin:10px 0 0}
+
+/* 05 + 06 */
+.studio .studio-trouble{margin-top:18px;border:2px solid var(--cs-deep);border-radius:3px;background:#fff}
+.studio .css-studio .studio-trouble>summary{padding:14px 18px;font:700 17px/1.4 'Segoe UI',Arial,sans-serif;color:var(--cs-deep);cursor:pointer}
+.studio .studio-trouble ul{margin:0;padding:0 22px 14px 40px}
+.studio .css-studio .why-label{display:grid;gap:8px;font:650 17px/1.5 'Segoe UI',Arial,sans-serif;margin:14px 0}
+.studio .css-studio .why-label textarea{box-sizing:border-box;width:100%;min-height:90px;padding:12px;border:2px solid var(--cs-deep);border-radius:3px;background:#fff;color:var(--cs-ink);font:400 18px/1.6 'Segoe UI',Arial,sans-serif;resize:vertical}
+.studio .css-studio .why-status{font-size:16px;font-weight:600}
+
+@media(prefers-reduced-motion:reduce){.studio .css-studio .studio-preview,.studio .css-studio .studio-preview :is(p,h5){transition:none}}
+.access-calm .studio .css-studio{box-shadow:none}.access-calm .studio .meaning-grid{grid-template-columns:minmax(0,1fr)}
+.access-contrast .studio .css-studio .m-chip,.access-contrast .studio .css-studio .mood-row button span{outline:2px solid #111}
+.access-contrast .studio .css-studio .studio-preview :is(p,h5){color:#111!important}
+@media(max-width:900px){.studio .meaning-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.studio .step-split,.studio .studio-bench{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.studio .studio-head,.studio .studio-step{padding:24px 18px}.studio .meaning-grid{grid-template-columns:minmax(0,1fr)}.studio .two-files{grid-template-columns:minmax(0,1fr)}.studio .file-cable{transform:rotate(90deg);justify-self:center}.studio .vsc-body{grid-template-columns:minmax(0,1fr)}.studio .vsc-explorer{display:none}.studio .rule-anatomy{padding:14px}.studio .css-studio .rule-anatomy .part{font-size:19px;padding:8px 9px}}
+@media print{.studio .css-studio{box-shadow:none}.studio .css-studio button{display:none}}

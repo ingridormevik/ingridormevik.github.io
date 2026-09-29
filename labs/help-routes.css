@@ -1,0 +1,22 @@
+/* "When you are unsure" help routes, shared by the AI coding and Construct guides. */
+.when-unsure .help-routes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:24px 0}
+.when-unsure .help-route{padding:22px 22px 18px;background:#f1f9e3;border:3px solid #12343b;border-radius:4px;box-shadow:5px 5px 0 #061418;color:#10272c;min-width:0}
+.when-unsure .help-route:nth-child(2){background:#fff3ea;border-color:#3a1d27}
+.when-unsure .help-route:nth-child(3){background:#eef1ff;border-color:#1b2a8f}
+.when-unsure .help-route:nth-child(4){background:#fdeef5;border-color:#2c1633}
+.when-unsure .help-route :is(p,li,h3,em,strong,span){color:#10272c}
+.when-unsure .help-route h3{font:400 23px/1.25 Georgia,'Times New Roman',serif!important;text-transform:none!important;letter-spacing:normal!important;-webkit-text-stroke:0!important;text-shadow:none!important;margin:6px 0 12px}
+.when-unsure .help-route p,.when-unsure .help-route li{font-size:16px;line-height:1.6}
+.when-unsure .help-route ol{padding-left:22px;margin:0 0 12px}.when-unsure .help-route ol li{padding:4px 0 4px 4px}
+.when-unsure .route-no{font:700 12px/1.5 Consolas,monospace!important;letter-spacing:.12em;color:#2e5a3a!important;margin:0}
+.when-unsure .route-prompt{font:400 16px/1.5 Georgia,'Times New Roman',serif!important;padding:12px 14px;background:#fff;border-left:5px solid #12343b;margin:0 0 12px}
+.when-unsure .route-note{font-size:14px!important;padding:10px 12px;border:2px dashed currentColor;border-radius:3px;margin:12px 0 0}
+.when-unsure .route-links{list-style:none;padding:0;margin:0}
+.when-unsure .route-links li{display:grid;gap:2px;padding:8px 0;border-bottom:1px solid #0000001f}
+.when-unsure .route-links a{font-weight:700;color:#12343b;text-underline-offset:3px}
+.when-unsure .route-links span{font-size:14px}
+.when-unsure kbd{font:600 13px Consolas,monospace;padding:0 6px;border:2px solid #12343b;border-bottom-width:3px;border-radius:3px;background:#fff;color:#10272c}
+.when-unsure .help-route :focus-visible{outline:3px solid #12343b;outline-offset:3px}
+.access-calm .when-unsure .help-route{box-shadow:none}
+@media(max-width:760px){.when-unsure .help-routes{grid-template-columns:minmax(0,1fr)}}
+@media print{.when-unsure .help-route{box-shadow:none}}

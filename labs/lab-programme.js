@@ -26,7 +26,7 @@
     });
     document.body.classList.add('student-view');
     document.getElementById('schedule-status').textContent = `${groupName}: ${clock(start)}–${clock(start + length)}. ` +
-      (length === 120 ? 'The 120-minute version needs 15 minutes beyond the listed slot.' : 'Fits the listed slot. Extra project time is omitted; both breaks and completion evidence time are retained.');
+      (length === 120 ? 'The 120-minute version needs 15 minutes beyond the listed slot.' : 'Fits the listed slot. Extra project time is omitted; the break and completion evidence time are retained.');
   }
   [group, duration].forEach(control => control.addEventListener('change', update));
   [group, duration].forEach(control => control.addEventListener('change', () => {

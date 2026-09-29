@@ -1,0 +1,37 @@
+/* Beginner code explainers, "try it" challenges, W3Schools strips and "by the end" hooks.
+   Self-contained light panels so they read the same on the dark guides and the cream CSS studio. */
+.code-explain,.you-will,.ce-moves,.w3-solo{--ce-ink:#10272c;--ce-deep:#12343b;--ce-lime:#c6f15b;--ce-bg:#f7fbef}
+.code-explain{margin:24px 0;padding:22px 22px 18px;background:var(--ce-bg);border:3px solid var(--ce-deep);border-radius:4px;box-shadow:5px 5px 0 #061418;color:var(--ce-ink)}
+.code-explain :is(p,li,span,strong,em){color:var(--ce-ink)}
+.ce-title,.w3-strip>span{margin:0 0 10px;font:800 12px/1.5 Consolas,monospace!important;letter-spacing:.12em;color:#2e5a3a!important}
+.ce-lines{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ce-lines li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:14px;align-items:start;padding:10px 12px;background:#fff;border:2px solid #cfdcc0;border-radius:3px}
+.code-explain .ce-lines code{display:block;padding:6px 8px;background:#1e1e1e;color:#e8f5d0;border-radius:3px;font:14px/1.5 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+.code-explain .ce-lines span{font-size:16px;line-height:1.55}
+.code-explain .ce-lines span code,.code-explain .ce-note code,.code-explain .ce-try code{display:inline;padding:1px 5px;background:#e8efdd;color:var(--ce-deep);border-radius:3px;font:14px Consolas,monospace}
+.code-explain a{color:var(--ce-deep);font-weight:700;text-underline-offset:3px;white-space:nowrap}
+.code-explain .ce-note{margin:12px 0 0;padding:10px 14px;border-left:5px solid var(--ce-lime);background:#fff;font-size:16px}
+.ce-try{margin-top:16px;padding:14px 16px;background:#fff;border:2px dashed var(--ce-deep);border-radius:3px}
+.ce-try ol{margin:0;padding-left:22px}.code-explain .ce-try li{font-size:16px;line-height:1.6;padding:4px 0 4px 4px}
+.code-explain kbd{font:600 13px Consolas,monospace;padding:0 6px;border:2px solid var(--ce-deep);border-bottom-width:3px;border-radius:3px;background:#fff;color:var(--ce-ink)}
+.w3-strip{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin:16px 0 0}
+.w3-strip>span{flex-basis:100%;margin:0}
+.w3-strip a{display:inline-flex;align-items:center;min-height:40px;padding:6px 12px;background:#04aa6d;color:#fff!important;border:2px solid var(--ce-deep,#12343b);border-radius:3px;font:700 15px/1.2 'Segoe UI',Arial,sans-serif;text-decoration:none;box-shadow:3px 3px 0 var(--ce-deep,#12343b)}
+.w3-strip a:hover{background:#038a58}
+.w3-solo{padding:16px 18px;background:var(--ce-bg);border:3px solid var(--ce-deep);border-radius:4px}
+.code-explain :focus-visible,.w3-strip a:focus-visible,.you-will :focus-visible{outline:3px solid #1b5fd0;outline-offset:3px}
+
+.you-will{margin:22px 0;padding:18px 20px;background:var(--ce-bg);border:3px solid var(--ce-deep);border-left:10px solid var(--ce-lime);border-radius:4px;color:var(--ce-ink)}
+.you-will ul{margin:0;padding-left:22px}.you-will li{color:var(--ce-ink)!important;font-size:17px;line-height:1.6;padding:3px 0}
+
+.ce-moves{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:22px 0 0;padding:0}
+.ce-moves li{display:grid;gap:4px;padding:14px;background:var(--ce-bg);border:3px solid var(--ce-deep);border-radius:4px}
+.ce-moves b{width:30px;height:30px;display:grid;place-items:center;background:var(--ce-lime);border:2px solid var(--ce-deep);border-radius:3px;color:var(--ce-ink);font:900 16px Consolas,monospace}
+.ce-moves strong{color:var(--ce-ink)!important;font:800 18px/1.3 'Segoe UI',Arial,sans-serif}
+.ce-moves span{color:var(--ce-ink)!important;font-size:15px;line-height:1.5}
+.victory-preview{margin:10px 0 0;font-size:15px}
+
+.access-contrast .w3-strip a{background:#111!important;color:#fff!important}
+.access-calm .code-explain{box-shadow:none}
+@media(max-width:700px){.ce-lines li{grid-template-columns:minmax(0,1fr)}.ce-moves{grid-template-columns:minmax(0,1fr)}.code-explain{padding:16px}}
+@media print{.code-explain{box-shadow:none}.w3-strip a{box-shadow:none}}

@@ -1,0 +1,110 @@
+/* Code missions: CSS Reactor (Lab 1, Dawn palette) and Signal Control Room (Lab 2, teal + lime).
+   Chunky outlines and hard shadows, matching the lab-complete scene. */
+.code-mission{--m-ink:#10151f;--m-deep:#3a1d27;--m-accent:#ff7a59;--m-soft:#ffe0d1;--m-panel:#fff}
+.signal-room{--m-deep:#12343b;--m-accent:#c6f15b;--m-soft:#dcefc0}
+.studio .code-mission :is(p,li,label,h3,h4,h5,strong,em){color:var(--m-ink)}
+.studio .code-mission code{font-family:Consolas,monospace}
+.studio .code-mission button{min-height:44px;padding:10px 16px;border:3px solid var(--m-ink);border-radius:4px;background:#ffd23f;color:var(--m-ink);box-shadow:4px 4px 0 var(--m-ink);font:800 15px/1.2 'Segoe UI',Arial,sans-serif;cursor:pointer}
+.studio .code-mission button:hover:not(:disabled){background:var(--m-accent)}
+.studio .code-mission button:active:not(:disabled){transform:translate(2px,2px);box-shadow:2px 2px 0 var(--m-ink)}
+.studio .code-mission button:disabled{opacity:.55;cursor:default}
+.studio .code-mission :focus-visible{outline:3px solid #1b5fd0;outline-offset:3px}
+
+/* Console: lights + power meter */
+.mission-console{margin:18px 0;padding:18px 20px;background:var(--m-ink);border:4px solid var(--m-ink);border-radius:6px;box-shadow:6px 6px 0 var(--m-accent)}
+.mc-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.studio .code-mission .mc-label,.studio .code-mission .mc-power{margin:0;font:800 13px/1.5 Consolas,monospace;letter-spacing:.12em;color:var(--m-accent)}
+.studio .code-mission .mc-power{color:#fff}
+.mc-meter{height:14px;margin:10px 0 16px;background:#2a3140;border:2px solid #4a5468;border-radius:3px;overflow:hidden}
+.mc-meter span{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--m-accent) 0 14px,#ffd23f 14px 28px);transition:width .5s cubic-bezier(.2,.9,.3,1.2)}
+.mission-lights{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.mission-lights li{display:flex;gap:12px;align-items:flex-start;padding:12px;background:#1b2130;border:2px solid #394257;border-radius:4px;transition:background .3s,border-color .3s}
+.studio .code-mission .mission-lights :is(strong,span){color:#c9d1dc}
+.mission-lights span{display:grid;gap:2px;font-size:14px;line-height:1.4}
+.studio .code-mission .mission-lights strong{color:#fff;font-size:15px}
+.studio .code-mission .mission-lights code{background:#2a3140;color:#fff;padding:0 4px;border-radius:2px}
+.lamp{position:relative;flex:0 0 26px;height:26px;border-radius:50%;border:3px solid #0a0d14;background:#394257}
+.mission-lights li.is-on{background:#253018;border-color:var(--m-accent)}
+.mission-lights li.is-on .lamp{background:var(--m-accent)}
+.lamp .pop{position:absolute;left:50%;top:50%;font:800 14px Consolas,monospace;font-style:normal;color:#ffd23f;pointer-events:none;animation:m-pop .85s ease-out forwards}
+@keyframes m-pop{from{transform:translate(-50%,-50%) rotate(var(--a)) translateY(0);opacity:1}to{transform:translate(-50%,-50%) rotate(var(--a)) translateY(-34px);opacity:0}}
+.code-mission.is-full .mission-console{box-shadow:6px 6px 0 #ffd23f}
+.code-mission.is-full .mc-power{color:#ffd23f!important}
+
+/* Editor + preview */
+.mission-bench{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin:16px 0 6px}
+.code-editor{border:3px solid var(--m-ink);border-radius:4px;background:#1e1e1e;overflow:hidden;box-shadow:5px 5px 0 var(--m-ink);min-width:0}
+.studio .code-mission .ce-tab{margin:0;padding:8px 14px;background:#252526;border-bottom:1px solid #3c3c3c;color:#fff;font:600 13px Consolas,monospace}
+.ce-wrap{display:grid;grid-template-columns:auto minmax(0,1fr);height:300px}
+.ce-gutter{margin:0;padding:12px 8px 12px 12px;overflow:hidden;background:#1e1e1e;color:#6e7681;font:14px/1.6 Consolas,monospace;text-align:right;user-select:none}
+.studio .code-mission .ce-code{box-sizing:border-box;width:100%;height:100%;margin:0;padding:12px;border:0;border-radius:0;background:#1e1e1e;color:#d4d4d4;font:14px/1.6 Consolas,monospace;resize:none;white-space:pre;overflow:auto;tab-size:2;caret-color:#ffd23f}
+.studio .code-mission .ce-code:focus-visible{outline:3px solid #ffd23f;outline-offset:-3px}
+.preview-frame{border:3px solid var(--m-ink);border-radius:4px;background:#fff;overflow:hidden;box-shadow:5px 5px 0 var(--m-ink);min-width:0;display:flex;flex-direction:column}
+.studio .code-mission .pf-bar{margin:0;padding:8px 14px;background:var(--m-soft);border-bottom:3px solid var(--m-ink);font:700 12px/1.4 Consolas,monospace;letter-spacing:.08em}
+.preview-frame iframe{flex:1;width:100%;min-height:300px;border:0;background:#fff}
+.studio .code-mission .ce-lint:not(:empty){margin:10px 0 0;padding:8px 12px;border-left:6px solid #b3122e;background:#fff0ee;font:600 15px/1.5 'Segoe UI',Arial,sans-serif}
+.mission-actions{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0 8px}
+.studio .code-mission .mission-status{min-height:1.6em;margin:6px 0 0;padding:12px 14px;background:var(--m-ink);border-radius:4px;color:var(--m-accent)!important;font:600 15px/1.5 Consolas,monospace}
+.studio .code-mission .mission-status code{background:#2a3140;color:#fff;padding:0 4px;border-radius:2px}
+
+/* Defend it */
+.defend{margin-top:18px;padding:16px 18px;background:var(--m-soft);border:3px dashed var(--m-ink);border-radius:4px}
+.studio .code-mission .defend label{display:grid;gap:8px;font:700 16px/1.5 'Segoe UI',Arial,sans-serif}
+.studio .code-mission .defend textarea{box-sizing:border-box;width:100%;padding:10px 12px;border:2px solid var(--m-ink);border-radius:3px;background:#fff;color:var(--m-ink);font:400 16px/1.5 'Segoe UI',Arial,sans-serif;resize:vertical}
+.defend button{margin-top:10px}
+.studio .code-mission .defend-status{margin:8px 0 0;font-weight:600}
+
+/* Signal Control Room */
+.signal-room{margin:24px 0;padding:0 0 24px;background:#f1f9e3;border:4px solid var(--m-deep);border-radius:6px;box-shadow:8px 8px 0 var(--m-deep);overflow:hidden}
+.signal-room>*:not(.sr-head){margin-left:26px;margin-right:26px}
+.sr-head{padding:28px 26px 22px;background:var(--m-deep);background-image:linear-gradient(0deg,#ffffff0d 1px,transparent 1px);background-size:100% 6px}
+.studio .signal-room .sr-eyebrow{margin:0;font:800 13px/1.5 Consolas,monospace;letter-spacing:.12em;color:var(--m-accent)}
+.studio .signal-room .sr-head h3{margin:8px 0 10px;color:#fff;font:900 clamp(32px,5vw,52px)/1 'Arial Black','Segoe UI',Arial,sans-serif;text-transform:none;letter-spacing:-.02em}
+.studio .signal-room .sr-head p{color:#e8f5d8;max-width:62ch;margin:0;font-size:18px;line-height:1.6}
+.sr-stage{margin-top:22px;padding-top:18px;border-top:3px solid var(--m-deep)}
+.studio .signal-room .sr-stage-no{margin:0;font:800 12px/1.5 Consolas,monospace;letter-spacing:.14em;color:#2e5a3a}
+.studio .signal-room .sr-stage h4{margin:6px 0 12px;font:800 22px/1.3 'Segoe UI',Arial,sans-serif}
+.sr-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+.boot-lines{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.boot-lines li{display:grid;gap:8px;padding:12px;background:#1e1e1e;border:3px solid var(--m-ink);border-radius:4px;transition:border-color .3s}
+.studio .signal-room .boot-lines code{color:#d4d4d4;font-size:14px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.boot-lines li.is-run{border-color:var(--m-accent)}
+.studio .signal-room .boot-lines li.is-run code{color:var(--m-accent)}
+.boot-lines button{justify-self:start}
+.sr-page{position:relative;padding:18px;background:#fff;border:3px solid var(--m-ink);border-radius:4px;box-shadow:5px 5px 0 var(--m-ink);min-height:250px;overflow:hidden}
+.studio .signal-room .sr-url{margin:0 0 10px;font:700 12px Consolas,monospace;color:#56606b}
+.studio .signal-room .sr-page h5{margin:0 0 8px;font:800 22px/1.2 system-ui,sans-serif}
+.studio .signal-room .sr-story{margin:0 0 14px;padding:6px 8px;border:3px solid transparent;border-radius:3px;font:18px/1.5 system-ui,sans-serif}
+.sr-box{display:grid;gap:2px;margin-bottom:12px;padding:8px 10px;background:#fff7d6;border:3px dashed var(--m-ink);border-radius:4px;animation:m-drop .4s cubic-bezier(.2,1.4,.4,1)}
+.studio .signal-room .sr-box span{font:800 12px Consolas,monospace;letter-spacing:.08em}
+.studio .signal-room .sr-box em{font-size:14px;line-height:1.4}
+.studio .signal-room .sr-button{background:#e9ecf1}
+.studio .signal-room .sr-button.is-listening{background:var(--m-accent);position:relative}
+.studio .signal-room .sr-button.is-listening:after{content:'LISTENING';position:absolute;left:100%;top:50%;margin-left:12px;transform:translateY(-50%);padding:2px 8px;background:var(--m-ink);color:var(--m-accent);font:800 11px Consolas,monospace;letter-spacing:.1em;border-radius:3px;white-space:nowrap}
+.sr-page .is-locked{border-color:#1b5fd0!important;background:#e8f0ff}
+.sr-beam{position:absolute;left:0;right:0;height:0;pointer-events:none;background:#c6f15b55;border-top:3px solid var(--m-accent);border-bottom:3px solid var(--m-accent);opacity:0}
+.sr-beam.is-scanning{animation:m-scan .8s ease-out}
+@keyframes m-scan{0%{opacity:1;transform:translateY(-120px)}70%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes m-drop{from{transform:translateY(-12px);opacity:0}to{transform:none;opacity:1}}
+.studio .signal-room .sr-status{margin:14px 0 0;padding:12px 14px;background:var(--m-ink);border-radius:4px;color:var(--m-accent)!important;font:600 15px/1.5 Consolas,monospace}
+.studio .signal-room .sr-status :is(code,strong,em){color:#fff}
+.signal-room .code-editor{margin-top:10px}.signal-room .ce-wrap{height:230px}
+.sr-output{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:14px;margin-top:10px}
+.sr-result{margin:0;padding:14px;background:#fff;border:3px solid var(--m-ink);border-radius:4px;display:grid;gap:6px}
+.studio .signal-room .sr-result span{font:800 12px Consolas,monospace;letter-spacing:.1em;color:#2e5a3a}
+.studio .signal-room .sr-result em{font:400 17px/1.5 system-ui,sans-serif;font-style:normal}
+.sr-console{margin:0;padding:14px;background:var(--m-ink);border-radius:4px;color:var(--m-accent);font:14px/1.6 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;min-height:5em}
+.sr-console.is-error{color:#ffb3ab}
+.sr-boss p{margin:10px 0 0;padding:12px 14px;background:#fff;border:3px solid var(--m-ink);border-radius:4px;font-size:16px;line-height:1.6}
+.sr-boss pre{margin:10px 0 0;padding:12px;background:#1e1e1e;color:#d4d4d4;border-radius:3px;font:14px/1.6 Consolas,monospace;white-space:pre-wrap}
+.studio .signal-room .sr-boss .is-win{background:var(--m-accent)}
+.studio .signal-room .sr-boss .is-error{background:#fff0ee}
+.studio .signal-room .sr-ai{font-size:15px;margin-top:12px}
+.sr-sandbox{position:absolute;width:1px;height:1px;border:0;left:-9999px}
+
+@media(prefers-reduced-motion:reduce){.mc-meter span,.mission-lights li{transition:none}.lamp .pop,.sr-box{animation:none}}
+.access-no-motion .code-mission *{animation:none!important;transition:none!important}
+.access-calm .code-mission .mission-console,.access-calm .signal-room{box-shadow:none}
+@media(max-width:800px){.mission-bench,.sr-grid,.sr-output{grid-template-columns:minmax(0,1fr)}.ce-wrap{height:240px}}
+@media(max-width:600px){.signal-room>*:not(.sr-head){margin-left:14px;margin-right:14px}.sr-head{padding:22px 16px 18px}.studio .code-mission button{width:100%}.studio .signal-room .sr-button.is-listening:after{display:none}}
+@media print{.code-mission button{display:none}}
