@@ -1,0 +1,36 @@
+/* Equipment room header: the mega lab. Fast, busy, safe: nothing flashes more than 3 times a second. */
+.studio.page-tools .exhibition-opening{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.35fr);gap:34px;align-items:center;min-height:0}
+.studio.page-tools .exhibition-opening:after{grid-column:1/-1}
+.mega-lab{position:relative;border:5px solid #10151f;border-radius:8px;box-shadow:10px 10px 0 #10151f;overflow:hidden;background:#241d3f}
+.mega-lab svg{display:block;width:100%;height:auto}
+
+@media(prefers-reduced-motion:no-preference){
+.ml-spin{transform-box:fill-box;transform-origin:center;animation:ml-spin 1.1s linear infinite}
+.ml-spin.slow{animation-duration:2.4s}.ml-spin.rev{animation-direction:reverse}
+.ml-blink{animation:ml-blink .9s steps(2,end) infinite}.d1{animation-delay:.2s}.d2{animation-delay:.45s}.d3{animation-delay:.7s}
+.ml-rise{animation:ml-rise 1.9s ease-in infinite}.ml-rise.d1{animation-delay:.5s}.ml-rise.d2{animation-delay:1s}.ml-rise.d3{animation-delay:1.4s}
+.ml-steam{transform-box:fill-box;transform-origin:center;animation:ml-steam 2.2s ease-out infinite}.ml-steam.d1{animation-delay:.7s}.ml-steam.d2{animation-delay:1.4s}
+.ml-wave{animation:ml-wave .9s linear infinite}
+.ml-flow{animation:ml-flow .8s linear infinite}
+.ml-slosh{animation:ml-slosh 1.4s ease-in-out infinite alternate}
+.ml-arm{transform-box:view-box;transform-origin:560px 22px;animation:ml-arm 1.6s ease-in-out infinite alternate}
+.ml-lever{transform-box:view-box;transform-origin:553px 330px;animation:ml-lever 2.4s ease-in-out infinite}
+.ml-zap{animation:ml-zap 1.2s steps(1,end) infinite}.ml-zap.z2{animation-delay:.4s}.ml-zap.z3{animation-delay:.8s}
+.ml-belt{animation:ml-belt 3.6s linear infinite}
+}
+@keyframes ml-spin{to{transform:rotate(360deg)}}
+@keyframes ml-blink{50%{opacity:.2}}
+@keyframes ml-rise{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-150px);opacity:.1}}
+@keyframes ml-steam{0%{transform:translateY(0) scale(.6);opacity:.9}100%{transform:translateY(-60px) scale(1.6);opacity:0}}
+@keyframes ml-wave{to{transform:translateX(-90px)}}
+@keyframes ml-flow{to{stroke-dashoffset:-40}}
+@keyframes ml-slosh{to{transform:translateX(-30px)}}
+@keyframes ml-arm{from{transform:rotate(-16deg)}to{transform:rotate(18deg)}}
+@keyframes ml-lever{0%,60%,100%{transform:rotate(0)}70%,90%{transform:rotate(-40deg)}}
+/* Each bolt shows once per 1.2 s: well under the 3-flashes-per-second safety limit. */
+@keyframes ml-zap{0%,65%{opacity:0}66%,80%{opacity:1}81%,100%{opacity:0}}
+@keyframes ml-belt{to{transform:translateX(-440px)}}
+.access-no-motion .mega-lab *{animation:none!important}
+.access-calm .mega-lab{box-shadow:none}
+.access-contrast .mega-lab{display:none}
+@media(max-width:860px){.studio.page-tools .exhibition-opening{grid-template-columns:minmax(0,1fr)}.mega-lab{box-shadow:6px 6px 0 #10151f}}
