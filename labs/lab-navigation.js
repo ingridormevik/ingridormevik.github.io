@@ -71,7 +71,7 @@
     try{
       if(sessionStorage.getItem(completeKey(lab))==='yes'&&ready(lab)&&experimentDone(lab)){
         lab.querySelectorAll('[data-final]').forEach(x=>{x.checked=true;});lab.dataset.questComplete='true';
-        lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Ingrid will check your actual MittUiB submission for attendance.';
+        lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your actual MittUiB submission is what counts for attendance.';
       }
     }catch{}
     render(lab);
@@ -87,7 +87,7 @@
     lab.querySelector('[data-confirm-reset]').addEventListener('click',()=>render(lab));
     lab.querySelector('.quest-complete-button').addEventListener('click',()=>{
       if(!available(lab)||!earned(lab)||!finalReady(lab))return;
-      lab.dataset.questComplete='true';lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Ingrid will check your actual MittUiB submission for attendance.';render(lab);
+      lab.dataset.questComplete='true';lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your actual MittUiB submission is what counts for attendance.';render(lab);
       try{sessionStorage.setItem(completeKey(lab),'yes');}catch{}
     });
   });

@@ -18,7 +18,7 @@
   function storageMessage() {
     panels.forEach(panel => {
       panel.querySelector('.mission-storage').textContent = storageWorks
-        ? 'Saved only in this browser. Nothing is sent to Ingrid. Download a copy before changing devices or clearing browser data.'
+        ? 'Saved only in this browser. Nothing is sent anywhere. Download a copy before changing devices or clearing browser data.'
         : 'Browser saving is unavailable. Your work stays for this visit; download your log before leaving.';
     });
   }

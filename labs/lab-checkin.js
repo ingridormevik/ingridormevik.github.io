@@ -133,7 +133,7 @@
         draw(sessions,'24px Arial',36);y+=25;
         draw(ideas,'30px Arial',44);y+=25;
         ctx.font='bold 22px Arial';ctx.fillText('TASK COMPLETED · READY TO SUBMIT',margin,y);y+=34;
-        ctx.font='20px Arial';ctx.fillText('Submit this card in the MittUiB task identified by Ingrid.',margin,y);
+        ctx.font='20px Arial';ctx.fillText('Submit this card in the MittUiB attendance task.',margin,y);
         const link=document.createElement('a');
         link.href=canvas.toDataURL('image/png');link.download=`dik105-lab-${panel.dataset.checkin}-pass.png`;
         document.body.append(link);link.click();link.remove();

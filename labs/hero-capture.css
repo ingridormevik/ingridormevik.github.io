@@ -1,0 +1,6 @@
+/* Equipment room: show the project capture as a framed screen beside the heading, not behind it. */
+.studio.page-tools .exhibition-opening{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:44px;align-items:center}
+.studio.page-tools .exhibition-image{position:static;order:2;inset:auto;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:50% 20%;z-index:auto;filter:none;border:4px solid #10151f;border-radius:6px;box-shadow:8px 8px 0 #ffd23f}
+.studio.page-tools .lab-apparatus{display:none}
+.studio.page-tools .exhibition-credit{grid-column:2;justify-self:start}
+@media(max-width:860px){.studio.page-tools .exhibition-opening{grid-template-columns:minmax(0,1fr)}.studio.page-tools .exhibition-credit{grid-column:1}}
