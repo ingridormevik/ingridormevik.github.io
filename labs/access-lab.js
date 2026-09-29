@@ -140,9 +140,22 @@
   alt.addEventListener('input', described);
   const speak = lab.querySelector('[data-speak]');
   if (!('speechSynthesis' in window)) { speak.hidden = true; }
+  // Always read in English, even when the device's default voice is Norwegian.
+  const englishVoice = () => {
+    const voices = speechSynthesis.getVoices();
+    return voices.find(v => /^en-GB/i.test(v.lang)) || voices.find(v => /^en-US/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang)) || null;
+  };
+  if ('speechSynthesis' in window) speechSynthesis.getVoices();
   speak.addEventListener('click', () => {
     const text = alt.value.trim() ? `image, ${alt.value.trim()}` : 'image, ramp poster dot s v g';
-    try { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(text)); } catch {}
+    try {
+      speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      const voice = englishVoice();
+      utterance.lang = voice ? voice.lang : 'en-GB';
+      if (voice) utterance.voice = voice;
+      speechSynthesis.speak(utterance);
+    } catch {}
   });
   described();
 
