@@ -20,3 +20,5 @@
 .access-calm .when-unsure .help-route{box-shadow:none}
 @media(max-width:760px){.when-unsure .help-routes{grid-template-columns:minmax(0,1fr)}}
 @media print{.when-unsure .help-route{box-shadow:none}}
+.when-unsure .help-route :is(ol,p) a{color:#4e1a26;font-weight:700;text-underline-offset:3px}
+.when-unsure .help-route code{padding:1px 6px;background:#1e1e1e;color:#e8f5d0;border-radius:3px;font:13px Consolas,monospace}

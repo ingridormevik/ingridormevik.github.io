@@ -1,0 +1,48 @@
+/* Clear sections inside each lab's Experiment step, plus the Construct guide's mistakes and tricks.
+   Each section kind has one colour: PREPARE blue, PRACTICE yellow, REQUIRED coral, WHEN YOU NEED IT grey. */
+.step-map,.section-band{--k-prepare:#6fb7ff;--k-practice:#ffd23f;--k-required:#ff7a59;--k-reference:#c9d1dc;--k-ink:#10151f}
+
+/* "On this step" map */
+.studio .step-map{margin:22px 0 10px;padding:16px 18px;background:#0b1720;border:3px solid #33515e;border-radius:6px}
+.studio .step-map .sm-label{margin:0 0 10px;font:800 12px/1.5 Consolas,monospace;letter-spacing:.14em;color:#c9d1dc}
+.step-map ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.studio .step-map a{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;min-height:56px;padding:10px 12px;background:#14232e;border:2px solid #33515e;border-left:8px solid var(--c);border-radius:4px;color:#eef5f7;text-decoration:none}
+.studio .step-map a:hover{background:#1c3140;border-color:var(--c)}
+.studio .step-map a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.step-map b{grid-row:1/3;font:900 22px/1 Consolas,monospace;color:var(--c)}
+.step-map span{font:700 15px/1.3 'Segoe UI',Arial,sans-serif}
+.step-map em{font:800 10px/1.3 Consolas,monospace;font-style:normal;letter-spacing:.12em;color:var(--c)}
+.sm-prepare{--c:var(--k-prepare)}.sm-practice{--c:var(--k-practice)}.sm-required{--c:var(--k-required)}.sm-reference{--c:var(--k-reference)}
+
+/* Section bands */
+.studio .section-band{margin:64px 0 16px;padding:18px 20px 16px;background:#0b1720;border:3px solid var(--c);border-left-width:14px;border-radius:6px;scroll-margin-top:20px}
+.studio .step-map+.section-band{margin-top:28px}
+.sb-prepare{--c:var(--k-prepare)}.sb-practice{--c:var(--k-practice)}.sb-required{--c:var(--k-required)}.sb-reference{--c:var(--k-reference)}
+.studio .section-band .sb-meta{display:flex;align-items:center;gap:12px;margin:0}
+.studio .section-band .sb-no{font:900 34px/1 Consolas,monospace;color:var(--c)}
+.studio .section-band .sb-badge{padding:4px 10px;background:var(--c);color:var(--k-ink);border-radius:3px;font:900 12px/1.3 Consolas,monospace;letter-spacing:.14em}
+.studio .section-band .sb-title{margin:10px 0 6px;color:#fff;font:800 clamp(24px,3vw,32px)/1.2 'Segoe UI',Arial,sans-serif;text-transform:none;letter-spacing:normal}
+.studio .section-band .sb-desc{margin:0;color:#d5e2e8;font-size:17px;line-height:1.6;max-width:70ch}
+.studio .section-band .sb-desc a{color:#fff;font-weight:700}
+.studio .sb-required{background:#2a1510}
+.studio .sb-required .sb-title:after{content:'  ← finish this to complete the lab';font:700 14px Consolas,monospace;color:var(--c);white-space:normal}
+
+/* Construct guide: mistakes and tricks */
+.construct-tips{padding:45px 0;border-bottom:1px solid #33515e;scroll-margin-top:20px}
+.ct-intro{max-width:64ch}
+.ct-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:22px 0}
+.ct-card{padding:18px 18px 14px;background:#fff;border:3px solid #10151f;border-radius:4px;box-shadow:5px 5px 0 var(--c);color:#10151f}
+.ct-mistake{--c:#ff7a59;border-top:10px solid #ff7a59}
+.ct-trick{--c:#c6f15b;border-top:10px solid #c6f15b}
+.construct-tips .ct-card :is(p,h3,b,em,strong,code){color:#10151f}
+.construct-tips .ct-card .ct-no{margin:0;font:900 14px Consolas,monospace!important;letter-spacing:.1em;color:#6b5a4a!important}
+.construct-tips .ct-card h3{margin:6px 0 10px;font:800 19px/1.3 'Segoe UI',Arial,sans-serif!important;text-transform:none!important;letter-spacing:normal!important;-webkit-text-stroke:0!important;text-shadow:none!important}
+.construct-tips .ct-card p{font-size:15px;line-height:1.55;margin:6px 0}
+.construct-tips .ct-card code{padding:0 4px;background:#eef1f4;border-radius:3px;font:13px Consolas,monospace}
+.construct-tips .ct-stuck{padding:14px 18px;border-left:5px solid #c6f15b;background:#c6f15b12}
+.ct-jump{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0}
+.ct-jump a{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border:2px solid currentColor;border-radius:4px;font-weight:700;text-decoration:none}
+
+@media(max-width:600px){.studio .section-band{margin-top:48px;padding:14px 14px 12px;border-left-width:10px}.studio .sb-required .sb-title:after{display:block;margin-top:4px}}
+.access-calm .ct-card{box-shadow:none}
+@media print{.step-map{display:none}.section-band{break-after:avoid}}
