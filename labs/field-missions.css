@@ -131,3 +131,9 @@
 .studio .test-lab .fix-row legend{display:block;float:none;width:auto;color:var(--m-ink)!important;background:#fff;font:800 15px/1.4 'Segoe UI',Arial,sans-serif}
 .studio .field-mission input[type=radio]{-webkit-appearance:radio;appearance:auto;width:20px!important;height:20px!important;min-height:0!important;margin:0;padding:0;border:0;background:none;box-shadow:none;accent-color:var(--m-deep)}
 .field-mission,.code-mission,.no-ai{color-scheme:light}
+/* Phone: readable shelf labels and full-size tap targets. */
+.studio .the-stacks .sc-cat{font-size:12px}
+.studio .the-stacks .sc-actions button,.studio .test-lab .fb-cards button{min-height:44px}
+.studio .the-stacks .co-label{font-size:12px}
+/* Phone: full-width buttons are right for actions, not for the prototype's corner icon or the theme chips. */
+@media(max-width:600px){.studio .test-lab .p-icon,.studio .the-stacks .theme-chips button{width:auto}}

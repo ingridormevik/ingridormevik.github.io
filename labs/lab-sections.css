@@ -46,3 +46,4 @@
 @media(max-width:600px){.studio .section-band{margin-top:48px;padding:14px 14px 12px;border-left-width:10px}.studio .sb-required .sb-title:after{display:block;margin-top:4px}}
 .access-calm .ct-card{box-shadow:none}
 @media print{.step-map{display:none}.section-band{break-after:avoid}}
+.step-map em{font-size:12px}

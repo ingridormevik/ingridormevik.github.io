@@ -17,3 +17,5 @@
 .studio.page-setup main,.studio.page-construct-guide main,.studio.page-github-guide main,.studio.page-javascript-construct main{max-width:960px}.studio [hidden]{display:none!important}@media print{.studio .lab[hidden],.studio [data-reader-step][hidden],.studio .book[hidden],.studio main>.finish[hidden]{display:block!important}}
 
 @media print{:root{--bg:#fff;--panel:#fff;--ink:#111;--soft:#333;--accent:#134c57;--cyan:#134c57;--line:#bbb;--violet:#46346c;color-scheme:light}.studio details,.studio .look,.studio .citation-card,.studio .citation-card blockquote,.studio .help-banner,.studio .help-strip,.studio .outcome{background:#fff;color:#111}.studio a{color:#134c57}.studio .book-author,.studio .row-detail>p{color:#333}}
+/* Phone: a comfortable tap target for the step-reader toggle. */
+.studio .reader-bar .reader-mode{min-height:44px}

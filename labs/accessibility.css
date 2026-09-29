@@ -86,3 +86,5 @@ html .studio .access-scalable{font-size:calc(var(--access-base-font)*var(--acces
 .studio .ramp-section pre{white-space:pre-wrap;overflow-wrap:anywhere}
 
 .access-contrast .studio .access-rocker:after{background:#111!important}.access-contrast .studio .access-state:after{color:#111!important}.access-contrast .studio .access-console-icon svg{stroke:#111}.access-contrast .studio .access-console-icon circle{fill:white}
+/* Phone: keep the console label readable (never below 12px). */
+.studio .access-summary-copy small{font-size:12px!important;letter-spacing:.08em}
