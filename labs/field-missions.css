@@ -1,0 +1,133 @@
+/* Field missions (Labs 3 to 5) and the library "0% AI" status board.
+   Builds on code-missions.css (deck, lights, defend, buttons). Each lab keeps its arrival palette. */
+.gate-engine{--m-deep:#1b2a8f;--m-accent:#ffd23f;--m-soft:#d8defc}
+.the-stacks{--m-deep:#4e1a26;--m-accent:#e0a33a;--m-soft:#f0dfbb}
+.test-lab{--m-deep:#2c1633;--m-accent:#f29bcd;--m-soft:#f7d5e6}
+.field-mission{margin:24px 0;padding:0 0 24px;background:#fff;border:4px solid var(--m-deep);border-radius:6px;box-shadow:8px 8px 0 var(--m-deep);overflow:hidden}
+.field-mission>*:not(.fm-head){margin-left:26px;margin-right:26px}
+.fm-head{padding:28px 26px 22px;background:var(--m-deep);background-image:linear-gradient(0deg,#ffffff0d 1px,transparent 1px);background-size:100% 6px}
+.studio .field-mission .fm-eyebrow{margin:0;font:800 13px/1.5 Consolas,monospace;letter-spacing:.12em;color:var(--m-accent)}
+.studio .field-mission .fm-head h3{margin:8px 0 10px;color:#fff;font:900 clamp(32px,5vw,52px)/1 'Arial Black','Segoe UI',Arial,sans-serif;text-transform:none;letter-spacing:-.02em}
+.studio .field-mission .fm-head p:not(.fm-eyebrow),.studio .field-mission .fm-head strong{color:#f4eef4;max-width:64ch;margin:0;font-size:18px;line-height:1.6}
+.fm-stage{margin-top:22px;padding-top:18px;border-top:3px solid var(--m-deep)}
+.studio .field-mission .fm-stage-no{margin:0;font:800 12px/1.5 Consolas,monospace;letter-spacing:.14em;color:var(--m-deep)}
+.studio .field-mission .fm-stage h4{margin:6px 0 12px;font:800 22px/1.3 'Segoe UI',Arial,sans-serif}
+.studio .field-mission .fm-status{margin:12px 0 0;padding:12px 14px;background:var(--m-ink);border-radius:4px;color:var(--m-accent)!important;font:600 15px/1.5 Consolas,monospace}
+.studio .field-mission .fm-note{font-size:15px;margin-top:12px}
+.studio .field-mission :is(input:not([type=radio]):not([type=range]),select,textarea){box-sizing:border-box;width:100%;min-height:44px;margin-top:6px;padding:9px 11px;border:2px solid var(--m-ink);border-radius:3px;background:#fff;color:var(--m-ink);font:400 16px/1.4 'Segoe UI',Arial,sans-serif}
+.studio .field-mission label{display:block;font:700 15px/1.4 'Segoe UI',Arial,sans-serif}
+
+/* Lab 3: Gate Engine */
+.rule-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:end}
+.studio .gate-engine input[type=range]{width:100%;accent-color:var(--m-deep)}
+.studio .gate-engine output{font:800 20px Consolas,monospace}
+.gate-scene,.gate-track{position:relative;height:120px;margin:16px 0 8px;background:#2a2f55;border:3px solid var(--m-ink);border-radius:4px;overflow:hidden;background-image:linear-gradient(0deg,#3b3f73 22px,transparent 22px)}
+.gs-player,.gt-player{position:absolute;left:18px;bottom:22px;width:34px;height:44px;background:var(--m-accent);border:3px solid var(--m-ink);border-radius:6px 6px 3px 3px;transition:transform .4s steps(4,end)}
+.gs-player i,.gt-player i{position:absolute;top:10px;left:6px;width:6px;height:6px;background:var(--m-ink);box-shadow:12px 0 0 var(--m-ink)}
+.gs-keys{position:absolute;left:66px;bottom:30px;display:flex;gap:6px}
+.gs-keys span,.gt-key{width:18px;height:18px;background:#ffd23f;border:3px solid var(--m-ink);border-radius:50%}
+.gs-gate,.gt-gate{position:absolute;right:22px;bottom:22px;width:60px;height:80px;display:flex;justify-content:space-around;border:4px solid var(--m-ink);border-bottom:0;background:#1a1d3d}
+.gs-gate span,.gt-gate span{width:8px;background:#9aa3c7;border:2px solid var(--m-ink);transition:transform .5s}
+.gs-gate.is-open span,.gt-gate.is-open span{transform:translateY(-80px)}
+.gs-gate.is-open,.gt-gate.is-open{background:#c6f15b}
+.studio .gate-engine .cn-line{margin:6px 0 0;padding:10px 14px;background:#1e1e1e;color:#e8f5d0;border-radius:4px;font:600 15px/1.5 Consolas,monospace;white-space:pre-wrap}
+.event-sheet{display:grid;gap:10px;margin:14px 0;padding:14px;background:#eef1ff;border:3px solid var(--m-ink);border-radius:4px}
+.ev-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:end;padding:10px;background:#fff;border:2px solid #b8c0e6;border-radius:3px}
+.studio .gate-engine .ev-no{margin:0 0 10px;font:800 12px Consolas,monospace;letter-spacing:.1em}
+.studio .gate-engine .ev-arrow{font:800 22px Consolas,monospace;margin-bottom:8px;color:var(--m-ink)}
+.gt-key{position:absolute;bottom:34px}.gt-key[data-track-key="1"]{left:26%}.gt-key[data-track-key="2"]{left:48%}.gt-key[data-track-key="3"]{left:70%}
+.gt-key.is-taken{opacity:0;transform:translateY(-20px);transition:.3s}
+.gt-player{left:10px}
+.studio .gate-engine .gt-hud{position:absolute;top:8px;left:12px;margin:0;color:#fff;font:700 14px Consolas,monospace}
+.studio .gate-engine .gt-hud b{color:var(--m-accent)}
+.own-rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.own-sheet{margin-top:14px;padding:12px 14px;background:#1e1e1e;border-radius:4px}
+.studio .gate-engine .own-sheet p{margin:4px 0;color:#d4d4d4;font:14px/1.6 Consolas,monospace}
+.studio .gate-engine .own-sheet b{color:var(--m-accent);margin-right:8px}.studio .gate-engine .own-sheet em{color:#9cdcfe;font-style:normal}
+
+/* Lab 4: The Stacks, and the library status board */
+.no-ai{--na-ink:#2b1a10;margin:22px 0;padding:18px 20px;background:#fbf2df;border:3px solid #4e1a26;border-radius:4px;box-shadow:5px 5px 0 #4e1a26;color:var(--na-ink)}
+.no-ai .na-title{margin:0 0 12px;font:800 13px/1.5 Consolas,monospace!important;letter-spacing:.14em;color:#4e1a26!important}
+.na-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.na-stats div{padding:10px 12px;background:#fff;border:2px solid #4e1a26;border-radius:3px}
+.no-ai dt{font:700 12px/1.3 Consolas,monospace;letter-spacing:.06em;color:#6b3a2a;text-transform:uppercase}
+.no-ai dd{margin:4px 0 0;font:900 24px/1.1 'Arial Black','Segoe UI',Arial,sans-serif;color:#4e1a26}
+.na-stats div:first-child dd{color:#b3122e}
+.no-ai .na-lines{margin:0 0 10px;padding-left:22px}
+.no-ai .na-lines li{color:var(--na-ink)!important;font:400 17px/1.55 Georgia,'Times New Roman',serif!important;padding:2px 0}
+.no-ai .na-foot{margin:0;font-size:14px!important;color:#6b3a2a!important;font-style:italic}
+.forge{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.studio .the-stacks .forge-label{margin:14px 0 8px;font-weight:700}
+.theme-chips{display:flex;flex-wrap:wrap;gap:8px}
+.studio .the-stacks .theme-chips button{min-height:40px;padding:6px 12px;background:#fff;box-shadow:3px 3px 0 var(--m-ink);font-size:14px}
+.studio .the-stacks .theme-chips button[aria-pressed=true]{background:var(--m-accent)}
+.forge-out{margin-top:14px;padding:14px 16px;background:var(--m-soft);border:3px solid var(--m-ink);border-radius:4px}
+.studio .the-stacks .fo-q{margin:0 0 6px;font:400 20px/1.4 Georgia,'Times New Roman',serif}
+.studio .the-stacks .forge-out p{margin:6px 0}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:12px}
+.shelf-card{display:flex;flex-direction:column;gap:6px;padding:14px 14px 12px 22px;background:#fffdf7;border:3px solid var(--m-ink);border-left:12px solid var(--spine);border-radius:3px 6px 6px 3px;box-shadow:4px 4px 0 var(--m-ink)}
+.shelf-card.is-chosen{outline:4px solid var(--m-accent);outline-offset:2px}
+.studio .the-stacks .shelf-card h5{margin:0;font:700 17px/1.3 Georgia,'Times New Roman',serif}
+.studio .the-stacks .sc-cat{margin:0;font:700 11px/1.3 Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:#6b3a2a}
+.studio .the-stacks .sc-by{margin:0;font-size:14px}
+.studio .the-stacks .sc-back p{margin:6px 0;font-size:14px;line-height:1.5}
+.sc-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:6px}
+.studio .the-stacks .sc-actions button{min-height:38px;padding:6px 10px;font-size:13px;box-shadow:2px 2px 0 var(--m-ink)}
+.myths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.studio .the-stacks .myth{display:block;min-height:150px;padding:16px;text-align:left;background:#fff;box-shadow:5px 5px 0 var(--m-ink);font:600 16px/1.45 'Segoe UI',Arial,sans-serif}
+.myth .myth-front b{display:block;margin-bottom:8px;font:800 12px Consolas,monospace;letter-spacing:.12em;color:#6b3a2a}
+.myth .myth-back{display:none}
+.studio .the-stacks .myth.is-flipped{background:var(--m-ink);color:#fff}
+.myth.is-flipped .myth-front{display:none}
+.myth.is-flipped .myth-back{display:block;color:var(--m-accent);font-weight:600}
+.cite-form,.bridge-form,.plan-form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:14px}
+.cite-out{margin-top:14px;padding:14px 16px;background:#fff;border:3px solid var(--m-ink);border-radius:4px}
+.studio .the-stacks .co-label{margin:0;font:800 11px Consolas,monospace;letter-spacing:.12em;color:#6b3a2a}
+.studio .the-stacks .co-ref{margin:4px 0 12px;padding-left:24px;text-indent:-24px;font:17px/1.5 Georgia,'Times New Roman',serif}
+.studio .the-stacks .co-intext{margin:4px 0 0;font:700 17px/1.5 Georgia,'Times New Roman',serif}
+.studio .the-stacks .cite-book{padding:10px 14px;background:var(--m-soft);border-radius:3px}
+
+/* Lab 5: Test Lab */
+.proto-wrap{display:grid;gap:8px}
+.proto{position:relative;min-height:230px;padding:22px;background:#f9f6fb;border:3px solid var(--m-ink);border-radius:4px;overflow:hidden}
+.studio .test-lab .p-icon{position:absolute;top:12px;right:12px;min-height:40px;padding:4px 12px;background:transparent;border:2px solid #c9bfd0;box-shadow:none;font-size:20px;color:#6b5a74}
+.p-icon-label{display:none;margin-left:6px;font-size:14px}
+.studio .test-lab .p-title{margin:18px 0 4px;display:inline-block;padding:10px 18px;background:#2c1633;color:#fff!important;border-radius:4px;font:900 30px/1 'Arial Black',Arial,sans-serif;box-shadow:4px 4px 0 #f29bcd}
+.studio .test-lab .p-sub{margin:10px 0 18px;color:#5b4b63!important}
+.studio .test-lab .p-start{color:#cdc6d2;font-size:15px}
+.proto.fix-title .p-title{background:transparent;color:#2c1633!important;box-shadow:none;padding:0}
+.proto.fix-start .p-start{display:inline-block;padding:12px 26px;background:#2c1633;color:#fff;border:3px solid var(--m-ink);border-radius:4px;box-shadow:4px 4px 0 #f29bcd;font:800 18px 'Segoe UI',Arial,sans-serif}
+.proto.fix-icon .p-icon-label{display:inline}
+.proto .is-poked{outline:3px dashed #b3122e;outline-offset:3px}
+.p-cursor{position:absolute;top:0;left:0;width:22px;height:22px;opacity:0;transition:transform .6s ease-in-out,opacity .2s;pointer-events:none;background:linear-gradient(135deg,#10151f 50%,transparent 50%);clip-path:polygon(0 0,100% 55%,55% 60%,40% 100%)}
+.p-cursor.is-on{opacity:1}
+.studio .test-lab .p-bubble{position:absolute;left:16px;right:16px;bottom:12px;margin:0;padding:10px 14px;background:#fff;border:3px solid var(--m-ink);border-radius:12px;font:600 15px/1.4 'Segoe UI',Arial,sans-serif;opacity:0;transform:translateY(8px);transition:.25s}
+.p-bubble.is-on{opacity:1;transform:none}
+.studio .test-lab .p-timer{margin:0;font:700 14px Consolas,monospace}
+.fb-cards{list-style:none;margin:10px 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fb-cards li{padding:12px;background:#fff;border:3px solid var(--m-ink);border-radius:4px}
+.studio .test-lab .fb-cards p{margin:0 0 8px;font:400 17px/1.4 Georgia,'Times New Roman',serif}
+.fb-cards [role=group]{display:flex;flex-wrap:wrap;gap:8px}
+.studio .test-lab .fb-cards button{min-height:38px;padding:6px 10px;font-size:13px;background:#fff;box-shadow:2px 2px 0 var(--m-ink)}
+.studio .test-lab .fb-cards button[aria-pressed=true]{background:var(--m-accent)}
+.fb-cards li.is-right{border-color:#1c7a3e;background:#effbe8}
+.fb-cards li.is-wrong{border-color:#b3122e;background:#fff0ee}
+.fixes{display:grid;gap:10px}
+.fix-row{margin:0;padding:10px 14px;border:3px solid var(--m-ink);border-radius:4px;background:#fff;display:flex;flex-wrap:wrap;gap:6px 22px}
+.fix-row legend{padding:0 6px;font:800 14px 'Segoe UI',Arial,sans-serif}
+.studio .test-lab .fix-row label{display:flex;gap:8px;align-items:center;font-weight:600;cursor:pointer}
+.fix-row input{width:20px;height:20px;accent-color:var(--m-deep)}
+.retest-score{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:10px 0 0}
+.retest-score span{font:800 16px Consolas,monospace}
+.retest-score b{display:inline-block;margin-left:6px;padding:4px 10px;background:var(--m-accent);border:3px solid var(--m-ink);border-radius:3px;font-size:22px}
+.studio .test-lab .test-card{margin:14px 0 0;padding:14px 16px;background:#1e1e1e;color:#e8f5d0;border:0;border-radius:4px;font:14px/1.6 Consolas,monospace;white-space:pre-wrap}
+
+@media(prefers-reduced-motion:reduce){.gs-player,.gt-player,.gs-gate span,.gt-gate span,.p-cursor,.p-bubble,.gt-key.is-taken{transition:none}}
+.access-no-motion .field-mission *{transition:none!important}
+.access-calm .field-mission,.access-calm .no-ai{box-shadow:none}
+@media(max-width:800px){.rule-controls,.own-rule,.forge,.cite-form,.bridge-form,.plan-form,.myths,.fb-cards,.na-stats{grid-template-columns:minmax(0,1fr)}.ev-row{grid-template-columns:minmax(0,1fr)}.ev-arrow{display:none}}
+@media(max-width:600px){.field-mission>*:not(.fm-head){margin-left:14px;margin-right:14px}.fm-head{padding:22px 16px 18px}.na-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Guard the Test Lab fix choices against the site's generic legend and input styles. */
+.studio .test-lab .fix-row legend{display:block;float:none;width:auto;color:var(--m-ink)!important;background:#fff;font:800 15px/1.4 'Segoe UI',Arial,sans-serif}
+.studio .field-mission input[type=radio]{-webkit-appearance:radio;appearance:auto;width:20px!important;height:20px!important;min-height:0!important;margin:0;padding:0;border:0;background:none;box-shadow:none;accent-color:var(--m-deep)}
+.field-mission,.code-mission,.no-ai{color-scheme:light}

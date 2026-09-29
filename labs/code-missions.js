@@ -65,6 +65,9 @@
     });
   }
 
+  // Shared with field-missions.js (Labs 3 to 5), which loads after this file.
+  window.labMissions = {reduced, gutter, lightsFor, defendTo};
+
   // ---------- Lab 1: CSS Reactor ----------
   const reactor = document.querySelector('[data-mission-kind="css"]');
   if (reactor) {

@@ -11,7 +11,7 @@
 .studio .code-mission :focus-visible{outline:3px solid #1b5fd0;outline-offset:3px}
 
 /* Console: lights + power meter */
-.mission-console{margin:18px 0;padding:18px 20px;background:var(--m-ink);border:4px solid var(--m-ink);border-radius:6px;box-shadow:6px 6px 0 var(--m-accent)}
+.mission-deck{margin:18px 0;padding:18px 20px;background:var(--m-ink);border:4px solid var(--m-ink);border-radius:6px;box-shadow:6px 6px 0 var(--m-accent)}
 .mc-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .studio .code-mission .mc-label,.studio .code-mission .mc-power{margin:0;font:800 13px/1.5 Consolas,monospace;letter-spacing:.12em;color:var(--m-accent)}
 .studio .code-mission .mc-power{color:#fff}
@@ -28,7 +28,7 @@
 .mission-lights li.is-on .lamp{background:var(--m-accent)}
 .lamp .pop{position:absolute;left:50%;top:50%;font:800 14px Consolas,monospace;font-style:normal;color:#ffd23f;pointer-events:none;animation:m-pop .85s ease-out forwards}
 @keyframes m-pop{from{transform:translate(-50%,-50%) rotate(var(--a)) translateY(0);opacity:1}to{transform:translate(-50%,-50%) rotate(var(--a)) translateY(-34px);opacity:0}}
-.code-mission.is-full .mission-console{box-shadow:6px 6px 0 #ffd23f}
+.code-mission.is-full .mission-deck{box-shadow:6px 6px 0 #ffd23f}
 .code-mission.is-full .mc-power{color:#ffd23f!important}
 
 /* Editor + preview */
@@ -104,7 +104,18 @@
 
 @media(prefers-reduced-motion:reduce){.mc-meter span,.mission-lights li{transition:none}.lamp .pop,.sr-box{animation:none}}
 .access-no-motion .code-mission *{animation:none!important;transition:none!important}
-.access-calm .code-mission .mission-console,.access-calm .signal-room{box-shadow:none}
+.access-calm .code-mission .mission-deck,.access-calm .signal-room{box-shadow:none}
 @media(max-width:800px){.mission-bench,.sr-grid,.sr-output{grid-template-columns:minmax(0,1fr)}.ce-wrap{height:240px}}
 @media(max-width:600px){.signal-room>*:not(.sr-head){margin-left:14px;margin-right:14px}.sr-head{padding:22px 16px 18px}.studio .code-mission button{width:100%}.studio .signal-room .sr-button.is-listening:after{display:none}}
 @media print{.code-mission button{display:none}}
+
+/* Guard against the site's generic pre/code/textarea/link styles leaking into the missions. */
+.studio .code-mission pre.ce-gutter,.studio .code-mission pre.sr-console{border:0!important;box-shadow:none!important;border-radius:0}
+.studio .code-mission pre.ce-gutter{margin:0!important;padding:12px 8px 12px 12px!important;background:#1e1e1e!important;font:14px/1.6 Consolas,monospace!important;color:#6e7681!important;white-space:pre}
+.studio .code-mission textarea.ce-code{padding:12px!important;font:14px/1.6 Consolas,monospace!important;border:0!important;box-shadow:none!important;min-height:0!important}
+.studio .code-mission pre.sr-console{border-radius:4px}
+.studio .code-mission :is(p,li,label,span,em) > code:not(.ce-code){display:inline;padding:1px 6px;background:#1e1e1e;color:#e8f5d0;border:0;border-radius:3px;font:14px/1.4 Consolas,monospace;white-space:normal}
+.studio .code-mission .mission-lights code{display:inline!important;width:auto!important;padding:0 5px!important;background:#2a3140!important;color:#fff!important;border:0!important}
+.studio .code-mission a{color:var(--m-deep);font-weight:700;text-underline-offset:3px}
+.studio .code-mission .mission-status a,.studio .code-mission .sr-status a{color:#fff}
+.studio .signal-room .sr-box span{color:var(--m-ink)}
