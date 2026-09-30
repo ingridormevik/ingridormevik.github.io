@@ -220,24 +220,6 @@
       light('bridge', true);
       defendBox.focus();
     });
-    stacks.querySelector('[data-card-download]').addEventListener('click', () => {
-      const plain = html => html.replace(/<[^>]+>/g, '');
-      const lines = ['MY PROJECT / LIBRARY RESEARCH CARD', 'DIKULT105 / The Stacks', '',
-        `I am making: ${forge('making').value.trim()}`, `My research question: I need to understand ${forge('understand').value.trim()}`,
-        `Useful search terms: ${currentTerms().join(', ')}`, '', 'SOURCE 1',
-        `Author as credited: ${chosenBook !== null ? books[chosenBook].author : ''}`,
-        `Year / title / publisher: ${chosenBook !== null ? `${books[chosenBook].year} / ${books[chosenBook].title} / ${books[chosenBook].publisher}` : ''}`,
-        `Page(s) I actually read: ${citeField('page').value.trim()}`, `The author's idea, in my own words: ${citeField('idea').value.trim()}`, '',
-        `My Chicago author-date reference: ${citation ? plain(citation.ref.html) : ''}`,
-        `My in-text citation: ${citation ? `(${citation.ref.last} ${citation.b.year}, ${citation.page})` : ''}`, '',
-        'HOW THIS CONNECTS TO MY PROJECT', defendBox.value.trim(), '', 'CHECK',
-        '[ ] I read the passage I am discussing.', '[ ] I separated quotation, paraphrase and my own connection.',
-        '[ ] My in-text citation matches the full reference.', '[ ] I checked the details against the edition I used.'];
-      const url = URL.createObjectURL(new Blob([lines.join('\n')], {type: 'text/plain;charset=utf-8'}));
-      const a = document.createElement('a'); a.href = url; a.download = 'my-research-card.txt';
-      document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-      defendStatus.textContent = 'Research card downloaded. Keep it with your project files.';
-    });
     defendTo(stacks, 'lab-4');
   }
 

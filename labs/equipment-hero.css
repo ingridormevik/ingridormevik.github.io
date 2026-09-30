@@ -34,3 +34,41 @@
 .access-calm .mega-lab{box-shadow:none}
 .access-contrast .mega-lab{display:none}
 @media(max-width:860px){.studio.page-tools .exhibition-opening{grid-template-columns:minmax(0,1fr)}.mega-lab{box-shadow:6px 6px 0 #10151f}}
+
+/* Hall of lab legends: computing history as lab machines. */
+.lab-legends{margin:10px 0 44px;padding:26px 24px 30px;background:#241d3f;border:5px solid #10151f;border-radius:14px;box-shadow:10px 10px 0 #10151f;color:#f3f0e8;
+  background-image:linear-gradient(#ffffff0d 2px,transparent 2px),linear-gradient(90deg,#ffffff0d 2px,transparent 2px);background-size:40px 40px}
+.lab-legends .lg-tag{margin:0;font:700 12px/1.3 Consolas,monospace;letter-spacing:.16em;color:#c6f15b}
+.lab-legends h2{margin:6px 0 6px;color:#fff;font-family:Impact,'Arial Narrow',sans-serif;text-transform:uppercase;font-size:clamp(30px,4.4vw,48px);line-height:1}
+.lab-legends .lg-lead{margin:0 0 22px;max-width:62ch;color:#dfe6ef;font-size:17px}
+.lg-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.lg-card{display:flex;flex-direction:column;background:#f3f0e8;color:#10151f;border:4px solid #10151f;border-radius:12px;box-shadow:6px 6px 0 #10151f;overflow:hidden}
+.lg-machine{background:#10151f;border-bottom:4px solid #10151f}
+.lg-machine svg{display:block;width:100%;height:auto}
+.lg-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.lg-id{display:flex;align-items:center;gap:10px;margin:0}
+.lg-id .lg-badge{flex:0 0 auto;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:3px solid #10151f;background:var(--lg,#ffd23f);font:900 15px/1 Consolas,monospace}
+.lg-id strong{display:block;font-size:20px;line-height:1.1}
+.lg-id small{display:block;font:700 12px/1.3 Consolas,monospace;color:#3d4658}
+.lg-card h3{margin:0;font-size:15px;font-family:Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;color:#6a2c8c}
+.lg-card p{margin:0;font-size:15px;line-height:1.5}
+.lg-card .lg-now{margin-top:auto;padding:8px 10px;background:#10151f;color:#c6f15b;border-radius:8px;font-size:14px}
+.lg-card .lg-now b{color:#ffd23f}
+@media(prefers-reduced-motion:no-preference){
+.lg-gear{transform-box:fill-box;transform-origin:center;animation:ml-spin 3s linear infinite}.lg-gear.rev{animation-direction:reverse}.lg-gear.fast{animation-duration:1.6s}
+.lg-card-fly{animation:lg-card 2.4s ease-in-out infinite}
+.lg-note{animation:lg-note 2.4s ease-out infinite}
+.lg-tape{animation:lg-tape 3s steps(6,end) infinite}
+.lg-read{animation:ml-blink 1s steps(2,end) infinite}
+}
+@keyframes lg-card{0%,20%{transform:translateX(0)}60%,100%{transform:translateX(96px)}}
+@keyframes lg-note{0%{transform:translate(0,0);opacity:0}30%{opacity:1}100%{transform:translate(18px,-46px);opacity:0}}
+@keyframes lg-tape{to{transform:translateX(-240px)}}
+.access-no-motion .lab-legends *{animation:none!important}
+@media(max-width:860px){.lg-grid{grid-template-columns:minmax(0,1fr)}.lab-legends{padding:20px 14px 22px;box-shadow:6px 6px 0 #10151f}}
+.studio .lab-legends .lg-card p,.studio .lab-legends .lg-id strong{color:#10151f}
+.studio .lab-legends .lg-id small{color:#3d4658}
+.studio .lab-legends .lg-card h3{color:#6a2c8c}
+.studio .lab-legends .lg-card p.lg-now{color:#c6f15b}
+.studio .lab-legends .lg-card p.lg-now b{color:#ffd23f}
+.studio .lab-legends .lg-lead{color:#dfe6ef}

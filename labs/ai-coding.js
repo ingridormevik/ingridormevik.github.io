@@ -92,25 +92,14 @@
     });
   }
 
-  // 08 / Process log: never stored, only downloaded or copied.
+  // 08 / Process log: never stored, only copied.
   const log = document.querySelector('[data-log]');
   if (log) {
     const status = log.querySelector('[data-log-status]');
     const text = () => ['DIKULT105 / AI process log', new Date().toLocaleDateString('en-GB'), '',
       ...[...log.querySelectorAll('[data-log-field]')].map(f => `${f.dataset.logField}:\n${f.value.trim() || '(empty)'}\n`)].join('\n');
-    const download = log.querySelector('[data-log-download]');
     const copy = log.querySelector('[data-log-copy]');
-    download.disabled = false; copy.disabled = false;
-    download.addEventListener('click', () => {
-      try {
-        const url = URL.createObjectURL(new Blob([text()], {type: 'text/plain;charset=utf-8'}));
-        const link = document.createElement('a');
-        link.href = url; link.download = 'my-ai-process-log.txt';
-        document.body.append(link); link.click(); link.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        status.textContent = 'Download started. Keep the file with your project.';
-      } catch { status.textContent = 'The download could not start. Use Copy my log instead.'; }
-    });
+    copy.disabled = false;
     copy.addEventListener('click', () => {
       const holder = document.createElement('pre');
       holder.className = 'log-copy-holder'; holder.textContent = text();

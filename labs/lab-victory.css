@@ -55,3 +55,9 @@ body.victory-open{overflow:hidden}
 .access-no-motion .victory *{animation:none!important}
 .access-contrast .victory-stage{background-image:none}
 @media(max-width:760px){.victory{place-items:start center}.victory-stage,.victory-body{grid-template-columns:minmax(0,1fr)}.victory-machine{height:150px}.victory-stage,.victory-body,.victory-actions{padding-left:18px;padding-right:18px}.victory-card{box-shadow:6px 6px 0 var(--v-pass)}.victory .victory-actions button{width:100%}}
+.victory-legend{margin:14px 0 0;padding:12px 14px;border:3px solid #10151f;border-radius:10px;background:#241d3f;color:#fff}
+.victory-legend p{margin:4px 0 6px;font-size:16px;line-height:1.45}
+.victory-legend p.victory-label{margin:0}
+.victory-legend cite{font:700 13px/1.3 Consolas,monospace;color:#c6f15b;font-style:normal}
+.victory .victory-legend .victory-label{color:#c6f15b}
+.victory .victory-legend p{color:#fff}

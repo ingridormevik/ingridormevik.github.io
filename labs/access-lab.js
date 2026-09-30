@@ -159,17 +159,11 @@
   });
   described();
 
-  // Your own project: copy or download the sentence.
+  // Your own project: copy the sentence.
   const note = lab.querySelector('[data-note]');
   const noteStatus = lab.querySelector('[data-note-status]');
   lab.querySelector('[data-note-copy]').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText(note.value); noteStatus.textContent = 'Copied. Paste it into your process notes.'; }
     catch { note.select(); noteStatus.textContent = 'Selected. Press Ctrl + C (Mac: Cmd + C) to copy.'; }
-  });
-  lab.querySelector('[data-note-download]').addEventListener('click', () => {
-    const url = URL.createObjectURL(new Blob([`DIKULT105 / The access lab\n\n${note.value}\n`], {type: 'text/plain;charset=utf-8'}));
-    const a = document.createElement('a'); a.href = url; a.download = 'my-barrier-note.txt';
-    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-    noteStatus.textContent = 'Downloaded. Keep it with your project files.';
   });
 })();

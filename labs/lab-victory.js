@@ -1,12 +1,12 @@
 (() => {
   // Full-screen "experiment complete" scene, shown when a student marks a lab quest complete.
-  // Preview without completing a lab: lab-programme.html?victory=1 (1 to 5).
+  // Test without completing a lab: lab-programme.html?victory=1 (1 to 5). Not linked on the site.
   const LABS = {
-    1: {rank: 'Junior Lab Technician', title: 'A place became a webpage', skills: ['Built a page from HTML structure', 'Styled it with CSS selectors, properties and values', 'Read and chose hex colours on purpose', 'Checked contrast so everyone can read it', 'Explained what a colour says']},
-    2: {rank: 'Interaction Engineer', title: 'A choice became a consequence', skills: ['Made a page respond to a click', 'Tracked state: what changed, and why', 'Wrote a prompt with where, what, why and limits', 'Read AI code line by line before keeping it', 'Logged what the AI did and what you did']},
-    3: {rank: 'Game Mechanic', title: 'The same idea, in Construct', skills: ['Built events: condition → action', 'Turned a rule into a consequence', 'Tested, saved and reopened a Construct project', 'Debugged with a screenshot, a forum or a person', 'Compared how a tool changes an idea']},
-    4: {rank: 'Archive Hacker', title: 'Your project met the library', skills: ['Found a real record in the catalogue', 'Read a passage in context, not just a title', 'Cited a source in Chicago style', 'Turned a source into a design decision', 'Knew which questions to ask a book']},
-    5: {rank: 'Lab Director', title: 'Someone else understood your work', skills: ['Watched someone use your work without help', 'Turned an observation into a revision', 'Explained your decisions in your own words', 'Retested after changing', 'Finished five experiments']}
+    1: {rank: 'Junior Lab Technician', title: 'A place became a webpage', skills: ['Built a page from HTML structure', 'Styled it with CSS selectors, properties and values', 'Read and chose hex colours on purpose', 'Checked contrast so everyone can read it', 'Explained what a colour says'], legend: {who: 'Ada Lovelace, 1843', quote: 'The Analytical Engine weaves algebraical patterns just as the Jacquard-loom weaves flowers and leaves.'}},
+    2: {rank: 'Interaction Engineer', title: 'A choice became a consequence', skills: ['Made a page respond to a click', 'Tracked state: what changed, and why', 'Wrote a prompt with where, what, why and limits', 'Read AI code line by line before keeping it', 'Logged what the AI did and what you did'], legend: {who: 'Alan Turing, 1950', quote: 'I propose to consider the question, ‘Can machines think?’'}},
+    3: {rank: 'Game Mechanic', title: 'The same idea, in Construct', skills: ['Built events: condition → action', 'Turned a rule into a consequence', 'Tested, saved and reopened a Construct project', 'Debugged with a screenshot, a forum or a person', 'Compared how a tool changes an idea'], legend: {who: 'Charles Babbage, 1864', quote: 'On two occasions I have been asked, ‘Pray, Mr. Babbage, if you put into the machine wrong figures, will the right answers come out?’'}},
+    4: {rank: 'Archive Hacker', title: 'Your project met the library', skills: ['Found a real record in the catalogue', 'Read a passage in context, not just a title', 'Cited a source in Chicago style', 'Turned a source into a design decision', 'Knew which questions to ask a book'], legend: {who: 'Ada Lovelace, 1841', quote: 'Imagination is the Discovering Faculty, pre-eminently.'}},
+    5: {rank: 'Lab Director', title: 'Someone else understood your work', skills: ['Watched someone use your work without help', 'Turned an observation into a revision', 'Explained your decisions in your own words', 'Retested after changing', 'Finished five experiments'], legend: {who: 'Alan Turing, 1950', quote: 'We can only see a short distance ahead, but we can see plenty there that needs to be done.'}}
   };
   const AI_LINES = [
     'ANALYSIS COMPLETE. The AI wrote suggestions. The human made the decisions.',
@@ -63,22 +63,6 @@
     })();
   }
 
-  function certificate(n, data, name, colour) {
-    const c = document.createElement('canvas'); c.width = 1200; c.height = 675;
-    const x = c.getContext('2d');
-    x.fillStyle = '#12151f'; x.fillRect(0, 0, 1200, 675);
-    for (let i = 0; i < 1200; i += 60) for (let j = 480; j < 675; j += 60) { x.fillStyle = (i + j) / 60 % 2 ? '#e9e4f5' : '#b7a6e3'; x.fillRect(i, j, 60, 60); }
-    x.fillStyle = colour || '#ff7a59'; x.fillRect(0, 0, 1200, 16);
-    x.fillStyle = '#c6f15b'; x.font = '700 24px Consolas, monospace'; x.fillText(`DIKULT105 / THE LAB / EXPERIMENT 0${n}: SUCCESSFUL`, 60, 80);
-    x.fillStyle = '#ffffff'; x.font = '800 64px Arial, sans-serif'; x.fillText((name || 'Lab scientist').slice(0, 30), 60, 170);
-    x.fillStyle = '#ffd23f'; x.font = '700 34px Arial, sans-serif'; x.fillText(`Rank: ${data.rank}`, 60, 225);
-    x.fillStyle = '#dfe6ef'; x.font = '24px Arial, sans-serif';
-    data.skills.forEach((s, i) => x.fillText(`✓  ${s}`, 60, 285 + i * 36));
-    x.fillStyle = '#12151f'; x.fillRect(0, 470, 1200, 10);
-    const link = document.createElement('a');
-    link.href = c.toDataURL('image/png'); link.download = `dik105-lab-${n}-complete.png`;
-    document.body.append(link); link.click(); link.remove();
-  }
 
   function show(n) {
     const data = LABS[n]; if (!data) return;
@@ -104,9 +88,9 @@
         </div>
         <div class="victory-body">
           <div><p class="victory-label">SKILLS UNLOCKED</p><ul class="victory-skills">${skills}</ul></div>
-          <div><p class="victory-label">LAB AI / FINAL REPORT</p><p class="victory-ai"></p><p class="victory-label">YOUR LAB PROGRESS</p><div class="victory-meter">${meter}</div><p class="victory-proud">You walked in with an idea. You walk out knowing how to build it. Be proud of that.</p></div>
+          <div><p class="victory-label">LAB AI / FINAL REPORT</p><p class="victory-ai"></p><p class="victory-label">YOUR LAB PROGRESS</p><div class="victory-meter">${meter}</div><blockquote class="victory-legend"><p class="victory-label">FROM THE HALL OF LAB LEGENDS</p><p>“${data.legend.quote}”</p><cite>${data.legend.who}</cite></blockquote><p class="victory-proud">You walked in with an idea. You walk out knowing how to build it. Be proud of that.</p></div>
         </div>
-        <div class="victory-actions"><button type="button" data-victory-cert>Download my lab certificate</button><button type="button" data-victory-close>Back to the lab</button></div>
+        <div class="victory-actions"><button type="button" data-victory-close>Back to the lab</button></div>
       </div>`;
     document.body.append(root);
     document.body.classList.add('victory-open');
@@ -130,8 +114,7 @@
     }
     document.addEventListener('keydown', keys);
     root.querySelector('[data-victory-close]').addEventListener('click', close);
-    root.querySelector('[data-victory-cert]').addEventListener('click', () => certificate(n, data, pass.name, pass.colour));
-    root.querySelector('[data-victory-cert]').focus();
+    root.querySelector('[data-victory-close]').focus();
   }
 
   // lab-navigation.js marks the quest complete in its own click handler; this runs after it (bubbling).

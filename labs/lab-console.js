@@ -18,8 +18,8 @@
   function storageMessage() {
     panels.forEach(panel => {
       panel.querySelector('.mission-storage').textContent = storageWorks
-        ? 'Saved only in this browser. Nothing is sent anywhere. Download a copy before changing devices or clearing browser data.'
-        : 'Browser saving is unavailable. Your work stays for this visit; download your log before leaving.';
+        ? 'Saved only in this browser. Nothing is sent anywhere.'
+        : 'Browser saving is unavailable. Your work stays for this visit only.';
     });
   }
   function save() {
@@ -42,27 +42,6 @@
     const stamp = document.querySelector(`[data-mission-status="${id}"]`);
     if (stamp) stamp.textContent = count === 3 ? '✓ Experiment logged' : `${count} / 3 milestones`;
   }
-  function download(panel) {
-    const lines = ['DIKULT105 — My lab notebook', '', 'Personal notes, not proof of submission. Follow the current MittUiB task.', ''];
-    panels.forEach(current => {
-      const item = entry(current.dataset.mission);
-      lines.push(current.closest('.lab').querySelector('.lab-title h2').textContent);
-      current.querySelectorAll('.mission-check').forEach((label, i) => {
-        lines.push(`${item.checks[i] ? '[x]' : '[ ]'} ${label.querySelector('span').textContent}`);
-      });
-      lines.push('My notes:', item.note || '(No note yet.)', '');
-    });
-    try {
-      const url = URL.createObjectURL(new Blob([lines.join('\n')], {type:'text/plain;charset=utf-8'}));
-      const link = document.createElement('a');
-      link.href = url; link.download = 'my-dik105-lab-notebook.txt';
-      document.body.append(link); link.click(); link.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      panel.querySelector('.mission-feedback').textContent = 'Your notebook download has started.';
-    } catch {
-      panel.querySelector('.mission-feedback').textContent = 'The download could not start. Copy your notes before leaving this page.';
-    }
-  }
   panels.forEach(panel => {
     const id = panel.dataset.mission;
     const item = entry(id);
@@ -73,7 +52,6 @@
       input.addEventListener('change', () => {entry(id).checks[i] = input.checked; save(); render(panel);});
     });
     note.addEventListener('input', () => {entry(id).note = note.value.slice(0,3000); save();});
-    panel.querySelector('[data-export]').addEventListener('click', () => download(panel));
     const reset = panel.querySelector('.mission-reset');
     panel.querySelector('[data-reset]').addEventListener('click', () => {
       reset.hidden = false; panel.querySelector('[data-cancel-reset]').focus();
