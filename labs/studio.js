@@ -101,6 +101,7 @@
     const continueButton = button('Continue →');
     footer.append(continueButton);
     document.getElementById('steps').after(footer);
+    const ownContinue = steps.every(step => [...step.querySelectorAll('a')].some(a => /^Continue/.test(a.textContent.trim())));
     function show(index, move = false) {
       current = Math.max(0, Math.min(steps.length - 1, index));
       steps.forEach((step, i) => {
@@ -111,6 +112,7 @@
       previous.disabled = current === 0;
       next.disabled = current === steps.length - 1;
       continueButton.disabled = current === steps.length - 1;
+      footer.hidden = all || ownContinue;
       continueButton.textContent = current === steps.length - 1 ? 'You reached the final step' : 'Continue to the next step →';
       mode.textContent = all ? 'Show one step' : 'Show every step';
       mode.setAttribute('aria-pressed', String(all));

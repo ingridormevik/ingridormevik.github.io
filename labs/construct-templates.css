@@ -56,3 +56,6 @@
 
 .page-templates .tp-objects{background:#fff!important}.page-templates .tp-objects summary{color:#12343b!important}
 .page-templates .tp-section>.tp-label{color:#c6f15b!important}
+
+/* phone footer taps */
+@media(max-width:600px){.studio footer a{display:inline-block;padding:12px 2px}}
