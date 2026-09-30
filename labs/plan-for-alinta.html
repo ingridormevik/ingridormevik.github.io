@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="noindex, nofollow" name="robots"/>
+<title>Lab plan for Alinta · DIKULT105</title>
+<meta content="The DIKULT105 lab plan: how the five labs run, what students do, what is tested, and the decisions for the course lead." name="description"/>
+<style>
+:root{--ink:#10151f;--wall:#241d3f;--paper:#f3f0e8;--lime:#c6f15b;--yellow:#ffd23f;--pink:#f29bcd;--blue:#6fb7ff;--coral:#ff7a59;--muted:#3d4658}
+*{box-sizing:border-box}
+body{margin:0;background:#0f2530;color:var(--paper);font:17px/1.6 system-ui,-apple-system,'Segoe UI',sans-serif}
+a{color:var(--lime)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+header.hero{background:var(--wall);background-image:linear-gradient(#ffffff0d 2px,transparent 2px),linear-gradient(90deg,#ffffff0d 2px,transparent 2px);background-size:40px 40px;border-bottom:6px solid var(--ink);padding:44px 0 36px}
+.tag{margin:0;font:700 12px/1.4 Consolas,monospace;letter-spacing:.16em;color:var(--lime);text-transform:uppercase}
+h1{margin:8px 0 12px;font-family:Impact,'Arial Narrow',sans-serif;text-transform:uppercase;font-weight:900;letter-spacing:.01em;font-size:clamp(40px,8vw,76px);line-height:.95;color:#fff}
+.lead{font-size:clamp(18px,2.4vw,22px);max-width:60ch;margin:0 0 18px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.meta li{padding:5px 12px;border:3px solid var(--ink);border-radius:999px;background:var(--yellow);color:var(--ink);font:900 13px/1.3 Consolas,monospace}
+nav.toc{background:var(--ink);border-bottom:4px solid #000;position:sticky;top:0;z-index:5}
+nav.toc ol{display:flex;gap:6px;overflow-x:auto;margin:0;padding:10px 0;list-style:none;scrollbar-width:thin}
+nav.toc a{display:inline-block;white-space:nowrap;padding:8px 12px;border-radius:999px;color:var(--paper);text-decoration:none;font-size:14px;font-weight:700}
+nav.toc a:hover{background:#ffffff1a}
+main{padding:28px 0 60px}
+section.card{background:var(--paper);color:var(--ink);border:4px solid var(--ink);border-radius:14px;box-shadow:8px 8px 0 #0a0d14;padding:22px 24px;margin:0 0 28px;scroll-margin-top:70px}
+section.card a{color:#194a8b}
+.no{display:inline-block;margin:0 0 4px;padding:2px 10px;border-radius:6px;background:var(--ink);color:var(--yellow);font:900 13px/1.5 Consolas,monospace}
+h2{margin:4px 0 10px;font-size:clamp(24px,3.4vw,32px);line-height:1.15}
+h3{margin:18px 0 6px;font-size:18px}
+p{margin:0 0 12px}
+ul,ol.steps{margin:0 0 12px;padding-left:22px}
+li{margin:0 0 6px}
+.table{margin:10px 0 14px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:9px 10px;border-bottom:2px solid #d8d2c2}
+th{background:var(--ink);color:var(--yellow);font:800 13px/1.3 Consolas,monospace;letter-spacing:.04em}
+tbody tr:nth-child(even) td{background:#ebe6d8}
+td:first-child{font-weight:700}
+.break td{background:#fff3c4!important}
+.checks{list-style:none;padding:0}
+.checks li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:3px solid var(--ink);border-radius:10px;background:#fff;margin:0 0 8px}
+.checks li::before{content:'';flex:0 0 22px;height:22px;border:3px solid var(--ink);border-radius:5px;background:#fff;margin-top:2px}
+.pill{display:inline-block;padding:1px 8px;border-radius:999px;background:var(--ink);color:var(--lime);font:700 12px/1.6 Consolas,monospace}
+footer{padding:0 0 40px;color:#cfe0dc;font-size:14px}
+/* Phones: every table row becomes a small card, so nothing scrolls sideways. */
+@media(max-width:720px){
+  section.card{padding:18px 14px;box-shadow:5px 5px 0 #0a0d14}
+  table,thead,tbody,tr,td{display:block;width:100%}
+  thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  tr{border:3px solid var(--ink);border-radius:10px;margin:0 0 10px;background:#fff;overflow:hidden}
+  tbody tr:nth-child(even) td{background:#fff}
+  td{border-bottom:1px solid #e3ddcd;padding:8px 12px}
+  td:last-child{border-bottom:0}
+  td::before{content:attr(data-label);display:block;font:800 11px/1.4 Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;color:#6a2c8c}
+  td:first-child{background:var(--ink)!important;color:var(--yellow)}
+  td:first-child::before{color:var(--lime)}
+}
+@media print{nav.toc{display:none}body{background:#fff}section.card{box-shadow:none;break-inside:avoid}header.hero{background:#fff;color:#000}h1{color:#000}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+<p class="tag">DIKULT105 / The lab / Meeting brief</p>
+<h1>Lab plan for Alinta</h1>
+<p class="lead">Five Friday labs, built, tested and live. This is the plan, the site, and the decisions I need from you before Lab 1.</p>
+<ul class="meta"><li>Ingrid Ormevik, lab assistant</li><li>30 September 2026</li><li>Lab 1: Friday 2 October</li></ul>
+</div></header>
+
+<nav aria-label="Sections" class="toc"><div class="wrap"><ol>
+<li><a href="#why">Why we meet</a></li><li><a href="#me">About me</a></li><li><a href="#site">The site</a></li><li><a href="#session">A lab session</a></li><li><a href="#labs">The five labs</a></li><li><a href="#guides">Guides</a></li><li><a href="#ai">AI</a></li><li><a href="#access">Accessibility</a></li><li><a href="#tested">Tested</a></li><li><a href="#decisions">Decisions</a></li>
+</ol></div></nav>
+
+<main class="wrap">
+<section class="card" id="why"><span class="no">01</span><h2>Why we are meeting</h2>
+<p>The five DIKULT105 labs are built, tested and live, and I would like your approval before the first lab on Friday 2 October. I want to walk you through the plan, show the site, and agree on a few open decisions (listed at the end).</p>
+<p>The idea in one sentence: every lab is a short, playful experiment with the student's own project at the centre, and it always ends with evidence they upload to MittUiB.</p>
+<p>All five labs are unlocked right now so you can see everything. I will lock them by date again after your review.</p>
+</section>
+
+<section class="card" id="me"><span class="no">02</span><h2>About me this semester</h2>
+<p>This semester I combine the lab assistant role with two other parts of my degree, and both feed directly into the labs.</p>
+<div class="table"><table>
+<thead><tr><th>Role</th><th>What I do</th><th>Why it matters for the labs</th></tr></thead>
+<tbody>
+<tr><td data-label="Role">Lab assistant, DIKULT105</td><td data-label="What I do">Five Friday labs, morning and afternoon group</td><td data-label="Why it matters">The site, the timetable and the guides on this page</td></tr>
+<tr><td data-label="Role">Intern, Center for Digital Narrative (practical course)</td><td data-label="What I do">Marketing and social media</td><td data-label="Why it matters">A direct line to current digital narrative research and events I can point students to</td></tr>
+<tr><td data-label="Role">Student, DIKULT203 Electronic Literature (Jason Nelson)</td><td data-label="What I do">Reading and making electronic literature</td><td data-label="Why it matters">Fresh examples of creative code and e-lit for Labs 1–3; Scott Rettberg's <em>Electronic Literature</em> is already on the Lab 4 shelf</td></tr>
+</tbody></table></div>
+<h3>Courses so far in my bachelor's in Digital Culture</h3>
+<div class="table"><table>
+<thead><tr><th>Course</th><th>Semester</th><th>What I made</th></tr></thead>
+<tbody>
+<tr><td data-label="Course">DIKULT203 Electronic Literature</td><td data-label="Semester">Autumn 2026 (now)</td><td data-label="What I made">In progress, with Jason Nelson</td></tr>
+<tr><td data-label="Course">DIKULT210 Internship at the Center for Digital Narrative</td><td data-label="Semester">Spring 2026</td><td data-label="What I made">SurvivingSOGICE: research, digital mapping and outreach on sexual orientation and gender identity change efforts in Europe</td></tr>
+<tr><td data-label="Course">DIKULT216 Digital Games</td><td data-label="Semester">Spring 2026</td><td data-label="What I made">Pride Park 2026, a browser game built with HTML, CSS and JavaScript, as my exam project</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="card" id="site"><span class="no">03</span><h2>The lab site at a glance</h2>
+<p>Everything lives on one public site, in English, and works on phones as well as laptops.</p>
+<div class="table"><table>
+<thead><tr><th>Page</th><th>What students do there</th><th>Link</th></tr></thead>
+<tbody>
+<tr><td data-label="Page">Lab map (start page)</td><td data-label="What students do">Choose a lab on a level map, see their stars and lab rank, then work through the lab</td><td data-label="Link"><a href="lab-programme.html">lab-programme.html</a></td></tr>
+<tr><td data-label="Page">Equipment room</td><td data-label="What students do">Pick a step-by-step guide, shown as eight lab machines</td><td data-label="Link"><a href="tools.html">tools.html</a></td></tr>
+<tr><td data-label="Page">Your Construct templates</td><td data-label="What students do">Your five templates, explained with pictures and routes</td><td data-label="Link"><a href="construct-templates.html">construct-templates.html</a></td></tr>
+<tr><td data-label="Page">Lab assistant</td><td data-label="What students do">The only page about me, presented as Mount Media</td><td data-label="Link"><a href="meet-ingrid.html">meet-ingrid.html</a></td></tr>
+<tr><td data-label="Page">Classroom QR</td><td data-label="What students do">A QR code to show on screen so students can join</td><td data-label="Link"><a href="join.html">join.html</a></td></tr>
+</tbody></table></div>
+<p>The look is Dexter's Laboratory meets Candy Crush: a cartoon lab, five level buttons, three stars per lab and a finish screen when a lab is complete. The lab pages are neutral; the only personal page is the Lab assistant page.</p>
+</section>
+
+<section class="card" id="session"><span class="no">04</span><h2>How every lab session runs</h2>
+<p>Every lab fits the listed 105-minute slot, with one 15-minute break: 08:15–10:00 for the morning group and 14:15–16:00 for the afternoon group. Both groups get the same lab on the same day.</p>
+<div class="table"><table>
+<thead><tr><th>Morning</th><th>Afternoon</th><th>Min</th><th>What happens</th></tr></thead>
+<tbody>
+<tr><td data-label="Morning">08:15–08:20</td><td data-label="Afternoon">14:15–14:20</td><td data-label="Minutes">5</td><td data-label="What happens">Check in: students make their lab pass</td></tr>
+<tr><td data-label="Morning">08:20–08:30</td><td data-label="Afternoon">14:20–14:30</td><td data-label="Minutes">10</td><td data-label="What happens">One useful example (or: before you start)</td></tr>
+<tr><td data-label="Morning">08:30–08:40</td><td data-label="Afternoon">14:30–14:40</td><td data-label="Minutes">10</td><td data-label="What happens">Practice mission, plan and settle in</td></tr>
+<tr><td data-label="Morning">08:40–09:00</td><td data-label="Afternoon">14:40–15:00</td><td data-label="Minutes">20</td><td data-label="What happens">Own-project time</td></tr>
+<tr class="break"><td data-label="Morning">09:00–09:15</td><td data-label="Afternoon">15:00–15:15</td><td data-label="Minutes">15</td><td data-label="What happens">Break</td></tr>
+<tr><td data-label="Morning">09:15–09:45</td><td data-label="Afternoon">15:15–15:45</td><td data-label="Minutes">30</td><td data-label="What happens">Own-project time: continue and test</td></tr>
+<tr><td data-label="Morning">09:45–09:55</td><td data-label="Afternoon">15:45–15:55</td><td data-label="Minutes">10</td><td data-label="What happens">Save, screenshot and upload to MittUiB</td></tr>
+<tr><td data-label="Morning">09:55–10:00</td><td data-label="Afternoon">15:55–16:00</td><td data-label="Minutes">5</td><td data-label="What happens">One next step</td></tr>
+</tbody></table></div>
+<p>Lab 4 uses the same frame but includes the walk to the library. Every part of a lab on the site shows its clock time, and students switch between morning and afternoon times with one button.</p>
+<p><strong>Attendance and evidence.</strong> Each lab starts with a check-in: the student writes a thought from the day's prompt, picks a colour and gets a lab pass as a PNG. They upload the pass (and a project screenshot if the task asks for it) to the MittUiB task. The site never sends anything anywhere; MittUiB is the only record.</p>
+<p><strong>Three steps per lab.</strong> Check in, Experiment, Save &amp; submit. Each step earns a star on the lab map, and marking a lab complete shows a finish screen with the skills unlocked and a quote from Ada Lovelace, Charles Babbage or Alan Turing.</p>
+</section>
+
+<section class="card" id="labs"><span class="no">05</span><h2>The five labs</h2>
+<p>Each lab asks one question about the student's own project, offers an optional practice mission with instant feedback, and has three required milestones plus a short note.</p>
+<div class="table"><table>
+<thead><tr><th>Lab</th><th>Date</th><th>Question</th><th>Practice mission (optional)</th><th>Required: your project</th></tr></thead>
+<tbody>
+<tr><td data-label="Lab">1. A place becomes a webpage (HTML &amp; CSS)</td><td data-label="Date">Fri 2 Oct</td><td data-label="Question">How can a detail from your own life shape a digital work?</td><td data-label="Practice">CSS &amp; colour studio: open the folder in VS Code, read a rule, choose colours on purpose, check contrast, power up the CSS Reactor <span class="pill">40 min</span></td><td data-label="Required">Choose a detail from a place, make one visible change in your own page, preview and save</td></tr>
+<tr><td data-label="Lab">2. A choice becomes a consequence (JavaScript)</td><td data-label="Date">Fri 16 Oct</td><td data-label="Question">What does an audience's action change, and why does that matter?</td><td data-label="Practice">Signal Control Room: run a click event line by line, rewire it, make a second click undo it <span class="pill">10 min</span></td><td data-label="Required">Describe an interaction, build or adapt one response, try it twice</td></tr>
+<tr><td data-label="Lab">3. The same idea in Construct</td><td data-label="Date">Fri 30 Oct</td><td data-label="Question">How does the tool change the way you express an interaction?</td><td data-label="Practice">Gate Engine: conditions and actions on an event sheet, then a rule for your own game <span class="pill">10 min</span></td><td data-label="Required">Choose a rule that matters, connect a condition to an action, preview and save</td></tr>
+<tr><td data-label="Lab">4. Take your project to the library</td><td data-label="Date">Fri 6 Nov</td><td data-label="Question">Which books can help you understand, question and explain what you are making?</td><td data-label="Practice">The Stacks: project question, a real book, three research myths, a Chicago citation, a bridge sentence <span class="pill">along the visit</span></td><td data-label="Required">Question and source, a passage read with its page, a connection and citation</td></tr>
+<tr><td data-label="Lab">5. Make it understandable to someone else</td><td data-label="Date">Fri 13 Nov</td><td data-label="Question">Can another person enter the work, use it and understand your decisions?</td><td data-label="Practice">Test Lab: watch a tester, sort feedback, fix three problems, retest, plan your own test <span class="pill">20 min</span></td><td data-label="Required">Choose a part to test, let someone try it, make one useful revision</td></tr>
+</tbody></table></div>
+<p>Every practice mission ends with "Defend it": one sentence the student adds to their experiment note, ready for the process report.</p>
+<p><strong>Lab 2 and AI.</strong> Before the practice, students get a five-step way of working with AI: intention first, ask for one small thing, read before you paste, change it by hand, log it.</p>
+<p><strong>Lab 3 and Construct Pro.</strong> Students activate Pro with the code from your MittUiB announcement. The code itself is never on the public site.</p>
+<p><strong>Lab 4 logistics.</strong> Proposed destination: the Arts and Humanities Library, Haakon Sheteligs plass 7. No group room or librarian-led session is booked yet.</p>
+</section>
+
+<section class="card" id="guides"><span class="no">06</span><h2>Guides in the equipment room</h2>
+<p>The equipment room holds eight step-by-step guides, drawn as lab machines. Students open them when they need them; each guide links back to its lab.</p>
+<div class="table"><table>
+<thead><tr><th>Machine</th><th>Guide</th><th>Used in</th></tr></thead>
+<tbody>
+<tr><td data-label="Machine">Code bench</td><td data-label="Guide">VS Code and Live Preview setup, with official screenshots</td><td data-label="Used in">Lab 1</td></tr>
+<tr><td data-label="Machine">Robot arm</td><td data-label="Guide">Code with AI and stay the author: eight steps and a process log</td><td data-label="Used in">Lab 2</td></tr>
+<tr><td data-label="Machine">Pipeline</td><td data-label="Guide">JavaScript in VS Code, then the same idea in Construct</td><td data-label="Used in">Labs 2 and 3</td></tr>
+<tr><td data-label="Machine">Control panel</td><td data-label="Guide">Construct 3 basics, 12 mistakes everyone makes, 12 clever tricks, where to get help</td><td data-label="Used in">Lab 3</td></tr>
+<tr><td data-label="Machine">Blueprint table</td><td data-label="Guide">Your five Construct templates, with pictures of each</td><td data-label="Used in">Lab 3</td></tr>
+<tr><td data-label="Machine">Transmitter</td><td data-label="Guide">Publish a webpage with GitHub Pages</td><td data-label="Used in">Lab 5</td></tr>
+<tr><td data-label="Machine">The archive</td><td data-label="Guide">Library field guide: Oria search, reading in context, Chicago author-date</td><td data-label="Used in">Lab 4</td></tr>
+<tr><td data-label="Machine">The ramp</td><td data-label="Guide">Build a digital wheelchair ramp: four accessibility repairs</td><td data-label="Used in">Any lab, links to DIKULT106</td></tr>
+</tbody></table></div>
+<p><strong>When you are unsure.</strong> Every Construct guide sends students to the same help routes: a screenshot to an AI assistant, Google Lens reverse image search, the Construct forum, r/construct, YouTube, or the lab assistant.</p>
+<p><strong>Computing history.</strong> The equipment room has a Hall of lab legends: Charles Babbage, Ada Lovelace and Alan Turing as animated machines, each tied to a lab (Construct events, JavaScript as a list of steps, coding with AI).</p>
+</section>
+
+<section class="card" id="ai"><span class="no">07</span><h2>AI in the labs</h2>
+<p>AI is allowed and taught, but never required: every core activity works without generative AI.</p>
+<ul>
+<li><strong>Lab 2 teaches AI-assisted coding</strong> as a skill: the student writes the intention, asks for one small thing, reads every line, changes something by hand and logs what the AI did and what they did.</li>
+<li><strong>The AI coding guide</strong> follows on from VS Code and Live Preview, and links to the course's rules for declaring AI help.</li>
+<li><strong>Screenshots as a help route.</strong> When stuck in Construct, students can send a screenshot to an AI assistant, or use Google Lens if they prefer not to use AI.</li>
+<li><strong>The library lab is the "0% AI" lab.</strong> The Stacks jokes that the library has no AI and is always the best option: students find real books, read a real passage and cite the page they actually read.</li>
+<li><strong>The finish screens</strong> carry the message on purpose: "The AI wrote suggestions. The human made the decisions."</li>
+</ul>
+</section>
+
+<section class="card" id="access"><span class="no">08</span><h2>Accessibility and engagement</h2>
+<p>The site is built to pull beginners in without leaving anyone out.</p>
+<h3>Engagement</h3>
+<ul>
+<li>A level map with three stars per lab, a lab rank from Lab intern to Lab Director, and a "+1 star" pop when a step is done.</li>
+<li>Arrival tasks tied to digital culture and the student's own screen life, with a private layer that is never saved or shown.</li>
+<li>Finish screens with skills unlocked and a quote from a computing pioneer.</li>
+<li>"This is a workshop, not a speedrun": students bring their own project and choose one manageable next step.</li>
+</ul>
+<h3>Accessibility</h3>
+<ul>
+<li>An accessibility console on every page: larger text, calmer colours, high contrast and no motion.</li>
+<li>All animation stops when the device asks for reduced motion, and nothing flashes more than three times a second.</li>
+<li>Keyboard access, readable contrast and tap targets of at least 44 px on phones.</li>
+<li>The digital wheelchair ramp lets students feel four barriers and repair them: readable, reachable, calm and described. The screen-reader demo reads in English.</li>
+</ul>
+</section>
+
+<section class="card" id="tested"><span class="no">09</span><h2>What is tested and ready</h2>
+<p>The live site passes every automated check with zero problems as of 30 September.</p>
+<ul>
+<li>All five labs completed end to end on a laptop and on an iPhone: check-in pass, practice mission, milestones, marking complete and the finish screen.</li>
+<li>Every button on all 12 student pages pressed on laptop Chrome, iPhone Safari and an Android phone.</li>
+<li>Every link and jump link checked; none are broken.</li>
+<li>Every guide walked from its first step to its last on a phone.</li>
+<li>Phone layout checked for sideways scrolling, small text, small tap targets and overlapping parts.</li>
+<li>Each lab's timetable adds up to 105 minutes, with the break at 09:00 and 15:00.</li>
+</ul>
+</section>
+
+<section class="card" id="decisions"><span class="no">10</span><h2>Decisions I need from you</h2>
+<ul class="checks">
+<li>Approve the plan and the site as it stands, or tell me what to change.</li>
+<li>Confirm the afternoon slot is 14:15–16:00, the same lab as the morning group.</li>
+<li>Confirm the MittUiB attendance task: the lab pass PNG, plus a project screenshot when you want one.</li>
+<li>Confirm one 15-minute break at 09:00 and 15:00.</li>
+<li>Lab 4: confirm the Arts and Humanities Library, the meeting point, and whether we book a group room or a librarian.</li>
+<li>AI: confirm which course rules for declaring AI help the guides should link to.</li>
+<li>Construct Pro: confirm the code covers every student before Lab 3.</li>
+<li>Agree how my CDN internship and DIKULT203 schedule fit around the Friday labs, and whether you want CDN events or e-lit examples mentioned to students.</li>
+</ul>
+<h3>Next steps</h3>
+<ol class="steps">
+<li>After this meeting, I lock the labs by date so each one opens on its own Friday.</li>
+<li>I make any changes you ask for and rerun the full test.</li>
+<li>Lab 1 runs on Friday 2 October.</li>
+</ol>
+</section>
+</main>
+<footer class="wrap"><p>Ingrid Ormevik · lab assistant, DIKULT105 · <a href="lab-programme.html">Open the lab site</a></p></footer>
+</body>
+</html>
