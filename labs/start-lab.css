@@ -101,7 +101,7 @@
 .studio .sl-levels .lv-text{max-width:176px}
 .studio .sl-levels .lv-text strong{font-size:19px}
 .studio .start-lab a.sl-go{width:auto;font-size:18px}
-.tk-tag{writing-mode:vertical-rl;transform:rotate(180deg);padding:10px 6px;font-size:11px}
+
 }
 
 /* The site's older map styles colour the selected lab differently: keep the level card readable. */
@@ -110,3 +110,43 @@
 .studio .lab-nav.sl-levels a.lv .lv-date{color:var(--c)}
 .studio .lab-nav.sl-levels a.lv .mission-nav-status{color:#dfe6ef;display:block}
 .studio .lab-nav.sl-levels a.lv[aria-current=true] .lv-text{border-color:#ffd23f}
+
+/* Phones: title, start button, then straight into the map. Levels zigzag left and right like a saga map. */
+@media(max-width:600px){
+.studio .intro.start-lab{gap:0;padding-top:26px}
+.studio .intro.start-lab .sl-copy{display:contents}
+.start-lab .eyebrow{order:1}
+.start-lab h1{order:2;font-size:clamp(44px,14vw,64px);margin:4px 0 10px}
+.start-lab .lead{order:3;font-size:19px;margin:0 0 16px}
+.studio .start-lab a.sl-go{order:4;justify-self:stretch;justify-content:center;margin:0 0 22px}
+.sl-map{order:5;margin:0 0 22px}
+.sl-rank{order:6;max-width:none;margin:0 0 16px}
+.sl-how{order:7;margin:0 0 6px}
+.sl-note{order:8;margin:10px 0 0}
+.studio .intro.start-lab:after{order:9}
+.sl-rank-name{font-size:24px}
+.sl-xp-text{font-size:12px}
+.sl-how li{font-size:16px}
+
+.sl-map{padding:78px 10px 60px;border-radius:14px}
+.sl-map-tag{left:12px;right:12px;top:32px;font-size:10px;letter-spacing:.1em;text-align:center}
+.studio .lab-nav.sl-levels{gap:20px}
+.studio .sl-levels a.lv{width:100%;max-width:none;margin-left:0;gap:10px}
+.studio .sl-levels a.lv-2,.studio .sl-levels a.lv-4{flex-direction:row-reverse}
+.studio .sl-levels a.lv-1,.studio .sl-levels a.lv-3,.studio .sl-levels a.lv-5{padding-left:4px}
+.studio .sl-levels a.lv-2,.studio .sl-levels a.lv-4{padding-right:4px}
+.studio .sl-levels .lv-orb{width:70px;height:70px}
+.studio .sl-levels .lv-orb b{font-size:27px}
+.studio .sl-levels .lv-text{flex:0 1 auto;min-width:0;max-width:calc(100% - 84px);padding:8px 10px}
+.studio .sl-levels .lv-text strong{font-size:19px}
+.studio .sl-levels .lv-date{font-size:11px}
+.studio .lab-nav.sl-levels a.lv .mission-nav-status{font-size:12px}
+.studio .sl-levels a.lv[aria-current=true] .lv-orb:before{top:-27px}
+
+.lab-legends-ticker{flex-direction:column}
+.tk-tag{padding:8px 12px;font-size:11px}
+.tk-track{padding:10px 14px}
+}
+.studio .sl-map .sl-map-tag{white-space:nowrap}
+@media(max-width:600px){.studio .sl-map .sl-map-tag{font-size:12px;letter-spacing:.14em}.sl-tag-more{display:none}}
+.sl-xp-text{white-space:pre-line}

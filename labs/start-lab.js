@@ -47,7 +47,8 @@
     });
     map.closest('.start-lab').querySelector('[data-rank-name]').textContent = RANKS[complete];
     map.closest('.start-lab').querySelector('[data-xp-fill]').style.width = `${total / 15 * 100}%`;
-    map.closest('.start-lab').querySelector('[data-xp-text]').textContent = `${total} / 15 stars · ${complete} / 5 labs complete`;
+    map.closest('.start-lab').querySelector('[data-xp-text]').textContent = `${total} / 15 stars
+${complete} / 5 labs complete`;
     const go = document.querySelector('[data-go]');
     if (next) { go.href = next.a.getAttribute('href'); go.textContent = `▶ ${next.count ? 'Continue' : 'Start'} experiment 0${next.i + 1}`; }
     else { go.href = '#lab-5'; go.textContent = '★ All 15 stars. Lab Director.'; }
