@@ -163,3 +163,6 @@
 .studio .studio-header nav .lab-sound-toggle{min-height:44px;padding:8px 12px;border:2px solid #a4b5bd;border-radius:4px;background:#102630;color:#eff5f2;font:700 14px/1.4 Consolas,monospace;cursor:pointer}
 .studio .studio-header nav .lab-sound-toggle[aria-pressed=true]{border-color:#c6f15b;color:#c6f15b}
 .studio .studio-header nav .lab-sound-toggle:focus-visible{outline:3px solid #ffd23f;outline-offset:3px}
+
+/* A star reward already announces the unlocked step. Show one toast at a time. */
+body:has(.sl-toast:not([hidden])) .lab-motion-status.show{opacity:0}

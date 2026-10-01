@@ -13,12 +13,15 @@
       where.prepend(label);
       controls.push(checkbox);
     }
-    add(lab.querySelector('.attendance-content'), 'data-paper-arrival', 'I wrote my arrival note on paper. Count my first star.');
+    const paper = document.createElement('div');
+    paper.className = 'paper-arrival';
+    lab.querySelector('.checkin-example').after(paper);
+    add(paper, 'data-paper-arrival', 'I wrote my arrival note on paper. Count my first star.');
     add(lab.querySelector('.mission-actions'), 'data-paper-reflection', 'I wrote my experiment reflection on paper. Use it instead of the text field below.');
     const help = document.createElement('p');
     help.className = 'mission-small';
-    help.textContent = 'Your three stars: arrival note ready; all three milestones and a reflection ready; saved files and Mark this quest complete. Paper notes count too.';
-    lab.querySelector('.attendance-content').prepend(help);
+    help.textContent = 'Write your response on paper, then tick the box to earn your first star. You can also use the on-screen form below.';
+    paper.prepend(help);
     function restore() {
       let saved;
       try { saved = JSON.parse(sessionStorage.getItem(key()) || 'null'); } catch {}
