@@ -37,6 +37,7 @@
       toast.className = 'sl-toast'; toast.setAttribute('role', 'status'); toast.hidden = true;
       document.body.append(toast);
     }
+    document.dispatchEvent(new CustomEvent('lab-star-earned', {detail: {lab: n, star}}));
     toast.hidden = true; void toast.offsetWidth;
     toast.innerHTML = `<b aria-hidden="true">★</b><span>+1 star · Experiment 0${n} · ${WHAT[star - 1]}</span>`;
     toast.hidden = false;
@@ -52,7 +53,7 @@
       a.querySelectorAll('.lv-stars i').forEach((star, k) => {
         const on = k < count;
         // Stars restored while the page loads count silently; only new stars get a cheer.
-        if (on && !star.classList.contains('on') && last.has(a) && performance.now() > 2500) { star.classList.add('pop'); cheer(i + 1, k + 1); }
+        if (on && !star.classList.contains('on') && last.has(a)) { star.classList.add('pop'); cheer(i + 1, k + 1); }
         star.classList.toggle('on', on);
         if (!on) star.classList.remove('pop');
       });

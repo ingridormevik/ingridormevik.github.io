@@ -159,3 +159,7 @@
 @media(prefers-reduced-motion:no-preference){.sl-player{transition:left .8s ease-in-out,top .8s ease-in-out}.studio .sl-levels a.lv.is-next .lv-text{border-color:#c6f15b}}
 .access-no-motion .sl-player,.access-calm .sl-player{transition:none!important}
 .access-contrast .studio .sl-player{background:#111!important;color:#fff!important}
+
+.studio .studio-header nav .lab-sound-toggle{min-height:44px;padding:8px 12px;border:2px solid #a4b5bd;border-radius:4px;background:#102630;color:#eff5f2;font:700 14px/1.4 Consolas,monospace;cursor:pointer}
+.studio .studio-header nav .lab-sound-toggle[aria-pressed=true]{border-color:#c6f15b;color:#c6f15b}
+.studio .studio-header nav .lab-sound-toggle:focus-visible{outline:3px solid #ffd23f;outline-offset:3px}
