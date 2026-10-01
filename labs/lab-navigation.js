@@ -1,5 +1,5 @@
 (() => {
-  const labels=['Check in','Experiment','Save & submit'];
+  const labels=['Check in','Experiment','Save & reflect'];
   const labs=[...document.querySelectorAll('.lab')];
   const active=new Map(labs.map(lab=>[lab.id,0]));
   const completeKey=lab=>`dik105-complete-${lab.id}-${document.getElementById('group').value}`;
@@ -42,11 +42,11 @@
     });
     lab.querySelector('.journey-location').textContent=open?`Step ${index+1} of 3 · ${labels[index]}`:`Locked until ${date}`;
     const hints=lab.querySelectorAll('.quest-requirements');
-    hints[0].textContent=ready(lab)?(OPEN_ALL?'Pass created. Keep it for your MittUiB submission.':'Experiment unlocked. Keep your pass for submission.'):OPEN_ALL?'All steps are open. You still need a lab pass for your MittUiB submission.':'Required: your name, an observation of at least 10 characters, and a generated lab pass.';
+    hints[0].textContent=ready(lab)?(OPEN_ALL?'Your lab note is ready.':'Experiment unlocked. Your lab note is ready.'):OPEN_ALL?'All steps are open. Create your on-screen lab note when you are ready.':'Required: your name, an observation of at least 10 characters, and a generated lab pass.';
     const remaining=[...lab.querySelectorAll('[data-check]')].filter(x=>!x.checked).length;
     const noteOK=lab.querySelector('.mission-actions textarea').value.trim().length>=10;
-    hints[1].textContent=experimentDone(lab)?(OPEN_ALL?'All experiment requirements complete.':'All experiment requirements complete. Save & submit is unlocked.'):`Still needed: ${remaining} milestone${remaining===1?'':'s'}${noteOK?'':', and a project note of at least 10 characters'}.`;
-    hints[2].textContent='Save your files and submit the required evidence, then confirm both actions below.';
+    hints[1].textContent=experimentDone(lab)?(OPEN_ALL?'All experiment requirements complete.':'All experiment requirements complete. Save & reflect is unlocked.'):`Still needed: ${remaining} milestone${remaining===1?'':'s'}${noteOK?'':', and a project note of at least 10 characters'}.`;
+    hints[2].textContent='Save your files, keep a short reflection and confirm below.';
     lab.querySelectorAll('.journey-next a').forEach((a,i)=>{const locked=!open||i+1>limit;a.setAttribute('aria-disabled',String(locked));a.classList.toggle('step-locked',locked);});
     updateFinal(lab);
     const stamp=document.querySelector(`[data-mission-status="${lab.id.split('-')[1]}"]`);
@@ -71,7 +71,7 @@
     try{
       if(sessionStorage.getItem(completeKey(lab))==='yes'&&ready(lab)&&experimentDone(lab)){
         lab.querySelectorAll('[data-final]').forEach(x=>{x.checked=true;});lab.dataset.questComplete='true';
-        lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your actual MittUiB submission is what counts for attendance.';
+        lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your progress is recorded in this browser tab.';
       }
     }catch{}
     render(lab);
@@ -87,7 +87,7 @@
     lab.querySelector('[data-confirm-reset]').addEventListener('click',()=>render(lab));
     lab.querySelector('.quest-complete-button').addEventListener('click',()=>{
       if(!available(lab)||!earned(lab)||!finalReady(lab))return;
-      lab.dataset.questComplete='true';lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your actual MittUiB submission is what counts for attendance.';render(lab);
+      lab.dataset.questComplete='true';lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your progress is recorded in this browser tab.';render(lab);
       try{sessionStorage.setItem(completeKey(lab),'yes');}catch{}
     });
   });
