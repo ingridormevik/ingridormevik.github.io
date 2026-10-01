@@ -4,15 +4,15 @@
   if (!map) return;
   const levels = [...map.querySelectorAll('a.lv')];
   const RANKS = ['Lab intern', 'Junior Lab Technician', 'Interaction Engineer', 'Game Mechanic', 'Archive Hacker', 'Lab Director'];
-  const WHAT = ['Pass created', 'Experiment done', 'Lab complete'];
+  const WHAT = ['Arrival note ready', 'Experiment done', 'Lab complete'];
   const labFor = a => document.getElementById(a.getAttribute('href').slice(1));
 
   function starsFor(lab) {
     if (!lab) return 0;
-    const pass = lab.querySelector('[data-checkin]')?.dataset.checkinReady === 'true';
+    const pass = lab.querySelector('[data-paper-arrival]')?.checked || lab.querySelector('[data-checkin]')?.dataset.checkinReady === 'true';
     const checks = [...lab.querySelectorAll('[data-check]')];
     const note = lab.querySelector('.mission-actions textarea');
-    const experiment = pass && checks.length > 0 && checks.every(x => x.checked) && (note?.value.trim().length || 0) >= 10;
+    const experiment = pass && checks.length > 0 && checks.every(x => x.checked) && (lab.querySelector('[data-paper-reflection]')?.checked || (note?.value.trim().length || 0) >= 10);
     const done = lab.dataset.questComplete === 'true';
     return done ? 3 : experiment ? 2 : pass ? 1 : 0;
   }
@@ -41,8 +41,10 @@
         // Stars restored while the page loads count silently; only new stars get a cheer.
         if (on && !star.classList.contains('on') && last.has(a) && performance.now() > 2500) { star.classList.add('pop'); cheer(i + 1, k + 1); }
         star.classList.toggle('on', on);
+        if (!on) star.classList.remove('pop');
       });
       a.classList.toggle('is-done', count === 3);
+      a.setAttribute('aria-label', `Experiment ${i + 1}: ${a.querySelector('strong').textContent}. ${count} of 3 stars earned.`);
       last.set(a, count);
     });
     map.closest('.start-lab').querySelector('[data-rank-name]').textContent = RANKS[complete];
