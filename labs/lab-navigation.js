@@ -3,15 +3,12 @@
   const labs=[...document.querySelectorAll('.lab')];
   const active=new Map(labs.map(lab=>[lab.id,0]));
   const completeKey=lab=>`dik105-complete-${lab.id}-${document.getElementById('group').value}`;
-  const dateFormat=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Oslo',year:'numeric',month:'2-digit',day:'2-digit'});
-  const displayDate=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Oslo',day:'numeric',month:'long',year:'numeric'});
-  function today() {
-    const p=Object.fromEntries(dateFormat.formatToParts(new Date()).map(x=>[x.type,x.value]));
-    return `${p.year}-${p.month}-${p.day}`;
+  // Reveal one new lab at a time as the preceding lab is completed.
+  const OPEN_ALL=false;
+  function available(lab){
+    const index=labs.indexOf(lab);
+    return index===0 || labs.slice(0,index).every(item=>item.dataset.questComplete==='true');
   }
-  // Review mode: every lab and every step is open to everyone. Set to false to restore the date and step gates.
-  const OPEN_ALL=true;
-  function available(lab){return OPEN_ALL||lab.dataset.openEarly==='true'||today()>=lab.dataset.unlockDate;}
   function ready(lab){return lab.querySelector('[data-paper-arrival]')?.checked || lab.querySelector('[data-checkin]').dataset.checkinReady==='true';}
   function experimentDone(lab){return [...lab.querySelectorAll('[data-check]')].every(x=>x.checked)&&(lab.querySelector('[data-paper-reflection]')?.checked || lab.querySelector('.mission-actions textarea').value.trim().length>=10);}
   function earned(lab){return ready(lab)&&experimentDone(lab);}
@@ -30,19 +27,19 @@
     const open=available(lab),limit=allowed(lab);index=Math.min(index,limit);active.set(lab.id,index);
     lab.classList.toggle('quest-locked',!open);
     lab.querySelector('.quest-content').hidden=!open;lab.querySelector('.quest-preview').hidden=open;
-    const date=displayDate.format(new Date(lab.dataset.unlockDate+'T12:00:00Z'));
-    lab.querySelector('.quest-preview time').textContent=date;
-    lab.querySelector('.quest-date-status').textContent=`Opens ${date} · Europe/Oslo`;
+    const previous=labs.indexOf(lab);
+    const lockedText=`Complete Lab ${String(previous).padStart(2,'0')} to unlock this experiment.`;
+    lab.querySelector('.quest-date-status').textContent=open?'Experiment unlocked':lockedText;
     lab.querySelectorAll('.journey-panel').forEach((panel,i)=>{panel.hidden=!open||i!==index;});
     lab.querySelectorAll('.journey-nav a').forEach((a,i)=>{
       const locked=!open||i>limit;
       a.setAttribute('aria-disabled',String(locked));a.classList.toggle('step-locked',locked);
       if(i===index&&open)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');
-      a.querySelector('small').textContent=locked?(i===1?'Create your pass first':'Complete experiment first'):['Write your arrival note','Your project + guides','Finish your session'][i];
+      a.querySelector('small').textContent=locked?(i===1?'Confirm your arrival note first':'Complete experiment first'):['Write your arrival note','Your project + guides','Finish your session'][i];
     });
-    lab.querySelector('.journey-location').textContent=open?`Step ${index+1} of 3 · ${labels[index]}`:`Locked until ${date}`;
+    lab.querySelector('.journey-location').textContent=open?`Step ${index+1} of 3 · ${labels[index]}`:lockedText;
     const hints=lab.querySelectorAll('.quest-requirements');
-    hints[0].textContent=ready(lab)?(OPEN_ALL?'Your lab note is ready.':'Experiment unlocked. Your lab note is ready.'):OPEN_ALL?'All steps are open. Write your arrival note on paper and confirm below, or create an on-screen note.':'Required: your name, an observation of at least 10 characters, and a generated lab pass.';
+    hints[0].textContent=ready(lab)?(OPEN_ALL?'Your lab note is ready.':'Experiment unlocked. Your lab note is ready.'):OPEN_ALL?'All steps are open. Write your arrival note on paper and confirm below, or create an on-screen note.':'Write your arrival note on paper and confirm it below, or create an on-screen note to earn your first star.';
     const remaining=[...lab.querySelectorAll('[data-check]')].filter(x=>!x.checked).length;
     const noteOK=lab.querySelector('[data-paper-reflection]')?.checked || lab.querySelector('.mission-actions textarea').value.trim().length>=10;
     hints[1].textContent=experimentDone(lab)?(OPEN_ALL?'All experiment requirements complete.':'All experiment requirements complete. Save & reflect is unlocked.'):`Still needed: ${remaining} milestone${remaining===1?'':'s'}${noteOK?'':', and a reflection on paper or in the note field'}.`;
@@ -50,8 +47,11 @@
     lab.querySelectorAll('.journey-next a').forEach((a,i)=>{const locked=!open||i+1>limit;a.setAttribute('aria-disabled',String(locked));a.classList.toggle('step-locked',locked);});
     updateFinal(lab);
     const stamp=document.querySelector(`[data-mission-status="${lab.id.split('-')[1]}"]`);
-    if(stamp)stamp.textContent=!open?`🔒 Opens ${date}`:lab.dataset.questComplete==='true'?'✓ Marked complete by you':`Unlocked · Step ${index+1} of 3`;
-    document.querySelector(`.lab-nav a[href="#${lab.id}"]`)?.classList.toggle('map-locked',!open);
+    if(stamp)stamp.textContent=!open?lockedText:lab.dataset.questComplete==='true'?'✓ Marked complete by you':`Unlocked · Step ${index+1} of 3`;
+    const mapLink=document.querySelector(`.lab-nav a[href="#${lab.id}"]`);
+    mapLink?.classList.toggle('map-locked',!open);
+    mapLink?.setAttribute('aria-describedby',`${lab.id}-lock-status`);
+    if(stamp)stamp.id=`${lab.id}-lock-status`;
   }
   function follow(target,focus=false){
     const lab=target?.closest('.lab');if(!lab)return;
@@ -83,12 +83,13 @@
         follow(target,true);
       }
     }));
-    lab.querySelectorAll('[data-check],.mission-actions textarea,[data-final]').forEach(input=>{input.addEventListener('change',()=>render(lab));input.addEventListener('input',()=>render(lab));});
-    lab.querySelector('[data-confirm-reset]').addEventListener('click',()=>render(lab));
+    lab.querySelectorAll('[data-check],.mission-actions textarea,[data-final]').forEach(input=>{input.addEventListener('change',()=>labs.forEach(item=>render(item)));input.addEventListener('input',()=>labs.forEach(item=>render(item)));});
+    lab.querySelector('[data-confirm-reset]').addEventListener('click',()=>labs.forEach(item=>render(item)));
     lab.querySelector('.quest-complete-button').addEventListener('click',()=>{
       if(!available(lab)||!earned(lab)||!finalReady(lab))return;
-      lab.dataset.questComplete='true';lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your progress is recorded in this browser tab.';render(lab);
+      lab.dataset.questComplete='true';lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your progress is recorded in this browser tab.';labs.forEach(item=>render(item));
       try{sessionStorage.setItem(completeKey(lab),'yes');}catch{}
+      document.dispatchEvent(new CustomEvent('lab-completed',{detail:{id:lab.id}}));
     });
   });
   document.addEventListener('lab-progress',()=>labs.forEach(lab=>render(lab)));

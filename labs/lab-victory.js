@@ -90,7 +90,7 @@
           <div><p class="victory-label">SKILLS UNLOCKED</p><ul class="victory-skills">${skills}</ul></div>
           <div><p class="victory-label">LAB AI / FINAL REPORT</p><p class="victory-ai"></p><p class="victory-label">YOUR LAB PROGRESS</p><div class="victory-meter">${meter}</div><blockquote class="victory-legend"><p class="victory-label">FROM THE HALL OF LAB LEGENDS</p><p>“${data.legend.quote}”</p><cite>${data.legend.who}</cite></blockquote><p class="victory-proud">You walked in with an idea. You walk out knowing how to build it. Be proud of that.</p></div>
         </div>
-        <div class="victory-actions"><button type="button" data-victory-close>Back to the lab</button></div>
+        <div class="victory-actions"><button type="button" data-victory-next>${n < 5 ? `Lab 0${n + 1} unlocked. Continue` : `All five labs complete. View my map`}</button><button type="button" data-victory-close>View my progress map</button></div>
       </div>`;
     document.body.append(root);
     document.body.classList.add('victory-open');
@@ -102,7 +102,7 @@
     burst(root.querySelector('.victory-burst'), pass.colour);
     chime();
 
-    const close = () => { root.remove(); document.body.classList.remove('victory-open'); document.removeEventListener('keydown', keys); opener?.focus?.(); };
+    const close = () => { root.remove(); document.body.classList.remove('victory-open'); document.removeEventListener('keydown', keys); const map=document.querySelector('.start-lab'); map?.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'start'}); document.querySelector('[data-go]')?.focus({preventScroll:true}); };
     function keys(e) {
       if (e.key === 'Escape') close();
       if (e.key === 'Tab') {
@@ -114,7 +114,8 @@
     }
     document.addEventListener('keydown', keys);
     root.querySelector('[data-victory-close]').addEventListener('click', close);
-    root.querySelector('[data-victory-close]').focus();
+    root.querySelector('[data-victory-next]').addEventListener('click',()=>{close();location.hash=n<5?`lab-${n+1}-arrival`:'programme';});
+    root.querySelector('[data-victory-next]').focus();
   }
 
   // lab-navigation.js marks the quest complete in its own click handler; this runs after it (bubbling).

@@ -6,6 +6,19 @@
   const RANKS = ['Lab intern', 'Junior Lab Technician', 'Interaction Engineer', 'Game Mechanic', 'Archive Hacker', 'Lab Director'];
   const WHAT = ['Arrival note ready', 'Experiment done', 'Lab complete'];
   const labFor = a => document.getElementById(a.getAttribute('href').slice(1));
+  const player = document.createElement('span');
+  player.className = 'sl-player';
+  player.setAttribute('aria-hidden', 'true');
+  player.textContent = 'YOU';
+  map.append(player);
+  let currentLevel = levels[0];
+  function movePlayer() {
+    if (!currentLevel) return;
+    const box = map.getBoundingClientRect();
+    const orb = currentLevel.querySelector('.lv-orb').getBoundingClientRect();
+    player.style.left = `${orb.left - box.left + orb.width / 2 - map.clientLeft}px`;
+    player.style.top = `${orb.top - box.top - 20 - map.clientTop}px`;
+  }
 
   function starsFor(lab) {
     if (!lab) return 0;
@@ -45,6 +58,7 @@
       });
       a.classList.toggle('is-done', count === 3);
       a.setAttribute('aria-label', `Experiment ${i + 1}: ${a.querySelector('strong').textContent}. ${count} of 3 stars earned.`);
+      a.title = count === 3 ? 'Lab complete. Revisit your experiment.' : `${count} of 3 stars earned`;
       last.set(a, count);
     });
     map.closest('.start-lab').querySelector('[data-rank-name]').textContent = RANKS[complete];
@@ -52,8 +66,11 @@
     map.closest('.start-lab').querySelector('[data-xp-text]').textContent = `${total} / 15 stars
 ${complete} / 5 labs complete`;
     const go = document.querySelector('[data-go]');
-    if (next) { go.href = next.a.getAttribute('href'); go.textContent = `▶ ${next.count ? 'Continue' : 'Start'} experiment 0${next.i + 1}`; }
-    else { go.href = '#lab-5'; go.textContent = '★ All 15 stars. Lab Director.'; }
+    currentLevel = next?.a || levels.at(-1);
+    levels.forEach(a => a.classList.toggle('is-next', a === currentLevel));
+    if (next) { go.href = `${next.a.getAttribute('href')}-${['arrival','workbench','finish'][next.count]}`; go.textContent = `▶ ${next.count ? 'Continue' : 'Start'} experiment 0${next.i + 1}`; }
+    else { go.href = '#lab-5-finish'; go.textContent = '★ All 15 stars. Lab Director.'; }
+    movePlayer();
   }
 
   // Draw the candy path through the centre of each level orb.
@@ -69,11 +86,12 @@ ${complete} / 5 labs complete`;
     svg.setAttribute('width', box.width); svg.setAttribute('height', box.height);
     svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
     svg.querySelectorAll('path').forEach(p => p.setAttribute('d', d));
+    movePlayer();
   }
 
   let queued = false;
   const soon = () => { if (queued) return; queued = true; setTimeout(() => { queued = false; update(); }, 60); };
-  ['input', 'change', 'click', 'lab-progress'].forEach(type => document.addEventListener(type, soon));
+  ['input', 'change', 'click', 'lab-progress', 'lab-completed'].forEach(type => document.addEventListener(type, soon));
   const watch = new MutationObserver(soon);
   document.querySelectorAll('.lab, [data-checkin]').forEach(el => watch.observe(el, {attributes: true, attributeFilter: ['data-quest-complete', 'data-checkin-ready']}));
   addEventListener('resize', drawPath);
