@@ -23,3 +23,22 @@
 @media(max-width:700px){.lab78-stage,.lab78-formulate,.lab78-loopwrap,.lab78-kit{grid-template-columns:1fr}.lab78-arrow{transform:rotate(90deg);justify-self:center}.lab78-rooms{grid-template-columns:1fr}.lab78-rooms svg{max-height:180px}.lab78-controls{padding:0;gap:14px}.lab78-transmit{padding:14px}.lab78-quote blockquote{font-size:21px}}
 @media(prefers-reduced-motion:no-preference){.lab78-cone.is-pop svg{animation:cone-press .25s ease-out}@keyframes cone-press{50%{transform:translateY(-5px) rotate(-8deg)}}}
 .access-no-motion .lab78 *{animation:none!important;transition:none!important}
+
+/* Mission deck: each room has its own objective, surface and exit. */
+.lab78 [hidden]{display:none!important}.lab78{scroll-margin-top:80px}
+.lab78-entry{border-top:1px solid #64867c;margin-top:24px;padding-top:20px;display:flex;gap:20px;justify-content:space-between;align-items:center}.lab78-entry p{max-width:44ch}
+.lab78-missions{padding:20px;background:#080e15;border-bottom:3px solid #8cdec5}
+.lab78-hud{display:flex;justify-content:space-between;align-items:center;gap:12px;font:12px Consolas,monospace;color:#b5ccc4;margin-bottom:18px;flex-wrap:wrap}
+.lab78-mission-buttons{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+#ai-coding .lab78-mission-buttons button{display:flex;flex-direction:column;text-align:left;gap:6px;background:#142128;color:#edf4dd;border:1px solid #40545a;box-shadow:none;padding:12px}
+.lab78-mission-buttons b{font:800 28px/1 system-ui,sans-serif;color:#8cdec5}.lab78-mission-buttons span{font-size:12px}.lab78-mission-buttons small{font:10px Consolas,monospace;color:#aabbb4}
+#ai-coding .lab78-mission-buttons button[aria-pressed=true]{background:#cfe7bc;color:#0b1118;border-color:#cfe7bc}.lab78-mission-buttons button[aria-pressed=true] b,.lab78-mission-buttons button[aria-pressed=true] small{color:#20382e}
+#ai-coding .lab78-mission-buttons .is-done{border-bottom:4px solid #ff9164}
+.lab78-mission-mode .lab78-part{border:0;min-height:520px;border-left:8px solid var(--mission-accent,#8cdec5)}
+.lab78-part[data-l78-panel="0"]{--mission-accent:#8cdec5;background:#102724}.lab78-part[data-l78-panel="1"]{--mission-accent:#9fb5f1;background:#101b32}.lab78-part[data-l78-panel="2"]{--mission-accent:#e9ca85;background:#2a241a}.lab78-part[data-l78-panel="3"]{--mission-accent:#ff9164;background:#2b1b18}.lab78-part[data-l78-panel="4"]{--mission-accent:#f1b9ce;background:#291c28}
+.lab78-mission-header{display:flex;gap:24px;align-items:center;border-bottom:1px solid #ffffff30;padding-bottom:20px;margin-bottom:28px}.lab78-mission-header p{margin:4px 0}.lab78-mission-number{font:900 clamp(60px,10vw,110px)/.9 system-ui,sans-serif;letter-spacing:-.07em;color:var(--mission-accent)}
+.lab78-mission-footer{display:flex;gap:24px;align-items:center;justify-content:space-between;border-top:2px solid var(--mission-accent);padding-top:22px;margin-top:32px}.lab78-mission-footer p{margin:4px 0}.lab78-mission-footer button{flex-shrink:0}.lab78-mission-footer .lab78-term{color:var(--mission-accent)}
+.lab78-mission-mode .lab78-loopwrap{display:block}.lab78-mission-mode .lab78-loop{grid-template-columns:repeat(4,1fr);margin:24px 0}.lab78-mission-feedback{padding:0 20px;font:13px Consolas,monospace}.lab78-mission-feedback:empty{display:none}
+@media(max-width:700px){.lab78-mission-buttons{grid-template-columns:repeat(2,1fr)}.lab78-mission-buttons button:last-child{grid-column:1/-1}.lab78-entry,.lab78-mission-footer{align-items:stretch;flex-direction:column}.lab78-mission-header{gap:16px}.lab78-mission-mode .lab78-loop{grid-template-columns:repeat(2,1fr)}.lab78-mission-mode .lab78-part{border-left-width:4px;min-height:0}}
+
+.lab78-radio{border:2px solid #64867c;background:#080e15;margin-top:24px;padding:18px}.lab78-radio>a{font-size:13px}.lab78-radio [role=status]{font:12px Consolas,monospace}.lab78.is-reading .lab78-radio{border-color:#ff9164}.lab78 button:disabled{opacity:.55;cursor:default}

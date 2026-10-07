@@ -6,6 +6,80 @@
   const reduced = () => document.documentElement.classList.contains('access-no-motion') || matchMedia('(prefers-reduced-motion: reduce)').matches;
   const wait = ms => new Promise(done => setTimeout(done, reduced() ? 0 : ms));
 
+
+  // Mission navigation: progressive enhancement keeps all content readable without JS.
+  const missionPanels = [...root.querySelectorAll('[data-l78-panel]')];
+  const missionButtons = [...root.querySelectorAll('[data-l78-select]')];
+  if (missionPanels.length) {
+    const intro = root.querySelector('.lab78-top');
+    const navigation = root.querySelector('.lab78-missions');
+    const completed = new Set();
+    let current = -1;
+    root.classList.add('lab78-mission-mode');
+    missionPanels.forEach(panel => { panel.hidden = true; });
+    function selectMission(index, focus = true) {
+      current = index;
+      intro.hidden = true; navigation.hidden = false;
+      missionPanels.forEach((panel, i) => { panel.hidden = i !== index; });
+      missionButtons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
+      root.dataset.activeMission = String(index);
+      if (focus) {
+        const title = missionPanels[index].querySelector('h5');
+        title.tabIndex = -1; title.focus({preventScroll: true});
+        root.scrollIntoView({behavior: reduced() ? 'instant' : 'smooth', block: 'start'});
+      }
+      window.labAudio?.play?.('unlock');
+    }
+    root.querySelector('[data-l78-start]').addEventListener('click', () => selectMission(current < 0 ? 0 : current));
+    missionButtons.forEach((button, i) => button.addEventListener('click', () => selectMission(i)));
+    root.querySelector('[data-l78-overview]').addEventListener('click', () => {
+      intro.hidden = false; navigation.hidden = true;
+      missionPanels.forEach(panel => { panel.hidden = true; });
+      root.querySelector('[data-l78-start]').focus({preventScroll:true});
+      root.scrollIntoView({behavior: reduced() ? 'instant' : 'smooth', block:'start'});
+    });
+    root.querySelectorAll('[data-l78-done]').forEach((button, i) => button.addEventListener('click', () => {
+      completed.add(i);
+      missionButtons[i].classList.add('is-done');
+      root.querySelector(`[data-l78-state="${i}"]`).textContent = 'DONE ✓';
+      root.querySelector('[data-l78-progress]').textContent = `${completed.size} / 5 missions marked done`;
+      root.querySelector('[data-l78-feedback]').textContent = completed.size === 5 ? 'All five missions marked done. Take your brief into your own project.' : `Mission ${i + 1} marked done.`;
+      window.labAudio?.play?.('complete');
+      if (i < 4) selectMission(i + 1);
+    }));
+  }
+
+
+  // Modern device narration, explicitly labelled as such on the page.
+  const listen = root.querySelector('[data-l78-listen]');
+  if (listen) {
+    const stop = root.querySelector('[data-l78-stop]');
+    const voiceStatus = root.querySelector('[data-l78-voice-status]');
+    const speech = window.speechSynthesis;
+    const finish = () => { stop.hidden = true; listen.disabled = false; root.classList.remove('is-reading'); };
+    if (!speech || !window.SpeechSynthesisUtterance) {
+      listen.disabled = true;
+      voiceStatus.textContent = 'Voice playback is unavailable in this browser. The complete quote is printed above.';
+    } else {
+      listen.addEventListener('click', () => {
+        speech.cancel();
+        const utterance = new window.SpeechSynthesisUtterance(root.querySelector('.lab78-quote blockquote').textContent);
+        utterance.lang = 'en-GB'; utterance.rate = 0.86;
+        const voice = speech.getVoices().find(v => v.lang === 'en-GB');
+        if (voice) utterance.voice = voice;
+        utterance.onend = () => { finish(); voiceStatus.textContent = 'Reading finished.'; };
+        utterance.onerror = () => { finish(); voiceStatus.textContent = 'Playback stopped or unavailable. You can read the quote above.'; };
+        stop.hidden = false; listen.disabled = true; root.classList.add('is-reading');
+        voiceStatus.textContent = 'Reading Turing’s 1950 words in a modern synthetic voice.';
+        speech.speak(utterance);
+      });
+      stop.addEventListener('click', () => { speech.cancel(); finish(); voiceStatus.textContent = 'Reading stopped.'; });
+      root.querySelector('[data-l78-start]')?.addEventListener('click', () => { speech.cancel(); finish(); });
+      document.addEventListener('visibilitychange', () => { if (document.hidden) { speech.cancel(); finish(); } });
+      window.addEventListener('pagehide', () => { speech.cancel(); finish(); });
+    }
+  }
+
   function addToNote(text, status) {
     const note = document.querySelector('[data-mission="2"] textarea');
     if (!note) { status.textContent = 'Copy it into your experiment note below.'; return; }
