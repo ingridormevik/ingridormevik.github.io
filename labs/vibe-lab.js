@@ -40,7 +40,7 @@
   ];
 
   const BEATS = [
-    {name: 'INTEND', text: 'Before touching the AI, the student writes one sentence on a sticky note. The intention exists before the machine does.'},
+    {name: 'INTEND', text: 'Before touching the AI, the student writes one sentence in the intention panel. The intention exists before the machine does.'},
     {name: 'ASK', text: 'One small, specific request in Ask mode. It names the elements, the exact words and the limits.'},
     {name: 'MACHINE WRITES', text: 'In seconds the answer arrives as green lines: proposed, not yet kept. It looks finished. That is the trap.'},
     {name: 'READ', text: 'Your turn. Read the green lines like an editor. Click the three lines that make decisions nobody asked for.'},

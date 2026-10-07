@@ -1,0 +1,173 @@
+// Lab 02 extra level: Dr. Turing's Laboratory 2078. Feelings transmitter, pinecone game, vibe brief.
+(() => {
+  const root = document.getElementById('vibe-extra');
+  if (!root) return;
+  const $ = sel => root.querySelector(sel);
+  const reduced = () => document.documentElement.classList.contains('access-no-motion') || matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait = ms => new Promise(done => setTimeout(done, reduced() ? 0 : ms));
+
+  function addToNote(text, status) {
+    const note = document.querySelector('[data-mission="2"] textarea');
+    if (!note) { status.textContent = 'Copy it into your experiment note below.'; return; }
+    note.value = note.value.trim() ? `${note.value.trim()}\n${text}` : text;
+    note.dispatchEvent(new Event('input', {bubbles: true}));
+    status.textContent = 'Added to your experiment note.';
+  }
+  async function copy(text, status) {
+    try { await navigator.clipboard.writeText(text); status.textContent = 'Copied. Paste it into the chat in VS Code.'; }
+    catch { status.textContent = 'Select the text and copy it with Ctrl + C.'; }
+  }
+
+  // ---------- Level A: feelings transmitter ----------
+  const FEELINGS = [
+    [/lone|alone|lonely|ensom/i, 'LONELINESS', 'one small character in a wide, empty space · cold blues · slow, quiet sound · lots of distance'],
+    [/empower|strong|power|brave|sterk|mestring/i, 'EMPOWERMENT', 'every action leaves something behind · the light grows when you act · warm colours spread'],
+    [/sad|grief|trist/i, 'SADNESS', 'muted colours · things drift slowly downward · soft rain sound'],
+    [/ang(ry|er)|rage|sint/i, 'ANGER', 'red and black · fast, shaky movement · sharp edges · loud clicks'],
+    [/calm|peace|rolig/i, 'CALM', 'soft greens · a slow breathing animation · round shapes · no timers'],
+    [/anx|stress|nervous|panic/i, 'ANXIETY', 'too much on screen at once · a ticking timer · the view never rests'],
+    [/happy|joy|glad/i, 'JOY', 'bright yellow · things bounce · a small burst of confetti on success'],
+    [/nostalg|memor|minne/i, 'NOSTALGIA', 'faded film grain · an old pixel font · sounds from an old console'],
+    [/free|freedom|fri/i, 'FREEDOM', 'no walls · you can go anywhere · the edges wrap around'],
+    [/love|kjærlighet/i, 'LOVE', 'two things that move toward each other · pink warmth · closeness is rewarded'],
+    [/html5|game|spill|canvas/i, 'HTML5 GAME', 'one <canvas>, one button, plain JavaScript · small enough to finish today']
+  ];
+  const readout = $('[data-readout]'), feel = $('[data-feel]');
+  let transmission = 0;
+  async function transmit() {
+    const id = ++transmission;
+    const text = feel.value.trim();
+    readout.textContent = '';
+    const out = (line, cls = '') => { const li = document.createElement('li'); li.className = cls; readout.append(li); return li; };
+    out('', 'is-sys').textContent = `> received: “${text || '…'}”`;
+    await wait(500);
+    if (id !== transmission) return;
+    const hits = FEELINGS.filter(([re]) => re.test(text));
+    if (!hits.length) {
+      out('', 'is-warn').textContent = '> No matching word in this demo. Try lonely, strong, calm or nostalgic, or describe your own design choices in the brief below.';
+      return;
+    }
+    for (const [, name, design] of hits) {
+      if (id !== transmission) return;
+      const li = out('', 'is-hit');
+      li.innerHTML = '<b></b><span></span>';
+      li.firstChild.textContent = `${name} →`;
+      li.lastChild.textContent = ` ${design}`;
+      await wait(650);
+    }
+    if (id === transmission) out('', 'is-sys').textContent = '> These are possible design choices, not rules. Keep, change or reject them.';
+  }
+  $('[data-transmit]').addEventListener('click', transmit);
+
+  // ---------- Level B: loneliness meets empowerment ----------
+  const canvas = $('[data-game]'), ctx = canvas.getContext('2d'), caption = $('[data-game-caption]');
+  canvas.addEventListener('keydown', e => {
+    const moves = {ArrowLeft: [-24, 0], ArrowRight: [24, 0], ArrowUp: [0, -24], ArrowDown: [0, 24]};
+    if (!moves[e.key]) return;
+    e.preventDefault();
+    const [dx, dy] = moves[e.key];
+    target = {x: Math.max(12, Math.min(W - 12, target.x + dx)), y: Math.max(12, Math.min(H - 12, target.y + dy))};
+    wake();
+  });
+  const W = canvas.width, H = canvas.height;
+  const stars = Array.from({length: 70}, () => ({x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.3 + .3, p: Math.random() * 6}));
+  let hero, target, lights, raf = 0;
+  const MESSAGES = [
+    [0, 'One small light in a very big dark.'],
+    [1, 'You pressed the pinecone. Something stays where you stood.'],
+    [3, 'The dark is still big. You are less small.'],
+    [6, 'Still alone. No longer powerless.'],
+    [10, 'Alone, and lighting up the whole field.']
+  ];
+  function reset() {
+    hero = {x: W / 2, y: H * .62}; target = {...hero}; lights = [];
+    caption.textContent = MESSAGES[0][1];
+    draw(performance.now());
+  }
+  const mix = (a, b, t) => Math.round(a + (b - a) * t);
+  function draw(now) {
+    const warmth = Math.min(1, lights.length / 10);
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, `rgb(${mix(4, 42, warmth)},${mix(9, 14, warmth)},${mix(26, 48, warmth)})`);
+    g.addColorStop(1, `rgb(${mix(10, 120, warmth)},${mix(26, 52, warmth)},${mix(58, 40, warmth)})`);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    for (const s of stars) {
+      ctx.globalAlpha = .35 + .35 * Math.sin(now / 900 + s.p);
+      ctx.fillStyle = '#cfe8ff'; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 7); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    for (const l of lights) {
+      const age = Math.min(1, (now - l.t) / 900);
+      const r = 14 + age * 46 + Math.sin(now / 700 + l.p) * 3;
+      const glow = ctx.createRadialGradient(l.x, l.y, 0, l.x, l.y, r);
+      glow.addColorStop(0, 'rgba(255,190,90,.75)'); glow.addColorStop(1, 'rgba(255,120,60,0)');
+      ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(l.x, l.y, r, 0, 7); ctx.fill();
+      cone(l.x, l.y, 5 + age * 5);
+    }
+    hero.x += (target.x - hero.x) * .06; hero.y += (target.y - hero.y) * .06;
+    const size = 6 + Math.min(lights.length, 10) * .7;
+    const halo = ctx.createRadialGradient(hero.x, hero.y, 0, hero.x, hero.y, size * 4);
+    halo.addColorStop(0, 'rgba(255,255,255,.55)'); halo.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(hero.x, hero.y, size * 4, 0, 7); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(hero.x, hero.y + (lights.length ? 0 : Math.sin(now / 160) * .8), size, 0, 7); ctx.fill();
+  }
+  function cone(x, y, s) {
+    ctx.fillStyle = '#6b3d1c'; ctx.strokeStyle = '#000'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.ellipse(x, y, s * .7, s, 0, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = '#ffb347'; ctx.beginPath(); ctx.ellipse(x, y, s * .7, s, 0, -1.2, .9); ctx.stroke();
+  }
+  function loop(now) {
+    draw(now);
+    raf = reduced() ? 0 : requestAnimationFrame(loop);
+  }
+  function wake() { if (!raf) raf = requestAnimationFrame(loop); if (reduced()) setTimeout(() => { hero = {...target}; draw(performance.now() + 2000); }, 30); }
+  canvas.addEventListener('pointerdown', e => {
+    const box = canvas.getBoundingClientRect();
+    target = {x: (e.clientX - box.left) / box.width * W, y: (e.clientY - box.top) / box.height * H};
+    wake();
+  });
+  $('[data-cone]').addEventListener('click', () => {
+    lights.push({x: hero.x, y: hero.y, t: performance.now(), p: Math.random() * 6});
+    caption.textContent = MESSAGES.filter(([n]) => lights.length >= n).pop()[1];
+    $('[data-cone]').classList.remove('is-pop'); void $('[data-cone]').offsetWidth; $('[data-cone]').classList.add('is-pop');
+    window.labAudio?.play?.('star');
+    wake();
+  });
+  $('[data-game-reset]').addEventListener('click', () => { reset(); wake(); });
+  // Only animate while the game is on screen.
+  new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) wake(); else { cancelAnimationFrame(raf); raf = 0; }
+  }).observe(canvas);
+  reset();
+  const motionChange = () => {
+    cancelAnimationFrame(raf); raf = 0;
+    if (reduced()) { hero = {...target}; draw(performance.now() + 2000); }
+    else wake();
+  };
+  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', motionChange);
+  new MutationObserver(motionChange).observe(document.documentElement, {attributes: true, attributeFilter: ['class']});
+
+  const conePrompt = $('[data-cone-prompt]').textContent, coneStatus = $('[data-cone-status]');
+  $('[data-copy-cone]').addEventListener('click', () => copy(conePrompt, coneStatus));
+
+  // ---------- Level E: vibe brief ----------
+  const kit = name => $(`[data-kit="${name}"]`);
+  const brief = $('[data-kit-out]'), hex = $('[data-kit-hex]'), kitStatus = $('[data-kit-status]');
+  function build() {
+    const f = kit('feel').value.trim() || 'lonely and strong at the same time';
+    const song = kit('song').value.trim() || 'the song on repeat this week';
+    const image = kit('image').value.trim() || 'a pinecone in the snow from my feed';
+    const interest = kit('interest').value.trim();
+    const action = kit('action').value.trim();
+    const personal = `${interest ? `Explore ${interest}.\n` : ''}${action ? `When someone interacts, let them ${action}.\n` : ''}`;
+    const colour = kit('colour').value;
+    hex.textContent = colour;
+    brief.style.borderLeftColor = colour;
+    brief.textContent = `My vibe brief:\n${personal}The page should feel ${f}.\nUse ${colour} as the main colour.\nMake it move like ${song} sounds.\nBorrow the mood of ${image}.\nStart with one small interaction. Plain JavaScript. Explain every line.`;
+    return brief.textContent;
+  }
+  root.querySelectorAll('[data-kit]').forEach(i => i.addEventListener('input', build));
+  $('[data-kit-copy]').addEventListener('click', () => copy(build(), kitStatus));
+  $('[data-kit-note]').addEventListener('click', () => addToNote(build().replace(/\n/g, ' '), kitStatus));
+  build();
+})();
