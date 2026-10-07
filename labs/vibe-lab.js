@@ -7,7 +7,7 @@
   const $ = sel => root.querySelector(sel);
 
   // ---------- Replay ----------
-  const INTENT = 'When someone clicks the button, the bus stop should tell its future, because places remember.';
+  const INTENT = 'Click the button to show a future version of the bus stop. Click again to return to the present.';
   const PROMPT = 'When someone clicks #future, change #story to “In 2040, this stop plays memories left by strangers.” Plain JavaScript in script.js. Explain each line.';
   const FUTURE = 'In 2040, this stop plays memories left by strangers.';
   const NOW = 'I hear rain at the bus stop.';
@@ -40,7 +40,7 @@
   ];
 
   const BEATS = [
-    {name: 'INTEND', text: 'Before touching the AI, the student writes one sentence in the intention panel. The intention exists before the machine does.'},
+    {name: 'INTEND', text: 'Before touching the AI, the student writes one sentence in the intention panel. This describes what the button should do.'},
     {name: 'ASK', text: 'One small, specific request in Ask mode. It names the elements, the exact words and the limits.'},
     {name: 'MACHINE WRITES', text: 'In seconds the answer arrives as green lines: proposed, not yet kept. It looks finished. That is the trap.'},
     {name: 'READ', text: 'Your turn. Read the green lines like an editor. Click the three lines that make decisions nobody asked for.'},

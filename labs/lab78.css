@@ -1,7 +1,4 @@
 /* Laboratory 2078: solid cartoon panels and instrument controls. */
-#ai-coding .vb-sticky{background:#141e24;color:#d8ebe6;font:13px/1.6 Consolas,monospace;transform:none;box-shadow:none;border:1px solid #64867c;margin:12px 6px;padding:12px;min-height:0}
-#ai-coding .vb-sticky p{color:#d8ebe6}
-#ai-coding .vb-sticky .vb-sticky-h{color:#9ad5c4}
 .lab78{--ink:#0b1118;--paper:#edf4dd;--mint:#8cdec5;--orange:#ff9164;background:var(--ink);color:var(--paper);border:2px solid var(--mint);font:16px/1.65 system-ui,sans-serif;overflow:hidden}
 .lab78 *{box-sizing:border-box}.lab78 a{color:var(--mint)}
 .lab78-top{padding:clamp(18px,4vw,40px);background:#13252b;border-bottom:4px solid #080d14}
