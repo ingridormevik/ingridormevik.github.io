@@ -17,7 +17,7 @@
     paper.className = 'paper-arrival';
     lab.querySelector('.checkin-example').after(paper);
     add(paper, 'data-paper-arrival', 'I wrote my arrival note on paper. Count my first star.');
-    add(lab.querySelector('.mission-actions'), 'data-paper-reflection', 'I wrote my experiment reflection on paper. Use it instead of the text field below.');
+    add(lab.querySelector('.mission-console .mission-actions'), 'data-paper-reflection', 'I wrote my experiment reflection on paper. Use it instead of the text field below.');
     const help = document.createElement('p');
     help.className = 'mission-small';
     help.textContent = 'Write your response on paper, then tick the box to earn your first star. You can also use the on-screen form below.';

@@ -10,14 +10,16 @@
   nav.className = 'sr-guided-nav';
   nav.innerHTML = '<button type="button" data-signal-back>← Previous task</button><p role="status" data-signal-task></p><button type="button" data-signal-next></button>';
   room.querySelector('.defend').before(nav);
+  const topStatus=document.createElement('p');topStatus.className='sr-task-status';room.querySelector('.sr-head').after(topStatus);
   const back = nav.querySelector('[data-signal-back]');
   const next = nav.querySelector('[data-signal-next]');
   const status = nav.querySelector('[data-signal-task]');
-  const instructions = ['Connect all four lines, then click the preview button.', 'Change the sentence in line 1, then run your code.', 'Edit the same code below. Test that click two restores the present.'];
+  const instructions = ['Connect all four lines, then click the preview button.', 'Change the sentence in line 1, then run your code.', 'Replace the existing click handler in the editor above. Then press Test both clicks. Use a hint if you need an example.'];
   let step = 0;
   function update() {
     const verified = goals[step].classList.contains('is-on');
     next.disabled = !verified;
+    topStatus.textContent=`TASK ${step+1} / 3 ? ${verified?'VERIFIED: your next step is ready':instructions[step]}`;
     next.textContent = ['Button connected: write my future →', 'My future works: add the return journey →', 'Take this interaction into my project →'][step];
     status.textContent = verified ? `Task ${step + 1} / 3 verified. Continue when ready.` : instructions[step];
   }
@@ -30,6 +32,7 @@
     editor.hidden = index === 0;
     back.disabled = index === 0;
     room.querySelector('.defend').hidden = index !== 2;
+    panels[index].append(nav);
     update();
   }
   back.addEventListener('click', () => show(Math.max(0, step - 1)));
@@ -40,7 +43,7 @@
       panels[step].scrollIntoView({block:'start', behavior:'auto'});
       window.labAudio?.play?.('unlock');
     } else {
-      location.hash = 'lab-2-sec-1';
+      location.hash = 'lab-2-sec-3';
     }
   });
   new MutationObserver(update).observe(room.querySelector('.mission-lights'), {subtree:true, attributes:true, attributeFilter:['class']});

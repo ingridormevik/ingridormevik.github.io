@@ -262,7 +262,7 @@ window.onerror=(m)=>{failed=true;send({error:String(m)});return true;};<\/script
     const HINTS = [
       'The code needs to know which sentence is showing right now. That is called <strong>state</strong>.',
       'Inside the click listener, ask a question: <code>if (story.textContent === futureText) { … } else { … }</code>',
-      `Here is one way. Read each line before you use it:<pre>button.addEventListener("click", () =&gt; {
+      `Replace your existing button.addEventListener block with this block. Keep the three const lines above it. Then press Test both clicks:<pre>button.addEventListener("click", () =&gt; {
   if (story.textContent === futureText) {
     story.textContent = "${START}";
   } else {
@@ -272,7 +272,7 @@ window.onerror=(m)=>{failed=true;send({error:String(m)});return true;};<\/script
     ];
     let hint = 0;
     hintButton.addEventListener('click', () => {
-      bossStatus.innerHTML = `<p><strong>Hint ${hint + 1} of ${HINTS.length}:</strong> ${HINTS[hint]}</p>`;
+      bossStatus.innerHTML = `<div class="sr-hint"><strong>Hint ${hint + 1} of ${HINTS.length}:</strong> ${HINTS[hint]}</div>`;
       hint = Math.min(hint + 1, HINTS.length - 1);
     });
     bossButton.addEventListener('click', async () => {
