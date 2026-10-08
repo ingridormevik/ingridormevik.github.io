@@ -10,7 +10,12 @@
     {q:'How does a link connect your Lab 1 page to another page?',choices:['It changes the font','It gives the reader a path to another document','It removes the need for HTML'],correct:1,why:'Links let readers move between documents. Berners-Lee’s 1989 proposal connected information through hypertext.',glyphs:['Aa','PAGE → PAGE','×']}
   ];
   let restored=0,index=0,answered=false,finished=false;
-  const correct=new Set();
+  const correct=new Set();let saved={};try{saved=JSON.parse(localStorage.getItem('dik105-history-quiz-v1')||'{}')||{};}catch(_){}
+  if(Array.isArray(saved.correct))saved.correct.filter(n=>Number.isInteger(n)&&n>=0&&n<6).forEach(n=>correct.add(n));
+  restored=Number(root.dataset.restored)||0;index=Number.isInteger(saved.index)&&saved.index>=0&&saved.index<6?saved.index:0;
+  finished=saved.finished===true&&correct.size===6;
+  function save(active){try{localStorage.setItem('dik105-history-quiz-v1',JSON.stringify({correct:[...correct],index,finished,active}));}catch(_){} }
+
   const shell=document.createElement('section');shell.className='hr-quiz';shell.hidden=true;shell.setAttribute('aria-labelledby','hr-quiz-title');
   shell.innerHTML='<p class="hr-kicker">FINAL CHECK / SIX QUICK QUESTIONS</p><h2 id="hr-quiz-title" tabindex="-1">Point. Choose. Explain.</h2><p data-hq-position role="status"></p><h3 data-hq-question></h3><div class="hq-options" data-hq-options></div><p class="hr-status" data-hq-feedback role="status"></p><button type="button" data-hq-next disabled>Next question →</button><button type="button" data-hq-back>Back to the machines</button>';
   root.append(shell);
@@ -33,24 +38,27 @@
       button.addEventListener('click',()=>{
         if(answered)return;
         if(i!==q.correct){button.classList.add('is-retry');one('[data-hq-feedback]').textContent=`Try again. ${q.why}`;return;}
-        answered=true;correct.add(index);score();options.querySelectorAll('button').forEach(b=>b.disabled=true);button.classList.add('is-correct');
+        answered=true;correct.add(index);save(true);score();options.querySelectorAll('button').forEach(b=>b.disabled=true);button.classList.add('is-correct');
         one('[data-hq-feedback]').textContent=`Correct. +15 XP. ${q.why}`;one('[data-hq-next]').disabled=false;window.labAudio?.play?.('star');
       });options.append(button);
     });
     one('[data-hq-feedback]').textContent=answered?`Correct. ${q.why}`:'Choose one answer. You can retry.';
     one('[data-hq-next]').disabled=!answered;one('[data-hq-next]').textContent=index===5?'Launch the time-lab finale →':'Next question →';
   }
-  function open(){if(restored!==6)return;shell.hidden=false;root.querySelector('.hr-console').hidden=true;root.querySelector('.hr-eras').hidden=true;render();one('#hr-quiz-title').focus({preventScroll:true});shell.scrollIntoView({block:'start',behavior:'auto'});}
+  function open(){if(restored!==6)return;save(true);shell.hidden=false;root.querySelector('.hr-console').hidden=true;root.querySelector('.hr-eras').hidden=true;render();one('#hr-quiz-title').focus({preventScroll:true});shell.scrollIntoView({block:'start',behavior:'auto'});}
   launch.addEventListener('click',open);
-  one('[data-hq-back]').addEventListener('click',()=>{shell.hidden=true;root.querySelector('.hr-console').hidden=false;root.querySelector('.hr-eras').hidden=false;launch.focus();});
+  one('[data-hq-back]').addEventListener('click',()=>{save(false);shell.hidden=true;root.querySelector('.hr-console').hidden=false;root.querySelector('.hr-eras').hidden=false;launch.focus();});
   one('[data-hq-next]').addEventListener('click',()=>{
     if(!answered)return;
-    if(index<5){index++;render();one('[data-hq-question]').setAttribute('tabindex','-1');one('[data-hq-question]').focus({preventScroll:true});return;}
+    if(index<5){index++;save(true);render();one('[data-hq-question]').setAttribute('tabindex','-1');one('[data-hq-question]').focus({preventScroll:true});return;}
     if(correct.size!==6)return;
     if(!finished){finished=true;window.labAudio?.play?.('unlock');}
-    shell.hidden=true;launch.hidden=true;root.querySelector('[data-hr-next]').hidden=true;
+    save(false);shell.hidden=true;launch.hidden=true;root.querySelector('[data-hr-next]').hidden=true;
     let finale=root.querySelector('.hr-finale');
     if(!finale){finale=document.createElement('section');finale.className='hr-finale';finale.setAttribute('aria-labelledby','hr-finale-title');finale.innerHTML='<p class="hr-kicker">TIME MACHINE ONLINE / HISTORY DECODED</p><div class="hr-seal" aria-hidden="true">✓<span>330 XP</span></div><h2 id="hr-finale-title" tabindex="-1">Past decoded.<br>Future yours.</h2><p>Six machines restored. Six ideas understood.</p><div class="hr-takeaways"><span>Instructions</span><span>Rules &amp; state</span><span>Debugging</span><span>Sound</span><span>Interfaces</span><span>Links</span></div><p>Bring one idea back into your own page. Make an action, test its result, and decide what the reader can do next.</p><a class="primary" href="lab-programme.html#lab-2-workbench">Return to my Lab 2 project →</a><a href="credits.html#computing-history-sources">Notes &amp; sources ↗</a>';root.append(finale);}
     finale.querySelector('h2').focus({preventScroll:true});finale.scrollIntoView({block:'start',behavior:'auto'});
   });
+  launch.disabled=restored!==6;if(restored===6)launch.textContent='Resume my final quiz';
+  if(restored===6&&finished){index=5;answered=true;one('[data-hq-next]').click();}
+  else if(restored===6&&saved.active)open();
 })();

@@ -5,9 +5,10 @@
   if (!room) return;
   const one = selector => room.querySelector(selector);
   const all = selector => [...room.querySelectorAll(selector)];
-  const completed = new Set();
+  const completed = new Set();let previous=[];try{const v=JSON.parse(localStorage.getItem('dik105-equipment-v1')||'[]');if(Array.isArray(v))previous=v.filter(n=>Number.isInteger(n)&&n>=0&&n<6);}catch(_){}
+
   const sound = cue => window.labAudio?.play?.(cue);
-  function calibrate(index) {
+  function calibrate(index, quiet=false) {
     if (completed.has(index)) return;
     completed.add(index);
     one(`[data-eq-badge="${index}"]`).textContent = 'CALIBRATED';
@@ -18,8 +19,10 @@
     one('[data-eq-feedback]').textContent = completed.size === 6
       ? 'All six instruments online. Choose one technique and try it in your own Lab 2 page.'
       : `${lessons[index]} Try the change in your own Lab 1 page, or open the next machine.`;
-    sound(completed.size === 6 ? 'unlock' : 'complete');
+    if(!quiet)sound(completed.size === 6 ? 'unlock' : 'complete');
+    try{localStorage.setItem('dik105-equipment-v1',JSON.stringify([...completed]));}catch(_){}
   }
+  previous.forEach(index=>calibrate(index,true));
   function select(index, focus = false) {
     all('[data-eq-station]').forEach(node => { node.hidden = Number(node.dataset.eqStation) !== index; });
     all('[data-eq-select]').forEach(node => node.setAttribute('aria-pressed', String(Number(node.dataset.eqSelect) === index)));

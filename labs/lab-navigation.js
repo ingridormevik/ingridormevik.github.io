@@ -19,7 +19,7 @@
     lab.querySelector('.quest-complete-button').disabled=!done;
     if(!done&&lab.dataset.questComplete==='true'){
       lab.dataset.questComplete='false';
-      try{sessionStorage.removeItem(completeKey(lab));}catch{}
+      try{localStorage.removeItem(completeKey(lab));sessionStorage.removeItem(completeKey(lab));}catch{}
       lab.querySelector('.quest-completion-status').textContent='Complete the required steps and confirmations to mark this quest complete.';
     }
   }
@@ -69,9 +69,9 @@
   }
   labs.forEach(lab=>{
     try{
-      if(sessionStorage.getItem(completeKey(lab))==='yes'&&ready(lab)&&experimentDone(lab)){
+      if((localStorage.getItem(completeKey(lab))==='yes'||sessionStorage.getItem(completeKey(lab))==='yes')&&ready(lab)&&experimentDone(lab)){
         lab.querySelectorAll('[data-final]').forEach(x=>{x.checked=true;});lab.dataset.questComplete='true';
-        lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your progress is recorded in this browser tab.';
+        lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your progress is saved in this browser.';
       }
     }catch{}
     render(lab);
@@ -87,8 +87,8 @@
     lab.querySelector('[data-confirm-reset]').addEventListener('click',()=>labs.forEach(item=>render(item)));
     lab.querySelector('.quest-complete-button').addEventListener('click',()=>{
       if(!available(lab)||!earned(lab)||!finalReady(lab))return;
-      lab.dataset.questComplete='true';lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your progress is recorded in this browser tab.';labs.forEach(item=>render(item));
-      try{sessionStorage.setItem(completeKey(lab),'yes');}catch{}
+      lab.dataset.questComplete='true';lab.querySelector('.quest-completion-status').textContent='Quest marked complete by you. Your progress is saved in this browser.';labs.forEach(item=>render(item));
+      try{localStorage.setItem(completeKey(lab),'yes');}catch{}
       document.dispatchEvent(new CustomEvent('lab-completed',{detail:{id:lab.id}}));
     });
   });

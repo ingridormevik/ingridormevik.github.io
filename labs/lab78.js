@@ -8,10 +8,21 @@
 
 
 
-  const discoveries = new Set();
-  let missionXP = 0;
+  let stored={};try{stored=JSON.parse(localStorage.getItem('dik105-lab78-v1')||'{}')||{};}catch(_){}
+  const valid=(a,max)=>Array.isArray(a)?a.filter(n=>Number.isInteger(n)&&n>=0&&n<=max):[];
+  const completed = new Set(valid(stored.completed,4));
+  const discoveries = new Set(valid(stored.discoveries,7));
+  function save(){try{localStorage.setItem('dik105-lab78-v1',JSON.stringify({completed:[...completed],discoveries:[...discoveries],current:Number(root.dataset.activeMission)}));}catch(_){} }
+
+  let missionXP = completed.size * 20;
   const treasureNames = ['1843 / Lovelace’s instruction patterns', '1936 / Turing’s rule machine', '1951 / Manchester computer music', '1947 / Mark II debugging', '1989 / connected information', '1950 / Turing’s question', '1837 / Babbage’s mechanical engine', '1968 / Engelbart’s linked ideas'];
   const treasureIcons = ['◉', '◎', '♨', '⚙', '♧', '◆', '≈', '✦'];
+  discoveries.forEach(id=>{
+    root.querySelector(`[data-l78-discover="${id}"]`)?.classList.add('is-discovered');
+    const tray=root.querySelector('[data-l78-badges]');
+    if(tray){const badge=document.createElement('span');badge.textContent=treasureIcons[id];badge.title=treasureNames[id];badge.setAttribute('aria-label',treasureNames[id]);tray.append(badge);}
+  });
+  const savedCount=root.querySelector('[data-l78-found]');if(savedCount)savedCount.textContent=`Discoveries / ${discoveries.size} of 8`;
   function score() {
     const xp = missionXP + discoveries.size * 10;
     const big = root.querySelector('[data-l78-xp]');
@@ -21,7 +32,7 @@
   }
   function discover(id) {
     if (discoveries.has(id)) return;
-    discoveries.add(id); score();
+    discoveries.add(id); score();save();
     const count = root.querySelector('[data-l78-found]');
     if (count) count.textContent = `Discoveries / ${discoveries.size} of 8`;
     const tray = root.querySelector('[data-l78-badges]');
@@ -45,7 +56,7 @@
   if (missionPanels.length) {
     const intro = root.querySelector('.lab78-top');
     const navigation = root.querySelector('.lab78-missions');
-    const completed = new Set();
+
     let current = -1;
     root.classList.add('lab78-mission-mode');
     missionPanels.forEach(panel => { panel.hidden = true; });
@@ -54,7 +65,7 @@
       intro.hidden = true; navigation.hidden = false;
       missionPanels.forEach((panel, i) => { panel.hidden = i !== index; });
       missionButtons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
-      root.dataset.activeMission = String(index);
+      root.dataset.activeMission = String(index);save();
       if (focus) {
         const title = missionPanels[index].querySelector('h5');
         title.tabIndex = -1; title.focus({preventScroll: true});
@@ -62,6 +73,10 @@
       }
       if (sound) window.labAudio?.play?.('unlock');
     }
+    completed.forEach(i=>{missionButtons[i].classList.add('is-done');root.querySelector(`[data-l78-state="${i}"]`).textContent='DONE ✓';});
+    root.querySelector('[data-l78-progress]').textContent=`${completed.size} / 5 missions marked done`;
+    if(Number.isInteger(stored.current)&&stored.current>=0&&stored.current<missionPanels.length)selectMission(stored.current,false,false);
+    score();
     root.querySelector('[data-l78-start]').addEventListener('click', () => selectMission(current < 0 ? 0 : current));
     missionButtons.forEach((button, i) => button.addEventListener('click', () => selectMission(i)));
     root.querySelector('[data-l78-overview]').addEventListener('click', () => {
@@ -72,7 +87,7 @@
     });
     root.querySelectorAll('[data-l78-done]').forEach((button, i) => button.addEventListener('click', () => {
       if (!completed.has(i)) { missionXP += 20; score(); }
-      completed.add(i);
+      completed.add(i);save();
       missionButtons[i].classList.add('is-done');
       root.querySelector(`[data-l78-state="${i}"]`).textContent = 'DONE ✓';
       root.querySelector('[data-l78-progress]').textContent = `${completed.size} / 5 missions marked done`;

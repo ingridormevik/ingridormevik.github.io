@@ -26,6 +26,13 @@
   }));
   const root=document.querySelector('[data-history-reactor]'); if(!root)return;
   const complete=new Set();let current=0,cardStep=0,tapeStep=0,inspected=new Set(),removed=false,notes=[],opened=new Set(),connections=0;
+  let saved={};try{saved=JSON.parse(localStorage.getItem('dik105-history-v1')||'{}')||{};}catch(_){}
+  const ints=(a,max)=>Array.isArray(a)?a.filter(n=>Number.isInteger(n)&&n>=0&&n<=max):[];
+  ints(saved.complete,5).forEach(n=>complete.add(n));
+  current=ints([saved.current],5)[0]||0;cardStep=Number.isInteger(saved.cardStep)&&saved.cardStep>=0?saved.cardStep:0;
+  tapeStep=ints([saved.tapeStep],4)[0]||0;inspected=new Set(ints(saved.inspected,3));removed=saved.removed===true;
+  notes=ints(saved.notes,2).slice(0,3);opened=new Set(ints(saved.opened,1));connections=Number.isInteger(saved.connections)&&saved.connections>=0?saved.connections:0;
+  function save(){try{localStorage.setItem('dik105-history-v1',JSON.stringify({complete:[...complete],current,cardStep,tapeStep,inspected:[...inspected],removed,notes,opened:[...opened],connections}));}catch(_){one('[data-hr-total]').textContent='Progress works here, but this browser cannot save it. Keep this tab open.';}}
   const sound=cue=>window.labAudio?.play?.(cue);
   const glyphs=['⚙','▣','⌁','♫','↖','⤴'];
   const graphics=[
@@ -54,7 +61,7 @@
     if(audible)sound(complete.size===6?'unlock':'complete');
     document.dispatchEvent(new CustomEvent('history-restored',{detail:{count:complete.size}}));
   }
-  function button(text,fn,parent=one('[data-hr-controls]')){const node=document.createElement('button');node.type='button';node.textContent=text;node.addEventListener('click',fn);parent.append(node);return node;}
+  function button(text,fn,parent=one('[data-hr-controls]')){const node=document.createElement('button');node.type='button';node.textContent=text;node.addEventListener('click',()=>{fn();save();});parent.append(node);return node;}
   function load(index,focus=false){
     current=index;root.dataset.era=String(index);root.classList.remove('hr-running');
     document.querySelectorAll('.hr-era-strip span').forEach((node,i)=>node.classList.toggle('is-current',i===index));
@@ -82,12 +89,17 @@
     }else{
       ['Author → Archive','Archive → Reader'].forEach((text,i)=>button(text,()=>{if(i!==connections%2){connections=0;status('Start with the author’s page. The second link belongs in the archive.');return;}connections++;run();status(i===0?'The author’s page now links to the archive. Add the reader’s path.':'Connected: author → archive → reader. A website is a set of paths people can follow.');if(connections%2===0)restore();else sound('transmit');}));
     }
-    if(focus)one('[data-hr-title]').focus({preventScroll:true});
+    if(focus){one('[data-hr-title]').focus({preventScroll:true});save();}
   }
   root.querySelectorAll('[data-hr-era]').forEach(node=>node.addEventListener('click',()=>load(Number(node.dataset.hrEra),true)));
   one('[data-hr-next]').addEventListener('click',()=>{const quiz=root.querySelector('[data-hr-quiz]');if(complete.size===6&&quiz&&!quiz.hidden)quiz.click();else load((current+1)%6,true);});
-  function fromHash(){const i=eras.findIndex(era=>location.hash==='#'+era.link);load(i<0?0:i);}
+  function fromHash(){const i=eras.findIndex(era=>location.hash==='#'+era.link);load(i<0?current:i);}
   window.addEventListener('hashchange',fromHash);fromHash();
+  complete.forEach(i=>root.querySelector(`[data-hr-era="${i}"]`).classList.add('is-restored'));
+  one('[data-hr-progress]').textContent=`${complete.size} / 6 restored`;one('[data-hr-power]').value=complete.size;
+  if(complete.size===6){one('[data-hr-next]').textContent='Enter the final quiz';one('[data-hr-total]').textContent='Six machines restored. Final quiz unlocked.';}
+  root.dataset.restored=String(complete.size);
+
   if('IntersectionObserver' in window)new IntersectionObserver(([entry])=>root.classList.toggle('is-visible',entry.isIntersecting)).observe(root);
   else root.classList.add('is-visible');
 })();
