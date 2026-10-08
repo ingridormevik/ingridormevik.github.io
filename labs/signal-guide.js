@@ -47,5 +47,6 @@
     }
   });
   new MutationObserver(update).observe(room.querySelector('.mission-lights'), {subtree:true, attributes:true, attributeFilter:['class']});
+  panels[1].append(editor);
   show(0);
 })();
