@@ -1,6 +1,6 @@
 (() => {
  const bar=document.querySelector('.access-bar');if(!bar)return;
- if(!bar.querySelector('.access-resource-tabs')){const links=document.createElement('nav');links.className='access-resource-tabs';links.setAttribute('aria-label','Lab resources');const credit=document.createElement('a');credit.href='credits.html';credit.textContent='Credits & sources ↗';links.append(credit);bar.append(links);}
+ if(!bar.querySelector('.access-resource-tabs')){const links=document.createElement('nav');links.className='access-resource-tabs';links.setAttribute('aria-label','Lab resources');const credit=document.createElement('a');credit.href='credits.html';credit.textContent='Notes & sources ↗';links.append(credit);bar.append(links);}
  const root=document.documentElement;
  const key='dik105-accessibility-v1';
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');

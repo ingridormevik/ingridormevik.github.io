@@ -236,3 +236,10 @@
 #ai-coding .vb-hunt{position:static;margin:0 12px 58px}
 #ai-coding .vb-stage[data-beat="3"] .vb-code{padding-bottom:12px}
 #ai-coding .vb-shot-img::after{top:8px;bottom:auto;left:8px;right:auto}
+
+/* Sequential workbench; all original controls stay mounted. */
+#ai-coding [hidden]{display:none!important}.vb-guide-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:24px 0 12px}
+#ai-coding .vb-guide-nav button{display:flex;flex-direction:column;text-align:left;gap:8px;border:1px solid #64867c;background:#142128;color:#edf4dd;min-height:76px;padding:12px;font:700 14px/1.4 system-ui,sans-serif;border-radius:0;box-shadow:none}.vb-guide-nav b{font:800 26px/1 system-ui,sans-serif;color:#8cdec5}
+#ai-coding .vb-guide-nav button[aria-pressed=true]{background:#cfe7bc;color:#0b1118}.vb-guide-nav button[aria-pressed=true] b{color:#0b1118}.vb-guide-status{font:12px Consolas,monospace}.vb-guide-task{padding:16px;border-left:5px solid #e9ca85;background:#17272b;color:#edf4dd;margin:0 0 24px!important;font:16px/1.6 system-ui,sans-serif}.vb-guide-task b{display:block;font:12px Consolas,monospace;color:#e9ca85;margin-bottom:6px}.vb-guide-exit{clear:both;display:flex;justify-content:flex-end;border-top:1px solid #64867c;padding-top:20px;margin-top:24px}.vb-tool-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:20px 0;font:13px Consolas,monospace}
+.vb-film{margin-bottom:0}.vb-block[data-guide-stage]{scroll-margin-top:70px}
+@media(max-width:700px){.vb-guide-nav{grid-template-columns:repeat(2,1fr)}.vb-guide-nav button:last-child{grid-column:1/-1}.vb-tool-controls{flex-wrap:wrap}}
