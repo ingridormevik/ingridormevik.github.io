@@ -14,9 +14,10 @@
     one(`[data-eq-select="${index}"]`).classList.add('is-calibrated');
     one('[data-eq-progress]').textContent = `${completed.size} / 6 calibrated`;
     one('[data-eq-power]').value = completed.size;
+    const lessons=['Your HTML button now has a JavaScript response.', 'Your CSS selector can find an element for JavaScript too.', 'A state value lets the second click undo the first.', 'A queued action can be cancelled before it runs.', 'Matching the selector to the HTML fixed the error.', 'Responsive width keeps the story inside its screen.'];
     one('[data-eq-feedback]').textContent = completed.size === 6
       ? 'All six instruments online. Choose one technique and try it in your own Lab 2 page.'
-      : 'Instrument calibrated. Keep experimenting, or open the next machine.';
+      : `${lessons[index]} Try the change in your own Lab 1 page, or open the next machine.`;
     sound(completed.size === 6 ? 'unlock' : 'complete');
   }
   function select(index, focus = false) {

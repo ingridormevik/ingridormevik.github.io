@@ -14,7 +14,7 @@
     'WARNING: creativity levels exceed lab safety limits.',
     'CONCLUSION: the software gave possibilities. You gave it a reason.'
   ];
-  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('access-no-motion');
+  const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('access-no-motion') || document.documentElement.classList.contains('access-calm');
   const group = () => document.getElementById('group')?.value || '495';
 
   function passFor(n) {
@@ -50,12 +50,19 @@
   }
 
 
-  function show(n) {
-    const data = LABS[n]; if (!data) return;
+  function show(n, options = {}) {
+    const practice = options.practice;
+    const practiceData = {
+      briefing: {rank:'ready to build',title:'Your idea is ready for a first version',skills:['Choose one action for your page', 'Ask for that change with clear limits', 'Read the suggested code before keeping it', 'Test the action and explain what changed', 'Record your own edits and decisions']},
+      web: {rank:'webpage interaction builder',title:'The click became a change',skills:['Connected HTML to a JavaScript file', 'Found the paragraph and button', 'Ran a click listener in Live Preview', 'Tested the change in the browser', 'Saved the working webpage']},
+      construct: {rank:'interaction builder in two tools',title:'The same idea works in a new tool',skills:['Placed objects in a Construct layout', 'Connected a button condition to an action', 'Used Construct’s runtime to change text', 'Tested the interaction in Preview', 'Saved the Construct project']}
+    };
+    const base = LABS[n]; if (!base) return;
+    const data = practice && practiceData[practice] ? {...base,...practiceData[practice]} : base;
     document.querySelector('.victory')?.remove();
     const pass = passFor(n);
     const done = completedCount();
-    const opener = document.activeElement;
+    const opener = options.opener || document.activeElement;
     const root = document.createElement('div');
     root.className = 'victory'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-labelledby', 'victory-title');
     if (pass.colour) root.style.setProperty('--v-pass', pass.colour);
@@ -63,31 +70,32 @@
     const meter = [1, 2, 3, 4, 5].map(i => `<span class="${i === n || i <= done ? 'is-on' : ''}${i === n ? ' is-now' : ''}">0${i}</span>`).join('');
     root.innerHTML = `<canvas class="victory-burst" aria-hidden="true"></canvas>
       <div class="victory-card">
-        <div class="victory-bar"><span>DIKULT105 / THE LAB</span><span>EXPERIMENT 0${n} / ${data.title.toUpperCase()}</span></div>
+        <div class="victory-bar"><span>DIKULT105 / THE LAB</span><span>${practice ? 'GUIDE CHECKPOINT' : `EXPERIMENT 0${n}`} / ${data.title.toUpperCase()}</span></div>
         <div class="victory-stage">
-          <div class="victory-machine" aria-hidden="true"><div class="flask f1"><i></i></div><div class="flask f2"><i></i></div><div class="flask f3"><i></i></div><div class="machine-lights"><b></b><b></b><b></b><b></b></div></div>
+          <div class="victory-machine victory-engine" aria-hidden="true"><svg viewBox="0 0 330 250"><g stroke="#12151f" stroke-width="6" stroke-linejoin="round"><rect x="18" y="26" width="294" height="196" rx="8" fill="#8aa0b8"/><rect x="38" y="43" width="254" height="53" fill="#12151f"/><text x="165" y="78" text-anchor="middle" font-family="monospace" font-size="22" fill="#c6f15b" stroke="none">BUILD / TEST / SAVE</text><g class="victory-gear"><circle cx="95" cy="157" r="45" fill="#e9ca85" stroke-dasharray="12 6" stroke-width="12"/><circle cx="95" cy="157" r="17" fill="#12151f"/></g><g class="victory-gear reverse"><circle cx="174" cy="157" r="35" fill="#f29bcd" stroke-dasharray="10 6" stroke-width="10"/><circle cx="174" cy="157" r="13" fill="#12151f"/></g><path class="victory-output" d="M246 123v94m-20-69h43m-43 22h43m-43 22h43" stroke="#edf4dd" stroke-width="10"/><path d="m219 46 16 17 30-31" stroke="#c6f15b" stroke-width="9" fill="none"/></g></svg></div>
           <div class="victory-copy">
-            <p class="victory-stamp">ACCESS GRANTED</p>
-            <h2 id="victory-title">Experiment<br>successful.</h2>
-            <p class="victory-name">${pass.name ? `${pass.name.replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[ch])}, you` : 'You'} are now a <strong>${data.rank}</strong>.</p>
+            <p class="victory-stamp">${practice === 'briefing' ? 'BUILD MODE READY' : 'MISSION COMPLETE'}</p>
+            <h2 id="victory-title">${practice === 'briefing' ? 'Your next move:<br>make it real.' : n === 5 && !practice ? 'Five labs.<br>You built it.' : 'Experiment<br>complete.'}</h2>
+            <p class="victory-name">${pass.name ? `${pass.name.replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[ch])}, you` : 'You'}${practice === 'briefing' ? ' are ready to build one interaction.' : ` earned the role <strong>${data.rank}</strong>.`}</p>
           </div>
         </div>
         <div class="victory-body">
-          <div><p class="victory-label">SKILLS UNLOCKED</p><ul class="victory-skills">${skills}</ul></div>
-          <div><p class="victory-label">LAB AI / FINAL REPORT</p><p class="victory-ai"></p><p class="victory-label">YOUR LAB PROGRESS</p><div class="victory-meter">${meter}</div><blockquote class="victory-legend"><p class="victory-label">FROM THE HALL OF LAB LEGENDS</p><p>“${data.legend.quote}”</p><cite>${data.legend.who}</cite></blockquote><p class="victory-proud">You walked in with an idea. You walk out knowing how to build it. Be proud of that.</p></div>
+          <div><p class="victory-label">${practice === 'briefing' ? 'YOUR BUILD PLAN' : 'YOUR PRACTICE RECORD'}</p><ul class="victory-skills">${skills}</ul></div>
+          <div><p class="victory-label">LAB AI / FINAL REPORT</p><p class="victory-ai"></p>${practice ? '<p class="victory-label">PRACTICE CHECKPOINT / LAB CHECKLIST STILL TO FINISH</p>' : `<p class="victory-label">YOUR LAB PROGRESS</p><div class="victory-meter">${meter}</div>`}<blockquote class="victory-legend"><p class="victory-label">FROM THE HALL OF LAB LEGENDS</p><p>“${data.legend.quote}”</p><cite>${data.legend.who}</cite></blockquote><p class="victory-proud">${practice === 'briefing' ? 'Start small. Make one change, test it, and decide what to keep.' : 'Keep the version you tested. Write what changed and what you want to try next.'}</p></div>
         </div>
-        <div class="victory-actions"><button type="button" data-victory-next>${n < 5 ? `Lab 0${n + 1} unlocked. Continue` : `All five labs complete. View my map`}</button><button type="button" data-victory-close>View my progress map</button></div>
+        <div class="victory-actions"><button type="button" data-victory-next>${practice ? (practice === 'briefing' ? 'Build my JavaScript page →' : practice === 'web' ? 'Meet Construct before continuing →' : 'Return to my Lab 2 checklist →') : n < 5 ? `Continue to Lab 0${n + 1} →` : 'View my completed lab map'}</button><button type="button" data-victory-close>${practice ? 'Back to this checkpoint' : 'View my progress map'}</button></div>
       </div>`;
     document.body.append(root);
     document.body.classList.add('victory-open');
 
     const ai = root.querySelector('.victory-ai');
-    const line = AI_LINES[(n - 1) % AI_LINES.length];
+    const line = practice ? (practice === 'briefing' ? 'BRIEFING COMPLETE. Next: one action, one test, your own decisions.' : 'PRACTICE CHECKPOINT. Return to your project and record what changed. This does not mark a course lab complete.') : 'PROJECT SAVED. Reflect on what changed, what you tested and your next step.';
     if (reduced()) ai.textContent = line;
     else { let k = 0; const type = setInterval(() => { ai.textContent = line.slice(0, ++k) + (k < line.length ? '▌' : ''); if (k >= line.length || !root.isConnected) clearInterval(type); }, 28); }
+    window.labAudio?.play?.('complete');
     burst(root.querySelector('.victory-burst'), pass.colour);
 
-    const close = () => { root.remove(); document.body.classList.remove('victory-open'); document.removeEventListener('keydown', keys); const map=document.querySelector('.start-lab'); map?.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'start'}); document.querySelector('[data-go]')?.focus({preventScroll:true}); };
+    const close = () => { root.remove(); document.body.classList.remove('victory-open'); document.removeEventListener('keydown', keys); if(practice){opener?.focus({preventScroll:true});}else{const map=document.querySelector('.start-lab'); map?.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'start'}); document.querySelector('[data-go]')?.focus({preventScroll:true});} };
     function keys(e) {
       if (e.key === 'Escape') close();
       if (e.key === 'Tab') {
@@ -99,15 +107,14 @@
     }
     document.addEventListener('keydown', keys);
     root.querySelector('[data-victory-close]').addEventListener('click', close);
-    root.querySelector('[data-victory-next]').addEventListener('click',()=>{if(n<5)window.labAudio?.play('unlock');close();location.hash=n<5?`lab-${n+1}-arrival`:'programme';});
+    root.querySelector('[data-victory-next]').addEventListener('click',()=>{close();if(practice){if(practice === 'construct') location.href='lab-programme.html#lab-2-workbench';else location.hash=options.target || 'lab-2-sec-2';}else{if(n<5)window.labAudio?.play('unlock');location.hash=n<5?`lab-${n+1}-arrival`:'programme';}});
     root.querySelector('[data-victory-next]').focus();
   }
 
-  // lab-navigation.js marks the quest complete in its own click handler; this runs after it (bubbling).
-  document.addEventListener('click', event => {
-    const button = event.target.closest('.quest-complete-button');
-    const lab = button?.closest('.lab');
-    if (lab?.dataset.questComplete === 'true') show(Number(lab.id.split('-')[1]));
+  // Only the authoritative completion event opens a course victory.
+  document.addEventListener('lab-completed', event => {
+    const lab = document.getElementById(event.detail?.id);
+    if(lab?.dataset.questComplete === 'true')show(Number(lab.id.split('-')[1]));
   });
   const preview = Number(new URLSearchParams(location.search).get('victory'));
   if (preview >= 1 && preview <= 5) addEventListener('load', () => show(preview));
