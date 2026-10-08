@@ -66,6 +66,7 @@
     current=index;root.dataset.era=String(index);root.classList.remove('hr-running');
     document.querySelectorAll('.hr-era-strip span').forEach((node,i)=>node.classList.toggle('is-current',i===index));
     root.querySelectorAll('[data-hr-era]').forEach(node=>node.setAttribute('aria-pressed',String(Number(node.dataset.hrEra)===index)));
+    if(complete.size<6)one('[data-hr-next]').textContent=`Next machine: ${eras[(index+1)%6].year} / ${eras[(index+1)%6].name} →`;
     const era=eras[index];one('[data-hr-person]').textContent=`${era.year} / ${era.person}`;one('[data-hr-title]').textContent=era.name;
     one('[data-hr-fact]').textContent=era.fact;one('[data-hr-task]').textContent=era.task;
     one('[data-hr-visual]').innerHTML=`<svg viewBox="0 0 380 250"><g stroke="#080e15" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">${graphics[index]}</g></svg><span class="hr-year">${era.year}</span>`;
