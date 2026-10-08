@@ -1,52 +1,44 @@
 (() => {
-  const room = document.getElementById('signal-room');
-  if (!room) return;
-  const panels = [...room.querySelectorAll('.sr-stage')];
-  const goals = [...room.querySelectorAll('.mission-lights li')];
-  const editor = document.createElement('div');
-  editor.className = 'sr-shared-editor';
-  ['.code-editor', '.mission-actions', '.sr-output'].forEach(selector => editor.append(panels[1].querySelector(selector)));
-  const nav = document.createElement('div');
-  nav.className = 'sr-guided-nav';
-  nav.innerHTML = '<button type="button" data-signal-back>← Previous task</button><p role="status" data-signal-task></p><button type="button" data-signal-next></button>';
-  room.querySelector('.defend').before(nav);
-  const topStatus=document.createElement('p');topStatus.className='sr-task-status';room.querySelector('.sr-head').after(topStatus);
-  const back = nav.querySelector('[data-signal-back]');
-  const next = nav.querySelector('[data-signal-next]');
-  const status = nav.querySelector('[data-signal-task]');
-  const instructions = ['Connect all four lines, then click the preview button.', 'Change the sentence in line 1, then run your code.', 'Replace the existing click handler in the editor above. Then press Test both clicks. Use a hint if you need an example.'];
-  let step = 0;
-  function update() {
-    const verified = goals[step].classList.contains('is-on');
-    next.disabled = !verified;
-    topStatus.textContent=`TASK ${step+1} / 3 ? ${verified?'VERIFIED: your next step is ready':instructions[step]}`;
-    next.textContent = ['Button connected: write my future →', 'My future works: add the return journey →', 'Take this interaction into my project →'][step];
-    status.textContent = verified ? `Task ${step + 1} / 3 verified. Continue when ready.` : instructions[step];
-  }
-  function show(index) {
-    step = index;
-    panels.forEach((panel, i) => { panel.hidden = i !== index; });
-    goals.forEach((goal, i) => goal.classList.toggle('is-current-task', i === index));
-    if (index === 1) panels[1].append(editor);
-    if (index === 2) panels[2].querySelector('.mission-actions').before(editor);
-    editor.hidden = index === 0;
-    back.disabled = index === 0;
-    room.querySelector('.defend').hidden = index !== 2;
-    panels[index].append(nav);
-    update();
-  }
-  back.addEventListener('click', () => show(Math.max(0, step - 1)));
-  next.addEventListener('click', () => {
-    if (step < 2) {
-      show(step + 1);
-      const title = panels[step].querySelector('h4'); title.tabIndex = -1; title.focus({preventScroll:true});
-      panels[step].scrollIntoView({block:'start', behavior:'auto'});
-      window.labAudio?.play?.('unlock');
-    } else {
-      location.hash = 'lab-2-sec-3';
-    }
-  });
-  new MutationObserver(update).observe(room.querySelector('.mission-lights'), {subtree:true, attributes:true, attributeFilter:['class']});
-  panels[1].append(editor);
-  show(0);
+  const room = document.getElementById('signal-room'); if (!room) return;
+  const core = [...room.querySelectorAll('.sr-stage')];
+  const lamps = [...room.querySelectorAll('.mission-lights li')];
+  const code = room.querySelector('[data-js-code]');
+  const editor = document.createElement('div'); editor.className='sr-shared-editor';
+  ['.code-editor','.mission-actions','.sr-output'].forEach(s=>editor.append(core[1].querySelector(s)));
+  core[1].append(editor);
+  function panel(title,html) { const el=document.createElement('div');el.className='sr-stage sr-quest';el.innerHTML=`<h4>${title}</h4>${html}`;return el; }
+  const brief=panel('01 / Reopen the world you made in Lab 1',`<p>Your HTML and CSS are already a starting point. Choose one paragraph and one button to add or improve.</p><label>What is your project about?<input data-js-plan="project" placeholder="A sauna, my neighbourhood, a memory?" maxlength="160"></label><label>What should a visitor be able to reveal?<input data-js-plan="meaning" placeholder="A different future for this place" maxlength="200"></label><div class="sr-choice-grid"><button type="button" data-js-choice="Reveal a memory">Reveal a memory</button><button type="button" data-js-choice="Explore a possible future">Explore a possible future</button><button type="button" data-js-choice="Switch between two perspectives">Switch perspectives</button></div><label><input type="checkbox" data-js-plan="opened"> I opened my saved Lab 1 page, or chose a project to start with.</label><p>Keep your idea. The bus stop below is a training example; your project can be about something completely different.</p>`);
+  const predict=panel('04 / Predict the second click',`<p>Your first click changes the words. Before repairing anything, read the current click handler: it sets the same sentence every time.</p><h5>What happens on the second click?</h5><div class="sr-choice-grid"><button type="button" data-js-predict="same">It shows the same future sentence</button><button type="button" data-js-predict="back">It returns to the original text</button><button type="button" data-js-predict="random">It chooses a random sentence</button></div><p data-js-prediction role="status">Make a prediction. Then test your code.</p><button type="button" data-js-compare>Test the prediction: run both clicks</button><div class="sr-click-results" data-js-comparison role="status"></div>`);
+  const transfer=panel('06 / Install the interaction in your own project',`<p>Use the page you saved in Lab 1. Give your paragraph and button the IDs below, or enter the IDs they already have.</p><label>Paragraph ID<input data-js-plan="paragraph" value="story" maxlength="60"></label><label>Button ID<input data-js-plan="button" value="future" maxlength="60"></label><label>Your alternative sentence<input data-js-plan="future" maxlength="300" placeholder="The memory, future or perspective you want to reveal"></label><button type="button" data-js-build>Build my project kit</button><p data-js-kit-status role="status"></p><div data-js-kit hidden><p><strong>1.</strong> Match these IDs in your HTML. Keep your own layout and CSS.</p><pre data-js-html></pre><p><strong>2.</strong> Save this code as <code>interaction.js</code> beside your HTML.</p><pre data-js-export tabindex="0"></pre><button type="button" data-js-download>Download interaction.js</button><p><strong>3.</strong> Add this once inside your HTML <code>&lt;head&gt;</code>: <code>&lt;script src="interaction.js" defer&gt;&lt;/script&gt;</code></p><p><strong>4.</strong> Save, refresh your preview and click twice. If the browser reports a missing element, compare your HTML IDs with the two names above.</p><label><input type="checkbox" data-js-transfer-check> My first click shows my alternative sentence.</label><label><input type="checkbox" data-js-transfer-check> My second click restores my original sentence.</label><label><input type="checkbox" data-js-transfer-check> I saved my project and checked the button at phone width.</label><button type="button" data-js-log>Save this experiment to my Lab 2 note</button></div>`);
+  const panels=[brief,core[0],core[1],predict,core[2],transfer];
+  core[0].before(brief);core[2].before(predict);core[2].after(transfer);
+  const hud=document.createElement('div');hud.className='sr-quest-map';hud.innerHTML=['My project','Connect','My words','Predict','Return','Install'].map((t,i)=>`<span data-js-route="${i}"><b>${i+1}</b>${t}</span>`).join('');room.querySelector('.mission-deck').before(hud);
+  const nav=document.createElement('div');nav.className='sr-guided-nav';nav.innerHTML='<button type="button" data-signal-back>? Previous checkpoint</button><p role="status" data-signal-task></p><button type="button" data-signal-next></button>';
+  const back=nav.querySelector('[data-signal-back]'),next=nav.querySelector('[data-signal-next]'),status=nav.querySelector('[data-signal-task]');
+  const key='dik105-javascript-journey-v1';let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{};}catch(_){}
+  const values={};room.querySelectorAll('[data-js-plan]').forEach(input=>{const k=input.dataset.jsPlan;if(typeof saved.values?.[k]==='string')input.value=saved.values[k];if(input.type==='checkbox')input.checked=saved.values?.[k]===true;});
+  if(typeof saved.code==='string') {code.value=saved.code;code.dispatchEvent(new Event('input',{bubbles:true}));}
+  let prediction=saved.prediction===true, kit=false, logged=saved.logged===true, step=0;
+  if(Array.isArray(saved.core))lamps.forEach((lamp,i)=>lamp.classList.toggle('is-on',saved.core[i]===true));
+  const validId=v=>/^[A-Za-z][A-Za-z0-9_-]*$/.test(v);
+  const plan=k=>room.querySelector(`[data-js-plan="${k}"]`);
+  const ready=i=>i===0?plan('project').value.trim().length>2&&plan('meaning').value.trim().length>2&&plan('opened').checked:i===1?lamps[0].classList.contains('is-on'):i===2?lamps[1].classList.contains('is-on'):i===3?prediction:i===4?lamps[2].classList.contains('is-on'):logged;
+  function save(){room.querySelectorAll('[data-js-plan]').forEach(el=>values[el.dataset.jsPlan]=el.type==='checkbox'?el.checked:el.value);try{localStorage.setItem(key,JSON.stringify({values,code:code.value,step,prediction,logged,kit,transferChecks:[...transfer.querySelectorAll('[data-js-transfer-check]')].map(c=>c.checked),core:lamps.map(e=>e.classList.contains('is-on'))}));}catch(_){} }
+  const instructions=['Choose your project and what the interaction should mean.','Run four lines, then click the preview.','Put your sentence into the code, then run it.','Choose your prediction and test both clicks.','Make click two restore the original, then test it.','Build your kit, install it and record your checks.'];
+  function update(){const done=ready(step);next.disabled=!done;next.textContent=step===5?'Mission complete: open my project ?':`Next: ${['connect the button','write my words','predict click two','add the return journey','install in my project'][step]} ?`;status.textContent=done?`Checkpoint ${step+1} verified ? ${panels.filter((_,i)=>ready(i)).length} / 6 cleared`:`Checkpoint ${step+1} / 6 ? ${instructions[step]}`;hud.querySelectorAll('[data-js-route]').forEach((el,i)=>{el.classList.toggle('is-current',i===step);el.classList.toggle('is-cleared',ready(i));});save();}
+  function show(i){step=i;panels.forEach((el,n)=>el.hidden=n!==i);if(i===2)core[1].append(editor);if(i===4)core[2].querySelector('.mission-actions').before(editor);editor.hidden=i!==2&&i!==4;room.querySelector('.defend').hidden=i!==5;back.disabled=i===0;panels[i].append(nav);update();}
+  back.addEventListener('click',()=>show(Math.max(0,step-1)));next.addEventListener('click',()=>{if(step<5){show(step+1);panels[step].scrollIntoView({block:'start',behavior:'auto'});window.labAudio?.play?.('unlock');}else location.hash='lab-2-sec-3';});
+  room.querySelectorAll('[data-js-plan]').forEach(el=>el.addEventListener('input',()=>{if(transfer.contains(el)){kit=false;logged=false;transfer.querySelector('[data-js-kit]').hidden=true;}update();}));
+  code.addEventListener('input',()=>{lamps[1].classList.remove('is-on');lamps[2].classList.remove('is-on');update();});
+  room.querySelectorAll('[data-js-choice]').forEach(button=>button.addEventListener('click',()=>{plan('meaning').value=button.dataset.jsChoice;update();}));
+  let choice='';room.querySelectorAll('[data-js-predict]').forEach(button=>button.addEventListener('click',()=>{choice=button.dataset.jsPredict;room.querySelectorAll('[data-js-predict]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));predict.querySelector('[data-js-prediction]').textContent='Prediction recorded. Test it against the current code.';}));
+  async function runClicks(){return new Promise(resolve=>{const f=document.createElement('iframe');f.sandbox='allow-scripts';f.hidden=true;const token=Math.random().toString(36);let timer;const finish=out=>{clearTimeout(timer);window.removeEventListener('message',receive);f.remove();resolve(out);};const receive=e=>{if(e.source===f.contentWindow&&e.data?.token===token)finish(e.data);};window.addEventListener('message',receive);timer=setTimeout(()=>finish({error:'The code did not finish.'}),2500);f.srcdoc=`<p id="story">I hear rain at the bus stop.</p><button id="future">Future</button><script>try { ${code.value.replace(/<\/script/gi,'<\\/script')}\n const p=document.getElementById('story'),b=document.getElementById('future');b.click();const first=p.textContent;b.click();parent.postMessage({token:${JSON.stringify(token)},first,second:p.textContent},'*'); } catch(e){parent.postMessage({token:${JSON.stringify(token)},error:e.message},'*');}<\/script>`;document.body.append(f);});}
+  predict.querySelector('[data-js-compare]').addEventListener('click',async()=>{const output=predict.querySelector('[data-js-comparison]');if(!choice){output.textContent='Choose a prediction first.';return;}const result=await runClicks();if(result.error){output.textContent=`Fix the code first: ${result.error}`;return;}output.textContent=`Click 1: ${result.first}\nClick 2: ${result.second}`;const actual=result.first===result.second?'same':result.second==='I hear rain at the bus stop.'?'back':'other';prediction=choice===actual;predict.querySelector('[data-js-prediction]').textContent=prediction?'Prediction verified. A click repeats the same instructions unless your code changes what happens.':'Compare the two results, then choose again. The browser follows the code, not our intention.';if(prediction)window.labAudio?.play?.('complete');update();});
+  let exportCode='';transfer.querySelector('[data-js-build]').addEventListener('click',()=>{const paragraph=plan('paragraph').value.trim(),button=plan('button').value.trim(),future=plan('future').value.trim();const message=transfer.querySelector('[data-js-kit-status]');if(!validId(paragraph)||!validId(button)||paragraph===button||!future){message.textContent='Use two different IDs (letters, numbers, _ or -), starting with a letter, and write your alternative sentence.';return;}exportCode=`const story = document.getElementById(${JSON.stringify(paragraph)});\nconst button = document.getElementById(${JSON.stringify(button)});\nif (!story || !button) {\n  console.error("Check your paragraph and button IDs in the HTML.");\n} else {\n  const originalText = story.textContent;\n  const futureText = ${JSON.stringify(future)};\n  let showingFuture = false;\n  button.addEventListener("click", () => {\n    showingFuture = !showingFuture;\n    story.textContent = showingFuture ? futureText : originalText;\n  });\n}`;transfer.querySelector('[data-js-export]').textContent=exportCode;transfer.querySelector('[data-js-html]').textContent=`<p id="${paragraph}">Your original words from Lab 1</p>\n<button id="${button}" type="button">Show another perspective</button>`;transfer.querySelector('[data-js-kit]').hidden=false;kit=true;message.textContent='Your kit is ready. Follow the four installation steps below.';save();});
+  transfer.querySelector('[data-js-download]').addEventListener('click',()=>{if(!kit)return;const url=URL.createObjectURL(new Blob([exportCode],{type:'text/javascript'}));const a=document.createElement('a');a.href=url;a.download='interaction.js';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+  transfer.querySelector('[data-js-log]').addEventListener('click',()=>{const message=transfer.querySelector('[data-js-kit-status]');if(!kit||![...transfer.querySelectorAll('[data-js-transfer-check]')].every(c=>c.checked)){message.textContent='Install and test your actual page, then confirm all three checks.';return;}const note=document.querySelector('#mission-note-2');const text=`JavaScript experiment: ${plan('project').value.trim()}\nMy intention: ${plan('meaning').value.trim()}\nMy alternative sentence: ${plan('future').value.trim()}\nI tested first and second clicks, saved my project and checked phone width.`;if(note&&!note.value.includes(text)){note.value=(note.value.trim()+'\n'+text).trim();note.dispatchEvent(new Event('input',{bubbles:true}));}logged=true;message.textContent='PROJECT CONNECTION VERIFIED. Your experiment is in your Lab 2 note.';window.labAudio?.play?.('complete');update();});
+  new MutationObserver(update).observe(room.querySelector('.mission-lights'),{subtree:true,attributes:true,attributeFilter:['class']});
+  transfer.querySelectorAll('[data-js-transfer-check]').forEach((c,i)=>{c.checked=saved.transferChecks?.[i]===true;c.addEventListener('change',save);});
+  if(saved.kit===true)transfer.querySelector('[data-js-build]').click();
+  show(Number.isInteger(saved.step)&&saved.step>=0&&saved.step<6?saved.step:0);
 })();

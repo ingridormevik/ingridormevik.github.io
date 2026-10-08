@@ -280,6 +280,7 @@ window.onerror=(m)=>{failed=true;send({error:String(m)});return true;};<\/script
       if (out.error) { bossStatus.innerHTML = `<p class="is-error">✕ ${explain(out.error, code.value)}</p>`; return; }
       if (out.one !== out.before && out.two === out.before) {
         bossStatus.innerHTML = '<p class="is-win"><strong>SIGNAL MASTERED.</strong> Click one shows the future, click two brings the rain back. Your code remembers its state: that is how every menu, like button and game switch works.</p>';
+        if (out.one !== EXAMPLE) setLight('rewire', true);
         setLight('toggle', true);
       } else if (out.one === out.before) {
         bossStatus.innerHTML = '<p>The first click did not change anything. Get stage 2 working first.</p>';
