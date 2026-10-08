@@ -167,3 +167,4 @@
 /* A star reward already announces the unlocked step. Show one toast at a time. */
 body:has(.sl-toast:not([hidden])) .lab-motion-status.show{opacity:0}
 .studio .sl-levels a.lv-2 .lv-text strong{font-size:17px;line-height:1.15;white-space:normal;overflow-wrap:normal;max-width:100%}
+.studio .sl-levels .lv-2 .lv-learning-order{display:block;color:#edf4dd;font:600 12px/1.4 system-ui,sans-serif;white-space:normal;margin:4px 0}.studio .sl-levels a.lv-2 .lv-text strong{font-size:19px}
