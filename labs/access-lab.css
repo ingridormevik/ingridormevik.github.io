@@ -138,3 +138,5 @@
 .studio .access-lab details.st-why{background:#fff!important;border:0;border-top:2px dashed #b8c0cc;border-radius:0;padding:6px 0 0;box-shadow:none}
 .studio .access-lab details.st-why>summary{color:var(--al-ink)!important;background:none!important;padding:0}
 .studio .access-lab .ramp-yours details.st-why{background:#f7fbef!important}
+/* Keep the project checklist and code samples inside narrow phone screens. */
+.access-lab .yours-checks{min-width:0;max-width:100%;padding-left:0;list-style:none}.studio .access-lab .yours-checks label{display:block;overflow-wrap:anywhere;min-width:0}.access-lab .yours-checks input{margin-right:8px}.access-lab pre{max-width:100%;min-width:0;overflow-x:auto}.access-lab .your-ramp{min-width:0}
