@@ -51,7 +51,9 @@
   async function play(cue) {
     const version = revision;
     if (!enabled || document.hidden || !await unlock() || version !== revision || !enabled) return;
-    if (cue === 'star') {
+    if (/^history-[0-2]{3}$/.test(cue)) {
+      cue.slice(8).split('').forEach((note,i)=>tone([261.63,329.63,392][Number(note)],i*.32,.25,.25,'square'));
+    } else if (cue === 'star') {
       tone(784, 0, 0.22, 0.45, 'triangle');
       tone(1175, 0.08, 0.35, 0.35);
       tone(1568, 0.15, 0.48, 0.2);

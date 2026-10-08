@@ -33,7 +33,7 @@
   function burst(canvas, colour) {
     if (reduced()) return;
     const ctx = canvas.getContext('2d');
-    const glyphs = ['</>', '{ }', '#', '01', '✓', ';', '=>', 'AI', '⚗', '★'];
+    const glyphs = ['READ', 'WRITE', '0', '1', 'ADD', 'PRINT', '1843', '1936', '1968', '1989'];
     const palette = [colour || '#ff7a59', '#c6f15b', '#ffd23f', '#f29bcd', '#6fb7ff', '#ffffff'];
     const w = canvas.width = innerWidth, h = canvas.height = innerHeight;
     const bits = Array.from({length: 90}, () => ({x: w / 2, y: h * 0.42, vx: (Math.random() - 0.5) * 16, vy: -Math.random() * 15 - 4, r: Math.random() * 6, spin: (Math.random() - 0.5) * 0.3, g: glyphs[Math.random() * glyphs.length | 0], c: palette[Math.random() * palette.length | 0], s: 16 + Math.random() * 18}));

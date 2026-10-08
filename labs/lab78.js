@@ -10,7 +10,7 @@
 
   const discoveries = new Set();
   let missionXP = 0;
-  const treasureNames = ['Signal robot', 'Small world', 'Sauna club', 'Code mechanic', 'Culture gardener', 'Turing’s pinecone', 'Steam signal', 'Forest of lights'];
+  const treasureNames = ['1843 / Lovelace’s instruction patterns', '1936 / Turing’s rule machine', '1951 / Manchester computer music', '1947 / Mark II debugging', '1989 / connected information', '1950 / Turing’s question', '1837 / Babbage’s mechanical engine', '1968 / Engelbart’s linked ideas'];
   const treasureIcons = ['◉', '◎', '♨', '⚙', '♧', '◆', '≈', '✦'];
   function score() {
     const xp = missionXP + discoveries.size * 10;
