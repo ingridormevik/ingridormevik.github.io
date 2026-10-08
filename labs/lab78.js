@@ -7,6 +7,38 @@
   const wait = ms => new Promise(done => setTimeout(done, reduced() ? 0 : ms));
 
 
+
+  const discoveries = new Set();
+  let missionXP = 0;
+  const treasureNames = ['Signal robot', 'Small world', 'Sauna club', 'Code mechanic', 'Culture gardener', 'Turing’s pinecone', 'Steam signal', 'Forest of lights'];
+  const treasureIcons = ['◉', '◎', '♨', '⚙', '♧', '◆', '≈', '✦'];
+  function score() {
+    const xp = missionXP + discoveries.size * 10;
+    const big = root.querySelector('[data-l78-xp]');
+    if (big) big.textContent = `LAB XP / ${xp}`;
+    const mini = root.querySelector('[data-l78-xp-mini]');
+    if (mini) mini.textContent = `XP / ${xp}`;
+  }
+  function discover(id) {
+    if (discoveries.has(id)) return;
+    discoveries.add(id); score();
+    const count = root.querySelector('[data-l78-found]');
+    if (count) count.textContent = `Discoveries / ${discoveries.size} of 8`;
+    const tray = root.querySelector('[data-l78-badges]');
+    if (tray) {
+      const badge = document.createElement('span');
+      badge.textContent = treasureIcons[id]; badge.title = treasureNames[id];
+      badge.setAttribute('aria-label', treasureNames[id]); tray.append(badge);
+    }
+    const status = root.querySelector('[data-l78-discovery-status]');
+    if (status) status.textContent = `+10 XP · ${treasureNames[id]} found!`;
+    root.querySelector(`[data-l78-discover="${id}"]`)?.classList.add('is-discovered');
+    window.labAudio?.play?.('secret');
+  }
+  root.querySelectorAll('[data-l78-discover]').forEach(button => button.addEventListener('click', () => discover(Number(button.dataset.l78Discover))));
+  root.querySelector('[data-l78-pine-secret]')?.addEventListener('click', () => discover(5));
+  new IntersectionObserver(([entry]) => root.classList.toggle('is-in-view', entry.isIntersecting)).observe(root);
+
   // Mission navigation: progressive enhancement keeps all content readable without JS.
   const missionPanels = [...root.querySelectorAll('[data-l78-panel]')];
   const missionButtons = [...root.querySelectorAll('[data-l78-select]')];
@@ -17,7 +49,7 @@
     let current = -1;
     root.classList.add('lab78-mission-mode');
     missionPanels.forEach(panel => { panel.hidden = true; });
-    function selectMission(index, focus = true) {
+    function selectMission(index, focus = true, sound = true) {
       current = index;
       intro.hidden = true; navigation.hidden = false;
       missionPanels.forEach((panel, i) => { panel.hidden = i !== index; });
@@ -28,7 +60,7 @@
         title.tabIndex = -1; title.focus({preventScroll: true});
         root.scrollIntoView({behavior: reduced() ? 'instant' : 'smooth', block: 'start'});
       }
-      window.labAudio?.play?.('unlock');
+      if (sound) window.labAudio?.play?.('unlock');
     }
     root.querySelector('[data-l78-start]').addEventListener('click', () => selectMission(current < 0 ? 0 : current));
     missionButtons.forEach((button, i) => button.addEventListener('click', () => selectMission(i)));
@@ -39,13 +71,14 @@
       root.scrollIntoView({behavior: reduced() ? 'instant' : 'smooth', block:'start'});
     });
     root.querySelectorAll('[data-l78-done]').forEach((button, i) => button.addEventListener('click', () => {
+      if (!completed.has(i)) { missionXP += 20; score(); }
       completed.add(i);
       missionButtons[i].classList.add('is-done');
       root.querySelector(`[data-l78-state="${i}"]`).textContent = 'DONE ✓';
       root.querySelector('[data-l78-progress]').textContent = `${completed.size} / 5 missions marked done`;
       root.querySelector('[data-l78-feedback]').textContent = completed.size === 5 ? 'All five missions marked done. Take your brief into your own project.' : `Mission ${i + 1} marked done.`;
       window.labAudio?.play?.('complete');
-      if (i < 4) selectMission(i + 1);
+      if (i < 4) selectMission(i + 1, true, false);
     }));
   }
 
@@ -70,7 +103,7 @@
         utterance.onend = () => { finish(); voiceStatus.textContent = 'Reading finished.'; };
         utterance.onerror = () => { finish(); voiceStatus.textContent = 'Playback stopped or unavailable. You can read the quote above.'; };
         stop.hidden = false; listen.disabled = true; root.classList.add('is-reading');
-        voiceStatus.textContent = 'Reading Turing’s 1950 words in a modern synthetic voice.';
+        voiceStatus.textContent = 'Reading the quote…';
         speech.speak(utterance);
       });
       stop.addEventListener('click', () => { speech.cancel(); finish(); voiceStatus.textContent = 'Reading stopped.'; });
@@ -94,6 +127,7 @@
 
   // ---------- Level A: feelings transmitter ----------
   const FEELINGS = [
+    [/sauna|badstu/i, 'SAUNA', 'warm wood tones · steam that rises slowly · a water button that changes the heat and sound'],
     [/lone|alone|lonely|ensom/i, 'LONELINESS', 'one small character in a wide, empty space · cold blues · slow, quiet sound · lots of distance'],
     [/empower|strong|power|brave|sterk|mestring/i, 'EMPOWERMENT', 'every action leaves something behind · the light grows when you act · warm colours spread'],
     [/sad|grief|trist/i, 'SADNESS', 'muted colours · things drift slowly downward · soft rain sound'],
@@ -111,6 +145,8 @@
   async function transmit() {
     const id = ++transmission;
     const text = feel.value.trim();
+    window.labAudio?.play?.('transmit');
+    if (/sauna|badstu/i.test(text)) discover(6);
     readout.textContent = '';
     const out = (line, cls = '') => { const li = document.createElement('li'); li.className = cls; readout.append(li); return li; };
     out('', 'is-sys').textContent = `> received: “${text || '…'}”`;
@@ -202,6 +238,7 @@
   });
   $('[data-cone]').addEventListener('click', () => {
     lights.push({x: hero.x, y: hero.y, t: performance.now(), p: Math.random() * 6});
+    if (lights.length >= 10) discover(7);
     caption.textContent = MESSAGES.filter(([n]) => lights.length >= n).pop()[1];
     $('[data-cone]').classList.remove('is-pop'); void $('[data-cone]').offsetWidth; $('[data-cone]').classList.add('is-pop');
     window.labAudio?.play?.('star');

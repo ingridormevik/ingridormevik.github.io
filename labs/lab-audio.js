@@ -61,6 +61,10 @@
       [523.25,659.25,783.99,1046.5].forEach((freq, i) => tone(freq, 0.12 + i * 0.12, 0.45, 0.4, 'triangle'));
       [261.63,392,523.25,659.25].forEach(freq => tone(freq, 0.65, 1.1, 0.22));
       tone(1568, 0.83, 0.7, 0.15);
+    } else if (cue === 'transmit') {
+      [330,440,660].forEach((freq,i)=>tone(freq,i*.09,.13,.18,'triangle'));
+    } else if (cue === 'secret') {
+      [523,784,1046,1318].forEach((freq,i)=>tone(freq,i*.10,.3,.22,'triangle'));
     } else if (cue === 'unlock') {
       tone(220, 0, 0.3, 0.3, 'sine', 880);
       tone(880, 0.2, 0.3, 0.25, 'triangle');

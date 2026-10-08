@@ -42,3 +42,25 @@
 @media(max-width:700px){.lab78-mission-buttons{grid-template-columns:repeat(2,1fr)}.lab78-mission-buttons button:last-child{grid-column:1/-1}.lab78-entry,.lab78-mission-footer{align-items:stretch;flex-direction:column}.lab78-mission-header{gap:16px}.lab78-mission-mode .lab78-loop{grid-template-columns:repeat(2,1fr)}.lab78-mission-mode .lab78-part{border-left-width:4px;min-height:0}}
 
 .lab78-radio{border:2px solid #64867c;background:#080e15;margin-top:24px;padding:18px}.lab78-radio>a{font-size:13px}.lab78-radio [role=status]{font:12px Consolas,monospace}.lab78.is-reading .lab78-radio{border-color:#ff9164}.lab78 button:disabled{opacity:.55;cursor:default}
+
+/* Cartoon instruments and optional discoveries. */
+.lab78-stage{position:relative}.lab78-secret-switch{position:absolute;top:12px;left:12px;z-index:1}
+#ai-coding .lab78-art{position:relative;float:right;width:min(32%,240px);padding:0 8px 12px;margin:0 0 18px 24px;background:#080e15;color:var(--mission-accent);border:2px solid var(--mission-accent);box-shadow:4px 4px 0 #080e15}
+.lab78-art svg{display:block;width:100%;height:auto}.lab78-art span{display:block;font:10px Consolas,monospace;letter-spacing:.1em}.lab78-art i{position:absolute;right:8px;top:4px;font-style:normal}.lab78-art.is-discovered i:after{content:' ✓'}
+.lab78-collection{display:flex;gap:16px;flex-wrap:wrap;align-items:center;padding-top:18px;border-top:1px solid #64867c;font:12px Consolas,monospace;color:#cfe7bc}.lab78-badge-tray{display:flex;gap:8px}.lab78-badge-tray span{display:grid;place-items:center;background:#cfe7bc;color:#142128;width:32px;height:32px;border:2px solid #080e15;font-size:20px}
+.lab78-discovery-toast{clear:both;margin:0;padding:12px 20px;background:#cfe7bc;color:#0b1118;font:700 14px Consolas,monospace}.lab78-discovery-toast:empty{display:none}.lab78-mission-footer{clear:both}
+.lab78 .lab78-art-orbit{transform-origin:155px 155px}.lab78 .lab78-art-gear{transform-origin:154px 213px}.lab78 .lab78-art-leaves{transform-origin:155px 228px}
+@media(prefers-reduced-motion:no-preference){
+.lab78.is-in-view .lab78-art-steam,.lab78.is-in-view .l78-bubble{animation:l78-steam 3.6s ease-in-out infinite}
+.lab78.is-in-view .lab78-art-orbit{animation:l78-orbit 24s linear infinite}
+.lab78.is-in-view .lab78-art-gear{animation:l78-orbit 8s linear infinite}
+.lab78.is-in-view .lab78-art-leaves{animation:l78-leaves 5s ease-in-out infinite}
+.lab78.is-in-view .lab78-art-wave{animation:l78-signal 4s ease-in-out infinite}
+.lab78.is-in-view .l78-held-cone{animation:l78-float 4s ease-in-out infinite}
+.lab78.is-in-view .lab78-art-eyes{animation:l78-eyes 7s ease-in-out infinite}
+.lab78.is-in-view .lab78-art-code{animation:l78-signal 5s ease-in-out infinite}
+.lab78-mission-mode .lab78-part:not([hidden]){animation:l78-enter .35s ease-out}
+@keyframes l78-steam{50%{transform:translateY(-9px);opacity:.55}}@keyframes l78-orbit{to{transform:rotate(360deg)}}@keyframes l78-leaves{50%{transform:rotate(3deg)}}@keyframes l78-signal{50%{opacity:.45}}@keyframes l78-float{50%{transform:translateY(-4px)}}@keyframes l78-eyes{92%{opacity:1}95%{opacity:.25}98%{opacity:1}}@keyframes l78-enter{from{opacity:.5;transform:translateY(8px)}to{opacity:1;transform:none}}
+}
+.access-no-motion .lab78 *,.access-calm .lab78 *{animation:none!important;transition:none!important}
+@media(max-width:600px){#ai-coding .lab78-art{float:none;width:150px;margin:0 auto 20px;display:block}.lab78-badge-tray{flex-wrap:wrap}.lab78-secret-switch{top:4px;left:4px}}
