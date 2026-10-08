@@ -43,6 +43,8 @@
   }
   const shots = [...root.querySelectorAll('.vb-shot')];
   if (shots.length) {
+    const screenshotStage=shots[0].closest('[data-guide-stage]');
+    screenshotStage.querySelectorAll('[data-guide-next]').forEach(button=>button.hidden=true);
     const controls = document.createElement('div'); controls.className = 'vb-tool-controls';
     const back = document.createElement('button'), next = document.createElement('button'), position = document.createElement('span');
     back.type = next.type = 'button'; back.textContent = '← Previous'; position.setAttribute('role','status');
@@ -50,8 +52,8 @@
     let current = 0;
     function show(index) {
       current = index; shots.forEach((shot,i)=>{shot.hidden=i!==index;});
-      back.disabled=index===0; next.textContent=index===shots.length-1?'Build my request →':'Next task →';
-      position.textContent=`Tool task ${index+1} / ${shots.length}`;
+      back.disabled=index===0; next.textContent=index===shots.length-1?'Next: write my own request →':`Next: ${shots[index+1].querySelector('h3,h4,h5').textContent.trim()} →`;
+      position.textContent=`VS Code walkthrough · ${index+1} / ${shots.length}`;
     }
     back.addEventListener('click',()=>show(Math.max(0,current-1)));
     next.addEventListener('click',()=>current===shots.length-1?selectStage(2):show(current+1)); show(0);
