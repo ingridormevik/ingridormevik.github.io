@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ingrid Ormevik — CV</title>
+<title>Ingrid Ormevik | Portefølje og CV</title>
 <meta name="description" content="CV og spillbare arbeider. Stedsbaserte spill, lydreaktive systemer og interaktive fortellinger under navnet Mount Media.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -140,6 +140,7 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
   .panel{display:block!important}
   .out,.in{box-shadow:none;border:none}
 }
+.talk-photo{margin:1rem 0}.talk-photo img{display:block;width:100%;height:auto;max-height:360px;object-fit:cover;object-position:center 58%}.talk-photo figcaption{font-size:11px;margin-top:6px}.tab:focus-visible,.icon:focus-visible{outline:2px solid var(--hot);outline-offset:3px}
 </style>
 </head>
 <body>
@@ -147,6 +148,7 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
 <div class="desktop">
 
   <nav class="icons" aria-label="Arbeider">
+<a class="icon" href="https://ingridormevik.itch.io/what-the-roots-keep"><svg width="42" height="38" viewBox="0 0 21 19" aria-hidden="true"><rect x="0" y="0" width="21" height="19" fill="#D8D4CB" stroke="#43403A"/><path d="M10 9v5m0-2-4 4m4-2 5 2m-5-2 1 3" stroke="#43403A" fill="none"/><path d="M10 10C2 6 7 1 10 5C14 1 19 6 10 10Z" fill="#D4145A"/></svg>What the Roots Keep</a>
     <a class="icon" href="https://ingridormevik.github.io/trail-mix-v2.html">
       <svg width="42" height="38" viewBox="0 0 21 19" aria-hidden="true"><rect class="bg" x="0" y="0" width="21" height="19" fill="#D8D4CB" stroke="#43403A"/><path d="M3 15 L8 6 L11 10 L14 5 L19 15 Z" fill="#2B2440"/><rect x="7" y="5" width="2" height="2" fill="#F2F0EA"/><rect x="13" y="4" width="2" height="2" fill="#F2F0EA"/></svg>
       Trail Mix</a>
@@ -169,19 +171,17 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
     <!-- PLAYABLE WINDOW -->
     <div class="play win out">
       <div class="title">
-        <span id="playName">trail_mix.exe</span>
+        <span id="playName">what_the_roots_keep.exe</span>
         <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
       </div>
       <div class="stage">
         <div class="cover" id="cover">
           <p data-en="Run one of my works here in the window, or open it full-size.">Kjør et av arbeidene mine her i vinduet, eller åpne det i full størrelse.</p>
-          <button class="launch" id="launch">Start Trail Mix</button>
+          <button class="launch" id="launch">Start What the Roots Keep</button>
         </div>
       </div>
       <div class="foot">
-        <span data-en="Trail Mix — a walking DJ set from Sandviken to Fløyen: play the route first, walk it after.">Trail Mix — et vandrende DJ-sett fra Sandviken til Fløyen: spill turen først, gå den etterpå.</span>
-        <a href="https://ingridormevik.github.io/trail-mix-v2.html" data-en="Open fullscreen">Åpne i fullskjerm</a>
-        <span class="tech" data-en="HTML5 · JavaScript · Web Audio · Geolocation">HTML5 · JavaScript · Web Audio · Geolokasjon</span>
+        <span  data-en="What the Roots Keep · five-part electronic literature about connection, distance and family inheritance.">What the Roots Keep · fem deler elektronisk litteratur om forbindelse, avstand og familiearv.</span><a href="https://ingridormevik.itch.io/what-the-roots-keep" target="_blank" rel="noopener" data-en="Open on itch.io">Åpne på itch.io</a><span class="tech" data-en="Electronic literature · 2026">Elektronisk litteratur · 2026</span>
       </div>
     </div>
 
@@ -195,6 +195,7 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
       <div class="tabs" role="tablist">
         <button class="tab" role="tab" aria-selected="true" aria-controls="p1" id="t1" data-en="About">Om</button>
         <button class="tab" role="tab" aria-selected="false" aria-controls="p2" id="t2" data-en="Work">Arbeider</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="p6" id="t6" data-en="Talks">Foredrag</button>
         <button class="tab" role="tab" aria-selected="false" aria-controls="p3" id="t3" data-en="Experience">Erfaring</button>
         <button class="tab" role="tab" aria-selected="false" aria-controls="p4" id="t4" data-en="Education">Utdanning</button>
         <button class="tab" role="tab" aria-selected="false" aria-controls="p5" id="t5" data-en="Tools">Verktøy</button>
@@ -205,13 +206,13 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
         <div class="panel on" id="p1" role="tabpanel" aria-labelledby="t1">
           <h1>Ingrid Ormevik</h1>
           <p class="tagline" data-en="Digital culture and creative technology · Bergen">Digital kultur og kreativ teknologi · Bergen</p>
-          <p class="lead" data-en="I make place-based games, sound and interactive stories under the name Mount Media, and code everything myself in the browser. I also work on communications for queer organisations in Bergen, and research how digital systems classify people.">Jeg lager stedsbaserte spill, lyd og interaktive fortellinger under navnet Mount Media, og koder alt selv i nettleseren. I tillegg jobber jeg med kommunikasjon for skeive organisasjoner i Bergen, og forsker på hvordan digitale systemer klassifiserer mennesker.</p>
+          <p class="lead" data-en="I make electronic literature, games and sound-reactive works as Mount Media. I have worked with social media since 2018, founded Queer Fashion of Scandinavia and lead Bergen Pride’s digital communication. As a Digital Culture student, I examine how platforms and AI represent people.">Jeg lager elektronisk litteratur, spill og lydreaktive verk under navnet Mount Media. Jeg har jobbet med sosiale medier siden 2018, grunnla Queer Fashion of Scandinavia og har ansvar for Bergen Pride sin digitale kommunikasjon. Som Digital kultur-student undersøker jeg hvordan plattformer og KI representerer mennesker.</p>
 
           <div class="figs">
             <div class="fig in"><b>330 000</b><span data-en="views on the festival account, up from 273,000">visninger på festivalkontoen, opp fra 273 000</span></div>
             <div class="fig in"><b>1.</b><span data-en="place in electronic literature, the Digital Culture Award">plass i elektronisk litteratur, Digitalkulturprisen</span></div>
             <div class="fig in"><b>7</b><span data-en="events for Skeiv Jul (Queer Christmas), funded from scratch">arrangementer i Skeiv Jul, finansiert fra bunnen</span></div>
-            <div class="fig in"><b>6</b><span data-en="playable works published in the browser">spillbare arbeider publisert i nettleseren</span></div>
+            <div class="fig in"><b>2018</b><span data-en="working with social media and queer representation since">starten på mitt arbeid med sosiale medier og skeiv representasjon</span></div>
           </div>
 
           <h2 data-en="Contact">Kontakt</h2>
@@ -224,42 +225,21 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
         <div class="panel" id="p2" role="tabpanel" aria-labelledby="t2">
           <h2 data-en="Work">Arbeider</h2>
           <div class="cards">
-            <article class="card in">
-              <h3><a href="https://ingridormevik.github.io/trail-mix-v2.html">Trail Mix</a></h3>
-              <span class="yr">2026</span>
-              <p data-en="A walking DJ set from Sandviken to Fløyen. Play the route first, walk it after. Made together with Preem Cast.">Et vandrende DJ-sett fra Sandviken til Fløyen. Spill turen først, gå den etterpå. Laget sammen med Preem Cast.</p>
-              <div class="tech" data-en="HTML5 · JavaScript · Web Audio · Geolocation">HTML5 · JavaScript · Web Audio · Geolokasjon</div>
-            </article>
-            <article class="card in">
-              <h3><a href="https://ingridormevik.github.io/touch%20game.html">The Turing Test</a></h3>
-              <span class="yr">2025–2026</span>
-              <p data-en="An interactive story about AI bias directed at Norwegian queer organisations. First place in electronic literature at the Digital Culture Award.">En interaktiv fortelling om KI-skjevhet rettet mot norske skeive organisasjoner. Førsteplass i elektronisk litteratur under Digitalkulturprisen.</p>
-              <div class="tech">Twine · CSS</div>
-            </article>
-            <article class="card in">
-              <h3><a href="https://ingridormevik.github.io/trail/">Folkloreløypa</a></h3>
-              <span class="yr">2026</span>
-              <p data-en="A place-based folklore layer for Trail Mix, where Norwegian folklore meets the route up the mountain.">Et stedsbasert folklorelag til Trail Mix, der norsk folketro møter ruten opp fjellet.</p>
-              <div class="tech">HTML5 · JavaScript</div>
-            </article>
-            <article class="card in">
-              <h3><a href="https://ingridormevik.github.io/Regnbuenatt_LED_final.html">Bergtatt</a> <span data-en="and">og</span> <a href="https://ingridormevik.github.io/fjordtatt-visuals.html">Fjordtatt</a></h3>
-              <span class="yr">2026</span>
-              <p data-en="A sound-reactive visual system for live music and club spaces, shown at Regnbuenatt in Marinehagen and at SALT during Oslo Pride.">Et lydreaktivt visuelt system for live musikk og klubbrom, vist på Regnbuenatt i Marinehagen og på SALT under Oslo Pride.</p>
-              <div class="tech">Canvas · Web Audio API</div>
-            </article>
-            <article class="card in">
-              <h3><a href="https://ingridormevik.github.io/regnbuedagene/pride-park-spill-2026.html" target="_blank" rel="noopener">Pride Park</a></h3>
-              <span class="yr">2026</span>
-              <p data-en="A place-based game in Nygårdsparken where Norwegian folklore, queer belonging and festival space meet.">Et stedsbasert spill i Nygårdsparken der norsk folketro, skeiv tilhørighet og festivalrom møtes.</p>
-              <div class="tech">HTML5 · JavaScript</div>
-            </article>
-          </div>
+<article class="card in"><h3><a href="https://ingridormevik.itch.io/what-the-roots-keep" target="_blank" rel="noopener">What the Roots Keep</a></h3><span class="yr" data-en="2 October 2026">2. oktober 2026</span><p  data-en="Five-part electronic literature about connection, distance, family inheritance and remaining open after a relationship changes. Hold the flower above dark water and follow the roots through rooms where touch, waiting, light, sound and release become part of reading.">Fem deler elektronisk litteratur om forbindelse, avstand, familiearv og det å forbli åpen etter at et forhold endrer seg. Hold blomsten over mørkt vann og følg røttene gjennom rom der berøring, venting, lys, lyd og slipp blir del av lesningen.</p><div class="tech" data-en="Electronic literature">Elektronisk litteratur</div></article>
+<article class="card in"><h3><a href="https://ingridormevik.github.io/bodyline/" target="_blank" rel="noopener">BODYLINE</a></h3><span class="yr" data-en="2026">2026</span><p  data-en="A rhythm game descending from Fløyen into Bergen over real footage of the Fløibanen funicular. Play four lanes with D, F, J and K or four touch pads on a phone.">Et rytmespill ned fra Fløyen til Bergen, over ekte opptak av Fløibanen. Fire baner spilles med D, F, J og K eller med fire berøringsfelt på telefon.</p><div class="tech" data-en="Rhythm game · Web Audio">Rytmespill · Web Audio</div></article>
+<article class="card in"><h3><a href="https://ingridormevik.github.io/trail-mix-v2.html" target="_blank" rel="noopener">Trail Mix</a></h3><span class="yr" data-en="2026">2026</span><p  data-en="A walking DJ set from Sandviken to Fløyen, made with Preem Cast. Play the route first, walk it afterwards.">Et vandrende DJ-sett fra Sandviken til Fløyen, laget sammen med Preem Cast. Spill ruten først, gå den etterpå.</p><div class="tech" data-en="HTML5 · JavaScript · Web Audio">HTML5 · JavaScript · Web Audio</div></article>
+<article class="card in"><h3><a href="https://ingridormevik.github.io/fjordtatt-visuals.html" target="_blank" rel="noopener">Fjordtatt</a></h3><span class="yr" data-en="2026">2026</span><p  data-en="The continuation of Bergtatt at SALT in Oslo. A lesbian sauna ritual built around heat, water, breath and chosen family.">Videreføringen av Bergtatt ved SALT i Oslo. Et lesbisk badsturitual bygget rundt varme, vann, pust og valgt familie.</p><div class="tech" data-en="Canvas · Web Audio">Canvas · Web Audio</div></article>
+<article class="card in"><h3><a href="https://ingridormevik.github.io/regnbuedagene/pride-park-spill-2026.html" target="_blank" rel="noopener">Pride Park 2026</a></h3><span class="yr" data-en="2026">2026</span><p  data-en="A place-based game in Nygårdsparken during Bergen Pride, connecting Norwegian folklore, queer belonging, QR codes, sound and movement through festival space.">Et stedsbasert spill i Nygårdsparken under Bergen Pride. Norsk folketro, skeiv tilhørighet, QR-koder, lyd og bevegelse møtes i festivalrommet.</p><div class="tech" data-en="HTML5 · JavaScript">HTML5 · JavaScript</div></article>
+<article class="card in"><h3><a href="https://ingridormevik.github.io/Regnbuenatt_LED_final.html" target="_blank" rel="noopener">Bergtatt</a></h3><span class="yr" data-en="2026">2026</span><p  data-en="A generative, sound-reactive visual system for Regnbuenatt in Marinehagen. Landscape, club space and queer folklore become live visuals.">Et generativt, lydreaktivt visuelt system for Regnbuenatt i Marinehagen. Landskap, klubbrom og skeiv folketro blir til levende bilder.</p><div class="tech" data-en="Canvas · Web Audio">Canvas · Web Audio</div></article>
+<article class="card in"><h3><a href="https://ingridormevik.github.io/vision_entity.html" target="_blank" rel="noopener">Vision Entity Live</a></h3><span class="yr" data-en="2026">2026</span><p  data-en="A camera-based work where a model reads the room, marks what it finds and writes poems over what it names. Requires your own API key.">Et kamerabasert verk der en modell leser rommet, markerer det den finner og skriver dikt over det den navngir. Krever egen API-nøkkel.</p><div class="tech" data-en="Computer vision · Machine poetics">Maskinsyn · Maskinpoetikk</div></article>
+<article class="card in"><h3><a href="https://ingridormevik.github.io/touch%20game.html" target="_blank" rel="noopener">The Turing Test</a></h3><span class="yr" data-en="2025–2026">2025–2026</span><p  data-en="An interactive story about AI bias directed at Norwegian queer organisations. First place in electronic literature at the Digital Culture Award.">En interaktiv fortelling om KI-skjevhet rettet mot norske skeive organisasjoner. Førsteplass i elektronisk litteratur under Digitalkulturprisen.</p><div class="tech" data-en="Twine · CSS">Twine · CSS</div></article>
+</div>
 
           <h2 data-en="Writing">Skriving</h2>
           <p class="lead"><span data-en="I write about digital culture, ethics and activism on my">Jeg skriver om digital kultur, etikk og aktivisme på</span> <a href="https://ingridormevik.github.io/blog.html" data-en="blog">bloggen min</a><span data-en=", including algorithmic misgendering, Mount Media as an emotional space, and queer belonging in game worlds.">, blant annet om algoritmisk feilkjønning, Mount Media som følelsesrom og skeiv tilhørighet i spillverdener.</span></p>
         </div>
 
+<div class="panel" id="p6" role="tabpanel" aria-labelledby="t6"><h2  data-en="Talks and panels">Foredrag og panelsamtaler</h2><article class="card in"><span class="yr" data-en="23 September 2026">23. september 2026</span><h3>Me, Myself and A.I.</h3><p class="org" data-en="CDN Autumn Equinox · Litteraturhuset, Bergen">CDN Autumn Equinox · Litteraturhuset i Bergen</p><p  data-en="My contribution to The Haunting of the Author panel with Yagmur Cisem Vik and Hanna Hellesø Lauvli. I examined how AI represents queer lives and identities, from invented organisations to algorithmic misgendering and a live demonstration of The Detector.">Mitt bidrag til panelet The Haunting of the Author, med Yagmur Cisem Vik og Hanna Hellesø Lauvli. Jeg undersøkte hvordan KI representerer skeive liv og identiteter: fra oppdiktede organisasjoner til algoritmisk feilkjønning og en direkte demonstrasjon av The Detector.</p><figure class="talk-photo"><img src="labs/intro-assets/panel.webp" alt="Ingrid Ormevik i panelsamtalen The Haunting of the Author" loading="lazy" width="1100" height="1467"/><figcaption  data-en="The Haunting of the Author · CDN Equinox 2026">The Haunting of the Author · CDN Equinox 2026</figcaption></figure><p><a href="https://www4.uib.no/en/research/research-centres/center-for-digital-narrative/events/cdn-autumn-equinox-open-research-day" target="_blank" rel="noopener" data-en="Event programme ↗">Arrangementets program ↗</a> · <a href="posts/2026-09-26-the-room-has-been-sorted.html" data-en="My reflection after Equinox ↗">Min refleksjon etter Equinox ↗</a></p></article></div>
         <div class="panel" id="p3" role="tabpanel" aria-labelledby="t3">
           <h2 data-en="Experience">Erfaring</h2>
 
@@ -275,7 +255,7 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
             <li data-en="Build real-time systems where sound, camera and movement drive the visuals in live spaces">Utvikler sanntidssystemer der lyd, kamera og bevegelse styrer det visuelle i live-rom</li>
             <li data-en="Apply for and manage project funding, and collaborate with musicians, organisers and institutions">Søker og forvalter prosjektstøtte, og samarbeider med musikere, arrangører og institusjoner</li></ul></div></div>
 
-          <div class="entry"><span class="when">2023 – <span class="now" data-en="present">nå</span></span><div>
+          <div class="entry"><span class="when">2023–2026</span><div>
             <h3 data-en="Digital Media Strategist">Digital mediestrateg</h3><p class="org" data-en="Regnbuedagene i Bergen (Bergen Pride)">Regnbuedagene i Bergen</p>
             <ul><li data-en="Hold main responsibility for the festival's social media and content production">Har hovedansvar for festivalens sosiale medier og innholdsproduksjon</li>
             <li data-en="Grew the festival account's reach from 273,000 to over 330,000 views">Økte rekkevidden på festivalkontoen fra 273 000 til over 330 000 visninger</li>
@@ -374,6 +354,8 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
       document.getElementById(t.getAttribute('aria-controls')).classList.toggle('on', on);
     });
   }
+  function openHash(){ var t=tabs.find(function(t){return '#'+t.getAttribute('aria-controls')===location.hash;}); if(t) show(t); }
+  openHash(); window.addEventListener('hashchange',openHash);
   tabs.forEach(function(t,i){
     t.addEventListener('click', function(){ show(t); });
     t.addEventListener('keydown', function(e){
@@ -386,8 +368,10 @@ h2{font-family:var(--px);font-size:19px;margin:1.5rem 0 .6rem;padding-bottom:.2r
 
   document.getElementById('launch').addEventListener('click', function(){
     var f = document.createElement('iframe');
-    f.src = 'https://ingridormevik.github.io/trail-mix-v2.html';
-    f.title = 'Trail Mix';
+    f.src = 'https://html-classic.itch.zone/html/19517672/index.html';
+    f.allow = 'fullscreen';
+    f.allowFullscreen = true;
+    f.title = 'What the Roots Keep';
     f.loading = 'lazy';
     document.querySelector('.stage').appendChild(f);
     document.getElementById('cover').remove();
