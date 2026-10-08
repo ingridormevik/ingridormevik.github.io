@@ -13,6 +13,7 @@
     buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
     const status = root.querySelector('[data-guide-status]');
     if (status) status.textContent = `Stage ${index + 1} of ${stages.length}`;
+    try{localStorage.setItem('dik105-vibe-stage-v1',String(index));}catch(_){}
     if (focus) {
       const heading = stages[index].querySelector('h4,h5') || stages[index];
       heading.tabIndex = -1; heading.focus({preventScroll:true});
@@ -32,7 +33,8 @@
     }
   }
   if (stages.length) {
-    selectStage(0,false);
+    let resume=0;try{resume=Number(localStorage.getItem('dik105-vibe-stage-v1'))||0;}catch(_){}
+    selectStage(resume>=0&&resume<stages.length?resume:0,false);
     window.addEventListener('hashchange',revealHash);
     root.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{
       const target = document.getElementById(a.getAttribute('href').slice(1));
@@ -58,7 +60,7 @@
       position.textContent=`VS Code walkthrough · ${index+1} / ${shots.length}`;
     }
     back.addEventListener('click',()=>show(Math.max(0,current-1)));
-    next.addEventListener('click',()=>current===shots.length-1?selectStage(2):show(current+1)); show(0);
+    next.addEventListener('click',()=>current===shots.length-1?selectStage(Number(screenshotStage.dataset.guideStage)+1):show(current+1)); show(0);
   }
   const rooms = [...root.querySelectorAll('[data-sims-room]')];
   if (rooms.length) {
