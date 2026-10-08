@@ -40,12 +40,12 @@
   ];
 
   const BEATS = [
-    {name: 'INTEND', text: 'Before touching the AI, the student writes one sentence in the intention panel. This describes what the button should do.'},
-    {name: 'ASK', text: 'One small, specific request in Ask mode. It names the elements, the exact words and the limits.'},
-    {name: 'MACHINE WRITES', text: 'In seconds the answer arrives as green lines: proposed, not yet kept. Read the proposed changes before deciding what to use.'},
-    {name: 'READ', text: 'Your turn. Read the green lines like an editor. Click the three lines that make decisions nobody asked for.'},
-    {name: 'TEST', text: 'Clicked once: the words change, but so do the colour, the font, and a pop-up appears. Clicked again: nothing. It cannot go back to now.'},
-    {name: 'MAKE IT YOURS', text: 'The student deletes the three decisions, adds a toggle by hand and tests it twice. Then logs it: tool, ask, kept, changed.'}
+    {name: 'INTEND', text: 'What should your button do? Decide before asking AI. Here, one click shows a possible future for the bus stop; another brings you back.'},
+    {name: 'ASK', text: 'Ask for one change at a time. Name the button, the text it should change and any limits, such as plain JavaScript and keeping your design.'},
+    {name: 'MACHINE WRITES', text: 'Read the green lines before keeping them. Does the code do what you asked? What else has the AI changed?'},
+    {name: 'READ', text: 'Find the three changes you did not ask for. Click the lines that change the background, replace the font and add a pop-up.'},
+    {name: 'TEST', text: 'Try the preview button twice. Does it return to the present? Check the colours, font and pop-up too. Compare what happens with what you wanted.'},
+    {name: 'MAKE IT YOURS', text: 'Remove the unwanted changes. Add a toggle so the second click brings you back, then test both clicks. In your project note, record which AI you used, what you asked for, what you kept and what you changed.'}
   ];
 
   const code = $('[data-code]'), chat = $('[data-chat]'), promptBox = $('[data-prompt]');
@@ -153,7 +153,7 @@
       await wait(500); await press(); await wait(1200); await press();
       if (id !== run) return;
       msg('me', 'LOG · Tool: Copilot, Ask mode · Asked: one click handler · Kept: querySelector + click listener · Changed: removed colour, font and pop-up; added a toggle by hand.').classList.add('is-log');
-      narr.textContent = `${BEATS[5].text} The page is now the student's: try the button.`;
+      narr.textContent = `${BEATS[5].text} Try the corrected button in the preview.`;
     }
     if (id !== run) return;
     playBtn.disabled = n === 3 && !huntDone;
