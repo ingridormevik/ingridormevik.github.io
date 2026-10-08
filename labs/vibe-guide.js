@@ -46,13 +46,15 @@
     const screenshotStage=shots[0].closest('[data-guide-stage]');
     screenshotStage.querySelectorAll('[data-guide-next]').forEach(button=>button.hidden=true);
     const controls = document.createElement('div'); controls.className = 'vb-tool-controls';
+    const instruction=document.createElement('p');instruction.className='vb-tool-instruction';instruction.textContent='Try this in VS Code, then continue. Already done? Go straight to the next step.';root.querySelector('.vb-film').after(instruction);
+    const nextActions=['Sign in','Choose an AI model','Enable a model if needed','See alternative AI tools','Open Chat','Ask about selected code','Review the code changes','Choose Keep or Undo','Restore an earlier version'];
     const back = document.createElement('button'), next = document.createElement('button'), position = document.createElement('span');
     back.type = next.type = 'button'; back.textContent = '← Previous'; position.setAttribute('role','status');
     controls.append(back,position,next); root.querySelector('.vb-film').after(controls);
     let current = 0;
     function show(index) {
       current = index; shots.forEach((shot,i)=>{shot.hidden=i!==index;});
-      back.disabled=index===0; next.textContent=index===shots.length-1?'Next: write my own request →':`Next: ${shots[index+1].querySelector('h3,h4,h5').textContent.trim()} →`;
+      back.disabled=index===0; next.textContent=index===shots.length-1?'Next: write my own request →':`Next: ${nextActions[index+1] || shots[index+1].querySelector('h3,h4,h5').textContent.trim()} →`;
       position.textContent=`VS Code walkthrough · ${index+1} / ${shots.length}`;
     }
     back.addEventListener('click',()=>show(Math.max(0,current-1)));
