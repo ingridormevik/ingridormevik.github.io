@@ -24,7 +24,7 @@
     }
   }
   function render(lab,index=active.get(lab.id)||0){
-    const open=available(lab),limit=allowed(lab);index=Math.min(index,limit);active.set(lab.id,index);
+    const open=available(lab),limit=allowed(lab);if(open){try{const old=Number(localStorage.getItem("dik105-history-unlocked-v1"))||2;localStorage.setItem("dik105-history-unlocked-v1",String(Math.max(old,Number(lab.id.split("-")[1]))));}catch{}}index=Math.min(index,limit);active.set(lab.id,index);
     lab.classList.toggle('quest-locked',!open);
     lab.querySelector('.quest-content').hidden=!open;lab.querySelector('.quest-preview').hidden=open;
     const previous=labs.indexOf(lab);

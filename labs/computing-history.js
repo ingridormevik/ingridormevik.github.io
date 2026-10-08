@@ -33,6 +33,8 @@
   tapeStep=ints([saved.tapeStep],4)[0]||0;inspected=new Set(ints(saved.inspected,3));removed=saved.removed===true;
   notes=ints(saved.notes,2).slice(0,3);opened=new Set(ints(saved.opened,1));connections=Number.isInteger(saved.connections)&&saved.connections>=0?saved.connections:0;
   function save(){try{localStorage.setItem('dik105-history-v1',JSON.stringify({complete:[...complete],current,cardStep,tapeStep,inspected:[...inspected],removed,notes,opened:[...opened],connections}));}catch(_){one('[data-hr-total]').textContent='Progress works here, but this browser cannot save it. Keep this tab open.';}}
+  let unlocked=2;try{unlocked=Math.max(2,Math.min(5,Number(localStorage.getItem('dik105-history-unlocked-v1'))||2));}catch(_){}
+  const labForMachine=[1,2,3,3,5,4];
   const sound=cue=>window.labAudio?.play?.(cue);
   const glyphs=['⚙','▣','⌁','♫','↖','⤴'];
   const graphics=[
@@ -90,10 +92,11 @@
   }
   function button(text,fn,parent=one('[data-hr-controls]')){const node=document.createElement('button');node.type='button';node.textContent=text;node.addEventListener('click',()=>{fn();save();});parent.append(node);return node;}
   function load(index,focus=false){
+    if(labForMachine[index]>unlocked&&!complete.has(index)){status(`This machine opens with Lab ${labForMachine[index]}. Labs 1 and 2 are already open.`);return;}
     current=index;root.dataset.era=String(index);root.classList.remove('hr-running');
     document.querySelectorAll('.hr-era-strip span').forEach((node,i)=>node.classList.toggle('is-current',i===index));
     root.querySelectorAll('[data-hr-era]').forEach(node=>node.setAttribute('aria-pressed',String(Number(node.dataset.hrEra)===index)));
-    if(complete.size<6)one('[data-hr-next]').textContent=`Next machine: ${eras[(index+1)%6].year} / ${eras[(index+1)%6].name} →`;
+    if(complete.size<6){let next=(index+1)%6;for(let step=1;step<=6;step++){const candidate=(index+step)%6;if(labForMachine[candidate]<=unlocked||complete.has(candidate)){next=candidate;break;}}one('[data-hr-next]').textContent=`Next machine: ${eras[next].year} / ${eras[next].name} →`;}
     one('[data-hr-mechanic]').textContent=mechanics[index];one('[data-hr-bridge]').textContent=bridges[index];one('[data-hr-project-idea]').textContent=projectIdeas[index];projectNote.value=typeof projectNotes[index]==='string'?projectNotes[index]:'';one('[data-hr-note-status]').textContent=projectNote.value?'Your saved idea. Keep developing it.':'';
     const era=eras[index];one('[data-hr-person]').textContent=`${era.year} / ${era.person}`;one('[data-hr-title]').textContent=era.name;
     one('[data-hr-fact]').textContent=era.fact;one('[data-hr-task]').textContent=era.task;
@@ -120,9 +123,10 @@
     }
     if(focus){one('[data-hr-title]').focus({preventScroll:true});save();}
   }
+  root.querySelectorAll('[data-hr-era]').forEach(node=>{const i=Number(node.dataset.hrEra);const locked=labForMachine[i]>unlocked&&!complete.has(i);node.disabled=locked;node.querySelector('small').textContent=locked?`Opens in Lab ${labForMachine[i]}`:eras[i].name;});
   root.querySelectorAll('[data-hr-era]').forEach(node=>node.addEventListener('click',()=>load(Number(node.dataset.hrEra),true)));
-  one('[data-hr-next]').addEventListener('click',()=>{const quiz=root.querySelector('[data-hr-quiz]');if(complete.size===6&&quiz&&!quiz.hidden)quiz.click();else load((current+1)%6,true);});
-  function fromHash(){const i=eras.findIndex(era=>location.hash==='#'+era.link);load(i<0?current:i);}
+  one('[data-hr-next]').addEventListener('click',()=>{const quiz=root.querySelector('[data-hr-quiz]');if(complete.size===6&&quiz&&!quiz.hidden)quiz.click();else{for(let step=1;step<=6;step++){const i=(current+step)%6;if(labForMachine[i]<=unlocked||complete.has(i)){load(i,true);break;}}}});
+  function fromHash(){const i=eras.findIndex(era=>location.hash==='#'+era.link);const requested=i<0?current:i;load(labForMachine[requested]<=unlocked||complete.has(requested)?requested:0);}
   window.addEventListener('hashchange',fromHash);fromHash();
   complete.forEach(i=>root.querySelector(`[data-hr-era="${i}"]`).classList.add('is-restored'));
   one('[data-hr-progress]').textContent=`${complete.size} / 6 restored`;one('[data-hr-power]').value=complete.size;
