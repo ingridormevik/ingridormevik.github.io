@@ -40,7 +40,7 @@
       panels[step].scrollIntoView({block:'start', behavior:'auto'});
       window.labAudio?.play?.('unlock');
     } else {
-      location.hash = 'lab-2-sec-3';
+      location.hash = 'lab-2-sec-1';
     }
   });
   new MutationObserver(update).observe(room.querySelector('.mission-lights'), {subtree:true, attributes:true, attributeFilter:['class']});
