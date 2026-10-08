@@ -221,7 +221,7 @@
 #ai-coding .vb-intention .vb-intention-heading{color:#9cdcfe}
 #ai-coding .vb-page p{color:#12343b}
 #ai-coding .vb-page .vb-page-k{color:#8a6d3b}
-#ai-coding .vb-page.is-magenta p{color:#fff}
+#ai-coding .vb-page.is-magenta > .vb-page-story,#ai-coding .vb-page.is-magenta > .vb-page-k{color:#fff}
 #ai-coding .vb-page-btn{background:#12343b;color:#fff;border:0;box-shadow:none;padding:8px 14px;font:600 14px system-ui,sans-serif}
 #ai-coding .vb-alert p{color:#222}
 #ai-coding .vb-alert button{background:#0b57d0;color:#fff;border:0;box-shadow:none}
@@ -253,3 +253,6 @@
 .studio .mission-console .own-mind{background:#142128;color:#f6f8ec;border-left:5px solid #8cdec5;padding:24px}.studio .mission-console .own-mind p,.studio .mission-console .own-mind li,.studio .mission-console .own-mind strong{color:#f6f8ec;opacity:1}.studio .mission-console .own-mind h4{color:#f6f8ec}.studio .mission-console .own-mind .eyebrow{color:#8cdec5}.own-mind-actions{display:flex;gap:12px;flex-wrap:wrap;list-style:none;padding:0;margin:18px 0}.own-mind-actions li{flex:1 1 160px;background:#223940;padding:14px;border:1px solid #8cdec5;font-size:16px}.own-mind-actions strong{display:block;font-size:18px;margin-bottom:4px}.studio .mission-console .own-mind .own-mind-note{border-top:1px solid #628a7d;padding-top:14px;font-size:16px;max-width:65ch}
 /* Keep the simulated alert readable even when AI changes the preview colours. */
 #ai-coding .vb-page .vb-alert{background:#fff;color:#171717;z-index:2;border:2px solid #171717;display:flow-root}#ai-coding .vb-page .vb-alert[hidden]{display:none}#ai-coding .vb-page .vb-alert p{color:#171717;opacity:1;font:14px/1.5 system-ui,sans-serif}#ai-coding .vb-page .vb-alert p:first-child{font-weight:700}#ai-coding .vb-page .vb-alert button{background:#12343b;color:#fff;min-height:44px;padding:8px 18px;border-radius:0}
+
+/* Preview chrome and the corrected page remain readable in every replay beat. */
+#ai-coding .vb-preview .vb-preview-h,#ai-coding .vb-preview .vb-preview-h span{background:#f3f3f3;color:#414141;opacity:1}#ai-coding .vb-page:not(.is-magenta) > .vb-page-story{color:#12343b;opacity:1}#ai-coding .vb-page:not(.is-magenta) > .vb-page-k{color:#604a25;opacity:1}#ai-coding .vb-page .vb-alert p,#ai-coding .vb-page.is-magenta .vb-alert p{color:#171717;opacity:1}
