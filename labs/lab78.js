@@ -15,7 +15,7 @@
   function save(){try{localStorage.setItem('dik105-lab78-v1',JSON.stringify({completed:[...completed],discoveries:[...discoveries],current:Number(root.dataset.activeMission)}));}catch(_){} }
 
   let missionXP = completed.size * 20;
-  const treasureNames = ['1843 / Lovelace’s instruction patterns', '1936 / Turing’s rule machine', '1951 / Manchester computer music', '1947 / Mark II debugging', '1989 / connected information', '1950 / Turing’s question', '1837 / Babbage’s mechanical engine', '1968 / Engelbart’s linked ideas'];
+  const treasureNames = ['1843 / Lovelace’s instruction patterns', '1936 / Turing’s rule machine', '1951 / Manchester computer music', '1947 / Mark II debugging', '1989 / connected information', '1950 / Turing’s question', '1834 / Babbage’s proposed Analytical Engine', '1968 / Engelbart’s linked ideas'];
   const treasureIcons = ['◉', '◎', '♨', '⚙', '♧', '◆', '≈', '✦'];
   discoveries.forEach(id=>{
     root.querySelector(`[data-l78-discover="${id}"]`)?.classList.add('is-discovered');
