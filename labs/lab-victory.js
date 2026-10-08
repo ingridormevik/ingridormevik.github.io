@@ -95,7 +95,8 @@
     window.labAudio?.play?.('complete');
     burst(root.querySelector('.victory-burst'), pass.colour);
 
-    const close = () => { root.remove(); document.body.classList.remove('victory-open'); document.removeEventListener('keydown', keys); if(practice){opener?.focus({preventScroll:true});}else{const map=document.querySelector('.start-lab'); map?.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'start'}); document.querySelector('[data-go]')?.focus({preventScroll:true});} };
+    let dismissed=false;
+    const close = () => { if(dismissed)return;dismissed=true;if(!practice&&document.getElementById(`lab-${n}`)?.dataset.questComplete==='true')setTimeout(()=>document.dispatchEvent(new CustomEvent('victory-dismissed',{detail:{lab:n}})),0);root.remove(); document.body.classList.remove('victory-open'); document.removeEventListener('keydown', keys); if(practice){opener?.focus({preventScroll:true});}else{const map=document.querySelector('.start-lab'); map?.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'start'}); document.querySelector('[data-go]')?.focus({preventScroll:true});} };
     function keys(e) {
       if (e.key === 'Escape') close();
       if (e.key === 'Tab') {
