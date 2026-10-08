@@ -172,9 +172,9 @@
     const beam = room.querySelector('[data-sr-beam]');
     const boot = room.querySelector('[data-boot-status]');
     const say = {
-      1: 'A box called <code>futureText</code> now holds your sentence. Nothing on the page has changed yet: the sentence is waiting in memory.',
-      2: '<code>querySelector("#story")</code> scanned the page and locked onto the paragraph with <code>id="story"</code>. It is now called <code>story</code>.',
-      3: 'Locked onto the button with <code>id="future"</code>. It is now called <code>button</code>.',
+      1: '<code>futureText</code> stores the new sentence. The preview still shows the present. Next: find the paragraph to change.',
+      2: '<code>story</code> refers to the highlighted paragraph. <code>#story</code> matches its HTML id. Next: find the button.',
+      3: '<code>button</code> refers to the highlighted button. Next: tell it what to do when clicked.',
       4: 'The button is <strong>listening</strong>. Nothing happens until someone clicks. Go on: click the button on the page.'
     };
     function scanTo(target) {
@@ -186,7 +186,7 @@
       beam.classList.remove('is-scanning'); void beam.offsetWidth; beam.classList.add('is-scanning');
     }
     runs[0].disabled = false;
-    boot.textContent = 'Press Run line 1.';
+    boot.textContent = 'Start with Run line 1: store the sentence.';
     runs.forEach((button, i) => button.addEventListener('click', () => {
       const n = i + 1;
       button.closest('li').classList.add('is-run');

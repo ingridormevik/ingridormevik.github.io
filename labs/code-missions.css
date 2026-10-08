@@ -119,3 +119,4 @@
 .studio .code-mission a{color:var(--m-deep);font-weight:700;text-underline-offset:3px}
 .studio .code-mission .mission-status a,.studio .code-mission .sr-status a{color:#fff}
 .studio .signal-room .sr-box span{color:var(--m-ink)}
+#signal-room .sr-line-purpose{color:#f5f7ed;font:700 15px/1.4 system-ui,sans-serif;margin:0 0 10px}#signal-room .sr-bridge{margin:0;padding:16px 24px;background:#edf4dd;color:#101820;font:16px/1.5 system-ui,sans-serif;border-bottom:3px solid #12343b}#signal-room .sr-bridge a{display:inline-block;color:#12343b;font-weight:700;text-decoration:underline;margin-left:8px}#signal-room .boot-lines code{display:block;overflow-wrap:anywhere;white-space:pre-wrap;margin-bottom:12px}
