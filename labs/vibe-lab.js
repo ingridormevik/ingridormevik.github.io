@@ -42,7 +42,7 @@
   const BEATS = [
     {name: 'INTEND', text: 'Before touching the AI, the student writes one sentence in the intention panel. This describes what the button should do.'},
     {name: 'ASK', text: 'One small, specific request in Ask mode. It names the elements, the exact words and the limits.'},
-    {name: 'MACHINE WRITES', text: 'In seconds the answer arrives as green lines: proposed, not yet kept. It looks finished. That is the trap.'},
+    {name: 'MACHINE WRITES', text: 'In seconds the answer arrives as green lines: proposed, not yet kept. Read the proposed changes before deciding what to use.'},
     {name: 'READ', text: 'Your turn. Read the green lines like an editor. Click the three lines that make decisions nobody asked for.'},
     {name: 'TEST', text: 'Clicked once: the words change, but so do the colour, the font, and a pop-up appears. Clicked again: nothing. It cannot go back to now.'},
     {name: 'MAKE IT YOURS', text: 'The student deletes the three decisions, adds a toggle by hand and tests it twice. Then logs it: tool, ask, kept, changed.'}

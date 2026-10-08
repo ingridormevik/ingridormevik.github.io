@@ -237,7 +237,7 @@
     const colour = kit('colour').value;
     hex.textContent = colour;
     brief.style.borderLeftColor = colour;
-    brief.textContent = `My vibe brief:\n${personal}The page should feel ${f}.\nUse ${colour} as the main colour.\nMake it move like ${song} sounds.\nBorrow the mood of ${image}.\nStart with one small interaction. Plain JavaScript. Explain every line.`;
+    brief.textContent = `My vibe brief:\n${personal}The page should feel ${f}.\nUse ${colour} as the main colour.\nUse the pace and mood of ${song} as a reference for timing.\nUse ${image} as a visual reference; make an original interpretation.\nStart with one small interaction. Ask who can use it and what the action communicates. Keep my existing style. Plain JavaScript. Explain the changes and how to test them.`;
     return brief.textContent;
   }
   root.querySelectorAll('[data-kit]').forEach(i => i.addEventListener('input', build));

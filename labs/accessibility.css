@@ -88,3 +88,5 @@ html .studio .access-scalable{font-size:calc(var(--access-base-font)*var(--acces
 .access-contrast .studio .access-rocker:after{background:#111!important}.access-contrast .studio .access-state:after{color:#111!important}.access-contrast .studio .access-console-icon svg{stroke:#111}.access-contrast .studio .access-console-icon circle{fill:white}
 /* Phone: keep the console label readable (never below 12px). */
 .studio .access-summary-copy small{font-size:12px!important;letter-spacing:.08em}
+
+.studio .access-resource-tabs{display:flex;justify-content:flex-end;padding:10px 0;gap:12px}.studio .access-resource-tabs a{display:inline-block;padding:8px 14px;min-height:44px;box-sizing:border-box;border:1px solid #64867c;color:#d8ebe6;background:#142128;font:600 14px/1.7 system-ui,sans-serif;text-decoration:none}.studio .access-resource-tabs a:hover{background:#203e48}
