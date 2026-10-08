@@ -11,7 +11,9 @@
   function calibrate(index, quiet=false) {
     if (completed.has(index)) return;
     completed.add(index);
-    one(`[data-eq-badge="${index}"]`).textContent = 'CALIBRATED';
+    one(`[data-eq-badge="${index}"]`).textContent = 'VERIFIED ?';
+    const monitor=one(`[data-eq-monitor="${index}"]`);
+    if(monitor){monitor.classList.add('is-verified');one(`[data-eq-live="${index}"]`).textContent='EXPERIMENT VERIFIED ? Try this in your project, or open the next machine.';}
     one(`[data-eq-select="${index}"]`).classList.add('is-calibrated');
     one('[data-eq-progress]').textContent = `${completed.size} / 6 calibrated`;
     one('[data-eq-power]').value = completed.size;
@@ -24,6 +26,7 @@
   }
   previous.forEach(index=>calibrate(index,true));
   function select(index, focus = false) {
+    try{localStorage.setItem('dik105-equipment-active-v1',String(index));}catch(_){}
     all('[data-eq-station]').forEach(node => { node.hidden = Number(node.dataset.eqStation) !== index; });
     all('[data-eq-select]').forEach(node => node.setAttribute('aria-pressed', String(Number(node.dataset.eqSelect) === index)));
     if (focus) {
@@ -35,11 +38,13 @@
   }
   all('[data-eq-select]').forEach(node => node.addEventListener('click', () => select(Number(node.dataset.eqSelect), true)));
   all('[data-eq-next]').forEach(node => node.addEventListener('click', () => select(Number(node.dataset.eqNext), true)));
-  select(0);
+  let active=0;try{active=Number(localStorage.getItem('dik105-equipment-active-v1'))||0;}catch(_){}
+  select(Number.isInteger(active)&&active>=0&&active<6?active:0);
 
   let clicks = 0;
   one('[data-eq-click]').addEventListener('click', () => {
     one('[data-eq-click-out]').textContent = `Signals received / ${++clicks}`;
+    one('[data-eq-live="0"]').textContent=`${Math.min(clicks,3)} / 3 signals received. Try Tab, then Enter too.`;
     if (clicks >= 3) calibrate(0);
     else sound('transmit');
   });
@@ -52,6 +57,7 @@
     one('[data-eq-scan-code]').textContent = `document.querySelector("${selector}");`;
     one('[data-eq-scan-out]').textContent = match ? `Found <${match.tagName.toLowerCase()}>. This is the element your code can change.` : 'null: no element matches this selector. Check the HTML before changing it.';
     scans.add(selector);
+    one('[data-eq-live="1"]').textContent=`${scans.size} / 3 selectors tested. Compare a real match with #missing.`;
     if (scans.size === 3) calibrate(1);
     else sound('star');
   }));
