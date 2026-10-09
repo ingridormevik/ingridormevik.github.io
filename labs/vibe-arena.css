@@ -242,3 +242,15 @@
   #ai-coding .va-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible}
   #ai-coding .va-steps button{padding:6px 2px;font-size:11px}
 }
+
+/* Ship it: export and publish */
+#ai-coding .va-ship{margin:22px 0 0;padding:16px 18px;border:3px solid var(--va-lime);background:#05090b;max-width:760px}
+#ai-coding .va-ship-steps{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:8px}
+#ai-coding .va-ship-steps li{padding:10px 12px;background:var(--va-panel);border:2px solid var(--va-line);color:var(--va-dim);font-size:16px}
+#ai-coding .va-ship-steps b{display:block;font:700 13px Consolas,monospace;letter-spacing:.12em;color:var(--va-lime);margin-bottom:4px}
+#ai-coding .va-ship-steps a{color:var(--va-yellow);font-weight:700}
+#ai-coding .va-ship code{font:14px Consolas,monospace;background:#000;color:var(--va-lime);padding:1px 6px}
+#ai-coding .va-ship kbd{font:700 13px Consolas,monospace;background:#000;color:var(--va-ink);border:1px solid var(--va-line);border-bottom-width:3px;padding:1px 6px;border-radius:4px}
+#ai-coding .va-ship .va-folder-big{font-size:20px;margin:0;color:var(--va-ink)}
+#ai-coding .va-ship .va-folder-big strong{color:var(--va-lime)}
+#ai-coding .va-ship-tip{margin:12px 0 0;font-weight:700;color:var(--va-yellow)}
