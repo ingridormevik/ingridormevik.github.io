@@ -13,7 +13,7 @@
     buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
     const status = root.querySelector('[data-guide-status]');
     if (status) status.textContent = `Stage ${index + 1} of ${stages.length}`;
-    try{localStorage.setItem('dik105-vibe-stage-v1',String(index));}catch(_){}
+    try{localStorage.setItem('dik105-vibe-stage-v2',String(index));}catch(_){}
     if (focus) {
       const heading = stages[index].querySelector('h4,h5') || stages[index];
       heading.tabIndex = -1; heading.focus({preventScroll:true});
@@ -33,7 +33,7 @@
     }
   }
   if (stages.length) {
-    let resume=0;try{resume=Number(localStorage.getItem('dik105-vibe-stage-v1'))||0;}catch(_){}
+    let resume=0;try{resume=Number(localStorage.getItem('dik105-vibe-stage-v2'))||0;}catch(_){}
     selectStage(resume>=0&&resume<stages.length?resume:0,false);
     window.addEventListener('hashchange',revealHash);
     root.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{

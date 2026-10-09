@@ -1,4 +1,4 @@
-// Lab 02: VIBE//CODE. A replay of one AI coding session, the screenshot zoom and the prompt forge.
+// Lab 02: VIBE//CODE. A replay of one AI coding session. The prompt forge lives in vibe-arena.js.
 (() => {
   const root = document.querySelector('[data-vibe]');
   if (!root) return;
@@ -40,12 +40,12 @@
   ];
 
   const BEATS = [
-    {name: 'INTEND', text: 'What should your button do? Decide before asking AI. Here, one click shows a possible future for the bus stop; another brings you back.'},
-    {name: 'ASK', text: 'Ask for one change at a time. Name the button, the text it should change and any limits, such as plain JavaScript and keeping your design.'},
-    {name: 'MACHINE WRITES', text: 'Read the green lines before keeping them. Does the code do what you asked? What else has the AI changed?'},
-    {name: 'READ', text: 'Find the three changes you did not ask for. Click the lines that change the background, replace the font and add a pop-up.'},
-    {name: 'TEST', text: 'Try the preview button twice. Does it return to the present? Check the colours, font and pop-up too. Compare what happens with what you wanted.'},
-    {name: 'MAKE IT YOURS', text: 'Remove the unwanted changes. Add a toggle so the second click brings you back, then test both clicks. In your project note, record which AI you used, what you asked for, what you kept and what you changed.'}
+    {name: 'INTEND', text: 'Decide first: one click shows the future, the next brings you back.'},
+    {name: 'ASK', text: 'One small request. Name the button, the text and the limits.'},
+    {name: 'MACHINE WRITES', text: 'Green lines are only suggestions until you press Keep.'},
+    {name: 'READ', text: 'Your turn: click the 3 lines nobody asked for.'},
+    {name: 'TEST', text: 'Click the preview button twice. Does it come back?'},
+    {name: 'MAKE IT YOURS', text: 'Unwanted lines out, a toggle in, tested twice. Logged.'}
   ];
 
   const code = $('[data-code]'), chat = $('[data-chat]'), promptBox = $('[data-prompt]');
@@ -228,48 +228,4 @@
   baseScene(0);
   playBtn.textContent = '▶ Play';
 
-  // ---------- Screenshot zoom ----------
-  const dialog = $('[data-zoom-dialog]'), zoomImg = $('[data-zoom-img]');
-  root.querySelectorAll('[data-zoom]').forEach(b => b.addEventListener('click', () => {
-    zoomImg.src = b.dataset.zoom; zoomImg.alt = b.dataset.zoomAlt;
-    if (dialog.showModal) dialog.showModal(); else window.open(b.dataset.zoom, '_blank');
-  }));
-  dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
-
-  // ---------- Prompt forge ----------
-  const fields = [...root.querySelectorAll('[data-f]')], chips = [...root.querySelectorAll('[data-chip]')];
-  const out = $('[data-forge-out]'), power = $('[data-power]'), powerLabel = $('[data-power-label]'), status = $('[data-forge-status]');
-  const LEVELS = ['EMPTY', 'VAGUE WISH', 'GETTING THERE', 'CLEAR BRIEF', "AUTHOR'S BRIEF"];
-  function forge() {
-    const [who, what, why] = fields.map(f => f.value.trim());
-    const limits = chips.filter(c => c.getAttribute('aria-pressed') === 'true').map(c => c.dataset.chip);
-    const filled = [who, what, why].filter(Boolean).length;
-    const score = filled * 2 + Math.min(limits.length, 4);
-    power.style.width = `${Math.round(score / 10 * 100)}%`;
-    powerLabel.textContent = LEVELS[score === 0 ? 0 : score < 4 ? 1 : score < 7 ? 2 : score < 10 ? 3 : 4];
-    root.querySelector('.vb-forge-out').dataset.level = Math.min(4, Math.ceil(score / 2.5));
-    if (!filled) { out.textContent = 'Fill in the three blanks. Your prompt appears here.'; return ''; }
-    const text = `When someone ${who || '___'}, the page should ${what || '___'}, because ${why || '___'}. ${limits.join(' ')}`.trim();
-    out.textContent = text;
-    return text;
-  }
-  fields.forEach(f => f.addEventListener('input', forge));
-  chips.forEach(c => c.addEventListener('click', () => { c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); forge(); }));
-  $('[data-forge-copy]').addEventListener('click', async () => {
-    const text = forge();
-    if (!text) { status.textContent = 'Fill in at least one blank first.'; fields[0].focus(); return; }
-    try { await navigator.clipboard.writeText(text); status.textContent = 'Copied. Paste it into the Chat view in VS Code.'; }
-    catch { status.textContent = 'Select the prompt text and copy it with Ctrl + C.'; }
-  });
-  $('[data-forge-note]').addEventListener('click', () => {
-    const text = forge();
-    if (!text) { status.textContent = 'Fill in at least one blank first.'; fields[0].focus(); return; }
-    const note = document.querySelector('#lab-2-workbench [data-mission] textarea');
-    if (!note) { status.textContent = 'Copy your prompt into your experiment note below.'; return; }
-    const entry = `My prompt: ${text}`;
-    note.value = note.value.trim() ? `${note.value.trim()}\n${entry}` : entry;
-    note.dispatchEvent(new Event('input', {bubbles: true}));
-    status.textContent = 'Added to your experiment note. After you test, add what you kept and what you changed.';
-  });
-  forge();
 })();
