@@ -34,7 +34,7 @@ Reflection prompt: I noticed ____. I used ____ to make the visitor experience __
 
 My next step: ____________________
 
-Screenshot to capture: Show the relevant progress in your own project, or the working starter exercise if you used it. Use the exact evidence format requested in MittUiB; do not present an unfinished required task as complete.
+Attendance: sign the paper attendance sheet. Keep your process notes with your own work.
 
 [ ] Saved the editable files. [ ] Tested the action. [ ] Uploaded the assigned evidence.
 
@@ -44,122 +44,36 @@ Screenshot to capture: Show the relevant progress in your own project, or the wo
 
 ============================================================
 
-LAB 2 / 16 October / A choice becomes a consequence
+LAB 2 / 9 October / JavaScript: your first response
+Open your Lab 1 page in VS Code. Add a paragraph and button.
+Connect story.js with a deferred script line in index.html.
+Find the elements, name an action and connect it to the click.
+Change the words yourself. Save, preview and test the first and second clicks.
+The second click repeats the same action. A reversible click is optional.
+I wanted the visitor to ____. Clicking changed ____. My test showed ____.
+No AI required. Signal Control Room and the AI route are optional extras.
+Attendance: sign the paper attendance sheet. Keep your own process notes.
 
-Question: What does an audience's action change, and why does that matter?
+LAB 3 / 16 October / Construct 1: first contact
+Activate Pro using the course announcement. Keep the code private.
+Open Mapping, move a text and use Preview layout.
+Choose a map. Add three text boxes about real or fictional campus places.
+Connect them with arrows or paths. Add Touch and a tap that reveals hidden text.
+Save your .c3p. Optional: replace the word choices in NPC_Text's NewArray.json.
+My places are ____. My tap reveals ____. My test showed ____.
 
-My ordinary observation: ____________________
+LAB 4 / 23 October / Construct 2: rules and rooms
+Continue your Construct 1 project. Test Gate Engine, then build your own rule.
+Inspect Alinta's scene templates. Repair arrows outside North.
+Test a route out and back. Save your .c3p.
+My condition is ____. My action is ____. My route is ____.
 
-My intended action and consequence: ____________________
+LAB 5 / 30 October / Test lab: user testing and publishing
+Ask someone to try one task. Watch before helping. Revise and retest.
+Construct: keep your .c3p, export Web (HTML5), host and test the playable link.
+HTML projects: GitHub Pages is the alternative publishing route.
+The tester tried ____. I observed ____. I changed ____.
 
-A decision I made and why: ____________________
-
-What a tester actually did or said: ____________________
-
-What I changed after the test: ____________________
-
-A course concept that helps explain the decision: ____________________
-
-Reflection prompt: Before the action ____. After the action ____. I checked ____ by ____. Help came from ____.
-
-My next step: ____________________
-
-Screenshot to capture: Show the relevant progress in your own project, or the working starter exercise if you used it. Use the exact evidence format requested in MittUiB; do not present an unfinished required task as complete.
-
-[ ] Saved the editable files. [ ] Tested the action. [ ] Uploaded the assigned evidence.
-
-[ ] Checked the submission confirmation. [ ] Recorded sources and help.
-
-
-
-============================================================
-
-LAB 3 / 30 October / The same idea in Construct
-
-Question: How does the tool change the way you express an interaction?
-
-My ordinary observation: ____________________
-
-My intended action and consequence: ____________________
-
-A decision I made and why: ____________________
-
-What a tester actually did or said: ____________________
-
-What I changed after the test: ____________________
-
-A course concept that helps explain the decision: ____________________
-
-Reflection prompt: The condition is ____. The action is ____. My idea stayed the same when ____, but the tool changed ____.
-
-My next step: ____________________
-
-Screenshot to capture: Show the relevant progress in your own project, or the working starter exercise if you used it. Use the exact evidence format requested in MittUiB; do not present an unfinished required task as complete.
-
-[ ] Saved the editable files. [ ] Tested the action. [ ] Uploaded the assigned evidence.
-
-[ ] Checked the submission confirmation. [ ] Recorded sources and help.
-
-
-
-============================================================
-
-LAB 4 / 6 November / Take your project to the library
-
-Question: Which books can help you understand, question and explain what you are making?
-
-My ordinary observation: ____________________
-
-My intended action and consequence: ____________________
-
-A decision I made and why: ____________________
-
-What a tester actually did or said: ____________________
-
-What I changed after the test: ____________________
-
-A course concept that helps explain the decision: ____________________
-
-Reflection prompt: My project asks ____. This source argues ____. On page ____ I found ____. It supports or complicates my decision to ____. I still need to investigate ____.
-
-My next step: ____________________
-
-Screenshot to capture: A research card or notes document showing the project question, two source leads, one connection and a checked citation, if this is accepted by the assigned task. Do not photograph other library users or substitute this for a different compulsory submission.
-
-[ ] Saved the editable files. [ ] Tested the action. [ ] Uploaded the assigned evidence.
-
-[ ] Checked the submission confirmation. [ ] Recorded sources and help.
-
-
-
-============================================================
-
-LAB 5 / 13 November / Make it understandable to someone else
-
-Question: Can another person enter the work, use it and understand your decisions?
-
-My ordinary observation: ____________________
-
-My intended action and consequence: ____________________
-
-A decision I made and why: ____________________
-
-What a tester actually did or said: ____________________
-
-What I changed after the test: ____________________
-
-A course concept that helps explain the decision: ____________________
-
-Reflection prompt: I intended ____. The tester encountered ____. I changed ____. This connects to ____ because ____. My next step is ____.
-
-My next step: ____________________
-
-Screenshot to capture: Show the relevant progress in your own project, or the working starter exercise if you used it. Use the exact evidence format requested in MittUiB; do not present an unfinished required task as complete.
-
-[ ] Saved the editable files. [ ] Tested the action. [ ] Uploaded the assigned evidence.
-
-[ ] Checked the submission confirmation. [ ] Recorded sources and help.
-
-
-
-Final assessment: consult the current official brief. These are your working notes, not an essay template, new rubric or replacement submission.
+OPTIONAL ESSAY GUIDE
+Use Guides > Library for source research and Chicago author-date.
+Attendance: sign the paper sheet. Write your reflection on paper and hand it to Ingrid.

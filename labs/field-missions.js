@@ -7,7 +7,7 @@
   const enable = root => root.querySelectorAll('button[disabled]').forEach(b => { b.disabled = false; });
   const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'})[c]);
 
-  // ---------- Lab 3: Gate Engine ----------
+  // ---------- Lab 4: Gate Engine ----------
   const gate = document.querySelector('[data-mission-kind="gate"]');
   if (gate) {
     enable(gate);
@@ -102,10 +102,10 @@
       if (thing && result) light('own', true);
     }
     gate.querySelectorAll('[data-own]').forEach(el => el.addEventListener('input', ownRule));
-    defendTo(gate, 'lab-3');
+    defendTo(gate, 'lab-4');
   }
 
-  // ---------- Lab 4: The Stacks ----------
+  // ---------- Optional essay guide: The Stacks ----------
   const stacks = document.querySelector('[data-mission-kind="stacks"]');
   if (stacks) {
     enable(stacks);
@@ -195,14 +195,14 @@
       citeBook.innerHTML = `Your book: <strong>${esc(b.title)}</strong> by ${esc(b.author)}.`;
       refOut.innerHTML = ref.html;
       const page = citeField('page').value.trim(), idea = citeField('idea').value.trim();
-      const pageOk = /^\d{1,4}(\s*[–-]\s*\d{1,4})?$/.test(page);
-      inOut.textContent = `(${ref.last} ${b.year}${pageOk ? ', ' + page.replace(/\s*-\s*/, '–') : ', page?'})`;
+      const pageOk = /^\d{1,4}(\s*[\u2013-]\s*\d{1,4})?$/.test(page);
+      inOut.textContent = `(${ref.last} ${b.year}${pageOk ? ', ' + page.replace(/\s*-\s*/, '-') : ', page?'})`;
       if (!page) citeStatus.textContent = 'Add the page you actually read. Never invent a page number.';
-      else if (!pageOk) citeStatus.textContent = 'Use a page number or a range, like 45 or 45–52.';
+      else if (!pageOk) citeStatus.textContent = 'Use a page number or a range, like 45 or 45-52.';
       else if (idea.length < 10) citeStatus.textContent = 'Now write the author’s idea in your own words.';
       else {
         citeStatus.textContent = 'Reference and in-text citation are ready. Check them against the book in your hands.';
-        citation = {b, ref, page: page.replace(/\s*-\s*/, '–'), idea}; light('citation', true); return;
+        citation = {b, ref, page: page.replace(/\s*-\s*/, '-'), idea}; light('citation', true); return;
       }
       citation = null;
     }
@@ -220,7 +220,14 @@
       light('bridge', true);
       defendBox.focus();
     });
-    defendTo(stacks, 'lab-4');
+    // The library is an optional essay guide, not Lab 4 progress.
+    stacks.querySelector('[data-defend-add]').addEventListener('click', async () => {
+      const text = stacks.querySelector('[data-defend]').value.trim();
+      const status = stacks.querySelector('[data-defend-status]');
+      if (!text) { status.textContent = 'Write your research note first.'; return; }
+      try { await navigator.clipboard.writeText(text); status.textContent = 'Copied. Paste it into your essay notes.'; }
+      catch (_) { status.textContent = 'Select and copy your note above.'; }
+    });
   }
 
   // ---------- Lab 5: Test Lab ----------

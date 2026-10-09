@@ -11,9 +11,9 @@
   function calibrate(index, quiet=false) {
     if (completed.has(index)) return;
     completed.add(index);
-    one(`[data-eq-badge="${index}"]`).textContent = 'VERIFIED ?';
+    one(`[data-eq-badge="${index}"]`).textContent = 'VERIFIED';
     const monitor=one(`[data-eq-monitor="${index}"]`);
-    if(monitor){monitor.classList.add('is-verified');one(`[data-eq-live="${index}"]`).textContent='EXPERIMENT VERIFIED ? Try this in your project, or open the next machine.';}
+    if(monitor){monitor.classList.add('is-verified');one(`[data-eq-live="${index}"]`).textContent='EXPERIMENT VERIFIED: Try this in your project, or open the next machine.';}
     one(`[data-eq-select="${index}"]`).classList.add('is-calibrated');
     one('[data-eq-progress]').textContent = `${completed.size} / 6 calibrated`;
     one('[data-eq-power]').value = completed.size;

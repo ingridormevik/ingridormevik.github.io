@@ -33,7 +33,7 @@
   tapeStep=ints([saved.tapeStep],4)[0]||0;inspected=new Set(ints(saved.inspected,3));removed=saved.removed===true;
   notes=ints(saved.notes,2).slice(0,3);opened=new Set(ints(saved.opened,1));connections=Number.isInteger(saved.connections)&&saved.connections>=0?saved.connections:0;
   function save(){try{localStorage.setItem('dik105-history-v1',JSON.stringify({complete:[...complete],current,cardStep,tapeStep,inspected:[...inspected],removed,notes,opened:[...opened],connections}));}catch(_){one('[data-hr-total]').textContent='Progress works here, but this browser cannot save it. Keep this tab open.';}}
-  let unlocked=2;try{unlocked=Math.max(2,Math.min(5,Number(localStorage.getItem('dik105-history-unlocked-v1'))||2));}catch(_){}
+  const unlocked = 5; // Optional machines are available without saved course progress.
   const labForMachine=[1,2,3,3,5,4];
   const sound=cue=>window.labAudio?.play?.(cue);
   const glyphs=['⚙','▣','⌁','♫','↖','⤴'];

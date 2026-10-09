@@ -3,7 +3,7 @@
   const map = document.querySelector('.sl-map');
   if (!map) return;
   const levels = [...map.querySelectorAll('a.lv')];
-  const RANKS = ['Lab intern', 'Junior Lab Technician', 'Interaction Engineer', 'Game Mechanic', 'Archive Hacker', 'Lab Director'];
+  const RANKS = ['Lab intern', 'Junior Lab Technician', 'Interaction Engineer', 'Game Mechanic', 'Room Builder', 'Lab Director'];
   const WHAT = ['Arrival note ready', 'Experiment done', 'Lab complete'];
   const labFor = a => document.getElementById(a.getAttribute('href').slice(1));
   const player = document.createElement('span');

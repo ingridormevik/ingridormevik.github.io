@@ -3,12 +3,9 @@
   const labs=[...document.querySelectorAll('.lab')];
   const active=new Map(labs.map(lab=>[lab.id,0]));
   const completeKey=lab=>`dik105-complete-${lab.id}-${document.getElementById('group').value}`;
-  // Every lab and every step is open: students move freely and revisit anything. Set to false to reveal labs one at a time again.
-  const OPEN_ALL=true;
-  function available(lab){
-    const index=labs.indexOf(lab);
-    return OPEN_ALL || index===0 || lab.dataset.openEarly==='true' || labs.slice(0,index).every(item=>item.dataset.questComplete==='true');
-  }
+  // Access never depends on earlier completion, a date, or browser storage.
+  const OPEN_ALL = true;
+  function available(lab) { return true; }
   function ready(lab){return lab.querySelector('[data-paper-arrival]')?.checked || lab.querySelector('[data-checkin]').dataset.checkinReady==='true';}
   function experimentDone(lab){return [...lab.querySelectorAll('[data-check]')].every(x=>x.checked)&&(lab.querySelector('[data-paper-reflection]')?.checked || lab.querySelector('.mission-actions textarea').value.trim().length>=10);}
   function earned(lab){return ready(lab)&&experimentDone(lab);}
@@ -28,7 +25,7 @@
     lab.classList.toggle('quest-locked',!open);
     lab.querySelector('.quest-content').hidden=!open;lab.querySelector('.quest-preview').hidden=open;
     const previous=labs.indexOf(lab);
-    const lockedText=`Complete Lab ${String(previous).padStart(2,'0')} to unlock this experiment.`;
+    const lockedText='Every lab is open. Choose your experiment.';
     lab.querySelector('.quest-date-status').textContent=open?'Experiment unlocked':lockedText;
     lab.querySelectorAll('.journey-panel').forEach((panel,i)=>{panel.hidden=!open||i!==index;});
     lab.querySelectorAll('.journey-nav a').forEach((a,i)=>{

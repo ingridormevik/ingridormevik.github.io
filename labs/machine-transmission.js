@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const channels={1:['1843','cards','The card engine','Instructions become action.'],2:['1936','tape','The tape machine','A rule changes the state. The next action remembers.'],3:['1947 + 1951','bug','Relay detective + sound machine','Inspect, repair, test. Then hear instructions become sound.'],4:['1989','web','The connected world','Follow a link. Find the evidence behind an idea.'],5:['1968','pointer','The pointing machine','Give another person a clear way into your work.']};
+  const channels={1:['1843','cards','The card engine','Instructions become action.'],2:['1936','tape','The tape machine','A rule changes the state. The next action remembers.'],3:['1947 + 1951','bug','Relay detective + sound machine','Inspect a tap response, repair it and test. Then hear instructions become sound.'],4:['1989','web','The connected world','Connect your rooms. Test the route out and back.'],5:['1968','pointer','The pointing machine','Give another person a clear way into your work.']};
   let open=false;
   document.addEventListener('victory-dismissed',event=>{
     const n=event.detail?.lab;if(!channels[n]||open)return;
