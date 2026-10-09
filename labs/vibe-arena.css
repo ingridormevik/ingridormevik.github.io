@@ -290,3 +290,6 @@
 #ai-coding .va-next-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;border-width:3px 0 0;padding:10px max(16px,calc((100vw - 1320px)/2))}
 #ai-coding{padding-bottom:96px}
 @media (max-width:760px){#ai-coding .va-next-bar{padding:8px 10px}}
+#ai-coding .va-restart{background:#000;color:var(--va-ink);border:2px solid var(--va-line);padding:6px 10px;font:700 13px Consolas,monospace;box-shadow:none}
+#ai-coding .va-restart:hover{border-color:var(--va-coral);color:var(--va-coral)}
+.va-projector #ai-coding .va-restart{display:none}

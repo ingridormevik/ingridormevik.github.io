@@ -380,6 +380,18 @@
   ['input', 'click', 'change'].forEach(type => document.addEventListener(type, () => setTimeout(computeNext, 0)));
   setInterval(computeNext, 800);
 
+  // ---------- Restart: play the arena again. Project, goal, saved code and the Lab 2 note stay. ----------
+  $('[data-va-restart]').addEventListener('click', () => {
+    if (!confirm('Start the Vibe Arena again from the beginning? XP, warm-up, rounds and bingo reset. Your project name, goal and Lab 2 note stay.')) return;
+    try {
+      localStorage.removeItem(ARENA_KEY);
+      localStorage.removeItem('dik105-vibe-stage-v2');
+      ['prompt-who', 'prompt-what', 'prompt-why', 'r2', 'r3'].forEach(k => { delete fields[k]; });
+      localStorage.setItem(FIELD_KEY, JSON.stringify(fields));
+    } catch (_) {}
+    location.hash = ''; window.scrollTo(0, 0); location.reload();
+  });
+
   // ---------- Projector mode: ?projector=1 shows the HUD big for the room ----------
   if (new URLSearchParams(location.search).has('projector')) document.documentElement.classList.add('va-projector');
 

@@ -3,11 +3,11 @@
   const labs=[...document.querySelectorAll('.lab')];
   const active=new Map(labs.map(lab=>[lab.id,0]));
   const completeKey=lab=>`dik105-complete-${lab.id}-${document.getElementById('group').value}`;
-  // Reveal one new lab at a time as the preceding lab is completed; data-open-early opens a lab regardless.
-  const OPEN_ALL=false;
+  // Every lab and every step is open: students move freely and revisit anything. Set to false to reveal labs one at a time again.
+  const OPEN_ALL=true;
   function available(lab){
     const index=labs.indexOf(lab);
-    return index===0 || lab.dataset.openEarly==='true' || labs.slice(0,index).every(item=>item.dataset.questComplete==='true');
+    return OPEN_ALL || index===0 || lab.dataset.openEarly==='true' || labs.slice(0,index).every(item=>item.dataset.questComplete==='true');
   }
   function ready(lab){return lab.querySelector('[data-paper-arrival]')?.checked || lab.querySelector('[data-checkin]').dataset.checkinReady==='true';}
   function experimentDone(lab){return [...lab.querySelectorAll('[data-check]')].every(x=>x.checked)&&(lab.querySelector('[data-paper-reflection]')?.checked || lab.querySelector('.mission-actions textarea').value.trim().length>=10);}
