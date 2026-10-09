@@ -5,7 +5,7 @@
 #ai-coding button:disabled{opacity:.45;cursor:not-allowed}
 
 /* HUD */
-#ai-coding .va-hud{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:10px 16px;background:#05090bf2;border-bottom:3px solid #000;box-shadow:0 6px 0 #0006;backdrop-filter:blur(6px)}
+#ai-coding .va-hud{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:10px 16px;background:#05090b;border-bottom:3px solid #000;box-shadow:0 6px 0 #0006}
 #ai-coding .va-hud p{margin:0}
 #ai-coding .va-hud-round{font:700 14px Consolas,monospace;letter-spacing:.12em;color:#111;background:var(--va-lime);padding:6px 10px;border:2px solid #000}
 #ai-coding .va-clock{display:flex;align-items:center;gap:6px}
@@ -35,16 +35,16 @@
 #ai-coding .va-start:not(:disabled):active{transform:translate(3px,3px);box-shadow:2px 2px 0 #000}
 
 /* Cold open */
-#ai-coding .va-cold{min-height:86vh;background:radial-gradient(circle at 80% 15%,#ff5fd233,transparent 45%),radial-gradient(circle at 10% 90%,#c6f15b22,transparent 50%),#05090b;overflow:hidden}
+#ai-coding .va-cold{min-height:86vh;background:#05090b;overflow:hidden}
 #ai-coding .va-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,#ffffff07 0 1px,transparent 1px 4px);pointer-events:none}
 #ai-coding .va-cold-line{font:400 clamp(52px,11vw,132px)/.9 Impact,'Arial Narrow',sans-serif;text-transform:uppercase;margin:0 0 22px;color:var(--va-ink)}
-#ai-coding .va-cold-line em{color:var(--va-lime);font-style:italic;text-shadow:4px 4px 0 #000,0 0 30px #c6f15b66}
+#ai-coding .va-cold-line em{color:var(--va-lime);font-style:italic;text-shadow:4px 4px 0 #000}
 #ai-coding .va-cold-sub{max-width:720px;font-size:20px;color:var(--va-dim);margin:0 0 28px}
 #ai-coding .va-cold-sub strong{color:var(--va-ink)}
 #ai-coding .va-loadout{position:relative;max-width:720px;background:var(--va-panel);border:3px solid #000;box-shadow:8px 8px 0 #000;padding:22px}
 #ai-coding .va-loadout label,#ai-coding .va-forge label,#ai-coding .va-decide label,#ai-coding .va-wide{display:block;font-weight:700;margin:0 0 14px;color:var(--va-ink)}
 #ai-coding .va-stage input[type=text],#ai-coding .va-loadout input{display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:12px 14px;background:#05090b;color:var(--va-ink);border:2px solid var(--va-line);font:17px system-ui,sans-serif}
-#ai-coding .va-stage input[type=text]:focus,#ai-coding .va-loadout input:focus{border-color:var(--va-lime);outline:none;box-shadow:0 0 0 3px #c6f15b44}
+#ai-coding .va-stage input[type=text]:focus,#ai-coding .va-loadout input:focus{border-color:var(--va-lime);outline:none;box-shadow:0 0 0 3px #c6f15b}
 #ai-coding .va-import{margin:0 0 10px;color:var(--va-dim);font-size:15px}
 #ai-coding .va-import button,#ai-coding .va-code button,#ai-coding .va-actions button,#ai-coding .va-skip button{background:transparent;color:var(--va-ink);border:2px solid var(--va-line);padding:8px 12px;font-weight:700;box-shadow:none}
 #ai-coding .va-code{margin:0 0 12px}
@@ -83,7 +83,7 @@
 #ai-coding .va-skip{margin:18px 0 0;text-align:right}
 
 /* Build rounds */
-#ai-coding .va-build{background:radial-gradient(circle at 90% 0,#6fb7ff22,transparent 40%),#0b1418}
+#ai-coding .va-build{background:#0b1418}
 #ai-coding .va-rounds{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0;margin:0 0 20px}
 #ai-coding .va-rounds li{padding:10px;text-align:center;font:700 14px Consolas,monospace;border:2px solid var(--va-line);color:var(--va-dim)}
 #ai-coding .va-rounds li.is-on{background:var(--va-yellow);color:#111;border-color:#000;box-shadow:4px 4px 0 #000}
@@ -125,13 +125,13 @@
 #ai-coding .va-award{display:flex;align-items:center;gap:18px;margin:6px 0 0}
 #ai-coding .va-award p{margin:0;font-size:18px;color:var(--va-ink)}
 #ai-coding .va-award span{font:700 16px Consolas,monospace;color:var(--va-yellow)}
-#ai-coding .va-cone{width:96px;height:120px;padding:10px;background:radial-gradient(circle,#ffd23f55,transparent 70%),#140a2b;border:3px solid #000;box-shadow:5px 5px 0 #000}
+#ai-coding .va-cone{width:96px;height:120px;padding:10px;background:#140a2b;border:3px solid #000;box-shadow:5px 5px 0 #000}
 #ai-coding .va-cone svg{width:100%;height:100%}
 #ai-coding .va-cone.is-pop{animation:va-cone .6s ease-out}
-@keyframes va-cone{30%{transform:scale(1.25) rotate(-10deg);box-shadow:0 0 40px #ffd23f}60%{transform:scale(.95) rotate(6deg)}}
+@keyframes va-cone{30%{transform:scale(1.25) rotate(-10deg)}60%{transform:scale(.95) rotate(6deg)}}
 
 /* Gallery walk + label */
-#ai-coding .va-show{background:radial-gradient(circle at 50% 0,#ffd23f1f,transparent 50%),#0b1418}
+#ai-coding .va-show{background:#0b1418}
 #ai-coding .va-label{background:#f7f3ea;color:#12343b;border:3px solid #000;box-shadow:10px 10px 0 #000;padding:26px 28px;max-width:560px;margin:0 0 20px}
 #ai-coding .va-label p,#ai-coding .va-label li{color:#12343b}
 #ai-coding .va-label-k{font:700 12px Consolas,monospace;letter-spacing:.16em;color:#8a6d3b!important;margin:0 0 8px}
@@ -201,14 +201,14 @@
 #ai-coding .va-tests input{vertical-align:-5px;margin:0 12px 0 0}
 
 /* Playtest party */
-#ai-coding .va-duel{background:radial-gradient(circle at 15% 10%,#ff5fd233,transparent 40%),radial-gradient(circle at 90% 80%,#6fb7ff2e,transparent 45%),#0b1418;overflow:hidden}
+#ai-coding .va-duel{background:#0b1418;overflow:hidden}
 #ai-coding .va-roles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 22px}
 #ai-coding .va-roles p{margin:0;padding:14px 16px;background:var(--va-panel);border:3px solid #000;box-shadow:5px 5px 0 #000;color:var(--va-dim);font-size:16px}
 #ai-coding .va-roles b{display:block;font:700 14px Consolas,monospace;letter-spacing:.1em;color:var(--va-lime);margin-bottom:4px}
 #ai-coding .va-roles p+p b{color:var(--va-pink)}
 #ai-coding .va-bingo-wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:start}
 #ai-coding .va-bingo{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px;margin:0;background:#000;border:3px solid #000;box-shadow:8px 8px 0 #000}
-#ai-coding .va-bingo.is-bingo{box-shadow:8px 8px 0 #000,0 0 0 4px var(--va-yellow),0 0 40px #ffd23f66}
+#ai-coding .va-bingo.is-bingo{box-shadow:8px 8px 0 #000,0 0 0 4px var(--va-yellow)}
 #ai-coding .va-bingo button{width:100%;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;background:var(--va-panel);color:var(--va-ink);border:2px solid var(--va-line);font:600 14px/1.25 system-ui,sans-serif;text-align:center;box-shadow:none;transition:transform .15s}
 #ai-coding .va-bingo button i{font-style:normal;font-size:28px;line-height:1}
 #ai-coding .va-bingo button b{color:var(--va-yellow)}
