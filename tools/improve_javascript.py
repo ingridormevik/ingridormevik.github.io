@@ -175,8 +175,8 @@ Attendance: sign the paper attendance sheet. Keep your own process notes.
     save('lab-process-worksheet.txt', worksheet)
     save('javascript-first-example/index.html', HTML)
     save('javascript-first-example/story.js', CODE)
-    from add_html_missions import add_missions
-    add_missions(out)
+    from simplify_lab2 import simplify
+    simplify(out.parent)
     with zipfile.ZipFile(out / 'javascript-beginner-starter.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
         archive.writestr('my-first-interaction/index.html', HTML)
         archive.writestr('my-first-interaction/story.js', '// Step 3: write your click action here.\n')
