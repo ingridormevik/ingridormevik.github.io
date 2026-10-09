@@ -56,7 +56,7 @@
     let current = 0;
     function show(index) {
       current = index; shots.forEach((shot,i)=>{shot.hidden=i!==index;});
-      back.disabled=index===0; next.textContent=index===shots.length-1?'Next: write my own request →':`Next: ${nextActions[index+1] || shots[index+1].querySelector('h3,h4,h5').textContent.trim()} →`;
+      back.disabled=index===0; next.textContent=index===shots.length-1?'Next: test my own project →':`Next: ${nextActions[index+1] || shots[index+1].querySelector('h3,h4,h5').textContent.trim()} →`;
       position.textContent=`VS Code walkthrough · ${index+1} / ${shots.length}`;
     }
     back.addEventListener('click',()=>show(Math.max(0,current-1)));
