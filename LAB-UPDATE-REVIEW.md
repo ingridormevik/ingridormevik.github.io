@@ -29,7 +29,7 @@ The DIKULT106 / DIGITAL ETHICS label is unchanged. It is baked into 13 HTML page
 - All five dates and schedule totals; two breaks per lab; no extension rows.
 - Six template sections, Gate Engine in Lab 4, Test Lab preserved and library quest under the optional guide.
 - Four primary JavaScript reader steps and the optional advanced routes.
-- Local file links, relevant fragments, duplicate programme IDs, UTF-8 and 42 JavaScript syntax checks.
+- Local file links, relevant fragments, duplicate programme IDs, UTF-8 and 43 JavaScript syntax checks.
 - The actual schedule script with a saved 120 preference, blocked storage and morning/afternoon switching.
 - The first-click script: no early text change, first click changes it, second click repeats it, personalised text works and a wrong id exposes the expected error.
 - Blank starter and completed solution agree with the example files. Git diff whitespace check passes.
@@ -104,3 +104,16 @@ The complete list follows. Pages with only shared script-cache or punctuation ch
 - [tools/verify_first_click.cjs](tools/verify_first_click.cjs)
 - [tools/verify_lab_plan.py](tools/verify_lab_plan.py)
 - [tools/verify_schedule.cjs](tools/verify_schedule.cjs)
+
+## Optional HTML missions
+
+Two closed help drawers now sit beside the first two beginner steps. The object scanner includes a live button and a choice with explanatory feedback. The file connector explains head, body, script and defer with a three-part circuit. Correct answers earn independent badges; nothing locks the four guide steps. Badges are saved only in this browser when storage is available. The complete MDN HTML reference is an optional drawer under Guides. No animation, timer or sound was added.
+
+The runtime check covers wrong answers, independent completion, the demo and blocked storage. Visual browser review is still pending.
+
+Additional files:
+
+- [labs/html-missions.js](labs/html-missions.js)
+- [labs/html-missions.css](labs/html-missions.css)
+- [tools/add_html_missions.py](tools/add_html_missions.py)
+- [tools/verify_html_missions.cjs](tools/verify_html_missions.cjs)

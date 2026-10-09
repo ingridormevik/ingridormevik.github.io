@@ -16,6 +16,8 @@
   "labs/equipment-lab2.js",
   "labs/field-missions.js",
   "labs/github-guide.html",
+  "labs/html-missions.css",
+  "labs/html-missions.js",
   "labs/index.html",
   "labs/javascript-beginner-starter.zip",
   "labs/javascript-construct.html",
@@ -36,10 +38,12 @@
   "labs/start-lab.js",
   "labs/tools.html",
   "labs/vibecoding.html",
+  "tools/add_html_missions.py",
   "tools/improve_javascript.py",
   "tools/update_lab_plan.ps1",
   "tools/update_lab_plan.py",
   "tools/verify_first_click.cjs",
+  "tools/verify_html_missions.cjs",
   "tools/verify_lab_plan.py",
   "tools/verify_schedule.cjs"
 ]
