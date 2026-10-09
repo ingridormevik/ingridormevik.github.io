@@ -19,14 +19,14 @@
 
   function passFor(n) {
     try {
-      const saved = JSON.parse(sessionStorage.getItem(`dik105-pass-v1-${n}-${group()}`) || 'null');
+      const saved = JSON.parse((localStorage.getItem(`dik105-pass-v1-${n}-${group()}`)??sessionStorage.getItem(`dik105-pass-v1-${n}-${group()}`)) || 'null');
       if (saved && typeof saved.name === 'string') return {name: saved.name.slice(0, 100), colour: /^#[0-9a-f]{6}$/i.test(saved.colour || '') ? saved.colour : null};
     } catch {}
     return {name: '', colour: null};
   }
   function completedCount() {
     let count = 0;
-    for (let n = 1; n <= 5; n++) { try { if (sessionStorage.getItem(`dik105-complete-lab-${n}-${group()}`) === 'yes') count++; } catch {} }
+    for (let n = 1; n <= 5; n++) { try { if ((localStorage.getItem(`dik105-complete-lab-${n}-${group()}`)??sessionStorage.getItem(`dik105-complete-lab-${n}-${group()}`)) === 'yes') count++; } catch {} }
     return count;
   }
 

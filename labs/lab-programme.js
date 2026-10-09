@@ -3,7 +3,7 @@
   const duration = document.getElementById('duration');
   const view = document.getElementById('view');
   try {
-    const saved = JSON.parse(sessionStorage.getItem('dik105-session-options') || 'null');
+    const saved = JSON.parse((localStorage.getItem('dik105-session-options')??sessionStorage.getItem('dik105-session-options')) || 'null');
     if (saved && ['495','855'].includes(saved.group)) group.value = saved.group;
     if (saved && ['105','120'].includes(saved.duration)) duration.value = saved.duration;
   } catch {}
@@ -42,7 +42,7 @@
   }
   [group, duration].forEach(control => control.addEventListener('change', update));
   [group, duration].forEach(control => control.addEventListener('change', () => {
-    try { sessionStorage.setItem('dik105-session-options', JSON.stringify({group:group.value,duration:duration.value})); } catch {}
+    try { localStorage.setItem('dik105-session-options', JSON.stringify({group:group.value,duration:duration.value})); } catch {}
   }));
   document.querySelectorAll('[data-clock-group]').forEach(b => b.addEventListener('click', () => {
     clockGroup = b.dataset.clockGroup;

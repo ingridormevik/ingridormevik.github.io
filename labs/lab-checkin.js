@@ -58,7 +58,7 @@
       if (fresh) { card.classList.remove('is-new'); void card.offsetWidth; card.classList.add('is-new'); }
     }
     try {
-      const saved = JSON.parse(sessionStorage.getItem(savedKey()) || 'null');
+      const saved = JSON.parse((localStorage.getItem(savedKey())??sessionStorage.getItem(savedKey())) || 'null');
       if (saved && typeof saved.name === 'string' && saved.name.trim() && saved.name.length <= 100 && typeof saved.idea === 'string' && saved.idea.trim().length >= 10 && saved.idea.length <= 280) {
         name.value = saved.name; idea.value = saved.idea;
         if (typeof saved.colour === 'string') setColour(saved.colour);
@@ -69,7 +69,7 @@
     function invalidate() {
       snapshot = null; result.hidden = true; form.hidden = false;
       panel.dataset.checkinReady = 'false';
-      try { sessionStorage.removeItem(savedKey()); } catch {}
+      try { (localStorage.removeItem(savedKey()),sessionStorage.removeItem(savedKey())); } catch {}
       feedback.textContent = '';
       announce();
     }
@@ -83,7 +83,7 @@
       const hidden = privateThought ? privateThought.value.trim().length : 0;
       redaction = hidden ? '█'.repeat(Math.min(36, Math.max(4, Math.ceil(hidden / 4)))) : '';
       showPass(true);
-      try { sessionStorage.setItem(savedKey(),JSON.stringify({name:snapshot.name,idea:snapshot.idea,colour:snapshot.colour})); }
+      try { localStorage.setItem(savedKey(),JSON.stringify({name:snapshot.name,idea:snapshot.idea,colour:snapshot.colour})); }
       catch { feedback.textContent='This browser cannot keep your note while you visit a guide. Copy it into your own notes before leaving this page.'; }
       announce(); card.focus();
     });

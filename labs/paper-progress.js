@@ -24,11 +24,11 @@
     paper.prepend(help);
     function restore() {
       let saved;
-      try { saved = JSON.parse(sessionStorage.getItem(key()) || 'null'); } catch {}
+      try { saved = JSON.parse((localStorage.getItem(key())??sessionStorage.getItem(key())) || 'null'); } catch {}
       controls.forEach((control, index) => { control.checked = saved?.[index] === true; });
     }
     controls.forEach(control => control.addEventListener('change', () => {
-      try { sessionStorage.setItem(key(), JSON.stringify(controls.map(input => input.checked))); } catch {}
+      try { localStorage.setItem(key(), JSON.stringify(controls.map(input => input.checked))); } catch {}
       document.dispatchEvent(new Event('lab-progress'));
     }));
     lab.querySelector('[data-confirm-reset]').addEventListener('click', () => {
