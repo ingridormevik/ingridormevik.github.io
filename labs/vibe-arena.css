@@ -236,3 +236,9 @@
 }
 @media (max-width:760px){#ai-coding .va-bingo button{font-size:11px;gap:3px}#ai-coding .va-free button{font-size:15px}}
 #ai-coding .va-duck{margin:6px 0 0;padding:10px 12px;border-left:4px solid var(--va-yellow);background:#05090b;color:var(--va-dim);font-size:15px}#ai-coding .va-duck strong{color:var(--va-ink)}
+
+/* Phones: every stage button visible, no sideways scrolling in the HUD. */
+@media (max-width:760px){
+  #ai-coding .va-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible}
+  #ai-coding .va-steps button{padding:6px 2px;font-size:11px}
+}
