@@ -79,3 +79,8 @@ section[data-panel="3"] h2{font-size:clamp(34px,4.4vw,62px);margin:14px 0 22px}
 .digits{white-space:nowrap;font-size:clamp(28px,3.4vw,54px)}
 .works .card p{margin-top:8px}
 .digits{font-size:clamp(28px,3.6vw,60px)}.countdown{overflow:hidden}.units{word-spacing:.6em}
+/* Headline breathing room: descenders must not hit the next line or the lime highlight */
+h1,h2{line-height:1.12}
+.slam{line-height:1.12;padding-bottom:.08em}
+h1 em.slam{padding:.02em .18em .14em;margin-top:.12em}
+section[data-panel="0"] h1{margin-bottom:34px}
