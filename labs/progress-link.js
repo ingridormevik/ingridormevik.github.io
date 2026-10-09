@@ -60,7 +60,10 @@
 <textarea readonly rows="3" aria-label="Your progress link"></textarea>
 <p class="pl-actions"><button type="button" data-pl-copy>Copy link</button> <button type="button" data-pl-share hidden>Share…</button> <button type="button" data-pl-close>Close</button></p>
 <p class="pl-status" role="status"></p>`;
-    document.body.append(btn, dlg);
+    // Sit in the lab header next to the sound toggle when there is one; float only on pages without it.
+    const nav = document.querySelector('.studio-header nav');
+    if (nav) { btn.classList.add('pl-in-nav'); btn.textContent = '💾 Save progress'; nav.append(btn); } else document.body.append(btn);
+    document.body.append(dlg);
     const box = dlg.querySelector('textarea'), status = dlg.querySelector('.pl-status'), share = dlg.querySelector('[data-pl-share]');
     if (navigator.share) share.hidden = false;
     btn.addEventListener('click', async () => {
@@ -77,14 +80,22 @@
     share.addEventListener('click', () => navigator.share({title: 'My DIKULT105 lab progress', url: box.value}).catch(() => {}));
     dlg.querySelector('[data-pl-close]').addEventListener('click', () => dlg.close ? dlg.close() : dlg.removeAttribute('open'));
     const css = document.createElement('style');
-    css.textContent = `.pl-button{position:fixed;left:12px;bottom:12px;z-index:60;font:700 14px/1 system-ui,sans-serif;padding:10px 14px;background:#ffd23f;color:#111;border:3px solid #000;box-shadow:4px 4px 0 #000;cursor:pointer}
-.pl-button:focus-visible{outline:3px solid #fff;outline-offset:3px}
-.pl-dialog{max-width:min(560px,92vw);border:3px solid #000;box-shadow:8px 8px 0 #000;background:#f9f4e5;color:#101019;padding:20px;font:16px/1.5 system-ui,sans-serif}
-.pl-dialog::backdrop{background:#000b}.pl-dialog h2{margin:0 0 8px;font:900 26px/1.1 system-ui,sans-serif}
-.pl-dialog textarea{width:100%;box-sizing:border-box;font:12px/1.4 Consolas,monospace;border:2px solid #101019;padding:8px;background:#fff;color:#101019}
-.pl-actions{display:flex;flex-wrap:wrap;gap:8px}.pl-actions button{font:700 15px system-ui,sans-serif;padding:9px 14px;border:3px solid #000;background:#d0ef65;color:#101019;cursor:pointer}
-.pl-actions [data-pl-close]{background:#fff}.pl-status{min-height:1.3em;margin:6px 0 0;font-weight:700}
-.pl-dialog p,.pl-dialog strong,.pl-dialog h2{color:#101019!important}.pl-dialog .pl-status{color:#2f5a00!important}@media (max-width:640px){.pl-button{font-size:13px;padding:8px 10px;left:8px;bottom:8px}}@media print{.pl-button{display:none}}`;
+    css.textContent = `.pl-button{position:fixed;left:12px;bottom:12px;z-index:60;min-height:44px;padding:8px 12px;border:2px solid #a4b5bd;border-radius:4px;background:#102630;color:#eff5f2;font:700 14px/1.4 Consolas,monospace;cursor:pointer}
+.studio .studio-header nav .pl-button.pl-in-nav{position:static;min-height:44px;padding:8px 12px;border:2px solid #a4b5bd;border-radius:4px;background:#102630;color:#eff5f2;font:700 14px/1.4 Consolas,monospace;box-shadow:3px 3px 0 #0b1418}
+.pl-button:hover,.studio .studio-header nav .pl-button.pl-in-nav:hover{border-color:#c6f15b;color:#c6f15b}
+.pl-button:focus-visible{outline:3px solid #ffd23f;outline-offset:3px}
+.pl-dialog{max-width:min(560px,92vw);border:2px solid #a4b5bd;border-radius:4px;background:#102630;color:#eff5f2;padding:22px;font:16px/1.55 'Segoe UI',Arial,sans-serif}
+.pl-dialog::backdrop{background:#000c}
+.pl-dialog h2{margin:0 0 10px;font:700 20px/1.3 Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;color:#c6f15b!important}
+.pl-dialog p,.pl-dialog strong{color:#eff5f2!important}
+.pl-dialog textarea{width:100%;box-sizing:border-box;font:12px/1.4 Consolas,monospace;border:2px solid #a4b5bd;border-radius:4px;padding:8px;background:#071116;color:#eff5f2}
+.pl-actions{display:flex;flex-wrap:wrap;gap:8px}
+.pl-actions button{min-height:44px;font:700 14px/1.4 Consolas,monospace;padding:8px 14px;border:2px solid #a4b5bd;border-radius:4px;background:#102630;color:#eff5f2;cursor:pointer}
+.pl-actions [data-pl-copy]{background:#c6f15b;border-color:#c6f15b;color:#102630}
+.pl-actions button:focus-visible{outline:3px solid #ffd23f;outline-offset:3px}
+.pl-dialog .pl-status{min-height:1.3em;margin:8px 0 0;font-weight:700;color:#c6f15b!important}
+@media (max-width:640px){.pl-button:not(.pl-in-nav){font-size:13px;left:8px;bottom:8px}}
+@media print{.pl-button{display:none}}`;
     document.head.append(css);
   }
 
