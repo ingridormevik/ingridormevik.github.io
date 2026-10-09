@@ -307,7 +307,7 @@
     const status = $('[data-vibe-review-status]');
     if (!lines.length) { status.textContent = 'Finish at least one round first.'; return; }
     note(`AI-assisted coding: ${val('project')}\nMy goal: ${val('goal')}\n${lines.join('\n')}`);
-    status.textContent = 'Saved to your Lab 2 note.'; sound('complete');
+    status.textContent = 'Saved to your Lab 2 note.'; sound('complete'); arena.saved = true; saveArena();
   });
   $('[data-va-unlock]').addEventListener('click', () => {
     const t = $('[data-va-transmission]'); t.hidden = false; sound('unlock');
@@ -315,8 +315,73 @@
     setTimeout(() => { go(6); }, calm() ? 0 : 1600);
   });
 
+  // ---------- NEXT bar: always exactly one clear next action ----------
+  const nextText = $('[data-va-next-text]'), nextGo = $('[data-va-next-go]'), learnOut = $('[data-va-learn]');
+  // The DIKULT105 outcome each stage practises.
+  const LEARN = ['Concept: plan one change to your own project', 'Analyse design and aesthetics in interaction', 'Look critically at digital outputs', 'Create a digital output with code', 'Test, look critically, defend your choices', 'From concept to exporting and publishing', 'Creative techniques for software'];
+  let nextTarget = null, nextAction = null;
+  function point(el, text, act) { nextTarget = el; nextAction = act || null; if (nextText.textContent !== text) nextText.textContent = text; }
+  function computeNext() {
+    const i = stages.findIndex(s => !s.hidden);
+    learnOut.textContent = LEARN[i] ? `🎯 You practise: ${LEARN[i]}` : '';
+    if (i === 0) {
+      if (val('project').length < 3) return point($('[data-vibe-project="project"]'), 'Name your project');
+      if (val('goal').length < 5) return point($('[data-vibe-project="goal"]'), 'Write the one thing it should do today');
+      return point(startBtn, 'Press START', () => startBtn.click());
+    }
+    if (i === 1) {
+      const play = $('[data-play]'), hunt = $('[data-hunt]');
+      if (hunt && !hunt.hidden && play.disabled) return point(hunt, 'Click the 3 lines nobody asked for');
+      if (/again/i.test(play.textContent)) return point($('#vibe-replay .va-skip button'), 'Go to the warm-up', () => go(2));
+      if (play.disabled) return point(play, 'Watch this beat');
+      return point(play, play.textContent.replace('▶', '').trim(), () => play.click());
+    }
+    if (i === 2) {
+      if (!$('[data-va-warm-end]').hidden) return point($('[data-va-warm-end] [data-guide-next]'), 'Start round 1 in your own project', () => go(3));
+      if (!nextBtn.hidden) return point(nextBtn, nextBtn.textContent.replace('→', '').trim(), () => nextBtn.click());
+      return point($('.va-judge'), 'Judge it: SLOP or SOLID?');
+    }
+    if (i === 3) {
+      const r = Math.min(arena.round, 2);
+      const blanks = (r === 0 ? forgeIn : [$(r === 1 ? '[data-va-r2]' : '[data-va-r3]')]).filter(f => !f.value.trim());
+      if (blanks.length) return point(blanks[0], `Round ${r + 1}: fill in the blank${blanks.length > 1 ? 's' : ''}`);
+      if (!arena.copied?.[r]) return point($('[data-forge-copy]'), 'Copy your prompt', () => $('[data-forge-copy]').click());
+      if (!decision) return point($('.va-decide'), 'In VS Code: Ctrl+Alt+I, paste, read the green lines. Then choose here');
+      if ($('[data-va-why]').value.trim().length < 4) return point($('[data-va-why]'), 'One line: why?');
+      return point($('[data-va-finish-round]'), `Finish round ${r + 1}`, () => $('[data-va-finish-round]').click());
+    }
+    if (i === 4) {
+      if (!lines()) return point($('.va-bingo'), 'Test your page: tick 3 in a row');
+      if (glow.value.trim().length < 4) return point(glow, 'Write one glow: what works?');
+      if (grow.value.trim().length < 4) return point(grow, 'Write one level up: what next?');
+      return point($('[data-va-duel-done]'), 'Finish', () => $('[data-va-duel-done]').click());
+    }
+    if (i === 5) {
+      if (!arena.saved) return point($('[data-vibe-save-review]'), 'Save your run to your Lab 2 note', () => $('[data-vibe-save-review]').click());
+      if (!arena.shipped) return point($('.va-ship'), 'Ship it: publish and check on your phone', () => { arena.shipped = true; saveArena(); });
+      return point($('[data-va-unlock]'), "Unlock Dr. Turing's Lab 2078", () => $('[data-va-unlock]').click());
+    }
+    return point($('#vibe-extra'), "Explore Turing's lab, or keep building your project");
+  }
+  function reveal(el) {
+    if (!el) return;
+    el.scrollIntoView({behavior: calm() ? 'instant' : 'smooth', block: 'center'});
+    const focusable = el.matches('input,textarea,button,a,select') ? el : el.querySelector('input,textarea,button,a');
+    if (focusable) setTimeout(() => focusable.focus({preventScroll: true}), calm() ? 0 : 350);
+    el.classList.remove('va-target'); void el.offsetWidth; el.classList.add('va-target');
+    setTimeout(() => el.classList.remove('va-target'), 2400);
+  }
+  nextGo.addEventListener('click', () => {
+    computeNext();
+    if (nextAction) { const el = nextTarget; nextAction(); if (el && !el.matches('button')) reveal(el); }
+    else reveal(nextTarget);
+    setTimeout(computeNext, 50);
+  });
+  ['input', 'click', 'change'].forEach(type => document.addEventListener(type, () => setTimeout(computeNext, 0)));
+  setInterval(computeNext, 800);
+
   // ---------- Projector mode: ?projector=1 shows the HUD big for the room ----------
   if (new URLSearchParams(location.search).has('projector')) document.documentElement.classList.add('va-projector');
 
-  loadoutReady(); forge(); onStage();
+  loadoutReady(); forge(); onStage(); computeNext();
 })();
