@@ -90,3 +90,6 @@ html .studio .access-scalable{font-size:calc(var(--access-base-font)*var(--acces
 .studio .access-summary-copy small{font-size:12px!important;letter-spacing:.08em}
 
 .studio .access-resource-tabs{display:flex;justify-content:flex-end;padding:10px 0;gap:12px}.studio .access-resource-tabs a{display:inline-block;padding:8px 14px;min-height:44px;box-sizing:border-box;border:1px solid #64867c;color:#d8ebe6;background:#142128;font:600 14px/1.7 system-ui,sans-serif;text-decoration:none}.studio .access-resource-tabs a:hover{background:#203e48}
+
+/* Keep the keyboard skip link readable above shared link styles. */
+body.studio .access-skip{background:#fff;color:#17354a}

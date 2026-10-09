@@ -35,3 +35,6 @@
 .access-calm .code-explain{box-shadow:none}
 @media(max-width:700px){.ce-lines li{grid-template-columns:minmax(0,1fr)}.ce-moves{grid-template-columns:minmax(0,1fr)}.code-explain{padding:16px}}
 @media print{.code-explain{box-shadow:none}.w3-strip a{box-shadow:none}}
+
+/* Darker green preserves the tutorial-link style with readable white text. */
+.w3-strip a{background:#007a4d}

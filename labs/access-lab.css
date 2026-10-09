@@ -140,3 +140,6 @@
 .studio .access-lab .ramp-yours details.st-why{background:#f7fbef!important}
 /* Keep the project checklist and code samples inside narrow phone screens. */
 .access-lab .yours-checks{min-width:0;max-width:100%;padding-left:0;list-style:none}.studio .access-lab .yours-checks label{display:block;overflow-wrap:anywhere;min-width:0}.access-lab .yours-checks input{margin-right:8px}.access-lab pre{max-width:100%;min-width:0;overflow-x:auto}.access-lab .your-ramp{min-width:0}
+
+/* Progress lamps are labels, not the intentionally low-contrast exercise. */
+body.studio .ramp-lights li:not(.is-on){color:#e8edf5}

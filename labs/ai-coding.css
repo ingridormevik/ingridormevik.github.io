@@ -69,3 +69,5 @@
 .access-calm .page-ai-coding :is(.prompt-builder,.spot,.log-builder){box-shadow:none}
 @media(max-width:760px){.page-ai-coding .mode-cards,.page-ai-coding .prompt-compare,.page-ai-coding .pb-grid{grid-template-columns:minmax(0,1fr)}.page-ai-coding .edit-ideas{columns:1}.page-ai-coding :is(.prompt-builder,.spot,.log-builder){padding:18px}}
 @media print{.page-ai-coding :is(.prompt-builder,.spot,.log-builder){box-shadow:none}.page-ai-coding button{display:none}}
+
+.page-ai-coding .mode .mode-name{color:#24552e!important}
