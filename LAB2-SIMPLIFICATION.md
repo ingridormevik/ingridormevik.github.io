@@ -1,6 +1,11 @@
 Lab 2 simplification
 ====================
 
+Latest revision: the visible vibecoding lesson now centres on describing a desired
+change, trying the result and asking for the next change. Voice input is mentioned
+conditionally, since support depends on the student's tool. Detailed code is in
+a closed optional drawer. The earlier five-part explanation is superseded.
+
 This follow-up supersedes the optional HTML missions described in LAB-UPDATE-REVIEW.md.
 The beginner guide now has two plain, closed HTML explanations. It no longer loads
 the scanner, quiz, badge or circuit scripts. The existing four-step route is intact.

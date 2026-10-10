@@ -21,7 +21,7 @@ def simplify(root):
     save(path, s)
     path = labs / 'vibecoding.html'
     s = BeautifulSoup(path.read_text(encoding='utf-8'), 'html.parser')
-    s.title.string = 'One change with AI in VS Code | Lab 2'
+    s.title.string = 'Vibecoding in VS Code | Lab 2'
     for node in s.select('script:not([src^="accessibility"]), link[href^="vibe"], link[href^="lab78"]'):
         node.decompose()
     main = s.select_one('main')
@@ -55,12 +55,26 @@ button.addEventListener("click", revealStory);</code></pre>
 <section id="vibe-test"><h2>4. Test in the browser</h2><ol><li>Save story.js. Reload the preview. The original sentence should appear.</li><li>Click once. The other perspective should appear.</li><li>Click again. The original sentence should return.</li><li>Use Tab to reach the button and press Enter. Check that the same change works.</li><li>Reload again. Check the starting sentence.</li></ol><p>If it fails, note what you did and what appeared. Check the ids and filename first. Give the AI the observed problem instead of asking it to rebuild the whole page.</p></section>
 <section id="vibe-finish"><h2>5. Keep, adjust or undo</h2><p>Keep the change if it works and you can explain it. Adjust it if the behaviour or wording needs work. Restore story.js from your backup if you prefer the earlier version.</p><p>In your Lab 2 project note, write what you asked for, what changed and what happened when you tested it. Name any AI help you used.</p><p><strong>Without AI:</strong> type the example yourself, change the sentence to your own words and run the same tests.</p><a class="primary" href="lab-programme.html#lab-2-sec-3">Return to my project</a></section></article>
 ''', 'html.parser'))
+    example = main.select_one('pre').extract()
+    main.clear()
+    main.append(BeautifulSoup('''<article class="reader">
+<p><a href="lab-programme.html#lab-2-sec-3">Back to my Lab 2 project</a></p>
+<p class="eyebrow">LAB 2 / OPTIONAL</p><h1>Tell the machine what you want.</h1>
+<p>Vibecoding means describing what you want to build and asking AI to change the code. Write it in your own words, or use voice input if your tool supports it.</p>
+<section id="vibe-project"><h2>Open your project</h2><p>Open your folder and AI chat in VS Code. Keep a backup and open Live Preview so you can see what changes.</p></section>
+<section id="vibe-replay"><h2>Say what you want</h2><blockquote><p>Make this button switch between the two stories each time I click it.</p></blockquote><p>Give the AI access to your current files, or paste the relevant code into the chat.</p></section>
+<section id="vibe-test"><h2>Try it. Ask again.</h2><p>Save and try the button in your preview. Then tell the AI what you want changed next.</p><blockquote><p>The second click still shows the same story. Make it bring the first one back.</p></blockquote><blockquote><p>That works. Now change the button label to “Another perspective”.</p></blockquote></section>
+<section id="vibe-finish"><p>Keep the result you like. Undo changes you do not want. Add a short note about what you made and any AI help you used.</p><p>You can also edit the code yourself.</p><details class="resources" id="vibe-build"><summary>Want to see one possible code solution?</summary><div data-example></div></details><p><a class="primary" href="lab-programme.html#lab-2-sec-3">Return to my project</a></p></section>
+</article>''', 'html.parser'))
+    main.select_one('[data-example]').append(example)
     save(path, s)
     for name in ['lab-programme.html', 'tools.html']:
         path = labs / name
         text = path.read_text(encoding='utf-8')
         text = text.replace('When your own click works and you can explain it, you can explore the Vibe Arena in VS Code. Keep the no-AI route if you prefer.', 'When your first click works, try one small change with AI in your own VS Code project. Read the change and test it. You can also work without AI.')
         text = text.replace('Your page works. Is it yours?', 'Try one change with AI').replace('Enter the Vibe Arena', 'Try the AI exercise').replace('Vibe Arena', 'AI practice in VS Code')
+        text = text.replace('When your first click works, try one small change with AI in your own VS Code project. Read the change and test it. You can also work without AI.', 'Tell AI what you want to build or change in your VS Code project. Try the result and ask for the next change. Use text, or voice input if your tool supports it.')
+        text = text.replace('Try one change with AI', 'Vibecoding in your project')
         path.write_text(text, encoding='utf-8', newline='\n')
 
 if __name__ == '__main__':
