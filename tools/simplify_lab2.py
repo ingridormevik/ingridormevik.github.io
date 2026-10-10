@@ -76,6 +76,8 @@ button.addEventListener("click", revealStory);</code></pre>
         text = text.replace('When your first click works, try one small change with AI in your own VS Code project. Read the change and test it. You can also work without AI.', 'Tell AI what you want to build or change in your VS Code project. Try the result and ask for the next change. Use text, or voice input if your tool supports it.')
         text = text.replace('Try one change with AI', 'Vibecoding in your project')
         path.write_text(text, encoding='utf-8', newline='\n')
+    from beginner_support import support
+    support(root)
 
 if __name__ == '__main__':
     simplify(Path(__file__).resolve().parent.parent)
