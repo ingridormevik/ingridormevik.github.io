@@ -43,3 +43,5 @@ def learning(root):
         if caption and not caption.select_one('[data-image-kind]'):
             caption.append(fragment('<span data-image-kind> Template illustration with annotations. For the actual editor interface, see the <a href="construct-guide.html#step-2">official Construct screenshots</a>.</span>'))
     path.write_text(str(s), encoding='utf-8', newline='\n')
+    from library_construct import library
+    library(root)
