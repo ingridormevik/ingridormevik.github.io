@@ -80,6 +80,8 @@ button.addEventListener("click", revealStory);</code></pre>
     support(root)
     from remove_lab_notes import cleanup
     cleanup(root)
+    from room_workshop import rooms
+    rooms(root)
 
 if __name__ == '__main__':
     simplify(Path(__file__).resolve().parent.parent)

@@ -36,3 +36,29 @@
 .studio #construct-rooms img{display:block;max-width:100%;height:auto}
 .studio #construct-rooms figure{margin:20px 0}
 [hidden]{display:none!important}
+
+
+/* Room repair workshop */
+.studio #construct-rooms{padding:0!important;background:#f4f2e9!important;color:#172e35!important;border:2px solid #172e35;box-shadow:none;overflow:hidden;max-width:100%;box-sizing:border-box}
+.studio #construct-rooms .cw-header{background:#172e35;padding:clamp(20px,4vw,36px)}
+.studio #construct-rooms .cw-header :is(h3,p){color:#fff!important;margin:0 0 16px;max-width:64ch}
+.studio #construct-rooms .cw-header h3{font:700 clamp(28px,4vw,44px)/1.1 Georgia,serif}
+.studio #construct-rooms .cw-header .primary{display:inline-block;background:#d7ee84!important;color:#172e35!important;white-space:normal}
+.studio #construct-rooms .cw-body{padding:clamp(16px,3vw,30px);display:grid;gap:20px;min-width:0}
+.studio #construct-rooms .cw-body :is(p,li,h4,small,strong,figcaption,summary){color:#172e35!important}
+.studio #construct-rooms .cw-body p{margin:0 0 12px;max-width:68ch}
+.studio #construct-rooms .cw-tag{font:700 13px/1.4 monospace;letter-spacing:.06em}
+.studio #construct-rooms .cw-task{padding:clamp(16px,3vw,26px);border:1px solid #91a1a0;background:#fff;min-width:0}
+.studio #construct-rooms h4{font:700 clamp(22px,3vw,29px)/1.25 Georgia,serif;margin:8px 0 18px}
+.studio #construct-rooms ol{padding-left:22px;margin:0 0 20px;max-width:68ch}
+.studio #construct-rooms li{margin:0 0 12px;line-height:1.65;overflow-wrap:anywhere}
+.studio #construct-rooms .cw-test{padding:14px 16px;border-left:4px solid #527025;background:#eff5df;max-width:none}
+.studio #construct-rooms details{background:#f4f2e9;padding:14px 16px;border:1px solid #91a1a0}
+.studio #construct-rooms summary{font-weight:700;cursor:pointer;line-height:1.5}
+.studio #construct-rooms details[open]>summary{margin-bottom:16px}
+.studio #construct-rooms figure{margin:16px 0;max-width:800px}
+.studio #construct-rooms img{width:100%;height:auto;display:block}
+.studio #construct-rooms figcaption{font-size:14px;line-height:1.6;margin-top:10px}
+.studio #construct-rooms .cw-route{display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:16px;border:1px solid #91a1a0}
+.studio #construct-rooms .cw-route span{font:700 20px/1.3 monospace;padding:8px 14px;background:#172e35;color:#fff}
+.studio #construct-rooms .cw-route small{font:700 12px/1.5 monospace}
