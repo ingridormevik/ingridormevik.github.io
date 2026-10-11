@@ -28,8 +28,11 @@ def library(root):
         path = labs / name
         t = BeautifulSoup(path.read_text(encoding='utf-8'), 'html.parser')
         for link in t.select('a[href^="library-lab.html"]'):
-            link.clear()
-            link.string = 'Construct workshop: make your scene respond'
+            if 'lab-machine' in link.get('class', []):
+                link.clear()
+                link.append(BeautifulSoup('<span class="lm-no">07</span><img class="lm-art" src="setup-assets/construct-logo.svg" alt="Construct 3 logo" width="160" height="140" style="object-fit:contain"/><strong>Construct workshop</strong><span class="lm-what">Build, tap, test and continue your scene</span>', 'html.parser'))
+            else:
+                link.string = 'Construct workshop: make your scene respond'
         if name == 'lab-programme.html':
             old = t.select_one('#library-construct-next')
             if old: old.decompose()
