@@ -1,13 +1,13 @@
 (() => {
-  const labels=['Check in','Experiment','Save & reflect'];
+  const labels=['Check in','Experiment','Save your work'];
   const labs=[...document.querySelectorAll('.lab')];
   const active=new Map(labs.map(lab=>[lab.id,0]));
   const completeKey=lab=>`dik105-complete-${lab.id}-${document.getElementById('group').value}`;
   // Access never depends on earlier completion, a date, or browser storage.
   const OPEN_ALL = true;
   function available(lab) { return true; }
-  function ready(lab){return lab.querySelector('[data-paper-arrival]')?.checked || lab.querySelector('[data-checkin]').dataset.checkinReady==='true';}
-  function experimentDone(lab){return [...lab.querySelectorAll('[data-check]')].every(x=>x.checked)&&(lab.querySelector('[data-paper-reflection]')?.checked || lab.querySelector('.mission-actions textarea').value.trim().length>=10);}
+  function ready(lab){return true;}
+  function experimentDone(lab){return [...lab.querySelectorAll("[data-check]")].every(x=>x.checked);}
   function earned(lab){return ready(lab)&&experimentDone(lab);}
   function allowed(lab){return OPEN_ALL?2:!ready(lab)?0:experimentDone(lab)?2:1;}
   function finalReady(lab){return [...lab.querySelectorAll('[data-final]')].every(x=>x.checked);}
@@ -32,15 +32,15 @@
       const locked=!open||i>limit;
       a.setAttribute('aria-disabled',String(locked));a.classList.toggle('step-locked',locked);
       if(i===index&&open)a.setAttribute('aria-current','step');else a.removeAttribute('aria-current');
-      a.querySelector('small').textContent=locked?(i===1?'Confirm your arrival note first':'Complete experiment first'):['Write your arrival note','Your project + guides','Finish your session'][i];
+      a.querySelector('small').textContent=locked?(i===1?'Confirm your arrival note first':'Complete experiment first'):['Open your project','Your project + guides','Finish your session'][i];
     });
     lab.querySelector('.journey-location').textContent=open?`Step ${index+1} of 3 · ${labels[index]}`:lockedText;
     const hints=lab.querySelectorAll('.quest-requirements');
-    hints[0].textContent=ready(lab)?(OPEN_ALL?'Your lab note is ready.':'Experiment unlocked. Your lab note is ready.'):OPEN_ALL?'All steps are open. Write your arrival note on paper and confirm below, or create an on-screen note.':'Write your arrival note on paper and confirm it below, or create an on-screen note to earn your first star.';
+    hints[0].textContent='Open your project and choose what to work on. All steps are open.';
     const remaining=[...lab.querySelectorAll('[data-check]')].filter(x=>!x.checked).length;
-    const noteOK=lab.querySelector('[data-paper-reflection]')?.checked || lab.querySelector('.mission-actions textarea').value.trim().length>=10;
-    hints[1].textContent=experimentDone(lab)?(OPEN_ALL?'All experiment requirements complete.':'All experiment requirements complete. Save & reflect is unlocked.'):`Still needed: ${remaining} milestone${remaining===1?'':'s'}${noteOK?'':', and a reflection on paper or in the note field'}.`;
-    hints[2].textContent='Save your files, keep a short reflection and confirm below.';
+    const noteOK=true;
+    hints[1].textContent=experimentDone(lab)?'Practical steps checked. Save your work.':`Still to try: ${remaining} practical step${remaining===1?'':'s'}.`;
+    hints[2].textContent='Save your project files and confirm below.';
     lab.querySelectorAll('.journey-next a').forEach((a,i)=>{const locked=!open||i+1>limit;a.setAttribute('aria-disabled',String(locked));a.classList.toggle('step-locked',locked);});
     updateFinal(lab);
     const stamp=document.querySelector(`[data-mission-status="${lab.id.split('-')[1]}"]`);

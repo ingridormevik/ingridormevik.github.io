@@ -37,7 +37,7 @@
     unlocked(`${el.querySelector('strong').textContent} unlocked`);
     animate(el,[{transform:'translateY(0)'},{transform:'translateY(-5px)'},{transform:'translateY(0)'}],{duration:380,easing:'ease-out'});
    }
-   if(record.attributeName==='data-quest-complete'&&record.oldValue!=='true'&&el.dataset.questComplete==='true')unlocked('Quest marked complete. Write your reflection on paper and hand it to Ingrid.');
+   if(record.attributeName==='data-quest-complete'&&record.oldValue!=='true'&&el.dataset.questComplete==='true')unlocked('Session complete. Keep your saved project files.');
   }
  });
  document.querySelectorAll('.lab').forEach(lab=>observer.observe(lab,{subtree:true,attributes:true,attributeOldValue:true,attributeFilter:['hidden','aria-disabled','data-quest-complete']}));

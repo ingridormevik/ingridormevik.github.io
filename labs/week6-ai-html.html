@@ -1,23 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>AI-Assisted Coding · DIKULT105</title>
 <!-- social + icons -->
-<link rel="icon" type="image/svg+xml" href="../favicon.svg">
-<link rel="canonical" href="https://ingridormevik.github.io/labs/week6-ai-html.html">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Ingrid Ormevik">
-<meta property="og:title" content="AI-Assisted Coding · DIKULT105">
-<meta property="og:url" content="https://ingridormevik.github.io/labs/week6-ai-html.html">
-<meta property="og:image" content="https://ingridormevik.github.io/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Ingrid Ormevik: essays, games and artistic research.">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="AI-Assisted Coding · DIKULT105">
-<meta name="twitter:image" content="https://ingridormevik.github.io/og-image.png">
+<link href="../favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="https://ingridormevik.github.io/labs/week6-ai-html.html" rel="canonical"/>
+<meta content="website" property="og:type"/>
+<meta content="Ingrid Ormevik" property="og:site_name"/>
+<meta content="AI-Assisted Coding · DIKULT105" property="og:title"/>
+<meta content="https://ingridormevik.github.io/labs/week6-ai-html.html" property="og:url"/>
+<meta content="https://ingridormevik.github.io/og-image.png" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="Ingrid Ormevik: essays, games and artistic research." property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="AI-Assisted Coding · DIKULT105" name="twitter:title"/>
+<meta content="https://ingridormevik.github.io/og-image.png" name="twitter:image"/>
 <style>
 :root {
   --accent: #a98df7;
@@ -259,32 +260,32 @@ ul.list.plain li { padding-left: 0; }
 <div class="progress-track"></div>
 <div class="progress"></div>
 <div class="deck">
-<section class="slide ">
+<section class="slide">
 <p class="kicker">Lab 2 · AI coding</p><h1>AI-Assisted HTML</h1><p class="subtitle">What changes when AI can write the code for you?</p>
 </section>
-<section class="slide ">
-<p class="kicker">The premise</p><p class="statement">This is not about whether AI can code.<br>We already know it can.<br><em>The question is whether you can stay in control of what it produces.</em></p>
+<section class="slide">
+<p class="kicker">The premise</p><p class="statement">This is not about whether AI can code.<br/>We already know it can.<br/><em>The question is whether you can stay in control of what it produces.</em></p>
 </section>
-<section class="slide ">
+<section class="slide">
 <p class="kicker">By the end, you should be able to</p><ul class="list"><li>use an AI assistant to help modify an HTML page</li>
 <li>identify what the AI changed</li>
 <li>test whether generated code actually works</li>
 <li>make at least one intentional change yourself</li>
 <li>reflect critically on what AI contributed and what you contributed</li></ul>
 </section>
-<section class="slide ">
+<section class="slide">
 <p class="kicker">Opening demo · start here</p><h2>A page. Two lines.</h2><div class="card">&lt;h1&gt;My page&lt;/h1&gt;
-&lt;p&gt;This is something I care about.&lt;/p&gt;</div><p class="footer-note">Now ask AI: <span class='hi'>“Make this page feel like a rainy evening in Bergen.”</span> Look at what comes back.</p>
+&lt;p&gt;This is something I care about.&lt;/p&gt;</div><p class="footer-note">Now ask AI: <span class="hi">“Make this page feel like a rainy evening in Bergen.”</span> Look at what comes back.</p>
 </section>
-<section class="slide ">
+<section class="slide">
 <p class="kicker">Look at what it decided without being asked</p><ul class="list"><li>What fonts did it choose?</li>
 <li>What colours?</li>
 <li>What layout?</li>
 <li>Did it interpret “Bergen” stereotypically?</li>
-<li>Which choices came from <em style='color:var(--accent);font-style:normal'>you</em>?</li>
-<li>Which choices came from the <em style='color:var(--accent);font-style:normal'>model</em>?</li></ul>
+<li>Which choices came from <em style="color:var(--accent);font-style:normal">you</em>?</li>
+<li>Which choices came from the <em style="color:var(--accent);font-style:normal">model</em>?</li></ul>
 </section>
-<section class="slide ">
+<section class="slide">
 <p class="kicker">Activity 1 · start with something that belongs to you</p><h2>Make a tiny page about one thing you actually care about</h2><ul class="list tight"><li>a place</li>
 <li>music</li>
 <li>football</li>
@@ -298,10 +299,10 @@ ul.list.plain li { padding-left: 0; }
 <li>something you hate</li>
 <li>something you wish existed</li></ul><p class="footer-note">Minimum tags: &lt;h1&gt; &lt;p&gt; &lt;img&gt; &lt;a&gt;, the point is that intention exists before AI enters.</p>
 </section>
-<section class="slide ">
+<section class="slide">
 <p class="kicker">Activity 2 · give it to AI</p><h2>Use AI to improve or transform your page</h2><div class="columns three"><div class="col"><h3>Function</h3><ul><li>Add a button that changes something on the page.</li></ul></div><div class="col"><h3>Design</h3><ul><li>Help me style this page to communicate [feeling / idea].</li></ul></div><div class="col"><h3>Accessibility</h3><ul><li>Look at this HTML and suggest ways to make it more accessible.</li></ul></div></div><p class="footer-note">Rule: do not paste the result blindly. Read what it changed. Compare before / after.</p>
 </section>
-<section class="slide ">
+<section class="slide">
 <p class="kicker">Activity 3 · break the AI answer</p><h2>Change one thing manually after AI generates it</h2><ul class="list"><li>remove something unnecessary</li>
 <li>change the colour</li>
 <li>rewrite the heading</li>
@@ -310,21 +311,21 @@ ul.list.plain li { padding-left: 0; }
 <li>fix something that did not work</li>
 <li>reject an AI design decision</li></ul><p class="footer-note">This turns you from recipient into editor.</p>
 </section>
-<section class="slide ">
+<section class="slide">
 <p class="kicker">Reflect and document</p><h2>Screenshots + a short written reflection</h2><ul class="list"><li>What did you ask the AI to do?</li>
 <li>What did it change?</li>
 <li>What did you keep or reject?</li>
-<li>Did using AI give you more creative control, less control, or something in between? Why?</li></ul><p class="footer-note">Keep your screenshots and a short reflection in your process log: how AI helped, and how you feel about using it, for or against, and why. Write your lab reflection on paper and hand it to Ingrid.</p>
+<li>Did using AI give you more creative control, less control, or something in between? Why?</li></ul><p class="footer-note" hidden="">Keep your screenshots and a short reflection in your process log: how AI helped, and how you feel about using it, for or against, and why. Write your lab reflection on paper and hand it to Ingrid.</p>
 </section>
-<section class="slide ">
-<p class="kicker">Closing question</p><p class="statement">If AI wrote half the code but <em>you</em> made the decisions ,<br>who made the page?</p><p class="footer-note">Do not resolve it. It's the bridge into the rest of the course.</p>
+<section class="slide">
+<p class="kicker">Closing question</p><p class="statement">If AI wrote half the code but <em>you</em> made the decisions ,<br/>who made the page?</p><p class="footer-note">Do not resolve it. It's the bridge into the rest of the course.</p>
 </section>
-<section class="slide ">
-<p class="kicker">Carry this with you</p><p class="statement">The software gives you <em>possibilities</em>.<br>It does not give you a <em>reason</em>.</p>
+<section class="slide">
+<p class="kicker">Carry this with you</p><p class="statement">The software gives you <em>possibilities</em>.<br/>It does not give you a <em>reason</em>.</p>
 </section>
 </div>
-<div class="navzone left" aria-label="previous slide"></div>
-<div class="navzone right" aria-label="next slide"></div>
+<div aria-label="previous slide" class="navzone left"></div>
+<div aria-label="next slide" class="navzone right"></div>
 <div class="deckname">Lab 2, AI-Assisted Coding</div>
 <div class="hud"><span class="idx">1</span> / <span class="total"></span></div>
 <script>

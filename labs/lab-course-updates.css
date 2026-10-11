@@ -25,3 +25,14 @@
 @media(max-width:600px){.studio .course-panel-head{padding:24px 18px 20px}.studio .course-steps{padding:20px 18px 4px 40px}.studio .course-panel>p{margin:0 18px 16px}}
 @media print{.studio .course-panel{box-shadow:none}}
 .studio .course-panel .ai-actions{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center}
+
+/* Construct workshop spacing */
+.studio #construct-rooms{padding:clamp(18px,4vw,32px);box-shadow:none;border-width:2px;border-radius:0}
+.studio #construct-rooms>p{margin:0 0 18px}
+.studio #construct-rooms h3{margin:0 0 18px;color:var(--cp-ink);font-size:clamp(26px,4vw,38px);line-height:1.2}
+.studio #construct-rooms ol{padding-left:24px;margin:18px 0}
+.studio #construct-rooms li{padding-left:6px;margin-bottom:14px}
+.studio #construct-rooms .look{padding:20px;margin:24px 0;background:#fff;color:var(--cp-ink);border:1px solid var(--cp-deep)}
+.studio #construct-rooms img{display:block;max-width:100%;height:auto}
+.studio #construct-rooms figure{margin:20px 0}
+[hidden]{display:none!important}

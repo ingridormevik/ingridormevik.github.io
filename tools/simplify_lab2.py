@@ -78,6 +78,8 @@ button.addEventListener("click", revealStory);</code></pre>
         path.write_text(text, encoding='utf-8', newline='\n')
     from beginner_support import support
     support(root)
+    from remove_lab_notes import cleanup
+    cleanup(root)
 
 if __name__ == '__main__':
     simplify(Path(__file__).resolve().parent.parent)

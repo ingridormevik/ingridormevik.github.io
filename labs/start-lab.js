@@ -22,10 +22,10 @@
 
   function starsFor(lab) {
     if (!lab) return 0;
-    const pass = lab.querySelector('[data-paper-arrival]')?.checked || lab.querySelector('[data-checkin]')?.dataset.checkinReady === 'true';
+    const pass = true;
     const checks = [...lab.querySelectorAll('[data-check]')];
     const note = lab.querySelector('.mission-actions textarea');
-    const experiment = pass && checks.length > 0 && checks.every(x => x.checked) && (lab.querySelector('[data-paper-reflection]')?.checked || (note?.value.trim().length || 0) >= 10);
+    const experiment = checks.length > 0 && checks.every(x => x.checked);
     const done = lab.dataset.questComplete === 'true';
     return done ? 3 : experiment ? 2 : pass ? 1 : 0;
   }
