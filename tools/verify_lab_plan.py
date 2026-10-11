@@ -38,7 +38,8 @@ assert len(page.select('#duration option')) == 1
 assert page.select_one('#duration option')['value'] == '105'
 assert page.select_one('.lv-4 strong').get_text() == 'Construct 2'
 assert page.select_one('#lab-3 #construct-pro a[href*="mitt.uib.no"]')
-assert parsed[LABS / 'library-lab.html'].select_one('#the-stacks')
+assert parsed[LABS / 'library-lab.html'].select_one('#construct-build')
+assert not parsed[LABS / 'library-lab.html'].select_one('#the-stacks')
 assert not parsed[LABS / 'library-lab.html'].select_one('.own-mind')
 assert parsed[LABS / 'construct-templates.html'].select_one('#tpl-npc')
 assert len(parsed[LABS / 'construct-templates.html'].select('[id^="tpl-"]')) == 6
