@@ -50,3 +50,5 @@ def support(root):
     insert(s, '#vibe-replay', '''<div class="look"><p>Type your request in the chat box and send it. If your tool supports voice input, you can say it instead. Use your own language.</p><p>If the AI cannot see your files, paste the contents of story.js and the paragraph and button from index.html. Say which filename each piece came from.</p><p>If it offers file edits, review and apply the change using your tool's controls. If it only replies with code, ask which file to put it in, then paste it there and save.</p></div>''', 'beginner-ai-change')
     insert(s, '#vibe-test', '''<div class="look"><p><strong>What should happen?</strong> First click: the other story appears. Second click: the starting story returns. If Preview still shows the old version, save the file and reload.</p><p>You can tell the AI what you see: “I clicked twice, but the starting story did not return.” Keep talking until the result fits what you want.</p></div>''', 'beginner-ai-result')
     save('vibecoding.html', s)
+    from construct_learning import learning
+    learning(root)
