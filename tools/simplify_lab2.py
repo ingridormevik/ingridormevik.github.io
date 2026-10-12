@@ -84,6 +84,8 @@ button.addEventListener("click", revealStory);</code></pre>
     rooms(root)
     from vibe_workshop import build
     build(root)
+    from construct_action_photos import photos
+    photos(root)
 
 if __name__ == '__main__':
     simplify(Path(__file__).resolve().parent.parent)

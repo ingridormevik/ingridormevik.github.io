@@ -1,0 +1,6 @@
+.studio .construct-action-shot{margin:22px 0 28px;padding:clamp(16px,3vw,24px);background:#fff!important;color:#172e35!important;border:2px solid #839495;max-width:700px;box-sizing:border-box}
+.studio .construct-action-shot h4{font:800 21px/1.3 system-ui;margin:0 0 16px;color:#172e35!important}
+.studio .construct-action-shot img{display:block;width:auto;max-width:100%;max-height:430px;height:auto;margin:0 auto;object-fit:contain}
+.studio .construct-action-shot figcaption{font:15px/1.65 system-ui;color:#172e35!important;margin-top:18px;overflow-wrap:anywhere}
+.studio .construct-action-shot a{color:#244b77!important;text-decoration:underline}
+.studio .construct-action-shot a:focus-visible{outline:3px solid #b63e73;outline-offset:4px}
