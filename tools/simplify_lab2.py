@@ -82,6 +82,8 @@ button.addEventListener("click", revealStory);</code></pre>
     cleanup(root)
     from room_workshop import rooms
     rooms(root)
+    from vibe_workshop import build
+    build(root)
 
 if __name__ == '__main__':
     simplify(Path(__file__).resolve().parent.parent)
