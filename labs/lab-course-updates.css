@@ -36,8 +36,6 @@
 .studio #construct-rooms img{display:block;max-width:100%;height:auto}
 .studio #construct-rooms figure{margin:20px 0}
 [hidden]{display:none!important}
-
-
 /* Room repair workshop */
 .studio #construct-rooms{padding:0!important;background:#f4f2e9!important;color:#172e35!important;border:2px solid #172e35;box-shadow:none;overflow:hidden;max-width:100%;box-sizing:border-box}
 .studio #construct-rooms .cw-header{background:#172e35;padding:clamp(20px,4vw,36px)}

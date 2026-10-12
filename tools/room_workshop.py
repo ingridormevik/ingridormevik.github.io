@@ -20,7 +20,7 @@ def rooms(root):
     path = labs / 'lab-course-updates.css'
     text = path.read_text(encoding='utf-8')
     marker = '/* Room repair workshop */'
-    if marker in text: text = text.split(marker)[0]
+    if marker in text: text = text.split(marker)[0].rstrip()
     text += '''\n/* Room repair workshop */
 .studio #construct-rooms{padding:0!important;background:#f4f2e9!important;color:#172e35!important;border:2px solid #172e35;box-shadow:none;overflow:hidden;max-width:100%;box-sizing:border-box}
 .studio #construct-rooms .cw-header{background:#172e35;padding:clamp(20px,4vw,36px)}

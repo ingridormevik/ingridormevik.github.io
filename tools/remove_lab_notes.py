@@ -8,8 +8,17 @@ def cleanup(root):
         changed = False
         for script in s.select('script[src^="paper-progress"]'):
             script.decompose(); changed = True
-        for node in s.select('.own-mind-note, .defend, .vibecoding-notebook, .mission-console .mission-actions, .lab-finish, .checkin-example'):
+        for node in s.select('.own-mind-note, .defend, .vibecoding-notebook, .lab-finish, .checkin-example'):
             node['hidden'] = ''; changed = True
+        for actions in s.select('.mission-console .mission-actions'):
+            actions.attrs.pop('hidden', None)
+            for textarea in actions.select('textarea'):
+                textarea['hidden'] = ''
+                label = textarea.find_parent('label')
+                if label: label['hidden'] = ''
+            for p in actions.select('p.mission-small'):
+                p.string = 'Try these practical steps in your project. Check them when you have tested the result.'
+            changed = True
         for node in s.select('[data-checkin]'):
             node['hidden'] = ''; changed = True
         for text in s.find_all(string=True):

@@ -6,3 +6,4 @@ assets/print/
 hagen/source/v23_3_garden.png
 hagen/source/v23_3_inner.png
 /schedule-test-fixture.json
+__pycache__/

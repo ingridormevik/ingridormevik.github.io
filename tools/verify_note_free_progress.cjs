@@ -1,0 +1,16 @@
+const fs = require('fs');
+const vm = require('vm');
+const assert = require('assert');
+const source = fs.readFileSync('labs/lab-navigation.js', 'utf8');
+const functions = source.slice(source.indexOf('  function ready(lab)'), source.indexOf('  function allowed(lab)'));
+const lab = {querySelectorAll: () => checks};
+let checks = [{checked: false}, {checked: true}, {checked: true}];
+const context = {lab};
+vm.createContext(context);
+vm.runInContext(functions, context);
+assert.equal(vm.runInContext('earned(lab)', context), false);
+checks[0].checked = true;
+assert.equal(vm.runInContext('earned(lab)', context), true);
+checks[1].checked = false;
+assert.equal(vm.runInContext('earned(lab)', context), false);
+console.log('PASS: actual progress functions require practical checks and never require an arrival or reflection note.');

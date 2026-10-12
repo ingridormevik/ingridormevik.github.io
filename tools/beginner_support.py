@@ -16,7 +16,10 @@ def support(root):
 
     s = load('lab-programme.html')
     panel = s.select_one('#mapping-first-contact')
-    panel.select_one('ol').replace_with(BeautifulSoup('''<div>
+    target = panel.select_one('ol')
+    while target.parent != panel and target.parent.name == 'div':
+        target = target.parent
+    target.replace_with(BeautifulSoup('''<div>
 <p>A <strong>layout</strong> is a scene where you place things. A <strong>Text object</strong> is a text box. An <strong>event sheet</strong> holds the rules that make the scene respond.</p>
 <ol><li><strong>Open the template.</strong> Follow the <a href="construct-templates.html?lab=3#tpl-map">Mapping download and opening instructions</a>. In Construct's Project Bar, expand Layouts and double-click one of the four maps. Keep using that map for this exercise.</li>
 <li><strong>Write your first place.</strong> Click an existing text box. In the Properties panel, find Text and replace its words with a campus place and one sentence about it. Drag the box to where you want it. You should see your words on the map.</li>
