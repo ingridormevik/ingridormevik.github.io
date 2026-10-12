@@ -13,6 +13,7 @@ def photos(root):
         path = labs / name
         s = BeautifulSoup(path.read_text(encoding='utf-8'), 'html.parser')
         for old in s.select('[data-action-photo]'): old.decompose()
+        for old in s.select('[data-learning-beat]'): old.decompose()
         if name == 'lab-programme.html':
             steps = s.select('#mapping-first-contact ol > li')
             steps[2].append(create())
@@ -23,12 +24,24 @@ def photos(root):
             missions[1].append(condition())
             missions[1].append(action())
             s.select_one('#mapping-first-contact h3').string = 'Build a map. Hide a thought. Let someone find it.'
+            beats = [
+                (steps[2], 'SCENE BUILDER', 'Your first result: three places a visitor can read.', 'Move one text box, then Preview. Only its position should change. You are editing the layout.'),
+                (steps[6], 'RULE MAKER', 'Before you tap: which object should reveal the thought?', 'Preview and try a different object first, then your chosen target. The condition decides which tap counts.'),
+                (steps[7], 'STORY DESIGNER', 'Make one small remix.', 'Change only the hidden sentence. Preview again. The same tap now carries a different meaning.')]
+            for target, tag, goal, task in beats:
+                target.append(BeautifulSoup(f'<aside class="construct-learning-beat" data-learning-beat><span>{tag}</span><h4>{goal}</h4><p>{task}</p></aside>', 'html.parser').find())
+            for target, tag, goal, task in [
+                (missions[0], 'EXPLORE → NOTICE', 'Find the reason you are stuck.', 'Compare East in Preview with East in the editor. Is its arrow inside the room or outside?'),
+                (missions[1], 'REPAIR → TRY', 'Choose the destination before testing.', 'Point to the destination in Go to layout. Then Preview and tap. Did the action take you there?'),
+                (missions[2], 'REMIX → SHARE', 'Give the journey a purpose.', 'Add a short Text clue in East. Let a visitor travel there and back. What do they discover along the way?')]:
+                target.append(BeautifulSoup(f'<aside class="construct-learning-beat" data-learning-beat><span>{tag}</span><h4>{goal}</h4><p>{task}</p></aside>', 'html.parser').find())
         elif name == 'library-lab.html':
             steps = s.select('#construct-build ol > li')
             steps[0].append(create())
             steps[3].append(condition())
             s.select_one('#construct-choice').append(action())
             s.select_one('#construct-test').append(preview())
+            s.select_one('#construct-choice').append(BeautifulSoup('<aside class="construct-learning-beat" data-learning-beat><span>YOU CONTROL THE EXPERIENCE</span><h4>Two versions. Which fits your story?</h4><p>Try keeping both messages visible, then try showing only the latest one. You have built both behaviours. Choose the version that helps your visitor understand the scene.</p></aside>', 'html.parser').find())
         else:
             figure = condition()
             caption = figure.select_one('figcaption')
@@ -37,5 +50,5 @@ def photos(root):
                     text.replace_with(str(text).replace('Search for Touch', 'Search for Button').replace('On tap object', 'On clicked'))
             s.select_one('#step-4').append(figure)
         for old in s.select('link[href^="construct-actions.css"]'): old.decompose()
-        s.head.append(BeautifulSoup('<link rel="stylesheet" href="construct-actions.css?v=1"/>','html.parser').find())
+        s.head.append(BeautifulSoup('<link rel="stylesheet" href="construct-actions.css?v=2"/>','html.parser').find())
         path.write_text(str(s), encoding='utf-8', newline='\n')
