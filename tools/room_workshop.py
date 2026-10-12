@@ -15,7 +15,7 @@ def rooms(root):
 <section class="cw-task"><p class="cw-tag">03 / PLAYTEST</p><h4>Make the round trip.</h4><ol><li>Preview North. Go to East, return to North, then go out again.</li><li>Let a partner try without directions. Can they find both exits?</li><li>Move an arrow or add a short Text label if the route is unclear. Test again.</li><li>Save a .c3p copy. Use this room connection in your own project.</li></ol><p class="cw-test"><strong>Working result:</strong> a visitor can travel North → East → North without getting stuck.</p></section>
 <details class="cw-extra"><summary>Another repair? South and West</summary><p>Repeat the same process for one more room. Decide its destination before creating the action. Test every new connection in both directions.</p><p>A room can be a place, a memory or a mood. Choose what the journey means in your project.</p></details></div>''', 'html.parser'))
     for link in s.select('link[href^="lab-course-updates.css"]'):
-        link['href'] = 'lab-course-updates.css?v=room-repair-2'
+        link['href'] = 'lab-course-updates.css?v=panels-3'
     path.write_text(str(s), encoding='utf-8', newline='\n')
     path = labs / 'lab-course-updates.css'
     text = path.read_text(encoding='utf-8')

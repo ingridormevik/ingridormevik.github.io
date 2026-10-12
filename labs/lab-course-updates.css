@@ -26,6 +26,20 @@
 @media print{.studio .course-panel{box-shadow:none}}
 .studio .course-panel .ai-actions{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center}
 
+/* Shared layout for panels without a separate header/body. */
+.studio .course-panel:is(#javascript-first-contact,#mapping-first-contact,#publish-your-project){padding:clamp(20px,3vw,32px);box-sizing:border-box;max-width:100%;min-width:0}
+.studio .course-panel:is(#javascript-first-contact,#mapping-first-contact,#publish-your-project)>p{margin:0 0 18px;max-width:68ch}
+.studio .course-panel:is(#javascript-first-contact,#mapping-first-contact,#publish-your-project) h3{margin:8px 0 22px;color:var(--cp-ink);font-size:clamp(24px,3vw,34px);line-height:1.25;overflow-wrap:anywhere}
+.studio .course-panel:is(#javascript-first-contact,#mapping-first-contact,#publish-your-project) :is(ol,ul){margin:18px 0 24px;padding-left:26px;max-width:68ch}
+.studio .course-panel:is(#javascript-first-contact,#mapping-first-contact,#publish-your-project) li{margin-bottom:12px;padding-left:4px;overflow-wrap:anywhere}
+.studio .course-panel:is(#javascript-first-contact,#mapping-first-contact,#publish-your-project)>a.primary{display:inline-block;max-width:100%;box-sizing:border-box;white-space:normal;margin:0 0 24px;overflow-wrap:anywhere}
+.studio #mapping-first-contact .look{padding:18px;margin:22px 0;background:#fff;color:var(--cp-ink);border:1px solid var(--cp-deep)}
+.studio #mapping-first-contact .look :is(p,li,h4,strong){color:var(--cp-ink)}
+.studio #mapping-first-contact details{padding:16px;margin:18px 0;background:#fff;color:var(--cp-ink);border:1px solid var(--cp-deep)}
+.studio #mapping-first-contact summary{color:var(--cp-ink);font-weight:700;line-height:1.5;cursor:pointer}
+.studio #mapping-first-contact figure{margin:22px 0;max-width:800px}
+.studio .course-panel img{max-width:100%;height:auto}
+.studio .course-panel :is(code,a){overflow-wrap:anywhere}
 /* Construct workshop spacing */
 .studio #construct-rooms{padding:clamp(18px,4vw,32px);box-shadow:none;border-width:2px;border-radius:0}
 .studio #construct-rooms>p{margin:0 0 18px}
