@@ -86,6 +86,8 @@ button.addEventListener("click", revealStory);</code></pre>
     build(root)
     from construct_action_photos import photos
     photos(root)
+    from template_workbench import templates
+    templates(root)
 
 if __name__ == '__main__':
     simplify(Path(__file__).resolve().parent.parent)
