@@ -88,6 +88,8 @@ button.addEventListener("click", revealStory);</code></pre>
     photos(root)
     from template_workbench import templates
     templates(root)
+    from publishing_workshop import publish
+    publish(root)
 
 if __name__ == '__main__':
     simplify(Path(__file__).resolve().parent.parent)
