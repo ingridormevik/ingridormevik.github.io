@@ -25,6 +25,11 @@ assert not s.select('script[src^="paper-progress"]')
 guide = BeautifulSoup((labs / 'javascript-construct.html').read_text(encoding='utf-8'), 'html.parser')
 assert len(guide.select('#first-click-help')) == 1
 assert len(guide.select('#first-click-help summary')) == 1
+for name, count in [('javascript-construct.html',4),('vibecoding.html',4),('construct-guide.html',5),('library-lab.html',5),('publish-guide.html',6)]:
+    page = BeautifulSoup((labs / name).read_text(encoding='utf-8'), 'html.parser')
+    links = page.select('[data-step-links]')
+    assert len(links) == count, f'Missing previous/next navigation in {name}'
+    assert all(len(nav.select('a')) == 2 for nav in links)
 for path in labs.glob('*.html'):
     page = BeautifulSoup(path.read_text(encoding='utf-8'), 'html.parser')
     ids = [x['id'] for x in page.select('[id]')]

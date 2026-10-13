@@ -107,6 +107,8 @@ button.addEventListener("click", revealStory);</code></pre>
     templates(root)
     from publishing_workshop import publish
     publish(root)
+    from connect_steps import connect
+    connect(root)
 
 if __name__ == '__main__':
     simplify(Path(__file__).resolve().parent.parent)
