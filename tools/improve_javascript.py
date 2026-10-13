@@ -69,6 +69,8 @@ def improve(base, out):
     if finish:
         finish.decompose()
     help_section = guide.select_one('#help')
+    for old in guide.select('#first-click-help, #javascript-sources'):
+        old.decompose()
     help_section.insert_before(node('''<section class="step" id="first-click-help"><p class="eyebrow">WHEN THE CLICK DOES NOTHING</p><h2>Check one connection at a time.</h2><ol><li><strong>The button is missing:</strong> check index.html and put the button inside the body.</li><li><strong>The button is visible but does nothing:</strong> save story.js and check that the script's filename is exactly story.js.</li><li><strong>The page cannot find an element:</strong> match <code>id="story"</code> with <code>"#story"</code>, and <code>id="future"</code> with <code>"#future"</code>. Keep <code>defer</code> on the script line.</li><li><strong>The code stops:</strong> compare quotes, braces and parentheses with the example. Open the preview in a browser and look at its developer tools Console for an error.</li></ol><p>Show Ingrid the two files, what you expected and what happened. You do not have to debug alone.</p></section>'''))
     # Keep the full older troubleshooting reference, labelled as an extra.
     help_section.extract()
@@ -87,6 +89,8 @@ def improve(base, out):
     quick_help = guide.select_one('#first-click-help')
     collapsed_help = node('<details class="step" id="first-click-help"><summary>My first click does nothing: open the help drawer</summary></details>')
     for child in list(quick_help.contents):
+        if getattr(child, 'name', None) == 'summary':
+            continue
         collapsed_help.append(child.extract())
     quick_help.replace_with(collapsed_help)
     save('javascript-construct.html', str(guide))

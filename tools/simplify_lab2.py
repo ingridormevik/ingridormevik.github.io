@@ -8,6 +8,23 @@ def simplify(root):
         path.write_text(str(soup), encoding='utf-8', newline='\n')
     path = labs / 'javascript-construct.html'
     s = BeautifulSoup(path.read_text(encoding='utf-8'), 'html.parser')
+    sources = s.select('#javascript-sources')
+    for duplicate in sources[1:]:
+        duplicate.decompose()
+    extras = s.select('#construct-extra')
+    for duplicate in extras[1:]:
+        duplicate.unwrap()
+    if extras:
+        summaries = extras[0].find_all('summary', recursive=False)
+        for duplicate in summaries[1:]:
+            duplicate.decompose()
+    help_nodes = s.select('#first-click-help')
+    if help_nodes:
+        fixed = BeautifulSoup('''<details class="step" id="first-click-help"><summary>My first click does nothing: open the help drawer</summary><p class="eyebrow">WHEN THE CLICK DOES NOTHING</p><h2>Check one connection at a time.</h2><ol><li><strong>Button missing:</strong> put the button inside the body in index.html.</li><li><strong>Click does nothing:</strong> save story.js and check that the script connection names that exact file.</li><li><strong>Element not found:</strong> match id="story" with "#story" and id="future" with "#future". Keep defer on the script line.</li><li><strong>Code stops:</strong> compare quotation marks, braces and parentheses with the example. Check the browser Console for an error.</li></ol><p>Show Ingrid the two files, what you expected and what happened.</p></details>''', 'html.parser').find()
+        help_nodes[0].replace_with(fixed)
+        for old in help_nodes[1:]:
+            if old.parent is not None:
+                old.decompose()
     for node in s.select('[data-html-mission], [data-html-help]'):
         node.decompose()
     for node in s.select('link[href^="html-missions"], script[src^="html-missions"]'):
