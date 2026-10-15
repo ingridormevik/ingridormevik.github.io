@@ -291,3 +291,58 @@ html.c3w-lb-open{overflow:hidden}
 .studio .route-card .route-links a{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border:1px solid rgba(255,255,255,.2);border-radius:8px;color:#f5f5ef!important;text-decoration:none;font-weight:600;font-size:15px}
 .studio .route-card .route-links a:hover{border-color:#ffd23f;color:#ffd23f!important}
 @media (max-width:560px){.route-card{padding:16px 14px}.route-links a{flex:1 1 100%}}
+
+/* ---------- Bridges between the labs: one project, five Fridays ---------- */
+.bridge{margin:18px 0 22px;padding:20px 22px;border:2px solid #9cc7ff;border-radius:12px;background:#0b0d14;color:#f5f5ef;text-align:left}
+.bridge.br-next{border-color:#ffd23f}
+.studio .bridge :is(p,h4,li,b,small,figcaption,th,td){color:inherit}
+.studio .bridge .br-kicker{margin:0 0 4px!important;font:700 12px/1.4 Consolas,monospace;letter-spacing:.14em;color:#9cc7ff!important}
+.studio .bridge.br-next .br-kicker{color:#ffd23f!important}
+.bridge h4{margin:0 0 8px;font:700 clamp(21px,2.5vw,27px)/1.25 Georgia,'Times New Roman',serif}
+.studio .bridge > p:not(.br-kicker){margin:0 0 14px!important;font-size:17px;line-height:1.55;color:#d6dbe1!important;max-width:68ch}
+.studio .bridge b{color:#fff}
+.studio .br-path{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:6px 0 4px!important;padding:0!important;list-style:none;counter-reset:none}
+.studio .br-path li{margin:0!important;padding:0!important;list-style:none}
+.studio .br-path li::before{content:none!important}
+.studio .br-path a{display:flex;flex-direction:column;gap:2px;height:100%;min-height:44px;padding:8px 10px;border:1px solid rgba(255,255,255,.18);border-radius:8px;color:#b9c2cc!important;text-decoration:none;font-size:13px;line-height:1.3}
+.br-path a span{font:700 12px/1 Consolas,monospace;color:#b9c2cc}
+.br-path a b{font-size:14px;color:#f5f5ef}
+.br-path a small{font-size:12px;color:#8f9aa6}
+.studio .br-path .is-done a{border-color:#c6f58d}
+.studio .br-path .is-done span::after{content:' ✓';color:#c6f58d}
+.studio .br-path .is-now a{background:#ffd23f;border-color:#ffd23f}
+.studio .br-path .is-now a :is(span,b,small){color:#14120a!important}
+.br-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.studio .bridge .br-links a{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border:1px solid rgba(255,255,255,.22);border-radius:8px;color:#f5f5ef!important;text-decoration:none;font-weight:600;font-size:15px}
+.studio .bridge .br-links a:hover{border-color:#ffd23f;color:#ffd23f!important}
+.br-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:center;margin:0 0 14px}
+.studio .br-code{margin:0!important;padding:14px!important;border:1px solid rgba(255,255,255,.18)!important;border-radius:8px!important;background:#1e1e1e!important;color:#d4d4d4!important;font:14px/1.6 Consolas,monospace!important;white-space:pre-wrap;overflow-wrap:anywhere;max-width:none!important}
+.br-code .br-c{color:#6a9955}
+.br-shot{margin:0}
+.br-shot img{display:block;width:100%;height:auto;border:1px solid rgba(255,255,255,.18);border-radius:8px}
+.studio .br-shot figcaption{margin-top:6px;font-size:14px;color:#b9c2cc!important}
+.br-table{width:100%;border-collapse:collapse;margin:0 0 14px;font-size:15px;line-height:1.45}
+.br-table th,.br-table td{padding:9px 10px;border:1px solid rgba(255,255,255,.15);text-align:left;vertical-align:top}
+.br-table thead th{background:#161a24;font:700 12px/1.4 Consolas,monospace;letter-spacing:.06em;color:#9cc7ff}
+.br-table tbody th{font-weight:700;color:#fff;white-space:nowrap}
+.br-table code,.br-mini code{font:13px/1.4 Consolas,monospace;padding:1px 5px;border-radius:4px;background:#1e1e1e;color:#ce9178;overflow-wrap:anywhere}
+.br-mini{margin:4px 0 16px;padding:12px 14px;border-left:4px solid #9cc7ff;border-radius:0 8px 8px 0;background:#10151f}
+.studio .c3w .br-mini .br-kicker{margin:0 0 4px!important;font:700 12px/1.4 Consolas,monospace;letter-spacing:.14em;color:#9cc7ff!important}
+.studio .c3w .br-mini p:last-child{margin:0!important;font-size:15px;line-height:1.5;max-width:none}
+.studio .br-new{margin:10px 0 14px!important;padding:10px 12px;border-left:4px solid #ffd23f;font-size:16px;line-height:1.5;max-width:44ch}
+@media (max-width:760px){
+  .bridge{padding:16px 14px}
+  .studio .br-path{grid-template-columns:1fr}
+  .studio .br-path a{flex-direction:row;align-items:center;gap:10px}
+  .br-pair{grid-template-columns:1fr}
+  .br-table thead{display:none}
+  .br-table,.br-table tbody,.br-table tr,.br-table th,.br-table td{display:block;width:100%}
+  .br-table tr{margin-bottom:10px;border:1px solid rgba(255,255,255,.15);border-radius:8px;overflow:hidden}
+  .br-table th,.br-table td{border:0;border-top:1px solid rgba(255,255,255,.08)}
+  .br-table tbody th{white-space:normal;background:#161a24}
+  .br-table td:empty{display:none}
+  .br-table td:nth-of-type(1)::before{content:'Lab 1: ';color:#9cc7ff;font-weight:700}
+  .br-table td:nth-of-type(2)::before{content:'Lab 2: ';color:#9cc7ff;font-weight:700}
+  .br-table td:nth-of-type(3)::before{content:'Construct: ';color:#9cc7ff;font-weight:700}
+}
+.route-card .br-path{margin:4px 0 12px!important}
