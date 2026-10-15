@@ -118,3 +118,164 @@
 @media (max-width:760px){.obligatory-banner{grid-template-columns:1fr}.obligatory-go{grid-column:1;grid-row:auto;justify-content:center;white-space:normal}}
 @media print{.obligatory-banner{border-color:#000;background:#fff;color:#000}}
 .studio .c3w .c3w-do a,.studio .c3w .c3w-see a{color:var(--c3w-yellow)!important;text-decoration:underline}
+
+/* Door from Part 1 (lab page) to Part 2 (its own page). */
+.c3w-nextpage{display:grid;gap:6px;margin:0 0 30px;padding:22px 24px;border:2px solid #ffd23f;border-radius:12px;background:#0b0d14;color:#f5f5ef!important;text-decoration:none!important}
+.c3w-nextpage:hover{background:#14130c}
+.c3w-nextpage-kicker{font:700 12px/1.4 Consolas,monospace;letter-spacing:.14em;color:#ffd23f}
+.c3w-nextpage strong{font:700 clamp(22px,2.8vw,30px)/1.2 Georgia,'Times New Roman',serif;color:#f5f5ef}
+.c3w-nextpage span:last-child{font-size:17px;line-height:1.5;color:#b9c2cc}
+.c3w-back{margin:10px 0 60px}
+.c3w-back a{font-weight:650}
+.studio a.c3w-nextpage strong{color:#f5f5ef!important}.studio a.c3w-nextpage span:last-child{color:#b9c2cc!important}.studio a.c3w-nextpage .c3w-nextpage-kicker{color:#ffd23f!important}
+
+/* Own-project nudge, timing line and the human help line. */
+.studio .c3w .c3w-own{margin:14px 0 6px!important;padding:12px 14px;border:1px solid var(--c3w-accent);border-radius:8px;font-size:16px;line-height:1.55;color:var(--c3w-ink)!important;max-width:none!important}
+.studio .c3w .c3w-own b{color:var(--c3w-accent)}
+.c3w-help-ask{margin:0 14px 12px!important;font-size:14px!important;line-height:1.5;color:var(--c3w-soft)!important}
+.studio .c3w-when{display:inline-block;margin-top:6px;padding:8px 12px;border:1px solid rgba(255,255,255,.18);border-radius:6px;font:13px/1.5 Consolas,monospace}
+
+/* Help boxes sit inside the numbered step column: no numbering, readable colours. */
+.studio .c3w .c3w-do .c3w-help ul{counter-reset:none;padding-left:18px!important;margin:12px 14px 10px!important;list-style:disc!important}
+.studio .c3w .c3w-do .c3w-help li{counter-increment:none;padding:0 0 8px 0!important;list-style:disc!important;font-size:15px;line-height:1.5;color:var(--c3w-ink)!important}
+.studio .c3w .c3w-do .c3w-help li::before{content:none!important}
+.studio .c3w .c3w-do .c3w-help li b{color:var(--c3w-yellow)}
+.studio .c3w .c3w-help summary{color:var(--c3w-yellow)!important;font-weight:650}
+.studio .c3w .c3w-help a{color:var(--c3w-yellow)!important}
+
+/* Mobile and spacing audit fixes (16 Oct). */
+.studio .c3w .c3w-shot{margin:0!important}
+.studio .c3w .c3w-tabs a{min-height:44px}
+@media (max-width:560px){
+  .c3w-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .c3w-controls .c3w-progress{grid-column:1/-1;grid-row:1;text-align:center;font-size:11px!important}
+  .c3w-controls button{width:100%;padding:10px 8px;font-size:14px;white-space:normal;line-height:1.2}
+  .c3w-scene h4{font-size:24px}
+  .c3w-story{font-size:16px!important}
+  .c3w-do li{font-size:16px}
+  .c3w-tabs ol{gap:5px}
+}
+
+/* ---------- Checkpoints, progress and the Construct licence ---------- */
+.c3w-meter{display:flex;align-items:center;gap:12px;margin:14px 0 4px}
+.c3w-meter-bar{flex:1;max-width:360px;height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+.c3w-meter-bar span{display:block;height:100%;width:0;background:var(--c3w-accent);transition:width .4s ease}
+.studio .c3w .c3w-meter-text{margin:0!important;font:12px/1.4 Consolas,monospace;letter-spacing:.06em;color:var(--c3w-soft)!important}
+.c3w-done-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:18px 0 4px;padding-top:16px;border-top:1px solid var(--c3w-hair)}
+.studio .c3w .c3w-done{min-height:48px;padding:10px 18px;border-radius:8px;border:2px solid var(--c3w-accent);background:transparent;color:var(--c3w-accent);font:700 16px/1.2 'Segoe UI',Arial,sans-serif;cursor:pointer;box-shadow:none}
+.studio .c3w .c3w-done[aria-pressed=true]{background:var(--c3w-accent);color:#14200c}
+.c3w-done-row span{font-size:14px;color:var(--c3w-soft)}
+.studio .c3w .c3w-tabs a.is-done{border-color:var(--c3w-accent);color:var(--c3w-accent)!important}
+.studio .c3w .c3w-tabs a.is-done span{font-size:0;background:var(--c3w-accent);color:#14200c}
+.studio .c3w .c3w-tabs a.is-done span::before{content:'✓';font-size:13px}
+.studio .c3w .c3w-tabs a.is-done[aria-current=step]{color:#14120a!important}
+.c3w-licence{margin:0 24px 24px;padding:22px 24px;border:2px solid var(--c3w-accent);border-radius:12px;background:#10160c}
+.c3w-licence[hidden]{display:none}
+.studio .c3w .c3w-licence-kicker{margin:0 0 6px!important;font:700 12px/1.4 Consolas,monospace;letter-spacing:.16em;color:var(--c3w-accent)!important}
+.c3w-licence h4{margin:0 0 8px;font:700 clamp(22px,2.6vw,30px)/1.2 Georgia,'Times New Roman',serif}
+.c3w-licence p{margin:0 0 8px!important;font-size:16px}
+.studio .c3w .c3w-licence ul{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px!important;padding:0!important;list-style:none}
+.studio .c3w .c3w-licence li{padding:5px 10px!important;border:1px solid var(--c3w-hair2);border-radius:5px;font-size:14px!important;list-style:none}
+.studio .c3w .c3w-licence .primary{background:var(--c3w-yellow);border-color:var(--c3w-yellow);color:#14120a!important;text-decoration:none!important}
+
+/* ---------- Find it! game ---------- */
+.c3w-game{margin:-4px 0 0;padding:14px 16px;border:1px dashed var(--c3w-hair2);border-radius:8px}
+.studio .c3w .c3w-game-kicker{margin:0 0 4px!important;font:700 11px/1.4 Consolas,monospace;letter-spacing:.14em;color:var(--c3w-yellow)!important}
+.studio .c3w .c3w-game-q{margin:0 0 10px!important;font-size:16px;line-height:1.5}
+.studio .c3w .c3w-game-q b{color:var(--c3w-yellow)}
+.studio .c3w .c3w-game-go{min-height:44px;padding:8px 16px;border-radius:8px;border:1px solid var(--c3w-yellow);background:var(--c3w-yellow);color:#14120a;font-weight:700;cursor:pointer;box-shadow:none}
+.c3w-game-go[hidden]{display:none}
+.c3w-shot a{position:relative}
+.c3w-shot.is-playing a{cursor:crosshair;outline:3px solid var(--c3w-yellow);outline-offset:2px}
+.c3w-hit{position:absolute;pointer-events:none;border:3px solid var(--c3w-accent);background:rgba(198,245,141,.18)}
+.c3w-hit.is-miss{border-color:#f29bcd;background:rgba(242,155,205,.15)}
+
+/* ---------- Screenshot viewer ---------- */
+.c3w-lb{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;background:rgba(5,6,10,.97);color:#f5f5ef;padding:max(10px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom))}
+.c3w-lb[hidden]{display:none}
+html.c3w-lb-open{overflow:hidden}
+.c3w-lb-bar{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.c3w-lb-count{flex:1;margin:0;font:12px/1.4 Consolas,monospace;letter-spacing:.08em;color:#b9c2cc}
+.c3w-lb-full{color:#ffd23f;font-size:14px}
+.c3w-lb-close{width:48px;height:48px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:transparent;color:#f5f5ef;font-size:26px;line-height:1;cursor:pointer}
+.c3w-lb-stage{flex:1;min-height:0;overflow:auto;display:flex;align-items:center;justify-content:center;touch-action:pinch-zoom pan-x pan-y}
+.c3w-lb-stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px}
+.c3w-lb-cap{margin:8px auto 6px;max-width:80ch;font-size:15px;line-height:1.5;text-align:center;color:#d8dde3}
+.c3w-lb-nav{display:flex;justify-content:center;gap:10px}
+.c3w-lb-nav button{min-height:48px;min-width:120px;padding:8px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:transparent;color:#f5f5ef;font:650 15px/1 'Segoe UI',Arial,sans-serif;cursor:pointer}
+.c3w-lb-nav button[hidden]{display:none}
+@media (max-width:560px){.c3w-licence{margin:0 16px 16px;padding:18px 16px}.c3w-lb-nav button{flex:1;min-width:0}}
+@media (prefers-reduced-motion:reduce){.c3w-meter-bar span{transition:none}}
+
+/* Mobile: no stacked panel padding around the walkthrough, so screenshots get the width. */
+@media (max-width:560px){
+  .studio #mapping-first-contact.course-panel{padding:14px 0 0!important;border-left-width:0!important;border-right-width:0!important;border-radius:0!important;background:transparent!important}
+  .studio #mapping-first-contact > :not(.c3w):not(.c3w-nextpage){margin-left:4px;margin-right:4px}
+  .c3w{border-radius:10px}
+  .c3w-head,.c3w-tabs,.c3w-stage,.c3w-controls{padding-left:12px!important;padding-right:12px!important}
+  .c3w-licence{margin-left:12px;margin-right:12px}
+}
+.studio .c3w .c3w-game-kicker,.studio .c3w .c3w-progress{font-size:12px!important}
+
+/* Viewer: solid backdrop above everything, zoom for small screens, calm buttons. */
+.c3w-lb{z-index:1000;background:#05060a!important}
+.c3w-lb-stage img{cursor:zoom-in}
+.c3w-lb.is-zoom .c3w-lb-stage{display:block}
+.c3w-lb.is-zoom .c3w-lb-stage img{max-width:none;max-height:none;width:240%;cursor:zoom-out}
+@media (min-width:900px){.c3w-lb.is-zoom .c3w-lb-stage img{width:160%}}
+.c3w-lb-hint{margin:0 0 8px;text-align:center;font-size:13px;color:#b9c2cc}
+.studio .c3w-lb button{box-shadow:none!important;transform:none!important;text-shadow:none}
+.studio .c3w-lb .c3w-lb-close{background:transparent!important;color:#f5f5ef!important;border:1px solid rgba(255,255,255,.3)!important}
+.studio .c3w-lb .c3w-lb-nav button{background:transparent!important;color:#f5f5ef!important;border:1px solid rgba(255,255,255,.3)!important}
+/* Done row now closes each scene, after the screenshots. */
+.c3w-scene > .c3w-done-row{margin-top:22px}
+.studio .c3w .c3w-licence li{margin:0!important;line-height:1.4!important}
+
+/* ---------- One connected journey: SO FAR → NOW → DO THIS → YOU SHOULD SEE → NEXT UP ---------- */
+.studio .c3w .c3w-from{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0 0 10px!important;padding:10px 12px;border:1px solid var(--c3w-hair2);border-radius:8px;font-size:16px;line-height:1.5;color:var(--c3w-soft)!important;max-width:none!important}
+.c3w-from span,.c3w-now,.c3w-nextup-label{font:700 12px/1.4 Consolas,monospace;letter-spacing:.14em}
+.c3w-from span{color:var(--c3w-soft)}
+.studio .c3w .c3w-now{display:inline-block;margin-right:10px;font-style:normal;color:var(--c3w-yellow)}
+.c3w-nextup{margin-top:24px;padding:16px 18px;border:2px solid var(--c3w-yellow);border-radius:10px;background:#14130c}
+.studio .c3w .c3w-nextup-label{margin:0 0 4px!important;color:var(--c3w-yellow)!important}
+.studio .c3w .c3w-nextup-text{margin:0!important;font-size:17px;line-height:1.5;color:var(--c3w-ink)!important;max-width:none!important}
+.studio .c3w .c3w-nextup-text b{color:var(--c3w-ink)}
+.c3w-nextup .c3w-done-row{margin:14px 0 0;padding-top:14px;border-top:1px solid rgba(255,210,63,.25)}
+.studio .c3w .c3w-nextup .c3w-done{border-color:var(--c3w-yellow);background:var(--c3w-yellow);color:#14120a}
+.studio .c3w .c3w-nextup .c3w-done[aria-pressed=true]{background:transparent;color:var(--c3w-yellow)}
+/* Tabs read as a path: one step leads to the next. */
+.c3w-tabs ol{align-items:center}
+.studio .c3w .c3w-tabs ol:not(.c3w-levels) li{display:flex;align-items:center;gap:6px}
+.studio .c3w .c3w-tabs ol:not(.c3w-levels) li + li::before{content:'›';color:var(--c3w-soft);font-size:18px;line-height:1}
+
+/* Mobile reading order: steps, then the pictures of those steps, then the check and help. */
+@media (max-width:860px){
+  .c3w-grid{display:flex;flex-direction:column;gap:0}
+  .c3w-grid > .c3w-do{display:contents}
+  .c3w-grid > .c3w-do > *{order:4}
+  .c3w-grid > .c3w-do > .c3w-label:first-child{order:1}
+  .c3w-grid > .c3w-do > ol{order:2}
+  .c3w-grid > .c3w-shots{order:3;margin:0 0 22px}
+}
+@media (max-width:860px){.c3w-grid > .c3w-do > *{align-self:stretch;max-width:none}}
+
+/* Paired layout: each picture sits under the step it shows. */
+.c3w-grid.is-paired{display:block;max-width:860px}
+.c3w-do li .c3w-step-shot{margin:12px 0 6px!important}
+.c3w-do li > .c3w-pair{margin:12px 0 6px}
+.c3w-do li .c3w-shot img{max-height:560px}
+.studio .c3w .c3w-do li figcaption{font-size:14px;color:var(--c3w-soft)}
+.c3w-do li .c3w-game{margin:10px 0 6px}
+
+/* Live Sine preview built from the real Preview frame: the Star moves by Magnitude 50 (63 px of 1084). */
+.c3w-anim{margin:4px 0 16px!important}
+.c3w-anim-stage{position:relative;overflow:hidden;border:1px solid var(--c3w-hair2);border-radius:8px;line-height:0;background:#5e5e5e}
+.c3w-anim-stage img{display:block;width:100%;height:auto}
+.c3w-anim-patch{position:absolute;left:38.9%;top:26.5%;width:26.3%;height:46.7%;background:#5e5e5e}
+.c3w-anim-star{position:absolute;left:37.08%;top:26.89%;width:25.83%;height:45.9%;border-radius:50%;
+  background:url(construct-lab3/b14-preview-a.webp) 52.74% 49.7%/387.1% auto no-repeat;animation:c3w-sine 4s ease-in-out infinite}
+@keyframes c3w-sine{0%,100%{transform:translateX(-22.5%)}50%{transform:translateX(22.5%)}}
+.c3w-anim-badge{position:absolute;right:8px;top:8px;padding:3px 7px;border-radius:4px;background:rgba(0,0,0,.6);color:#c6f58d;font:700 12px/1.4 Consolas,monospace;letter-spacing:.1em}
+.studio .c3w .c3w-anim figcaption{margin-top:8px;font-size:14px;line-height:1.5;color:var(--c3w-soft)}
+@media (prefers-reduced-motion:reduce){.c3w-anim-star{animation-duration:12s}}
+.access-no-motion .c3w-anim-star{animation:none}

@@ -41,7 +41,16 @@
     const trackGate = gate.querySelector('[data-track-gate]');
     const trackKeys = [...gate.querySelectorAll('[data-track-key]')];
     let running = false;
-    const pairs = () => [1, 2].map(n => [gate.querySelector(`[data-ev-cond="${n}"]`).value, gate.querySelector(`[data-ev-act="${n}"]`).value]);
+    // Every condition → action pair on the sheet, including the optional second action per event.
+    const val = sel => gate.querySelector(sel)?.value || '';
+    const pairs = () => [1, 2].flatMap(n => {
+      const c = val(`[data-ev-cond="${n}"]`), a2 = val(`[data-ev-act2="${n}"]`);
+      return [[c, val(`[data-ev-act="${n}"]`)], ...(a2 ? [[c, a2]] : [])];
+    });
+    gate.querySelectorAll('[data-add-action]').forEach(btn => btn.addEventListener('click', () => {
+      const second = gate.querySelector(`[data-ev-act2="${btn.dataset.addAction}"]`);
+      second.hidden = false; btn.hidden = true; second.focus();
+    }));
     const has = (list, c, a) => list.some(([x, y]) => x === c && y === a);
     function reset() {
       player.style.transform = 'translateX(0)'; hud.textContent = '0';
@@ -53,7 +62,7 @@
       const list = pairs();
       const collect = has(list, 'collide', 'addkey'), destroy = has(list, 'collide', 'destroy');
       const opens = has(list, 'keys', 'open'), tickOpen = has(list, 'tick', 'open'), tickAdd = has(list, 'tick', 'addkey');
-      if (list.some(([c, a]) => !c || !a)) { sheetStatus.textContent = 'Choose a condition and an action for both events first.'; running = false; return; }
+      if ([1, 2].some(n => !val(`[data-ev-cond="${n}"]`) || !val(`[data-ev-act="${n}"]`))) { sheetStatus.textContent = 'Choose a condition and an action for both events first.'; running = false; return; }
       let count = 0;
       if (tickOpen) trackGate.classList.add('is-open');
       for (let step = 1; step <= 4; step++) {
@@ -63,7 +72,7 @@
         const key = trackKeys[step - 1];
         if (key) {
           if (collect) { count += 1; hud.textContent = count; }
-          if (collect || destroy) key.classList.add('is-taken');
+          if (destroy) key.classList.add('is-taken');
         }
         if (opens && count >= 3) trackGate.classList.add('is-open');
       }
@@ -74,9 +83,11 @@
         sheetStatus.textContent = 'The gate was open before the player even moved. “Every tick” is always true, so there is no challenge left. A rule needs a condition that can be false.';
       } else if (list.some(([c]) => c === 'click')) {
         sheetStatus.textContent = 'Nothing happened: there is no button in this scene, so “On clicked” never fires. Conditions only run when their event actually happens.';
-      } else if (collect && opens) {
-        sheetStatus.textContent = 'GATE OPEN. Two events, one rule system: every key adds 1, and at 3 the gate opens. That is exactly how an event sheet works in Construct.';
+      } else if (collect && opens && destroy) {
+        sheetStatus.textContent = 'GATE OPEN. Perfect sheet: each key is counted and picked up, and at 3 the gate opens. Two events, three actions: exactly how you would build it in Construct.';
         light('sheet', true);
+      } else if (collect && opens) {
+        sheetStatus.textContent = 'GATE OPEN, but look: the keys are still lying there. Event 1 needs a second action. Click + Add action and choose Key ▸ Destroy, then run again.';
       } else if (collect) {
         sheetStatus.textContent = `The player collected ${count} keys, but nothing tells the gate to open. Add an event: System ▸ keys ≥ 3 → Gate ▸ Open.`;
       } else if (opens) {
@@ -88,7 +99,7 @@
       }
       running = false;
     });
-    const hints = ['Event 1 should count keys: what happens when the player touches a key?', 'Event 1: Player ▸ On collision with Key → System ▸ Add 1 to keys.', 'Event 2: System ▸ keys ≥ 3 → Gate ▸ Open.'];
+    const hints = ['Event 1 should count keys: what happens when the player touches a key?', 'Event 1: Player ▸ On collision with Key → System ▸ Add 1 to keys. Then + Add action → Key ▸ Destroy.', 'Event 2: System ▸ keys ≥ 3 → Gate ▸ Open.'];
     let hint = 0;
     gate.querySelector('[data-gate-hint]').addEventListener('click', () => { sheetStatus.textContent = `Hint ${hint + 1} of 3: ${hints[hint]}`; hint = Math.min(hint + 1, 2); });
 

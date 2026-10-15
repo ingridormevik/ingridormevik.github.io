@@ -45,3 +45,17 @@ body.has-now-bar{padding-bottom:96px}
 .now-bar[data-kind=task]{background:#1c1a0f;border-top:2px solid #ffd23f}
 .now-bar[data-kind=task] .now-label{color:#ffd23f}
 .now-bar[data-kind=task] .now-go{background:#ffd23f;color:#14120a!important}
+/* Mobile audit fixes: readable label, wrapping side text on small phones. */
+.now-label{font-size:11px!important}
+@media (max-width:420px){
+  .now-bar{gap:6px 10px;padding:8px 12px}
+  .now-side{flex-wrap:wrap;gap:2px 10px}
+  .now-side p{white-space:normal!important;font-size:12px!important}
+  .now-clock strong{font-size:20px}
+  .now-go{padding:8px 10px;font-size:13px}
+  .now-title{font-size:14px!important}
+}
+.now-label{font-size:12px!important}
+.now-go{min-height:44px;display:inline-flex;align-items:center}
+/* Keep focused or scrolled-to content clear of the fixed bar. */
+html:has(body.has-now-bar){scroll-padding-bottom:120px}

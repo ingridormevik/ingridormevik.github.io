@@ -49,9 +49,10 @@
   let lastAnnounced = '';
 
   function show(view) {
-    if (!view || hiddenByUser) { bar.hidden = true; document.body.classList.remove('has-now-bar'); return; }
+    if (!view || hiddenByUser) { bar.hidden = true; document.body.classList.remove('has-now-bar'); document.documentElement.style.scrollPaddingBottom = ''; return; }
     bar.hidden = false;
     document.body.classList.add('has-now-bar');
+    document.documentElement.style.scrollPaddingBottom = (bar.offsetHeight + 16) + 'px';
     bar.dataset.kind = view.kind;
     $('[data-now-time]').textContent = view.time;
     $('[data-now-title]').textContent = view.title;
@@ -61,14 +62,20 @@
     $('[data-now-fill]').style.width = `${Math.max(0, Math.min(100, view.progress * 100))}%`;
     const go = $('[data-now-go]');
     go.hidden = !view.href;
-    if (view.href) go.href = view.href;
+    if (view.href) {
+      // On a sub-page, jump to a matching place here, or back to the lab page.
+      let href = view.href;
+      if (view.kind === 'task' && document.querySelector('.obligatory-banner')) href = '#' + document.querySelector('.obligatory-banner').id;
+      else if (href.startsWith('#') && (document.querySelector('[data-now-schedule]') || !document.getElementById(href.slice(1)))) href = 'lab-programme.html' + href;
+      go.href = href;
+    }
     if (view.title !== lastAnnounced) { lastAnnounced = view.title; $('.now-sr').textContent = `Now: ${view.title}. ${view.left || ''}`; }
   }
 
   function compute() {
     const t = now();
     const today = `${t.getFullYear()}-${pad(t.getMonth() + 1)}-${pad(t.getDate())}`;
-    const lab = document.querySelector(`.lab[data-unlock-date="${today}"]`);
+    const lab = document.querySelector(`.lab[data-unlock-date="${today}"], [data-now-schedule][data-unlock-date="${today}"]`);
     if (!lab) return null;
     const minutes = t.getHours() * 60 + t.getMinutes();
     const start = pickGroup(minutes);
@@ -91,7 +98,7 @@
     const isBreak = current.row.classList.contains('break-row');
     // Last quarter of the lab: the screenshot for the obligatory task comes first.
     const task = lab.dataset.obligatory;
-    if (task && !isBreak && elapsed >= 85) return {
+    if (task && !isBreak && elapsed >= 85 && elapsed < 100) return {
       kind: 'task', time, title: `Screenshot → Obligatory Task ${task}`,
       prompt: `Post a screenshot of today's work on Mitt UiB under Discussions › Obligatory Task ${task}.`,
       left: `${LENGTH - elapsed} min left`, next: `Ends ${clock(start + LENGTH)}`, progress: elapsed / LENGTH, href: `#${lab.id}-obligatory`};
