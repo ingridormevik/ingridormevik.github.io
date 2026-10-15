@@ -279,3 +279,15 @@ html.c3w-lb-open{overflow:hidden}
 .studio .c3w .c3w-anim figcaption{margin-top:8px;font-size:14px;line-height:1.5;color:var(--c3w-soft)}
 @media (prefers-reduced-motion:reduce){.c3w-anim-star{animation-duration:12s}}
 .access-no-motion .c3w-anim-star{animation:none}
+
+/* Route cards: where you came from, and where you can jump ahead. */
+.route-card{margin:18px 0;padding:18px 20px;border:2px solid #c6f58d;border-radius:12px;background:#0b0d14;color:#f5f5ef}
+.route-card.route-ahead{border-style:dashed}
+.studio .route-card :is(p,h4){color:inherit}
+.studio .route-card .route-kicker{margin:0 0 4px!important;font:700 12px/1.4 Consolas,monospace;letter-spacing:.14em;color:#c6f58d!important}
+.route-card h4{margin:0 0 6px;font:700 22px/1.25 Georgia,'Times New Roman',serif}
+.studio .route-card p:not(.route-kicker){margin:0 0 10px!important;font-size:16px;line-height:1.5;color:#b9c2cc!important;max-width:none}
+.route-links{display:flex;flex-wrap:wrap;gap:8px}
+.studio .route-card .route-links a{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border:1px solid rgba(255,255,255,.2);border-radius:8px;color:#f5f5ef!important;text-decoration:none;font-weight:600;font-size:15px}
+.studio .route-card .route-links a:hover{border-color:#ffd23f;color:#ffd23f!important}
+@media (max-width:560px){.route-card{padding:16px 14px}.route-links a{flex:1 1 100%}}
