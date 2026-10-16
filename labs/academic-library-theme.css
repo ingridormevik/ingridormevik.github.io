@@ -50,6 +50,17 @@
 .studio.page-academic-library #rf-result{margin-top:28px;padding:clamp(16px,3vw,26px);border:3px solid #203d49;background:#edf3df}
 .studio.page-academic-library #rf-routes section{background:#fff;padding:20px;border:1px solid #8c9893;margin:18px 0}
 .studio.page-academic-library #rf-routes h4{font:800 23px/1.3 system-ui;margin:0 0 16px}
+.studio.page-academic-library .al-hero .lc-scene{margin:24px -10px 0;background:#132d3b;border:2px solid #081b26}
+.studio.page-academic-library .lc-scene img{display:block;width:100%;height:auto;max-width:none}
+.studio.page-academic-library .al-hero nav.lc-benches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0;padding:18px 0;border:0;max-width:none;text-align:left}
+.studio.page-academic-library .lc-benches a{display:block;background:#f4f1fc;color:#172c34;border:3px solid #081b26;border-top:6px solid #c6ef77;padding:18px;text-decoration:none;min-width:0}
+.studio.page-academic-library .lc-benches a:nth-child(2){border-top-color:#f2c85a}.studio.page-academic-library .lc-benches a:nth-child(3){border-top-color:#a58bc6}.studio.page-academic-library .lc-benches a:nth-child(4){border-top-color:#7fb9dc}
+.studio.page-academic-library .lc-benches strong{display:block;font:850 21px/1.25 'Segoe UI',Arial,sans-serif;color:#172c34}.studio.page-academic-library .lc-benches span{display:block;margin-top:10px;font:16px/1.6 'Segoe UI',Arial,sans-serif;color:#354a52}
+.studio.page-academic-library .lc-history{background:#142e3b;border:1px solid #7d9ba6;border-radius:0;text-align:left;padding:0;margin:10px 0 0}
+.studio.page-academic-library .lc-history summary{color:#ffdf48;font:750 15px/1.5 'Segoe UI',Arial,sans-serif;padding:14px 18px}
+.studio.page-academic-library .al-hero .lc-history p{color:#eef4e8;margin:18px;max-width:80ch;font-size:16px}.studio.page-academic-library .lc-history strong{color:#d4f47d}
+@media(max-width:850px){.studio.page-academic-library .al-hero nav.lc-benches{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.studio.page-academic-library .al-hero nav.lc-benches{grid-template-columns:1fr}.studio.page-academic-library .al-hero .lc-scene{margin-left:-16px;margin-right:-16px}}
 
 .al-atlas{margin:36px 0;padding:clamp(16px,3vw,28px);background:#f8f6ef;border:2px solid #172c34}.al-atlas h2{font:800 clamp(27px,4vw,38px)/1.2 Georgia,serif}.al-atlas label{display:grid;gap:10px;font-weight:750;margin:24px 0}.al-atlas input{padding:14px;border:2px solid #172c34;background:#fff;color:#172c34;font:17px system-ui;width:100%;box-sizing:border-box}.al-table-scroll{overflow-x:auto;max-width:100%;border:1px solid #879398}.al-table-scroll table{border-collapse:collapse;min-width:950px;width:100%;font:16px/1.6 system-ui;background:#fff;color:#172c34}.al-table-scroll caption{text-align:left;padding:16px;font-weight:800;background:#e8e1f1}.al-table-scroll th,.al-table-scroll td{padding:18px;border:1px solid #b0b8b7;text-align:left;vertical-align:top;min-width:145px}.al-table-scroll thead th{background:#203c43;color:#fff}.al-table-scroll small{display:block;font-weight:400;margin-top:10px}.al-table-scroll code{white-space:normal;overflow-wrap:anywhere}.al-table-scroll tr[hidden]{display:none!important}.al-reading code{white-space:normal}.al-library nav{line-height:1.8}.access-contrast .studio .al-table-scroll th{background:#fff!important;color:#111!important}
 .page-academic-library .al-atlas{background:#f4f1fc;color:#172c34;border:3px solid #0e1c29;box-shadow:5px 5px 0 #0e1c29}

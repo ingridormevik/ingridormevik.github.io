@@ -48,6 +48,8 @@ def library(root):
     add(root)
     from library_theme import theme
     theme(root)
+    from laboratory_header import header
+    header(root)
     path = labs / 'tools.html'
     s = BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
     old = s.select_one('#academic-library-link')
