@@ -109,6 +109,8 @@ button.addEventListener("click", revealStory);</code></pre>
     publish(root)
     from connect_steps import connect
     connect(root)
+    from academic_library import library as academic_library
+    academic_library(root)
 
 if __name__ == '__main__':
     simplify(Path(__file__).resolve().parent.parent)
