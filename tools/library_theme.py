@@ -53,6 +53,29 @@ body.studio.page-academic-library{margin:0;background:#15313e;background-image:r
 .studio.page-academic-library .al-library>section{scroll-margin-top:24px}
 @media(max-width:600px){.studio.page-academic-library main{padding:0 12px}.studio.page-academic-library :is(.al-hero,.al-reading,.al-atlas,.al-book,.ge-card){box-shadow:none}.studio.page-academic-library .al-hero nav{display:grid;grid-template-columns:1fr 1fr}.studio.page-academic-library .al-hero nav a{font-size:14px}.studio.page-academic-library .al-library h1{font-size:36px}.studio.page-academic-library .ge-cards{grid-template-columns:1fr}}
 .access-calm .studio.page-academic-library :is(.al-hero,.al-reading,.al-atlas,.al-book,.ge-card){box-shadow:none}
+/* Centred, compact entry point. The tasks come before the long reference. */
+.studio.page-academic-library main{max-width:1280px;margin:0 auto;padding:0 24px}
+.studio.page-academic-library .studio-header,.studio.page-academic-library .access-bar{max-width:1280px;margin-left:auto;margin-right:auto}
+.studio.page-academic-library .al-library{max-width:none;margin:20px auto 50px}
+.studio.page-academic-library .al-breadcrumb{margin:0 0 16px;font-size:15px;color:#e4ecec}
+.studio.page-academic-library .al-breadcrumb a{color:#f6dc67}
+.studio.page-academic-library .al-hero{padding:clamp(20px,3vw,32px);box-shadow:none;margin-bottom:24px}
+.studio.page-academic-library .al-entry-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,1fr);gap:32px;align-items:center}
+.studio.page-academic-library .al-hero h1{font:850 clamp(30px,3.5vw,44px)/1.12 'Segoe UI',Arial,sans-serif;max-width:23ch;letter-spacing:-.025em;margin:16px 0}
+.studio.page-academic-library .al-hero .al-intro{font-size:18px;line-height:1.65;margin:12px 0;max-width:48ch}
+.studio.page-academic-library .al-hero .al-tag{font-size:11px;margin:0;padding:5px 9px}
+.studio.page-academic-library .al-hero nav.al-start-actions{display:grid;grid-template-columns:1fr;gap:10px;padding:0;margin:0;border:0;max-width:none}
+.studio.page-academic-library .al-start-actions a{display:grid;grid-template-columns:32px minmax(0,1fr);column-gap:12px;align-items:center;background:#f4f1fc;color:#172c34;border:2px solid #0b202c;padding:14px 16px;font-size:16px;text-decoration:none}
+.studio.page-academic-library .al-start-actions a:first-child{background:#d4f47d}
+.studio.page-academic-library .al-start-actions b{grid-row:1/3;font:850 22px/1.3 monospace;color:#47287a}
+.studio.page-academic-library .al-start-actions strong{color:#172c34;font-size:18px;line-height:1.4}
+.studio.page-academic-library .al-start-actions span{color:#354a52;font-size:14px;line-height:1.5}
+.studio.page-academic-library .al-hero .al-entry-links{display:flex;gap:10px 20px;flex-wrap:wrap;padding-top:18px;margin-top:22px;border-top:1px solid #6d8d9b;font:650 15px/1.6 'Segoe UI',Arial,sans-serif}
+.studio.page-academic-library .al-entry-links a{color:#ffdf48}
+.studio.page-academic-library .al-entry-note{font-size:14px;line-height:1.6;margin:14px 0 0;color:#d7e3e6}
+.studio.page-academic-library #research-finder{margin-top:24px}
+.studio.page-academic-library :is(.al-reading,.al-atlas){box-shadow:none}
+@media(max-width:750px){.studio.page-academic-library main{padding:0 14px}.studio.page-academic-library .al-entry-grid{grid-template-columns:1fr;gap:16px}.studio.page-academic-library .al-hero h1{font-size:34px;max-width:none}.studio.page-academic-library .al-hero .al-entry-links{display:flex}.studio.page-academic-library .al-hero nav.al-start-actions{grid-template-columns:1fr}}
 '''
 
 def theme(root):
@@ -63,11 +86,18 @@ def theme(root):
     (labs/'academic-library-theme.css').write_text(text,encoding='utf-8',newline='\n')
     path=labs/'academic-library.html'
     s=BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
+    hero=s.select_one('.al-hero')
+    hero.clear()
+    hero.append(BeautifulSoup('''<div class="al-entry-grid"><div><p class="al-tag">DIGITAL CULTURE / RESEARCH WORKBENCH</p><h1>Find research for what you’re making.</h1><p class="al-intro">Making a game, app, artwork or story? Start with your project. Find useful terms, questions and something worth reading.</p></div><nav class="al-start-actions" aria-label="Where would you like to start?"><a href="#research-finder"><b>01</b><strong>I don’t know what to look for</strong><span>Answer a few simple questions.</span></a><a href="#genre-explorer"><b>02</b><strong>Show me the possibilities</strong><span>Explore forms, genres and examples.</span></a><a href="#sources"><b>03</b><strong>I’m ready to find a source</strong><span>Search the academic book collection.</span></a></nav></div><div class="al-entry-links"><a href="#building-and-research">Games, apps and client projects</a><a href="#aesthetics">Aesthetics</a><a href="#across-fields">Combine subjects</a><a href="#reading">Read and cite</a></div><p class="al-entry-note">Optional research help. Check your course reading list and the actual availability of each source.</p>''','html.parser'))
+    breadcrumb=BeautifulSoup('<p class="al-breadcrumb"><a href="tools.html">Guides</a> / Academic library · <a href="lab-programme.html">Back to the labs</a></p>','html.parser').find()
+    hero.insert_before(breadcrumb)
+    finder=s.select_one('#research-finder')
+    finder.extract();hero.insert_after(finder)
     # The standalone reading page needs the shared header, not lesson/arena layouts.
     for link in s.select('link[rel="stylesheet"]'):
         if link.get('href','').split('?')[0] not in ['studio.css','accessibility.css']:link.decompose()
     access=s.select_one('link[href^="accessibility.css"]')
-    link=s.new_tag('link',rel='stylesheet',href='academic-library-theme.css?v=readable-6')
+    link=s.new_tag('link',rel='stylesheet',href='academic-library-theme.css?v=workbench-7')
     if access: access.insert_before(link)
     else: s.head.append(link)
     path.write_text(str(s),encoding='utf-8',newline='\n')
