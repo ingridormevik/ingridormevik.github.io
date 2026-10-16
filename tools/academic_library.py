@@ -29,6 +29,8 @@ def library(root):
     main.append(BeautifulSoup(content,'html.parser'))
     s.head.append(BeautifulSoup('<link rel="stylesheet" href="academic-library.css?v=1"/><script defer src="academic-library.js?v=1"></script>','html.parser'))
     (labs / 'academic-library.html').write_text(str(s),encoding='utf-8',newline='\n')
+    from genre_atlas import atlas
+    atlas(root)
     path = labs / 'tools.html'
     s = BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
     old = s.select_one('#academic-library-link')
