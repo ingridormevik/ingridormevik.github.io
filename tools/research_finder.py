@@ -29,6 +29,7 @@ def finder(root):
     html = html.replace('Agency alone does not prove any of these labels.', 'A choice button does not automatically make something a game. Text on a screen does not automatically make it electronic literature.')
     html += '''<fieldset><legend>Start with what you are making.</legend><p>Choose as many as you need. These are everyday starting points, not final genre labels.</p>'''
     formats = [('game','A game, puzzle or simulation'),('text','A story, poem or interactive text'),('art','Digital images, artwork or creative code'),('video','Video, animation or a video essay'),('audio','A podcast, sound piece or audio story'),('documentary','Real events, interviews or a documentary'),('data','A chart, data story or interactive map'),('social','Social posts, memes, livestreaming or a community'),('fan','Fan fiction or remixing an existing story'),('immersive','VR, AR, an installation or a live digital performance')]
+    formats += [('app','An app, website or useful digital tool'),('client','An interactive solution for a company or organisation')]
     for value,label in formats:
         html += f'<label><input type="checkbox" name="formats" value="{value}"/> <span>{escape(label)}</span></label>'
     html += '</fieldset>'
@@ -45,6 +46,6 @@ def finder(root):
     nav = s.select_one('.al-hero nav')
     link = s.new_tag('a',href='#research-finder'); link.string='Start / Find my research'
     nav.insert(0,link)
-    s.head.append(BeautifulSoup('<script defer src="research-finder.js?v=2"></script>','html.parser'))
+    s.head.append(BeautifulSoup('<script defer src="research-finder.js?v=3"></script>','html.parser'))
     for link in s.select('link[href^="academic-library.css"]'): link['href']='academic-library.css?v=library-5'
     path.write_text(str(s),encoding='utf-8',newline='\n')

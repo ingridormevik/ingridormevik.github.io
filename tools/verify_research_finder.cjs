@@ -15,7 +15,7 @@ assert(titles({values:'belong'}).includes('Inclusion, ethics and design justice'
 assert(titles({world:'media'}).includes('Transmedia storytelling'));
 assert.equal(titles({}).length,1);
 assert.equal(titles({agency:'unsure',language:'unsure'}).length,1);
-for (const format of ['game','text','art','video','audio','documentary','data','social','fan','immersive']) {
+for (const format of ['game','text','art','video','audio','documentary','data','social','fan','immersive','app','client']) {
   const result=context.recommend({formats:[format]});
   assert(result.length>0);
   assert(!result.some(r=>r.title==='Describe one action before choosing a label'));

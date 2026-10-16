@@ -44,6 +44,8 @@ def library(root):
     finder(root)
     from genre_explorer import explore
     explore(root)
+    from practice_aesthetics import add
+    add(root)
     path = labs / 'tools.html'
     s = BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
     old = s.select_one('#academic-library-link')

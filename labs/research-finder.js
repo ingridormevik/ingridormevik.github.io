@@ -39,6 +39,10 @@
       ['immersive','VR, AR, installations and digital performance','These are different ways to involve space or the body. VR places someone in a virtual world; AR adds digital material to a physical setting. An installation or performance can use many technologies.','What does moving, being present or taking part add to the work?','virtual reality augmented reality interactive installation digital performance embodiment','#genre-atlas','Compare immersive and performance forms']
     ];
     broad.forEach(([key,...route]) => { if (formats.includes(key)) add(...route); });
+    if (formats.includes('app'))
+      add('App and web development: usability and interaction','You are building something people use to complete a task. Look at user needs, feedback, accessibility and how to test the design.','Can the intended user complete the task without your help?','human computer interaction usability accessible app design','#building-and-research','Connect making and research');
+    if (formats.includes('client'))
+      add('Interactive solutions for organisations','A client brief is a starting point. Study whether the solution meets the needs of the people who will actually use it.','Whose problem is being solved, and what evidence shows the solution works?','service design participatory design user research design justice','#building-and-research','Find research for a company or community project');
     if (!found.length) add('Describe one action before choosing a label','You can begin without knowing a genre. Pick one moment in your prototype and say what a visitor does and what changes.','Is the change in the story, the system, the reading route or the visitor’s interpretation?','digital narrative interaction affordances',glossary,'Start with the Living Glossary');
     return found;
   };
@@ -57,7 +61,7 @@
     });
     const answered = ['agency','structure','rules','language','world','values'].filter(key=>answers[key]).length;
     const selected = answers.formats.length;
-    document.querySelector('#rf-context').textContent = answered || selected ? `${selected} project ${selected===1?'type':'types'} selected · ${answered} of 6 questions answered. You can combine routes. Pick one or two to explore first.` : 'Nothing selected yet. Start with one thing your visitor does, or choose a project type above.';
+    document.querySelector('#rf-context').textContent = answered || selected ? `${selected} project ${selected===1?'type':'types'} selected · ${answered} of 6 questions answered. You can combine routes. Pick one or two to explore first. Also consider aesthetics: how does your work look, sound and feel?` : 'Nothing selected yet. Start with one thing your visitor does, or choose a project type above.';
     result.hidden=false;result.focus();
   });
   form.addEventListener('reset', () => {result.hidden=true;routes.replaceChildren();});
