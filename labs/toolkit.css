@@ -1,0 +1,64 @@
+/* Construct toolkit in the equipment room. Self-contained colours so the page theme cannot wash it out. */
+.toolkit{--tk-ground:#0b0d14;--tk-panel:#11141d;--tk-hair:rgba(255,255,255,.12);--tk-ink:#f5f5ef;--tk-soft:#b9c2cc;--tk-yellow:#ffd23f;--tk-green:#c6f58d;
+  margin:48px 0;padding:28px 28px 32px;border:1px solid var(--tk-hair);border-radius:14px;background:var(--tk-ground);color:var(--tk-ink);text-align:left}
+.studio .toolkit :is(p,li,h2,h3,h4,dt,dd,b,figcaption){color:inherit}
+.toolkit a{color:var(--tk-yellow)}
+.tk-kicker{margin:0 0 6px!important;font:700 12px/1.4 Consolas,monospace;letter-spacing:.16em;color:var(--tk-yellow)!important}
+.toolkit h2{margin:0 0 8px;font:700 clamp(28px,4vw,42px)/1.15 Georgia,'Times New Roman',serif;letter-spacing:-.01em}
+.studio .toolkit .tk-lead{margin:0 0 18px!important;font-size:18px;line-height:1.55;color:var(--tk-soft)!important;max-width:62ch}
+.tk-nav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.studio .toolkit .tk-nav a{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border:1px solid var(--tk-hair);border-radius:8px;color:var(--tk-ink);text-decoration:none;font-weight:600;font-size:15px}
+.studio .toolkit .tk-nav a:hover{border-color:var(--tk-yellow);color:var(--tk-yellow)}
+.tk-block{margin-top:30px;padding-top:26px;border-top:1px solid var(--tk-hair);scroll-margin-top:20px}
+.toolkit h3{margin:0 0 10px;font:700 clamp(22px,2.6vw,28px)/1.2 Georgia,'Times New Roman',serif}
+.tk-block > p{margin:0 0 16px!important;font-size:16px;line-height:1.55;max-width:70ch}
+
+/* Templates */
+.tk-tpls{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.tk-tpl{display:flex;flex-direction:column;border:1px solid var(--tk-hair);border-radius:10px;background:var(--tk-panel);overflow:hidden}
+.tk-tpl-img{display:block;aspect-ratio:16/9;background:#000;line-height:0}
+.tk-tpl-img img{width:100%;height:100%;object-fit:cover}
+.tk-tpl-body{display:flex;flex-direction:column;gap:8px;padding:14px 16px 16px;flex:1}
+.studio .toolkit .tk-tpl-no{margin:0!important;font:700 11px/1.4 Consolas,monospace;letter-spacing:.12em;color:var(--tk-green)!important}
+.toolkit .tk-tpl h4{margin:0;font:700 19px/1.3 Georgia,'Times New Roman',serif}
+.studio .toolkit .tk-tpl p{margin:0!important;font-size:15px;line-height:1.5;max-width:none}
+.studio .toolkit .tk-tpl-file{font:13px/1.4 Consolas,monospace!important;color:var(--tk-soft)!important;word-break:break-word}
+.studio .toolkit .tk-tpl-notice{padding-left:10px;border-left:3px solid var(--tk-green);color:var(--tk-soft)!important}
+.studio .toolkit .tk-tpl-when{font-size:13px!important;color:var(--tk-soft)!important}
+.studio .toolkit .tk-tpl-go{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border-radius:8px;background:var(--tk-yellow);color:#14120a!important;font-weight:700;text-decoration:none}
+
+/* Rules */
+.studio .toolkit .tk-rules{margin:0!important;padding:0!important;list-style:none;counter-reset:tk;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.studio .toolkit .tk-rules li{counter-increment:tk;position:relative;margin:0!important;padding:12px 14px 12px 50px!important;border:1px solid var(--tk-hair);border-radius:8px;background:var(--tk-panel);font-size:15px;line-height:1.5;list-style:none}
+.toolkit .tk-rules li::before{content:counter(tk);position:absolute;left:12px;top:12px;width:26px;height:26px;display:grid;place-items:center;border-radius:5px;background:var(--tk-yellow);color:#14120a;font:700 13px/1 Consolas,monospace}
+.toolkit .tk-rules b{display:block;margin-bottom:2px}
+
+/* Shortcuts and screen */
+.tk-two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:28px;align-items:start}
+.tk-keys,.tk-defs{margin:0;display:grid;gap:8px}
+.tk-def{display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr);gap:4px 14px;padding:10px 12px;border:1px solid var(--tk-hair);border-radius:8px;background:var(--tk-panel)}
+.toolkit dt{font-weight:700;font-size:15px;line-height:1.45}
+.toolkit dd{margin:0;font-size:15px;line-height:1.5;color:var(--tk-soft)}
+.toolkit kbd{display:inline-block;padding:2px 7px;border:1px solid rgba(255,255,255,.3);border-bottom-width:2px;border-radius:4px;background:#1b1f2b;font:600 13px/1.5 Consolas,monospace;color:var(--tk-ink);white-space:nowrap}
+.tk-shot{margin:0}
+.tk-shot img{display:block;width:100%;height:auto;border:1px solid var(--tk-hair);border-radius:8px}
+.toolkit .tk-shot figcaption{margin-top:8px;font-size:14px;line-height:1.5;color:var(--tk-soft)}
+.studio .toolkit .tk-more{margin:14px 0 0!important}
+.studio .toolkit .tk-more a{font-weight:700}
+
+/* Tricks */
+.tk-tricks{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.tk-trick{padding:12px 14px;border:1px solid var(--tk-hair);border-radius:8px;background:var(--tk-panel)}
+.studio .toolkit .tk-trick-type{margin:0 0 4px!important;font:700 11px/1.4 Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--tk-green)!important}
+.toolkit .tk-trick h4{margin:0 0 4px;font-size:17px;line-height:1.3}
+.studio .toolkit .tk-trick p:last-child{margin:0!important;font-size:14px;line-height:1.5;color:var(--tk-soft)!important}
+
+@media (max-width:760px){
+  .toolkit{margin:32px 0;padding:20px 14px 24px;border-radius:10px}
+  .tk-two{grid-template-columns:1fr}
+  .tk-def{grid-template-columns:1fr}
+  .studio .toolkit .tk-rules{grid-template-columns:1fr}
+  .tk-tpls{grid-template-columns:1fr}
+}
+.access-contrast .toolkit{border-color:#fff}
+@media print{.toolkit{background:#fff;color:#000;border-color:#000}}
