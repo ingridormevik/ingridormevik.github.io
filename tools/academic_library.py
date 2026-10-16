@@ -15,6 +15,11 @@ def library(root):
     labs = root / 'labs'
     s = BeautifulSoup((labs / 'github-guide.html').read_text(encoding='utf-8'),'html.parser')
     s.title.string = 'Academic library for digital culture | DIKULT105'
+    s.body['class'] = ['studio', 'page-academic-library']
+    s.body.attrs.pop('data-reader', None)
+    description = s.find('meta', attrs={'name':'description'})
+    if description:
+        description['content'] = 'Find digital narrative genres, academic sources and interdisciplinary research questions.'
     for script in s.select('script:not([src^="accessibility"])'): script.decompose()
     main = s.select_one('main')
     main.clear()
@@ -37,3 +42,13 @@ def library(root):
     if old: old.decompose()
     s.select_one('#lab-floor').insert_before(BeautifulSoup('<section class="help-banner" id="academic-library-link"><h2>Academic library for digital culture</h2><p>Explore literature, narrative, media history, design and data through verified academic sources.</p><a class="primary" href="academic-library.html">Explore the academic library →</a></section>','html.parser').find())
     path.write_text(str(s),encoding='utf-8',newline='\n')
+    for name in ['tools.html','lab-programme.html','academic-library.html']:
+        path = labs / name
+        page = BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
+        nav = page.select_one('.studio-header nav')
+        if nav and not nav.select_one('a[href="academic-library.html"]'):
+            link = page.new_tag('a',href='academic-library.html')
+            link.string = 'Academic library'
+            if name == 'academic-library.html': link['aria-current']='page'
+            nav.append(link)
+        path.write_text(str(page),encoding='utf-8',newline='\n')

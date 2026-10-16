@@ -29,5 +29,13 @@ def atlas(root):
     s.select_one('#reading').insert_before(BeautifulSoup(cross,'html.parser').find())
     s.select_one('.al-library h1').insert_before(BeautifulSoup('<nav aria-label="Library sections"><a href="#genre-atlas">Find my genre</a> · <a href="#across-fields">Combine fields and reading lists</a> · <a href="#reading">Read and cite</a></nav>','html.parser').find())
     for old in s.select('link[href^="genre-atlas.css"],script[src^="genre-atlas.js"]'): old.decompose()
-    s.head.append(BeautifulSoup('<link rel="stylesheet" href="genre-atlas.css?v=1"/><script defer src="genre-atlas.js?v=1"></script>','html.parser'))
+    s.head.append(BeautifulSoup('<link rel="stylesheet" href="genre-atlas.css?v=2"/><script defer src="genre-atlas.js?v=1"></script>','html.parser'))
+    for link in s.select('link[href^="academic-library.css"]'):
+        link['href'] = 'academic-library.css?v=lab-theme-2'
+    article = s.select_one('.al-library')
+    hero = s.new_tag('header', attrs={'class':'al-hero'})
+    for child in list(article.children):
+        if getattr(child,'attrs',{}).get('id') == 'genre-atlas': break
+        hero.append(child.extract())
+    article.insert(0,hero)
     path.write_text(str(s),encoding='utf-8',newline='\n')
