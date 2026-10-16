@@ -42,7 +42,13 @@ def finder(root):
     html = html.replace('Compare terms in the genre table', 'See more kinds of digital work in the table')
     s.select_one('.al-hero').insert_after(BeautifulSoup(html,'html.parser').find())
     j = '''<section class="al-reading" id="jorgensen-start"><p class="al-tag">GAME STUDIES / KRISTINE JØRGENSEN</p><h2>What makes the gameworld understandable?</h2><p>In <em>Gameworld Interfaces</em> (MIT Press, 2013), Kristine Jørgensen examines how interfaces communicate information players need to act in a game. Her research draws on designers' and players' perspectives.</p><p>Start with your own project: what shows the player an action is possible? How can they tell the action worked? Would your arrows, sound or text make sense to someone who has never seen the project?</p><p><a href="https://mitpress.mit.edu/9780262026864/gameworld-interfaces/" target="_blank" rel="noopener">Book and publisher record</a> · <a href="https://gamephilosophy2013.w.uib.no/files/2013/09/Jorgensen-PoCG2013.pdf" target="_blank" rel="noopener">Read Jørgensen's short 2013 paper, “GWI: The Gameworld Interface” (PDF)</a> · <a href="https://www4.uib.no/en/find-employees/kristine.jorgensen" target="_blank" rel="noopener">UiB research profile</a></p><p>The short paper presents a version of the book's central argument; it is not the full book. The questions here are suggestions from this lab, not quotations from Jørgensen.</p><a href="lab-programme.html#construct-rooms">Try these questions in the Construct room workshop →</a></section>'''
-    s.select_one('#genre-atlas').insert_before(BeautifulSoup(j,'html.parser').find())
+    book = s.select_one('.al-book')
+    book['id'] = 'jorgensen-start'
+    book.append(BeautifulSoup('<p><a href="https://gamephilosophy2013.w.uib.no/files/2013/09/Jorgensen-PoCG2013.pdf" target="_blank" rel="noopener">Read the short paper: GWI: The Gameworld Interface (2013, PDF)</a></p><p class="al-small">The short paper presents a version of the book’s central argument, not the full book.</p>','html.parser').find())
+    # Keep the paper explanation with the book rather than creating a featured section.
+    note = s.new_tag('p', attrs={'class':'al-small'})
+    note.string = 'The short paper presents a version of the book’s central argument, not the full book.'
+    book.append(note)
     nav = s.select_one('.al-hero nav')
     link = s.new_tag('a',href='#research-finder'); link.string='Start / Find my research'
     nav.insert(0,link)
