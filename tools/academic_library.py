@@ -46,6 +46,8 @@ def library(root):
     explore(root)
     from practice_aesthetics import add
     add(root)
+    from library_theme import theme
+    theme(root)
     path = labs / 'tools.html'
     s = BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
     old = s.select_one('#academic-library-link')
