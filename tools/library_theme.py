@@ -73,9 +73,28 @@ body.studio.page-academic-library{margin:0;background:#15313e;background-image:r
 .studio.page-academic-library .al-hero .al-entry-links{display:flex;gap:10px 20px;flex-wrap:wrap;padding-top:18px;margin-top:22px;border-top:1px solid #6d8d9b;font:650 15px/1.6 'Segoe UI',Arial,sans-serif}
 .studio.page-academic-library .al-entry-links a{color:#ffdf48}
 .studio.page-academic-library .al-entry-note{font-size:14px;line-height:1.6;margin:14px 0 0;color:#d7e3e6}
+.studio.page-academic-library main#main-content{display:block;float:none;position:relative;left:auto;width:min(100%,1280px);max-width:1280px;min-width:0;margin-inline:auto;margin-left:auto;margin-right:auto;box-sizing:border-box}
+.studio.page-academic-library .al-breadcrumb{text-align:center}
+.studio.page-academic-library .al-entry-grid{grid-template-columns:minmax(0,1fr);gap:22px;justify-items:center;text-align:center}
+.studio.page-academic-library .al-entry-grid>div{width:100%;min-width:0}
+.studio.page-academic-library .al-hero h1{margin:18px auto;max-width:25ch}
+.studio.page-academic-library .al-hero .al-intro{margin:12px auto;max-width:58ch}
+.studio.page-academic-library .al-hero nav.al-start-actions{grid-template-columns:repeat(3,minmax(0,1fr));width:100%;text-align:left}
+.studio.page-academic-library .al-hero .al-entry-links{justify-content:center}
+.studio.page-academic-library .al-hero .al-entry-note{margin:16px auto 0;max-width:70ch;text-align:center}
+.studio.page-academic-library .al-route-rail{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:24px auto 0;font:750 13px/1.5 monospace;color:#a9c7ce}
+.studio.page-academic-library .al-route-rail span{border:1px solid #7d9ba6;padding:7px 12px;color:#d7efad;background:#102936}
+.studio.page-academic-library .al-route-rail b{color:#ffdf48}
+.studio.page-academic-library .al-hero{border-top:5px solid #d4f47d}
+.studio.page-academic-library .al-start-actions a{border-bottom:5px solid #8bbfd3;transition:border-color .12s ease}
+.studio.page-academic-library .al-start-actions a:first-child{border-bottom-color:#93b94b}
+.studio.page-academic-library .al-start-actions a:last-child{border-bottom-color:#aa8ed3}
+.studio.page-academic-library .al-start-actions a:hover{border-color:#ffdf48}
 .studio.page-academic-library #research-finder{margin-top:24px}
 .studio.page-academic-library :is(.al-reading,.al-atlas){box-shadow:none}
 @media(max-width:750px){.studio.page-academic-library main{padding:0 14px}.studio.page-academic-library .al-entry-grid{grid-template-columns:1fr;gap:16px}.studio.page-academic-library .al-hero h1{font-size:34px;max-width:none}.studio.page-academic-library .al-hero .al-entry-links{display:flex}.studio.page-academic-library .al-hero nav.al-start-actions{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.studio.page-academic-library .al-start-actions a{transition:none}}
+.access-no-motion .studio.page-academic-library .al-start-actions a{transition:none}
 '''
 
 def theme(root):
@@ -86,10 +105,14 @@ def theme(root):
     (labs/'academic-library-theme.css').write_text(text,encoding='utf-8',newline='\n')
     path=labs/'academic-library.html'
     s=BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
+    # Keep the shared, correctly styled skip-to-main link; remove the inherited duplicate.
+    for duplicate in s.select('body > a.skip'):
+        duplicate.decompose()
     hero=s.select_one('.al-hero')
     hero.clear()
     hero.append(BeautifulSoup('''<div class="al-entry-grid"><div><p class="al-tag">DIGITAL CULTURE / RESEARCH WORKBENCH</p><h1>Find research for what you’re making.</h1><p class="al-intro">Making a game, app, artwork or story? Start with your project. Find useful terms, questions and something worth reading.</p></div><nav class="al-start-actions" aria-label="Where would you like to start?"><a href="#research-finder"><b>01</b><strong>I don’t know what to look for</strong><span>Answer a few simple questions.</span></a><a href="#genre-explorer"><b>02</b><strong>Show me the possibilities</strong><span>Explore forms, genres and examples.</span></a><a href="#sources"><b>03</b><strong>I’m ready to find a source</strong><span>Search the academic book collection.</span></a></nav></div><div class="al-entry-links"><a href="#building-and-research">Games, apps and client projects</a><a href="#aesthetics">Aesthetics</a><a href="#across-fields">Combine subjects</a><a href="#reading">Read and cite</a></div><p class="al-entry-note">Optional research help. Check your course reading list and the actual availability of each source.</p>''','html.parser'))
     breadcrumb=BeautifulSoup('<p class="al-breadcrumb"><a href="tools.html">Guides</a> / Academic library · <a href="lab-programme.html">Back to the labs</a></p>','html.parser').find()
+    hero.select_one('.al-intro').insert_after(BeautifulSoup('<div class="al-route-rail" aria-hidden="true"><span>YOUR PROJECT</span><b>→</b><span>A GOOD QUESTION</span><b>→</b><span>A USEFUL SOURCE</span></div>','html.parser').find())
     hero.insert_before(breadcrumb)
     finder=s.select_one('#research-finder')
     finder.extract();hero.insert_after(finder)
@@ -97,7 +120,7 @@ def theme(root):
     for link in s.select('link[rel="stylesheet"]'):
         if link.get('href','').split('?')[0] not in ['studio.css','accessibility.css']:link.decompose()
     access=s.select_one('link[href^="accessibility.css"]')
-    link=s.new_tag('link',rel='stylesheet',href='academic-library-theme.css?v=workbench-7')
+    link=s.new_tag('link',rel='stylesheet',href='academic-library-theme.css?v=centred-8')
     if access: access.insert_before(link)
     else: s.head.append(link)
     path.write_text(str(s),encoding='utf-8',newline='\n')
