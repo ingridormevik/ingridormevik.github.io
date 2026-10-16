@@ -1,0 +1,14 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const buttons=['all','play','words','sound'].map(key=>({dataset:{geFilter:key},pressed:key==='play'?'true':'false',setAttribute(_,value){this.pressed=value;},getAttribute(){return this.pressed;},addEventListener(_,fn){this.click=fn;}}));
+const cards=['play','play','words','sound'].map(key=>({dataset:{geFamily:key},hidden:false}));
+const count={textContent:''};
+const inner={tagName:'SECTION',parentElement:{tagName:'DETAILS',open:false,parentElement:null}};
+let hashchange;
+vm.runInNewContext(fs.readFileSync('labs/genre-explorer.js','utf8'),{document:{querySelectorAll:selector=>selector==='[data-ge-filter]'?buttons:cards,querySelector:()=>count,getElementById:()=>inner},location:{hash:'#genre-atlas'},window:{addEventListener:(_,fn)=>{hashchange=fn;}}});
+assert.equal(cards.filter(c=>!c.hidden).length,2);
+assert(inner.parentElement.open);
+buttons[2].click();assert.equal(cards.filter(c=>!c.hidden).length,1);assert(!cards[2].hidden);
+assert(count.textContent.startsWith('1 route'));
+buttons[0].click();assert(cards.every(c=>!c.hidden));
+assert.equal(buttons.filter(b=>b.pressed==='true').length,1);
+console.log('PASS: shelf filters, initial selection, all-shelves reset, singular count and deep links into the reference drawer.');

@@ -1,0 +1,11 @@
+.studio.page-academic-library .ge-filters{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 18px}
+.studio.page-academic-library .ge-filters button{background:#fff;color:#172c34;border:2px solid #172c34;padding:12px 16px;font:750 16px/1.4 system-ui;min-height:48px}
+.studio.page-academic-library .ge-filters button[aria-pressed=true]{background:#203d49;color:#fff;box-shadow:3px 3px 0 #8b74b1}
+.studio.page-academic-library .ge-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px;align-items:start}
+.studio.page-academic-library .ge-card{margin:0;padding:0;background:#fff;border:2px solid #172c34;border-top:7px solid #8b74b1;min-width:0}
+.studio.page-academic-library .ge-card[data-ge-family=play]{border-top-color:#afd653}.studio.page-academic-library .ge-card[data-ge-family=sound]{border-top-color:#ebbf39}.studio.page-academic-library .ge-card[data-ge-family=space]{border-top-color:#579bbf}
+.studio.page-academic-library .ge-card summary{display:list-item;list-style-position:inside;padding:20px;cursor:pointer;color:#172c34}
+.studio.page-academic-library .ge-card summary :is(strong,span){display:block;margin-top:12px}.studio.page-academic-library .ge-card summary strong{font:850 23px/1.3 system-ui}.studio.page-academic-library .ge-clue{font:17px/1.65 system-ui}.studio.page-academic-library .ge-open{font:750 14px/1.5 monospace;color:#61417d}
+.studio.page-academic-library .ge-card-body{border-top:1px solid #bcc5c3;padding:20px}.studio.page-academic-library .ge-card-body p{font-size:16px}.studio.page-academic-library .ge-card code{white-space:normal;overflow-wrap:anywhere}
+.studio.page-academic-library .ge-mix{padding:24px;margin:30px 0;background:#eaf1d8;border:2px solid #172c34}.studio.page-academic-library .ge-full-table{background:#203d49;border:2px solid #0e1c29;margin:30px 0;padding:0}.studio.page-academic-library .ge-full-table>summary{padding:20px;color:#ffdf48;font:750 18px/1.5 system-ui;cursor:pointer}.studio.page-academic-library .ge-full-table .al-atlas{margin:0;border:0;box-shadow:none}
+.studio.page-academic-library .ge-card[hidden]{display:none!important}.studio.page-academic-library .ge-explorer [tabindex]:focus-visible{outline:3px solid #c73e7d;outline-offset:4px}

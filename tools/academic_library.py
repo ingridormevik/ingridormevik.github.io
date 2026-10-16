@@ -42,6 +42,8 @@ def library(root):
     atlas(root)
     from research_finder import finder
     finder(root)
+    from genre_explorer import explore
+    explore(root)
     path = labs / 'tools.html'
     s = BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
     old = s.select_one('#academic-library-link')
