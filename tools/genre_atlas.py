@@ -2,6 +2,7 @@
 from bs4 import BeautifulSoup
 from html import escape
 from urllib.parse import quote
+from project_routes import ADDITIONAL_ROUTES
 
 ROWS = [
  ('Readers follow links between fragments.','Hypertext / hypertext fiction','Form / genre','hypertext fiction reader agency nonlinear narrative','Narratology + literary studies + interface design','Who chooses the order, and how does that shape meaning?'),
@@ -40,6 +41,8 @@ ROWS += [
  ('Code is written or changed as part of a live performance.','Live coding / algorithmic performance','Performance practices','live coding algorave algorithmic performance','Performance studies + music + software studies','What does showing the making process add?'),
  ('Visitors explore cultural objects, memories or a virtual exhibition.','Digital heritage / virtual exhibition','Cultural and curatorial practices','digital heritage virtual exhibition museum interpretation','Museum studies + history + design + archival ethics','Who gets to interpret the objects, and whose history is missing?'),
  ('A digital work presents the maker’s life or a personal memory.','Digital life writing / autobiographical narrative','Narrative practices','digital life writing autobiography memory identity','Literary studies + memory studies + ethics','How do you represent other people who share your memories?')]
+
+ROWS += ADDITIONAL_ROUTES
 
 def atlas(root):
     labs = root / 'labs'

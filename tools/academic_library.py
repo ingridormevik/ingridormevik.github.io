@@ -12,6 +12,16 @@ BOOKS = [
  ('Data Feminism','Catherine D’Ignazio and Lauren F. Klein','MIT Press · 2020','Data and power','https://data-feminism.mitpress.mit.edu/','Read open access','An intersectional feminist approach to data science and data ethics.','For your project: whose experience is represented, and whose perspective is absent?','lab-programme.html#lab-2-sec-3'),
  ('Algorithms of Oppression: How Search Engines Reinforce Racism','Safiya Umoja Noble','NYU Press · 2018','Data and power','https://nyupress.org/9781479866762/algorithms-of-oppression/','Publisher record','A critical study of search engines, racism and discoverability.','For research and AI use: how does a platform influence what you can find?','vibecoding.html')]
 
+BOOKS += [
+ ('Digital Art','Christiane Paul','Thames & Hudson · 4th edition, 2023','Digital art and aesthetics','https://thamesandhudsonusa.com/books/digital-art-softcover-fourth','Publisher record','An introduction to digital art, its histories, media and artistic questions.','What does your medium or process contribute to the experience of the artwork?','academic-library.html#aesthetics'),
+ ('The Sonic Color Line: Race and the Cultural Politics of Listening','Jennifer Lynn Stoever','NYU Press · 2016','Sound and listening','https://nyupress.org/9781479890439/the-sonic-color-line/','Publisher record','A historical study of race and the cultural politics of listening in the United States.','How might listening habits shape the way a voice is interpreted? Connect the historical argument carefully to your context.','academic-library.html#genre-route-13'),
+ ('Software Studies: A Lexicon','Matthew Fuller (editor)','MIT Press · 2008','Software and creative tools','https://academic.oup.com/mit-press-scholarship-online/book/14880','Publisher record','An edited collection that treats software as a cultural object and a field of practice.','Choose a relevant entry. What does examining the software help you notice about your creative choices?','academic-library.html#genre-route-33'),
+ ('Introduction to Documentary','Bill Nichols and Jaimie Baron','Indiana University Press · 4th edition, 2024','Film and documentary','https://iupress.org/9780253070159/introduction-to-documentary-fourth-edition/','Publisher record','An introduction to documentary forms, evidence, perspectives and ethical questions.','How does your selection and arrangement of material shape the account you present?','academic-library.html#genre-route-12'),
+ ('The Platform Society: Public Values in a Connective World','José van Dijck, Thomas Poell and Martijn de Waal','Oxford University Press · 2018','Platforms and communities','https://academic.oup.com/book/12378','Publisher record','A study of how platforms relate to public values and social institutions.','Who controls visibility, participation and data on the platform your project uses?','academic-library.html#genre-route-43'),
+]
+# The old Lab 2 fragment was removed when the beginner path was rebuilt.
+BOOKS = [(*book[:8], 'accessibility-lab.html' if book[0] == 'Data Feminism' else book[8]) for book in BOOKS]
+
 def library(root):
     labs = root / 'labs'
     s = BeautifulSoup((labs / 'github-guide.html').read_text(encoding='utf-8'),'html.parser')
@@ -20,7 +30,7 @@ def library(root):
     s.body.attrs.pop('data-reader', None)
     description = s.find('meta', attrs={'name':'description'})
     if description:
-        description['content'] = 'Find digital narrative genres, academic sources and interdisciplinary research questions.'
+        description['content'] = 'Explore digital culture forms, try small projects, find research articles and learn Chicago author-date citation for DIKULT105.'
     for script in s.select('script:not([src^="accessibility"])'): script.decompose()
     main = s.select_one('main')
     main.clear()
@@ -33,6 +43,9 @@ def library(root):
         content += f'''<section class="al-book" data-topic="{escape(topic)}"><p class="al-tag">{i:02d} / {escape(topic)}</p><h2>{escape(title)}</h2><p class="al-author">{escape(author)}</p><p>{escape(publisher)}</p><p>{escape(desc)}</p><p><a href="{escape(url)}" target="_blank" rel="noopener">{access} ↗</a> · <a href="{escape(search)}" target="_blank" rel="noopener">Search Oria ↗</a></p><details><summary>Take a question into your project</summary><p>{escape(prompt)}</p><a href="{lab}">Return to the relevant workshop →</a><p class="al-small">These are suggested questions from the lab, not quotations from the book.</p></details></section>'''
     content += '''</div><section class="al-reading" id="reading"><h2>Read with a question.</h2><ol><li>Use the contents or index to locate a relevant chapter. For edited collections, choose a chapter and identify its author.</li><li>Read the passage in context. Separate the author's claim from your own interpretation.</li><li>Record the edition and actual page or locator you used. Cite a chapter by its author, not automatically by the book's editors.</li><li>Use the idea to question a design choice, compare two approaches or develop an argument.</li></ol><p>For library access, choose your institution in Oria and check the actual record. A publisher page may offer a preview or require purchase; it is not automatically free full text.</p><p><a href="https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-2.html" target="_blank" rel="noopener">Chicago author-date examples</a>. Follow your assignment instructions and cite the edition you actually read.</p><a href="lab-programme.html">Back to your project →</a></section></article>'''
     main.append(BeautifulSoup(content,'html.parser'))
+    for link in main.select('.al-book details > a'):
+        link.string = 'Connect this to your project →'
+    main.select_one('.al-controls').insert_before(BeautifulSoup('<p class="al-source-note">These books are optional starting points, not the official course reading list. Publisher links identify the edition; check Oria for your library access. Free full text is labelled “Read open access”.</p>','html.parser').find())
     main.select_one('.al-controls')['id'] = 'sources'
     main.select_one('#al-count').string = f'{len(BOOKS)} sources'
     main.select_one('.al-controls').append(BeautifulSoup('<button type="button" id="al-reset">Show all sources</button>','html.parser').find())
@@ -50,6 +63,10 @@ def library(root):
     theme(root)
     from laboratory_header import header
     header(root)
+    from course_learning import learning
+    learning(root)
+    from article_finder import articles
+    articles(root)
     path = labs / 'tools.html'
     s = BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
     old = s.select_one('#academic-library-link')

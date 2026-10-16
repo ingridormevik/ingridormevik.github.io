@@ -9,3 +9,6 @@
 .studio.page-academic-library .ge-card-body{border-top:1px solid #bcc5c3;padding:20px}.studio.page-academic-library .ge-card-body p{font-size:16px}.studio.page-academic-library .ge-card code{white-space:normal;overflow-wrap:anywhere}
 .studio.page-academic-library .ge-mix{padding:24px;margin:30px 0;background:#eaf1d8;border:2px solid #172c34}.studio.page-academic-library .ge-full-table{background:#203d49;border:2px solid #0e1c29;margin:30px 0;padding:0}.studio.page-academic-library .ge-full-table>summary{padding:20px;color:#ffdf48;font:750 18px/1.5 system-ui;cursor:pointer}.studio.page-academic-library .ge-full-table .al-atlas{margin:0;border:0;box-shadow:none}
 .studio.page-academic-library .ge-card[hidden]{display:none!important}.studio.page-academic-library .ge-explorer [tabindex]:focus-visible{outline:3px solid #c73e7d;outline-offset:4px}
+.studio.page-academic-library .ge-prototype{padding:0 0 12px;margin:0 0 16px;border-bottom:2px solid #bcc5c3}
+.studio.page-academic-library .ge-card[data-ge-family=use]{border-top-color:#e39abd}
+.studio.page-academic-library .ge-card{scroll-margin-top:24px}

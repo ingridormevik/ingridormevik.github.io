@@ -21,5 +21,5 @@ def header(root):
     # Remove generic transition captions; retain useful links and the keyboard shortcut.
     for a in s.select('a[href]'):
         if a.get_text(' ',strip=True)=='Next: find an academic source →':a.string='Browse the academic books →'
-    link=s.select_one('link[href^="academic-library-theme.css"]');link['href']='academic-library-theme.css?v=laboratory-9'
+    link=s.select_one('link[href^="academic-library-theme.css"]');link['href']='academic-library-theme.css?v=learning-10'
     path.write_text(str(s),encoding='utf-8',newline='\n')
