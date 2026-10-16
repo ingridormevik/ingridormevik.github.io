@@ -10,23 +10,41 @@ QUESTIONS = [
  ('world','How does the visitor know what they can do?','Think about arrows, labels, sound, animation and the response after an action.', [('interface','Those signals and responses are part of what I want to study.'),('place','A place, map, body or physical route matters most.'),('media','Different platforms each contribute part of the story.'),('unsure','I am not sure yet.')]),
  ('values','What question matters beyond the technique?','This can come from your work, community, other courses or personal interests.', [('belong','Belonging, inclusion or representation.'),('ethics','Responsibility, power, consent or harm.'),('authorship','Authorship, AI, creativity or knowledge.'),('experience','Experience, memory or place.'),('unsure','I am still finding my question.')])]
 
+# Keep the answer keys stable while making the student-facing language simpler.
+PLAIN = [
+ ('What can someone do in your project?', 'For example: choose a reply, open a door, read a page or just watch.', ['Their choices change what happens.','They choose where to go or what to read.','They watch or read in a set order.','Not sure yet.']),
+ ('Does everyone get the story in the same order?', 'A story is nonlinear when people can take different routes through it.', ['No: choices lead to different paths or endings.','No: they explore pieces in their own order.','Yes: it goes from beginning to end.','My project is not mainly a story.','Not sure yet.']),
+ ('Is there something to play or try?', 'Rules might let people solve a puzzle, collect something, move or change the world.', ['Yes: actions work with rules, challenges or changing states.','There are points or badges for doing another activity.','They mostly click to see more material.','Playing is not the main thing.','Not sure yet.']),
+ ('Are the words part of the artwork?', 'A poem is different from a button label. Both use words, but the words do different jobs.', ['Yes: the writing, poetry or voice really matters.','Code or AI makes or mixes the words.','Words mostly give instructions or information.','Not sure yet.']),
+ ('What else matters in the experience?', 'Choose the closest answer. The first question also lets you choose several kinds of work.', ['How people find the controls and understand what happened.','A place, map, walk or physical space.','Different platforms each tell part of the story.','Not sure yet.']),
+ ('What do you care about in this project?', 'Your interests can guide your research. Think of your life, job, community or other courses.', ['Belonging, inclusion or who is represented.','Power, responsibility, consent or harm.','Who made it, AI, creativity or what counts as knowledge.','Memory, place or what an experience feels like.','I am still working that out.'])]
+QUESTIONS = [(key, title, helptext, [(value,label) for (value,_),label in zip(choices,labels)]) for (key,_,_,choices),(title,helptext,labels) in zip(QUESTIONS,PLAIN)]
+
 def finder(root):
     path = root / 'labs/academic-library.html'
     s = BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
     for old in s.select('#research-finder, #jorgensen-start'): old.decompose()
     html = '''<section class="al-reading rf-workshop" id="research-finder"><p class="al-tag">START HERE / WHAT RESEARCH DO I NEED?</p><h2>You do not need to know your genre yet.</h2><p>Describe what your project does. These six questions suggest research directions and explain why they might fit. Choose “not sure” whenever you need to. There are no right answers or points.</p><p>A project can be a game, electronic literature and an artwork at the same time. Agency alone does not prove any of these labels. Use the result as a starting point to investigate.</p><form id="rf-form">'''
+    html = html.replace('These six questions suggest research directions and explain why they might fit.', 'Choose what sounds like your work. Then answer any questions you can. We will suggest what to search for and why.')
+    html = html.replace('Agency alone does not prove any of these labels.', 'A choice button does not automatically make something a game. Text on a screen does not automatically make it electronic literature.')
+    html += '''<fieldset><legend>Start with what you are making.</legend><p>Choose as many as you need. These are everyday starting points, not final genre labels.</p>'''
+    formats = [('game','A game, puzzle or simulation'),('text','A story, poem or interactive text'),('art','Digital images, artwork or creative code'),('video','Video, animation or a video essay'),('audio','A podcast, sound piece or audio story'),('documentary','Real events, interviews or a documentary'),('data','A chart, data story or interactive map'),('social','Social posts, memes, livestreaming or a community'),('fan','Fan fiction or remixing an existing story'),('immersive','VR, AR, an installation or a live digital performance')]
+    for value,label in formats:
+        html += f'<label><input type="checkbox" name="formats" value="{value}"/> <span>{escape(label)}</span></label>'
+    html += '</fieldset>'
     for i,(key,title,helptext,choices) in enumerate(QUESTIONS,1):
         html += f'<fieldset><legend>{i:02d} / {escape(title)}</legend><p>{escape(helptext)}</p>'
         for value,label in choices:
             html += f'<label><input type="radio" name="{key}" value="{value}"/> <span>{escape(label)}</span></label>'
         html += '</fieldset>'
     html += '''<button type="submit">Find my research starting points →</button><button type="reset">Start again</button></form><div id="rf-result" tabindex="-1" hidden><p class="al-tag">YOUR POSSIBLE RESEARCH ROUTES</p><h3 id="rf-result-title">Where you could start</h3><p id="rf-context" role="status"></p><div id="rf-routes"></div><p><strong>Use this in your writing:</strong> “My project uses ____ to let the participant ____. I am investigating ____ through ____.” Fill this in after reading and testing your project; it is not an automatic genre verdict.</p><a href="#genre-atlas">Compare terms in the genre table ↓</a> · <a href="#sources">Explore the academic sources ↓</a></div><noscript><p>The questionnaire needs JavaScript to suggest routes. You can still use the genre table, the Jørgensen reading below and all source links without it.</p></noscript></section>'''
+    html = html.replace('Compare terms in the genre table', 'See more kinds of digital work in the table')
     s.select_one('.al-hero').insert_after(BeautifulSoup(html,'html.parser').find())
     j = '''<section class="al-reading" id="jorgensen-start"><p class="al-tag">GAME STUDIES / KRISTINE JØRGENSEN</p><h2>What makes the gameworld understandable?</h2><p>In <em>Gameworld Interfaces</em> (MIT Press, 2013), Kristine Jørgensen examines how interfaces communicate information players need to act in a game. Her research draws on designers' and players' perspectives.</p><p>Start with your own project: what shows the player an action is possible? How can they tell the action worked? Would your arrows, sound or text make sense to someone who has never seen the project?</p><p><a href="https://mitpress.mit.edu/9780262026864/gameworld-interfaces/" target="_blank" rel="noopener">Book and publisher record</a> · <a href="https://gamephilosophy2013.w.uib.no/files/2013/09/Jorgensen-PoCG2013.pdf" target="_blank" rel="noopener">Read Jørgensen's short 2013 paper, “GWI: The Gameworld Interface” (PDF)</a> · <a href="https://www4.uib.no/en/find-employees/kristine.jorgensen" target="_blank" rel="noopener">UiB research profile</a></p><p>The short paper presents a version of the book's central argument; it is not the full book. The questions here are suggestions from this lab, not quotations from Jørgensen.</p><a href="lab-programme.html#construct-rooms">Try these questions in the Construct room workshop →</a></section>'''
     s.select_one('#genre-atlas').insert_before(BeautifulSoup(j,'html.parser').find())
     nav = s.select_one('.al-hero nav')
     link = s.new_tag('a',href='#research-finder'); link.string='Start / Find my research'
     nav.insert(0,link)
-    s.head.append(BeautifulSoup('<script defer src="research-finder.js?v=1"></script>','html.parser'))
-    for link in s.select('link[href^="academic-library.css"]'): link['href']='academic-library.css?v=library-4'
+    s.head.append(BeautifulSoup('<script defer src="research-finder.js?v=2"></script>','html.parser'))
+    for link in s.select('link[href^="academic-library.css"]'): link['href']='academic-library.css?v=library-5'
     path.write_text(str(s),encoding='utf-8',newline='\n')
