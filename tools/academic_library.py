@@ -4,6 +4,7 @@ from html import escape
 from urllib.parse import quote
 
 BOOKS = [
+ ('Gameworld Interfaces','Kristine Jørgensen','MIT Press · 2013','Game interfaces and player experience','https://mitpress.mit.edu/9780262026864/gameworld-interfaces/','Publisher record','A study of how game interfaces communicate the information players need to interact with gameworlds and rules.','What tells a player what they can do, what changed and what to try next?','lab-programme.html#construct-rooms'),
  ('The Routledge Handbook of AI and Literature','Will Slocombe and Genevieve Liveley (editors)','Routledge','AI and literature','https://www.routledge.com/The-Routledge-Handbook-of-AI-and-Literature/Slocombe-Liveley/p/book/9781032186948/','Publisher record','Literary approaches to AI and AI in literary practice.','For the vibecoding workshop: what choices did you make, and what did the machine contribute?','vibecoding.html'),
  ('Hamlet on the Holodeck: The Future of Narrative in Cyberspace','Janet H. Murray','MIT Press · updated edition, 2017','Narrative and games','https://mitpress.mit.edu/9780262533485/hamlet-on-the-holodeck/','Publisher record','Digital environments and the possibilities of participatory narrative.','For Construct: what does the visitor do that changes their experience of the story?','lab-programme.html#mapping-first-contact'),
  ('The New Media Reader','Noah Wardrip-Fruin and Nick Montfort (editors)','MIT Press · 2003','Media history','https://mitpress.mit.edu/9780262232272/the-new-media-reader/','Publisher record','A collection of foundational writings in the history of new media.','Connect a historical idea about computing to one interaction you are building.','computing-history.html'),
@@ -33,11 +34,14 @@ def library(root):
     content += '''</div><section class="al-reading" id="reading"><h2>Read with a question.</h2><ol><li>Use the contents or index to locate a relevant chapter. For edited collections, choose a chapter and identify its author.</li><li>Read the passage in context. Separate the author's claim from your own interpretation.</li><li>Record the edition and actual page or locator you used. Cite a chapter by its author, not automatically by the book's editors.</li><li>Use the idea to question a design choice, compare two approaches or develop an argument.</li></ol><p>For library access, choose your institution in Oria and check the actual record. A publisher page may offer a preview or require purchase; it is not automatically free full text.</p><p><a href="https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-2.html" target="_blank" rel="noopener">Chicago author-date examples</a>. Follow your assignment instructions and cite the edition you actually read.</p><a href="lab-programme.html">Back to your project →</a></section></article>'''
     main.append(BeautifulSoup(content,'html.parser'))
     main.select_one('.al-controls')['id'] = 'sources'
+    main.select_one('#al-count').string = f'{len(BOOKS)} sources'
     main.select_one('.al-controls').append(BeautifulSoup('<button type="button" id="al-reset">Show all sources</button>','html.parser').find())
     s.head.append(BeautifulSoup('<link rel="stylesheet" href="academic-library.css?v=library-3"/><script defer src="academic-library.js?v=2"></script>','html.parser'))
     (labs / 'academic-library.html').write_text(str(s),encoding='utf-8',newline='\n')
     from genre_atlas import atlas
     atlas(root)
+    from research_finder import finder
+    finder(root)
     path = labs / 'tools.html'
     s = BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
     old = s.select_one('#academic-library-link')

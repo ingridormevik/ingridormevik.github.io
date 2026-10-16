@@ -40,3 +40,11 @@
 @media(max-width:600px){.studio.page-academic-library .al-hero{box-shadow:none}.studio.page-academic-library .al-hero nav{display:grid}.studio.page-academic-library .al-hero h1{font-size:36px}.studio.page-academic-library .al-library :is(p,li){font-size:17px}.studio.page-academic-library .al-controls button{width:100%}.studio.page-academic-library :is(.al-reading,.al-atlas,.al-book){box-shadow:none}}
 .access-calm .page-academic-library :is(.al-hero,.al-reading,.al-atlas,.al-book){box-shadow:none}
 @media print{.studio.page-academic-library .al-library,.studio.page-academic-library .al-hero{color:#111;background:#fff}.studio.page-academic-library .al-hero p,.studio.page-academic-library .al-hero h1{color:#111}.studio.page-academic-library .al-controls{display:none}.studio.page-academic-library .al-shelves{display:block}.studio.page-academic-library .al-book{break-inside:avoid;margin-bottom:20px;box-shadow:none}}
+.studio.page-academic-library .rf-workshop fieldset{margin:22px 0;padding:22px;border:2px solid #8c889c;min-width:0;background:#fff}
+.studio.page-academic-library .rf-workshop legend{padding:0 8px;font:800 21px/1.4 system-ui;color:#172c34;max-width:100%}
+.studio.page-academic-library .rf-workshop fieldset label{display:flex;align-items:flex-start;gap:12px;padding:12px;margin:8px 0;background:#f0edf8;cursor:pointer;color:#172c34;font:17px/1.6 system-ui}
+.studio.page-academic-library .rf-workshop input[type=radio]{width:22px;min-width:22px;min-height:22px;height:22px;padding:0;margin:3px 0 0;accent-color:#62428b}
+.studio.page-academic-library .rf-workshop button{margin:12px 12px 12px 0;padding:14px 18px;background:#ffdf48;color:#172c34;border:2px solid #172c34;font-weight:800}
+.studio.page-academic-library #rf-result{margin-top:28px;padding:clamp(16px,3vw,26px);border:3px solid #203d49;background:#edf3df}
+.studio.page-academic-library #rf-routes section{background:#fff;padding:20px;border:1px solid #8c9893;margin:18px 0}
+.studio.page-academic-library #rf-routes h4{font:800 23px/1.3 system-ui;margin:0 0 16px}
