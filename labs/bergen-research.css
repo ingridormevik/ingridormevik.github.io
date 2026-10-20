@@ -1,0 +1,23 @@
+/* Research made in Bergen: section inside the academic library (tools/bergen_research.py). */
+.studio.page-academic-library .br-bergen > p:not(.al-tag) a{color:#ffdf48}
+.studio.page-academic-library .br-card .br-list{margin:0 0 16px;padding:0;list-style:none;display:grid;gap:10px}
+.studio.page-academic-library .br-card .br-list li{margin:0;padding:10px 12px;border:1px solid #bcc5c3;font-size:16px;line-height:1.5;color:#172c34}
+.studio.page-academic-library .br-card .br-list li b{color:#172c34}
+.studio.page-academic-library .br-card .br-route{display:block;margin-top:4px;font:750 13px/1.5 monospace;color:#61417d}
+.studio.page-academic-library .br-cite{margin:26px 0 0;background:#fff;border:2px solid #172c34}
+.studio.page-academic-library .br-cite summary{padding:16px 20px;min-height:48px;cursor:pointer;font:750 17px/1.4 system-ui;color:#172c34}
+.studio.page-academic-library .br-cite ul{margin:0;padding:6px 20px 8px 40px;border-top:1px solid #bcc5c3}
+.studio.page-academic-library .br-cite li{margin:10px 0;font-size:16px;line-height:1.6;color:#172c34;padding-left:1.5em;text-indent:-1.5em;list-style:none}
+.studio.page-academic-library .br-cite .al-small{margin:4px 20px 16px;color:#172c34}
+/* Own card classes (same look as the genre explorer) so the explorer's 44-route checks stay exact. */
+.studio.page-academic-library .br-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px;align-items:start}
+.studio.page-academic-library .br-card{margin:0;padding:0;background:#fff;border:2px solid #172c34;border-top:7px solid #8b74b1;min-width:0}
+.studio.page-academic-library .br-card summary{display:list-item;list-style-position:inside;padding:20px;cursor:pointer;color:#172c34;min-height:48px}
+.studio.page-academic-library .br-card summary :is(strong,span){display:block;margin-top:12px}
+.studio.page-academic-library .br-card summary strong{font:850 23px/1.3 system-ui;color:#172c34}
+.studio.page-academic-library .br-clue{font:17px/1.65 system-ui;color:#172c34}
+.studio.page-academic-library .br-open{font:750 14px/1.5 monospace;color:#61417d}
+.studio.page-academic-library .br-card-body{border-top:1px solid #bcc5c3;padding:20px}
+.studio.page-academic-library .br-card-body p{font-size:16px;color:#172c34}
+.studio.page-academic-library .br-card-body a{color:#462a77;font-weight:700}
+.studio.page-academic-library .br-card code{white-space:normal;overflow-wrap:anywhere;color:#172c34}

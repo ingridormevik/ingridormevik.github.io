@@ -18,6 +18,8 @@ BOOKS += [
  ('Software Studies: A Lexicon','Matthew Fuller (editor)','MIT Press · 2008','Software and creative tools','https://academic.oup.com/mit-press-scholarship-online/book/14880','Publisher record','An edited collection that treats software as a cultural object and a field of practice.','Choose a relevant entry. What does examining the software help you notice about your creative choices?','academic-library.html#genre-route-33'),
  ('Introduction to Documentary','Bill Nichols and Jaimie Baron','Indiana University Press · 4th edition, 2024','Film and documentary','https://iupress.org/9780253070159/introduction-to-documentary-fourth-edition/','Publisher record','An introduction to documentary forms, evidence, perspectives and ethical questions.','How does your selection and arrangement of material shape the account you present?','academic-library.html#genre-route-12'),
  ('The Platform Society: Public Values in a Connective World','José van Dijck, Thomas Poell and Martijn de Waal','Oxford University Press · 2018','Platforms and communities','https://academic.oup.com/book/12378','Publisher record','A study of how platforms relate to public values and social institutions.','Who controls visibility, participation and data on the platform your project uses?','academic-library.html#genre-route-43'),
+ ('Electronic Literature', 'Scott Rettberg', 'Polity · 2019', 'Electronic literature', 'https://elmcip.net/node/13149', 'ELMCIP record', 'A survey of the main genres of electronic literature, from combinatory poetics and hypertext fiction to interactive fiction, kinetic poetry and network writing, in their historical and technical contexts. Winner of the 2019 N. Katherine Hayles Award.', 'Which of the genres is closest to what your visitor does? Name it, then explain how your work changes it.', 'academic-library.html#bergen-research'),
+ ('Machine Vision: How Algorithms Are Changing the Way We See the World', 'Jill Walker Rettberg', 'Polity · 2023', 'Machine vision', 'https://jilltxt.net/book/machine-vision-how-algorithms-are-changing-the-way-we-see-the-world/', 'Open access: read it free', 'How cameras, filters, surveillance and image recognition change how we see, with examples from art, games and science fiction.', 'Does your work see the visitor, or show a seeing machine? Who is seen, and who decides what the machine sees?', 'academic-library.html#bergen-research')
 ]
 # The old Lab 2 fragment was removed when the beginner path was rebuilt.
 BOOKS = [(*book[:8], 'accessibility-lab.html' if book[0] == 'Data Feminism' else book[8]) for book in BOOKS]
@@ -67,6 +69,8 @@ def library(root):
     learning(root)
     from article_finder import articles
     articles(root)
+    from bergen_research import bergen
+    bergen(root)
     path = labs / 'tools.html'
     s = BeautifulSoup(path.read_text(encoding='utf-8'),'html.parser')
     old = s.select_one('#academic-library-link')
