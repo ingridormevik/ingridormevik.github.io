@@ -161,6 +161,68 @@
     pick(st.sense, false);
   }
 
+  // Room A: the futures dial and the backcasting ladder.
+  const dial = document.querySelector('.fr-dial');
+  if (dial) {
+    const btns = [...dial.querySelectorAll('[data-fr]')];
+    const lines = [...document.querySelectorAll('[data-fr-line]')];
+    const pickFuture = (k, sound) => {
+      btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.fr === k)));
+      lines.forEach(l => { l.hidden = l.dataset.frLine !== (k || 'none'); });
+      if (k) { st.future = k; save(); if (sound) star(); }
+    };
+    btns.forEach(b => b.addEventListener('click', () => pickFuture(b.dataset.fr, true)));
+    pickFuture(st.future, false);
+    const lad = document.querySelector('[data-fr-ladder]');
+    const goal = lad.querySelector('[data-fr-goal]'), year = lad.querySelector('[data-fr-year]');
+    const paintLadder = () => {
+      const y = Math.max(2030, Math.min(2200, Number(year.value) || 2040));
+      lad.querySelector('[data-fr-y="0"]').textContent = y;
+      lad.querySelector('[data-fr-y="1"]').textContent = y - Math.round((y - 2026) * 0.4);
+      lad.querySelector('[data-fr-y="2"]').textContent = y - Math.round((y - 2026) * 0.7);
+      lad.querySelector('[data-fr-g]').textContent = goal.value.trim() || 'clean water for everyone';
+    };
+    const replay = () => lad.querySelectorAll('.fr-rungs li').forEach(li => { li.style.animation = 'none'; void li.offsetWidth; li.style.animation = ''; });
+    goal.value = st.goal || ''; year.value = st.year || '';
+    goal.addEventListener('input', () => { st.goal = goal.value; save(); paintLadder(); });
+    year.addEventListener('change', () => { st.year = year.value; save(); paintLadder(); replay(); });
+    paintLadder();
+  }
+
+  // Room B: tap a part of the game machine.
+  const gm = document.querySelector('.gm-line');
+  if (gm) {
+    const parts = [...gm.querySelectorAll('[data-gm]')];
+    const cards = [...document.querySelectorAll('[data-gm-card]')];
+    parts.forEach(b => b.addEventListener('click', () => {
+      parts.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      cards.forEach(c => { c.hidden = c.dataset.gmCard !== b.dataset.gm; });
+      st.gmSeen = [...new Set([...(st.gmSeen || []), b.dataset.gm])]; save(); star();
+    }));
+  }
+
+  // Room C: Audacity stations and the media tabs.
+  const bench = document.querySelector('.ss-stations');
+  if (bench) {
+    const stations = [...bench.querySelectorAll('[data-ss]')];
+    const cards = [...document.querySelectorAll('[data-ss-card]')];
+    stations.forEach(b => b.addEventListener('click', () => {
+      stations.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      cards.forEach(c => { c.hidden = c.dataset.ssCard !== b.dataset.ss; });
+    }));
+    const tabs = document.querySelector('.ss-tabs');
+    const tbtn = [...tabs.querySelectorAll('[data-ss-tab]')];
+    const panes = [...document.querySelectorAll('[data-ss-pane]')];
+    const pickTab = k => {
+      tbtn.forEach(x => x.setAttribute('aria-pressed', String(x.dataset.ssTab === k)));
+      panes.forEach(p => { p.hidden = p.dataset.ssPane !== k; });
+      st.media = k; save();
+    };
+    tabs.hidden = false;
+    tbtn.forEach(b => b.addEventListener('click', () => pickTab(b.dataset.ssTab)));
+    pickTab(tbtn.some(b => b.dataset.ssTab === st.media) ? st.media : tbtn[0].dataset.ssTab);
+  }
+
   // Final gate: seven seals.
   const seals = document.querySelector('[data-fq-seals]');
   if (seals) {

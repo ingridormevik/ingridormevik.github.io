@@ -7,6 +7,7 @@ from html import escape
 import re
 
 from lab4_walkthrough import TURING_HEAD
+from final_rooms import forge, machine, studio, room_map
 
 COURSE = 'https://mitt.uib.no/courses/59620'
 LAB_DATES = [('lab-1', '2 Oct'), ('lab-2', '9 Oct'), ('lab-3', '16 Oct'), ('lab-4', '23 Oct'), ('lab-5', '30 Oct'),
@@ -78,7 +79,7 @@ LABS = {
          starters=['In my future, nobody ', 'The thing I would miss most is ', 'The machines finally '],
          example='Example: “In my future nobody remembers birdsong. Today I want a room where you can only hear it if you wait.”',
          practice='Practice: Future lab', practice_desc='Three moves. Leave with one future and one interaction.',
-         moves=[move(1, '#c6f15b', 'Spin', 'SPIN · 10 MIN', '<p>Pick a future from the brief, or bring your own. Stuck? Spin one.</p><p><a href="final-assessment.html#brief">Future generator →</a></p>'),
+         moves=[move(1, '#c6f15b', 'Spin', 'SPIN · 10 MIN', '<p>Pick a future from the brief, or bring your own. Stuck? Spin one.</p><p><a href="final-assessment.html#forge">Future forge →</a></p>'),
                 move(2, '#ff5fd2', 'Touch', 'TOUCH · 15 MIN', '<p>What does the visitor <b>do</b> in that future? Choose one power: a variable that remembers, a rule that waits, rooms, a sound.</p><p><a href="#l4-host">Your Lab 4 powers →</a></p>'),
                 move(3, '#e9ca85', 'Cut', 'CUT · 5 MIN', '<p>One room, one rule, one ending that works. Everything else goes on a wish list for later.</p>')],
          goal='Your final work: an interactive piece about <b>speculative digital futures</b>. <a href="final-assessment.html">Final quest →</a>',
@@ -111,7 +112,7 @@ LABS = {
          practice='Practice: Feedback clinic', practice_desc='Diagnose first. Feedback in the right order. Write it down.',
          moves=[move(1, '#8cdec5', 'Diagnose', 'DIAGNOSE · 10 MIN', '<p>Fill in four lines before anyone gives feedback:</p>'
                      '<p class="fw-diag">I AM MAKING ___ FOR ___<br/>I WANT THEM TO FEEL / NOTICE / UNDERSTAND / QUESTION ___<br/>THE MOST IMPORTANT INTERACTION IS ___</p>'),
-                move(2, '#ff5fd2', 'Swap', 'SWAP · 20 MIN', '<p>Feedback in this order: <b>concept</b>, <b>experience</b>, <b>form</b>, <b>scope</b>, <b>technical problem</b>, and polish last.</p>'),
+                move(2, '#ff5fd2', 'Swap', 'SWAP · 20 MIN', '<p>Feedback in this order: <b>concept</b>, <b>experience</b>, <b>form</b>, <b>scope</b>, <b>technical problem</b>, and polish last.</p><p><a href="final-assessment.html#machine">Flow check →</a></p>'),
                 move(3, '#e9ca85', 'Write it down', 'NOTE · 5 MIN', '<p>Every piece of feedback is process. It becomes part 4 of your text.</p><p><a href="final-assessment.html#doc">Start your text →</a></p>')],
          goal='Feedback is material for your written text: the process part. <a href="final-assessment.html#doc">Text builder →</a>',
          m_h='Make it sharper', m_p='Use other eyes to find what matters most.', m_q='What is the one thing a stranger must not miss?',
@@ -143,7 +144,7 @@ LABS = {
          practice='Practice: Ship it', practice_desc='Export, test, record. Leave with a link and a video.',
          moves=[move(1, '#ffb347', 'Export', 'EXPORT · 15 MIN', '<p>Web export. Upload to itch.io, playable in the browser, set to <b>public</b>.</p><p><a href="publish-guide.html">Publish guide →</a></p>'),
                 move(2, '#8cdec5', 'Test', 'TEST · 10 MIN', '<p>Open the exact link in a <b>private window</b> and on a <b>phone</b>. Fix what breaks.</p>'),
-                move(3, '#ff5fd2', 'Record', 'RECORD · 20 MIN', '<p>A video walkthrough: the start, the main interaction, the moment it changes. Your voice is optional.</p><p><a href="final-assessment.html#video">Video guide →</a></p>')],
+                move(3, '#ff5fd2', 'Record', 'RECORD · 20 MIN', '<p>A video walkthrough: the start, the main interaction, the moment it changes. Your voice is optional.</p><p><a href="final-assessment.html#video">Video guide →</a> · <a href="final-assessment.html#studio">Sound check →</a></p>')],
          goal='A broken link may fail. Test the exact link you paste. <a href="final-assessment.html#seals">Final seals →</a>',
          m_h='Ready for the examiner', m_p='The work, the link and the video, all reachable.', m_q='Does the link work for someone who is not you?',
          m_link=('final-assessment.html#seals', 'Run the final seals →'),
@@ -271,8 +272,8 @@ def patch_programme(root):
     if 'href="final-assessment.html">Final quest</a>' not in s.split('</header>')[0]:
         s = re.sub(r'(<header class="studio-header">.*?<nav[^>]*>.*?Lab map</a>)', lambda m: m.group(1) + '<a href="final-assessment.html">Final quest</a>', s, count=1, flags=re.S)
     if 'final-quest.css' not in s:
-        s = s.replace('</head>', '<link href="final-quest.css?v=3" rel="stylesheet"/><script defer="" src="final-quest.js?v=3"></script></head>', 1)
-    s = re.sub(r'final-quest\.(css|js)\?v=\d+', r'final-quest.\1?v=3', s)
+        s = s.replace('</head>', '<link href="final-quest.css?v=4" rel="stylesheet"/><script defer="" src="final-quest.js?v=4"></script></head>', 1)
+    s = re.sub(r'final-quest\.(css|js)\?v=\d+', r'final-quest.\1?v=4', s)
     # Eight labs instead of five: the level map, the finish screen and the guide return links changed.
     s = re.sub(r'(start-lab|lab-victory|lab-navigation)\.js\?v=[\w-]+', r'\1.js?v=final-weeks-1', s)
     path.write_text(s, encoding='utf-8', newline='\n')
@@ -285,8 +286,8 @@ def patch_ai_pages(root):
         s = re.sub(r'<!-- fq-ai -->.*?<!-- /fq-ai -->', '', s, flags=re.S)
         s = re.sub(r'(<main id="main-content"[^>]*>)', lambda m: m.group(1) + AI_NOTE, s, count=1)
         if 'final-quest.css' not in s:
-            s = s.replace('</head>', '<link href="final-quest.css?v=3" rel="stylesheet"/></head>', 1)
-        s = re.sub(r'final-quest\.css\?v=\d+', 'final-quest.css?v=3', s)
+            s = s.replace('</head>', '<link href="final-quest.css?v=4" rel="stylesheet"/></head>', 1)
+        s = re.sub(r'final-quest\.css\?v=\d+', 'final-quest.css?v=4', s)
         path.write_text(s, encoding='utf-8', newline='\n')
 
 
@@ -444,10 +445,10 @@ def senses():
 
 
 PARTS = [
- ('link', '1 · The link', 'Label it clearly, for example <b>Interactive work: https://…</b> Put the video link here too.', ''),
- ('theme', '2 · The theme', 'What future does your work imagine? How does it address speculative digital futures, and how does it fit the theme?', '600'),
- ('genre', '3 · The genre', 'Which genre or genres is your work, and why? Use the <a href="academic-library.html#genre-explorer">Genre explorer</a> and cite your sources.', '500'),
- ('process', '4 · The process', 'How did you make it? Which challenge did you solve? Skip “I had never used the software”: find something more interesting.', '700'),
+ ('link', '1 · The link', 'On your front page, clearly labelled: <b>Interactive work: https://…</b> and <b>Video walkthrough: https://…</b> <a href="academic-library.html#writing-desk">See the paper →</a>', ''),
+ ('theme', '2 · The theme', 'What future does your work imagine, and for whom is it preferred? How is your work one early step? <a href="#forge">Future forge ↑</a>', '600'),
+ ('genre', '3 · The genre', 'Which genre or genres, and why? Describe how it works: rules, mechanics, state. <a href="#machine">Game machine ↑</a> · <a href="academic-library.html#genre-explorer">Genre explorer</a>. Cite your sources.', '500'),
+ ('process', '4 · The process', 'Frame, research, try, test: how did you make it, and what did testing change? Skip “I had never used the software”. <a href="academic-library.html#writing-desk">How to cite →</a>', '700'),
  ('frame', 'Opening and ending', 'Optional: what the work is, in a few sentences, and what you would do next.', '200'),
 ]
 SEALS = [
@@ -473,8 +474,8 @@ def hub():
 <html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Final quest | DIKULT105</title>
 <meta content="Everything for the DIKULT105 final assessment: the brief, the 2000-word text, the link, the video walkthrough and the AI rules." name="description"/>
 <link href="setup.css" rel="stylesheet"/><link href="studio.css?v=3" rel="stylesheet"/><link href="accessibility.css?v=contrast20261009" rel="stylesheet"/><script defer="" src="accessibility.js?v=3"></script>
-<link href="computing-history.css?v=contrast20261009" rel="stylesheet"/><link href="c3-walk.css?v=25" rel="stylesheet"/><link href="final-quest.css?v=3" rel="stylesheet"/>
-<script defer="" src="lab-audio.js?v=4"></script><script defer="" src="final-quest.js?v=3"></script></head>
+<link href="computing-history.css?v=contrast20261009" rel="stylesheet"/><link href="c3-walk.css?v=25" rel="stylesheet"/><link href="final-quest.css?v=4" rel="stylesheet"/>
+<script defer="" src="lab-audio.js?v=4"></script><script defer="" src="final-quest.js?v=4"></script></head>
 <body class="studio time-lab fq-page"><a class="skip-link" href="#main-content">Skip to the final quest</a>
 <header class="studio-header"><a href="lab-programme.html">Creating Digital Culture</a><nav aria-label="Main navigation"><a href="lab-programme.html">Lab map</a><a href="final-assessment.html" aria-current="page">Final quest</a><a href="tools.html">Guides</a></nav></header>
 <main id="main-content">
@@ -485,6 +486,8 @@ def hub():
 <div class="l4-host-art">{FUTURE_SVG}</div></section>
 
 {road('Where you are', go=False)}
+
+{room_map()}
 
 <section class="fq-gate" id="gate0" aria-labelledby="g0"><p class="fq-kicker">GATE 0 · CAN I SUBMIT?</p><h2 id="g0">Two keys open the exam door.</h2>
 <p class="fq-sub">The final assessment can only be taken when both keys are yours.</p><div class="fq-grid">
@@ -505,7 +508,13 @@ def hub():
 <div class="fq-gen" data-fq-gen=""><p class="fq-kicker">FUTURE GENERATOR</p><p>Futures from the brief: climate change, pandemics, extinction, environmental loss, talking with other planets, AI and fresh water, AI and office jobs, AI and creativity.</p>
 <button type="button" class="fq-btn" hidden="">Spin a future</button><p class="fq-gen-out" data-fq-gen-out="" aria-live="polite">? + ? + ?</p><p class="fq-small">Not your idea? Spin again. Your own idea always wins.</p></div></section>
 
+{forge()}
+
+{machine()}
+
 {senses()}
+
+{studio()}
 
 <section class="fq-gate" id="doc" aria-labelledby="g2" data-fq-doc=""><p class="fq-kicker">GATE 2 · THE TEXT</p><h2 id="g2">2000 words, four parts.</h2>
 <p class="fq-sub">Write here or in your own document. Write it yourself: AI may only do light editing if you write in English.</p>

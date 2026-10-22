@@ -220,3 +220,91 @@
 .access-no-motion .fs-gate *,.access-calm .fs-gate *{animation:none!important}
 .fs-do .fq-tag{display:inline-block;padding:3px 7px;border:2px solid var(--fq-line);background:var(--fq-lime);color:#080e15;font:800 11px/1.2 Consolas,monospace;letter-spacing:.1em}
 .fs-do .fq-tag.fs-tag-future{background:var(--fq-pink)}
+
+/* Final quest rooms: route chips, credit lines, Future forge, Game machine, Sound & media studio */
+.fq-rooms{margin:0 0 26px;padding:14px 16px;border:4px solid var(--fq-line);background:var(--fq-panel);box-shadow:5px 5px 0 var(--fq-line)}
+.fq-rooms>div{display:flex;flex-wrap:wrap;gap:8px}
+.studio .fq-rooms a{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 10px;border:2px solid var(--fq-line);background:#18353b;color:var(--fq-ink)!important;font:800 14px/1.2 system-ui,sans-serif;text-decoration:none;box-shadow:2px 2px 0 var(--fq-line)}
+.studio .fq-rooms a:hover{background:var(--fq-gold);color:#080e15!important}
+.fq-rooms a span{font:700 11px Consolas,monospace;color:var(--fq-mint)}
+.fq-rooms a:hover span{color:#080e15}
+.studio .fq-gate .fq-credit{margin:0 0 10px!important;padding:6px 10px;border-left:4px solid var(--fq-gold);background:#0f1f24;font:italic 15px/1.5 system-ui,sans-serif;color:var(--fq-gold)!important;max-width:70ch}
+.fq-use{margin-top:16px;padding:12px 14px;border:3px solid var(--fq-pink);background:#2a1430;font-size:16px;line-height:1.5}
+.fq-use .fq-tag{display:inline-block;margin:0 6px 4px 0;padding:3px 7px;border:2px solid var(--fq-line);background:var(--fq-pink);color:#080e15;font:800 11px/1.2 Consolas,monospace;letter-spacing:.1em}
+.studio .gm-note,.studio .fr-out{font-size:16px;line-height:1.5}
+
+/* Future forge */
+.fr-dial{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:6px 0 10px}
+.studio.fq-page .fr-dial button,.studio.fq-page .gm-line button,.studio.fq-page .ss-stations button,.studio.fq-page .ss-tabs button{min-height:44px;margin:0;border:3px solid var(--fq-line);border-radius:0;background:#18353b;color:var(--fq-ink)!important;font:800 15px/1.2 system-ui,'Segoe UI',Arial,sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--fq-line);transition:transform .12s}
+.studio.fq-page .fr-dial button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px}
+.studio.fq-page :is(.fr-dial,.gm-line,.ss-stations,.ss-tabs) button:hover{transform:translate(-1px,-1px)}
+.studio.fq-page :is(.fr-dial,.ss-stations,.ss-tabs) button[aria-pressed=true]{background:var(--fq-gold);color:#080e15!important;animation:l4-pop .35s ease-out}
+.fr-dial svg{width:56px;height:56px}
+.studio .fq-gate .fr-out{min-height:2em;margin:0 0 16px!important;padding:12px 14px;border:3px dashed var(--fq-gold);font-size:18px}
+.fr-out [hidden]{display:none}
+.fr-rise{stroke-dasharray:80;animation:fr-rise 2.4s ease-out infinite}
+@keyframes fr-rise{from{stroke-dashoffset:80}to{stroke-dashoffset:0}}
+.fr-fall{animation:fr-fall 2.4s ease-in infinite}.fr-d2{animation-delay:.3s}
+@keyframes fr-fall{0%,40%{transform:none;opacity:1}90%{transform:translate(6px,22px) rotate(25deg);opacity:0}100%{opacity:0}}
+.fr-pulse{transform-box:fill-box;transform-origin:center;animation:fr-pulse 1.8s ease-in-out infinite}
+@keyframes fr-pulse{50%{transform:scale(.7)}}
+.fr-morph{transform-box:fill-box;transform-origin:center;animation:fr-morph 3s ease-in-out infinite}
+@keyframes fr-morph{50%{transform:rotate(72deg) scale(.85);fill:#c6f15b}}
+.fr-ladder{margin:0 0 16px;padding:16px;border:3px solid var(--fq-line);background:#0f1f24}
+.fr-in{display:flex;flex-wrap:wrap;gap:10px 16px;margin-bottom:12px}
+.fr-in label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--fq-soft)}
+.fr-in input{min-width:0;padding:9px 11px;border:3px solid var(--fq-line);background:#edf4dd;color:#080e15;font:16px system-ui,sans-serif}
+.fr-in label:first-child input{width:min(340px,80vw)}
+.fr-in input[type=number]{width:110px}
+.studio .fr-rungs{list-style:none!important;margin:0!important;padding:0!important;display:grid;gap:8px}
+.studio .fr-rungs li{display:flex;align-items:center;gap:14px;margin:0 0 0 calc(var(--r,0) * 28px)!important;padding:10px 12px!important;list-style:none!important;border:2px solid var(--fq-line);background:#18353b;animation:fr-rung .5s ease-out both;animation-delay:calc(var(--r,0) * .12s)}
+.studio .fr-rungs li::before{content:none!important}
+.fr-rungs li[data-rung="1"]{--r:1}.fr-rungs li[data-rung="2"]{--r:2}.fr-rungs li[data-rung="3"]{--r:3}
+.fr-rungs b{min-width:56px;font:900 18px Consolas,monospace;color:var(--fq-gold)}
+.studio .fr-rungs li.is-today{background:var(--fq-gold);color:#080e15}
+.fr-rungs li.is-today b{color:#080e15}
+@keyframes fr-rung{from{opacity:0;transform:translateX(-10px)}}
+
+/* Game machine */
+.gm-line{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:6px 0 12px}
+.studio.fq-page .gm-line button{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 6px}
+.gm-cog{display:block;width:34px;height:34px;border:6px dashed var(--c);border-radius:50%;animation:hr-gear 6s linear infinite}
+.gm-line button:nth-child(2n) .gm-cog{animation-direction:reverse}
+.studio.fq-page .gm-line button[aria-pressed=true]{background:var(--c);color:#080e15!important}
+.studio.fq-page .gm-line button[aria-pressed=true] .gm-cog{border-color:#080e15;animation-duration:1.5s}
+.gm-cards{margin:0 0 16px}
+.gm-card{padding:14px 16px;border:3px solid var(--fq-line);background:#18353b;animation:fq-in .35s ease-out}
+.gm-card[hidden]{display:none}
+.studio .gm-card h3{margin:0 0 4px!important;font:900 24px/1.1 system-ui,sans-serif;color:var(--fq-ink)!important}
+.studio .gm-card p{margin:0 0 6px!important;font-size:16px;line-height:1.5}
+.gm-card .fq-tag{display:inline-block;margin-right:6px;padding:3px 7px;border:2px solid var(--fq-line);background:var(--fq-lime);color:#080e15;font:800 11px/1.2 Consolas,monospace;letter-spacing:.1em}
+.studio .gm-card .gm-ex{font:15px Consolas,monospace;color:var(--fq-mint)}
+.studio .gm-card.is-hint p{color:var(--fq-soft);margin:0!important}
+.studio .gm-note{margin:16px 0!important;padding:12px 14px;border-left:4px solid var(--fq-mint);background:#0f1f24}
+.gm-flow{margin-top:14px}
+.gm-flow .fq-steps>li{padding-left:14px!important}
+.gm-flow .fq-steps>li::before{content:none!important}
+
+/* Sound & media studio */
+.ss-bench{padding:14px;border:3px solid var(--fq-line);background:#0f1f24;margin-bottom:16px}
+.ss-wave{display:block;width:100%;height:auto;max-height:120px;border:3px solid var(--fq-line);margin-bottom:12px}
+.ss-bar{fill:#c6f15b;transform-box:fill-box;transform-origin:center;animation:ss-bar 1.2s ease-in-out infinite;animation-delay:calc(var(--i) * -.09s)}
+@keyframes ss-bar{50%{transform:scaleY(.45)}}
+.ss-head{animation:ss-head 4s linear infinite}
+@keyframes ss-head{to{transform:translateX(297px)}}
+.ss-stations{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.studio.fq-page .ss-stations button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;font-size:14px}
+.ss-stations span{display:grid;place-items:center;width:26px;height:26px;border:2px solid var(--fq-line);background:var(--fq-mint);color:#080e15;font:900 14px system-ui,sans-serif}
+.studio .ss-card{margin:12px 0 0!important;padding:12px 14px;border-left:4px solid var(--fq-lime);background:#18353b;font-size:16px;line-height:1.55;animation:fq-in .3s ease-out}
+.ss-card[hidden]{display:none}
+.ss-into{margin-bottom:16px}
+.ss-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.ss-tabs[hidden]{display:none}
+.studio.fq-page .ss-tabs button{padding:8px 18px}
+.ss-pane[hidden]{display:none}
+.studio .ss-pane .fq-steps p{margin:0 0 8px!important;font-size:16px;line-height:1.5}
+.ss-shot{margin:6px 0 0}
+.ss-shot img{display:block;max-width:100%;height:auto;max-height:300px;border:2px solid var(--fq-line)}
+@media (max-width:760px){.fr-dial,.gm-line{grid-template-columns:repeat(2,minmax(0,1fr))}.ss-stations{grid-template-columns:repeat(3,minmax(0,1fr))}.studio .fr-rungs li{margin-left:calc(var(--r,0) * 12px)!important}}
+@media (prefers-reduced-motion:reduce){:is(.fr-forge,.gm-room,.ss-room) *{animation:none!important}}
+.access-no-motion :is(.fr-forge,.gm-room,.ss-room) *,.access-calm :is(.fr-forge,.gm-room,.ss-room) *{animation:none!important}
