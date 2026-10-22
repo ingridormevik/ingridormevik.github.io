@@ -65,7 +65,8 @@
     if (view.href) {
       // On a sub-page, jump to a matching place here, or back to the lab page.
       let href = view.href;
-      if (view.kind === 'task' && document.querySelector('.obligatory-banner')) href = '#' + document.querySelector('.obligatory-banner').id;
+      // Today's own banner when this page has it; on a sub-page, the first banner there.
+      if (view.kind === 'task' && !document.getElementById(href.slice(1)) && document.querySelector('.obligatory-banner')) href = '#' + document.querySelector('.obligatory-banner').id;
       else if (href.startsWith('#') && (document.querySelector('[data-now-schedule]') || !document.getElementById(href.slice(1)))) href = 'lab-programme.html' + href;
       go.href = href;
     }
@@ -121,6 +122,12 @@
     hiddenByUser = true;
     try { sessionStorage.setItem(HIDE_KEY, 'yes'); } catch {}
     tick();
+  });
+  // "Show me" on this page: the lab panels re-render on hashchange, so scroll to the target ourselves.
+  $('[data-now-go]').addEventListener('click', () => {
+    const href = $('[data-now-go]').getAttribute('href') || '';
+    if (!href.startsWith('#')) return;
+    setTimeout(() => document.getElementById(href.slice(1))?.scrollIntoView({block: 'start'}), 60);
   });
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-clock-group]');
