@@ -346,3 +346,30 @@ html.c3w-lb-open{overflow:hidden}
   .br-table td:nth-of-type(3)::before{content:'Construct: ';color:#9cc7ff;font-weight:700}
 }
 .route-card .br-path{margin:4px 0 12px!important}
+
+/* ---------- Lab 4, Part 3: ready to hand in ---------- */
+.l4-ready{margin:22px 0 30px;padding:22px 24px;border:2px solid #ffd23f;border-radius:12px;background:#0b0d14;color:#f5f5ef;text-align:left}
+.studio .l4-ready :is(p,h4,li,b,span,label){color:inherit}
+.studio .l4-ready .l4-ready-kicker{margin:0 0 6px!important;font:700 12px/1.4 Consolas,monospace;letter-spacing:.14em;color:#ffd23f!important}
+.l4-ready h4{margin:0 0 8px;font:700 clamp(22px,2.6vw,30px)/1.2 system-ui,'Segoe UI',Arial,sans-serif}
+.studio .l4-ready > p:not(.l4-ready-kicker){margin:0 0 12px!important;font-size:17px;line-height:1.55;color:#d6dbe1!important;max-width:68ch}
+.l4-official{margin:0 0 16px;padding:12px 14px;border-left:4px solid #9cc7ff;background:#10151f}
+.studio .l4-official p{margin:0!important;font-size:15px;line-height:1.5;max-width:none!important}
+.studio .l4-checks{list-style:none!important;margin:0 0 14px!important;padding:0!important;display:grid;gap:8px}
+.studio .l4-checks li{margin:0!important;padding:0!important;list-style:none!important}
+.studio .l4-checks li::before{content:none!important}
+.l4-checks label{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid rgba(255,255,255,.18);border-radius:8px;cursor:pointer;min-height:44px}
+.l4-checks input{width:22px;height:22px;margin-top:2px;flex-shrink:0;accent-color:#c6f58d}
+.l4-checks span{font-size:16px;line-height:1.5;color:#d6dbe1}
+.studio .l4-checks span b{display:block;color:#fff;margin-bottom:2px}
+.l4-checks li.is-done label{border-color:#c6f58d;background:#10160c}
+.l4-meter{height:6px;max-width:360px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+.l4-meter span{display:block;height:100%;width:0;background:#c6f58d;transition:width .3s}
+.studio .l4-status{margin:6px 0 12px!important;font:12px/1.4 Consolas,monospace!important;letter-spacing:.06em;color:#b9c2cc!important}
+.l4-done{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin:0 0 12px;padding:14px 16px;border:1px solid #c6f58d;border-radius:8px}
+.l4-done[hidden]{display:none}
+.studio .l4-done p{margin:0!important;font-size:16px}
+.studio .l4-done .primary{background:#ffd23f;border-color:#ffd23f;color:#14120a!important;text-decoration:none!important}
+@media (max-width:560px){.l4-ready{padding:18px 14px}}
+@media (prefers-reduced-motion:reduce){.l4-meter span{transition:none}}
+.studio .l4-checks span a{color:#ffd23f!important}

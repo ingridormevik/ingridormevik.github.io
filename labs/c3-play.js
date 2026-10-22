@@ -1,9 +1,8 @@
 // Lab 3 walkthrough extras: "I did it" checkpoints with a Construct licence, a Find it! game on the
 // real editor screenshot, and a full-screen screenshot viewer. Everything degrades to the plain page.
 (() => {
-  const root = document.querySelector('[data-c3w]');
-  if (!root) return;
   const sound = cue => { try { window.labAudio?.play(cue); } catch {} };
+  document.querySelectorAll('[data-c3w]').forEach(root => {
   const store = {
     get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
@@ -14,7 +13,7 @@
   const done = new Set(store.get(DONE_KEY, []));
   const scenes = [...root.querySelectorAll('[data-c3w-scene]')];
   const core = scenes.filter(s => !s.closest('.c3w-levelup'));
-  const part = core[0]?.dataset.c3wLabel?.startsWith('Part 1') ? 'Part 1' : 'Part 2';
+  const part = root.dataset.c3wPart || (core[0]?.dataset.c3wLabel?.startsWith('Part 1') ? 'Part 1' : 'Part 2');
 
   const meter = document.createElement('div');
   meter.className = 'c3w-meter';
@@ -24,7 +23,7 @@
   const licence = document.createElement('section');
   licence.className = 'c3w-licence';
   licence.hidden = true;
-  licence.setAttribute('aria-labelledby', 'c3w-licence-t');
+  licence.setAttribute('aria-label', 'Construct licence');
   root.append(licence);
 
   const SKILL = {
@@ -32,7 +31,9 @@
     'z-move': 'Move, size, turn', 'z-undo': 'Undo', 'z-behavior': 'Behaviors', 'z-when': 'Conditions', 'z-then': 'Actions',
     'z-play': 'Preview and save', 'z-remember': 'The ten rules',
     open: 'Open a .c3p', lock: 'Lock', place: 'Text objects', secret: 'Initially visible', ears: 'Touch',
-    listen: 'On tap object', act: 'Set visible', play: 'Preview layout', save: 'Download a copy', show: 'Obligatory Task 4'
+    listen: 'On tap object', act: 'Set visible', play: 'Preview layout', save: 'Download a copy', show: 'Obligatory Task 4',
+    'l4-open': 'Open a .c3p', 'l4-var': 'Global variable', 'l4-add': 'Add to', 'l4-show': 'Expressions with &', 'l4-if': 'Compare variable', 'l4-test1': 'Testing a rule',
+    'l4-arrow': 'Go to layout', 'l4-clone': 'Clone an object type', 'l4-room2': 'Event sheet per layout', 'l4-back': 'On start of layout', 'l4-test2': 'What rooms forget', 'l4-save': 'Download a copy'
   };
   const skills = () => core.map(s => SKILL[s.dataset.c3wScene] || s.querySelector('h4').textContent);
   function render(celebrate) {
@@ -56,7 +57,7 @@
         ? '<a class="primary" href="lab3-alinta-map.html#c3w-open">Use it on Alinta\'s map →</a>'
         : '<a class="primary" href="#map-obligatory">Post your screenshot: Obligatory Task 4 →</a>';
       licence.innerHTML = `<p class="c3w-licence-kicker">CONSTRUCT LICENCE · ${part.toUpperCase()}</p>`
-        + `<h4 id="c3w-licence-t">${part === 'Part 1' ? 'You can use Construct now.' : 'Your map keeps a secret.'}</h4>`
+        + `<h4>${root.dataset.c3wLicenceTitle || (part === 'Part 1' ? 'You can use Construct now.' : 'Your map keeps a secret.')}</h4>`
         + `<p>Skills unlocked today:</p><ul>${skills().map(k => `<li>${k}</li>`).join('')}</ul>${next}`;
       if (celebrate) {
         sound('complete');
@@ -155,6 +156,7 @@
       }
     }, true);
   }
+  });
 
   /* ---------- 3. Full-screen screenshot viewer ---------- */
   const lb = document.createElement('div');
@@ -186,12 +188,12 @@
     document.documentElement.classList.remove('c3w-lb-open');
     opener?.focus();
   }
-  root.addEventListener('click', e => {
-    const a = e.target.closest('.c3w-shot a');
+  document.addEventListener('click', e => {
+    const a = e.target.closest('.c3w .c3w-shot a');
     if (!a || e.ctrlKey || e.metaKey || e.shiftKey) return;
     e.preventDefault();
     opener = a;
-    list = [...a.closest('.c3w-scene').querySelectorAll('.c3w-shot a')];
+    list = [...(a.closest('.c3w-scene') || a.closest('.c3w')).querySelectorAll('.c3w-shot a')];
     showShot(list.indexOf(a));
     lb.hidden = false;
     document.documentElement.classList.add('c3w-lb-open');

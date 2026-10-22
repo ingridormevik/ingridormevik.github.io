@@ -1,8 +1,7 @@
 // Lab 3 map workshop: show one Construct scene at a time, with tabs, Back/Next and remembered progress.
 // Without JavaScript every scene stays visible in order.
 (() => {
-  const root = document.querySelector('[data-c3w]');
-  if (!root) return;
+  document.querySelectorAll('[data-c3w]').forEach(root => {
   const KEY = 'dik105-c3w-seen';
   const scenes = [...root.querySelectorAll('[data-c3w-scene]')];
   const main = scenes.filter(s => !s.closest('.c3w-levelup'));
@@ -99,4 +98,5 @@
   }
   window.addEventListener('hashchange', fromHash);
   if (!fromHash()) show(current);
+  });
 })();
