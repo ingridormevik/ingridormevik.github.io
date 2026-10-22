@@ -431,3 +431,32 @@ button.hud-room{cursor:default}
 .studio .side-quests .sq:hover{border-color:#ffd23f!important}
 .sq-body{padding:0 12px 12px}
 @media (max-width:560px){.side-quests{padding:16px 12px}.sq-body{padding:0 4px 8px}}
+
+/* Lab 4: power-up tip cards */
+.l4-power{margin:22px 0;padding:20px 22px;border:1px solid rgba(255,255,255,.18);border-radius:12px;background:#0b0d14;color:#f5f5ef;text-align:left}
+.studio .l4-power :is(p,h4,li,b,i){color:inherit}
+.studio .l4-power .pw-kicker{margin:0 0 4px!important;font:700 12px/1.4 Consolas,monospace;letter-spacing:.14em;color:#9cc7ff!important}
+.l4-power h4{margin:0 0 14px;font:700 clamp(22px,2.6vw,28px)/1.2 system-ui,'Segoe UI',Arial,sans-serif}
+.pw-decks{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.pw-decks[hidden]{display:none}
+.studio .l4-power .pw-decks button{min-height:40px;margin:0;padding:6px 14px;border:1px solid rgba(255,255,255,.25);border-radius:6px;background:transparent;color:#b9c2cc;font:600 15px/1.2 system-ui,'Segoe UI',Arial,sans-serif;cursor:pointer;box-shadow:none}
+.studio .l4-power .pw-decks button[aria-pressed=true]{border-color:#9cc7ff;background:#9cc7ff;color:#0b0d14}
+.studio .l4-power .pw-cards{list-style:none!important;margin:0!important;padding:0!important;display:grid;gap:12px}
+.studio .l4-power .pw-card{margin:0!important;padding:16px 18px!important;list-style:none!important;border:2px solid #9cc7ff;border-radius:10px;background:#10151f}
+.studio .l4-power .pw-card::before{content:none!important}
+.pw-card[hidden]{display:none}
+.pw-js .pw-card{min-height:150px;animation:pw-in .25s ease-out}
+@keyframes pw-in{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+.studio .l4-power .pw-no{margin:0 0 6px!important;font:700 11px/1.4 Consolas,monospace;letter-spacing:.14em;color:#9cc7ff!important}
+.studio .l4-power .pw-title{margin:0 0 6px!important;font:700 21px/1.25 system-ui,'Segoe UI',Arial,sans-serif;color:#fff!important}
+.studio .l4-power .pw-txt{margin:0!important;font-size:17px;line-height:1.5;color:#d6dbe1!important;max-width:60ch}
+.studio .l4-power .pw-txt a{color:#ffd23f!important}
+.l4-power .c3w-shot{display:inline-block;max-width:100%;margin:12px 12px 0 0;vertical-align:top}
+.l4-power .c3w-shot img{display:block;max-width:100%;height:auto;max-height:260px;border:1px solid rgba(255,255,255,.18);border-radius:6px}
+.pw-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.pw-nav[hidden]{display:none}
+.studio .l4-power .pw-nav button{min-height:44px;margin:0;padding:8px 16px;border:2px solid #9cc7ff;border-radius:6px;background:transparent;color:#9cc7ff;font:700 15px/1 system-ui,sans-serif;cursor:pointer;box-shadow:none}
+.studio .l4-power .pw-nav button.primary{background:#9cc7ff;color:#0b0d14}
+.studio .l4-power .pw-count{margin:0!important;font:12px/1.4 Consolas,monospace;letter-spacing:.06em;color:#b9c2cc!important;text-align:center}
+@media (max-width:560px){.l4-power{padding:16px 12px}.studio .l4-power .pw-card{padding:14px!important}}
+@media (prefers-reduced-motion:reduce){.pw-js .pw-card{animation:none}}

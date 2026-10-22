@@ -81,3 +81,38 @@
   paint();
   if (done.size) say(done.size === IDS.length ? 'Map complete. Tap your place, use the doors.' : 'Tap your place to play what you have built.');
 })();
+
+// Power-ups: two decks of tip cards, one card at a time. Seen cards count as collected.
+(() => {
+  const box = document.querySelector('[data-l4-power]');
+  if (!box) return;
+  const KEY = 'dik105-l4-power';
+  const cards = [...box.querySelectorAll('.pw-card')];
+  cards.forEach((c, i) => { c.dataset.pw = i; });
+  let got = new Set();
+  try { got = new Set(JSON.parse(localStorage.getItem(KEY)) || []); } catch {}
+  let deck = 'c3', at = 0;
+  const inDeck = () => cards.filter(c => c.dataset.deck === deck);
+  box.classList.add('pw-js');
+  box.querySelector('.pw-decks').hidden = false;
+  box.querySelector('.pw-nav').hidden = false;
+  function show() {
+    const list = inDeck();
+    at = (at + list.length) % list.length;
+    cards.forEach(c => { c.hidden = c !== list[at]; });
+    got.add(list[at].dataset.pw);
+    try { localStorage.setItem(KEY, JSON.stringify([...got])); } catch {}
+    const n = list.filter(c => got.has(c.dataset.pw)).length;
+    box.querySelector('.pw-count').textContent = n === list.length ? `${list.length} of ${list.length} collected ✓` : `${n} of ${list.length} collected`;
+    box.querySelectorAll('[data-pw-deck]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pwDeck === deck)));
+  }
+  box.querySelectorAll('[data-pw-deck]').forEach(b => b.addEventListener('click', () => { deck = b.dataset.pwDeck; at = 0; show(); }));
+  box.querySelector('[data-pw-prev]').addEventListener('click', () => { at--; show(); });
+  box.querySelector('[data-pw-next]').addEventListener('click', () => {
+    const before = got.size;
+    at++;
+    show();
+    if (got.size > before) { try { window.labAudio?.play('star'); } catch {} }
+  });
+  show();
+})();

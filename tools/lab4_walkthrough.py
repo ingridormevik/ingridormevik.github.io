@@ -74,7 +74,8 @@ P1 = [
    ('Tap twice more.', shot(L4 + 'd14-pv-three.webp', 'Preview: You know this place now.', 'Tap 3.'))],
   '1, 2, then the message.',
   stuck('<b>Number stuck?</b> Set text must be on the same row as Add 1.',
-        '<b>No message?</b> Use ≥ 3, not = 3.'),
+        '<b>No message?</b> Use ≥ 3, not = 3.',
+        '<b>Not sure what visits is?</b> ▶ menu › <b>Debug layout</b> shows it live under Global variables.'),
   'Part 2: a second room'),
 ]
 
@@ -159,6 +160,48 @@ HUD = (
  '</div><p class="hud-msg" role="status">Finish a scene to build your map here.</p></div>')
 
 
+# Power-up cards: one tip each. Construct cards are checked in the real editor (r506.3).
+POWER = [
+ ('c3', 'See your variable live', '▶ menu › <b>Debug layout</b>. Tap your place: <b>Global variables › visits</b> counts up.',
+  shot(L4 + 't02-debug-menu.webp', 'The Preview menu with Debug layout highlighted.') + shot(L4 + 't01-debug-visits.webp', 'The debugger Inspector with Global variables: visits.')),
+ ('c3', 'Double-click = Add event', 'Double-click empty space in the event sheet. The Add condition dialog opens.',
+  shot(L4 + 't03-dbl-add.webp', 'Add condition dialog opened by a double-click in the event sheet.')),
+ ('c3', 'Type, don\'t scroll', 'Every dialog has a Search box. Type two or three letters: <b>add</b>, <b>comp</b>, <b>lay</b>.', ''),
+ ('c3', 'Copy a whole event', 'Click an event row, <b>Ctrl + C</b>, <b>Ctrl + V</b>. Then change one thing. Mac: Cmd.', ''),
+ ('c3', 'Watch the event counter', 'Guests get 25 events. Construct shows how many are left. Lab 4 uses 5.', ''),
+ ('c3', 'Text cut off?', 'The Text box is too small. Drag a corner handle wider.', ''),
+ ('c3', 'Save every 20 minutes', 'Menu › Project › Save as › <b>Download a copy</b>. Name it <b>yourname-lab4.c3p</b>.', ''),
+ ('c3', 'Construct wants you to rest', 'After two hours it tells you to take a break. Listen to it.', ''),
+ ('task', 'Your variable, your story', 'What should your place remember? <b>keysFound</b>, <b>roomsSeen</b>, <b>trust</b>, or <b>choice</b> (1 = left, 2 = right).', ''),
+ ('task', 'Room 2 can be anything', 'Not only another map: a memory, a closer look, a locked door, an ending.', ''),
+ ('task', 'Small and working', 'One room, one variable, one rule that works beats a big world that does not.', ''),
+ ('task', 'Your own project counts', 'Not using the map? Add the same three things: a variable, a rule that waits for it, a second layout.', ''),
+ ('task', 'A screenshot that shows it', 'Take it in Preview, at the moment something changes. Add one of the event sheet if you like.', ''),
+ ('task', 'The tester rule', 'Say nothing. Watch their hands. Write down one thing you did not expect.', ''),
+ ('task', 'One sentence', '<i>The visitor ___. It remembers ___. It is closest to ___ (genre).</i> See the <a href="academic-library.html#genre-explorer">Genre explorer</a>.', ''),
+]
+
+
+def power():
+    n = {d: sum(1 for p in POWER if p[0] == d) for d in ('c3', 'task')}
+    seen = {'c3': 0, 'task': 0}
+    cards = ''
+    for d, t, txt, fig in POWER:
+        seen[d] += 1
+        lab = 'CONSTRUCT' if d == 'c3' else 'YOUR TASK'
+        cards += (f'<li class="pw-card" data-deck="{d}"><p class="pw-no">{lab} · {seen[d]}/{n[d]}</p>'
+                  f'<p class="pw-title">{t}</p><p class="pw-txt">{txt}</p>{fig}</li>')
+    return (
+     '<section class="l4-power" id="l4-power" aria-labelledby="l4-power-t" data-l4-power="">'
+     '<p class="pw-kicker">POWER-UPS</p><h4 id="l4-power-t">Pro tips. Collect them all.</h4>'
+     f'<div class="pw-decks" hidden=""><button type="button" data-pw-deck="c3" aria-pressed="true">Construct · {n["c3"]}</button>'
+     f'<button type="button" data-pw-deck="task" aria-pressed="false">Your task · {n["task"]}</button></div>'
+     f'<ol class="pw-cards">{cards}</ol>'
+     '<div class="pw-nav" hidden=""><button type="button" data-pw-prev="" aria-label="Previous card">←</button>'
+     '<p class="pw-count" aria-live="polite"></p><button type="button" class="primary" data-pw-next="">Next card →</button></div>'
+     '</section>')
+
+
 CHECK = [
  ('file', 'Opens', 'My .c3p opens. Saved as yourname-lab4.c3p.'),
  ('rule', 'Responds', 'A condition › an action.'),
@@ -230,7 +273,7 @@ def build(root):
      '<nav class="c3w-tabs" aria-label="Lab 4 scenes">'
      f'<p class="c3w-tabs-label">Part 1 · Memory · 22 min</p><ol>{tabs(P1)}</ol>'
      f'<p class="c3w-tabs-label">Part 2 · Rooms · 22 min</p><ol>{tabs(P2)}</ol></nav>'
-     f'<div class="c3w-stage">{body}</div>{controls}</div>' + checklist() + '<!-- /l4w -->')
+     f'<div class="c3w-stage">{body}</div>{controls}</div>' + power() + checklist() + '<!-- /l4w -->')
 
     anchor = '<!-- l4-side -->'
     assert s.count(anchor) == 1
@@ -239,8 +282,8 @@ def build(root):
     # Step map and the bridge from Lab 3.
     s = re.sub(r'(<nav aria-label="Experiment sections" class="step-map"><p class="sm-label">ON THIS STEP</p><ol>)'
                r'<li><a href="#lab-4-walk">.*?</ol>(?=</nav><aside class="route-card route-from">)',
-               r'\1<li><a href="#lab-4-walk">01 Build: 12 scenes</a></li><li><a href="#l4-ready">02 Final gate</a></li>'
-               r'<li><a href="#lab-4-sec-1">03 Side quests</a></li><li><a href="#lab-4-sec-3">04 Guides</a></li></ol>', s, flags=re.S)
+               r'\1<li><a href="#lab-4-walk">01 Build: 12 scenes</a></li><li><a href="#l4-power">02 Power-ups</a></li><li><a href="#l4-ready">03 Final gate</a></li>'
+               r'<li><a href="#lab-4-sec-1">04 Side quests</a></li><li><a href="#lab-4-sec-3">05 Guides</a></li></ol>', s, flags=re.S)
     s = s.replace('<h4>Finish your map first, if you need to.</h4><p>Map finished and posted under Obligatory Task 4? Start the Gate Engine below. It uses the same condition and action you built last week.</p>',
                   '<h4>Bring your Lab 3 map.</h4><p>No map yet? Play Lab 3 first, then come back.</p>')
 
@@ -267,13 +310,23 @@ def build(root):
     L = L[:oa] + '<ol class="agenda">' + ''.join(items) + '</ol>' + L[ob:]
     s = s[:a] + L + s[b:]
 
-    for asset in ['lab4-ready.js?v=1', 'lab4-hud.js?v=1']:
+    # Static morning clocks (08:15 start) for rows that only had elapsed minutes; the page script still adjusts them.
+    def clocks(m):
+        lab = m.group(0); t = 8 * 60 + 15
+        def row(r):
+            nonlocal t
+            mins = int(r.group(1)); a, t = t, t + mins
+            return f'{r.group(0)[:-len("</span>")]}{a // 60:02d}:{a % 60:02d}-{t // 60:02d}:{t % 60:02d}</span>'
+        return re.sub(r'data-minutes="(\d+)"><div class="time"><span class="clock"></span>', row, lab)
+    s = re.sub(r'<article class="lab"[^>]*id="lab-[34]".*?</article>', clocks, s, flags=re.S)
+
+    for asset in ['lab4-ready.js?v=1', 'lab4-hud.js?v=2']:
         if asset.split('?')[0] not in s:
             s = s.replace('<script defer="" src="c3-play.js', f'<script defer="" src="{asset}"></script><script defer="" src="c3-play.js', 1)
     s = re.sub(r'lab4-ready\.js\?v=\d+', 'lab4-ready.js?v=2', s)
     s = re.sub(r'c3-walk\.js\?v=\d+', 'c3-walk.js?v=5', s)
     s = re.sub(r'c3-play\.js\?v=\d+', 'c3-play.js?v=6', s)
-    s = re.sub(r'c3-walk\.css\?v=\d+', 'c3-walk.css?v=23', s)
+    s = re.sub(r'c3-walk\.css\?v=\d+', 'c3-walk.css?v=24', s)
     path.write_text(s, encoding='utf-8', newline='\n')
 
 
