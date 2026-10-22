@@ -126,7 +126,7 @@ P2 = [
 
 
 # Project types the student can pick in the host card. 'any' is shown until they pick one (and without JS).
-TYPES = [('story', 'Story'), ('game', 'Game'), ('place', 'Place or tour'), ('poem', 'Poem or art'), ('any', 'Not sure yet')]
+TYPES = [('story', 'Story'), ('game', 'Game'), ('place', 'Place or tour'), ('poem', 'Poem or art'), ('sound', 'Sound piece'), ('any', 'Not sure yet')]
 
 # "Your project": the same power, used in the student's own work. One line per project type.
 YOURS = {
@@ -136,43 +136,50 @@ YOURS = {
   'story': '<b>trust</b>: how much a character trusts the reader. Or <b>choice</b>: 1 = left, 2 = right.',
   'game': '<b>score</b>, <b>lives</b> or <b>keysFound</b>.',
   'place': '<b>roomsSeen</b> or <b>objectsFound</b> in your tour.',
-  'poem': '<b>linesRead</b>: the poem changes the more it is read.'},
+  'poem': '<b>linesRead</b>: the poem changes the more it is read.',
+  'sound': '<b>layers</b>: how many sounds are playing. Or <b>calm</b>, which grows with stillness.'},
  'l4-add': {
   'any': 'Every tap, choice or step can add something.',
   'story': 'A kind answer adds 1 to <b>trust</b>.',
   'game': 'A coin adds 1 to <b>score</b>. A hit adds -1 to <b>lives</b>.',
   'place': 'Each new object tapped adds 1 to <b>objectsFound</b>.',
-  'poem': 'Each tap shows a line and adds 1 to <b>linesRead</b>.'},
+  'poem': 'Each tap shows a line and adds 1 to <b>linesRead</b>.',
+  'sound': 'Each tap adds a sound: 1 more in <b>layers</b>.'},
  'l4-show': {
   'any': 'Should the visitor see the number? Sometimes a hidden memory is stronger.',
   'story': 'Show words, not numbers: a mood, a diary line.',
   'game': 'A classic HUD: <b>Score: 3</b>, <b>Lives: 2</b>.',
   'place': 'Show progress: <b>3 of 7 found</b>.',
-  'poem': 'Or show nothing. Let the reader feel the change.'},
+  'poem': 'Or show nothing. Let the reader feel the change.',
+  'sound': 'Show it as sound, not a number: louder, fuller, stranger.'},
  'l4-if': {
   'any': 'What happens when the number reaches something? That is your rule.',
   'story': '<b>trust ≥ 3</b>: the character tells the secret.',
   'game': '<b>keysFound ≥ 3</b>: the gate opens. <b>lives ≤ 0</b>: game over.',
   'place': '<b>objectsFound ≥ 7</b>: the last room unlocks.',
-  'poem': '<b>linesRead ≥ 5</b>: the last line rewrites the first.'},
+  'poem': '<b>linesRead ≥ 5</b>: the last line rewrites the first.',
+  'sound': '<b>layers ≥ 3</b>: the full chord plays.'},
  'l4-arrow': {
   'any': 'A layout can be a chapter, a level, a page or an ending.',
   'story': 'Room 2 is the next chapter.',
   'game': 'Room 2 is level 2.',
   'place': 'Room 2 is the next hall, floor or street.',
-  'poem': 'Room 2 is the next page or stanza.'},
+  'poem': 'Room 2 is the next page or stanza.',
+  'sound': 'Room 2 is a new soundscape.'},
  'l4-back': {
   'any': 'Is the way back open, locked, or changed? Leaving it out is a choice too.',
   'story': 'Can the reader go back, or is the choice final?',
   'game': 'A way back to a hub, a shop or a map.',
   'place': 'Visitors expect a way back to the main hall.',
-  'poem': 'Return to page 1, and find it changed.'},
+  'poem': 'Return to page 1, and find it changed.',
+  'sound': 'Come back, and room 1 sounds different.'},
  'l4-test2': {
   'any': 'Ask: what does your world remember when you leave a room?',
   'story': 'Does chapter 2 remember chapter 1?',
   'game': 'Does the score survive the level change?',
   'place': 'Does the tour remember what was already seen?',
-  'poem': 'Does the poem remember its reader?'},
+  'poem': 'Does the poem remember its reader?',
+  'sound': 'Does the sound remember what was played before?'},
  'l4-save': {'any': 'Working in your own project? Save that one too, with today\'s powers in it.'},
 }
 
@@ -345,6 +352,7 @@ def host():
      '<div class="l4-host-copy"><p class="l4-host-k">TURING’S MAP ROOM · LAB 4</p>'
      '<h3 id="l4-host-t">Make a world<br/>that remembers.</h3>'
      '<p>Four new powers: <b>memory</b>, <b>a rule that waits</b>, <b>doors</b> and <b>a way back</b>. Learn them on Alinta’s map, then use them in your own project.</p>'
+     '<p class="l4-goal"><b>Your final work:</b> an interactive piece about <b>speculative digital futures</b>, on itch.io by week 50. <a href="final-assessment.html">Final quest →</a></p>'
      '<div class="l4-pick" data-l4-pick="" hidden=""><p class="l4-pick-q">What are you building?</p><div class="l4-pick-row">' + picks + '</div>'
      '<label class="l4-pname">My project is called <input type="text" maxlength="40" data-l4-pname="" placeholder="working title"/></label></div>'
      '<button type="button" class="l4-ask" data-l4-ask="" hidden="">Ask Dr. Turing</button>'
@@ -357,13 +365,14 @@ PLAN = [
  ('var', 'It remembers', 'visits, trust, score, linesRead'),
  ('rule', 'When it reaches', 'when trust ≥ 3, the secret is told'),
  ('room', 'Room 2 is', 'the next chapter, level 2, an ending'),
+ ('future', 'Its future', 'a world where AI has taken all the fresh water'),
 ]
 
 
 def plan():
     rows = ''.join(f'<label><span>{t}</span><input type="text" maxlength="80" data-l4-plan="{k}" placeholder="{escape(p)}"/></label>' for k, t, p in PLAN)
     return (
-     '<div class="l4-plan" id="l4-plan"><p class="l4-plan-k">YOUR PROJECT · 3 LINES</p>'
+     '<div class="l4-plan" id="l4-plan"><p class="l4-plan-k">YOUR PROJECT · 4 LINES</p>'
      '<p class="l4-plan-h">Today’s powers in <b data-l4-pshow="">your project</b></p>'
      f'<div class="l4-plan-rows">{rows}</div>'
      '<p class="l4-plan-foot"><button type="button" data-l4-copy="" hidden="">Copy for my post</button>'
@@ -382,6 +391,7 @@ POWER = [
  ('c3', 'Text cut off?', 'The Text box is too small. Drag a corner handle wider.', ''),
  ('c3', 'Save every 20 minutes', 'Menu › Project › Save as › <b>Download a copy</b>. Name it <b>yourname-lab4.c3p</b>.', ''),
  ('c3', 'Construct wants you to rest', 'After two hours it tells you to take a break. Listen to it.', ''),
+ ('task', 'Your final work starts here', 'An interactive piece about <b>speculative digital futures</b>, on itch.io by week 50. Today\'s powers can build it. <a href="final-assessment.html">Final quest →</a>', ''),
  ('task', 'Your variable, your story', 'What should your place remember? <b>keysFound</b>, <b>roomsSeen</b>, <b>trust</b>, or <b>choice</b> (1 = left, 2 = right).', ''),
  ('task', 'Room 2 can be anything', 'Not only another map: a memory, a closer look, a locked door, an ending.', ''),
  ('task', 'Small and working', 'One room, one variable, one rule that works beats a big world that does not.', ''),
@@ -537,7 +547,7 @@ def build(root):
     s = re.sub(r'c3-walk\.js\?v=\d+', 'c3-walk.js?v=5', s)
     s = re.sub(r'c3-play\.js\?v=\d+', 'c3-play.js?v=6', s)
     s = re.sub(r'c3-walk\.css\?v=\d+', 'c3-walk.css?v=25', s)
-    s = re.sub(r'lab4-hud\.js\?v=\d+', 'lab4-hud.js?v=3', s)
+    s = re.sub(r'lab4-hud\.js\?v=\d+', 'lab4-hud.js?v=4', s)
     path.write_text(s, encoding='utf-8', newline='\n')
 
 

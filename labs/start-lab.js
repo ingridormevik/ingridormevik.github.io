@@ -3,7 +3,8 @@
   const map = document.querySelector('.sl-map');
   if (!map) return;
   const levels = [...map.querySelectorAll('a.lv')];
-  const RANKS = ['Lab intern', 'Junior Lab Technician', 'Interaction Engineer', 'Game Mechanic', 'Room Builder', 'Lab Director'];
+  const RANKS = ['Lab intern', 'Junior Lab Technician', 'Interaction Engineer', 'Game Mechanic', 'Room Builder', 'Test Pilot', 'Future Maker', 'Critic', 'Lab Director'];
+  const STARS = levels.length * 3;
   const WHAT = ['Arrival note ready', 'Experiment done', 'Lab complete'];
   const labFor = a => document.getElementById(a.getAttribute('href').slice(1));
   const player = document.createElement('span');
@@ -62,15 +63,15 @@
       a.title = count === 3 ? 'Lab complete. Revisit your experiment.' : `${count} of 3 stars earned`;
       last.set(a, count);
     });
-    map.closest('.start-lab').querySelector('[data-rank-name]').textContent = RANKS[complete];
-    map.closest('.start-lab').querySelector('[data-xp-fill]').style.width = `${total / 15 * 100}%`;
-    map.closest('.start-lab').querySelector('[data-xp-text]').textContent = `${total} / 15 stars
-${complete} / 5 labs complete`;
+    map.closest('.start-lab').querySelector('[data-rank-name]').textContent = RANKS[Math.min(complete, RANKS.length - 1)];
+    map.closest('.start-lab').querySelector('[data-xp-fill]').style.width = `${total / STARS * 100}%`;
+    map.closest('.start-lab').querySelector('[data-xp-text]').textContent = `${total} / ${STARS} stars
+${complete} / ${levels.length} labs complete`;
     const go = document.querySelector('[data-go]');
     currentLevel = next?.a || levels.at(-1);
     levels.forEach(a => a.classList.toggle('is-next', a === currentLevel));
     if (next) { go.href = `${next.a.getAttribute('href')}-${['arrival','workbench','finish'][next.count]}`; go.textContent = `▶ ${next.count ? 'Continue' : 'Start'} experiment 0${next.i + 1}`; }
-    else { go.href = '#lab-5-finish'; go.textContent = '★ All 15 stars. Lab Director.'; }
+    else { go.href = 'final-assessment.html'; go.textContent = `★ All ${STARS} stars. On to the Final quest.`; }
     movePlayer();
   }
 

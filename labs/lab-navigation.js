@@ -98,5 +98,5 @@
   if(labs.length){setInterval(()=>labs.forEach(lab=>render(lab)),30000);document.addEventListener('visibilitychange',()=>labs.forEach(lab=>render(lab)));}
   document.body.classList.add('journey-enabled');
   const origin=new URLSearchParams(location.search).get('lab');
-  if(/^[1-5]$/.test(origin||''))document.querySelectorAll('.guide-return').forEach(a=>{a.href=`lab-programme.html#lab-${origin}-workbench`;a.textContent=`← Back to Lab ${origin}: experiment`;});
+  if(/^[1-8]$/.test(origin||''))document.querySelectorAll('.guide-return').forEach(a=>{a.href=`lab-programme.html#lab-${origin}-workbench`;a.textContent=`← Back to Lab ${origin}: experiment`;});
 })();

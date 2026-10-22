@@ -78,7 +78,7 @@
 
   // A link straight to a side quest opens its tile.
   function openTarget() {
-    const t = location.hash && document.getElementById(location.hash.slice(1));
+    const t = location.hash ? document.getElementById(location.hash.slice(1)) : null;
     const tile = t?.closest('details.sq');
     if (tile) { tile.open = true; t.scrollIntoView({block: 'start'}); }
   }
@@ -134,7 +134,7 @@
   const pick = document.querySelector('[data-l4-pick]');
   if (!pick) return;
   const KEY = 'dik105-l4-project';
-  const LABEL = {story: 'a story', game: 'a game', place: 'a place or tour', poem: 'a poem or artwork', any: 'something new'};
+  const LABEL = {story: 'a story', game: 'a game', place: 'a place or tour', poem: 'a poem or artwork', sound: 'a sound piece', any: 'something new'};
   const TIPS = {
     any: ['Not sure yet? Pick the power you liked most today. Your project can grow from that one rule.',
       'A good first question: what should your work remember about the person using it?'],
@@ -146,8 +146,11 @@
       'Unlock the last room only when every object has been found.'],
     poem: ['A poem that changes the more it is read: linesRead.',
       'Return to the first page and let it say something new.'],
+    sound: ['A variable can be a volume, a layer count or a mood.',
+      'Let the sound remember the listener: what played before changes what plays next.'],
   };
-  const COMMON = ['Small and working beats big and broken. One variable, one rule, two rooms.',
+  const COMMON = ['Your final work is about speculative digital futures. Ask: what will the future remember?',
+    'Small and working beats big and broken. One variable, one rule, two rooms.',
     'Read your sheet like a sentence: when this happens, if this is true, do that.',
     'Test with someone else. Say nothing, watch their hands.'];
   let st = {};
@@ -203,7 +206,7 @@
   copy.addEventListener('click', async () => {
     const out = document.querySelector('[data-l4-copied]');
     const v = k => (st[k] || '').trim() || '...';
-    const text = `${(st.name || '').trim() || 'My project'} (${LABEL[st.type || 'any']}). It remembers: ${v('var')}. When it reaches: ${v('rule')}. Room 2 is: ${v('room')}.`;
+    const text = `${(st.name || '').trim() || 'My project'} (${LABEL[st.type || 'any']}). It remembers: ${v('var')}. When it reaches: ${v('rule')}. Room 2 is: ${v('room')}. Its future: ${v('future')}.`;
     try { await navigator.clipboard.writeText(text); out.textContent = 'Copied. Paste it under your screenshot.'; }
     catch { out.textContent = text; }
   });

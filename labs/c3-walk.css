@@ -590,3 +590,5 @@ button.hud-room{cursor:default}
 @media (prefers-reduced-motion:reduce){.l4-host *,.l4-concept *,.hud-talk *,.l4-host-art,.l4-host-msg{animation:none!important}.l4h-n3,.l4c-d3,.l4c-result,.l4c-msg,.l4c-repaint{opacity:1}.l4h-n0,.l4c-d0,.l4c-left,.l4c-right,.l4c-amp{opacity:0}.l4c-door-l{transform:translateX(-26px)}.l4c-door-r{transform:translateX(26px)}.l4c-go{transform:translateX(125px)}.l4c-return{transform:translateX(-128px)}}
 .access-no-motion :is(.l4-host,.l4-concept,.hud-talk) *,.access-calm :is(.l4-host,.l4-concept,.hud-talk) *{animation:none!important}
 .studio .c3w .l4-hud button.hud-room:hover{background:#151a28}.studio .c3w .l4-hud.is-playable button.hud-room.is-here:hover{background:#1b2133}
+.studio .l4-host .l4-goal{margin:0 0 14px!important;padding:10px 12px;border:2px dashed #e9ca85;font-size:16px;line-height:1.5;max-width:46ch}
+.studio .l4-host .l4-goal a{color:#e9ca85!important;font-weight:800}

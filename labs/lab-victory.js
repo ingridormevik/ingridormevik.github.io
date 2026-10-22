@@ -1,12 +1,15 @@
 (() => {
   // Full-screen "experiment complete" scene, shown when a student marks a lab quest complete.
-  // Test without completing a lab: lab-programme.html?victory=1 (1 to 5). Not linked on the site.
+  // Test without completing a lab: lab-programme.html?victory=1 (1 to 8). Not linked on the site.
   const LABS = {
     1: {rank: 'Junior Lab Technician', title: 'A place became a webpage', skills: ['Built a page from HTML structure', 'Styled it with CSS selectors, properties and values', 'Read and chose hex colours on purpose', 'Checked contrast so everyone can read it', 'Explained what a colour says'], legend: {who: 'Ada Lovelace, 1843', quote: 'The Analytical Engine weaves algebraical patterns just as the Jacquard-loom weaves flowers and leaves.'}},
     2: {rank: 'Interaction Engineer', title: 'Your first click changed the page', skills: ['Connected a JavaScript file to HTML', 'Found the paragraph and button by id', 'Named an action and connected it to a click', 'Tested the first and second clicks', 'Explained a response in your own project'], legend: {who: 'Alan Turing, 1950', quote: 'I propose to consider the question, ‘Can machines think?’'}},
     3: {rank: 'Game Mechanic', title: 'Your campus became a story', skills: ['Composed three text boxes on a map', 'Connected places with arrows or paths', 'Made a tap reveal hidden text', 'Tested the right layout', 'Saved the editable .c3p'], legend: {who: 'Charles Babbage, 1864', quote: 'On two occasions I have been asked, ‘Pray, Mr. Babbage, if you put into the machine wrong figures, will the right answers come out?’'}},
     4: {rank: 'Room Builder', title: 'Your rooms remember a choice', skills: ['Continued your Construct project', 'Connected a condition to an action', 'Repaired room navigation', 'Tested a route out and back', 'Saved the .c3p'], legend: {who: 'Ada Lovelace, 1841', quote: 'Imagination is the Discovering Faculty, pre-eminently.'}},
-    5: {rank: 'Lab Director', title: 'Someone else understood your work', skills: ['Watched someone use your work without help', 'Turned an observation into a revision', 'Explained your decisions in your own words', 'Retested after changing', 'Finished five experiments'], legend: {who: 'Alan Turing, 1950', quote: 'We can only see a short distance ahead, but we can see plenty there that needs to be done.'}}
+    5: {rank: 'Test Pilot', title: 'Someone else understood your work', skills: ['Watched someone use your work without help', 'Turned an observation into a revision', 'Explained your decisions in your own words', 'Retested after changing', 'Finished five experiments'], legend: {who: 'Alan Turing, 1950', quote: 'We can only see a short distance ahead, but we can see plenty there that needs to be done.'}},
+    6: {rank: 'Future Maker', title: 'You chose a future to build', skills: ['Chose a speculative digital future', 'Picked the one interaction that carries it', 'Cut the scope to something that works', 'Built a first room', 'Showed it to a neighbour'], legend: {who: 'Ada Lovelace, 1843', quote: 'The Analytical Engine might act upon other things besides number.'}},
+    7: {rank: 'Critic', title: 'Feedback made it sharper', skills: ['Named what you want someone to feel', 'Asked for feedback in the right order', 'Changed the thing that mattered most', 'Turned feedback into process notes', 'Started the written text'], legend: {who: 'Alan Turing, 1950', quote: 'We can only see a short distance ahead, but we can see plenty there that needs to be done.'}},
+    8: {rank: 'Lab Director', title: 'Your work has a link', skills: ['Exported the work for the web', 'Published it where examiners can open it', 'Tested the link as a stranger', 'Recorded a video walkthrough', 'Finished eight experiments'], legend: {who: 'Ada Lovelace, 1841', quote: 'Imagination is the Discovering Faculty, pre-eminently.'}}
   };
   const AI_LINES = [
     'ANALYSIS COMPLETE. The code followed instructions. The human made the decisions.',
@@ -26,7 +29,7 @@
   }
   function completedCount() {
     let count = 0;
-    for (let n = 1; n <= 5; n++) { try { if ((localStorage.getItem(`dik105-complete-lab-${n}-${group()}`)??sessionStorage.getItem(`dik105-complete-lab-${n}-${group()}`)) === 'yes') count++; } catch {} }
+    for (let n = 1; n <= 8; n++) { try { if ((localStorage.getItem(`dik105-complete-lab-${n}-${group()}`)??sessionStorage.getItem(`dik105-complete-lab-${n}-${group()}`)) === 'yes') count++; } catch {} }
     return count;
   }
 
@@ -67,7 +70,7 @@
     root.className = 'victory'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-labelledby', 'victory-title');
     if (pass.colour) root.style.setProperty('--v-pass', pass.colour);
     const skills = data.skills.map((s, i) => `<li style="--i:${i}"><span aria-hidden="true">✓</span>${s}</li>`).join('');
-    const meter = [1, 2, 3, 4, 5].map(i => `<span class="${i === n || i <= done ? 'is-on' : ''}${i === n ? ' is-now' : ''}">0${i}</span>`).join('');
+    const meter = [1, 2, 3, 4, 5, 6, 7, 8].map(i => `<span class="${i === n || i <= done ? 'is-on' : ''}${i === n ? ' is-now' : ''}">0${i}</span>`).join('');
     root.innerHTML = `<canvas class="victory-burst" aria-hidden="true"></canvas>
       <div class="victory-card">
         <div class="victory-bar"><span>DIKULT105 / THE LAB</span><span>${practice ? 'GUIDE CHECKPOINT' : `EXPERIMENT 0${n}`} / ${data.title.toUpperCase()}</span></div>
@@ -75,7 +78,7 @@
           <div class="victory-machine victory-engine" aria-hidden="true"><svg viewBox="0 0 330 250"><g stroke="#12151f" stroke-width="6" stroke-linejoin="round"><rect x="18" y="26" width="294" height="196" rx="8" fill="#8aa0b8"/><rect x="38" y="43" width="254" height="53" fill="#12151f"/><text x="165" y="78" text-anchor="middle" font-family="monospace" font-size="22" fill="#c6f15b" stroke="none">BUILD / TEST / SAVE</text><g class="victory-gear"><circle cx="95" cy="157" r="45" fill="#e9ca85" stroke-dasharray="12 6" stroke-width="12"/><circle cx="95" cy="157" r="17" fill="#12151f"/></g><g class="victory-gear reverse"><circle cx="174" cy="157" r="35" fill="#f29bcd" stroke-dasharray="10 6" stroke-width="10"/><circle cx="174" cy="157" r="13" fill="#12151f"/></g><path class="victory-output" d="M246 123v94m-20-69h43m-43 22h43m-43 22h43" stroke="#edf4dd" stroke-width="10"/><path d="m219 46 16 17 30-31" stroke="#c6f15b" stroke-width="9" fill="none"/></g></svg></div>
           <div class="victory-copy">
             <p class="victory-stamp">${practice === 'briefing' ? 'BUILD MODE READY' : 'MISSION COMPLETE'}</p>
-            <h2 id="victory-title">${practice === 'briefing' ? 'Your next move:<br>make it real.' : n === 5 && !practice ? 'Five labs.<br>You built it.' : 'Experiment<br>complete.'}</h2>
+            <h2 id="victory-title">${practice === 'briefing' ? 'Your next move:<br>make it real.' : n === 8 && !practice ? 'Eight labs.<br>You built it.' : 'Experiment<br>complete.'}</h2>
             <p class="victory-name">${pass.name ? `${pass.name.replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[ch])}, you` : 'You'}${practice === 'briefing' ? ' are ready to build one interaction.' : ` earned the role <strong>${data.rank}</strong>.`}</p>
           </div>
         </div>
@@ -118,6 +121,6 @@
     if(lab?.dataset.questComplete === 'true')show(Number(lab.id.split('-')[1]));
   });
   const preview = Number(new URLSearchParams(location.search).get('victory'));
-  if (preview >= 1 && preview <= 5) addEventListener('load', () => show(preview));
+  if (preview >= 1 && preview <= 8) addEventListener('load', () => show(preview));
   window.labVictory = show;
 })();
