@@ -460,3 +460,133 @@ button.hud-room{cursor:default}
 .studio .l4-power .pw-count{margin:0!important;font:12px/1.4 Consolas,monospace;letter-spacing:.06em;color:#b9c2cc!important;text-align:center}
 @media (max-width:560px){.l4-power{padding:16px 12px}.studio .l4-power .pw-card{padding:14px!important}}
 @media (prefers-reduced-motion:reduce){.pw-js .pw-card{animation:none}}
+
+/* Lab 4: Turing's map room, the opening scene (same drawing style as Turing's laboratory) */
+.l4-host{display:grid;grid-template-columns:1fr 1.15fr;gap:24px;margin:20px 0 26px;padding:clamp(18px,3.5vw,34px);background:#12252b;border:5px solid #080e15;box-shadow:9px 9px 0 #080e15;color:#edf4dd;text-align:left}
+.studio .l4-host :is(p,h3,b,label,span){color:inherit}
+.studio .l4-host .l4-host-k{margin:0 0 8px!important;font:700 12px/1.4 Consolas,monospace;letter-spacing:.14em;color:#8cdec5!important}
+.studio .l4-host h3{margin:0 0 14px!important;font:900 clamp(30px,4.4vw,52px)/1.03 system-ui,'Segoe UI',Arial,sans-serif;letter-spacing:-.04em;text-transform:none;color:#edf4dd!important}
+.studio .l4-host .l4-host-copy>p{margin:0 0 14px!important;font-size:17px;line-height:1.55;max-width:46ch}
+.l4-host-art{min-width:0;align-self:center;animation:l4h-arrive .5s ease-out both}
+.l4h-scene{display:block;width:100%;height:auto;border:4px solid #080e15}
+@keyframes l4h-arrive{from{opacity:0;transform:translateY(10px)}}
+.l4h-mono{font:700 14px Consolas,monospace}
+.l4h-small{font-size:11px}
+.l4h-n{font:700 14px Consolas,monospace;fill:#ffd23f;opacity:0}
+.l4h-cnt{fill:#c6f15b}
+.l4h-n0{animation:l4h-n0 10s linear infinite}.l4h-n1{animation:l4h-n1 10s linear infinite}
+.l4h-n2{animation:l4h-n2 10s linear infinite}.l4h-n3{animation:l4h-n3 10s linear infinite}
+@keyframes l4h-n0{0%,7.9%{opacity:1}8%,100%{opacity:0}}
+@keyframes l4h-n1{0%,7.9%{opacity:0}8%,17.9%{opacity:1}18%,100%{opacity:0}}
+@keyframes l4h-n2{0%,17.9%{opacity:0}18%,27.9%{opacity:1}28%,100%{opacity:0}}
+@keyframes l4h-n3{0%,27.9%{opacity:0}28%,100%{opacity:1}}
+.l4h-visitor{animation:l4h-walk 10s ease-in-out infinite}
+@keyframes l4h-walk{0%,6%{transform:translate(0,0)}8%{transform:translate(0,-10px)}10%,16%{transform:translate(0,0)}18%{transform:translate(0,-10px)}20%,26%{transform:translate(0,0)}28%{transform:translate(0,-10px)}30%,38%{transform:translate(0,0)}46%{transform:translate(72px,-30px);opacity:1}47%{opacity:0}48%{transform:translate(138px,-30px);opacity:0}49%{opacity:1}56%,70%{transform:translate(176px,0)}76%{transform:translate(138px,-30px);opacity:1}77%{opacity:0}78%{transform:translate(72px,-30px);opacity:0}79%{opacity:1}86%,100%{transform:translate(0,0)}}
+.l4h-thought{opacity:0;transform-box:fill-box;transform-origin:left bottom;animation:l4h-thought 10s ease-out infinite}
+@keyframes l4h-thought{0%,27.9%{opacity:0;transform:scale(.5)}31%,44%{opacity:1;transform:scale(1)}47%,100%{opacity:0;transform:scale(1)}}
+.l4h-plus{font:700 15px Consolas,monospace;fill:#c6f15b;opacity:0;animation:l4h-plus 10s ease-out infinite}
+@keyframes l4h-plus{0%,6%,16%,26%{opacity:0;transform:translateY(0)}8%,18%,28%{opacity:1;transform:translateY(-4px)}12%,22%,32%,100%{opacity:0;transform:translateY(-18px)}}
+.l4h-still{opacity:0;animation:l4h-still 10s linear infinite}
+@keyframes l4h-still{0%,53%{opacity:0}56%,73%{opacity:1}76%,100%{opacity:0}}
+.l4h-arrow{transform-box:fill-box;transform-origin:center;animation:l4h-pulse 10s ease-in-out infinite}
+@keyframes l4h-pulse{0%,40%,50%,70%,80%,100%{transform:scale(1)}45%,75%{transform:scale(1.25)}}
+.l4h-blink{animation:l4h-blink 1.6s steps(2) infinite}.l4h-b2{animation-delay:.4s}.l4h-b3{animation-delay:.8s}
+@keyframes l4h-blink{50%{opacity:.25}}
+.l4h-point{transform-box:fill-box;transform-origin:100% 100%;animation:l4h-point 3s ease-in-out infinite}
+@keyframes l4h-point{50%{transform:rotate(-4deg)}}
+.l4h-head{transform-box:fill-box;transform-origin:center bottom;animation:l4h-bob 4s ease-in-out infinite}
+@keyframes l4h-bob{50%{transform:rotate(-3deg) translateY(-2px)}}
+.l4-pick[hidden],.l4-ask[hidden],.l4-plan button[hidden]{display:none}
+.studio .l4-host .l4-pick-q{margin:6px 0 8px!important;font:700 12px/1.4 Consolas,monospace!important;letter-spacing:.12em;text-transform:uppercase;color:#e9ca85!important}
+.l4-pick-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.studio .l4-host .l4-pick-row button,.studio .l4-host .l4-ask{min-height:44px;margin:0;padding:10px 14px;border:3px solid #080e15;border-radius:0;background:#edf4dd;color:#080e15!important;font:800 15px/1.2 system-ui,'Segoe UI',Arial,sans-serif;cursor:pointer;box-shadow:3px 3px 0 #080e15;transition:transform .12s}
+.studio .l4-host .l4-pick-row button:hover,.studio .l4-host .l4-ask:hover{transform:translate(-1px,-1px)}
+.studio .l4-host .l4-pick-row button[aria-pressed=true]{background:#ff5fd2;animation:l4-pop .35s ease-out}
+.studio .l4-host .l4-ask{background:#e9ca85;margin:4px 0 12px}
+.l4-pname{display:block;margin:0 0 12px;font-size:15px}
+.l4-pname input{display:block;width:100%;max-width:340px;box-sizing:border-box;margin-top:6px;padding:10px 12px;border:3px solid #080e15;border-radius:0;background:#edf4dd;color:#080e15;font:16px/1.3 system-ui,'Segoe UI',Arial,sans-serif}
+.studio .l4-host .l4-host-msg{margin:0!important;padding:12px;border-left:4px solid #8cdec5;background:#18353b;font:14px/1.6 Consolas,monospace!important;max-width:none}
+.l4-host-msg.is-new{animation:l4-msg .35s ease-out}
+@keyframes l4-msg{from{opacity:0;transform:translateY(6px)}}
+@media (max-width:850px){.l4-host{grid-template-columns:1fr}.l4-host-art{order:-1}}
+@media (max-width:560px){.l4-host{padding:14px;box-shadow:5px 5px 0 #080e15}}
+
+/* Lab 4: Dr. Turing speaks in the live map */
+.hud-talk{display:flex;align-items:center;gap:10px;margin-top:10px}
+.studio .c3w .hud-talk .hud-msg{margin:0!important}
+.hud-host{flex:none;width:44px;height:44px;border:2px solid #080e15;border-radius:50%;background:#2b1b6b}
+.hud-talk.is-talking .hud-host{animation:l4-nod .5s ease-out}
+@keyframes l4-nod{30%{transform:rotate(-8deg) translateY(-3px)}60%{transform:rotate(5deg)}}
+
+/* Lab 4: what each new power does, as a small loop */
+.l4-brief{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;margin:0 0 18px}
+.studio .c3w .l4-brief .l4-mission{margin:0!important;flex:0 1 46ch}
+.l4-concept{flex:0 0 auto;width:230px;margin:0;padding:8px 8px 6px;border:2px solid #080e15;background:#16124a;box-shadow:4px 4px 0 #080e15}
+.l4-concept svg{display:block;width:100%;height:auto}
+.studio .c3w .l4-concept figcaption{margin:4px 0 0;font:11px/1.35 Consolas,monospace;letter-spacing:.04em;color:#c6f15b;text-align:center}
+.l4c-box{fill:#1b2363;stroke:#ffd23f;stroke-width:2.5}
+.l4c-d{font:700 22px Consolas,monospace;fill:#ffd23f;text-anchor:middle}
+.l4c-tag{font:700 12px Consolas,monospace;fill:#4fd1c5;text-anchor:middle}
+.l4c-swing{transform-box:fill-box;transform-origin:center bottom;animation:l4c-swing 2.4s ease-in-out infinite}
+@keyframes l4c-swing{50%{transform:rotate(-6deg) translateY(-2px)}}
+.l4c-glint{fill:#fff;animation:l4h-blink 1.8s steps(2) infinite}
+.l4c-d0,.l4c-d1,.l4c-d2,.l4c-d3{opacity:0;animation:6s linear infinite}
+.l4c-d0{animation-name:l4c-q0}.l4c-d1{animation-name:l4c-q1}.l4c-d2{animation-name:l4c-q2}.l4c-d3{animation-name:l4c-q3}
+@keyframes l4c-q0{0%,24.9%{opacity:1}25%,100%{opacity:0}}
+@keyframes l4c-q1{0%,24.9%{opacity:0}25%,49.9%{opacity:1}50%,100%{opacity:0}}
+@keyframes l4c-q2{0%,49.9%{opacity:0}50%,74.9%{opacity:1}75%,100%{opacity:0}}
+@keyframes l4c-q3{0%,74.9%{opacity:0}75%,100%{opacity:1}}
+.l4c-plus{font:700 15px Consolas,monospace;fill:#c6f15b;text-anchor:middle;opacity:0;animation:l4c-drop 6s ease-in infinite}
+@keyframes l4c-drop{0%,14%,39%,64%{opacity:0;transform:translateY(-8px)}18%,43%,68%{opacity:1}24.9%,49.9%,74.9%{opacity:0;transform:translateY(16px)}100%{opacity:0}}
+.l4c-chip{fill:#0b0b1e;stroke:#ff7a59;stroke-width:2}
+.l4c-mono{font:700 13px Consolas,monospace;fill:#edf4dd;text-anchor:middle}
+.l4c-amp{font:900 22px Consolas,monospace;fill:#ff5fd2;text-anchor:middle;animation:l4c-fade 4s ease-in-out infinite}
+.l4c-left{animation:l4c-left 4s ease-in-out infinite}.l4c-right{animation:l4c-right 4s ease-in-out infinite}
+@keyframes l4c-left{0%,10%{transform:translateX(0);opacity:1}40%{transform:translateX(30px);opacity:1}50%,100%{transform:translateX(30px);opacity:0}}
+@keyframes l4c-right{0%,10%{transform:translateX(0);opacity:1}40%{transform:translateX(-30px);opacity:1}50%,100%{transform:translateX(-30px);opacity:0}}
+@keyframes l4c-fade{0%,30%{opacity:1}45%,100%{opacity:0}}
+.l4c-result{opacity:0;transform-box:fill-box;transform-origin:center;animation:l4c-result 4s ease-out infinite}
+@keyframes l4c-result{0%,45%{opacity:0;transform:scale(.9)}55%,92%{opacity:1;transform:scale(1)}100%{opacity:0}}
+.l4c-screen{fill:#06231f;stroke:#c6f15b;stroke-width:2.5}
+.l4c-big{font:700 18px Consolas,monospace;fill:#c6f15b;text-anchor:middle}
+.l4c-cmp{fill:#e9ca85}
+.l4c-gate-frame{fill:#0b0b1e;stroke:#ff7a59;stroke-width:2.5}
+.l4c-door{fill:#2d3a8c;stroke:#080e15;stroke-width:1.5;animation:6s ease-in-out infinite}
+.l4c-door-l{animation-name:l4c-door-l}.l4c-door-r{animation-name:l4c-door-r}
+@keyframes l4c-door-l{0%,75%{transform:translateX(0)}85%,95%{transform:translateX(-26px)}100%{transform:translateX(0)}}
+@keyframes l4c-door-r{0%,75%{transform:translateX(0)}85%,95%{transform:translateX(26px)}100%{transform:translateX(0)}}
+.l4c-msg{font:900 26px Consolas,monospace;fill:#ffd23f;text-anchor:middle;opacity:0;animation:l4c-msg 6s ease-out infinite}
+@keyframes l4c-msg{0%,78%{opacity:0}84%,95%{opacity:1}100%{opacity:0}}
+.l4c-room{fill:#2b1b6b;stroke:#080e15;stroke-width:2}.l4c-room2{fill:#12403a}
+.l4c-small{font:700 11px Consolas,monospace;fill:#b9c2cc;text-anchor:middle}
+.l4c-arrow{font:900 20px system-ui,sans-serif;fill:#ff7a59;text-anchor:middle}
+.l4c-dot{fill:#ff5fd2;stroke:#080e15;stroke-width:2}
+.l4c-go{animation:l4c-go 4s ease-in-out infinite}
+@keyframes l4c-go{0%,15%{transform:translateX(0);opacity:1}45%{transform:translateX(44px);opacity:1}50%{opacity:0;transform:translateX(44px)}55%{opacity:0;transform:translateX(104px)}60%,90%{transform:translateX(125px);opacity:1}100%{transform:translateX(125px);opacity:0}}
+.l4c-return{animation:l4c-return 5s ease-in-out infinite}
+@keyframes l4c-return{0%,15%{transform:translateX(0);opacity:1}40%{transform:translateX(-36px);opacity:1}44%{opacity:0;transform:translateX(-36px)}48%{opacity:0;transform:translateX(-96px)}52%,92%{transform:translateX(-128px);opacity:1}100%{transform:translateX(-128px);opacity:0}}
+.l4c-reset,.l4c-repaint{opacity:0;animation:5s linear infinite}
+.l4c-reset{fill:#ff7a59;animation-name:l4c-reset}.l4c-repaint{fill:#c6f15b;animation-name:l4c-repaint}
+@keyframes l4c-reset{0%,51.9%{opacity:0}52%,67.9%{opacity:1}68%,100%{opacity:0}}
+@keyframes l4c-repaint{0%,67.9%{opacity:0}68%,96%{opacity:1}100%{opacity:0}}
+@media (max-width:560px){.l4-concept{width:100%;max-width:300px}}
+
+/* Lab 4: your project, under each scene and in the final gate */
+[data-pt][hidden]{display:none}
+.studio .c3w .l4-yours{margin:12px 0 14px!important;padding:10px 14px;border-left:4px solid #ff5fd2;background:#1d1026;font-size:16px;line-height:1.5;color:#f3e8f7!important;max-width:none}
+.studio .c3w .l4-yours .l4-yours-k{display:block;margin-bottom:2px;font:700 11px/1.4 Consolas,monospace;letter-spacing:.14em;color:#ff5fd2}
+.studio .c3w .l4-yours b{color:#fff}
+.l4-plan{margin:4px 0 16px;padding:14px 16px;border:2px solid #ff5fd2;border-radius:10px;background:#140c1a}
+.studio .l4-ready .l4-plan-k{margin:0 0 4px!important;font:700 11px/1.4 Consolas,monospace;letter-spacing:.14em;color:#ff5fd2!important}
+.studio .l4-ready .l4-plan-h{margin:0 0 10px!important;font-size:18px;line-height:1.35}
+.l4-plan-rows{display:grid;gap:8px}
+.l4-plan-rows label{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:10px;font-size:15px;color:#b9c2cc}
+.l4-plan-rows input{width:100%;box-sizing:border-box;padding:9px 11px;border:1px solid rgba(255,255,255,.25);border-radius:6px;background:#0b0d14;color:#fff;font:16px/1.3 system-ui,'Segoe UI',Arial,sans-serif}
+.l4-plan-rows input:focus{outline:2px solid #ff5fd2;outline-offset:1px}
+.studio .l4-ready .l4-plan-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:10px 0 0!important;font-size:14px;color:#b9c2cc!important}
+.studio .l4-ready .l4-plan button{min-height:40px;margin:0;padding:8px 14px;border:2px solid #ff5fd2;border-radius:6px;background:#ff5fd2;color:#140c1a;font:700 15px/1 system-ui,sans-serif;cursor:pointer;box-shadow:none}
+@media (max-width:560px){.l4-plan-rows label{grid-template-columns:1fr;gap:4px}}
+
+@media (prefers-reduced-motion:reduce){.l4-host *,.l4-concept *,.hud-talk *,.l4-host-art,.l4-host-msg{animation:none!important}.l4h-n3,.l4c-d3,.l4c-result,.l4c-msg,.l4c-repaint{opacity:1}.l4h-n0,.l4c-d0,.l4c-left,.l4c-right,.l4c-amp{opacity:0}.l4c-door-l{transform:translateX(-26px)}.l4c-door-r{transform:translateX(26px)}.l4c-go{transform:translateX(125px)}.l4c-return{transform:translateX(-128px)}}
+.access-no-motion :is(.l4-host,.l4-concept,.hud-talk) *,.access-calm :is(.l4-host,.l4-concept,.hud-talk) *{animation:none!important}
+.studio .c3w .l4-hud button.hud-room:hover{background:#151a28}.studio .c3w .l4-hud.is-playable button.hud-room.is-here:hover{background:#1b2133}

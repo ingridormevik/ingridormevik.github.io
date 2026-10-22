@@ -30,6 +30,7 @@
     lastXp = xp;
     hud.querySelectorAll('[data-need]').forEach(el => el.classList.toggle('is-on', has(el.dataset.need)));
     $('[data-hud-room="2"] .hud-place').textContent = has('l4-room2') ? 'MapOption2' : 'locked';
+    $('[data-hud-room="1"] .hud-place').textContent = hud.dataset.project || 'your place';
     $('[data-hud-v]').textContent = visits;
     const txt = $('[data-hud-text]');
     txt.textContent = has('l4-if') && visits >= 3 ? 'You know this place now.' : `Visits: ${visits}`;
@@ -38,7 +39,14 @@
     hud.querySelectorAll('[data-hud-go]').forEach(d => { d.disabled = !d.classList.contains('is-on') || Number(d.dataset.hudGo) === room; });
     hud.classList.toggle('is-playable', has('l4-add'));
   }
-  function say(text) { msg.textContent = text; }
+  function say(text) {
+    msg.textContent = text;
+    // Dr. Turing nods when he has something new to say.
+    const talk = hud.querySelector('.hud-talk');
+    talk?.classList.remove('is-talking');
+    void talk?.offsetWidth;
+    talk?.classList.add('is-talking');
+  }
 
   $('[data-hud-room="1"]').addEventListener('click', () => {
     if (room !== 1) return;
@@ -76,6 +84,9 @@
   }
   window.addEventListener('hashchange', openTarget);
   openTarget();
+
+  // The project card names the place on the map.
+  document.addEventListener('l4-project', e => { hud.dataset.project = e.detail.name; paint(); });
 
   read();
   paint();
@@ -115,4 +126,86 @@
     if (got.size > before) { try { window.labAudio?.play('star'); } catch {} }
   });
   show();
+})();
+
+// Your project: pick what you are building, and every scene shows how its power fits your own work.
+// The three-line plan in the final gate is saved here too, and can be copied into the Discussions post.
+(() => {
+  const pick = document.querySelector('[data-l4-pick]');
+  if (!pick) return;
+  const KEY = 'dik105-l4-project';
+  const LABEL = {story: 'a story', game: 'a game', place: 'a place or tour', poem: 'a poem or artwork', any: 'something new'};
+  const TIPS = {
+    any: ['Not sure yet? Pick the power you liked most today. Your project can grow from that one rule.',
+      'A good first question: what should your work remember about the person using it?'],
+    story: ['Stories love memory. Let chapter 2 remember a choice from chapter 1.',
+      'A variable called trust can change how a character speaks to the reader.'],
+    game: ['Score, lives and keys are all variables. A level is a layout.',
+      'Make one rule that waits: keysFound ≥ 3 opens the door.'],
+    place: ['A tour can remember where the visitor has been: roomsSeen.',
+      'Unlock the last room only when every object has been found.'],
+    poem: ['A poem that changes the more it is read: linesRead.',
+      'Return to the first page and let it say something new.'],
+  };
+  const COMMON = ['Small and working beats big and broken. One variable, one rule, two rooms.',
+    'Read your sheet like a sentence: when this happens, if this is true, do that.',
+    'Test with someone else. Say nothing, watch their hands.'];
+  let st = {};
+  try { st = JSON.parse(localStorage.getItem(KEY)) || {}; } catch {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch {} };
+  const msg = document.querySelector('[data-l4-hostmsg]');
+  const name = pick.querySelector('[data-l4-pname]');
+  const plans = [...document.querySelectorAll('[data-l4-plan]')];
+  const copy = document.querySelector('[data-l4-copy]');
+  const ask = document.querySelector('[data-l4-ask]');
+  let tip = 0;
+
+  function say(text) {
+    msg.textContent = text;
+    msg.classList.remove('is-new');
+    void msg.offsetWidth;
+    msg.classList.add('is-new');
+  }
+  function apply() {
+    const t = st.type || 'any';
+    pick.querySelectorAll('[data-l4-pt]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.l4Pt === st.type)));
+    document.querySelectorAll('[data-l4-yours]').forEach(p => {
+      const spans = [...p.querySelectorAll('[data-pt]')];
+      const show = spans.find(s => s.dataset.pt === t) || spans.find(s => s.dataset.pt === 'any');
+      spans.forEach(s => { s.hidden = s !== show; });
+    });
+    const title = (st.name || '').trim();
+    document.querySelectorAll('[data-l4-pshow]').forEach(b => { b.textContent = title || 'your project'; });
+    document.dispatchEvent(new CustomEvent('l4-project', {detail: {name: title}}));
+  }
+
+  pick.hidden = false;
+  ask.hidden = false;
+  copy.hidden = false;
+  name.value = st.name || '';
+  plans.forEach(i => { i.value = st[i.dataset.l4Plan] || ''; });
+
+  pick.querySelectorAll('[data-l4-pt]').forEach(b => b.addEventListener('click', () => {
+    st.type = b.dataset.l4Pt;
+    save();
+    apply();
+    tip = 0;
+    say(`You are building ${LABEL[st.type]}. Look for YOUR PROJECT under each scene. ${TIPS[st.type][0]}`);
+    try { window.labAudio?.play('star'); } catch {}
+  }));
+  name.addEventListener('input', () => { st.name = name.value; save(); apply(); });
+  plans.forEach(i => i.addEventListener('input', () => { st[i.dataset.l4Plan] = i.value; save(); }));
+  ask.addEventListener('click', () => {
+    const list = [...TIPS[st.type || 'any'], ...COMMON];
+    say(list[tip % list.length]);
+    tip++;
+  });
+  copy.addEventListener('click', async () => {
+    const out = document.querySelector('[data-l4-copied]');
+    const v = k => (st[k] || '').trim() || '...';
+    const text = `${(st.name || '').trim() || 'My project'} (${LABEL[st.type || 'any']}). It remembers: ${v('var')}. When it reaches: ${v('rule')}. Room 2 is: ${v('room')}.`;
+    try { await navigator.clipboard.writeText(text); out.textContent = 'Copied. Paste it under your screenshot.'; }
+    catch { out.textContent = text; }
+  });
+  apply();
 })();
