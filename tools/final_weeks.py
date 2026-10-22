@@ -271,8 +271,8 @@ def patch_programme(root):
     if 'href="final-assessment.html">Final quest</a>' not in s.split('</header>')[0]:
         s = re.sub(r'(<header class="studio-header">.*?<nav[^>]*>.*?Lab map</a>)', lambda m: m.group(1) + '<a href="final-assessment.html">Final quest</a>', s, count=1, flags=re.S)
     if 'final-quest.css' not in s:
-        s = s.replace('</head>', '<link href="final-quest.css?v=1" rel="stylesheet"/><script defer="" src="final-quest.js?v=1"></script></head>', 1)
-    s = re.sub(r'final-quest\.(css|js)\?v=\d+', r'final-quest.\1?v=1', s)
+        s = s.replace('</head>', '<link href="final-quest.css?v=3" rel="stylesheet"/><script defer="" src="final-quest.js?v=3"></script></head>', 1)
+    s = re.sub(r'final-quest\.(css|js)\?v=\d+', r'final-quest.\1?v=3', s)
     # Eight labs instead of five: the level map, the finish screen and the guide return links changed.
     s = re.sub(r'(start-lab|lab-victory|lab-navigation)\.js\?v=[\w-]+', r'\1.js?v=final-weeks-1', s)
     path.write_text(s, encoding='utf-8', newline='\n')
@@ -285,7 +285,8 @@ def patch_ai_pages(root):
         s = re.sub(r'<!-- fq-ai -->.*?<!-- /fq-ai -->', '', s, flags=re.S)
         s = re.sub(r'(<main id="main-content"[^>]*>)', lambda m: m.group(1) + AI_NOTE, s, count=1)
         if 'final-quest.css' not in s:
-            s = s.replace('</head>', '<link href="final-quest.css?v=1" rel="stylesheet"/></head>', 1)
+            s = s.replace('</head>', '<link href="final-quest.css?v=3" rel="stylesheet"/></head>', 1)
+        s = re.sub(r'final-quest\.css\?v=\d+', 'final-quest.css?v=3', s)
         path.write_text(s, encoding='utf-8', newline='\n')
 
 
@@ -352,6 +353,96 @@ def card(tag, title, body, cls=''):
     return f'<article class="fq-card fq-in {cls}"><span class="fq-tag">{tag}</span><h3>{title}</h3>{body}</article>'
 
 
+# Beyond the screen: Alinta's lecture "Digital art beyond the screen" (physical computing, sound and sensory
+# experience), turned into a sense switch. Works and facts come from the lecture; the Construct lines say what
+# students can actually build in a browser.
+SENSE_ART = {
+ 'hear': '<circle cx="40" cy="40" r="8" fill="#ffd23f" stroke="#080e15" stroke-width="3"/>'
+         '<circle class="fs-ring" cx="40" cy="40" r="16" fill="none" stroke="#ffd23f" stroke-width="3"/>'
+         '<circle class="fs-ring fs-d2" cx="40" cy="40" r="16" fill="none" stroke="#ffd23f" stroke-width="3"/>'
+         '<circle class="fs-ring fs-d3" cx="40" cy="40" r="16" fill="none" stroke="#ffd23f" stroke-width="3"/>',
+ 'touch': '<path d="M30 66V30a5 5 0 0 1 10 0v18M40 44v-6a5 5 0 0 1 10 0v8M50 46a5 5 0 0 1 10 0v6q0 16-14 16H38q-8 0-12-8l-8-14a5 5 0 0 1 9-5l3 5" '
+          'fill="#efc39b" stroke="#080e15" stroke-width="3" stroke-linejoin="round"/>'
+          '<circle class="fs-press" cx="35" cy="22" r="7" fill="none" stroke="#ff5fd2" stroke-width="3"/>',
+ 'move': '<g class="fs-walk"><circle cx="40" cy="18" r="7" fill="#8cdec5" stroke="#080e15" stroke-width="3"/>'
+         '<path d="M40 26v20M40 32l-12 8M40 32l12-4M40 46l-10 16M40 46l12 14" stroke="#080e15" stroke-width="4" stroke-linecap="round" fill="none"/></g>'
+         '<path d="M10 70h60" stroke="#8cdec5" stroke-width="3" stroke-dasharray="6 6" class="fs-floor"/>',
+ 'tilt': '<g class="fs-tilt"><rect x="26" y="12" width="28" height="50" rx="5" fill="#2d3a8c" stroke="#080e15" stroke-width="3"/>'
+         '<circle class="fs-ball" cx="40" cy="40" r="5" fill="#c6f15b" stroke="#080e15" stroke-width="2"/></g>'
+         '<path d="M20 72h40" stroke="#c6f15b" stroke-width="3"/><path d="M40 72l-6-6h12Z" fill="#c6f15b"/>',
+ 'inside': '<path d="M40 66q-26-16-26-34a13 13 0 0 1 26-5 13 13 0 0 1 26 5q0 18-26 34Z" fill="#ff7a59" stroke="#080e15" stroke-width="3" class="fs-beat"/>'
+           '<polyline points="8,44 24,44 30,32 36,54 42,40 72,40" fill="none" stroke="#edf4dd" stroke-width="3" class="fs-line"/>',
+ 'signal': '<path d="M40 70V34" stroke="#080e15" stroke-width="4"/><circle cx="40" cy="30" r="6" fill="#6fb7ff" stroke="#080e15" stroke-width="3"/>'
+           '<path class="fs-arc" d="M26 18a20 20 0 0 1 28 0" fill="none" stroke="#6fb7ff" stroke-width="3"/>'
+           '<path class="fs-arc fs-d2" d="M18 10a30 30 0 0 1 44 0" fill="none" stroke="#6fb7ff" stroke-width="3"/>'
+           '<path class="fs-zig" d="M8 54l8-6 8 6 8-6" fill="none" stroke="#ff5fd2" stroke-width="3"/>',
+}
+SENSES = [
+ ('hear', 'Hear', 'SOUND AS VIBRATION',
+  'Sound travels through air, water and solids, not through a vacuum. Humans hear about 20 to 20,000 Hz.',
+  [('River Listening', 'Leah Barclay with the Australian Rivers Institute, 2014–', 'Listening to rivers, under the surface.'),
+   ('What Stirs Between?', 'Camille Norment, 2023', 'Visitors sit or lie down and feel the voices vibrate through wood.'),
+   ('Department of X', 'Nanna K. Hougaard, 2019', 'An algorithm rearranges eight researchers into a conversation that never happened.')],
+  'Add the <b>Audio</b> object. Right-click <b>Sounds</b> › Import sounds. Event: on tap › Audio › <b>Play</b>. A variable can set the volume.',
+  'What will a future river, city or forest sound like? Make one sound the visitor can only find by listening.'),
+ ('touch', 'Touch', 'TEXTURE AND PRESSURE',
+  'Museums say look, don’t touch. Digital work does not have to.',
+  [('Jabblrs', 'Britt Ransom, 2016', 'Silicone objects with electronics and code. Dogs play with them, with their mouths.'),
+   ('Elephant “jukebox”', 'Fiona French, 2014–2021', 'Elephants use their trunks on tactile controls to trigger sounds.'),
+   ('Good Night Lamp', 'Alexandra Deschamps-Sonsino and collaborators, 2005–2015', 'Switch your lamp on, and a lamp in someone else’s home lights up.')],
+  'Touch › <b>On hold gesture</b> rewards patience. <b>Drag &amp; Drop</b> lets them push things. Browser › <b>Vibrate</b> buzzes phones that support it.',
+  'In your future, what can no longer be touched? Let the visitor hold, press or wait instead of just look.'),
+ ('move', 'Move', 'KINAESTHESIA AND PROPRIOCEPTION',
+  'Knowing where your body is, and how it moves.',
+  [('Wooden Mirror', 'Daniel Rozin, 1999', 'Hundreds of wooden pieces tilt to mirror the person in front of it.'),
+   ('Rain Room', 'Random International, 2012', 'It rains everywhere, except where you walk.'),
+   ('MIMICRY', 'Sougwen Chung, 2015', 'A robot arm draws alongside the artist, copying the artist’s lines.')],
+  'Every tick › Set position to <b>Mouse.X</b>, <b>Mouse.Y</b> (or Touch.X, Touch.Y). The world can follow, flee or copy the visitor.',
+  'What in your future moves away when you come near? Or what only appears when you hold still?'),
+ ('tilt', 'Balance', 'VESTIBULAR PERCEPTION',
+  'Balance: the sense that tells you which way is up.',
+  [('Can’t Help Myself', 'Sun Yuan and Peng Yu, 2016', 'A robot arm keeps trying to sweep a spreading liquid back into place.'),
+   ('tele-present water', 'David Bowen, 2011', 'Live data from a buoy far away moves a grid of wires like the sea.')],
+  'On a phone, Touch gives the tilt: <b>Touch.Beta</b> and <b>Touch.Gamma</b>. On iPhone, add Touch › <b>Request permission</b> first.',
+  'A future that will not stay level: let the visitor tilt the phone to keep something from spilling.'),
+ ('inside', 'Inside', 'INTEROCEPTION',
+  'Conditions within the body: heartbeat, breath, hunger.',
+  [('Pulse Room', 'Rafael Lozano-Hemmer, 2006', 'Your heartbeat becomes a flashing light bulb among hundreds of others.'),
+   ('BioMuse performance', 'Atau Tanaka, early 1990s–', 'Signals from the body play the music.'),
+   ('Data Garden Quartet', 'Data Garden, 2012', 'Signals from plants become music through MIDI.')],
+  'Construct cannot read a heartbeat, but it can fake one: System › <b>Every X seconds</b>, where X shrinks as a variable grows. A pulse that speeds up.',
+  'What does the body feel in your future: thirsty, tired, calm? Give your work a pulse.'),
+ ('signal', 'Invisible', 'DATA MADE SENSIBLE',
+  'Turning what we cannot sense into something we can. MIDI does this: control messages become sound.',
+  [('Electrical Walks', 'Christina Kubisch, 2003', 'Induction headphones make electromagnetic activity audible.'),
+   ('Amphibious Architecture', 'The Living Architecture Lab and NYU Environmental Health Clinic, 2009', 'Lights on the river respond to fish and water quality.')],
+  'Translate one number into another sense: a variable sets a volume, a colour, a speed. Start with your own made-up data.',
+  'What is invisible in your future: the water, the air, the AI? Make it heard, felt or seen.'),
+]
+
+
+def senses():
+    btns = ''.join(f'<button type="button" data-fs="{k}" aria-pressed="{str(i == 0).lower()}">'
+                   f'<svg viewBox="0 0 80 80" aria-hidden="true">{SENSE_ART[k]}</svg><span>{t}</span></button>'
+                   for i, (k, t, *_) in enumerate(SENSES))
+    panels = ''
+    for k, t, kick, idea, works, c3, future in SENSES:
+        w = ''.join(f'<li><b>{a}</b><small>{b}</small><span>{c}</span></li>' for a, b, c in works)
+        panels += (f'<article class="fs-panel" data-fs-panel="{k}"><div class="fs-art" aria-hidden="true"><svg viewBox="0 0 80 80">{SENSE_ART[k]}</svg></div>'
+                   f'<div class="fs-body"><p class="fq-kicker">{kick}</p><h3>{t}</h3><p class="fs-idea">{idea}</p>'
+                   f'<ul class="fs-works">{w}</ul><div class="fs-do"><p><span class="fq-tag">IN CONSTRUCT</span> {c3}</p>'
+                   f'<p><span class="fq-tag fs-tag-future">IN YOUR FUTURE</span> {future}</p></div></div></article>')
+    return (
+     '<section class="fq-gate fs-gate" id="senses" aria-labelledby="gs" data-fs=""><p class="fq-kicker">BEYOND THE SCREEN · FROM ALINTA’S LECTURE</p>'
+     '<h2 id="gs">Close your eyes. Is it still art?</h2>'
+     '<p class="fq-sub"><i>Aesthetics</i> comes from the Greek <i>aisthetikos</i>: “of sense perception”. Not only what looks good. '
+     'Seeing is believing, but looking is only one way in. The brief even names an interactive sound piece.</p>'
+     f'<div class="fs-switch" role="group" aria-label="Choose a sense" hidden="">{btns}</div><div class="fs-panels">{panels}</div>'
+     '<div class="fs-test"><p class="fq-kicker">THE EYES-CLOSED TEST</p><p>Let someone try your work for ten seconds with their eyes closed, '
+     'or with the screen turned away. What is left? That is your work beyond the screen.</p></div>'
+     '<p class="fq-small">Works from Alinta’s lecture “Digital art beyond the screen”. Find them by name for photos and sources, and cite what you use.</p></section>')
+
+
 PARTS = [
  ('link', '1 · The link', 'Label it clearly, for example <b>Interactive work: https://…</b> Put the video link here too.', ''),
  ('theme', '2 · The theme', 'What future does your work imagine? How does it address speculative digital futures, and how does it fit the theme?', '600'),
@@ -382,8 +473,8 @@ def hub():
 <html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Final quest | DIKULT105</title>
 <meta content="Everything for the DIKULT105 final assessment: the brief, the 2000-word text, the link, the video walkthrough and the AI rules." name="description"/>
 <link href="setup.css" rel="stylesheet"/><link href="studio.css?v=3" rel="stylesheet"/><link href="accessibility.css?v=contrast20261009" rel="stylesheet"/><script defer="" src="accessibility.js?v=3"></script>
-<link href="computing-history.css?v=contrast20261009" rel="stylesheet"/><link href="c3-walk.css?v=25" rel="stylesheet"/><link href="final-quest.css?v=1" rel="stylesheet"/>
-<script defer="" src="lab-audio.js?v=4"></script><script defer="" src="final-quest.js?v=1"></script></head>
+<link href="computing-history.css?v=contrast20261009" rel="stylesheet"/><link href="c3-walk.css?v=25" rel="stylesheet"/><link href="final-quest.css?v=3" rel="stylesheet"/>
+<script defer="" src="lab-audio.js?v=4"></script><script defer="" src="final-quest.js?v=3"></script></head>
 <body class="studio time-lab fq-page"><a class="skip-link" href="#main-content">Skip to the final quest</a>
 <header class="studio-header"><a href="lab-programme.html">Creating Digital Culture</a><nav aria-label="Main navigation"><a href="lab-programme.html">Lab map</a><a href="final-assessment.html" aria-current="page">Final quest</a><a href="tools.html">Guides</a></nav></header>
 <main id="main-content">
@@ -413,6 +504,8 @@ def hub():
 </div>
 <div class="fq-gen" data-fq-gen=""><p class="fq-kicker">FUTURE GENERATOR</p><p>Futures from the brief: climate change, pandemics, extinction, environmental loss, talking with other planets, AI and fresh water, AI and office jobs, AI and creativity.</p>
 <button type="button" class="fq-btn" hidden="">Spin a future</button><p class="fq-gen-out" data-fq-gen-out="" aria-live="polite">? + ? + ?</p><p class="fq-small">Not your idea? Spin again. Your own idea always wins.</p></div></section>
+
+{senses()}
 
 <section class="fq-gate" id="doc" aria-labelledby="g2" data-fq-doc=""><p class="fq-kicker">GATE 2 · THE TEXT</p><h2 id="g2">2000 words, four parts.</h2>
 <p class="fq-sub">Write here or in your own document. Write it yourself: AI may only do light editing if you write in English.</p>

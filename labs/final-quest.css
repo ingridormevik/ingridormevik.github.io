@@ -167,3 +167,56 @@
 @media (prefers-reduced-motion:reduce){.fq-f,.fq-bee,.fq-drip,.fq-ring,.fq-pen,.fq-star,.fq-portal,.fq-road-list li.is-now,.fw-no,.sl-goal svg,.fq-in,.fq-gen-out.is-spin{animation:none!important}.fq-f1{opacity:1}}
 .access-no-motion :is(.fq-page,.fq-road,.fw-move,.sl-goal) *,.access-calm :is(.fq-page,.fq-road,.fw-move,.sl-goal) *{animation:none!important}
 .access-no-motion .fq-f1,.access-calm .fq-f1{opacity:1}
+
+/* Beyond the screen: the sense switch (from Alinta's lecture "Digital art beyond the screen") */
+.fs-switch{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:6px 0 16px}
+.fs-switch[hidden]{display:none}
+.studio.fq-page .fs-switch button{display:flex;flex-direction:column;align-items:center;gap:6px;min-height:44px;margin:0;padding:10px 6px;border:3px solid var(--fq-line);border-radius:0;background:#18353b;color:var(--fq-ink)!important;font:800 15px/1.2 system-ui,'Segoe UI',Arial,sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--fq-line);transition:transform .12s}
+.studio.fq-page .fs-switch button:hover{transform:translate(-1px,-1px)}
+.studio.fq-page .fs-switch button[aria-pressed=true]{background:var(--fq-gold);color:#080e15!important;animation:l4-pop .35s ease-out}
+.fs-switch svg{width:46px;height:46px}
+.fs-panels{display:grid;gap:14px}
+.fs-panel{display:grid;grid-template-columns:110px 1fr;gap:18px;padding:18px;border:3px solid var(--fq-line);background:#18353b;box-shadow:5px 5px 0 var(--fq-line)}
+.fs-panel[hidden]{display:none}
+.fs-js .fs-panel{animation:fq-in .4s ease-out}
+.fs-art{align-self:start;padding:8px;border:3px solid var(--fq-line);background:#16124a}
+.fs-art svg{display:block;width:100%;height:auto}
+.studio .fs-panel h3{margin:0 0 6px!important;font:900 clamp(24px,3vw,32px)/1.1 system-ui,'Segoe UI',Arial,sans-serif;color:var(--fq-ink)!important}
+.studio .fs-panel .fs-idea{margin:0 0 12px!important;font-size:17px;line-height:1.5;color:var(--fq-soft)!important;max-width:60ch}
+.studio .fs-works{list-style:none!important;margin:0 0 12px!important;padding:0!important;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.studio .fs-works li{margin:0!important;padding:10px 12px!important;list-style:none!important;border:2px solid var(--fq-line);background:#0f1f24;font-size:15px;line-height:1.45;color:var(--fq-ink)}
+.studio .fs-works li::before{content:none!important}
+.fs-works b{display:block;font:800 17px/1.25 system-ui,sans-serif;color:var(--fq-ink)}
+.fs-works small{display:block;margin:2px 0 6px;font:12px/1.35 Consolas,monospace;color:var(--fq-mint)}
+.fs-do{display:grid;gap:8px}
+.studio .fs-do p{margin:0!important;padding:10px 12px;border-left:4px solid var(--fq-lime);background:#0f1f24;font-size:16px;line-height:1.5;color:var(--fq-ink)}
+.studio .fs-do p:last-child{border-left-color:var(--fq-pink)}
+.fs-do .fq-tag{margin:0 6px 4px 0;vertical-align:middle}
+.fq-tag.fs-tag-future{background:var(--fq-pink)}
+.fs-test{margin-top:16px;padding:16px;border:3px dashed var(--fq-mint);background:#0f1f24}
+.studio .fs-test p:last-child{margin:0!important;font-size:17px;line-height:1.55}
+.fs-ring{transform-box:fill-box;transform-origin:center;animation:fs-ring 2.4s ease-out infinite}
+.fs-d2{animation-delay:.8s}.fs-d3{animation-delay:1.6s}
+@keyframes fs-ring{0%{transform:scale(.6);opacity:1}100%{transform:scale(2.2);opacity:0}}
+.fs-press{transform-box:fill-box;transform-origin:center;animation:fs-press 1.6s ease-out infinite}
+@keyframes fs-press{0%{transform:scale(.4);opacity:1}100%{transform:scale(1.8);opacity:0}}
+.fs-walk{animation:fs-walk 1s ease-in-out infinite}
+@keyframes fs-walk{50%{transform:translate(4px,-3px)}}
+.fs-floor{animation:fs-floor 1s linear infinite}
+@keyframes fs-floor{to{stroke-dashoffset:-12}}
+.fs-tilt{transform-box:view-box;transform-origin:40px 70px;animation:fs-tilt 3s ease-in-out infinite}
+@keyframes fs-tilt{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(14deg)}}
+.fs-ball{animation:fs-ball 3s ease-in-out infinite}
+@keyframes fs-ball{0%,100%{transform:translateY(-16px)}50%{transform:translateY(16px)}}
+.fs-beat{transform-box:fill-box;transform-origin:center;animation:fs-beat 1s ease-in-out infinite}
+@keyframes fs-beat{0%,40%,100%{transform:scale(1)}15%{transform:scale(1.12)}30%{transform:scale(1.05)}}
+.fs-line{stroke-dasharray:90;animation:fs-line 1.6s linear infinite}
+@keyframes fs-line{from{stroke-dashoffset:90}to{stroke-dashoffset:0}}
+.fs-arc{animation:l4h-blink 1.4s steps(2) infinite}
+.fs-zig{animation:fs-zig 1s linear infinite}
+@keyframes fs-zig{50%{transform:translateX(6px)}}
+@media (max-width:760px){.fs-switch{grid-template-columns:repeat(3,minmax(0,1fr))}.fs-panel{grid-template-columns:1fr}.fs-art{width:90px}}
+@media (prefers-reduced-motion:reduce){.fs-gate *{animation:none!important}}
+.access-no-motion .fs-gate *,.access-calm .fs-gate *{animation:none!important}
+.fs-do .fq-tag{display:inline-block;padding:3px 7px;border:2px solid var(--fq-line);background:var(--fq-lime);color:#080e15;font:800 11px/1.2 Consolas,monospace;letter-spacing:.1em}
+.fs-do .fq-tag.fs-tag-future{background:var(--fq-pink)}

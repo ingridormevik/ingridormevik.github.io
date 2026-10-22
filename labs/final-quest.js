@@ -143,6 +143,24 @@
     });
   });
 
+  // Beyond the screen: one sense at a time.
+  const fs = document.querySelector('[data-fs]');
+  if (fs) {
+    const btns = [...fs.querySelectorAll('[data-fs]')].filter(b => b.tagName === 'BUTTON');
+    const panels = [...fs.querySelectorAll('[data-fs-panel]')];
+    const pick = (k, sound) => {
+      if (!panels.some(p => p.dataset.fsPanel === k)) k = panels[0].dataset.fsPanel;
+      panels.forEach(p => { p.hidden = p.dataset.fsPanel !== k; });
+      btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.fs === k)));
+      st.sense = k; save();
+      if (sound) star();
+    };
+    fs.classList.add('fs-js');
+    fs.querySelector('.fs-switch').hidden = false;
+    btns.forEach(b => b.addEventListener('click', () => pick(b.dataset.fs, true)));
+    pick(st.sense, false);
+  }
+
   // Final gate: seven seals.
   const seals = document.querySelector('[data-fq-seals]');
   if (seals) {
