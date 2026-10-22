@@ -53,9 +53,11 @@
     const complete = count === core.length;
     licence.hidden = !complete;
     if (complete) {
-      const next = part === 'Part 1'
-        ? '<a class="primary" href="lab3-alinta-map.html#c3w-open">Use it on Alinta\'s map →</a>'
-        : '<a class="primary" href="#map-obligatory">Post your screenshot: Obligatory Task 4 →</a>';
+      const next = root.dataset.c3wLicenceHref
+        ? `<a class="primary" href="${root.dataset.c3wLicenceHref}">${root.dataset.c3wLicenceLabel}</a>`
+        : part === 'Part 1'
+          ? '<a class="primary" href="lab3-alinta-map.html#c3w-open">Use it on Alinta\'s map →</a>'
+          : '<a class="primary" href="#map-obligatory">Post your screenshot: Obligatory Task 4 →</a>';
       licence.innerHTML = `<p class="c3w-licence-kicker">CONSTRUCT LICENCE · ${part.toUpperCase()}</p>`
         + `<h4>${root.dataset.c3wLicenceTitle || (part === 'Part 1' ? 'You can use Construct now.' : 'Your map keeps a secret.')}</h4>`
         + `<p>Skills unlocked today:</p><ul>${skills().map(k => `<li>${k}</li>`).join('')}</ul>${next}`;
@@ -71,7 +73,7 @@
     const host = s.querySelector('.c3w-nextup') || s;
     const row = document.createElement('div');
     row.className = 'c3w-done-row';
-    row.innerHTML = '<button type="button" class="c3w-done" aria-pressed="false"></button><span>Works on your screen? Tick it and keep going.</span>';
+    row.innerHTML = '<button type="button" class="c3w-done" aria-pressed="false"></button><span>Works on your screen?</span>';
     host.append(row);
     row.querySelector('button').addEventListener('click', () => {
       const id = s.dataset.c3wScene;
