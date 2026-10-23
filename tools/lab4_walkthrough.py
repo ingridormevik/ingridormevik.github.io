@@ -452,7 +452,7 @@ def checklist():
 BOOT = [
  ('c3', 'Construct is open', 'Log in or play as a guest.', '<a href="https://editor.construct.net" target="_blank" rel="noopener">editor.construct.net ↗</a>'),
  ('map', 'Your Lab 3 map is open', 'Menu › Project › Open local file › your .c3p.', '<a href="construct-project-files.html">No file? Get Alinta’s files →</a>'),
- ('split', 'Side by side', 'Construct on one half, this page on the other. Windows key + ← or →. Mac: hold the green window button.', ''),
+ ('split', 'Side by side', 'Construct on one half, this page on the other. Windows: Windows key + ← or →. Mac: hold the green window button. Linux: Super + ← or →.', ''),
 ]
 SPLIT_SVG = (
  '<svg class="l4b-art" viewBox="0 0 240 120" aria-hidden="true">'
@@ -560,6 +560,11 @@ def build(root):
     L = L.replace('Next level: save &amp; reflect →', 'Next level: save &amp; post →')
     s = s[:a] + L + s[b:]
 
+    # Linux next to Windows, Mac and Chromebook in every screenshot banner.
+    s = s.replace('<li><b>Chromebook:</b> Ctrl + Shift + Show windows</li></ul>', '<li><b>Chromebook:</b> Ctrl + Shift + Show windows</li><li><b>Linux:</b> Print Screen</li></ul>')
+    s = s.replace('<li><b>Linux:</b> Print Screen</li><li><b>Linux:</b> Print Screen</li>', '<li><b>Linux:</b> Print Screen</li>')
+    s = s.replace('Mac: Cmd + Shift + 4. Then save', 'Mac: Cmd + Shift + 4. Linux: Print Screen. Then save')
+
     # Last stop: no pass and no notes any more, so say exactly what to keep.
     s = s.replace('<p>Need your pass? <a href="#lab-4-arrival">Go back to check-in.</a></p><p>Your experiment checklist and notes are saved in this browser when storage is available.</p>', '')
     s = s.replace('<p class="eyebrow">LAST STOP / LAB 04</p><h3>Keep your work. Make a note.</h3><ol><li><strong>Save your project files.</strong> Keep a copy somewhere you can find again.</li></ol>',
@@ -581,7 +586,7 @@ def build(root):
      (10, 'Break: step away', 'Save your .c3p first. Then take a real break.', 'Stretch, get water or leave the screen.'),
      (30, 'Part 2: rooms and the way back', 'A second room, a back arrow and the round-trip test.', 'Or add a second room and a variable to your own project. Not finished? Continue in Lab 5.'),
      (5, 'Short break: reset', 'Save your .c3p and take a real break.', 'Stretch, get water or leave the screen.'),
-     (10, 'Final gate: Obligatory Task 5', 'Light the seven seals, take a screenshot and post it under Obligatory Task 5.', 'Windows: Windows key + Shift + S. Mac: Cmd + Shift + 4. Save your .c3p one more time.'),
+     (10, 'Final gate: Obligatory Task 5', 'Light the seven seals, take a screenshot and post it under Obligatory Task 5.', 'Windows: Windows key + Shift + S. Mac: Cmd + Shift + 4. Linux: Print Screen. Save your .c3p one more time.'),
      (5, 'One next step', 'Write one thing you learned and one thing to try in Lab 5.', 'Keep your .c3p file. Bring it next Friday.'),
     ]
     assert sum(r[0] for r in ROWS) == 105

@@ -537,7 +537,7 @@ def hub():
 <section class="fq-gate" id="video" aria-labelledby="g4"><p class="fq-kicker">GATE 4 · THE VIDEO</p><h2 id="g4">Show it working, in its best light.</h2>
 <p class="fq-sub">The video helps the examiners see what they might miss. You do not have to speak.</p>
 {tick(['Plan three moments: the start, the main interaction, and the moment something changes.',
-       'Record your screen.<span class="fq-keys"><span>Windows: Win + Shift + R (Snipping Tool)</span><span>Mac: Cmd + Shift + 5</span><span>Chromebook: Ctrl + Shift + Show windows › Screen record</span></span>',
+       'Record your screen.<span class="fq-keys"><span>Windows: Win + Shift + R (Snipping Tool)</span><span>Mac: Cmd + Shift + 5</span><span>Chromebook: Ctrl + Shift + Show windows › Screen record</span><span>Linux: Print Screen › video, or OBS Studio</span></span>',
        'Play slowly. Let each change finish before you move on.',
        'Speak, add short captions, or stay silent. All are fine.',
        'Upload it where the examiners can watch: Panopto in the Mitt UiB menu, or YouTube set to <b>Unlisted</b>. Check the link in a private window.',
