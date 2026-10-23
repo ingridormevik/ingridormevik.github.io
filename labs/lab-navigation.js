@@ -36,10 +36,11 @@
     });
     lab.querySelector('.journey-location').textContent=open?`Step ${index+1} of 3 · ${labels[index]}`:lockedText;
     const hints=lab.querySelectorAll('.quest-requirements');
-    hints[0].textContent='Open your project and choose what to work on. All steps are open.';
+    hints[0].textContent='Open your project and choose what to work on. All steps are open.';hints[0].hidden=!!lab.querySelector('[data-l4-boot]');
     const remaining=[...lab.querySelectorAll('[data-check]')].filter(x=>!x.checked).length;
     const noteOK=true;
-    hints[1].textContent=experimentDone(lab)?'Practical steps checked. Save your work.':`Still to try: ${remaining} practical step${remaining===1?'':'s'}.`;
+    const seals=[...lab.querySelectorAll('[data-l4-check]')];
+    hints[1].textContent=seals.length?`Seals lit: ${seals.filter(x=>x.checked).length} of ${seals.length}. Light them in the Final gate.`:experimentDone(lab)?'Practical steps checked. Save your work.':`Still to try: ${remaining} practical step${remaining===1?'':'s'}.`;
     hints[2].textContent='Save your project files and confirm below.';
     lab.querySelectorAll('.journey-next a').forEach((a,i)=>{const locked=!open||i+1>limit;a.setAttribute('aria-disabled',String(locked));a.classList.toggle('step-locked',locked);});
     updateFinal(lab);
@@ -90,6 +91,8 @@
     });
   });
   document.addEventListener('lab-progress',()=>labs.forEach(lab=>render(lab)));
+  document.addEventListener('change',e=>{if(e.target.matches?.('[data-l4-check]'))labs.forEach(lab=>render(lab));});
+  addEventListener('load',()=>labs.forEach(lab=>render(lab)));
   window.addEventListener('hashchange',revealHash);revealHash();
   document.getElementById('view')?.addEventListener('change',()=>labs.forEach(lab=>render(lab)));
   document.getElementById('group')?.addEventListener('change',()=>labs.forEach(lab=>{

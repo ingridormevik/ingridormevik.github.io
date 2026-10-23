@@ -592,3 +592,32 @@ button.hud-room{cursor:default}
 .studio .c3w .l4-hud button.hud-room:hover{background:#151a28}.studio .c3w .l4-hud.is-playable button.hud-room.is-here:hover{background:#1b2133}
 .studio .l4-host .l4-goal{margin:0 0 14px!important;padding:10px 12px;border:2px dashed #e9ca85;font-size:16px;line-height:1.5;max-width:46ch}
 .studio .l4-host .l4-goal a{color:#e9ca85!important;font-weight:800}
+/* Lab 4 check in: three lamps before the map room. */
+.l4-boot{margin:10px 0 22px;padding:22px 24px;border:2px solid #ffd23f;border-radius:12px;background:#0b0d14;color:#f5f5ef}
+.l4b-head{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.l4b-k{margin:0 0 6px!important;font:700 12px/1.4 Consolas,monospace;letter-spacing:.14em;color:#ffd23f!important}
+.l4-boot h3{margin:0!important;font:800 clamp(24px,3vw,32px)/1.15 system-ui,'Segoe UI',Arial,sans-serif;color:#fff}
+.l4b-art{width:220px;max-width:100%;height:auto}
+.l4b-win{animation:l4b-slide 3.2s ease-in-out infinite alternate}
+.l4b-right{animation-name:l4b-slide-r}
+@keyframes l4b-slide{0%{transform:translateX(56px) scale(.9)}35%,100%{transform:none}}
+@keyframes l4b-slide-r{0%{transform:translateX(-56px) scale(.9);opacity:.4}35%,100%{transform:none;opacity:1}}
+.l4b-list{list-style:none!important;margin:18px 0 10px!important;padding:0!important;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.l4b-list li{margin:0!important;padding:0!important;list-style:none!important;display:grid;align-content:start;gap:6px}
+.l4b-list li::before{content:none!important}
+.l4b-list label{position:relative;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;padding:14px 12px;border:1px solid rgba(255,255,255,.2);border-radius:10px;cursor:pointer}
+.l4b-list label:hover{border-color:#ffd23f}
+.l4b-list input{position:absolute;opacity:0;width:1px;height:1px}
+.l4b-list input:focus-visible+.l4b-lamp{outline:3px solid #8cdec5;outline-offset:3px}
+.l4b-lamp{width:30px;height:30px;border-radius:50%;border:3px solid #f5f5ef;background:#2b2f3a;transition:background .2s}
+.l4b-list input:checked+.l4b-lamp{background:#ffd23f;animation:l4b-pop .35s ease-out}
+.l4b-list input:checked~.l4b-txt b::after{content:' ✓';color:#c6f58d}
+.l4b-txt{font-size:15px;line-height:1.45;color:#d9dde4}
+.l4b-txt b{display:block;font-size:17px;color:#fff;margin-bottom:3px}
+.l4b-link{margin:0 0 0 12px!important;font-size:15px}
+.l4b-link a{color:#ffd23f}
+.l4b-msg{margin:6px 0 0!important;font:700 14px/1.4 Consolas,monospace;color:#c6f58d!important}
+@keyframes l4b-pop{0%{transform:scale(.6)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.studio .journey-next .mission-launch.l4b-ready{animation:l4b-nudge 1.4s ease-in-out 3}
+@keyframes l4b-nudge{50%{transform:translateY(-4px)}}
+@media(prefers-reduced-motion:reduce){.l4b-win,.l4b-list input:checked+.l4b-lamp,.studio .journey-next .mission-launch.l4b-ready{animation:none}}

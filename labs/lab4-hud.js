@@ -212,3 +212,29 @@
   });
   apply();
 })();
+
+// Check in: three lamps. Saved in this browser so a reload keeps them lit.
+(() => {
+  const boxes = [...document.querySelectorAll('[data-l4-boot]')];
+  if (!boxes.length) return;
+  const KEY = 'dik105-l4-boot';
+  let on = [];
+  try { on = JSON.parse(localStorage.getItem(KEY)) || []; } catch {}
+  const msg = document.querySelector('[data-l4-bootmsg]');
+  const go = document.querySelector('#lab-4-arrival .journey-next .mission-launch');
+  const paint = sound => {
+    const n = boxes.filter(b => b.checked).length;
+    msg.textContent = n === boxes.length ? 'All lights on. Enter Turing’s map room.' : `${n} of ${boxes.length} lights on.`;
+    go?.classList.toggle('l4b-ready', n === boxes.length);
+    if (sound) { try { window.labAudio?.play(n === boxes.length ? 'unlock' : 'star'); } catch {} }
+  };
+  boxes.forEach(b => {
+    b.checked = on.includes(b.dataset.l4Boot);
+    b.addEventListener('change', () => {
+      on = boxes.filter(x => x.checked).map(x => x.dataset.l4Boot);
+      try { localStorage.setItem(KEY, JSON.stringify(on)); } catch {}
+      paint(b.checked);
+    });
+  });
+  paint(false);
+})();

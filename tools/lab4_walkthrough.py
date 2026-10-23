@@ -448,6 +448,39 @@ def checklist():
      '</section>')
 
 
+# Check in: three lamps before the map room. Construct open, last week's map open, two windows side by side.
+BOOT = [
+ ('c3', 'Construct is open', 'Log in or play as a guest.', '<a href="https://editor.construct.net" target="_blank" rel="noopener">editor.construct.net ↗</a>'),
+ ('map', 'Your Lab 3 map is open', 'Menu › Project › Open local file › your .c3p.', '<a href="construct-project-files.html">No file? Get Alinta’s files →</a>'),
+ ('split', 'Side by side', 'Construct on one half, this page on the other. Windows key + ← or →. Mac: hold the green window button.', ''),
+]
+SPLIT_SVG = (
+ '<svg class="l4b-art" viewBox="0 0 240 120" aria-hidden="true">'
+ '<rect x="4" y="6" width="232" height="108" rx="8" fill="#0b0d14" stroke="#f5f5ef" stroke-width="3"/>'
+ '<g class="l4b-win l4b-left"><rect x="12" y="14" width="104" height="92" rx="4" fill="#2b2f3a" stroke="#000" stroke-width="2"/>'
+ '<rect x="12" y="14" width="104" height="12" fill="#ffd23f"/><rect x="20" y="34" width="40" height="8" fill="#5bc0eb"/>'
+ '<rect x="20" y="48" width="88" height="8" fill="#555c6b"/><rect x="20" y="62" width="70" height="8" fill="#555c6b"/>'
+ '<rect x="20" y="76" width="80" height="8" fill="#555c6b"/><text x="20" y="23" font-size="8" font-family="Consolas,monospace" fill="#000">Construct</text></g>'
+ '<g class="l4b-win l4b-right"><rect x="124" y="14" width="104" height="92" rx="4" fill="#163038" stroke="#000" stroke-width="2"/>'
+ '<rect x="124" y="14" width="104" height="12" fill="#8cdec5"/><circle cx="148" cy="56" r="14" fill="#efc39b" stroke="#000" stroke-width="2"/>'
+ '<rect x="168" y="44" width="50" height="7" fill="#f5f5ef"/><rect x="168" y="58" width="40" height="7" fill="#f5f5ef"/>'
+ '<rect x="134" y="80" width="84" height="16" rx="3" fill="#ffd23f"/><text x="132" y="23" font-size="8" font-family="Consolas,monospace" fill="#000">this page</text></g>'
+ '</svg>')
+
+
+def boot():
+    more = lambda link: f'<p class="l4b-link">{link}</p>' if link else ''
+    items = ''.join(
+     f'<li><label><input type="checkbox" data-l4-boot="{k}"/><span class="l4b-lamp" aria-hidden="true"></span>'
+     f'<span class="l4b-txt"><b>{t}</b>{d}</span></label>{more(link)}</li>'
+     for k, t, d, link in BOOT)
+    return (
+     '<!-- l4-boot --><section class="l4-boot" aria-labelledby="l4-boot-t">'
+     f'<div class="l4b-head"><div><p class="l4b-k">BOOT UP · 5 MIN</p><h3 id="l4-boot-t">Three lights on. Then we play.</h3></div>{SPLIT_SVG}</div>'
+     f'<ol class="l4b-list">{items}</ol><p class="l4b-msg" role="status" data-l4-bootmsg="">0 of 3 lights on.</p>'
+     '</section><!-- /l4-boot -->')
+
+
 def side_quests(span):
     """Gate Engine, room repair and the project console, each behind one game tile."""
     def cut(start_marker, end_marker):
@@ -507,6 +540,26 @@ def build(root):
     s = s.replace('<h4>Finish your map first, if you need to.</h4><p>Map finished and posted under Obligatory Task 4? Start the Gate Engine below. It uses the same condition and action you built last week.</p>',
                   '<h4>Bring your Lab 3 map.</h4><p>No map yet? Play Lab 3 first, then come back.</p>')
 
+    # Check in: the boot lamps replace the old pass line (the pass itself was removed from the student flow).
+    s = re.sub(r'<!-- l4-boot -->.*?<!-- /l4-boot -->', '', s, flags=re.S)
+    s = s.replace('<div class="journey-next"><p>Your pass is saved in this browser, so it is still here when you come back.</p>',
+                  '<div class="journey-next"><p>Open your project, then step into today’s experiment.</p>')
+    old_next = '<div class="journey-next"><p>Open your project, then step into today’s experiment.</p><a class="primary mission-launch" href="#lab-4-workbench">Enter the project laboratory →</a></div>'
+    new_next = '<div class="journey-next"><p>Lights on? Today your world learns to remember.</p><a class="primary mission-launch" href="#lab-4-workbench">Enter Turing’s map room →</a></div>'
+    s = s.replace(old_next, new_next)
+    assert s.count(new_next) == 1
+    s = s.replace(new_next, boot() + new_next, 1)
+
+    # Last stop: no pass and no notes any more, so say exactly what to keep.
+    s = s.replace('<p>Need your pass? <a href="#lab-4-arrival">Go back to check-in.</a></p><p>Your experiment checklist and notes are saved in this browser when storage is available.</p>', '')
+    s = s.replace('<p class="eyebrow">LAST STOP / LAB 04</p><h3>Keep your work. Make a note.</h3><ol><li><strong>Save your project files.</strong> Keep a copy somewhere you can find again.</li></ol>',
+                  '<p class="eyebrow">LAST STOP / LAB 04</p><h3>Save it. Post it. Bring it back.</h3><ol>'
+                  '<li><strong>Save:</strong> Menu › Project › Save as › Download a copy. Name it <b>yourname-lab4.c3p</b>.</li>'
+                  '<li><strong>Post:</strong> your screenshot under <b>Discussions › Obligatory Task 5</b>.</li>'
+                  '<li><strong>Bring it back:</strong> the same .c3p next Friday. Lab 5 tests it on another person.</li></ol>')
+    for n in range(1, 9):
+        s = s.replace(f'<p>Need your pass? <a href="#lab-{n}-arrival">Go back to check-in.</a></p>', '')
+
     # Timetable that matches the walkthrough (105 minutes, two breaks).
     a = s.index('id="lab-4"'); b = s.index('id="lab-5"'); L = s[a:b]
     ROWS = [
@@ -546,8 +599,8 @@ def build(root):
     s = re.sub(r'lab4-ready\.js\?v=\d+', 'lab4-ready.js?v=2', s)
     s = re.sub(r'c3-walk\.js\?v=\d+', 'c3-walk.js?v=5', s)
     s = re.sub(r'c3-play\.js\?v=\d+', 'c3-play.js?v=6', s)
-    s = re.sub(r'c3-walk\.css\?v=\d+', 'c3-walk.css?v=25', s)
-    s = re.sub(r'lab4-hud\.js\?v=\d+', 'lab4-hud.js?v=4', s)
+    s = re.sub(r'c3-walk\.css\?v=\d+', 'c3-walk.css?v=26', s)
+    s = re.sub(r'lab4-hud\.js\?v=\d+', 'lab4-hud.js?v=5', s)
     path.write_text(s, encoding='utf-8', newline='\n')
 
 
