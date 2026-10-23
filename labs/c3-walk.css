@@ -621,3 +621,9 @@ button.hud-room{cursor:default}
 .studio .journey-next .mission-launch.l4b-ready{animation:l4b-nudge 1.4s ease-in-out 3}
 @keyframes l4b-nudge{50%{transform:translateY(-4px)}}
 @media(prefers-reduced-motion:reduce){.l4b-win,.l4b-list input:checked+.l4b-lamp,.studio .journey-next .mission-launch.l4b-ready{animation:none}}
+/* Lab 4: how one scene works, above the scene tabs. */
+.l4-how{list-style:none!important;display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px!important;padding:0!important}
+.l4-how li{margin:0!important;padding:8px 12px!important;display:flex;align-items:center;gap:8px;border:1px dashed rgba(255,255,255,.3);border-radius:8px;font-size:15px;color:#f5f5ef;list-style:none!important}
+.l4-how li::before{content:none!important}
+.l4-how span{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#ffd23f;color:#000;font:800 13px/1 system-ui}
+.l4-pick-q span{display:block;font:400 13px/1.4 system-ui;letter-spacing:0;text-transform:none;color:#cfd6dc;margin-top:2px}

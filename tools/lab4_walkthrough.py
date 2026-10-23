@@ -353,7 +353,7 @@ def host():
      '<h3 id="l4-host-t">Make a world<br/>that remembers.</h3>'
      '<p>Four new powers: <b>memory</b>, <b>a rule that waits</b>, <b>doors</b> and <b>a way back</b>. Learn them on Alinta’s map, then use them in your own project.</p>'
      '<p class="l4-goal"><b>Your final work:</b> an interactive piece about <b>speculative digital futures</b>, on itch.io by week 50. <a href="final-assessment.html">Final quest →</a></p>'
-     '<div class="l4-pick" data-l4-pick="" hidden=""><p class="l4-pick-q">What are you building?</p><div class="l4-pick-row">' + picks + '</div>'
+     '<div class="l4-pick" data-l4-pick="" hidden=""><p class="l4-pick-q">What are you building? <span>Optional. The tips follow your pick.</span></p><div class="l4-pick-row">' + picks + '</div>'
      '<label class="l4-pname">My project is called <input type="text" maxlength="40" data-l4-pname="" placeholder="working title"/></label></div>'
      '<button type="button" class="l4-ask" data-l4-ask="" hidden="">Ask Dr. Turing</button>'
      '<p class="l4-host-msg" role="status" data-l4-hostmsg="">Watch the visitor: the number goes with them. The thought stays behind.</p></div>'
@@ -524,6 +524,8 @@ def build(root):
      'data-c3w-licence-href="#l4-ready" data-c3w-licence-label="To the final gate →" data-c3w-next-page="#l4-ready" data-c3w-next-label="To the final gate →">'
      f'<div class="c3w-head"><p class="eyebrow">LAB 4 · CONSTRUCT BESIDE THIS PAGE · YOUR OWN MAP</p>{HUD}</div>'
      '<nav class="c3w-tabs" aria-label="Lab 4 scenes">'
+     '<ol class="l4-how" aria-label="How a scene works"><li><span>1</span>Do it in Construct</li>'
+     '<li><span>2</span>Compare with <b>✓ CHECK</b></li><li><span>3</span>Press <b>It works ✓ Next</b></li></ol>'
      f'<p class="c3w-tabs-label">Part 1 · Memory · 22 min</p><ol>{tabs(P1)}</ol>'
      f'<p class="c3w-tabs-label">Part 2 · Rooms · 22 min</p><ol>{tabs(P2)}</ol></nav>'
      f'<div class="c3w-stage">{body}</div>{controls}</div>' + power() + checklist() + '<!-- /l4w -->')
@@ -549,6 +551,14 @@ def build(root):
     s = s.replace(old_next, new_next)
     assert s.count(new_next) == 1
     s = s.replace(new_next, boot() + new_next, 1)
+
+    # The bridge helps students without a map; the old Lab 4 history machine is a detour today.
+    s = s.replace('<h4>Bring your Lab 3 map.</h4><p>No map yet? Play Lab 3 first, then come back.</p>',
+                  '<h4>Bring your Lab 3 map.</h4><p>No map? Get Alinta’s Mapping template from <a href="construct-project-files.html">the course files</a> and start at scene 1.</p>')
+    a = s.index('id="lab-4"'); b = s.index('id="lab-5"')
+    L = re.sub(r'<div class="time-unlock">.*?</div>', '', s[a:b], flags=re.S)
+    L = L.replace('Next level: save &amp; reflect →', 'Next level: save &amp; post →')
+    s = s[:a] + L + s[b:]
 
     # Last stop: no pass and no notes any more, so say exactly what to keep.
     s = s.replace('<p>Need your pass? <a href="#lab-4-arrival">Go back to check-in.</a></p><p>Your experiment checklist and notes are saved in this browser when storage is available.</p>', '')
@@ -601,7 +611,7 @@ def build(root):
     s = re.sub(r'lab4-ready\.js\?v=\d+', 'lab4-ready.js?v=2', s)
     s = re.sub(r'c3-walk\.js\?v=\d+', 'c3-walk.js?v=5', s)
     s = re.sub(r'c3-play\.js\?v=\d+', 'c3-play.js?v=6', s)
-    s = re.sub(r'c3-walk\.css\?v=\d+', 'c3-walk.css?v=26', s)
+    s = re.sub(r'c3-walk\.css\?v=\d+', 'c3-walk.css?v=27', s)
     s = re.sub(r'lab4-hud\.js\?v=\d+', 'lab4-hud.js?v=5', s)
     path.write_text(s, encoding='utf-8', newline='\n')
 
