@@ -557,6 +557,8 @@ def build(root):
                   '<li><strong>Save:</strong> Menu › Project › Save as › Download a copy. Name it <b>yourname-lab4.c3p</b>.</li>'
                   '<li><strong>Post:</strong> your screenshot under <b>Discussions › Obligatory Task 5</b>.</li>'
                   '<li><strong>Bring it back:</strong> the same .c3p next Friday. Lab 5 tests it on another person.</li></ol>')
+    s = s.replace('Write your reflection on paper and hand it to Ingrid. This is your own record of your progress.',
+                  'Session complete. Keep your saved project files.')
     for n in range(1, 9):
         s = s.replace(f'<p>Need your pass? <a href="#lab-{n}-arrival">Go back to check-in.</a></p>', '')
 
