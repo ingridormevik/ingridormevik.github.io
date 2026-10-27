@@ -576,3 +576,43 @@ button:focus-visible {
 .post-preview:nth-child(1) { animation-delay: 0.1s; }
 .post-preview:nth-child(2) { animation-delay: 0.2s; }
 .post-preview:nth-child(3) { animation-delay: 0.3s; }
+
+/* === CONTACT LIST ===
+   .contact only exists on about.html, so these rules reach nothing else.
+   The list had no styling at all before, so it fell back to the browser's
+   grey bullets. Links keep the site's own hover underline. */
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contact-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5em;
+    padding: 0.85em 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.contact-list li:first-child {
+    border-top: 1px solid var(--border-color);
+}
+
+.contact-label {
+    flex: 0 0 9em;
+    color: var(--text-light);
+    font-size: 0.72em;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 560px) {
+    .contact-list li {
+        flex-direction: column;
+        gap: 0.35em;
+    }
+    .contact-label {
+        flex: none;
+    }
+}
