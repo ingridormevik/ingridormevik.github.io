@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mirror Model Card</title>
+<meta name="description" content="Printable consent card for the Mirror Model costume, in Norwegian and English.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,200..700&family=Chakra+Petch:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --ground: #07080d;
+    --paper: #000;
+    --ink: #e9ecf5;
+    --dim: #8b8fa1;
+    --hud: #8fd8ff;
+    --rose: #f29bcd;
+    --line: rgba(255, 255, 255, 0.18);
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ground: #07080d; } }
+  :root[data-theme="dark"] { --ground: #07080d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: "Archivo", "Helvetica Neue", Arial, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 32px 16px 48px; }
+  .intro { color: var(--dim); font-size: 15px; line-height: 1.55; margin: 0 0 24px; }
+  .intro strong { color: var(--ink); font-weight: 600; }
+  .intro button { margin-top: 12px; border: 1px solid var(--line); background: var(--ink); color: #000; border-radius: 4px; padding: 9px 16px; font: inherit; font-weight: 600; cursor: pointer; }
+  .sheet { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+  .card {
+    position: relative; aspect-ratio: 105 / 148; background: var(--paper);
+    border: 1px solid var(--line); overflow: hidden;
+    display: grid; grid-template-rows: auto 1fr auto; padding: 9% 9% 8%;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .card .tiles { position: absolute; inset: 0; pointer-events: none; }
+  .card .top { position: relative; display: flex; justify-content: space-between; font-family: "Chakra Petch", sans-serif; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--hud); }
+  .card .rec::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #ff2a55; margin-right: 6px; vertical-align: 0; }
+  .card .mid { position: relative; align-self: center; }
+  .card h2 { margin: 0 0 14px; font-weight: 200; font-stretch: 120%; font-size: clamp(30px, 8vw, 40px); line-height: 0.98; letter-spacing: -0.01em; }
+  .card p { margin: 0; font-size: 15px; line-height: 1.45; color: #c9ccd8; max-width: 24ch; }
+  .card .foot { position: relative; font-family: "Chakra Petch", sans-serif; font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); line-height: 1.6; border-top: 1px solid var(--line); padding-top: 10px; }
+  .card .foot b { color: var(--rose); font-weight: 500; }
+
+  @page { size: A4; margin: 12mm; }
+  @media print {
+    body { background: #fff; }
+    .intro { display: none; }
+    .wrap { padding: 0; max-width: none; }
+    .sheet { grid-template-columns: 105mm 105mm; gap: 0; justify-content: center; }
+    .card { width: 105mm; height: 148mm; aspect-ratio: auto; border: 0.2mm dashed #999; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="intro">
+    <strong>Mirror Model: "I am listening" card.</strong> Two cards, Norwegian and English, each A6 (105 x 148 mm).
+    Print on A4, cut along the dashed lines and slide one into the clear pouch on the harness, behind or beside the phone.
+    It tells guests the costume listens, so talking to it is their choice.<br>
+    <button type="button" onclick="print()">Print the cards</button>
+  </p>
+
+  <div class="sheet">
+    <article class="card" lang="nb">
+      <svg class="tiles" viewBox="0 0 105 148" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="top"><span class="rec">Rec</span><span>Speilmodell</span></div>
+      <div class="mid">
+        <h2>Jeg lytter.<br>Snakk til meg.</h2>
+        <p>Jeg er en AI laget av speil. Kom nærmere og si noe, så svarer jeg. Eller gå forbi, og jeg glemmer deg. Kanskje.</p>
+      </div>
+      <div class="foot">Jeg lagrer ingenting etter i kveld.<br><b>Du velger selv om du vil bli sett.</b></div>
+    </article>
+
+    <article class="card" lang="en">
+      <svg class="tiles" viewBox="0 0 105 148" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="top"><span class="rec">Rec</span><span>Mirror Model</span></div>
+      <div class="mid">
+        <h2>I am listening.<br>Speak to me.</h2>
+        <p>I am an AI made of mirrors. Come closer and say something, and I will answer. Or walk past, and I will forget you. Probably.</p>
+      </div>
+      <div class="foot">I keep nothing after tonight.<br><b>You choose whether to be seen.</b></div>
+    </article>
+  </div>
+</div>
+<script>
+  // a scatter of mirror tiles along the card edges, different on every card
+  document.querySelectorAll(".card .tiles").forEach((svg) => {
+    const ns = "http://www.w3.org/2000/svg", s = 4.2;
+    for (let y = 0; y < 148; y += s) {
+      for (let x = 0; x < 105; x += s) {
+        const edge = Math.min(x, 105 - x - s, y, 148 - y - s);
+        if (Math.random() > Math.max(0, 0.55 - edge / 12)) continue;
+        const r = document.createElementNS(ns, "rect");
+        const shade = 120 + Math.random() * 120 | 0, pink = y / 148;
+        r.setAttribute("x", x + 0.35); r.setAttribute("y", y + 0.35);
+        r.setAttribute("width", s - 0.7); r.setAttribute("height", s - 0.7);
+        r.setAttribute("fill", `rgb(${Math.min(255, shade + pink * 60) | 0},${shade * (1 - pink * 0.25) | 0},${Math.min(255, shade + 20)})`);
+        r.setAttribute("opacity", (0.25 + Math.random() * 0.5).toFixed(2));
+        svg.appendChild(r);
+      }
+    }
+  });
+</script>
+</body>
+</html>
