@@ -164,7 +164,10 @@ def apply(root):
     s.title.string="Alan Turing's library | Digital culture research"
     hero=s.select_one('.al-hero') or s.find(id='library-entrance')
     history=hero.select_one('.lc-history')
-    if history:history.extract()
+    if history:
+        for paragraph in list(history.select('p')):
+            if 'nechvatal' in paragraph.get_text().lower():paragraph.decompose()
+        history.extract()
     replacement=BeautifulSoup(entrance(True),'html.parser').find();replacement['class'].append('al-hero')
     replacement.name='header'
     if history:replacement.append(history)
