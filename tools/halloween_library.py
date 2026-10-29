@@ -97,6 +97,8 @@ def entrance(library=False):
 def navigation(page):
     nav=page.select_one('.studio-header nav')
     if not nav:return
+    for link in list(nav.select('a')):
+        if link.get('href','').split('#')[0].split('/')[-1]=='meet-ingrid.html' or link.get_text(' ',strip=True).lower()=='lab assistant':link.decompose()
     final=nav.select_one('a[href="final-assessment.html"]')
     if not final:
         final=page.new_tag('a',href='final-assessment.html');nav.insert(1,final)
@@ -179,6 +181,8 @@ def apply(root):
         p.write_text(raw,encoding='utf-8',newline='\n')
     from library_session import build
     build(root)
+    from remove_lab_assistant import remove
+    remove(root)
 
 
 if __name__=='__main__':
