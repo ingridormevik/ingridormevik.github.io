@@ -96,11 +96,20 @@
     function deviceVoice(){
       if(id!==speechID)return;
       if(!hasTTS){clearTimeout(speechTimer);speechTimer=setTimeout(finish,Math.max(1500,text.length*45));return;}
-      const u=new SpeechSynthesisUtterance(text),language=row?.lang||lang;
+      const language=row?.lang||lang;
       const all=speechSynthesis.getVoices(),matching=all.filter(v=>language==='nb'?/^(nb|no|nn)/i.test(v.lang):/^en/i.test(v.lang));
-      u.voice=matching.find(v=>/Sonia|Pernille|Nora|Samantha|Aria|Jenny|Natural|female/i.test(v.name))||matching[0]||null;
-      u.lang=language==='nb'?'nb-NO':'en-GB';u.rate=.80;u.pitch=.84;u.volume=.94;u.onend=finish;u.onerror=finish;u.onstart=()=>{S.energy=.35;};
-      speechSynthesis.speak(u);
+      const names=language==='nb'?['Pernille','Nora']:['Aria','Victoria','Zira','Samantha','Sonia','Jenny'];
+      const chosen=names.map(name=>matching.find(v=>v.name.includes(name))).find(Boolean)||matching[0]||null;
+      const clauses=text.match(/[^.!?]+[.!?]?/g)||[text];let clause=0;
+      function next(){
+        if(id!==speechID)return;
+        const u=new SpeechSynthesisUtterance(clauses[clause++].trim().replace(/[!?]$/,'.'));
+        u.voice=chosen;u.lang=language==='nb'?'nb-NO':'en-US';u.rate=.72;u.pitch=.60;u.volume=1;
+        u.onstart=()=>{S.energy=.35;};u.onerror=finish;
+        u.onend=()=>{if(id!==speechID)return;if(clause<clauses.length)setTimeout(next,480);else finish();};
+        speechSynthesis.speak(u);
+      }
+      next();
     }
   }
   setInterval(()=>{
@@ -176,5 +185,5 @@
   for(let i=0;i<39;i++){const bar=document.createElement('i');bar.style.setProperty('--h',(4+Math.sin(i/38*Math.PI)*15+(i%3)*2)+'px');bar.style.setProperty('--d',-(i*.137)+'s');$('waveform').appendChild(bar);}
   if(hasTTS)speechSynthesis.getVoices();
   language(lang);mindLabel();prepare(lines.find(l=>l.lang===lang&&l.topic==='welcome')).catch(()=>{});
-  if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
+  if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
 })();
