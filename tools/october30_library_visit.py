@@ -3,13 +3,13 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 
 VISIT = '''<section class="pv-lab" id="project-research-lab" aria-labelledby="pv-title">
-<p class="pv-tag">FRIDAY 30 OCTOBER / YOUR PROJECT GOES TO THE LIBRARY</p>
-<h3 id="pv-title">Build together. Find something worth using.</h3>
-<p class="pv-lead">Bring the project you are already making, at whatever stage it is. Work alongside each other, get help and take a question from your project into the library.</p>
+<p class="pv-tag">FRIDAY 30 OCTOBER / PROJECT WORK, LIBRARY OR BOTH</p>
+<h3 id="pv-title">Your project. Your route.</h3>
+<p class="pv-lead">Stay in the lab and work on your project, explore the library, or combine the two. Choose what helps you today. The library visit is optional.</p>
 <div class="pv-stations">
-<article><span class="pv-number" aria-hidden="true">01</span><h4>At the workbench</h4><p>Open your latest version. Show a neighbour one part you want to improve. Choose one manageable change and help each other try it.</p><p><strong>Take a question:</strong> how can a player find the next room? What makes an interface welcoming? How can sound tell part of the story?</p><a href="tools.html#construct-toolkit">Open the practical guides</a></article>
-<article><span class="pv-number" aria-hidden="true">02</span><h4>Among the shelves</h4><p>Go together and find your way around. Start with your question, search Oria and locate a book that could help. Look at nearby books too: another subject may give you a useful angle.</p><p><strong>Open the book:</strong> use its contents or index to find a relevant passage. What does it help you notice about your project?</p><a href="#library-shelf-route">From a search result to the shelf</a></article>
-<article><span class="pv-number" aria-hidden="true">03</span><h4>Back to your idea</h4><p>Tell a partner what you found. Use the idea to try a change or question a choice in your project. Test it together if there is time.</p><p><strong>Keep the connection:</strong> save the source details and the page you used alongside your project files. We continue developing the work in Lab 6.</p><a href="academic-library.html#chicago-author-date">Cite the source you actually read</a></article>
+<article><span class="pv-number" aria-hidden="true">BUILD</span><h4>Stay in the lab</h4><p>Open your latest version and choose one manageable change. Work alongside each other, ask for help and let a neighbour try what you are making.</p><p><strong>Your focus:</strong> an interaction, a scene, an interface, sound or a problem you want to solve. You can spend the whole session on your project.</p><a href="tools.html#construct-toolkit">Open the practical guides</a></article>
+<article><span class="pv-number" aria-hidden="true">BROWSE</span><h4>Explore the library</h4><p>Find your way around, search Oria and locate a book that could help with your interests. Look at nearby books too: another subject may give you a useful angle.</p><p><strong>Open the book:</strong> use its contents or index to find a relevant passage. Keep the source details and the page you used.</p><a href="#library-shelf-route">From a search result to the shelf</a></article>
+<article><span class="pv-number" aria-hidden="true">MIX</span><h4>Combine both</h4><p>Work on your project, take a question to the library and use what you find to try a change or question a design choice. Switch between making and researching when it helps.</p><p><strong>For example:</strong> build a room, read about how game interfaces guide players, then try a clearer signal in your scene.</p><a href="academic-library.html#chicago-author-date">Cite the source you actually read</a></article>
 </div>
 <details class="pv-shelf" id="library-shelf-route"><summary>First library visit? Find the book, step by step.</summary>
 <ol><li><strong>Search UiB's Oria.</strong> Try a title, author or two topic words. Select a physical book record rather than an e-book if you want to find it on a shelf.</li>
@@ -20,21 +20,21 @@ VISIT = '''<section class="pv-lab" id="project-research-lab" aria-labelledby="pv
 <li><strong>Borrow if useful.</strong> Bring your student card or student ID app. Use the self-service machine or ask at the desk.</li></ol>
 <p><a href="https://www4.uib.no/universitetsbiblioteket/bruk-biblioteket/bibliotekets-sokeportal-oria" target="_blank" rel="noopener">Open UiB's Oria entry and access help ↗</a> · <a href="https://hjelpekort.app.uib.no/en/KI-3385.html" target="_blank" rel="noopener">UiB's guide to finding and borrowing books ↗</a></p>
 </details>
-<p class="pv-logistics"><strong>Before we leave:</strong> save your work. We walk to the library together.</p>
-<p class="pv-alternative">If you cannot join the walk, use the same question with an e-book or article. <a href="academic-library.html#find-articles">Google Scholar, Sikt's NVA and article-search help</a> are available here. If access is blocked, keep the exact record and ask for help. UiB's Oria page explains access to licensed resources.</p>
+<p class="pv-logistics"><strong>If you go to the library:</strong> save any open project files before leaving. Allow time for the walk.</p>
+<p class="pv-alternative">You can also research from the lab using an e-book or article. <a href="academic-library.html#find-articles">Google Scholar, Sikt's NVA and article-search help</a> are available here. If access is blocked, keep the exact record and ask for help. UiB's Oria page explains access to licensed resources.</p>
 <p class="pv-connect"><a href="academic-library.html#research-finder">Help me find research words</a> · <a href="academic-library.html#sources">Browse the starting book collection</a> · <a href="#lab-6">Continue with Lab 6: future lab →</a></p>
 </section>'''
 
 AGENDA = [
-    (5, 'Open your project', 'Bring your current version, finished or not.', 'Show a neighbour what you are working on and choose one manageable next step.'),
-    (10, 'Work together: choose what to improve', 'Try one part of your project with a partner.', 'Ask for specific help, compare ideas and begin a useful change.'),
-    (10, 'Build alongside each other', 'Continue your own project.', 'Use a guide when needed. You do not need to start again or switch tools.'),
-    (20, 'Keep building; find a research question', 'What could research help you understand about this project?', 'Work on your chosen change. Before the break, try two search words in Oria and check a possible book location.'),
+    (5, 'Choose your route', 'Project work in the lab, library research, or both.', 'Bring your current project or a research question. Choose one useful goal.'),
+    (10, 'Get started and help each other', 'Open your project or begin a research search.', 'Compare ideas, ask for help or look up a book location in Oria if you want to visit the library.'),
+    (10, 'Project work or research', 'Continue with the route you chose.', 'Build, test, read or explore the library. Allow walking time if you go.'),
+    (20, 'Keep going, or combine the routes', 'Use the time for what your project needs.', 'Work alongside others, follow a research lead or move between the lab and library.'),
     (10, 'Break: step away', 'Save your work and take a real break.', 'Stretch, get water or leave the screen.'),
-    (30, 'Library visit: find research and the shelves', 'Go together, find your way around and look for something relevant.', 'This block includes walking. Check the library, copy status and shelf mark in Oria. Open a useful chapter or browse with a partner; ask staff for help.'),
-    (5, 'Short break: reset', 'Take a real break.', 'Keep the source details so you can find the material again.'),
-    (10, 'Connect the research to your project', 'Share one useful idea with a partner.', 'Wherever we finish, use it to test a change or question a design decision. Keep the actual reference and page.'),
-    (5, 'Save and choose your next step', 'Save your project and keep the source you found.', 'Choose what to continue in Lab 6 on 6 November. Follow the current course instructions on Mitt UiB.'),
+    (30, 'Continue: project, library or both', 'Stay with your route or try the other one.', 'The library visit is optional. Keep building in the lab, find a useful source, or connect reading to a design choice.'),
+    (5, 'Short break: reset', 'Take a real break.', 'Step away from what you are working on.'),
+    (10, 'Try, discuss or follow up', 'Use the last work block for your chosen goal.', 'Test a change with a neighbour, read a useful passage or follow up a question.'),
+    (5, 'Save and choose your next step', 'Save your project work or the research details you want to keep.', 'Choose what to continue in Lab 6 on 6 November. Follow the current course instructions on Mitt UiB.'),
 ]
 
 
@@ -42,20 +42,20 @@ def update(root):
     path = root / 'labs/lab-programme.html'
     page = BeautifulSoup(path.read_text(encoding='utf-8'), 'html.parser')
     lab = page.find(id='lab-5')
-    lab.select_one('.lab-title h2').string = 'Project lab + library visit'
-    lab.select_one('.lab-title .lead').string = 'Work on your own project together, then find research and discover where the books live.'
+    lab.select_one('.lab-title h2').string = 'Project lab: choose your route'
+    lab.select_one('.lab-title .lead').string = 'Work on your project in the lab, visit the library, or combine both. The library visit is optional.'
     for node in page.select('.lab-nav a[href="#lab-5"] strong'):
-        node.string = 'Projects + library'
+        node.string = 'Project lab'
     orb = page.select_one('.lab-nav a[href="#lab-5"] .lv-orb i')
     if orb: orb.string = 'MAKE'
     arrival = lab.find(id='checkin-title-5')
     arrival.string = 'What does your project need next?'
-    lab.select_one('#lab-5-arrival .arrival-prompt').string = 'Open the work you already have. Today we help each other build, then explore the library with a question from our projects.'
+    lab.select_one('#lab-5-arrival .arrival-prompt').string = 'Choose what would help you today: work on your project in the lab, explore research at the library, or combine the two.'
     work = lab.find(id='lab-5-workbench')
     for old in page.select('#project-research-lab'): old.decompose()
     band = page.find(id='lab-5-sec-1')
-    band.select_one('.sb-title').string = 'Your project + the library'
-    band.select_one('.sb-desc').string = 'One project, a useful question and a source to take back into your work.'
+    band.select_one('.sb-title').string = 'Choose: project work, library or both'
+    band.select_one('.sb-desc').string = 'These are three ways to use the session. You can stay with one or switch between them.'
     band.select_one('.time-chip')['data-to'] = '85'
     band.insert_after(BeautifulSoup(VISIT, 'html.parser').find())
     work.select_one('.route-kicker').string = 'CONTINUE FROM LAB 4'
@@ -68,28 +68,30 @@ def update(root):
             summary = page.new_tag('summary'); summary.string = label; drawer.append(summary)
             node.replace_with(drawer); drawer.append(node)
         work.select_one('.resources').insert_after(node.parent.extract())
-    page.find(id='lab-5-sec-2').select_one('.sb-title').string = 'Make the research useful'
+    page.find(id='lab-5-sec-2').select_one('.sb-title').string = 'Your chosen next step'
     page.find(id='lab-5-sec-2').select_one('.time-chip')['data-from'] = '90'
     page.find(id='lab-5-sec-2').select_one('.time-chip')['data-to'] = '100'
-    for href,label in [('#lab-5-sec-1','Projects + library'),('#lab-5-sec-2','Use what you found'),('#lab-5-sec-3','Help when needed')]:
+    for href,label in [('#lab-5-sec-1','Choose your route'),('#lab-5-sec-2','Your next step'),('#lab-5-sec-3','Help when needed')]:
         work.select_one(f'.step-map a[href="{href}"] span').string = label
     mission = work.select_one('[data-mission="5"]')
     brief = mission.select_one('.mission-brief')
-    brief.h3.string = 'Let research change something.'
-    brief.select_one('h3 + p').string = 'Connect what you found in the library to a choice in the project you are building.'
-    brief.select_one('.mission-prompt').string = 'Does the source support your choice, challenge it or suggest something to try?'
+    brief.h3.string = 'Move your work forward.'
+    brief.select_one('h3 + p').string = 'Build something, investigate a question or use research to explore a design choice. Choose what is useful for you.'
+    brief.select_one('.mission-prompt').string = 'What did you try or discover, and what would you like to do next?'
     brief.select_one('a.primary')['href'] = '#project-research-lab'
     brief.select_one('a.primary').string = 'Return to the project + library route'
-    checks = ['Work on one part of my project with a peer.', 'Find a relevant source and read a useful passage, or identify what I need help accessing.', 'Use research or feedback to choose a revision, and save my current version.']
+    checks = ['Choose a useful project goal or research question.', 'Make progress on my project, explore a relevant source, or combine the two.', 'Save the work or source details I want to keep, and choose my next step.']
     for node,text in zip(mission.select('.mission-check span'), checks): node.string = text
-    mission.select_one('.own-mind h4').string = 'Your project brings the question.'
-    mission.select_one('.own-mind > p:not(.eyebrow)').string = 'Keep building what matters to you. Use another person and a relevant source to see it differently.'
+    mission.select_one('.own-mind h4').string = 'Choose what helps you today.'
+    mission.select_one('.own-mind > p:not(.eyebrow)').string = 'Continue your project, explore research or mix both. Help each other along the way.'
     mission.select_one('.own-mind-actions').clear()
-    mission.select_one('.own-mind-actions').append(BeautifulSoup('<li><strong>Build</strong> one useful change.</li><li><strong>Find</strong> a source that fits your question.</li><li><strong>Connect</strong> the idea to a design choice.</li>','html.parser'))
+    mission.select_one('.own-mind-actions').append(BeautifulSoup('<li><strong>Choose</strong> a goal.</li><li><strong>Try</strong> it through making, reading or both.</li><li><strong>Keep</strong> what helps you continue.</li>','html.parser'))
     finish = page.find(id='lab-5-finish')
-    finish.select_one('.finish-mission h3').string = 'Save your work. Keep the source.'
+    finish.select_one('.finish-mission h3').string = 'Keep what you worked on.'
     finish.select_one('.finish-mission > ol').clear()
-    finish.select_one('.finish-mission > ol').append(BeautifulSoup('<li><strong>Save your current project.</strong> Keep the version you worked on today.</li><li><strong>Keep the source details.</strong> Save the reference and the passage or page you used.</li>','html.parser'))
+    finish.select_one('.finish-mission > ol').append(BeautifulSoup('<li><strong>Save what you worked on.</strong> Your project files, research details or both.</li><li><strong>Choose your next step.</strong> What would help you continue next time?</li>','html.parser'))
+    saved=finish.select_one('[data-final="saved"]').parent
+    saved.contents[-1].replace_with(' I saved my project work or the research details I want to keep.')
     link = finish.select_one('.finish-mission > a.primary')
     link['href'] = '#lab-6'; link.string = 'Next lab: future lab, 6 November →'
     agenda = lab.select_one('.agenda'); agenda.clear()
@@ -118,7 +120,9 @@ def update(root):
         p=root/'labs'/name
         html=p.read_text(encoding='utf-8')
         html=html.replace('<b>Someone tests it</b><small>Test &amp; publish</small>','<b>Build + investigate</b><small>Projects + library</small>')
+        html=html.replace('<b>Build + investigate</b><small>Projects + library</small>','<b>Your next step</b><small>Project / research</small>')
         html=html.replace('30 Oct · test and publish. Video lecture counts as attendance','30 Oct · projects + library. Video lecture counts as attendance')
+        html=html.replace('30 Oct · projects + library. Video lecture counts as attendance','30 Oct · project lab, optional library visit. Video lecture counts as attendance')
         p.write_text(html,encoding='utf-8',newline='\n')
 
 

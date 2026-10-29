@@ -15,7 +15,7 @@ LAB_DATES = [('lab-1', '2 Oct'), ('lab-2', '9 Oct'), ('lab-3', '16 Oct'), ('lab-
 
 # One project, eight Fridays: the strip at the top of every lab.
 PATH = [('A place', 'HTML &amp; CSS'), ('A choice', 'JavaScript'), ('A secret', 'Construct 1'), ('Rules &amp; rooms', 'Construct 2'),
-        ('Build + investigate', 'Projects + library'), ('A future', 'Future lab'), ('Sharper', 'Feedback'), ('Shipped', 'Link + video')]
+        ('Your next step', 'Project / research'), ('A future', 'Future lab'), ('Sharper', 'Feedback'), ('Shipped', 'Link + video')]
 
 
 def br_path(k):
@@ -27,7 +27,7 @@ def br_path(k):
 # The road to week 50, on the lab map and in the hub.
 ROAD = [
  (43, 'Lab 4', '23 Oct · rules and rooms', 'lab-programme.html#lab-4', ''),
- (44, 'Lab 5', '30 Oct · projects + library. Video lecture counts as attendance', 'lab-programme.html#lab-5', ''),
+ (44, 'Lab 5', '30 Oct · project lab, optional library visit. Video lecture counts as attendance', 'lab-programme.html#lab-5', ''),
  (45, 'Lab 6', '6 Nov · future lab. Maybe the last obligatory chance', 'lab-programme.html#lab-6', ''),
  (46, 'Lab 7', '13 Nov · feedback clinic', 'lab-programme.html#lab-7', ''),
  (47, 'Lab 8', '20 Nov · ship it: link and video', 'lab-programme.html#lab-8', ''),

@@ -23,6 +23,11 @@ for row in lab.select('.agenda-row'):
     elapsed+=minutes
 assert elapsed==105 and breaks==[(45,55),(85,90)]
 assert len(lab.select('#project-research-lab .pv-stations > article'))==3
+assert 'The library visit is optional.' in lab.select_one('.pv-lead').get_text()
+assert 'Stay in the lab' in lab.select_one('.pv-stations').get_text()
+assert 'combine the two' in lab.select_one('#lab-5-arrival .arrival-prompt').get_text()
+assert 'or combine the two' in lab.select_one('[data-mission="5"]').get_text()
+assert 'or the research details' in lab.select_one('[data-final="saved"]').parent.get_text()
 assert lab.select_one('#library-shelf-route summary')
 assert lab.select_one('[data-pv-optional="test-lab"] #test-lab')
 assert lab.select_one('[data-pv-optional="publish-your-project"] #publish-your-project')
