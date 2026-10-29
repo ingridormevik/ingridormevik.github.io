@@ -6,7 +6,7 @@ function run(hash=''){
  const links=panels.map((_,i)=>element({lsGo:String(i)}));const skip=element({lsGo:'2'});
  const next=[element()],back=[element()],controls=[element()];const position=element();
  const lens=element({lsLens:'choice',lsQuery:'player agency',lsQuestion:'What did the choice change?',lsHref:'#jorgensen-start',lsTitle:'Gameworld Interfaces',lsAuthor:'Kristine Jørgensen'});
- const query={value:'digital interaction'},question=element(),words=element(),book=element(),author=element();
+ const query=element();query.value='digital interaction';const question=element(),words=element(),book=element(),author=element(),oria=element(),guide=element(),returnLink=element();
  const channel=['shelf','online'].map(lsChannel=>element({lsChannel}));channel[0].attrs['aria-pressed']='true';
  const channelPanels=['shelf','online'].map(lsChannelPanel=>element({lsChannelPanel}));
  const tabs=['contents','index','references'].map(lsBookTab=>element({lsBookTab}));tabs[1].attrs['aria-pressed']='true';
@@ -15,13 +15,14 @@ function run(hash=''){
  const demo=element({lsDemo:'closed'}),demoButton=element(),story=element();
  const singles={'[data-ls-position]':position,'[data-ls-question]':question,'[data-ls-words]':words,'#ls-query':query,'[data-ls-book]':book,'[data-ls-author]':author,'[data-ls-meaning-text]':meaning,'[data-ls-demo]':demo,'[data-ls-demo-action]':demoButton,'[data-ls-demo-story]':story};
  const lists={'[data-ls-panel]':panels,'.ls-room-map [data-ls-go]':links,'[data-ls-controls]':controls,'[data-ls-go]':[...links,skip],'[data-ls-next]':next,'[data-ls-back]':back,'[data-ls-lens]':[lens],'[data-ls-channel]':channel,'[data-ls-channel-panel]':channelPanels,'[data-ls-book-tab]':tabs,'[data-ls-book-page]':pages,'[data-ls-meaning]':meanings};
+ singles['[data-ls-oria]']=oria;lists['[data-ls-search-guide]']=[guide];
  const root={querySelector:key=>singles[key]||null,querySelectorAll:key=>lists[key]||[],closest:()=>null};
  const collection={tagName:'DETAILS',open:false,parentElement:null};
  const station={tagName:'DETAILS',open:false,parentElement:collection};
  const source={tagName:'SECTION',parentElement:station,closest:()=>null};
  const location={hash};let follow;
  vm.runInNewContext(fs.readFileSync('labs/library-session.js','utf8'),{
-  document:{getElementById:id=>id==='library-session'?root:id==='jorgensen-start'?source:panels.find(p=>p.id===id)},
+  document:{querySelectorAll:key=>key==='[data-ls-return]'?[returnLink]:[],getElementById:id=>id==='library-session'?root:id==='jorgensen-start'?source:panels.find(p=>p.id===id)},
   location,history:{replaceState(_a,_b,h){location.hash=h;}},addEventListener:(_,fn)=>{follow=fn;}
  });
  const visible=()=>panels.findIndex(p=>!p.hidden);
@@ -32,6 +33,9 @@ function run(hash=''){
  skip.events.click({preventDefault(){}});assert.equal(visible(),2);assert(panels[2].heading.focused);assert(panels[2].scrolled);
  back[0].events.click();assert.equal(visible(),1);
  lens.events.click();assert.equal(query.value,'player agency');assert.equal(book.href,'#jorgensen-start');assert.equal(author.textContent,'Kristine Jørgensen');
+ assert(oria.href.includes('47BIBSYS_UBB%3AUBB'));assert(oria.href.includes('player%20agency'));
+ assert.equal(guide.href,'research-guide.html?q=player%20agency#search-start');
+ query.value='sound & belonging';query.events.input();assert(guide.href.includes('sound%20%26%20belonging'));
  next[0].events.click();assert.equal(visible(),2);
  channel[1].events.click();assert(channelPanels[0].hidden&&!channelPanels[1].hidden);
  tabs[2].events.click();assert.equal(pages.find(p=>!p.hidden).dataset.lsBookPage,'references');
@@ -40,6 +44,7 @@ function run(hash=''){
  links[0].events.click({preventDefault(){}});assert.equal(visible(),0);
  location.hash='#jorgensen-start';follow();assert(collection.open&&station.open);
  location.hash='#ls-find';follow();assert.equal(visible(),2);
+ assert.equal(returnLink.href,'#ls-find');assert(returnLink.textContent.includes('room 3'));
  location.hash='#%broken';assert.doesNotThrow(follow);
  assert.equal(links.filter(l=>l.attrs['aria-current']==='step').length,1);
  return visible();

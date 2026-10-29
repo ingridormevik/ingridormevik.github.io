@@ -17,6 +17,8 @@ collection=page.find(id='library-shelves')
 assert collection and len(collection.select('.lq-station'))==9 and not collection.has_attr('open')
 assert len(collection.select('.ge-card'))==44 and len(collection.select('.al-book'))==14
 assert len(collection.select('.ls-return'))==9
+assert len(collection.select('[data-ls-return]'))==9
+assert session.select_one('[data-ls-oria]') and session.select_one('[data-ls-search-guide]')
 assert len(session.select('[data-ls-lens]'))==9
 for button in session.select('[data-ls-lens]'):
     book=page.find(id=button['data-ls-href'][1:])

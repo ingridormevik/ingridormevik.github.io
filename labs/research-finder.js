@@ -57,7 +57,7 @@
       const h = document.createElement('h4'); h.textContent=route.title; section.append(h);
       [route.why,`Ask: ${route.question}`,`Search terms: ${route.terms}`].forEach(text => {const p=document.createElement('p');p.textContent=text;section.append(p);});
       const reading=document.createElement('a');reading.href=route.url;reading.textContent=route.label;section.append(reading);
-      const p=document.createElement('p');const search=document.createElement('a');search.href='https://oria.no/?query=any,contains,'+encodeURIComponent(route.terms);search.textContent='Search these terms in Oria ↗';p.append(search);section.append(p);routes.append(section);
+      const p=document.createElement('p');const search=document.createElement('a');search.href='https://bibsys-d.primo.exlibrisgroup.com/discovery/search?vid=47BIBSYS_UBB%3AUBB&lang=en&tab=default_slot&search_scope=MyInst_and_CI&query='+encodeURIComponent('any,contains,'+route.terms);search.textContent='Search these terms in UiB Oria ↗';p.append(search);section.append(p);routes.append(section);
     });
     const answered = ['agency','structure','rules','language','world','values'].filter(key=>answers[key]).length;
     const selected = answers.formats.length;

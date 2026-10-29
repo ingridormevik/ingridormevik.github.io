@@ -15,7 +15,7 @@ for name in files:
     ids=[node['id'] for node in page.select('[id]')]
     assert not [key for key,count in Counter(ids).items() if count>1],name
     assert len(page.select('h1'))==1,name
-    assert page.select_one('.studio-header .hl-final-tab[href="final-assessment.html"]'),name
+    assert page.select_one('.studio-header .hl-final-tab[href="final-assessment.html#brief"]'),name
     if name in ['lab-programme.html','academic-library.html']:
         assert len(page.select('[data-hl-calm]'))==1
         assert page.select_one('svg.hh-drawing .hh-ghost .hh-eyes')

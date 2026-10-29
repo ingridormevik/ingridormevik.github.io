@@ -99,14 +99,18 @@ def navigation(page):
     if not nav:return
     for link in list(nav.select('a')):
         if link.get('href','').split('#')[0].split('/')[-1]=='meet-ingrid.html' or link.get_text(' ',strip=True).lower()=='lab assistant':link.decompose()
-    final=nav.select_one('a[href="final-assessment.html"]')
+    final=nav.select_one('a[href^="final-assessment.html"]')
     if not final:
-        final=page.new_tag('a',href='final-assessment.html');nav.insert(1,final)
+        final=page.new_tag('a');nav.insert(1,final)
+    final['href']='final-assessment.html#brief'
     final.clear();final.append('Final Assignment ')
     badge=page.new_tag('span',attrs={'class':'hl-new'});badge.string='NEW';final.append(badge)
     final['class']=['hl-final-tab']
-    library=nav.select_one('a[href="academic-library.html"]')
-    if library:library.string="Turing's Library"
+    library=nav.select_one('a[href^="academic-library.html"]')
+    if not library:
+        library=page.new_tag('a');nav.insert(2,library)
+    library['href']='academic-library.html#library-session'
+    library.string="Turing's Library"
 
 
 def assets(page):
@@ -186,6 +190,10 @@ def apply(root):
     build(root)
     from remove_lab_assistant import remove
     remove(root)
+    from research_guide import build as research_guide
+    research_guide(root)
+    from lab_links import apply as lab_links
+    lab_links(root)
 
 
 if __name__=='__main__':

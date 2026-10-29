@@ -20,11 +20,6 @@
       if (el.tagName === 'DETAILS') el.open = true;
       el = el.parentElement;
     }
-    const target = hashTarget();
-    if (target) {
-      const direct = [...target.children].find(el => el.tagName === 'DETAILS');
-      if (direct) direct.open = true;
-    }
   }
 
   const labs = [...document.querySelectorAll('.lab')];

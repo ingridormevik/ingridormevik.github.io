@@ -9,6 +9,7 @@
     current=Number.isInteger(index)?Math.max(0,Math.min(panels.length-1,index)):0;
     panels.forEach((panel,i)=>{panel.hidden=i!==current;});
     roomLinks.forEach((link,i)=>{if(i===current)link.setAttribute('aria-current','step');else link.removeAttribute('aria-current');});
+    document.querySelectorAll('[data-ls-return]').forEach(link=>{link.href='#'+panels[current].id;link.textContent='← Back to room '+(current+1)+': '+names[current];});
     root.querySelector('[data-ls-position]').textContent=`Room ${current+1} of ${panels.length} · ${names[current]}. You can visit any room.`;
     if(bookmark){try{history.replaceState(null,'','#'+panels[current].id);}catch{}}
     if(focus){const heading=panels[current].querySelector('h3');heading.tabIndex=-1;heading.focus({preventScroll:true});panels[current].scrollIntoView({block:'start'});}
@@ -18,11 +19,20 @@
   root.querySelectorAll('[data-ls-next]').forEach(button=>button.addEventListener('click',()=>go(current+1,true,true)));
   root.querySelectorAll('[data-ls-back]').forEach(button=>button.addEventListener('click',()=>go(current-1,true,true)));
   const lenses=[...root.querySelectorAll('[data-ls-lens]')];
+  const query=root.querySelector('#ls-query');
+  const syncSearch=()=>{
+    const words=query.value.trim();
+    const oria=root.querySelector('[data-ls-oria]');
+    if(oria)oria.href='https://bibsys-d.primo.exlibrisgroup.com/discovery/search?vid=47BIBSYS_UBB%3AUBB&lang=en&tab=default_slot&search_scope=MyInst_and_CI&query='+encodeURIComponent('any,contains,'+words);
+    root.querySelectorAll('[data-ls-search-guide]').forEach(link=>{link.href='research-guide.html?q='+encodeURIComponent(words)+'#search-start';});
+  };
+  query.addEventListener('input',syncSearch);syncSearch();
   lenses.forEach(button=>button.addEventListener('click',()=>{
     lenses.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
     root.querySelector('[data-ls-question]').textContent=button.dataset.lsQuestion;
     root.querySelector('[data-ls-words]').textContent=button.dataset.lsQuery;
     root.querySelector('#ls-query').value=button.dataset.lsQuery;
+    syncSearch();
     const book=root.querySelector('[data-ls-book]');book.href=button.dataset.lsHref;book.textContent=button.dataset.lsTitle;
     root.querySelector('[data-ls-author]').textContent=button.dataset.lsAuthor;
   }));
@@ -60,6 +70,7 @@
     let target;try{target=location.hash?document.getElementById(decodeURIComponent(location.hash.slice(1))):null;}catch{return;}
     const panel=target?.closest('[data-ls-panel]');
     if(panel&&panels.includes(panel))go(panels.indexOf(panel));
+    if(target?.closest('.al-book')&&current===0)go(2);
     for(let node=target;node;node=node.parentElement)if(node.tagName==='DETAILS')node.open=true;
   };
   go(0);addEventListener('hashchange',follow);follow();
