@@ -87,3 +87,5 @@ def library(root):
             if name == 'academic-library.html': link['aria-current']='page'
             nav.append(link)
         path.write_text(str(page),encoding='utf-8',newline='\n')
+    from halloween_library import apply
+    apply(root)

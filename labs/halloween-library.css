@@ -1,0 +1,63 @@
+/* An illustrated Halloween reading room. All interactions keep a plain HTML route. */
+body.studio.hl-season{background-color:#151e29;background-image:radial-gradient(#b4c0a521 1px,transparent 1px);background-size:26px 26px}
+body.studio.hl-season .hl-entrance{display:block;position:relative;width:100%;max-width:none;margin:24px 0;padding:clamp(20px,4vw,42px);border:4px solid #090e17;background:#233336;color:#f4e7c9;box-shadow:8px 8px 0 #090e17;box-sizing:border-box}
+body.studio.hl-season .hl-topline{display:flex;gap:16px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+body.studio.hl-season .hl-kicker{margin:0;color:#c7ddab;font:800 12px/1.6 Consolas,monospace;letter-spacing:.09em}
+body.studio.hl-season .hl-open-sign{display:inline-block;transform:rotate(2deg);padding:7px 12px;background:#e5bd7d;color:#101d25;border:2px solid #090e17;font:850 12px/1.4 monospace}
+body.studio.hl-season .hl-entrance h1{max-width:22ch;margin:22px 0 18px;color:#f4e7c9;font:800 clamp(38px,5.7vw,76px)/1.03 Georgia,serif;letter-spacing:-.04em;text-align:left;text-transform:none;text-shadow:none;-webkit-text-stroke:0}
+body.studio.hl-season .hl-entrance .hl-lead{max-width:68ch;margin:0 0 28px;color:#e3e4d2;font:19px/1.75 'Segoe UI',Arial,sans-serif;text-align:left}
+body.studio.hl-season .hl-scene{position:relative;background:#161e2b;border:3px solid #090e17;margin:0 -10px;overflow:hidden}
+body.studio.hl-season .hl-scene>img{display:block;width:100%;max-width:none;height:auto;margin:0;transform:translateY(var(--hl-lift,0px));transition:transform .3s ease}
+body.studio.hl-season .hl-map-doors{position:absolute;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;left:4%;right:4%;bottom:5%;padding:0;margin:0;border:0;text-align:left;max-width:none}
+body.studio.hl-season .hl-map-doors>a{position:relative;display:block;min-width:0;padding:14px 16px 14px 44px;background:#e8ddbf;color:#15252c;border:3px solid #090e17;text-decoration:none;box-shadow:4px 4px 0 #090e17;transition:transform .15s ease}
+body.studio.hl-season .hl-map-doors>a:nth-child(2){background:#c5d3b0}
+body.studio.hl-season .hl-map-doors>a:nth-child(3){background:#d4b9c5}
+body.studio.hl-season .hl-map-doors>a>span{position:absolute;left:12px;top:15px;color:#33464a;font:800 12px/1.4 monospace}
+body.studio.hl-season .hl-map-doors strong{display:block;color:#15252c;font:850 clamp(15px,1.6vw,21px)/1.3 'Segoe UI',Arial,sans-serif}
+body.studio.hl-season .hl-map-doors small{display:block;margin-top:5px;color:#33464a;font:14px/1.5 'Segoe UI',Arial,sans-serif}
+body.studio.hl-season .hl-map-doors>a:hover{transform:translateY(-5px)}
+body.studio.hl-season .hl-familiar{display:flex;align-items:center;gap:18px;margin-top:22px;padding:16px 18px;border:1px solid #778a80;background:#172a30;text-align:left}
+body.studio.hl-season .hl-familiar p{max-width:75ch;margin:0;color:#ede6d0;font:16px/1.65 'Segoe UI',Arial,sans-serif}
+body.studio.hl-season .hl-familiar button{flex-shrink:0;padding:10px 12px;background:#e5bd7d;color:#15252c;border:2px solid #090e17;font:800 14px/1.4 'Segoe UI',Arial,sans-serif;cursor:pointer}
+body.studio.hl-season .hl-familiar button span{display:inline-block;margin-right:6px;animation:hl-book-float 4s ease-in-out infinite}
+@keyframes hl-book-float{50%{transform:translateY(-3px) rotate(12deg)}}
+body.studio.hl-season .hl-route-picker{margin:32px 0;padding:clamp(20px,4vw,36px);border:4px solid #090e17;background:#263c3c;color:#f4e7c9}
+body.studio.hl-season .hl-picker-heading{display:flex;justify-content:space-between;gap:24px;align-items:start}
+body.studio.hl-season .hl-route-picker h2{margin:12px 0 22px;max-width:34ch;color:#f4e7c9;font:750 clamp(26px,3.2vw,38px)/1.2 Georgia,serif}
+body.studio.hl-season [data-hl-calm]{flex-shrink:0;padding:10px 14px;min-height:44px;border:2px solid #8a9c8e;background:#172a30;color:#eee7cf;font-weight:750;cursor:pointer}
+body.studio.hl-season .hl-route-buttons{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 22px}
+body.studio.hl-season .hl-route-buttons button{min-height:48px;padding:12px 18px;border:3px solid #090e17;background:#e7dfc8;color:#15252c;font:800 17px/1.4 'Segoe UI',Arial,sans-serif;cursor:pointer}
+body.studio.hl-season .hl-route-buttons button[aria-pressed=true]{background:#b8d6a0;box-shadow:inset 0 -4px 0 #76936b}
+body.studio.hl-season .hl-plan{margin:16px 0;padding:clamp(22px,4vw,32px);border:3px solid #090e17;border-left:9px solid #d3ad70;background:#f0ebda;color:#15252c;text-align:left}
+body.studio.hl-season .hl-plan-icon{color:#3b5555;font:800 12px/1.5 monospace;letter-spacing:.07em}
+body.studio.hl-season .hl-plan h3{margin:12px 0 16px;color:#15252c;font:850 clamp(25px,3vw,34px)/1.2 'Segoe UI',Arial,sans-serif}
+body.studio.hl-season .hl-plan :is(p,li){max-width:75ch;color:#233b40;font:18px/1.75 'Segoe UI',Arial,sans-serif}
+body.studio.hl-season .hl-plan ol{padding-left:24px;margin:18px 0 24px}
+body.studio.hl-season .hl-plan li{margin-bottom:8px}
+body.studio.hl-season a.hl-launch{display:inline-block;padding:14px 18px;border:3px solid #090e17;background:#d9b477;color:#15252c;text-decoration:none;font:850 17px/1.5 'Segoe UI',Arial,sans-serif;box-shadow:4px 4px 0 #090e17}
+body.studio.hl-season .hl-small-link{display:block;width:fit-content;margin-top:22px;color:#4d3560;font-weight:750}
+body.studio.hl-season .hl-route-status{margin:20px 0 0;color:#e5e8d5;font:15px/1.65 'Segoe UI',Arial,sans-serif}
+body.studio.hl-season .hl-archive{padding:0;margin:30px 0;border:2px solid #718379;background:#1e2a31;color:#e7e3d1}
+body.studio.hl-season .hl-archive>summary{padding:20px;color:#e4c68d;font:750 17px/1.5 'Segoe UI',Arial,sans-serif;cursor:pointer}
+body.studio.hl-season .hl-archive .start-lab{margin:0;box-shadow:none;border:0}
+body.studio.hl-season .hl-archive .sl-copy h2{font:800 38px/1.1 Georgia,serif;color:#f0e4c8}
+body.studio.hl-season .hl-archive .fq-road{margin:24px;border-width:2px}
+body.studio.hl-season .hl-archive .lab-legends-ticker{margin:24px}
+body.studio.hl-season .hl-library-return{margin:20px 0 0;font-size:16px;text-align:left}
+body.studio.hl-season .hl-library-return a{color:#f0cc88;font-weight:750}
+body.studio.hl-season .hl-final-invitation{margin-top:28px;padding:22px 24px;border:2px solid #090e17;border-left:8px solid #b991a4;background:#e7ddcb;color:#15252c}
+body.studio.hl-season .hl-final-invitation :is(h4,p){color:#15252c}
+body.studio.hl-season .hl-final-invitation h4{font:850 25px/1.3 'Segoe UI',Arial,sans-serif;margin:12px 0}
+body.studio.hl-season .hl-final-invitation .hl-kicker{color:#465c50}
+body.studio.hl-season .hl-final-invitation a{color:#49335b;font-weight:800}
+body.studio.hl-season .studio-header nav .hl-final-tab{display:inline-flex;gap:8px;align-items:center;min-height:44px;padding:7px 12px;border:2px solid #090e17;border-top:5px solid #d0af7a;background:#dfd2b5;color:#15252c;font-weight:800}
+body.studio.hl-season .hl-new{padding:3px 5px;background:#273b3a;color:#f4e7c9;font:800 10px/1.2 monospace;letter-spacing:.03em}
+body.studio.hl-season :is(.hl-entrance,.hl-route-picker,.hl-archive) a:focus-visible,body.studio.hl-season :is(.hl-entrance,.hl-route-picker) button:focus-visible{outline:3px solid #d09eb8;outline-offset:5px}
+body.studio.hl-season [hidden]{display:none!important}
+.hl-quiet .hl-familiar button span{animation:none!important}
+.hl-quiet .hl-scene>img{transform:none!important;transition:none!important}
+.hl-quiet :is(.hl-map-doors>a,.lq-tile,.lq-tick,.lq-body,.lq-scan,.lq-spin,.lq-sun,.lq-lamp,.lq-book,.lq-dot){animation:none!important;transition:none!important;transform:none!important}
+@media(max-width:900px){body.studio.hl-season .hl-map-doors{gap:10px;left:2%;right:2%;bottom:3%}body.studio.hl-season .hl-map-doors>a{padding:12px}body.studio.hl-season .hl-map-doors>a>span{position:static;display:block;margin-bottom:5px}body.studio.hl-season .hl-map-doors small{display:none}body.studio.hl-season .hl-familiar{align-items:start;flex-direction:column;gap:12px}}
+@media(max-width:560px){body.studio.hl-season .hl-entrance{padding:20px 14px;box-shadow:4px 4px 0 #090e17}body.studio.hl-season .hl-scene{margin:0}body.studio.hl-season .hl-map-doors{position:static;grid-template-columns:1fr;gap:10px;padding:12px;background:#172a30}body.studio.hl-season .hl-map-doors>a{padding:12px 14px}body.studio.hl-season .hl-map-doors>a>span{display:none}body.studio.hl-season .hl-map-doors small{display:block}body.studio.hl-season .hl-picker-heading{display:block}body.studio.hl-season [data-hl-calm]{margin-bottom:18px}body.studio.hl-season .hl-route-buttons{display:grid;grid-template-columns:1fr;width:100%}body.studio.hl-season .hl-entrance h1{font-size:38px}body.studio.hl-season .hl-archive .fq-road{margin:10px}}
+@media(prefers-reduced-motion:reduce){body.studio.hl-season .hl-familiar button span{animation:none}body.studio.hl-season .hl-scene>img,body.studio.hl-season .hl-map-doors>a{transform:none;transition:none}}
+@media print{body.studio.hl-season .hl-scene,body.studio.hl-season .hl-familiar,body.studio.hl-season [data-hl-calm]{display:none}body.studio.hl-season .hl-entrance,body.studio.hl-season .hl-route-picker,body.studio.hl-season .hl-plan{background:white;color:#111;border:1px solid #444;box-shadow:none}body.studio.hl-season .hl-plan[hidden]{display:block!important}}

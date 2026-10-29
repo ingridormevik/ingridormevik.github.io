@@ -124,6 +124,8 @@ def update(root):
         html=html.replace('30 Oct · test and publish. Video lecture counts as attendance','30 Oct · projects + library. Video lecture counts as attendance')
         html=html.replace('30 Oct · projects + library. Video lecture counts as attendance','30 Oct · project lab, optional library visit. Video lecture counts as attendance')
         p.write_text(html,encoding='utf-8',newline='\n')
+    from halloween_library import apply
+    apply(root)
 
 
 if __name__ == '__main__':
