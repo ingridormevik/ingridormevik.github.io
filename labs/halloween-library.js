@@ -9,6 +9,7 @@
     if(!Object.hasOwn(labels,route)) route='build';
     buttons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.hlRoute===route)));
     plans.forEach(plan=>{plan.hidden=plan.dataset.hlPlan!==route;});
+    document.body.dataset.hhRoom=route;
     document.querySelector('[data-hl-route-status]').textContent=`Your route: ${labels[route]}. You can change it at any time. The library visit is optional.`;
     if(remember){try{localStorage.setItem(KEY,route);}catch{}}
   };
@@ -41,6 +42,30 @@
       calm.textContent=quiet?'Room is quiet · restore motion':'Quiet the room';
     });
   }
+  const wake=document.querySelector('[data-hh-wake]');
+  if(wake){
+    wake.hidden=false;
+    wake.addEventListener('click',()=>{
+      const awake=document.body.classList.toggle('hh-awake');
+      wake.setAttribute('aria-pressed',String(awake));
+      wake.textContent=awake?'Let the machine idle':'Wake the machine';
+    });
+  }
+  // A curious ghost follows the pointer gently, without moving navigation or text.
+  const moves=()=>!document.body.classList.contains('hl-quiet')&&!document.documentElement?.classList.contains('access-no-motion')&&!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.hl-scene').forEach(scene=>{
+    let frame=0;
+    scene.addEventListener('pointermove',event=>{
+      if(!moves()||frame)return;
+      frame=requestAnimationFrame(()=>{
+        frame=0;
+        const box=scene.getBoundingClientRect();
+        scene.style.setProperty('--hh-look-x',`${Math.max(-4,Math.min(4,(event.clientX-box.left)/box.width*8-4))}px`);
+        scene.style.setProperty('--hh-look-y',`${Math.max(-3,Math.min(3,(event.clientY-box.top)/box.height*6-3))}px`);
+      });
+    },{passive:true});
+    scene.addEventListener('pointerleave',()=>{scene.style.setProperty('--hh-look-x','0px');scene.style.setProperty('--hh-look-y','0px');});
+  });
   // Native details must also open when an old saved link points into the eight-week map.
   const reveal=()=>{
     let node;

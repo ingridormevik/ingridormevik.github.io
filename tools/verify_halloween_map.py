@@ -16,6 +16,11 @@ for name in files:
     assert not [key for key,count in Counter(ids).items() if count>1],name
     assert len(page.select('h1'))==1,name
     assert page.select_one('.studio-header .hl-final-tab[href="final-assessment.html"]'),name
+    if name in ['lab-programme.html','academic-library.html']:
+        assert len(page.select('[data-hl-calm]'))==1
+        assert page.select_one('svg.hh-drawing .hh-ghost .hh-eyes')
+        assert len(page.select('svg.hh-drawing .hh-gear'))==2
+        assert page.select_one('svg.hh-drawing .hh-book') and page.select_one('[data-hh-wake]')
     styles=page.select('link[rel=stylesheet]')
     assert next(i for i,n in enumerate(styles) if n['href'].startswith('halloween-library'))<next(i for i,n in enumerate(styles) if n['href'].startswith('accessibility.css'))
     for node in page.select('.hl-entrance a,.hl-route-picker a,.hl-final-invitation a,link[href^="halloween"],script[src^="halloween"],img[src^="turing-halloween"]'):

@@ -61,3 +61,39 @@ body.studio.hl-season [hidden]{display:none!important}
 @media(max-width:560px){body.studio.hl-season .hl-entrance{padding:20px 14px;box-shadow:4px 4px 0 #090e17}body.studio.hl-season .hl-scene{margin:0}body.studio.hl-season .hl-map-doors{position:static;grid-template-columns:1fr;gap:10px;padding:12px;background:#172a30}body.studio.hl-season .hl-map-doors>a{padding:12px 14px}body.studio.hl-season .hl-map-doors>a>span{display:none}body.studio.hl-season .hl-map-doors small{display:block}body.studio.hl-season .hl-picker-heading{display:block}body.studio.hl-season [data-hl-calm]{margin-bottom:18px}body.studio.hl-season .hl-route-buttons{display:grid;grid-template-columns:1fr;width:100%}body.studio.hl-season .hl-entrance h1{font-size:38px}body.studio.hl-season .hl-archive .fq-road{margin:10px}}
 @media(prefers-reduced-motion:reduce){body.studio.hl-season .hl-familiar button span{animation:none}body.studio.hl-season .hl-scene>img,body.studio.hl-season .hl-map-doors>a{transform:none;transition:none}}
 @media print{body.studio.hl-season .hl-scene,body.studio.hl-season .hl-familiar,body.studio.hl-season [data-hl-calm]{display:none}body.studio.hl-season .hl-entrance,body.studio.hl-season .hl-route-picker,body.studio.hl-season .hl-plan{background:white;color:#111;border:1px solid #444;box-shadow:none}body.studio.hl-season .hl-plan[hidden]{display:block!important}}
+/* The animated cartoon laboratory lives inside the drawing, around the reading controls. */
+body.studio.hl-season .hl-entrance{background:#30263f;border-top:7px solid #bde74c;overflow:hidden;padding-top:40px}
+body.studio.hl-season .hl-entrance h1{max-width:24ch;color:#c9ef52;font-family:Impact,'Arial Black','Segoe UI',sans-serif;font-weight:900;font-size:clamp(42px,6.3vw,84px);line-height:1.02;letter-spacing:.015em;text-transform:uppercase;-webkit-text-stroke:1px #090e17;text-shadow:3px 4px 0 #090e17}
+body.studio.hl-season .hl-scene>svg.hh-drawing{display:block;width:100%;height:auto;aspect-ratio:1200/620;background:#161e2b;overflow:hidden}
+.hh-slime{position:absolute;top:0;left:0;right:0;height:7px;background:#bde74c;pointer-events:none}
+.hh-slime i{position:absolute;top:0;left:8%;height:22px;width:17px;border:2px solid #090e17;border-top:0;border-radius:0 0 10px 10px;background:#bde74c;transform-origin:top;animation:hh-drip 7s ease-in-out infinite}
+.hh-slime i:nth-child(2){left:19%;height:13px;animation-delay:-2s}.hh-slime i:nth-child(3){left:37%;height:28px;animation-delay:-5s}.hh-slime i:nth-child(4){left:58%;height:16px;animation-delay:-1s}.hh-slime i:nth-child(5){left:71%;height:24px;animation-delay:-3s}.hh-slime i:nth-child(6){left:86%;height:12px;animation-delay:-6s}.hh-slime i:nth-child(7){left:96%;height:22px;animation-delay:-4s}
+.hh-drawing .hh-gear{transform-origin:0 0;animation:hh-turn 14s linear infinite}
+.hh-drawing .hh-reverse{animation-direction:reverse;animation-duration:11s}
+.hh-drawing .hh-ghost{animation:hh-hover 5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.hh-drawing .hh-eyes{transform:translate(var(--hh-look-x,0px),var(--hh-look-y,0px));transition:transform .18s ease-out}
+.hh-drawing .hh-book{transform-box:fill-box;transform-origin:center;animation:hh-book 6s ease-in-out infinite}
+.hh-drawing .hh-bat{transform-box:fill-box;transform-origin:center;animation:hh-bat 8s ease-in-out infinite}
+.hh-drawing .hh-bat-two{animation-duration:11s;animation-delay:-4s}
+.hh-drawing .hh-spider{transform-box:fill-box;transform-origin:top center;animation:hh-sway 9s ease-in-out infinite}
+.hh-drawing .hh-code{animation:hh-code 5s ease-in-out infinite}
+.hh-drawing .hh-led{animation:hh-lamp 4s ease-in-out infinite}
+.hh-awake .hh-drawing .hh-gear{animation-duration:2.5s}
+.hh-awake .hh-drawing .hh-code{animation-duration:1.8s}
+.hh-awake .hh-drawing .hh-led{fill:#f3cd66}
+[data-hh-room=browse] .hh-drawing .hh-book{animation-duration:3.5s}
+body.studio.hl-season .hh-machine-controls{display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0}
+body.studio.hl-season .hh-machine-controls [data-hh-wake]{background:#c9ef52}
+body.studio.hl-season [data-hh-wake][aria-pressed=true]{background:#f1c75a}
+@keyframes hh-turn{to{transform:rotate(360deg)}}
+@keyframes hh-hover{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-12px) rotate(3deg)}}
+@keyframes hh-book{0%,100%{transform:translate(0,0) rotate(-5deg)}50%{transform:translate(5px,-14px) rotate(7deg)}}
+@keyframes hh-bat{0%,100%{transform:translate(-8px,3px) rotate(-5deg)}50%{transform:translate(18px,-8px) rotate(7deg)}}
+@keyframes hh-sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(5deg)}}
+@keyframes hh-code{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes hh-lamp{0%,100%{opacity:1}50%{opacity:.6}}
+@keyframes hh-drip{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.15)}}
+.hl-quiet .hh-drawing *,.hl-quiet .hh-slime i{animation:none!important;transition:none!important}
+.hl-quiet .hh-drawing .hh-eyes{transform:none!important}
+@media(prefers-reduced-motion:reduce){.hh-drawing *,.hh-slime i{animation:none!important;transition:none!important}.hh-drawing .hh-eyes{transform:none!important}}
+@media(max-width:560px){body.studio.hl-season .hl-entrance h1{font-size:43px}.hh-machine-controls{width:100%}body.studio.hl-season .hh-machine-controls button{flex:1 1 140px}}
