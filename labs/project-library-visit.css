@@ -1,0 +1,27 @@
+/* Lab 5 uses the existing workshop palette, with paired foreground/background colours. */
+#lab-5 .pv-lab{padding:clamp(20px,4vw,36px);margin:24px 0;background:#192f3d;color:#f4f1fc;border:3px solid #080e15}
+#lab-5 .pv-tag{display:inline-block;padding:7px 10px;background:#c6f15b;color:#10151f;border:2px solid #080e15;font:800 13px/1.5 monospace}
+#lab-5 .pv-lab>h3{color:#f4f1fc;font:850 clamp(26px,4vw,40px)/1.15 'Segoe UI',Arial,sans-serif;margin:18px 0}
+#lab-5 .pv-lab>p{color:#f4f1fc;line-height:1.75;max-width:85ch}
+#lab-5 .pv-lab>p.pv-tag{color:#10151f}
+#lab-5 .pv-stations{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:26px 0}
+#lab-5 .pv-stations>article{min-width:0;padding:22px;background:#f4f1fc;color:#10151f;border:3px solid #080e15;border-top:7px solid #c6f15b}
+#lab-5 .pv-stations>article:nth-child(2){border-top-color:#ffd23f}
+#lab-5 .pv-stations>article:nth-child(3){border-top-color:#8cdec5}
+#lab-5 .pv-stations :is(h4,p,strong,span){color:#10151f}
+#lab-5 .pv-stations h4{font:850 24px/1.3 'Segoe UI',Arial,sans-serif;margin:18px 0 14px}
+#lab-5 .pv-stations p{font:17px/1.7 'Segoe UI',Arial,sans-serif}
+#lab-5 .pv-number{display:inline-block;padding:5px 9px;border:2px solid #080e15;background:#ffd23f;font:800 16px/1.4 monospace}
+#lab-5 .pv-stations a{display:block;margin-top:20px;color:#47287a;font-weight:750;text-underline-offset:3px}
+#lab-5 :is(.pv-shelf,.pv-optional){padding:0;margin:22px 0;border:2px solid #688897;background:#112735;color:#f4f1fc;scroll-margin-top:24px}
+#lab-5 :is(.pv-shelf,.pv-optional)>summary{padding:18px 20px;background:#112735;color:#ffd23f;font:750 18px/1.5 'Segoe UI',Arial,sans-serif;cursor:pointer}
+#lab-5 .pv-shelf>ol{padding:0 24px 0 46px;margin:20px 0}
+#lab-5 .pv-shelf :is(li,strong,p){color:#f4f1fc}
+#lab-5 .pv-shelf li{margin:14px 0;line-height:1.75}
+#lab-5 .pv-shelf>p{margin:20px}
+#lab-5 .pv-lab :is(.pv-shelf a,.pv-alternative a,.pv-connect a){color:#ffd23f;text-underline-offset:3px}
+#lab-5 .pv-lab :focus-visible{outline:3px solid #f29bcd;outline-offset:4px}
+#lab-5 .pv-lab a{overflow-wrap:anywhere}
+#lab-5 .pv-optional>.course-panel{margin:0;padding:24px;background:#192f3d;color:#f4f1fc;border:0}
+#lab-5 .pv-optional>.course-panel :is(h3,p){color:#f4f1fc}
+@media(max-width:900px){#lab-5 .pv-stations{grid-template-columns:1fr}}
