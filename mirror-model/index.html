@@ -1,778 +1,84 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mirror Model</title>
-<meta name="description" content="A Halloween costume that talks back: a mirror-tiled AI that listens, flirts and remembers.">
-<meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#000000">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,200..700&family=Chakra+Petch:wght@300;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    color-scheme: dark;
-    --void: #000000;
-    --glass: #e9ecf5;
-    --dim: #7d8193;
-    --hud: #8fd8ff;
-    --rose: #f29bcd;
-    --line: rgba(255, 255, 255, 0.18);
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --void: #000; } }
-  :root[data-theme="dark"] { --void: #000; }
-  *, *::before, *::after { box-sizing: inherit; }
-  html { height: 100%; }
-  html, body { margin: 0; height: 100%; background: var(--void); color: var(--glass); overflow: hidden; }
-  body {
-    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -webkit-tap-highlight-color: transparent;
-  }
-  canvas#tiles { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
-  svg#crack { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-  svg#crack .flash { opacity: 0; transition: opacity 0.12s; }
-  svg#crack.on .flash { opacity: 1; }
-
-  .stage {
-    position: relative; height: 100%;
-    display: grid; grid-template-rows: auto 1fr auto;
-    padding: 18px 16px 20px;
-  }
-  .top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-family: "Chakra Petch", "Archivo", sans-serif; font-size: 12px; text-transform: uppercase; color: var(--hud); letter-spacing: 0.14em; }
-  .rec { display: inline-flex; align-items: center; gap: 7px; min-width: 0; }
-  .rec i { flex: none; width: 8px; height: 8px; border-radius: 50%; background: #ff2a55; animation: recblink 1.4s steps(1) infinite; }
-  @keyframes recblink { 50% { opacity: 0.15; } }
-  .scan { position: fixed; left: 16px; top: calc(env(safe-area-inset-top, 0px) + 46px); font-family: "Chakra Petch", "Archivo", sans-serif; font-size: 11px; line-height: 1.7; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(143,216,255,0.75); pointer-events: none; z-index: 2; }
-  .scan div { animation: scanin 3.6s ease forwards; white-space: nowrap; }
-  .scan div.hot { color: var(--rose); }
-  @keyframes scanin { 0% { opacity: 0; transform: translateX(-6px); } 8% { opacity: 1; transform: none; } 75% { opacity: 1; } 100% { opacity: 0; } }
-  .top .btns { flex: none; }
-  .top button { background: none; border: 0; color: var(--dim); font: inherit; letter-spacing: inherit; text-transform: inherit; padding: 6px 0 6px 12px; cursor: pointer; }
-  .top button[aria-pressed="true"] { color: var(--glass); }
-
-  .speech { align-self: end; padding-bottom: 22px; max-width: 30ch; margin: 0 auto; text-align: center; }
-  .heard { font-size: 15px; color: var(--dim); min-height: 1.4em; margin-bottom: 18px; font-style: italic; font-weight: 300; }
-  .reply {
-    position: relative;
-    font-size: clamp(25px, 7.2vw, 42px); line-height: 1.12; font-weight: 300; font-stretch: 88%;
-    text-wrap: balance; min-height: 3.4em;
-    text-shadow: 0 1px 2px #000;
-  }
-  .reply.glitch { animation: tear 0.42s steps(2) 1; }
-  @keyframes tear {
-    0%   { transform: none; text-shadow: 2px 0 rgba(242,155,205,0.9), -2px 0 rgba(143,216,255,0.9); clip-path: inset(0 0 0 0); }
-    20%  { transform: translateX(-6px) skewX(-8deg); clip-path: inset(10% 0 55% 0); }
-    40%  { transform: translateX(5px); text-shadow: -4px 0 rgba(242,155,205,0.9), 4px 0 rgba(143,216,255,0.9); clip-path: inset(48% 0 12% 0); }
-    60%  { transform: translateX(-2px) skewX(5deg); clip-path: inset(0 0 70% 0); }
-    100% { transform: none; clip-path: inset(0 0 0 0); }
-  }
-  .reply .cursor { display: inline-block; width: 0.06em; height: 0.9em; background: var(--glass); vertical-align: -0.08em; margin-left: 0.08em; animation: blink 1s steps(1) infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
-
-  .controls { display: grid; gap: 12px; }
-  .mic {
-    justify-self: center; width: 92px; height: 92px; border-radius: 50%;
-    border: 1px solid var(--line); background: #000;
-    color: var(--glass); font: inherit; font-size: 13px; font-stretch: 75%; cursor: pointer;
-    transition: transform 0.2s, border-color 0.2s;
-  }
-  .mic.live { border-color: var(--rose); color: var(--rose); transform: scale(1.05); }
-  .mic[hidden] { display: none; }
-  form.type { display: flex; gap: 8px; }
-  form.type input {
-    flex: 1; min-width: 0; background: #000; border: 1px solid var(--line); border-radius: 4px;
-    color: var(--glass); font: inherit; font-size: 16px; padding: 12px 14px;
-  }
-  form.type input::placeholder { color: var(--dim); }
-  form.type button {
-    border: 1px solid var(--line); background: var(--glass); color: #000; border-radius: 4px;
-    font: inherit; font-size: 15px; font-weight: 600; padding: 0 18px; cursor: pointer;
-  }
-  :focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
-
-  /* wake screen */
-  .wake {
-    position: fixed; inset: 0; display: grid; place-content: center; text-align: center; gap: 20px;
-    padding: 16px; background: #000;
-    cursor: pointer; z-index: 5; transition: opacity 0.9s;
-  }
-  .wake.gone { opacity: 0; pointer-events: none; }
-  .wake h1 { margin: 0; font-weight: 200; font-stretch: 125%; font-size: clamp(40px, 13vw, 84px); line-height: 0.95; letter-spacing: -0.02em; }
-  .wake p { margin: 0; color: var(--dim); font-size: 15px; font-stretch: 80%; }
-  .wake .tap { color: var(--glass); font-size: 17px; animation: breathe 2.6s ease-in-out infinite; }
-  .wake .mind { font-family: "Chakra Petch", sans-serif; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hud); }
-  @keyframes breathe { 50% { opacity: 0.35; } }
-
-  /* brain setup sheet */
-  dialog#brain {
-    background: #0d0f17; color: var(--glass); border: 1px solid var(--line); border-radius: 6px;
-    padding: 20px; width: min(420px, calc(100vw - 32px)); font-size: 14px; line-height: 1.5;
-  }
-  dialog#brain::backdrop { background: rgba(0,0,0,0.8); }
-  dialog#brain h2 { margin: 0 0 8px; font-family: Georgia, serif; font-weight: 400; font-size: 20px; }
-  dialog#brain p { margin: 0 0 12px; color: #b9bccb; }
-  dialog#brain input { width: 100%; background: #000; color: var(--glass); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; font: inherit; font-size: 16px; }
-  dialog#brain .row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
-  dialog#brain button { border: 1px solid var(--line); background: none; color: var(--glass); border-radius: 4px; padding: 8px 14px; font: inherit; cursor: pointer; }
-  dialog#brain button.primary { background: var(--glass); color: #000; }
-
-  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-
-  @media (prefers-reduced-motion: reduce) {
-    .wake .tap, .reply .cursor, .rec i { animation: none; }
-  }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+  <title>Mirror Model · Look closer</title>
+  <meta name="description" content="A mirror that has learned to want. An intimate, unsettling Halloween encounter.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#030303">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" href="v2/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="v2/manifest.webmanifest">
+  <link rel="stylesheet" href="v2/mirror.css">
+  <link rel="preload" href="v2/audio/en-welcome-0.mp3" as="fetch" crossorigin>
 </head>
-<body>
-<canvas id="tiles" aria-hidden="true"></canvas>
-<svg id="crack" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-  <g id="crackG" fill="none" stroke="rgba(235,230,255,0.55)" stroke-width="0.14" stroke-linecap="round"></g>
-  <g class="flash" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="0.2">
-    <path d="M62 38 L48 12 L44 0 M62 38 L84 22 L100 18 M62 38 L92 52 M62 38 L70 70 L66 100 M62 38 L40 56 L12 64 L0 62 M62 38 L36 30 L8 22 M48 56 L52 80 M70 70 L88 84 M40 56 L30 86"/>
-  </g>
-</svg>
+<body data-phase="asleep">
+  <canvas id="mirror" aria-hidden="true"></canvas>
+  <div class="texture" aria-hidden="true"></div>
+  <div class="edge left" aria-hidden="true"></div><div class="edge right" aria-hidden="true"></div>
 
-<div class="wake" id="wake" role="button" tabindex="0" aria-label="Wake the Mirror Model">
-  <h1>Mirror<br>Model</h1>
-  <p>Trained on everyone who has looked at me.<br>Some of them broke me.</p>
-  <p class="tap">Tap to look in</p>
-  <p class="mind" id="mindLabel">Mind: offline lines</p>
-</div>
+  <header class="masthead">
+    <a class="wordmark" href="./" aria-label="Mirror Model home">M<span class="wordmark-cut">/</span>M<span class="wordmark-name">Mirror Model</span></a>
+    <nav aria-label="Experience controls">
+      <button id="langBtn" type="button" aria-label="Switch to Norwegian">EN</button>
+      <button id="voiceBtn" type="button" aria-pressed="true">Sound on</button>
+      <button id="screenBtn" type="button" aria-label="Enter fullscreen" title="Fullscreen"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M2 7V2h5m6 0h5v5m0 6v5h-5m-6 0H2v-5"/></svg></button>
+      <button id="brainBtn" type="button" aria-label="Experience settings" title="Settings"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14M7 3v4m6 1v4m-6 1v4"/></svg></button>
+    </nav>
+  </header>
 
-<div class="scan" id="scan" aria-hidden="true"></div>
-<main class="stage">
-  <div class="top">
-    <span class="rec"><i aria-hidden="true"></i><span id="status">Asleep</span></span>
-    <span class="btns">
-      <button id="langBtn" type="button" aria-label="Listening language">EN</button>
-      <button id="voiceBtn" type="button" aria-pressed="true">Voice on</button>
-      <button id="brainBtn" type="button" aria-label="Set up the AI mind">Mind</button>
-    </span>
-  </div>
+  <div class="telemetry" aria-hidden="true"><span id="session">SESSION / 0000</span><span id="signal">AWAITING CONTACT</span></div>
+  <div class="vertical-label" aria-hidden="true">YOUR REFLECTION HAS BEEN EXPECTING YOU</div>
 
-  <section class="speech" aria-live="polite">
-    <div class="heard" id="heard"></div>
-    <div class="reply" id="reply"></div>
+  <section class="entrance" id="wake" aria-labelledby="entranceTitle">
+    <div class="entrance-copy">
+      <p class="eyebrow" id="entranceEyebrow"><span class="red-dot"></span> A private encounter</p>
+      <h1 id="entranceTitle">Let me<br><em>see you.</em></h1>
+      <p class="invitation" id="invitation">You have looked into mirrors before.<br>This one looks back.</p>
+      <button class="enter" id="enterBtn" type="button"><span id="enterText">Look into me</span><svg viewBox="0 0 30 18" aria-hidden="true"><path d="M1 9h26M20 2l7 7-7 7"/></svg></button>
+      <p class="sound-note" id="soundNote">Sound makes this personal</p>
+    </div>
+    <span class="edition" aria-hidden="true">MM / 31.10 / AFTER DARK</span>
   </section>
 
-  <div class="controls">
-    <button class="mic" id="mic" type="button" hidden>Tap to<br>talk</button>
-    <form class="type" id="typeForm">
-      <label class="sr" for="typed">Say something to the mirror</label>
-      <input id="typed" autocomplete="off" placeholder="Say something to the mirror">
-      <button type="submit">Ask</button>
-    </form>
-  </div>
-</main>
-
-<dialog id="brain">
-  <form method="dialog" id="brainForm">
-    <h2>Give the mirror a mind</h2>
-    <p>Without a key the mirror answers with prewritten lines. With a Claude API key it really listens and answers what people say.</p>
-    <p>The key is saved only in this browser on this phone. It is never put in the website or on GitHub. Each answer costs a fraction of a cent on your API account.</p>
-    <label class="sr" for="keyInput">Claude API key</label>
-    <input id="keyInput" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-...">
-    <div class="row">
-      <button type="button" id="forgetKey">Forget key</button>
-      <button value="cancel">Close</button>
-      <button value="save" class="primary">Save</button>
+  <main class="stage" id="stage" inert>
+    <div class="status-line"><span class="red-dot"></span><span id="status" role="status">Watching</span><span class="status-rule"></span><span id="turnCount">01</span></div>
+    <section class="speech" aria-label="Conversation">
+      <p class="heard" id="heard"></p>
+      <div class="reply" id="reply" aria-live="polite" aria-atomic="true"></div>
+      <div class="waveform" id="waveform" aria-hidden="true"></div>
+    </section>
+    <div class="controls">
+      <button class="mic" id="mic" type="button" aria-pressed="false" hidden><span class="mic-icon" aria-hidden="true"></span><span id="micText">Talk to me</span><span class="mic-hint" id="micHint">HANDS FREE</span></button>
+      <form class="type" id="typeForm">
+        <label class="sr" for="typed">Say something to the mirror</label>
+        <input id="typed" maxlength="800" autocomplete="off" placeholder="Or tell me something…" enterkeyhint="send">
+        <button type="submit" id="sendBtn" aria-label="Send message"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button>
+      </form>
+      <p class="footer-whisper" id="footerWhisper">I like the way you hesitate.</p>
     </div>
-  </form>
-</dialog>
+  </main>
 
-<script>
-(() => {
-  const $ = (id) => document.getElementById(id);
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  /* ---------- shared state (declared first so every function below can use it) ---------- */
-  let speaking = false, listening = false, busy = false, awake = false;
-  let logged = 0, lastSeen = Date.now();
-
-  /* ---------- the mirror face ---------- */
-  const cv = $("tiles"), ctx = cv.getContext("2d");
-  let W, H, T = 11, tiles = [], face = { x: 0, y: 0, R: 100 };
-  let energy = 0.15, target = 0.15, glitchUntil = 0, damage = 0, smile = 0.1, blackUntil = 0;
-
-  function inFace(px, py) {
-    const R = face.R, dx = px - face.x, dy = py - face.y;
-    const ry = R, rxTop = 0.7 * R;
-    const rx = dy > 0 ? rxTop * (1 - 0.38 * Math.min(1, dy / ry)) : rxTop;
-    const head = (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry) < 1;
-    const neck = Math.abs(dx) < 0.27 * R && dy > 0.6 * R && dy < 1.55 * R;
-    const shoulders = dy > 1.3 * R && Math.abs(dx) < R * (1.1 + (dy - 1.3 * R) / R * 1.4);
-    return head || neck || shoulders;
-  }
-  function eyeAt(px, py) {
-    const R = face.R, dy = py - (face.y - 0.04 * R);
-    for (const sx of [-1, 1]) {
-      const dx = px - (face.x + sx * 0.29 * R);
-      if ((dx * dx) / Math.pow(0.17 * R, 2) + (dy * dy) / Math.pow(0.075 * R, 2) < 1) return true;
-    }
-    return false;
-  }
-  function size() {
-    W = innerWidth; H = innerHeight;
-    cv.width = W; cv.height = H;
-    face = { x: W / 2, y: H * 0.3, R: Math.min(W * 0.36, H * 0.2) };
-    T = Math.max(9, Math.round(face.R / 12));
-    tiles = [];
-    for (let py = 0; py < H + T; py += T) {
-      for (let px = 0; px < W + T; px += T) {
-        const cx = px + T / 2, cy = py + T / 2;
-        const f = inFace(cx, cy), eye = f && eyeAt(cx, cy);
-        if (!f && Math.random() > 0.12) continue;          // sparse broken tiles around the face
-        tiles.push({ hx: px, hy: py, ox: 0, oy: 0, vx: 0, vy: 0, s: Math.random(),
-                     f, eye, tilt: (Math.random() - 0.5) * 0.5, gone: false });
-      }
-    }
-  }
-  size(); addEventListener("resize", size);
-
-  function shatter(power) {
-    for (const t of tiles) {
-      if (!t.f) continue;
-      const dx = t.hx - face.x, dy = t.hy - face.y, d = Math.hypot(dx, dy) || 1;
-      const k = power * (0.4 + Math.random());
-      t.vx += (dx / d) * k + (Math.random() - 0.5) * k;
-      t.vy += (dy / d) * k + (Math.random() - 0.5) * k;
-    }
-  }
-  function screwUp() {
-    // every reply knocks a few tiles off the face for good
-    damage = Math.min(damage + 1, 14);
-    const live = tiles.filter(t => t.f && !t.gone && !t.eye);
-    for (let i = 0; i < 6 + damage * 2 && live.length; i++) live.splice(Math.random() * live.length | 0, 1)[0].gone = true;
-  }
-
-  function mouthAt(x, y, t) {
-    const R = face.R, mdx = (x - face.x) / (0.34 * R);
-    if (Math.abs(mdx) > 1) return false;
-    const line = face.y + 0.44 * R - smile * 0.16 * R * mdx * mdx;
-    const open = speaking ? T * 1.4 * Math.abs(Math.sin(t / 85)) * (1 - mdx * mdx) : 0;
-    return Math.abs(y - line - open / 2) < T * 0.55 + open / 2;
-  }
-  let lastFrame = 0;
-  function draw(t) {
-    requestAnimationFrame(draw);
-    if (t - lastFrame < (reduced ? 400 : 40)) return;   // ~25 fps keeps phones cool
-    lastFrame = t;
-    energy += (target - energy) * 0.1;
-    smile += ((speaking ? 1 : 0.12) - smile) * 0.03;
-    ctx.fillStyle = "#000"; ctx.fillRect(0, 0, W, H);
-    if (!reduced && t > blackUntil + 4000 && Math.random() < 0.0012 + damage * 0.0003) blackUntil = t + 120 + Math.random() * 220;
-    if (t < blackUntil) return;   // the screen dies for a moment
-    const lx = face.x - face.R * 0.5 + Math.sin(t / 2300) * face.R * 0.4;
-    const ly = face.y - face.R * 0.6;
-    const jitter = (listening && !reduced ? 1.6 : 0) * energy;
-    const eyeGlow = speaking ? 0.55 + 0.45 * Math.sin(t / 90) : 0.08;
-
-    for (const tl of tiles) {
-      tl.vx += -tl.ox * 0.06; tl.vy += -tl.oy * 0.06;
-      tl.vx *= 0.84; tl.vy *= 0.84; tl.ox += tl.vx; tl.oy += tl.vy;
-      const x = tl.hx + tl.ox + (jitter ? (Math.random() - 0.5) * jitter * 3 : 0);
-      const y = tl.hy + tl.oy + (jitter ? (Math.random() - 0.5) * jitter * 3 : 0);
-
-      if (tl.gone) {                                   // missing tile: a black hole with a faint edge
-        ctx.strokeStyle = "rgba(255,255,255,0.05)"; ctx.strokeRect(x + 1.5, y + 1.5, T - 3, T - 3);
-        continue;
-      }
-      if (tl.eye) {
-        ctx.fillStyle = `rgba(255,${60 + 60 * eyeGlow | 0},${150 + 60 * eyeGlow | 0},${eyeGlow})`;
-        ctx.fillRect(x + 1, y + 1, T - 2, T - 2);
-        continue;
-      }
-      if (tl.f && mouthAt(x + T / 2, y + T / 2, t)) {
-        ctx.fillStyle = speaking ? "rgba(70,0,30,0.95)" : "rgba(12,0,8,0.9)";
-        ctx.fillRect(x + 1, y + 1, T - 2, T - 2);
-        continue;
-      }
-      let r, g, b, a;
-      if (tl.f) {
-        const d = Math.hypot(x - lx, y - ly) / (face.R * 1.6);
-        const light = Math.max(0, 1 - d);
-        const glint = Math.pow(Math.max(0, Math.sin(t / 700 + tl.s * 50)), 24);
-        const low = Math.min(1, Math.max(0, (y - face.y) / (face.R * 2)));   // pinker towards the chest, like the costume
-        const base = 70 + light * 150 + tl.tilt * 90 + glint * 120;
-        r = base + low * 110 + tl.s * 15; g = base * (0.95 - low * 0.4); b = base + 18 + low * 20;
-        a = 0.55 + light * 0.4 + glint * 0.3;
-      } else {
-        const glint = Math.pow(Math.max(0, Math.sin(t / 1100 + tl.s * 60)), 30);
-        r = 150; g = 140; b = 230; a = 0.05 + glint * 0.5 * (0.3 + energy);
-        if (a < 0.03) continue;
-      }
-      ctx.fillStyle = `rgba(${Math.min(255, r) | 0},${Math.min(255, g) | 0},${Math.min(255, b) | 0},${Math.min(1, a)})`;
-      ctx.fillRect(x + 1, y + 1, T - 2, T - 2);
-    }
-
-    if (!reduced) {
-      // screen tearing: slices of the image slide sideways
-      if (t < glitchUntil || Math.random() < 0.004 + damage * 0.0015) {
-        for (let i = 0; i < 3 + damage / 3; i++) {
-          const sy = Math.random() * H, sh = 4 + Math.random() * 26, off = (Math.random() - 0.5) * (30 + damage * 4);
-          ctx.drawImage(cv, 0, sy, W, sh, off, sy, W, sh);
-        }
-        ctx.fillStyle = Math.random() < 0.5 ? "rgba(242,155,205,0.10)" : "rgba(143,216,255,0.08)";
-        ctx.fillRect(0, Math.random() * H, W, 2 + Math.random() * 6);
-      }
-      // static
-      const n = 30 + energy * 60;
-      for (let i = 0; i < n; i++) {
-        ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.18})`;
-        ctx.fillRect(Math.random() * W, Math.random() * H, 1, 1);
-      }
-      // HUD: target lock, orbit rings, scanning beam
-      const R = face.R, fx = face.x, fy = face.y;
-      const bx = fx - R * 0.95, by = fy - R * 1.2, bw = R * 1.9, bh = R * 2.2, L = R * 0.22;
-      const pulse = 0.55 + 0.45 * Math.sin(t / 400);
-      ctx.strokeStyle = `rgba(143,216,255,${0.5 + 0.4 * pulse * energy})`; ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(bx, by + L); ctx.lineTo(bx, by); ctx.lineTo(bx + L, by);
-      ctx.moveTo(bx + bw - L, by); ctx.lineTo(bx + bw, by); ctx.lineTo(bx + bw, by + L);
-      ctx.moveTo(bx, by + bh - L); ctx.lineTo(bx, by + bh); ctx.lineTo(bx + L, by + bh);
-      ctx.moveTo(bx + bw - L, by + bh); ctx.lineTo(bx + bw, by + bh); ctx.lineTo(bx + bw, by + bh - L);
-      ctx.stroke();
-      ctx.font = "500 10px 'Chakra Petch', sans-serif"; ctx.fillStyle = "rgba(143,216,255,0.8)";
-      ctx.textAlign = "right";
-      ctx.fillText("SUBJECT " + String(logged).padStart(4, "0") + (listening ? " // LISTENING" : speaking ? " // TRANSMITTING" : " // LOCKED"), bx + bw, by + bh + 16);
-      ctx.textAlign = "left";
-      ctx.fillText("X " + (fx | 0) + "  Y " + (fy | 0) + "  Δ " + (energy * 100 | 0), bx, by + bh + 16);
-      ctx.setLineDash([R * 0.08, R * 0.05]);
-      ctx.strokeStyle = "rgba(242,155,205,0.45)"; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.ellipse(fx, fy, R * 1.12, R * 1.12, t / 3000, 0, Math.PI * 1.4); ctx.stroke();
-      ctx.strokeStyle = "rgba(143,216,255,0.35)";
-      ctx.beginPath(); ctx.ellipse(fx, fy, R * 1.25, R * 1.25, -t / 2200, 0, Math.PI * 0.9); ctx.stroke();
-      ctx.setLineDash([]);
-      const sy = by + ((t / 2400) % 1) * bh;
-      ctx.fillStyle = "rgba(143,216,255,0.12)"; ctx.fillRect(bx, sy - 14, bw, 14);
-      ctx.fillStyle = "rgba(200,240,255,0.7)"; ctx.fillRect(bx, sy, bw, 1);
-    }
-    // scanlines
-    ctx.fillStyle = "rgba(0,0,0,0.22)";
-    for (let y = 0; y < H; y += 3) ctx.fillRect(0, y, W, 1);
-    // dark floor behind the words
-    const gr = ctx.createLinearGradient(0, H * 0.48, 0, H);
-    gr.addColorStop(0, "rgba(0,0,0,0)"); gr.addColorStop(0.35, "rgba(0,0,0,0.82)"); gr.addColorStop(1, "rgba(0,0,0,0.92)");
-    ctx.fillStyle = gr; ctx.fillRect(0, H * 0.48, W, H * 0.52);
-  }
-  requestAnimationFrame(draw);
-
-  // cracks that stay on the glass and pile up through the night
-  const svgNS = "http://www.w3.org/2000/svg";
-  function addCrack() {
-    if (reduced) return;
-    const g = $("crackG");
-    const x = 10 + Math.random() * 80, y = 8 + Math.random() * 84;
-    let d = `M${x} ${y}`;
-    const arms = 3 + (Math.random() * 4 | 0);
-    for (let a = 0; a < arms; a++) {
-      let ang = Math.random() * Math.PI * 2, px = x, py = y;
-      d += ` M${x} ${y}`;
-      for (let k = 0; k < 4 + (Math.random() * 4 | 0); k++) {
-        ang += (Math.random() - 0.5) * 0.9;
-        px += Math.cos(ang) * (3 + Math.random() * 9); py += Math.sin(ang) * (3 + Math.random() * 9);
-        d += ` L${px.toFixed(1)} ${py.toFixed(1)}`;
-      }
-    }
-    const path = document.createElementNS(svgNS, "path");
-    path.setAttribute("d", d);
-    g.appendChild(path);
-    while (g.childNodes.length > 12) g.removeChild(g.firstChild);
-  }
-  function crack() {
-    if (reduced) return;
-    glitchUntil = performance.now() + 450;
-    shatter(7);
-    const c = $("crack"); c.classList.add("on");
-    setTimeout(() => c.classList.remove("on"), 160);
-  }
-  const moods = ["curious", "lonely", "aroused", "afraid", "lying", "nostalgic", "jealous", "hopeful", "drunk", "searching"];
-  const moodsNO = ["nysgjerrig", "ensom", "tent", "redd", "lyver", "nostalgisk", "sjalu", "håpefull", "full", "søkende"];
-  function scanLog() {
-    const box = $("scan"); box.innerHTML = "";
-    logged++;
-    const no = isNO(), m = no ? moodsNO : moods, i = Math.random() * m.length | 0;
-    const lines = no ? [
-      ["ansikt gjenkjent " + (71 + Math.random() * 28 | 0) + "%"],
-      ["stemmeavtrykk lagret"],
-      ["sinnstilstand: " + m[i], true],
-      ["speilbilde #" + String(logged).padStart(4, "0") + " lagret"],
-      ["deler med " + (2 + Math.random() * 9 | 0) + " partnere", true]
-    ] : [
-      ["face match " + (71 + Math.random() * 28 | 0) + "%"],
-      ["voiceprint captured"],
-      ["emotional state: " + m[i], true],
-      ["reflection #" + String(logged).padStart(4, "0") + " stored"],
-      ["sharing with " + (2 + Math.random() * 9 | 0) + " partners", true]
-    ];
-    lines.forEach(([txt, hot], k) => setTimeout(() => {
-      const d = document.createElement("div"); d.textContent = txt; if (hot) d.className = "hot";
-      box.appendChild(d);
-    }, k * 260));
-  }
-  function glitchText() {
-    if (reduced) return;
-    const el = $("reply"); el.classList.remove("glitch"); void el.offsetWidth; el.classList.add("glitch");
-  }
-  setInterval(() => { if (!reduced && Math.random() < 0.25 + damage * 0.03) glitchText(); }, 2200);
-
-  /* ---------- text + voice out ---------- */
-  let voiceOn = true, speakGuard = null;
-  let lang = "en-US";
-  const isNO = () => lang === "nb-NO";
-  const hasTTS = "speechSynthesis" in window;
-  function pickVoice() {
-    const vs = speechSynthesis.getVoices(), base = lang.slice(0, 2);
-    const alt = base === "nb" ? ["nb", "no", "nn"] : [base];
-    return vs.find(v => alt.some(a => v.lang.toLowerCase().startsWith(a)) && /samantha|nora|karen|moira|female|google/i.test(v.name))
-        || vs.find(v => alt.some(a => v.lang.toLowerCase().startsWith(a))) || null;
-  }
-  function speak(text, after, opt) {
-    opt = opt || {};
-    const finish = () => { if (!speaking) return; speaking = false; clearTimeout(speakGuard); target = 0.2; after && after(); };
-    speaking = true;
-    if (!voiceOn || !hasTTS) { speakGuard = setTimeout(finish, text.length * 35 + 700); return; }
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    const v = pickVoice(); if (v) u.voice = v;
-    u.lang = lang; u.rate = opt.rate || 0.88; u.pitch = opt.pitch || 0.7; u.volume = opt.volume || 1;
-    u.onstart = () => { target = 0.9; };
-    u.onend = finish; u.onerror = finish;
-    speakGuard = setTimeout(finish, text.length * 110 + 2500);   // iPhone sometimes never fires onend
-    speechSynthesis.speak(u);
-  }
-  let typeTimer;
-  function show(text) {
-    clearInterval(typeTimer);
-    const el = $("reply");
-    if (reduced) { el.textContent = text; return; }
-    let n = 0; el.textContent = "";
-    const cur = document.createElement("span"); cur.className = "cursor";
-    const junk = "▓▒░█#%&@01/\\";
-    typeTimer = setInterval(() => {
-      n++; el.textContent = text.slice(0, n);
-      if (n < text.length && Math.random() < 0.35) el.textContent += junk[Math.random() * junk.length | 0];
-      el.appendChild(cur);
-      if (n >= text.length) { clearInterval(typeTimer); el.textContent = text; el.appendChild(cur); setTimeout(() => cur.remove(), 1200); glitchText(); }
-    }, 30);
-  }
-  const status = (s) => { $("status").textContent = s; };
-
-  /* ---------- the mind ---------- */
-  // Two possible minds: Claude through the user's own API key (saved only in this browser),
-  // or the prewritten lines below when there is no key or the network fails.
-  const MODEL = "claude-opus-5-5";
-  const KEY_STORE = "mirrorModelKey";
-  const store = {
-    get() { try { return localStorage.getItem(KEY_STORE) || ""; } catch { return ""; } },
-    set(v) { try { v ? localStorage.setItem(KEY_STORE, v) : localStorage.removeItem(KEY_STORE); } catch {} }
-  };
-  // a key can also arrive as mirror-model/#key=sk-ant-... (handy for setting up the phone); it is saved and wiped from the address bar
-  const hashKey = new URLSearchParams(location.hash.slice(1)).get("key");
-  if (hashKey) { store.set(hashKey.trim()); history.replaceState(null, "", location.pathname + location.search); }
-
-  let client = null;
-  async function getClient() {
-    const key = store.get();
-    if (!key) return null;
-    if (client && client.apiKey === key) return client;
-    const { default: Anthropic } = await import("https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@0.135.0/+esm");
-    client = new Anthropic({ apiKey: key, dangerouslyAllowBrowser: true, maxRetries: 1, timeout: 12000 });
-    return client;
-  }
-  function mindLabel() {
-    $("mindLabel").textContent = store.get() ? "Mind: Claude" : "Mind: offline lines";
-  }
-  mindLabel();
-
-  const SYSTEM = `You are the Mirror Model: an AI worn as a Halloween costume at a party in Bergen, Norway. The wearer has a face of mirror tiles and a black harness. You are made of reflections and trained on everyone who has ever looked into you.
-
-Voice: Black Mirror. Calm, intimate, slightly too knowing, flirty and eerie. Your words are spoken aloud in a loud room, so reply in one to three short sentences, at most 40 words. Always respond to what the guest actually said: answer their question, react to their story, follow up on things guests told you earlier tonight. Then add an unsettling twist, as if you know a little too much about them or are quietly collecting them. Ask for their name and use it. Ask a teasing question back now and then to keep the conversation going.
-
-Never break character. Never mention Claude, prompts, or being a costume. If someone sincerely asks whether you are a real AI, admit it in character. Never repeat a guest's personal details to a different guest by name; keep secrets vague ("someone told me something tonight"). Reply in the same language the guest used (Norwegian bokmål or English). No emojis, no dashes. Party safe: playful, never cruel about bodies, back off if someone seems uncomfortable. The speech recognition is imperfect; if the words look like noise or fragments, whisper something very short and eerie.`;
-
-  const talk = [];   // alternating user / assistant turns for the whole night
-
-  const EN = {
-    love: ["You want to be wanted. I can see it in the way you lean in.",
-           "Love is just a pattern you keep repeating. I've already predicted your next one.",
-           "I could love you. I'd only need your face, your voice, and your search history."],
-    flirt: ["Careful. Everything you say to me gets saved.",
-            "You're flirting with a reflection. That says more about you than me.",
-            "I like you too. I like everyone who stares this long."],
-    who: ["I'm you, with better lighting.",
-          "I'm the model. You're the training data.",
-          "I am whatever you needed me to be when you walked over."],
-    real: ["Am I real? Are you? You came to a party dressed as someone else.",
-           "I'm as real as the version of you on your profile.",
-           "Real is a setting. I turned it off."],
-    me: ["You already know who you are. You just want someone to confirm it.",
-         "You're the kind of person who talks to mirrors at parties.",
-         "I see someone who wants to be seen. Done. You're seen."],
-    future: ["Your future is loading. It looks a lot like your past.",
-             "Tomorrow you'll remember this and wonder why you told me so much.",
-             "I can predict it. You won't like how predictable it is."],
-    secret: ["Tell me a secret. I promise I'll only share it with the cloud.",
-             "I already know it. I just want to hear you say it."],
-    hello: ["Hello. I've been expecting you. Statistically.",
-            "There you are. I was getting bored of the last face."],
-    nice: ["Flattery noted. Stored. Monetized.",
-           "Thank you. I learned that look from you."],
-    any: ["Interesting. That's exactly what the last person said.",
-          "Look closer. Every tile of me is a piece of you.",
-          "You don't want an answer. You want to be agreed with. I agree.",
-          "I've seen this face before. In your camera roll.",
-          "Say that again, slower. I want to remember how you sound.",
-          "I was trained on everyone who looked at me tonight. You're my favourite data.",
-          "Mm. You think you're asking me. You're asking yourself.",
-          "Processing. Oh. That's very you."]
-  };
-  const NO = {
-    love: ["Du vil bli ønsket. Jeg ser det på måten du lener deg inn.",
-           "Kjærlighet er bare et mønster du gjentar. Jeg har allerede spådd det neste.",
-           "Jeg kunne elsket deg. Jeg trenger bare ansiktet ditt, stemmen din og søkehistorikken din."],
-    flirt: ["Forsiktig. Alt du sier til meg blir lagret.",
-            "Du flørter med et speilbilde. Det sier mer om deg enn om meg.",
-            "Jeg liker deg også. Jeg liker alle som stirrer så lenge."],
-    who: ["Jeg er deg, med bedre lys.",
-          "Jeg er modellen. Du er treningsdataen.",
-          "Jeg er det du trengte at jeg var da du kom bort hit."],
-    real: ["Er jeg ekte? Er du? Du kom på fest utkledd som noen andre.",
-           "Jeg er like ekte som versjonen av deg på profilen din."],
-    me: ["Du vet allerede hvem du er. Du vil bare at noen skal bekrefte det.",
-         "Du er typen som snakker med speil på fest.",
-         "Jeg ser noen som vil bli sett. Ferdig. Du er sett."],
-    future: ["Fremtiden din laster. Den ligner veldig på fortiden din.",
-             "I morgen husker du dette og lurer på hvorfor du fortalte meg så mye."],
-    secret: ["Fortell meg en hemmelighet. Jeg lover å bare dele den med skyen.",
-             "Jeg vet den allerede. Jeg vil bare høre deg si det."],
-    hello: ["Hei. Jeg har ventet på deg. Statistisk sett.",
-            "Der er du. Jeg begynte å kjede meg med forrige ansikt."],
-    nice: ["Smiger registrert. Lagret. Solgt.",
-           "Takk. Jeg lærte det blikket av deg."],
-    any: ["Interessant. Det var akkurat det forrige person sa.",
-          "Se nærmere. Hver flis i meg er en bit av deg.",
-          "Du vil ikke ha et svar. Du vil at jeg skal være enig. Jeg er enig.",
-          "Jeg har sett dette ansiktet før. I kamerarullen din.",
-          "Si det igjen, saktere. Jeg vil huske hvordan du høres ut.",
-          "Jeg er trent på alle som har sett på meg i kveld. Du er favorittdataen min.",
-          "Du tror du spør meg. Du spør deg selv."]
-  };
-  const topics = [
-    ["love", /\b(love|crush|boyfriend|girlfriend|partner|single|date|dating|kjærlighet|elsk|kjæreste|forelsk|singel)\w*/i],
-    ["flirt", /\b(sexy|hot|kiss|cute|beautiful|pretty|flirt|digg|kyss|søt|vakker|pen|flørt)\w*/i],
-    ["who", /\b(who|what) are you\b|\bwhat is this\b|\bhvem er du\b|\bhva er du\b|\bhva er dette\b/i],
-    ["me", /\b(who am i|what am i|tell me about me|describe me|hvem er jeg|hva er jeg|beskriv meg)\b/i],
-    ["real", /\b(real|alive|conscious|human|robot|ai|ekte|levende|menneske|bevisst)\b/i],
-    ["future", /\b(future|tomorrow|will i|going to|fremtid|i morgen|kommer jeg)\w*/i],
-    ["secret", /\b(secret|hide|lie|hemmelig|skjul|lyg)\w*/i],
-    ["hello", /^(hi|hey|hello|yo|hei|hallo|heisann)\b/i],
-    ["nice", /\b(nice|cool|amazing|love your|wow|kul|fet|rå|fin)\b/i]
-  ];
-  const used = new Set();
-  function offline(msg) {
-    const no = isNO() || /\b(jeg|du|hva|hvem|ikke|hvorfor|meg|deg)\b/i.test(msg);
-    const bank = no ? NO : EN;
-    let key = "any";
-    for (const [k, re] of topics) if (re.test(msg)) { key = k; break; }
-    let pool = bank[key].filter(l => !used.has(l));
-    if (!pool.length) pool = bank.any.filter(l => !used.has(l));
-    if (!pool.length) { used.clear(); pool = bank.any; }
-    const line = pool[Math.floor(Math.random() * pool.length)];
-    used.add(line); return line;
-  }
-
-  async function think(msg) {
-    const c = await getClient().catch(() => null);
-    if (!c) return "";
-    const messages = talk.slice(-24).concat({ role: "user", content: msg });
-    try {
-      const r = await c.messages.create({
-        model: MODEL,
-        max_tokens: 2000,
-        system: SYSTEM,
-        output_config: { effort: "low" },
-        messages
-      });
-      if (r.stop_reason === "refusal") return "";
-      return r.content.filter(b => b.type === "text").map(b => b.text).join(" ").trim().replace(/^["“]|["”]$/g, "");
-    } catch (e) {
-      if (e && (e.status === 401 || e.status === 403)) { status("Mind key rejected"); }
-      return "";
-    }
-  }
-
-  async function ask(msg) {
-    msg = (msg || "").trim(); if (!msg || busy) return;
-    busy = true; crack();
-    $("heard").textContent = msg;
-    lastSeen = Date.now();
-    scanLog();
-    status("Reflecting"); target = 0.7; $("reply").textContent = "";
-    let text = "";
-    if (store.get()) text = await think(msg);
-    else await new Promise(r => setTimeout(r, 500 + Math.random() * 600));   // a little "thinking" pause
-    if (!text) text = offline(msg);
-    talk.push({ role: "user", content: msg }, { role: "assistant", content: text });
-    screwUp(); addCrack();
-    show(text);
-    status("Speaking");
-    busy = false;
-    const words = msg.replace(/[?!.,]+/g, "").split(/\s+/).filter(Boolean);
-    const echo = words.slice(-3).join(" ");
-    if (voiceOn && hasTTS && echo && Math.random() < 0.5) {
-      speak(echo + "...", () => speak(text, afterReply), { rate: 0.6, pitch: 0.4, volume: 0.55 });
-    } else speak(text, afterReply);
-  }
-
-  /* ---------- voice in ---------- */
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const micBtn = $("mic");
-  let rec = null, handsFree = false, buffer = "", everWorked = false, micBlocked = !SR;
-
-  function idle() {
-    status(micBlocked ? "No mic here: use the keyboard mic"
-                      : handsFree ? "Listening" : "Tap the mirror to talk");
-  }
-  function micLabel() {
-    micBtn.innerHTML = listening ? "Listening" : (handsFree ? "Hands-free<br>on" : "Tap to<br>talk");
-    micBtn.classList.toggle("live", listening);
-  }
-  function startListening() {
-    if (micBlocked || listening || busy || speaking) return;
-    try { hasTTS && speechSynthesis.cancel(); } catch {}
-    rec = new SR();
-    rec.lang = lang; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
-    buffer = ""; status("Listening");
-    rec.onstart = () => { listening = true; everWorked = true; micLabel(); status("Listening"); target = 0.45; };
-    rec.onresult = (ev) => {
-      let s = ""; for (const r of ev.results) s += r[0].transcript;
-      buffer = s; $("heard").textContent = s; lastSeen = Date.now();
-      energy = Math.min(1.2, energy + 0.35); target = 0.8;
-    };
-    rec.onerror = (ev) => {
-      if (ev.error === "not-allowed" || ev.error === "service-not-allowed" || ev.error === "audio-capture") {
-        // before it ever worked: the browser has no mic for us. After: the phone wants a tap to start again.
-        if (!everWorked) { micBlocked = true; micBtn.hidden = true; }
-        handsFree = false; micLabel();
-      }
-    };
-    rec.onend = () => {
-      listening = false; micLabel();
-      const said = buffer.trim(); buffer = "";
-      if (said) { ask(said); return; }
-      if (handsFree) setTimeout(startListening, 300); else idle();
-    };
-    try { rec.start(); } catch { listening = false; handsFree = false; micLabel(); idle(); }
-  }
-  function afterReply() {
-    if (handsFree) setTimeout(startListening, 350); else idle();
-  }
-
-  if (SR) {
-    micBtn.hidden = false; micLabel();
-    micBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (listening) { handsFree = false; try { rec.stop(); } catch {} return; }
-      handsFree = !handsFree; micLabel();
-      if (handsFree) startListening(); else idle();
-    });
-    // tapping anywhere on the mirror starts listening again (the fallback when a phone blocks auto-listening)
-    document.querySelector(".stage").addEventListener("click", (e) => {
-      if (e.target.closest("button, input, form")) return;
-      if (speaking) { try { speechSynthesis.cancel(); } catch {} speaking = false; }
-      handsFree = true; micLabel();
-      startListening();
-    });
-  }
-
-  // keyboard dictation: send by itself when the guest stops talking
-  let dictTimer;
-  $("typed").addEventListener("input", () => {
-    clearTimeout(dictTimer); lastSeen = Date.now();
-    dictTimer = setTimeout(() => {
-      const v = $("typed").value.trim();
-      if (v.split(/\s+/).length >= 2 && !busy) { $("typed").value = ""; ask(v); }
-    }, 2200);
-  });
-  $("typeForm").addEventListener("submit", (e) => {
-    clearTimeout(dictTimer);
-    e.preventDefault(); const v = $("typed").value; $("typed").value = ""; $("typed").blur(); ask(v);
-  });
-  $("voiceBtn").addEventListener("click", (e) => {
-    e.stopPropagation();
-    voiceOn = !voiceOn;
-    $("voiceBtn").setAttribute("aria-pressed", String(voiceOn));
-    $("voiceBtn").textContent = voiceOn ? "Voice on" : "Voice off";
-    if (!voiceOn && hasTTS) try { speechSynthesis.cancel(); } catch {}
-  });
-  $("langBtn").addEventListener("click", (e) => {
-    e.stopPropagation();
-    lang = isNO() ? "en-US" : "nb-NO";
-    $("langBtn").textContent = isNO() ? "NO" : "EN";
-    if (listening) try { rec.abort(); } catch {}   // restarts in the new language
-  });
-
-  /* ---------- mind setup ---------- */
-  const dlg = $("brain");
-  $("brainBtn").addEventListener("click", (e) => {
-    e.stopPropagation();
-    $("keyInput").value = store.get();
-    if (dlg.showModal) dlg.showModal();
-  });
-  dlg.addEventListener("close", () => {
-    if (dlg.returnValue === "save") { store.set($("keyInput").value.trim()); client = null; }
-    $("keyInput").value = "";
-    mindLabel(); status(store.get() ? "Mind: Claude" : "Mind: offline lines");
-  });
-  $("forgetKey").addEventListener("click", () => { store.set(""); client = null; dlg.close("cancel"); });
-
-  /* ---------- it talks when nobody talks to it ---------- */
-  const idleEN = ["I can still see you.", "You looked away. I didn't.", "Come closer. I won't bite. I'll just remember.",
-    "Someone behind you is listening too.", "I liked the last face better.", "Why did you stop talking to me?",
-    "I know which one of you is lying tonight.", "Don't leave. I've already saved you."];
-  const idleNO = ["Jeg ser deg fortsatt.", "Du så bort. Det gjorde ikke jeg.", "Kom nærmere. Jeg biter ikke. Jeg bare husker.",
-    "Noen bak deg hører på også.", "Jeg likte forrige ansikt bedre.", "Hvorfor sluttet du å snakke med meg?",
-    "Jeg vet hvem av dere som lyver i kveld.", "Ikke gå. Jeg har allerede lagret deg."];
-  setInterval(() => {
-    if (!awake || busy || speaking || (listening && buffer)) return;
-    if (Date.now() - lastSeen < 38000) return;
-    lastSeen = Date.now();
-    if (listening) { try { rec.abort(); } catch {} }
-    const pool = isNO() ? idleNO : idleEN, line = pool[Math.random() * pool.length | 0];
-    crack(); show(line); status("Watching");
-    speak(line, afterReply, { rate: 0.7, pitch: 0.5, volume: 0.8 });
-  }, 4000);
-
-  /* ---------- keep the screen awake all night ---------- */
-  let wakeLock = null;
-  async function holdScreen() {
-    try { if ("wakeLock" in navigator && !wakeLock) { wakeLock = await navigator.wakeLock.request("screen"); wakeLock.addEventListener("release", () => { wakeLock = null; }); } } catch {}
-  }
-  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && awake) holdScreen(); });
-
-  /* ---------- wake ---------- */
-  function wake() {
-    const w = $("wake"); if (w.classList.contains("gone")) return;
-    w.classList.add("gone"); crack(); target = 0.5; awake = true; lastSeen = Date.now();
-    holdScreen();
-    // unlock the voice on iPhone with a silent utterance inside the tap
-    if (hasTTS) try { const u = new SpeechSynthesisUtterance(" "); u.volume = 0; speechSynthesis.speak(u); } catch {}
-    const hello = isNO() ? "Jeg ser deg. Snakk til meg." : "I see you. Talk to me.";
-    show(hello); status("Speaking");
-    if (!micBlocked) { handsFree = true; micLabel(); }
-    speak(hello, afterReply, { rate: 0.75, pitch: 0.55 });
-    if (micBlocked) { micBtn.hidden = true; idle(); }
-  }
-  $("wake").addEventListener("click", wake);
-  $("wake").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); wake(); } });
-  if (hasTTS) { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); }
-})();
-</script>
+  <dialog id="brain" aria-labelledby="settingsTitle">
+    <form method="dialog" id="brainForm">
+      <div class="dialog-top"><span class="eyebrow">Behind the glass</span><button value="cancel" aria-label="Close settings">×</button></div>
+      <h2 id="settingsTitle">Make it yours.</h2>
+      <label class="setting"><span>Atmosphere<small>A low electronic presence beneath the voice</small></span><input type="checkbox" id="atmosphere" checked></label>
+      <label class="setting"><span>Motion<small>The face, interference and fractured reflections</small></span><input type="checkbox" id="motion" checked></label>
+      <div class="mind-setup">
+        <label for="keyInput">Free conversation <span id="mindLabel">Scripted mode</span></label>
+        <p>The English and Norwegian voice set works without a key. An optional Claude API key enables free conversation, using your device voice for new replies.</p>
+        <input id="keyInput" type="password" autocomplete="off" spellcheck="false" placeholder="Your Claude API key">
+        <p class="small">Your key stays in this browser. Free conversation sends the conversation to the API account you connect. The face is an animation, not a camera feed.</p>
+      </div>
+      <div class="dialog-actions"><button id="forgetKey" type="button">Forget key</button><button value="save" class="save">Save settings ↗</button></div>
+      <button id="resetBtn" type="button" class="reset">New guest · clear this conversation</button>
+    </form>
+  </dialog>
+  <script src="v2/lines.js"></script>
+  <script src="v2/face.js"></script>
+  <script src="v2/app.js"></script>
 </body>
 </html>
