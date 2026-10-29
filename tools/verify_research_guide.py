@@ -14,6 +14,7 @@ assert len(s.select('h1'))==1 and len(s.select('.rp-station'))==5
 assert len(s.select('.rp-shot img'))==7
 for img in s.select('.rp-shot img'):
     p=guide.parent/img['src'];im=Image.open(p);im.verify()
+    assert Image.open(p).format==('JPEG' if p.suffix=='.jpg' else 'PNG'),p
     assert Image.open(p).size==(int(img['width']),int(img['height']))
     assert img.get('alt') and img.find_parent('figure').find('figcaption').find('a',href=True)
 assert 'do not log in through MittUiB or Feide' in s.find(id='internet-archive').get_text(' ',strip=True)
