@@ -17,7 +17,7 @@ LENSES = [
 
 TEMPLATE = '''<section class="ls-session" id="library-session" aria-labelledby="ls-title">
 <div class="ls-welcome"><p class="ls-kicker">TURING'S LIBRARY / LAB MODE</p><h2 id="ls-title">Make first. Find meaning.</h2><p>Bring one part of something you made. Try it, notice what it does, then find research that helps you understand it. Your making can lead the research.</p><a class="ls-skip" href="#ls-find" data-ls-go="2">Already looking for a source? Go straight to the shelves →</a></div>
-<nav class="ls-room-map" aria-label="Your library session"><a href="#ls-make" data-ls-go="0"><i class="ls-lamp" aria-hidden="true"></i><small>ROOM 01</small><strong>Your creation</strong></a><a href="#ls-notice" data-ls-go="1"><i class="ls-lamp" aria-hidden="true"></i><small>ROOM 02</small><strong>Look closer</strong></a><a href="#ls-find" data-ls-go="2"><i class="ls-lamp" aria-hidden="true"></i><small>ROOM 03</small><strong>Find a voice</strong></a><a href="#ls-connect" data-ls-go="3"><i class="ls-lamp" aria-hidden="true"></i><small>ROOM 04</small><strong>Find meaning</strong></a></nav>
+<nav class="ls-room-map" aria-label="Your library session"><a href="#ls-make" data-ls-go="0"><i class="ls-lamp" aria-hidden="true"></i><small>ROOM 01</small><strong>Your creation</strong></a><a href="#ls-notice" data-ls-go="1"><i class="ls-lamp" aria-hidden="true"></i><small>ROOM 02</small><strong>Look closer</strong></a><a href="#ls-find" data-ls-go="2"><i class="ls-lamp" aria-hidden="true"></i><small>ROOM 03</small><strong>Find a source</strong></a><a href="#ls-connect" data-ls-go="3"><i class="ls-lamp" aria-hidden="true"></i><small>ROOM 04</small><strong>Find meaning</strong></a></nav>
 <p class="ls-position" data-ls-position role="status">Four rooms to explore. Start anywhere; return whenever it helps.</p>
 <section class="ls-panel" id="ls-make" data-ls-panel="0"><p class="ls-room-no">ROOM 01 / THE MAKING TABLE</p><h3>Start with something you made.</h3><p>Open one scene, screen, sound, text or interaction from your project. It can be unfinished. Choose one small part to explore.</p><div class="ls-action"><b>Do this now</b><p>Try that part of your work, or let a neighbour try it. Watch what actually happens.</p><a href="lab-programme.html#lab-5-workbench">Open the project workbench →</a></div>
 <details class="ls-example"><summary>Nothing ready yet? Try a tiny browser prototype.</summary><div class="ls-demo" data-ls-demo="closed"><p class="ls-demo-sign">THE LITTLE ROOM</p><div class="ls-demo-door" aria-hidden="true"><span></span></div><p id="ls-demo-story" data-ls-demo-story role="status">A closed door. A little light underneath.</p><button type="button" data-ls-demo-action hidden>Open the door</button><noscript><p>Imagine a click opening this door and revealing a memory. You can also use any existing digital work as your starting point.</p></noscript></div><p>This is a tiny browser prototype. After trying it, ask what changed and what the action meant.</p></details>
@@ -70,10 +70,10 @@ def build(root):
         session.insert_after(collection)
     for station in page.select('.lq-station'):
         for old in station.select('.ls-return'):old.decompose()
-        station.select_one('.lq-body').append(BeautifulSoup('<p class="ls-return"><a href="#ls-find" data-ls-return>← Back to room 3: Find a voice</a></p>','html.parser').find())
+        station.select_one('.lq-body').append(BeautifulSoup('<p class="ls-return"><a href="#ls-find" data-ls-return>← Back to room 3: Find a source</a></p>','html.parser').find())
     for old in page.select('link[href^="library-session.css"],script[src^="library-session.js"]'):old.decompose()
     page.select_one('link[href^="accessibility.css"]').insert_before(page.new_tag('link',rel='stylesheet',href='library-session.css?v=2'))
-    page.head.append(page.new_tag('script',src='library-session.js?v=2',defer=''))
+    page.head.append(page.new_tag('script',src='library-session.js?v=3',defer=''))
     path.write_text(str(page),encoding='utf-8',newline='\n')
     from lab_links import apply as lab_links
     lab_links(root,[path])

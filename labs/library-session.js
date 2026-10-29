@@ -3,7 +3,7 @@
   const root=document.getElementById('library-session');if(!root)return;
   const panels=[...root.querySelectorAll('[data-ls-panel]')];
   const roomLinks=[...root.querySelectorAll('.ls-room-map [data-ls-go]')];
-  const names=['Your creation','Look closer','Find a voice','Find meaning'];
+  const names=['Your creation','Look closer','Find a source','Find meaning'];
   let current=0;
   const go=(index,focus=false,bookmark=false)=>{
     current=Number.isInteger(index)?Math.max(0,Math.min(panels.length-1,index)):0;

@@ -70,8 +70,8 @@ def illustration(root):
     (root/'labs/turing-halloween-library.svg').write_text(svg,encoding='utf-8',newline='\n')
 
 
-PLANS = '''<section class="hl-route-picker" aria-labelledby="hl-route-title" data-hl-picker>
-<div class="hl-picker-heading"><div><p class="hl-kicker">WHAT WOULD FEEL USEFUL TODAY?</p><h2 id="hl-route-title">Pick a door. Change your mind whenever you like.</h2></div></div>
+PLANS = '''<section class="hl-route-picker" id="friday-routes" aria-labelledby="hl-route-title" data-hl-picker>
+<div class="hl-picker-heading"><div><p class="hl-kicker">FRIDAY 30 OCTOBER / YOUR SESSION</p><h2 id="hl-route-title">Where would you like to work?</h2><p>Stay in the lab, visit the library, or do a little of both. Choose one route to see your next steps.</p></div></div>
 <div class="hl-route-buttons" role="group" aria-label="Choose today's route" data-hl-controls hidden><button type="button" data-hl-route="build" aria-pressed="true">Build in the lab</button><button type="button" data-hl-route="browse" aria-pressed="false">Browse the library</button><button type="button" data-hl-route="mix" aria-pressed="false">A bit of both</button></div>
 <article class="hl-plan" data-hl-plan="build"><span class="hl-plan-icon" aria-hidden="true">01 / THE WORKBENCH</span><h3>Make one small thing work.</h3><p>Stay in our usual lab room. Open your project, choose a change and help each other try it. Bring the unfinished version.</p><ol><li>Open the work you already have.</li><li>Build or repair one manageable part.</li><li>Let a neighbour try it, then save.</li></ol><a class="hl-launch" href="#lab-5-workbench" data-hl-launch>Open my Friday workbench →</a></article>
 <article class="hl-plan" data-hl-plan="browse"><span class="hl-plan-icon" aria-hidden="true">02 / THE RESEARCH SHELVES</span><h3>Take something you made into the library.</h3><p>You can create first and find research afterwards. Start with one scene, sound, screen or interaction, then investigate what it does and what it might mean.</p><ol><li>Bring one part of your creation, or an interest to explore.</li><li>Notice something, then find a useful book or article.</li><li>Bring an idea back to your work and keep its reference.</li></ol><a class="hl-launch" href="academic-library.html#library-session" data-hl-launch>Enter library lab mode →</a><a class="hl-small-link" href="#library-shelf-route">Help me find a physical book</a></article>
@@ -83,34 +83,21 @@ PLANS = '''<section class="hl-route-picker" aria-labelledby="hl-route-title" dat
 def entrance(library=False):
     title="Alan Turing's haunted library." if library else "Turing's haunted library."
     lead=('Games, stories, art, sound, code, data and power. Bring something you want to understand. Start with one shelf and follow your curiosity.' if library else 'Stay and build, explore research, or mix the two. Bring what you have. We will work things out together.')
-    return f'''<section class="hl-entrance" id="{'library-entrance' if library else 'programme'}" aria-labelledby="{'hl-library-title' if library else 'hl-title'}">
+    heading='h1' if library else 'h2'
+    action=('<a class="hl-start-session" href="#library-session">Start library lab: make, notice, research, connect →</a>' if library else '<a class="hl-start-session" href="#friday-routes">Choose my Friday route →</a>')
+    return f'''<section class="hl-entrance {'hl-library-hero' if library else 'hl-friday-hero'}" id="{'library-entrance' if library else 'programme'}" aria-labelledby="{'hl-library-title' if library else 'hl-title'}">
 <div class="hh-slime" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-<div class="hl-topline"><p class="hl-kicker">DIKULT105 / HALLOWEEN EDITION · FRIDAY 30 OCTOBER</p><span class="hl-open-sign">ALL DOORS OPEN</span><button type="button" data-hl-calm aria-pressed="false" hidden>Quiet the room</button></div>
-<h1 id="{'hl-library-title' if library else 'hl-title'}">{title}</h1><p class="hl-lead">{lead}</p>
-<div class="hl-scene"><img src="turing-halloween-library.svg" width="1200" height="620" alt="A Halloween library with research shelves, Turing's illustrated portrait, a code machine, pumpkin lanterns, a book ghost and a black cat."/>
-<nav class="hl-map-doors" aria-label="Explore the Halloween library"><a href="{'lab-programme.html#lab-5-workbench' if library else '#lab-5-workbench'}"><span aria-hidden="true">01</span><strong>The workbench</strong><small>Your project, your next step</small></a><a href="{'#library-session' if library else 'academic-library.html#library-session'}"><span aria-hidden="true">02</span><strong>Library lab mode</strong><small>Make, notice, research, connect</small></a><a href="final-assessment.html#brief"><span aria-hidden="true">03</span><strong>Final Assignment</strong><small>Take a look at where this goes</small></a></nav></div>
-<div class="hl-familiar"><div class="hh-machine-controls"><button type="button" data-hh-wake aria-pressed="false" hidden>Wake the machine</button><button type="button" data-hl-familiar aria-label="Ask the library familiar for a little guidance" hidden><span aria-hidden="true">✦</span> Ask the book ghost</button></div><p data-hl-hint role="status">{'You can combine subjects. A genre is a useful starting point, not a box.' if library else 'One useful next step is plenty. Choose a route below and take your time.'}</p></div>
-{'<p class="hl-library-return"><a href="lab-programme.html#programme">Back to today’s Halloween map</a> · <a href="final-assessment.html#brief">Look at the Final Assignment</a></p>' if library else ''}
+<div class="hl-topline"><p class="hl-kicker"><img class="hl-date-logo" src="halloween-lab-badge.svg" alt="" width="30" height="30"/> DIKULT105 / HALLOWEEN EDITION · FRIDAY 30 OCTOBER</p><button type="button" data-hl-calm aria-pressed="false" hidden>Quiet the room</button></div>
+<div class="hl-entrance-copy"><{heading} id="{'hl-library-title' if library else 'hl-title'}">{title}</{heading}><p class="hl-lead">{lead}</p>{action}</div>
+<div class="hl-scene"><img src="turing-halloween-library.svg" width="1200" height="620" alt="A Halloween library with research shelves, Turing's illustrated portrait, a code machine, pumpkin lanterns, a book ghost and a black cat."/></div>
+<details class="hl-scene-controls"><summary>Play with the room</summary><div class="hl-familiar"><div class="hh-machine-controls"><button type="button" data-hh-wake aria-pressed="false" hidden>Wake the machine</button><button type="button" data-hl-familiar aria-label="Ask the library familiar for a little guidance" hidden><span aria-hidden="true">✦</span> Ask the book ghost</button></div><p data-hl-hint role="status">{'You can combine subjects. A genre is a useful starting point, not a box.' if library else 'One useful next step is plenty. Choose a route below and take your time.'}</p></div></details>
+{'<p class="hl-library-return"><a href="lab-programme.html#all-labs">← Original lab map</a> · <a href="lab-programme.html#programme">Friday 30 October</a></p>' if library else ''}
 </section>'''
 
 
 def navigation(page):
-    nav=page.select_one('.studio-header nav')
-    if not nav:return
-    for link in list(nav.select('a')):
-        if link.get('href','').split('#')[0].split('/')[-1]=='meet-ingrid.html' or link.get_text(' ',strip=True).lower()=='lab assistant':link.decompose()
-    final=nav.select_one('a[href^="final-assessment.html"]')
-    if not final:
-        final=page.new_tag('a');nav.insert(1,final)
-    final['href']='final-assessment.html#brief'
-    final.clear();final.append('Final Assignment ')
-    badge=page.new_tag('span',attrs={'class':'hl-new'});badge.string='NEW';final.append(badge)
-    final['class']=['hl-final-tab']
-    library=nav.select_one('a[href^="academic-library.html"]')
-    if not library:
-        library=page.new_tag('a');nav.insert(2,library)
-    library['href']='academic-library.html#library-session'
-    library.string="Turing's Library"
+    from lab_wayfinding import navigation as wayfinding
+    wayfinding(page)
 
 
 def assets(page):
@@ -118,7 +105,7 @@ def assets(page):
     if 'hl-season' not in classes:classes.append('hl-season')
     page.body['class']=classes
     for old in page.select('link[href^="halloween-library.css"],script[src^="halloween-library.js"]'):old.decompose()
-    style=page.new_tag('link',rel='stylesheet',href='halloween-library.css?v=2')
+    style=page.new_tag('link',rel='stylesheet',href='halloween-library.css?v=3')
     access=page.select_one('link[href^="accessibility.css"]')
     if access:access.insert_before(style)
     else:page.head.append(style)
@@ -137,7 +124,7 @@ def living_scene(page,root):
 def apply(root):
     illustration(root)
     p=root/'labs/lab-programme.html';s=BeautifulSoup(p.read_text(encoding='utf-8'),'html.parser')
-    s.title.string="Halloween lab | Alan Turing's library | DIKULT105"
+    s.title.string="The lab map | DIKULT105"
     if not s.find(id='all-labs'):
         old=s.find(id='programme');old['id']='lab-archive'
         if old.h1:old.h1.name='h2'
@@ -145,10 +132,33 @@ def apply(root):
         summary=s.new_tag('summary');summary.string='All eight Fridays + your saved lab progress';drawer.append(summary)
         old.replace_with(drawer);drawer.append(old)
         for node in list(s.select('#road-to-50,.lab-legends-ticker')):drawer.append(node.extract())
-        drawer.insert_before(BeautifulSoup(entrance()+PLANS,'html.parser'))
-    else:
-        s.find(id='programme').replace_with(BeautifulSoup(entrance(),'html.parser').find())
-        s.select_one('.hl-route-picker').replace_with(BeautifulSoup(PLANS,'html.parser').find())
+    # The familiar eight-week map is the home view, not a hidden archive.
+    drawer=s.find(id='all-labs');drawer.name='section'
+    drawer['class']=['hl-archive','hl-main-map'];drawer['aria-labelledby']='lab-map-title'
+    drawer.attrs.pop('open',None)
+    if drawer.find('summary',recursive=False):drawer.find('summary',recursive=False).decompose()
+    old=s.find(id='lab-archive');title=old.find(['h1','h2']);title.name='h1';title['id']='lab-map-title'
+    old.select_one('[data-xp-text]').string='0 / 24 stars\n0 / 8 labs complete'
+    s.main.insert(0,drawer.extract())
+    if not drawer.select_one('.hl-map-more'):
+        more=s.new_tag('details',attrs={'class':'hl-map-more'})
+        summary=s.new_tag('summary');summary.string='Course timeline + computing history';more.append(summary)
+        for node in list(drawer.select('#road-to-50,.lab-legends-ticker')):more.append(node.extract())
+        drawer.append(more)
+    # The Halloween room belongs to the dated Lab 5, so all old lab links still work.
+    for node in list(s.select('#programme,.hl-route-picker')):node.decompose()
+    hero=BeautifulSoup(entrance(),'html.parser').find()
+    s.select_one('#lab-5 > .lab-title').insert_after(hero)
+    hero.insert_after(BeautifulSoup(PLANS,'html.parser').find())
+    tile=s.select_one('.sl-levels .lv-5')
+    tile['class']=list(dict.fromkeys(tile.get('class',[])+['lv-halloween']))
+    date=tile.select_one('.lv-date')
+    if not date.select_one('.hl-date-logo'):
+        date.insert(0,s.new_tag('img',attrs={'src':'halloween-lab-badge.svg','class':'hl-date-logo','alt':'','width':'26','height':'26'}))
+    tile.select_one('.lv-text > strong').string='Halloween lab'
+    goal=drawer.select_one('.sl-goal');goal['href']='final-assessment.html#brief';goal.b.string='Final Assignment'
+    if not tile.select_one('.hl-map-theme'):
+        theme=s.new_tag('span',attrs={'class':'hl-map-theme'});theme.string='Your project + the library';date.insert_after(theme)
     # The publishing screenshot belongs with optional publishing, rather than the Friday research route.
     resource=s.select_one('#lab-5 .resources')
     for figure in list(resource.select('figure')):

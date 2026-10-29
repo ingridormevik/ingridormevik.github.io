@@ -97,3 +97,30 @@ body.studio.hl-season [data-hh-wake][aria-pressed=true]{background:#f1c75a}
 .hl-quiet .hh-drawing .hh-eyes{transform:none!important}
 @media(prefers-reduced-motion:reduce){.hh-drawing *,.hh-slime i{animation:none!important;transition:none!important}.hh-drawing .hh-eyes{transform:none!important}}
 @media(max-width:560px){body.studio.hl-season .hl-entrance h1{font-size:43px}.hh-machine-controls{width:100%}body.studio.hl-season .hh-machine-controls button{flex:1 1 140px}}
+/* The course map is home. The seasonal room lives inside the dated fifth lab. */
+body.studio.hl-season .hl-main-map{margin:24px 0 36px;padding:0;border:0;background:none;scroll-margin-top:18px}
+body.studio.hl-season .hl-main-map .start-lab{padding:26px 0 34px}
+body.studio.hl-season .hl-map-more{margin-top:26px;border:2px solid #718379;background:#1e2a31}
+body.studio.hl-season .hl-map-more>summary{padding:18px 22px;color:#e4c68d;font:750 16px/1.5 'Segoe UI',Arial,sans-serif;cursor:pointer}
+body.studio.hl-season .lv-halloween{--c:#f4af5d}
+body.studio.hl-season .lv-halloween .lv-date{display:flex;align-items:center;gap:6px}
+body.studio.hl-season .hl-date-logo{display:inline-block;flex-shrink:0;vertical-align:middle;width:26px;height:26px}
+body.studio.hl-season .hl-map-theme{font:700 12px/1.4 'Segoe UI',Arial,sans-serif;color:#f4d39c}
+body.studio.hl-season .lv-halloween .lv-orb{border-color:#452b21}
+body.studio.hl-season .hl-topline .hl-kicker{display:flex;align-items:center;gap:10px}
+body.studio.hl-season a.hl-start-session{display:inline-block;max-width:100%;margin:0 0 24px;padding:13px 18px;background:#c9e693;color:#16272e;border:3px solid #090e17;text-decoration:none;font:850 17px/1.5 'Segoe UI',Arial,sans-serif}
+body.studio.hl-season a.hl-start-session:hover{background:#e0efb6}
+body.studio.hl-season .hl-scene-controls{margin-top:18px;border-top:1px solid #758176;background:none}
+body.studio.hl-season .hl-scene-controls>summary{padding:14px 0;color:#ead1a0;font:750 15px/1.5 'Segoe UI',Arial,sans-serif;cursor:pointer}
+body.studio.hl-season .hl-scene-controls .hl-familiar{margin-top:0}
+body.studio.hl-season .hl-friday-hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:14px 26px}
+body.studio.hl-season .hl-friday-hero .hl-topline{grid-column:1/-1}
+body.studio.hl-season .hl-friday-hero .hl-entrance-copy{align-self:center}
+body.studio.hl-season .hl-friday-hero h2{margin:14px 0 20px;max-width:16ch;font:900 clamp(32px,4.1vw,52px)/1.08 Impact,'Arial Black','Segoe UI',sans-serif;letter-spacing:.015em;text-transform:uppercase;color:#c9ef52;text-shadow:2px 3px 0 #090e17}
+body.studio.hl-season .hl-friday-hero .hl-lead{font-size:18px;margin-bottom:20px}
+body.studio.hl-season .hl-friday-hero .hl-scene{margin:0;align-self:center}
+body.studio.hl-season .hl-friday-hero .hl-scene-controls{grid-column:1/-1}
+body.studio.hl-season .hl-library-hero .hl-entrance-copy{max-width:84ch}
+body.studio.hl-season .hl-picker-heading>div>p:not(.hl-kicker){max-width:70ch;color:#e4e9da;font-size:18px;line-height:1.7}
+@media(max-width:800px){body.studio.hl-season .hl-friday-hero{grid-template-columns:1fr}body.studio.hl-season .hl-friday-hero h2{max-width:24ch}body.studio.hl-season .hl-friday-hero .hl-scene{grid-column:1}}
+@media print{body.studio.hl-season .hl-scene-controls{display:none}}

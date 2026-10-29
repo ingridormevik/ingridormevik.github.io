@@ -10,6 +10,8 @@ def oria(query=''):
     return ORIA + ('&' + urlencode({'query': 'any,contains,' + query}) if query else '')
 
 def apply(root, paths=None):
+    from lab_wayfinding import apply as wayfinding
+    wayfinding(root,paths)
     for path in paths or sorted((root/'labs').glob('*.html')):
         raw = path.read_text(encoding='utf-8')
         if 'studio.js' not in raw and 'class="studio' not in raw: continue

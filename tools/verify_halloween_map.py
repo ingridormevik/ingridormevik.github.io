@@ -32,7 +32,10 @@ for name in files:
             destination=page if target==path else BeautifulSoup(target.read_text(encoding='utf-8'),'html.parser')
             assert destination.find(id=unquote(url.fragment)),node
     if name=='lab-programme.html':
-        assert page.main.find(recursive=False).get('id')=='programme'
+        assert page.main.find(recursive=False).get('id')=='all-labs'
+        assert page.find(id='all-labs').name=='section','The original map must be visible, not in a drawer'
+        assert page.find(id='programme').find_parent(id='lab-5'),'Halloween belongs to the dated fifth lab'
+        assert page.select_one('.lv-5 .hl-date-logo[src="halloween-lab-badge.svg"]')
         assert len(page.select('#all-labs .sl-map a.lv'))==8
         assert len(page.select('[data-hl-plan]'))==3
         assert not page.select('[data-hl-plan][hidden]'),'All routes must remain visible without JS'
