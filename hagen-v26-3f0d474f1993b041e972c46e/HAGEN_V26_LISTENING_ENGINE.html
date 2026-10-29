@@ -22147,6 +22147,79 @@ globalThis.HagenListeningModel={create(storage,seed,now=()=>Date.now()){
  H.updateNaturalRealm=(g,...args)=>{update?.(g,...args);viewport.value.set(g.canvas.width,g.canvas.height);};
 })();
 
+// Warm light belongs to the existing root surfaces, never a new halo/post pass.
+(()=>{
+ if(new URLSearchParams(location.search).get('underground-gold')==='off')return;
+ const T=THREE,seen=new WeakSet(),sprites=new WeakSet(),revisions=new WeakMap();let at=0;
+ const R=H.goldenUnderground={rooms:0,wood:0,matter:0,networks:0,radialHalosMuted:0,addedLights:0,addedDraws:0};
+ const gold=['#c39750','#e4bb73','#c6a477','#d6b975','#d4a45d'];
+ function bindWood(m){
+  if(!m?.userData.rootUniforms)return;
+  m.color.set('#302315');m.emissive.set('#bd8437');m.emissiveIntensity=.035;
+  m.userData.rootUniforms.silver.value=.08;
+  if(seen.has(m))return;seen.add(m);R.wood++;
+  const before=m.onBeforeCompile,key=m.customProgramCacheKey();
+  m.onBeforeCompile=s=>{before.call(m,s);
+   s.fragmentShader=s.fragmentShader
+    .replace('vec3(.16,.40,.19)','vec3(.62,.31,.065)')
+    .replace('vec3(.39,.24,.065)','vec3(.91,.59,.18)')
+    .replace('vec3(.25,.39,.26)','vec3(.72,.47,.16)')
+    .replace('vec3(.24,.67,.39)','vec3(.87,.53,.14)')
+    .replace('vec3(.42,.61,.55)','vec3(.94,.73,.37)')
+    .replace('vec3(.83,.88,.95)','vec3(.98,.83,.57)').replaceAll('rootGlow*','rootGlow*1.35*');
+  };m.customProgramCacheKey=()=>key+'-v26-gold-within-bark';m.needsUpdate=true;
+ }
+ function bindNetwork(m){
+  if(!m?.isShaderMaterial||seen.has(m)||!m.fragmentShader?.includes('gl_FragColor'))return;
+  seen.add(m);R.networks++;const before=m.onBeforeCompile,key=m.customProgramCacheKey();
+  m.onBeforeCompile=s=>{before.call(m,s);const i=s.fragmentShader.lastIndexOf('}');
+   if(i<0)return;
+   s.fragmentShader=s.fragmentShader.slice(0,i)+`\nfloat goldLuma=dot(max(gl_FragColor.rgb,vec3(0.)),vec3(.2126,.7152,.0722));
+    gl_FragColor.rgb=mix(vec3(.50,.26,.065),vec3(1.,.80,.40),clamp(goldLuma,0.,1.))*goldLuma*1.2;
+    `+s.fragmentShader.slice(i);
+  };m.customProgramCacheKey=()=>key+'-v26-gold-network';m.needsUpdate=true;
+ }
+ function apply(e,force=false){
+  const r=e?.room;if(!r)return;
+  const revision=(r.materials?.length||0)+':'+(r.network?.cells?.size||0)+':'+r.group.children.length;
+  if(!force&&revisions.get(r)===revision)return;
+  if(!revisions.has(r))R.rooms++;revisions.set(r,revision);
+  const accent=gold[e.portal.encounter??e.portal.group]||gold[0],wood=new Set(r.materials||[]);
+  r.group.traverse(o=>{
+   const image=o.material?.map?.image;
+   if(o.isSprite&&image?.width===64&&image?.height===64&&o.material.blending===T.AdditiveBlending&&!sprites.has(o)){
+    // These are radial light cards, not text or plants. Root surfaces carry
+    // the illumination instead; retain the object and all story state.
+    sprites.add(o);o.material=o.material.clone();o.material.opacity=0;
+    const render=o.onBeforeRender;o.onBeforeRender=function(...args){this.material.opacity=0;return render?.apply(this,args);};R.radialHalosMuted++;
+   }
+   for(const m of [].concat(o.material||[])){
+   if(m.userData.rootUniforms){bindWood(m);continue;}
+   if(m.isShaderMaterial&&(o.isPoints||o.isLine||/root|signal|mycel|thread|interlac/i.test(o.name))){bindNetwork(m);continue;}
+   if((m.isLineBasicMaterial||m.isPointsMaterial)&&!seen.has(m)){seen.add(m);m.color.set('#d3ad65');continue;}
+   if(!m.isMeshStandardMaterial||m.transparent||seen.has(m))continue;
+   // Late streamed humus used to escape the room's original colour pass,
+   // leaving flat brown patches among the pale lines. Keep its real soil dark.
+   seen.add(m);R.matter++;m.color.set(o.name==='Leaf fragments in humus'?'#302719':'#272419');
+   m.emissive.set('#513819');m.emissiveIntensity=.025;
+   if(m.emissiveMap!==m.map){m.emissiveMap=m.map;m.needsUpdate=true;}
+  }});
+  for(const m of wood)bindWood(m);
+  r.soilBounce?.color.set('#bd995c');r.soilBounce?.groundColor.set('#191b13');
+  if(r.soilBounce)r.soilBounce.intensity=.72;
+  r.soilGrazing?.color.set('#927644');r.spot?.color.set(accent);
+  r.lights?.forEach((light,i)=>light.color.set(i? '#8d7247':accent));
+  r.answer?.color.set(accent);
+  if(r.threadMaterial){r.threadMaterial.color.set('#dab879');r.threadMaterial.emissive?.set('#a8732b');}
+ }
+ const style=H.styleRootNocturne;H.styleRootNocturne=(g,e)=>{style?.(g,e);apply(e,true);};
+ const gpu=H.prepareRootGPU;H.prepareRootGPU=(g,e)=>{apply(e);return gpu?.(g,e);};
+ const update=H.updateNaturalRealm;H.updateNaturalRealm=(g,a,dt)=>{
+  update?.(g,a,dt);if(g.world.age<at)return;at=g.world.age+.25;
+  for(const chunk of g.chunks.values())for(const e of chunk.rootEntrances||[])if(e.room?.ready)apply(e);
+ };
+})();
+
 H.tick=currentRuntime=>{
  H.runtime=currentRuntime;if(H.disposed||document.hidden)return;
  if(H.entryCovered&&H.quickProfile?.phase==="ready"&&H.bootTiming?.firstRender!==undefined)return;
