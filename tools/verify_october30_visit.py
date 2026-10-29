@@ -49,6 +49,8 @@ for i in [1,2,3,4,6,7,8]:
     for section in [a,b]:
         for route in section.select('.br-path'):route.decompose()
         for link in section.select('a[href="#lab-5"]'):link.string='Lab 5 link'
+        for link in section.select('a[href="#programme"]'):
+            if 'lab map' in link.get_text(' ',strip=True).lower():link['href']='#all-labs'
     assert str(a)==str(b),f'Unexpected change in Lab {i}'
 outputs=[path,root/'labs/final-assessment.html']
 before=[sha256(p.read_bytes()).hexdigest() for p in outputs]

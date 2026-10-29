@@ -125,6 +125,9 @@ def apply(root):
     illustration(root)
     p=root/'labs/lab-programme.html';s=BeautifulSoup(p.read_text(encoding='utf-8'),'html.parser')
     s.title.string="The lab map | DIKULT105"
+    if s.select_one('body > a.access-skip'):
+        for legacy in s.select('body > a.skip'):
+            if 'lab map' in legacy.get_text(' ',strip=True).lower():legacy.decompose()
     if not s.find(id='all-labs'):
         old=s.find(id='programme');old['id']='lab-archive'
         if old.h1:old.h1.name='h2'

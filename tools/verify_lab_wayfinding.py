@@ -18,6 +18,9 @@ for p in (root/'labs').glob('*.html'):
     assert len(nav.select('.wf-friday-tab[href="lab-programme.html#programme"] img[src="halloween-lab-badge.svg"]'))==1,p
     assert len(nav.select('a'))==6 and len(nav.select('[aria-current]'))<=1,p
     assert not nav.select('a[href*="meet-ingrid"]'),p
+    for a in s.select('a[href]'):
+        if 'lab map' in a.get_text(' ',strip=True).lower():
+            assert a['href'] not in ['#programme','lab-programme.html#programme'],(p,a)
     assert s.select_one('link[href^="lab-wayfinding.css"]'),p
     assert s.select_one('script[src^="lab-wayfinding.js"]'),p
     styles=s.select('link[rel=stylesheet]')
@@ -34,6 +37,7 @@ assert s.find(id='friday-routes').find_parent(id='lab-5')
 assert s.find(id='lab-5')['data-unlock-date']=='2026-10-30'
 assert len(s.select('[data-check]'))>10 and len(s.select('[data-final]'))>10
 assert len(s.select('h1'))==1
+assert len(s.select('body > a.access-skip'))==1 and not s.select('body > a.skip')
 assert not s.select('.hl-map-doors'),'Avoid competing room menus above the actual route chooser'
 library=BeautifulSoup((root/'labs/academic-library.html').read_text(encoding='utf-8'),'html.parser')
 assert library.select_one('.hl-start-session[href="#library-session"]')
