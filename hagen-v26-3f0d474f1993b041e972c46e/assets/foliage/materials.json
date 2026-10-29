@@ -1,0 +1,32 @@
+{
+  "nettle_plant": {
+    "color": "nettle_plant_color.webp",
+    "normal": "official/nettle_plant_normal.jpg",
+    "arm": "official/nettle_plant_arm.jpg",
+    "cutout": true
+  },
+  "fern_02": {
+    "color": "fern_02_color.webp",
+    "normal": "official/fern_02_normal.jpg",
+    "arm": "official/fern_02_arm.jpg",
+    "cutout": true
+  },
+  "moss_01": {
+    "color": "moss_01_color.webp",
+    "normal": "official/moss_01_normal.jpg",
+    "arm": "official/moss_01_arm.jpg",
+    "cutout": true
+  },
+  "fir_sapling_twigs": {
+    "color": "fir_sapling_twigs_color.webp",
+    "normal": "official/fir_sapling_twigs_normal.jpg",
+    "arm": "official/fir_sapling_twigs_arm.jpg",
+    "cutout": true
+  },
+  "fir_sapling_branches": {
+    "color": "fir_sapling_branches_color.jpg",
+    "normal": "official/fir_sapling_branches_normal.jpg",
+    "arm": "official/fir_sapling_branches_arm.jpg",
+    "cutout": false
+  }
+}
