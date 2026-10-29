@@ -20,7 +20,7 @@ VISIT = '''<section class="pv-lab" id="project-research-lab" aria-labelledby="pv
 <li><strong>Borrow if useful.</strong> Bring your student card or student ID app. Use the self-service machine or ask at the desk.</li></ol>
 <p><a href="https://www4.uib.no/universitetsbiblioteket/bruk-biblioteket/bibliotekets-sokeportal-oria" target="_blank" rel="noopener">Open UiB's Oria entry and access help ↗</a> · <a href="https://hjelpekort.app.uib.no/en/KI-3385.html" target="_blank" rel="noopener">UiB's guide to finding and borrowing books ↗</a></p>
 </details>
-<p class="pv-logistics"><strong>Before we leave:</strong> save your work. Ingrid confirms the library, meeting point and route in the lab. The visit block includes walking; the split can change to suit travel time and library opening hours.</p>
+<p class="pv-logistics"><strong>Before we leave:</strong> save your work. We walk to the library together.</p>
 <p class="pv-alternative">If you cannot join the walk, use the same question with an e-book or article. <a href="academic-library.html#find-articles">Google Scholar, Sikt's NVA and article-search help</a> are available here. If access is blocked, keep the exact record and ask for help. UiB's Oria page explains access to licensed resources.</p>
 <p class="pv-connect"><a href="academic-library.html#research-finder">Help me find research words</a> · <a href="academic-library.html#sources">Browse the starting book collection</a> · <a href="#lab-6">Continue with Lab 6: future lab →</a></p>
 </section>'''
@@ -30,7 +30,7 @@ AGENDA = [
     (10, 'Work together: choose what to improve', 'Try one part of your project with a partner.', 'Ask for specific help, compare ideas and begin a useful change.'),
     (10, 'Build alongside each other', 'Continue your own project.', 'Use a guide when needed. You do not need to start again or switch tools.'),
     (20, 'Keep building; find a research question', 'What could research help you understand about this project?', 'Work on your chosen change. Before the break, try two search words in Oria and check a possible book location.'),
-    (10, 'Break: step away', 'Save your work and take a real break.', 'Ingrid confirms where we meet for the library visit.'),
+    (10, 'Break: step away', 'Save your work and take a real break.', 'Stretch, get water or leave the screen.'),
     (30, 'Library visit: find research and the shelves', 'Go together, find your way around and look for something relevant.', 'This block includes walking. Check the library, copy status and shelf mark in Oria. Open a useful chapter or browse with a partner; ask staff for help.'),
     (5, 'Short break: reset', 'Take a real break.', 'Keep the source details so you can find the material again.'),
     (10, 'Connect the research to your project', 'Share one useful idea with a partner.', 'Wherever we finish, use it to test a change or question a design decision. Keep the actual reference and page.'),
