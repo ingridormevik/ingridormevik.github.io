@@ -207,6 +207,8 @@ def apply(root):
     research_guide(root)
     from final_assessment_guide import build as final_assessment_guide
     final_assessment_guide(root)
+    from today_lab_presentation import build as today_lab_presentation
+    today_lab_presentation(root)
     from lab_links import apply as lab_links
     lab_links(root)
 

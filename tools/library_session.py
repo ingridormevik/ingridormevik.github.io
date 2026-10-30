@@ -77,6 +77,8 @@ def build(root):
     for old in page.select('link[href^="library-session.css"],script[src^="library-session.js"]'):old.decompose()
     page.select_one('link[href^="accessibility.css"]').insert_before(page.new_tag('link',rel='stylesheet',href='library-session.css?v=2'))
     page.head.append(page.new_tag('script',src='library-session.js?v=3',defer=''))
+    from today_lab_presentation import decorate
+    decorate(page, library=True)
     path.write_text(str(page),encoding='utf-8',newline='\n')
     from lab_links import apply as lab_links
     lab_links(root,[path])
