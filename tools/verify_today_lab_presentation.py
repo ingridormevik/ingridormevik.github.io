@@ -22,11 +22,16 @@ for name in ['lab-programme.html', 'academic-library.html']:
     path = root / 'labs' / name
     previous = BeautifulSoup(subprocess.check_output(['git', 'show', f'HEAD:labs/{name}'], cwd=root), 'html.parser')
     current = BeautifulSoup(path.read_text(encoding='utf-8'), 'html.parser')
+    # Today's social session is explicitly revised. Preserve all other lessons.
+    compared = BeautifulSoup(str(current), 'html.parser')
+    if name == 'lab-programme.html':
+        previous.find(id='lab-5').decompose()
+        compared.find(id='lab-5').decompose()
     # Existing text, links, forms, saved-state hooks, and accessible names stay intact.
-    assert [(a.get('href'), a.get_text(' ', strip=True)) for a in previous.select('a[href]')] == [(a.get('href'), a.get_text(' ', strip=True)) for a in current.select('a[href]')], name + ': links changed'
+    assert [(a.get('href'), a.get_text(' ', strip=True)) for a in previous.select('a[href]')] == [(a.get('href'), a.get_text(' ', strip=True)) for a in compared.select('a[href]')], name + ': links changed'
     for selector in ['input', 'textarea', 'button', 'form', '[data-mission]', '[data-final]']:
-        assert [n.attrs for n in previous.select(selector)] == [n.attrs for n in current.select(selector)], name + ': controls changed'
-    assert lesson(previous) == lesson(BeautifulSoup(str(current), 'html.parser')), name + ': lesson copy changed'
+        assert [n.attrs for n in previous.select(selector)] == [n.attrs for n in compared.select(selector)], name + ': controls changed'
+    assert lesson(previous) == lesson(compared), name + ': unrelated lesson copy changed'
     ids = [n['id'] for n in current.select('[id]')]
     assert not [key for key, count in Counter(ids).items() if count > 1]
     assert len(current.select('link[href^="today-lab.css"]')) == 1
@@ -50,4 +55,4 @@ paths = [root / 'labs' / name for name in ['lab-programme.html', 'academic-libra
 before = [sha256(path.read_bytes()).hexdigest() for path in paths]
 build(root)
 assert before == [sha256(path.read_bytes()).hexdigest() for path in paths], 'Presentation build is not repeatable'
-print('PASS: unchanged lesson text, links, forms, saved-state hooks; 17 decorative room illustrations; accessible controls and repeatable output.')
+print('PASS: unrelated lesson text, links and controls unchanged; 17 decorative room illustrations; accessible controls and repeatable output.')

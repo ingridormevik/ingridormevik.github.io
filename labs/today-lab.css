@@ -1,4 +1,5 @@
 /* Friday's existing lesson, furnished as an illustrated laboratory. */
+.now-bar[data-no-breaks=true] .now-break{display:none}
 .studio :is(#lab-5,#library-session,#library-entrance){--tl-ink:#101722;--tl-green:#ceeb91;--tl-paper:#f4ecd7;--tl-orange:#edb474;--tl-edge:#738879;--tl-room:#202f36}
 .studio .tl-art{display:block;pointer-events:none;line-height:0}
 .studio .tl-mini-scene{display:block;width:100%;height:auto;max-width:none;margin:0;overflow:visible}
@@ -156,3 +157,41 @@ body.studio.page-academic-library #library-session .ls-step-actions button[data-
  .studio #lab-5 .pv-shelf>ol{padding-left:32px}
 }
 @media print{.studio .tl-art{display:none!important}.studio #friday-routes .hl-plan{display:block!important}.studio :is(#programme,#library-entrance,#friday-routes,#library-session){box-shadow:none!important}}
+
+/* A common room, with optional play beside the real work. */
+.studio #programme .ff-session-strip{grid-column:1;display:grid;grid-template-columns:.85fr 1.3fr 1fr;gap:0;margin:0;border-top:2px solid #101722;background:#d8c59e;color:#172a30}
+.studio #programme .ff-session-strip>p{margin:0;padding:16px 24px;border-right:2px solid #a99d7e;font:14px/1.5 'Segoe UI',Arial,sans-serif;color:#172a30}
+.studio #programme .ff-session-strip>p:last-child{border:0}
+.studio #programme .ff-session-strip strong,.studio #programme .ff-session-strip span{display:block;color:#172a30}
+.studio #programme .ff-session-strip strong{margin-bottom:4px;font-size:17px;font-weight:850}
+.studio #lab-5 .ff-social{margin:32px 0;padding:clamp(20px,3.5vw,36px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;background:#263b3c;border:3px solid #101722;border-top:8px solid #edb474;box-shadow:6px 7px 0 #101722}
+.studio #lab-5 .ff-social-heading{grid-column:1/-1}
+.studio #lab-5 .ff-social-heading h2{margin:12px 0 16px;color:#ceeb91;font:850 clamp(29px,4vw,45px)/1.13 'Arial Black','Segoe UI',sans-serif;max-width:24ch}
+.studio #lab-5 .ff-social-heading>p:not(.hl-kicker){max-width:75ch;margin:0;color:#f4ecd7;font:18px/1.7 'Segoe UI',Arial,sans-serif}
+.studio #lab-5 :is(.ff-dip,.ff-snacks){min-width:0;padding:clamp(20px,3vw,28px);border:3px solid #101722;background:#f4ecd7;color:#192b31}
+.studio #lab-5 .ff-label{margin:0 0 20px;color:#465f50;font:800 11px/1.6 Consolas,monospace;letter-spacing:.07em}
+.studio #lab-5 .ff-ticket{position:relative;min-height:230px;padding:30px 24px 24px;border:2px dashed #9c9d80;background:#e1e8cd}
+.studio #lab-5 .ff-ticket-number{display:inline-block;padding:6px 10px;border:2px solid #101722;background:#c8de9b;color:#192b31;font:850 22px/1 monospace}
+.studio #lab-5 .ff-social h3{color:#192b31;font:850 clamp(24px,3vw,32px)/1.2 'Segoe UI',Arial,sans-serif;margin:18px 0 16px}
+.studio #lab-5 .ff-social :is(.ff-ticket p,.ff-snacks>p:not(.ff-label)){color:#263b39;font:17px/1.75 'Segoe UI',Arial,sans-serif}
+.studio #lab-5 .ff-dip-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:22px 0 16px}
+.studio #lab-5 .ff-dip-actions button{padding:12px 16px;border:3px solid #101722;border-radius:0;background:#edb474;color:#192b31;font:800 16px/1.5 'Segoe UI',Arial,sans-serif;box-shadow:3px 4px 0 #101722;text-transform:none;letter-spacing:normal;cursor:pointer}
+.studio #lab-5 .ff-dip-actions button:hover{background:#cfdf9f}
+.studio #lab-5 .ff-dip-actions a{font:750 16px/1.6 'Segoe UI',Arial,sans-serif;color:#4d3560;text-underline-offset:4px}
+.studio #lab-5 .ff-small{color:#45594c;font:15px/1.65 'Segoe UI',Arial,sans-serif;margin:14px 0 0}
+.studio #lab-5 .ff-snacks{background:#ddd2e2;border-top:7px solid #aa94b9}
+.studio #lab-5 .ff-pumpkin{display:block;width:100%;padding:0 0 12px;margin:14px 0 0;border:2px solid #81758a;border-radius:0;background:#c5baca;color:#192b31;box-shadow:none;font:800 14px/1.5 'Segoe UI',Arial,sans-serif;cursor:pointer;text-transform:none;letter-spacing:normal}
+.studio #lab-5 .ff-pumpkin:hover{background:#d2c5d7}
+.studio #lab-5 .ff-bowl{display:block;width:100%;height:auto;max-width:340px;margin:0 auto}
+.studio #lab-5 .ff-snack-status{min-height:3.5em;font-size:15px!important;margin-bottom:0}
+.studio #lab-5 .ff-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@keyframes ff-boo-a{50%{transform:translateY(-12px) rotate(-5deg)}}
+@keyframes ff-boo-b{50%{transform:translateY(-12px) rotate(5deg)}}
+.ff-pumpkin[data-ff-mood='0'] .ff-little-ghost{transform-box:fill-box;transform-origin:center;animation:ff-boo-a .8s ease-out}
+.ff-pumpkin[data-ff-mood='1'] .ff-little-ghost{transform-box:fill-box;transform-origin:center;animation:ff-boo-b .8s ease-out}
+.hl-quiet .ff-little-ghost,.access-no-motion .ff-little-ghost{animation:none!important}
+.access-calm .ff-bowl{display:none!important}
+.access-large .studio #lab-5 .ff-social{grid-template-columns:minmax(0,1fr)}
+@media(prefers-reduced-motion:reduce){.ff-little-ghost{animation:none!important}}
+@media(max-width:750px){.studio #lab-5 .ff-social{grid-template-columns:minmax(0,1fr)}.studio #programme .ff-session-strip{grid-template-columns:minmax(0,1fr)}.studio #programme .ff-session-strip>p{padding:12px 20px;border-right:0;border-bottom:1px solid #a99d7e}.studio #lab-5 .ff-ticket{min-height:0}}
+@media print{.studio #lab-5 .ff-social{display:none}}

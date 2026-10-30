@@ -82,7 +82,7 @@ PLANS = '''<section class="hl-route-picker" id="friday-routes" aria-labelledby="
 
 def entrance(library=False):
     title="Alan Turing's haunted library." if library else "Turing's haunted library."
-    lead=('Games, stories, art, sound, code, data and power. Bring something you want to understand. Start with one shelf and follow your curiosity.' if library else 'Stay and build, explore research, or mix the two. Bring what you have. We will work things out together.')
+    lead=('Games, stories, art, sound, code, data and power. Bring something you want to understand. Start with one shelf and follow your curiosity.' if library else 'Work on your tasks together, wander into the library and enjoy Halloween snacks. Bring your unfinished work. Settle in for a relaxed Friday with Ingrid.')
     heading='h1' if library else 'h2'
     action=('<a class="hl-start-session" href="#library-session">Start library lab: make, notice, research, connect →</a>' if library else '<a class="hl-start-session" href="#friday-routes">Choose my Friday route →</a>')
     return f'''<section class="hl-entrance {'hl-library-hero' if library else 'hl-friday-hero'}" id="{'library-entrance' if library else 'programme'}" aria-labelledby="{'hl-library-title' if library else 'hl-title'}">
@@ -173,6 +173,8 @@ def apply(root):
     pv.select_one('#pv-title').string='Pick a room. Make yourself at home.'
     if not s.find(id='hl-final-invitation'):
         pv.append(BeautifulSoup('<aside class="hl-final-invitation" id="hl-final-invitation"><p class="hl-kicker">THE NEXT CHAPTER</p><h4>You can peek at the Final Assignment today.</h4><p>Open the brief to see the direction your project could take. Then return to your own next step. The Final Assignment tab stays in the navigation.</p><a href="final-assessment.html#brief">Open the Final Assignment →</a></aside>','html.parser').find())
+    from friday_social_session import decorate as social_session
+    social_session(s)
     navigation(s);assets(s);living_scene(s,root);p.write_text(str(s),encoding='utf-8',newline='\n')
     p=root/'labs/academic-library.html';s=BeautifulSoup(p.read_text(encoding='utf-8'),'html.parser')
     if not s.select_one('.lq-on'):

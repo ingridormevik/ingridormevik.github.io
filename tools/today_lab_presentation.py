@@ -101,7 +101,7 @@ def decorate(page, library=False):
         access.extract()
     if wayfinding:
         wayfinding.extract()
-    page.head.append(page.new_tag('link', rel='stylesheet', href='today-lab.css?v=1'))
+    page.head.append(page.new_tag('link', rel='stylesheet', href='today-lab.css?v=2'))
     if wayfinding:
         page.head.append(wayfinding)
     if access:

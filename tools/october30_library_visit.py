@@ -26,15 +26,9 @@ VISIT = '''<section class="pv-lab" id="project-research-lab" aria-labelledby="pv
 </section>'''
 
 AGENDA = [
-    (5, 'Choose your route', 'Project work in the lab, library research, or both.', 'Bring your current project or a research question. Choose one useful goal.'),
-    (10, 'Get started and help each other', 'Open your project or begin a research search.', 'Compare ideas, ask for help or look up a book location in Oria if you want to visit the library.'),
-    (10, 'Project work or research', 'Continue with the route you chose.', 'Build, test, read or explore the library. Allow walking time if you go.'),
-    (20, 'Keep going, or combine the routes', 'Use the time for what your project needs.', 'Work alongside others, follow a research lead or move between the lab and library.'),
-    (10, 'Break: step away', 'Save your work and take a real break.', 'Stretch, get water or leave the screen.'),
-    (30, 'Continue: project, library or both', 'Stay with your route or try the other one.', 'The library visit is optional. Keep building in the lab, find a useful source, or connect reading to a design choice.'),
-    (5, 'Short break: reset', 'Take a real break.', 'Step away from what you are working on.'),
-    (10, 'Try, discuss or follow up', 'Use the last work block for your chosen goal.', 'Test a change with a neighbour, read a useful passage or follow up a question.'),
-    (5, 'Save and choose your next step', 'Save your project work or the research details you want to keep.', 'Choose what to continue in Lab 6 on 6 November. Follow the current course instructions on Mitt UiB.'),
+    (5, 'Settle in', 'Open your task, find a seat and say hello.', 'A relaxed Friday together: project work, an optional library visit and Halloween snacks. We finish at 15:30.'),
+    (65, 'Make, browse and help each other', 'Work on your tasks together, visit the library, or move between both.', 'Ask Ingrid or a neighbour for help, try each other\'s work and have some Halloween snacks along the way. No scheduled breaks today. Allow walking time if you go to the library.'),
+    (5, 'Save before 15:30', 'Keep your files and any source details you want to use again.', 'Follow the current task instructions on Mitt UiB. Save what you worked on before we finish at 15:30.'),
 ]
 
 
@@ -42,8 +36,14 @@ def update(root):
     path = root / 'labs/lab-programme.html'
     page = BeautifulSoup(path.read_text(encoding='utf-8'), 'html.parser')
     lab = page.find(id='lab-5')
-    lab.select_one('.lab-title h2').string = 'Project lab: choose your route'
-    lab.select_one('.lab-title .lead').string = 'Work on your project in the lab, visit the library, or combine both. The library visit is optional.'
+    lab['data-session-start'] = '855'
+    lab['data-session-minutes'] = '75'
+    lab['data-session-breaks'] = 'none'
+    lab.select_one('.lab-title h2').string = 'Halloween lab: a Friday together'
+    lab.select_one('.lab-title .lead').string = 'Work on your tasks together, explore the library and enjoy Halloween snacks. A relaxed Friday session. The library visit is optional.'
+    lab.select_one('.session-window').string = 'Today · 14:15-15:30 · 75 minutes · no scheduled breaks'
+    for switch in lab.select('.group-switch'): switch.decompose()
+    lab.select_one('.journey-schedule > summary').string = "Today's loose plan · 14:15-15:30 · no scheduled breaks"
     for node in page.select('.lab-nav a[href="#lab-5"] strong'):
         node.string = 'Project lab'
     orb = page.select_one('.lab-nav a[href="#lab-5"] .lv-orb i')
@@ -56,7 +56,7 @@ def update(root):
     band = page.find(id='lab-5-sec-1')
     band.select_one('.sb-title').string = 'Choose: project work, library or both'
     band.select_one('.sb-desc').string = 'These are three ways to use the session. You can stay with one or switch between them.'
-    band.select_one('.time-chip')['data-to'] = '85'
+    band.select_one('.time-chip')['data-to'] = '70'
     band.insert_after(BeautifulSoup(VISIT, 'html.parser').find())
     work.select_one('.route-kicker').string = 'CONTINUE FROM LAB 4'
     work.select_one('.route-card h4').string = 'Keep your project. Give it a useful next step.'
@@ -69,8 +69,8 @@ def update(root):
             node.replace_with(drawer); drawer.append(node)
         work.select_one('.resources').insert_after(node.parent.extract())
     page.find(id='lab-5-sec-2').select_one('.sb-title').string = 'Your chosen next step'
-    page.find(id='lab-5-sec-2').select_one('.time-chip')['data-from'] = '90'
-    page.find(id='lab-5-sec-2').select_one('.time-chip')['data-to'] = '100'
+    page.find(id='lab-5-sec-2').select_one('.time-chip')['data-from'] = '65'
+    page.find(id='lab-5-sec-2').select_one('.time-chip')['data-to'] = '70'
     for href,label in [('#lab-5-sec-1','Choose your route'),('#lab-5-sec-2','Your next step'),('#lab-5-sec-3','Help when needed')]:
         work.select_one(f'.step-map a[href="{href}"] span').string = label
     mission = work.select_one('[data-mission="5"]')
@@ -87,6 +87,8 @@ def update(root):
     mission.select_one('.own-mind-actions').clear()
     mission.select_one('.own-mind-actions').append(BeautifulSoup('<li><strong>Choose</strong> a goal.</li><li><strong>Try</strong> it through making, reading or both.</li><li><strong>Keep</strong> what helps you continue.</li>','html.parser'))
     finish = page.find(id='lab-5-finish')
+    finish.select_one('.time-chip')['data-from'] = '70'
+    finish.select_one('.time-chip')['data-to'] = '75'
     finish.select_one('.finish-mission h3').string = 'Keep what you worked on.'
     finish.select_one('.finish-mission > ol').clear()
     finish.select_one('.finish-mission > ol').append(BeautifulSoup('<li><strong>Save what you worked on.</strong> Your project files, research details or both.</li><li><strong>Choose your next step.</strong> What would help you continue next time?</li>','html.parser'))
@@ -98,11 +100,15 @@ def update(root):
     elapsed = 0
     for minutes,title,prompt,detail in AGENDA:
         row = BeautifulSoup(f'<li class="agenda-row{" break-row" if title.startswith(("Break", "Short break")) else ""}" data-extension="false" data-minutes="{minutes}"><div class="time"><span class="clock"></span><span class="elapsed">{elapsed}-{elapsed+minutes} min</span></div><div class="activity"><h4></h4><p class="row-prompt"></p><details class="row-detail" open=""><summary>Details &amp; help</summary><p></p></details></div></li>','html.parser').find()
-        start,end=495+elapsed,495+elapsed+minutes
+        start,end=855+elapsed,855+elapsed+minutes
         row.select_one('.clock').string=f'{start//60:02d}:{start%60:02d}-{end//60:02d}:{end%60:02d}'
         row.h4.string=title;row.select_one('.row-prompt').string=prompt;row.select_one('.row-detail p').string=detail
         agenda.append(row);elapsed+=minutes
-    assert elapsed == 105
+    assert elapsed == 75
+    script=page.select_one('script[src^="lab-programme.js"]')
+    script['src']='lab-programme.js?v=halloween75-1'
+    script=page.select_one('script[src^="friday-now.js"]')
+    script['src']='friday-now.js?v=8'
     resources=work.select_one('.resources ul')
     for href,label in [('academic-library.html#research-finder','Find research for my project'),('academic-library.html#find-articles','Find articles with Google Scholar and Sikt'),('academic-library.html#chicago-author-date','Chicago author-date: cite what I read')]:
         if not resources.select_one(f'a[href="{href}"]'):

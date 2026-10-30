@@ -79,13 +79,15 @@
     const lab = document.querySelector(`.lab[data-unlock-date="${today}"], [data-now-schedule][data-unlock-date="${today}"]`);
     if (!lab) return null;
     const minutes = t.getHours() * 60 + t.getMinutes();
-    const start = pickGroup(minutes);
+    const start = Number(lab.dataset.sessionStart || pickGroup(minutes));
+    const length = Number(lab.dataset.sessionMinutes || LENGTH);
+    bar.dataset.noBreaks = String(lab.dataset.sessionBreaks === 'none');
     const elapsed = minutes - start;
     const time = clock(minutes);
     const labName = lab.querySelector('.lab-title h2')?.textContent.trim() || 'Today\'s lab';
-    if (elapsed < -30 || elapsed > LENGTH + 20) return null;
+    if (elapsed < -30 || elapsed > length + 20) return null;
     if (elapsed < 0) return {kind: 'before', time, title: `${labName} starts at ${clock(start)}`, prompt: 'Open your project files. Find a seat with a charger.', left: `${-elapsed} min to go`, progress: 0, href: `#${lab.id}`};
-    if (elapsed >= LENGTH) return {kind: 'after', time, title: 'Lab finished for today', prompt: 'Save your project files somewhere you can find again. See you next Friday.', progress: 1, href: `#${lab.id}-finish`};
+    if (elapsed >= length) return {kind: 'after', time, title: 'Lab finished for today', prompt: 'Save your project files somewhere you can find again. See you next Friday.', progress: 1, href: `#${lab.id}-finish`};
 
     const rows = [...lab.querySelectorAll('.agenda-row')].filter(r => r.dataset.extension !== 'true');
     let from = 0, current = null, next = null;
@@ -97,12 +99,12 @@
     }
     if (!current) return null;
     const isBreak = current.row.classList.contains('break-row');
-    // Last quarter of the lab: the screenshot for the obligatory task comes first.
+    // Keep the existing task reminder inside this session's actual finishing window.
     const task = lab.dataset.obligatory;
-    if (task && !isBreak && elapsed >= 85 && elapsed < 100) return {
+    if (task && !isBreak && elapsed >= (lab.dataset.sessionMinutes ? length - 10 : 85) && elapsed < length - 5) return {
       kind: 'task', time, title: `Screenshot → Obligatory Task ${task}`,
       prompt: `Post a screenshot of today's work on Mitt UiB under Discussions › Obligatory Task ${task}.`,
-      left: `${LENGTH - elapsed} min left`, next: `Ends ${clock(start + LENGTH)}`, progress: elapsed / LENGTH, href: `#${lab.id}-obligatory`};
+      left: `${length - elapsed} min left`, next: `Ends ${clock(start + length)}`, progress: elapsed / length, href: `#${lab.id}-obligatory`};
     const chip = [...lab.querySelectorAll('.time-chip[data-from]')].filter(c => elapsed >= Number(c.dataset.from) && elapsed < Number(c.dataset.to)).pop();
     const section = chip?.closest('[id]');
     return {
@@ -111,8 +113,8 @@
       title: current.row.querySelector('h4')?.textContent.trim() || '',
       prompt: isBreak ? `Step away from the screen. Back at ${clock(start + current.to)}.` : current.row.querySelector('.row-prompt')?.textContent.trim() || '',
       left: `${current.to - elapsed} min left`,
-      next: next ? `Next ${clock(start + next.at)} · ${next.row.querySelector('h4')?.textContent.trim()}` : `Ends ${clock(start + LENGTH)}`,
-      progress: elapsed / LENGTH,
+      next: next ? `Next ${clock(start + next.at)} · ${next.row.querySelector('h4')?.textContent.trim()}` : `Ends ${clock(start + length)}`,
+      progress: elapsed / length,
       href: isBreak || !section ? null : `#${section.id}`
     };
   }

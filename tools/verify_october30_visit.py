@@ -21,7 +21,16 @@ for row in lab.select('.agenda-row'):
     minutes=int(row['data-minutes'])
     if 'break-row' in row.get('class',[]):breaks.append((elapsed,elapsed+minutes))
     elapsed+=minutes
-assert elapsed==105 and breaks==[(45,55),(85,90)]
+assert elapsed==75 and breaks==[]
+assert lab['data-session-start']=='855' and lab['data-session-minutes']=='75'
+assert lab['data-session-breaks']=='none'
+assert '14:15-15:30' in lab.select_one('.session-window').text
+assert not lab.select('[data-clock-group]')
+assert 'two breaks' not in lab.select_one('.journey-schedule > summary').text
+assert lab.select('.agenda-row .clock')[-1].text=='15:25-15:30'
+assert lab.select_one('#friday-play [data-ff-draw]')
+assert lab.select_one('#friday-play [data-ff-boo]')
+assert 'Halloween snacks' in lab.select_one('#friday-session-info').text
 assert len(lab.select('#project-research-lab .pv-stations > article'))==3
 assert 'The library visit is optional.' in lab.select_one('.pv-lead').get_text()
 assert 'Stay in the lab' in lab.select_one('.pv-stations').get_text()
@@ -58,6 +67,7 @@ update(root)
 assert before==[sha256(p.read_bytes()).hexdigest() for p in outputs],'Repeated update changes output'
 # The schedule runtime test consumes actual programme rows, including all eight labs.
 fixture={'rows':[[int(row['data-minutes']) for row in item.select('.agenda-row')] for item in page.select('.lab')],
-         'chips':[dict(node.attrs) for node in page.select('.time-chip[data-from]')]}
+         'sessions':[{key.removeprefix('data-'):value for key,value in item.attrs.items() if key.startswith('data-session-')} for item in page.select('.lab')],
+         'chips':[dict({key.removeprefix('data-'):value for key,value in node.attrs.items() if key.startswith('data-')},lab=node.find_parent(class_='lab')['id']) for node in page.select('.time-chip[data-from]')]}
 (root/'schedule-test-fixture.json').write_text(json.dumps(fixture),encoding='utf-8')
-print('PASS: eight labs preserved, 105 minutes and both breaks, mixed project/library route, existing tools, links and repeatable update.')
+print('PASS: other seven labs preserved; Halloween 14:15-15:30 without breaks; snacks, shared tasks, optional library, working links and repeatable update.')

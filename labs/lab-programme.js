@@ -16,22 +16,27 @@
     const start = Number(clockGroup), length = 105;
     const groupName = start === 495 ? 'Morning' : 'Afternoon';
     document.querySelectorAll('.lab').forEach(lab => {
+      const labStart = Number(lab.dataset.sessionStart || start);
+      const labLength = Number(lab.dataset.sessionMinutes || length);
       let elapsed = 0;
       lab.querySelectorAll('.agenda-row').forEach(row => {
         row.hidden = row.dataset.extension === 'true';
         if (row.hidden) return;
         const minutes = Number(row.dataset.minutes);
-        row.querySelector('.clock').textContent = `${clock(start + elapsed)}-${clock(start + elapsed + minutes)}`;
+        row.querySelector('.clock').textContent = `${clock(labStart + elapsed)}-${clock(labStart + elapsed + minutes)}`;
         row.querySelector('.elapsed').textContent = `${elapsed}-${elapsed + minutes} min`;
         elapsed += minutes;
       });
-      lab.querySelector('.session-window').textContent = `${groupName} · ${clock(start)}-${clock(start + length)} · 105 minutes`;
+      lab.querySelector('.session-window').textContent = `${lab.dataset.sessionStart ? 'Today' : groupName} · ${clock(labStart)}-${clock(labStart + labLength)} · ${labLength} minutes${lab.dataset.sessionBreaks === 'none' ? ' · no scheduled breaks' : ''}`;
     });
     document.querySelectorAll('.time-chip[data-from]').forEach(chip => {
-      const from = Number(chip.dataset.from), to = Math.min(Number(chip.dataset.to), length);
+      const lab = chip.closest('.lab');
+      const chipStart = Number(lab?.dataset.sessionStart || start);
+      const chipLength = Number(lab?.dataset.sessionMinutes || length);
+      const from = Number(chip.dataset.from), to = Math.min(Number(chip.dataset.to), chipLength);
       const overlap = (a, b) => Math.max(0, Math.min(to, b) - Math.max(from, a));
-      const breaks = overlap(45, 55) + overlap(85, 90);
-      chip.textContent = `⏱ ${clock(start + from)}-${clock(start + to)} · ${to - from - breaks} min${breaks ? ' + breaks' : ''}`;
+      const breaks = lab?.dataset.sessionBreaks === 'none' ? 0 : overlap(45, 55) + overlap(85, 90);
+      chip.textContent = `⏱ ${clock(chipStart + from)}-${clock(chipStart + to)} · ${to - from - breaks} min${breaks ? ' + breaks' : ''}`;
     });
     document.querySelectorAll('[data-clock-group]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.clockGroup === clockGroup)));
     document.body.classList.add('student-view');
