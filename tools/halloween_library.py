@@ -205,6 +205,8 @@ def apply(root):
     remove(root)
     from research_guide import build as research_guide
     research_guide(root)
+    from final_assessment_guide import build as final_assessment_guide
+    final_assessment_guide(root)
     from lab_links import apply as lab_links
     lab_links(root)
 

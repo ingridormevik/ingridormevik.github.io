@@ -61,6 +61,9 @@ def build(root):
     article_guide=page.find(id='find-articles')
     if article_guide and not article_guide.select_one('[data-ls-search-guide]'):
         article_guide.find(['h2','h3']).insert_after(BeautifulSoup('<p><a href="research-guide.html#search-start" data-ls-search-guide>New to research? Open the step-by-step screenshot guide for Scholar, NVA, UiB access, Internet Archive and Tibi →</a></p>','html.parser').find())
+    citation_guide=page.find(id='chicago-author-date')
+    if citation_guide and not citation_guide.select_one('[data-chicago-howto]'):
+        citation_guide.find(['h2','h3']).insert_after(BeautifulSoup('<p><a href="final-assessment.html#chicago-author-date" data-chicago-howto>Chicago author-date: step-by-step examples for books, chapters, articles, websites, digital works and media →</a></p>','html.parser').find())
     collection=page.find(id='library-shelves')
     if not collection:
         collection=page.new_tag('details',attrs={'id':'library-shelves','class':'ls-collection'})

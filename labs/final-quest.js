@@ -57,7 +57,7 @@
       const pct = Math.round((labs + l) / (boxes.length + LECT) * 100);
       boxes.forEach(b => b.closest('label').classList.toggle('is-on', b.checked));
       bar.style.width = `${pct}%`;
-      out.textContent = `Labs ${labs}/${boxes.length} · Lectures ${l}/${LECT} · Together ${pct}% ${pct >= 75 ? '✓ over 75%' : `· ${75 - pct} points to 75%`}`;
+      out.textContent = `Your notes: ${labs} lab sessions and ${l} lectures. This does not confirm exam eligibility; ask the course coordinator if you need an attendance check.`;
     }
     boxes.forEach(b => {
       b.checked = st.att.labs.includes(b.dataset.fqLab);

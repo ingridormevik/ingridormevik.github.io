@@ -44,7 +44,7 @@ for name in files:
     if name=='academic-library.html':
         assert len(page.select('.ge-card'))==44 and len(page.select('.lq-station'))==9
         assert page.find(id='writing-desk') and page.find(id='chicago-author-date')
-    if name in ['final-assessment.html','tools.html']:
+    if name=='tools.html':
         original=BeautifulSoup(subprocess.check_output(['git','show',f'HEAD:labs/{name}'],cwd=root),'html.parser')
         assert original.main.get_text(' ',strip=True)==page.main.get_text(' ',strip=True),f'Unrelated content changed: {name}'
 ET.parse(root/'labs/turing-halloween-library.svg')
@@ -52,4 +52,4 @@ paths=[root/'labs'/name for name in files]+[root/'labs/turing-halloween-library.
 before=[sha256(p.read_bytes()).hexdigest() for p in paths]
 apply(root)
 assert before==[sha256(p.read_bytes()).hexdigest() for p in paths],'Build must be repeatable'
-print('PASS: Halloween entrances, 3 open routes, archive progress, 9 library stations, final-assignment tabs, local links, SVG and unchanged assessment content.')
+print('PASS: Halloween entrances, 3 open routes, archive progress, 9 library stations, final-assignment tabs, local links, SVG and unchanged equipment content.')
