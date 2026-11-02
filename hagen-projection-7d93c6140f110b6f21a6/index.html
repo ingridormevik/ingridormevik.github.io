@@ -680,10 +680,11 @@ body.noscroll{overflow:hidden}
 
 <audio id="music" src="media/hagen_abyss.mp3" loop preload="none"></audio>
 
+<script>if(location.hash){history.replaceState(null,'',location.pathname+location.search)}</script>
 <script>
 if('scrollRestoration' in history)history.scrollRestoration='manual';
 if(location.hash)history.replaceState(null,'',location.pathname+location.search);
-window.scrollTo(0,0);addEventListener('load',()=>window.scrollTo(0,0));
+window.scrollTo(0,0);addEventListener('load',()=>{window.scrollTo(0,0);setTimeout(()=>window.scrollTo(0,0),60);setTimeout(()=>window.scrollTo(0,0),400)});
 (()=>{
   fetch('media/logo.svg').then(r=>r.text()).then(s=>document.querySelectorAll('[data-logo]').forEach(e=>e.innerHTML=s)).catch(()=>{});
   const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
