@@ -159,27 +159,22 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
 .budget td:not(:first-child),.budget th:not(:first-child){text-align:right;white-space:nowrap}
 .budget tr.sum td{border-top:1px solid var(--soft);font-style:italic}
 
-/* Mount Media window, at home in HAGEN's night */
-.mm{scroll-margin-top:90px;--bar:#2B2440;--bar2:#463A63;--hot:#D4145A;--face:#D8D4CB;margin-top:3em;border:2px solid #0b0f0c;box-shadow:0 0 0 1px rgba(216,212,203,.35),6px 6px 0 rgba(0,0,0,.55);background:#07100b}
-.mm-bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,var(--bar),var(--bar2));padding:6px 8px 6px 12px;font:600 15px "Pixelify Sans",monospace;color:#f3eefb;letter-spacing:.02em}
-.mm-btns{display:flex;gap:5px}.mm-btns i{width:14px;height:12px;background:var(--face);box-shadow:inset -1px -1px 0 #7C776D,inset 1px 1px 0 #fff;display:block}
-.mm-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:10px 12px 0;background:#0c1510;border-bottom:1px solid rgba(216,212,203,.2)}
-.mm-tabs button{font:500 14px "Pixelify Sans",monospace;color:var(--soft);background:#132019;border:1px solid rgba(216,212,203,.25);border-bottom:0;padding:5px 12px;text-decoration:none;border-radius:0}
-.mm-tabs button[aria-selected=true]{background:#07100b;color:var(--gold);position:relative;top:1px}
-.mm-body{font-weight:400;padding:22px 24px 26px;font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15.5px;line-height:1.6;color:#ddd8cc}
-.mm-body h4{font:700 clamp(30px,3.4vw,46px) "Pixelify Sans",monospace;color:var(--pearl);margin:0;letter-spacing:.01em}
-.mm-sub{font-weight:600;color:var(--gold);margin:.2em 0 1em}
-.mm-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:1.2em 0 .4em}
-.mm-stats div{border:1px solid rgba(216,212,203,.3);padding:10px 12px;background:#0b1510}
-.mm-stats b{display:block;font:700 22px "Pixelify Sans",monospace;color:var(--hot)}
-.mm-stats span{font-size:13px;color:var(--soft)}
-.mm-pane{display:none}.mm-pane.on{display:block}
-.mm-pane ul{margin:.4em 0 0;padding-left:1.1em}.mm-pane li{margin:.35em 0}
-.mm-body a{color:#8fb0ff}
-@media (max-width:900px){.mm-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.mm-body{padding:18px 16px}}
+
+/* the artist: a root line */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 28px;margin:1.6em 0}
+.stats b{display:block;font-size:clamp(34px,3.4vw,52px);line-height:1;color:var(--gold);font-weight:500}
+.stats span{color:var(--soft);font-size:.92em}
+.root-tl{list-style:none;margin:0 0 2.4em;padding:0 0 0 30px;position:relative}
+.root-tl::before{content:"";position:absolute;left:6px;top:.4em;bottom:.4em;width:1px;background:linear-gradient(180deg,rgba(217,179,106,.7),rgba(169,195,173,.35),rgba(217,179,106,0))}
+.root-tl li{position:relative;margin:0 0 1.15em}
+.root-tl li::before{content:"";position:absolute;left:-28px;top:.55em;width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px 2px rgba(217,179,106,.55)}
+.root-tl li.on::before{animation:node 3.5s ease-in-out infinite}
+@keyframes node{50%{box-shadow:0 0 16px 5px rgba(217,179,106,.75)}}
+.root-tl .yr{display:block;font-size:.85em;color:var(--sage);font-style:italic}
+.root-tl b{font-weight:500;color:var(--pearl)}
+.root-tl .d{display:block;color:var(--soft);font-size:.95em}
+.tl-h{font-size:clamp(24px,2vw,30px);margin:1.4em 0 .7em}
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 <canvas id="roots" aria-hidden="true"></canvas>
@@ -194,7 +189,7 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
     <button id="enterSound">Enter with sound</button>
     <button id="enterQuiet" class="quiet">Enter in silence</button>
   </div>
-  <div class="ghint">Thirteen short chapters. Move on with the link at the end of each one, the arrow keys, or the menu at the top.</div>
+  <div class="ghint">Fourteen short chapters. Move on with the link at the end of each one, the arrow keys, or the menu at the top.</div>
 </div>
 
 <nav id="bar" aria-label="Chapters">
@@ -229,27 +224,46 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
     <div class="grid" style="margin-top:1.4em">
       <div>
         <p class="lead reveal">HAGEN is a work of electronic literature. The light carries words, and the order and timing of those words depend on the people in front of it.</p>
-        <p class="reveal">On the church, this line is the first thing the cloth can say, and it is not shown at a set time. It surfaces from the roots only when the street in front of the church has gone quiet, and it fades again when the noise returns. A visitor who wants to read it has to wait, and has to wait together with everyone else, because one loud voice keeps it hidden. The sentence also describes the system: the garden keeps how far it has grown from one evening to the next, while it keeps nothing about who was there.</p>
-        <p class="reveal soft">The roots, displaced plants and mixed folklore in HAGEN come from a question about belonging in more than one place. A church that is being restored and a garden whose plants were carried here from other countries give that question two real sites.</p>
+        <p class="reveal">On the church, this line is the first thing the cloth can say, and it is not shown at a set time. It surfaces from the roots only when the street in front of the church has gone quiet, and it fades again when the noise returns. Reading it means waiting together with everyone else. Sound is welcome as well: a voice or a clap changes how the roots move and how the words breathe, and the quiet lets the whole sentence settle. The sentence also describes the system: the garden keeps how far it has grown from one evening to the next, while it keeps nothing about who was there.</p>
+        <h3 class="reveal">Roots and care</h3>
+        <p class="reveal">HAGEN grows out of my own experience of family roots that broke, roots that were supposed to nourish and did not. What follows from that is a difficulty I know well: wanting closeness and finding it hard to trust it, or to know how to receive care when it comes.</p>
+        <p class="reveal">It also grows out of living without a family safety net in a country where many people take one for granted. Being white and Norwegian says nothing about whether there was ever a home to return to, help with money, or someone to call when things go wrong.</p>
+        <p class="reveal">The garden asks how we find other sources of nourishment, for ourselves and for each other, and how we care for others without passing on the harm we were given. Its central invitation is this: <span class="it">You don't have to repair your broken roots to be part of the garden.</span></p>
       </div>
       <div class="reveal">
         <table>
           <tr><th>What the crowd does</th><th>What happens to the language</th><th>Why</th><th>Status</th></tr>
           <tr><td>The street goes quiet</td><td>A line rises out of the roots and stays while the quiet lasts</td><td>Waiting becomes part of reading</td><td>In the garden today</td></tr>
-          <tr><td>Someone speaks or claps</td><td>The roots flare and the line in view sinks back into them, and another is chosen</td><td>A voice has a visible effect on the text</td><td>Proposed for the cloth</td></tr>
-          <tr><td>Many people at once</td><td>Their combined sound sets the pace, and quiet needs all of them</td><td>Reading becomes something the crowd negotiates</td><td>Proposed for the cloth</td></tr>
+          <tr><td>Someone speaks or claps</td><td>The roots flare, the words loosen and drift, then gather into a new line</td><td>Speaking has a consequence without shutting anyone out</td><td>Proposed for the cloth</td></tr>
+          <tr><td>Many people at once</td><td>Their combined sound sets the rhythm of the text, and both loud and quiet moments open something to read</td><td>Reading becomes shared, with room for different ways of taking part</td><td>Proposed for the cloth</td></tr>
           <tr><td>People return another evening</td><td>The garden has kept what grew, so the text starts from a different place</td><td>The line about not forgetting becomes literal</td><td>In the garden today</td></tr>
         </table>
         <p class="cap">The microphone measures sound only. Quiet is something the whole crowd produces, not a sign that any one person is standing still.</p>
       </div>
     </div>
-    <h3 class="reveal">Three connections</h3>
+    <h3 class="reveal">One encounter on the evening</h3>
+    <table class="reveal">
+      <tr><th>Moment</th><th>What happens</th><th>Status</th></tr>
+      <tr><td>Arrival</td><td>Someone walking past sees thin roots of light at the foot of the cloth and slows down.</td><td>Proposed</td></tr>
+      <tr><td>Invitation</td><td>A friend laughs and the roots flare. People notice the cloth is listening, and the sign confirms it.</td><td>Proposed</td></tr>
+      <tr><td>Passage</td><td>When the street settles, <span class="it">There is a garden that does not forget</span> rises out of the roots.</td><td>Line exists in the garden today</td></tr>
+      <tr><td>Consequence</td><td>The line stays while people stay. Their sound and their quiet shape how it moves, so each group reads it a little differently.</td><td>Proposed</td></tr>
+      <tr><td>Departure</td><td>People leave, the words sink back, and the garden keeps what grew for the next evening, with nothing kept about who was there.</td><td>Growth memory exists in the garden today</td></tr>
+    </table>
+    <h3 class="reveal">What the theme stands on</h3>
+    <div class="grid">
+      <div class="card reveal"><p>In "We Just Take Care of Each Other" (2020), Nina Jackson Levin and colleagues interviewed eleven queer and transgender young adults about chosen family, and found support built through leaning on each other and mutual aid. HAGEN takes up the idea that belonging can be made through acts of care, alongside or beyond the family one was born into.</p></div>
+      <div class="card reveal"><p>Sara Ahmed's <span class="it">Queer Phenomenology</span> (2006) looks at how orientation and familiar paths decide what is within reach. In the garden, approaching, turning away and finding another route are ways of relating, and none of them counts as failure.</p></div>
+      <div class="card reveal"><p>Donna Haraway's <span class="it">Staying with the Trouble</span> (2016) describes making worlds with others in damaged conditions. It supports a garden where growth is shared and unfinished, and where a root does not need to be whole to take part.</p></div>
+      <div class="card reveal"><p>Statistics Norway reports that half of home buyers under 30 get some form of help from their parents, and that this help may widen differences in who owns a home (Dokka 2018). The garden turns this into a question: what conditions does a root need to grow, and what happens when they are missing?</p></div>
+    </div>
+    <h3 class="reveal">Three connections in electronic literature</h3>
     <div class="grid">
       <div class="card reveal"><p><span class="it">Electronic Literature</span> by Scott Rettberg (2019) describes writing that a program assembles from material the author wrote. On the cloth the program draws from HAGEN's lines, and the crowd's sound decides which one is shown and when.</p></div>
       <div class="card reveal"><p>Kristine Jørgensen's <span class="it">Gameworld Interfaces</span> (2013) looks at how a world can show its own rules. The projection has no buttons or instructions on the cloth. The roots and the light have to show people what is possible.</p></div>
       <div class="card reveal"><p>In <span class="it">Text Rain</span> by Camille Utterback and Romy Achituv (1999) falling letters land on visitors' bodies. HAGEN turns the relation around: the words do not fall on the crowd, they wait until the crowd makes room for them.</p></div>
     </div>
-    <p class="cap reveal">Rettberg, Scott. 2019. <span class="it">Electronic Literature</span>. Cambridge: Polity. Jørgensen, Kristine. 2013. <span class="it">Gameworld Interfaces</span>. Cambridge, MA: MIT Press. Utterback, Camille, and Romy Achituv. 1999. <span class="it">Text Rain</span>. Interactive installation.</p>
+    <p class="cap reveal">Ahmed, Sara. 2006. <span class="it">Queer Phenomenology: Orientations, Objects, Others</span>. Durham, NC: Duke University Press. Dokka, Åsmund Gram. 2018. "Halvparten av unge boligkjøpere får foreldrehjelp." Statistisk sentralbyrå, 25 April. Haraway, Donna J. 2016. <span class="it">Staying with the Trouble: Making Kin in the Chthulucene</span>. Durham, NC: Duke University Press. Jackson Levin, Nina, Shanna K. Kattari, Emily K. Piellusch, and Erica Watson. 2020. "“We Just Take Care of Each Other”: Navigating ‘Chosen Family’ in the Context of Health, Illness, and the Mutual Provision of Care amongst Queer and Transgender Young Adults." <span class="it">International Journal of Environmental Research and Public Health</span> 17 (19): 7346. doi:10.3390/ijerph17197346. Rettberg, Scott. 2019. <span class="it">Electronic Literature</span>. Cambridge: Polity. Jørgensen, Kristine. 2013. <span class="it">Gameworld Interfaces</span>. Cambridge, MA: MIT Press. Utterback, Camille, and Romy Achituv. 1999. <span class="it">Text Rain</span>. Interactive installation.</p>
   </div>
 </section>
 
@@ -544,62 +558,83 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
         </div>
       </div>
     </div>
-    <div class="mm reveal" id="cv">
-      <div class="mm-bar"><span>ingrid_ormevik.cv</span><span class="mm-btns"><i></i><i></i><i></i></span></div>
-      <div class="mm-tabs" role="tablist">
-        <button role="tab" aria-selected="true" data-p="0">About</button>
-        <button role="tab" aria-selected="false" data-p="1">Works</button>
-        <button role="tab" aria-selected="false" data-p="2">Research and teaching</button>
-        <button role="tab" aria-selected="false" data-p="3">Talks and writing</button>
-        <button role="tab" aria-selected="false" data-p="4">Organising</button>
-      </div>
-      <div class="mm-body">
-        <div class="mm-pane on">
-          <h4>Ingrid Ormevik</h4>
-          <div class="mm-sub">Artist and creative technologist · Mount Media · Bergen</div>
-          <p>I make electronic literature, games and sound-reactive works under the name Mount Media. BA student in Digital Culture at the University of Bergen, working at the Center for Digital Narrative.</p>
-          <div class="mm-stats">
-            <div><b>1st</b><span>prize in electronic literature, Digital Culture Awards 2025</span></div>
-            <div><b>330 000</b><span>views for Regnbuedagene, up from 273 000</span></div>
-            <div><b>7</b><span>events in Skeiv Jul 2025, with funding raised</span></div>
-            <div><b>2015</b><span>working with minority communities since</span></div>
-          </div>
-          <p style="margin-top:1em"><a href="mailto:ingrid.ormevik@student.uib.no">ingrid.ormevik@student.uib.no</a> · <a href="../cv.html">Interactive CV</a></p>
-        </div>
-        <div class="mm-pane">
-          <ul>
-            <li><b>HAGEN</b>, interactive night garden and projection, 2026, in development.</li>
-            <li><b>What the Roots Keep</b>, interactive prelude to HAGEN, 2026.</li>
-            <li><b>The Turing Test: Fragments of a Life Saved by Pixels</b>, interactive story. First prize in electronic literature, Digital Culture Awards 2025, UiB.</li>
-            <li><b>Trail Mix</b>, a walking AI music hike in Bergen's mountains, Mount Media × Preem Cast.</li>
-            <li><b>Pride Park spillet</b>, a game for Bergen Pride.</li>
-          </ul>
-        </div>
-        <div class="mm-pane">
-          <ul>
-            <li>Research intern on SurvivingSOGICE, Center for Digital Narrative, spring 2026, continuing autumn 2026.</li>
-            <li>Lab assistant in DIKULT105 Creating Digital Culture, autumn 2026, teaching Construct 3 and Visual Studio Code.</li>
-            <li>BA in Digital Culture, University of Bergen, in progress.</li>
-          </ul>
-        </div>
-        <div class="mm-pane">
-          <ul>
-            <li>Speaker and panelist at CDN Autumn Equinox 2026, Litteraturhuset i Bergen, 23 September 2026: <i>Me, Myself and A.I</i>, in the panel "The Haunting of the Author".</li>
-            <li>Co-writing with Zahra Rizvi on "Synthetic Influencers: Content, Co-creation and Advocacy" for the Routledge Handbook of Influencer Activism and Advocacy, in progress.</li>
-          </ul>
-        </div>
-        <div class="mm-pane">
-          <ul>
-            <li>Content producer and social media strategist for Regnbuedagene (Bergen Pride) since 2023.</li>
-            <li>Board member of FRI Vestland since 2023.</li>
-            <li>Initiated Skeiv Jul 2025 with Regnbuedagene, FRI Vestland and Skeiv Verden Vest, with funding from Vestland fylkeskommune and private sponsors.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
     <div class="film reveal">
       <video src="media/garden_film.mp4" poster="media/garden_film_poster.jpg" controls playsinline preload="none"></video>
       <p class="cap">One-minute film of the garden, set to <span class="it">Nordic Rainforest Pulse</span> by Ingrid Ormevik.</p>
+    </div>
+  </div>
+
+</section>
+<section class="ch" id="c14" data-title="The artist">
+  <div class="in">
+    <div class="kick reveal">The artist</div>
+    <h2 class="reveal">Ingrid Ormevik</h2>
+    <div class="grid" style="margin-top:1.2em">
+      <div>
+        <p class="lead reveal">Artist and creative technologist in Bergen, working as Mount Media. I make electronic literature, games and sound-reactive works for real places, from mountain paths and parks to club rooms and façades.</p>
+        <p class="reveal">Behind HAGEN are years of live production: multi-camera streaming through the pandemic, festival media, and work with crowds, hosting and safety in Bergen's venues. That is the practical ground the projection stands on.</p>
+        <div class="stats reveal">
+          <div><b>1st</b><span>prize in electronic literature, Digital Culture Awards 2025</span></div>
+          <div><b>330 000</b><span>views for Regnbuedagene, up from 273 000</span></div>
+          <div><b>7</b><span>events in Skeiv Jul 2025, funded from scratch</span></div>
+          <div><b>2018</b><span>the start of my work with social media and queer representation</span></div>
+        </div>
+        <p class="reveal"><a href="mailto:ingrid.ormevik@student.uib.no">ingrid.ormevik@student.uib.no</a><br><a href="https://github.com/ingridormevik">github.com/ingridormevik</a><br><a href="../cv.html">Interactive portfolio</a></p>
+        <h3 class="tl-h reveal">Tools</h3>
+        <p class="reveal soft">HTML5, JavaScript, CSS, Python, Git and GitHub, Visual Studio Code, Claude Code, Codex, Construct 3, Twine, Canvas, Web Audio API, Premiere Pro, DaVinci Resolve, Photoshop, OBS and multi-camera, Blackmagic Studio, Canva.</p>
+        <h3 class="tl-h reveal">Certificates and languages</h3>
+        <p class="reveal soft">Drone operator. Responsible alcohol service. Responsible hosting. Norwegian, native. English, fluent.</p>
+      </div>
+      <div>
+        <h3 class="tl-h reveal" style="margin-top:0">Works</h3>
+    <ul class="root-tl">
+      <li class="reveal"><span class="yr">2026</span><b>HAGEN</b><span class="d">Interactive night garden and projection, in development.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>What the Roots Keep</b><span class="d">Five parts of electronic literature about connection, distance, family inheritance and staying open after a relationship changes.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>BODYLINE</b><span class="d">A rhythm game down from Fløyen to Bergen, over real recordings of Fløibanen.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>Trail Mix</b><span class="d">A walking DJ set from Sandviken to Fløyen, made with Preem Cast.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>Fjordtatt</b><span class="d">The continuation of Bergtatt at SALT in Oslo, a sauna ritual built around warmth, water, breath and chosen family.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>Pride Park</b><span class="d">A location-based game in Nygårdsparken during Bergen Pride, with Norwegian folklore, QR codes, sound and movement.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>Bergtatt</b><span class="d">A generative, sound-reactive visual system for Regnbuenatt in Marinehagen.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>Vision Entity Live</b><span class="d">A camera-based work where a model reads the room and writes poems over what it names.</span></li>
+      <li class="reveal"><span class="yr">2025–2026</span><b>The Turing Test: Fragments of a Life Saved by Pixels</b><span class="d">Interactive story about AI bias against Norwegian queer organisations. First prize in electronic literature, Digital Culture Awards 2025.</span></li>
+    </ul>
+        <h3 class="tl-h reveal">Live streaming and production</h3>
+    <ul class="root-tl">
+      <li class="reveal"><span class="yr">2020–2023</span><b>Live streaming technician</b> <span class="d">Bergen Kjøtt</span><span class="d">Live broadcasts, multi-camera production and interviews for cultural events through the pandemic.</span></li>
+      <li class="reveal"><span class="yr">During the pandemic</span><b>Live streaming and recording</b> <span class="d">BEK, Bergen Centre for Electronic Arts</span></li>
+      <li class="reveal"><span class="yr">During the pandemic</span><b>Live streaming</b> <span class="d">Ekko festival</span></li>
+      <li class="reveal"><span class="yr">During the pandemic</span><b>Live streaming</b> <span class="d">Prøverommet</span></li>
+      <li class="reveal"><span class="yr">2020</span><b>Grip workshop</b></li>
+      <li class="reveal"><span class="yr"></span><b>Live stream, Trans Awareness Week</b><span class="d">Multi-camera stream with Blackmagic cameras.</span></li>
+    </ul>
+      </div>
+    </div>
+    <div class="grid">
+      <div>
+        <h3 class="tl-h reveal">Experience</h3>
+    <ul class="root-tl">
+      <li class="reveal"><span class="yr">2026 to now</span><b>Artistic director and developer</b> <span class="d">Mount Media</span><span class="d">Location-based games, sound and interactive narrative, coded in HTML5, JavaScript and CSS. Real-time systems where sound, camera and movement drive the visuals in live spaces.</span></li>
+      <li class="reveal"><span class="yr">2026 to now</span><b>Teaching assistant</b> <span class="d">University of Bergen, DIKULT105 Creating Digital Culture</span><span class="d">Teaching Construct 3 and Visual Studio Code in the labs.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>Research intern, SurvivingSOGICE</b> <span class="d">Center for Digital Narrative, University of Bergen</span><span class="d">Mapped Norwegian networks connected to conversion practices and built interactive network maps.</span></li>
+      <li class="reveal"><span class="yr">2023 to now</span><b>Content and concept development</b> <span class="d">KIM</span><span class="d">Concepts, booking, visual communication and event work.</span></li>
+      <li class="reveal"><span class="yr">2023–2026</span><b>Digital media strategist</b> <span class="d">Regnbuedagene i Bergen</span><span class="d">Led the festival's social media and content. Reach grew from 273 000 to over 330 000 views. Coordinated volunteer photographers.</span></li>
+      <li class="reveal"><span class="yr">2025</span><b>Project lead, Skeiv Jul</b> <span class="d">Regnbuedagene, FRI Vestland and Skeiv Verden Vest</span><span class="d">Initiated the project, raised funding from Vestland fylkeskommune and private sponsors, and ran seven events.</span></li>
+      <li class="reveal"><span class="yr">2023–2025</span><b>Head of communication</b> <span class="d">FRI Vestland</span></li>
+      <li class="reveal"><span class="yr">2018–2024</span><b>Founder</b> <span class="d">Queer Fashion of Scandinavia</span><span class="d">A digital platform for queer representation with consent-based documentation.</span></li>
+      <li class="reveal"><span class="yr">2015–2018</span><b>Bar manager</b> <span class="d">Rockefeller Music Hall, John Dee and Sentrum Scene</span><span class="d">Operations, staffing, audience handling and safety.</span></li>
+      <li class="reveal"><span class="yr">2010–2015, 2023–2025</span><b>Bartender and door staff</b> <span class="d">Fincken</span><span class="d">Hosting, audience work and safety in nightlife and culture.</span></li>
+    </ul>
+      </div>
+      <div>
+        <h3 class="tl-h reveal">Talks, writing, education and awards</h3>
+    <ul class="root-tl">
+      <li class="reveal"><span class="yr">23 September 2026</span><b>Me, Myself and A.I.</b> <span class="d">CDN Autumn Equinox, Litteraturhuset i Bergen</span><span class="d">Talk in the panel "The Haunting of the Author" with Yagmur Cisem Vik and Hanna Hellesø Lauvli, on how AI represents queer lives.</span></li>
+      <li class="reveal"><span class="yr">In progress</span><b>"Synthetic Influencers: Content, Co-creation and Advocacy"</b> <span class="d">Routledge Handbook of Influencer Activism and Advocacy</span><span class="d">Chapter co-written with Zahra Rizvi.</span></li>
+      <li class="reveal"><span class="yr">2024–2027</span><b>BA in Digital Culture</b> <span class="d">University of Bergen</span><span class="d">Electronic literature, digital games and critical technology studies. Member of the digital culture student committee 2024–2025.</span></li>
+      <li class="reveal"><span class="yr">2025</span><b>First prize in electronic literature</b> <span class="d">Digital Culture Awards</span><span class="d">For The Turing Test: Fragments of a Life Saved by Pixels.</span></li>
+      <li class="reveal"><span class="yr">2023 to now</span><b>Board member</b> <span class="d">FRI Vestland</span></li>
+    </ul>
+      </div>
     </div>
   </div>
   <footer>
@@ -653,10 +688,6 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
     else{fade(0,900);setTimeout(()=>music.pause(),950);snd.textContent='Sound on'}};
 
 
-  // CV window tabs
-  $$('.mm-tabs button').forEach(b=>b.onclick=()=>{const i=+b.dataset.p;
-    $$('.mm-tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
-    $$('.mm-pane').forEach((p,k)=>p.classList.toggle('on',k===i))});
   // day and night
   const dn=$('#dn');$$('[data-dn]').forEach(b=>b.onclick=()=>{dn.classList.toggle('night',b.dataset.dn==='night');$$('[data-dn]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
 
