@@ -175,9 +175,6 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
 .root-tl .d{display:block;color:var(--soft);font-size:.95em}
 .tl-h{font-size:clamp(24px,2vw,30px);margin:1.4em 0 .7em}
 
-#artist{position:fixed;inset:0;z-index:40;overflow-y:auto;background:radial-gradient(ellipse at 30% 0%,#122019 0%,#060a07 55%,#030504 100%);padding:90px 0 80px;opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s ease}
-#artist.open{opacity:1;transform:none}
-#artistClose{position:fixed;top:16px;right:22px;z-index:41;font-size:17px}
 #artistLink{margin-left:14px;white-space:nowrap;font-size:16px;color:var(--gold)}
 body.noscroll{overflow:hidden}
 </style>
@@ -195,7 +192,7 @@ body.noscroll{overflow:hidden}
     <button id="enterSound">Enter with sound</button>
     <button id="enterQuiet" class="quiet">Enter in silence</button>
   </div>
-  <div class="ghint">Fourteen short chapters. Move on with the link at the end of each one, the arrow keys, or the menu at the top.</div>
+  <div class="ghint">Fifteen short chapters. Move on with the link at the end of each one, the arrow keys, or the menu at the top.</div>
 </div>
 
 <nav id="bar" aria-label="Chapters">
@@ -617,20 +614,13 @@ body.noscroll{overflow:hidden}
     </div>
   </div>
 
-  <footer>
-    <div class="logo" data-logo></div>
-    <p>HAGEN by Ingrid Ormevik · Bergen · <a href="../cv.html">CV</a></p>
-    <p>Music on this page: HAGEN, Siren Abyss (8D remix).<br>Church images are renderings. Test clips are filmed on a phone.</p>
-    <p><button id="top" class="quiet">Back to the start</button></p>
-  </footer>
+
 </section>
 
-</main>
-<div id="artist" role="dialog" aria-modal="true" aria-label="The artist" hidden>
-  <button id="artistClose" class="quiet" aria-label="Close">Close ✕</button>
+<section class="ch" id="c14" data-title="The artist">
   <div class="in">
     <div class="kick">The artist</div>
-    <h2>Ingrid Ormevik</h2>
+    <h2 class="reveal">Ingrid Ormevik</h2>
     <div class="grid" style="margin-top:1.2em">
       <div>
         <p class="lead">Artist and creative technologist in Bergen, working as Mount Media. I make electronic literature, games and sound-reactive works for real places, from mountain paths and parks to club rooms and façades.</p>
@@ -642,62 +632,70 @@ body.noscroll{overflow:hidden}
           <div><b>2018</b><span>the start of my work with social media and queer representation</span></div>
         </div>
         <p><a href="mailto:ingrid.ormevik@student.uib.no">ingrid.ormevik@student.uib.no</a><br><a href="https://github.com/ingridormevik">github.com/ingridormevik</a><br><a href="../cv.html">Interactive portfolio</a></p>
-        <h3 class="tl-h">Tools</h3>
+        <h3 class="tl-h reveal">Tools</h3>
         <p class="soft">HTML5, JavaScript, CSS, Python, Git and GitHub, Visual Studio Code, Claude Code, Codex, Construct 3, Twine, Canvas, Web Audio API, Premiere Pro, DaVinci Resolve, Photoshop, OBS and multi-camera, Blackmagic Studio, Canva.</p>
-        <h3 class="tl-h">Certificates and languages</h3>
+        <h3 class="tl-h reveal">Certificates and languages</h3>
         <p class="soft">Drone operator. Responsible alcohol service. Responsible hosting. Norwegian, native. English, fluent.</p>
       </div>
       <div>
-        <h3 class="tl-h" style="margin-top:0">Works</h3>
+        <h3 class="tl-h reveal" style="margin-top:0">Works</h3>
     <ul class="root-tl">
-      <li><span class="yr">2026</span><b>HAGEN</b><span class="d">Interactive night garden and projection, in development.</span></li>
-      <li><span class="yr">2026</span><b>What the Roots Keep</b><span class="d">Five parts of electronic literature about connection, distance, family inheritance and staying open after a relationship changes.</span></li>
-      <li><span class="yr">2026</span><b>Trail Mix</b><span class="d">A walking DJ set from Sandviken to Fløyen, made with Preem Cast.</span></li>
-      <li><span class="yr">2026</span><b>Fjordtatt</b><span class="d">The continuation of Bergtatt at SALT in Oslo, a sauna ritual built around warmth, water, breath and chosen family.</span></li>
-      <li><span class="yr">2026</span><b>Pride Park</b><span class="d">A location-based game in Nygårdsparken during Bergen Pride, with Norwegian folklore, QR codes, sound and movement.</span></li>
-      <li><span class="yr">2026</span><b>Bergtatt</b><span class="d">A generative, sound-reactive visual system for Regnbuenatt in Marinehagen.</span></li>
-      <li><span class="yr">2025–2026</span><b>The Turing Test: Fragments of a Life Saved by Pixels</b><span class="d">Interactive story about AI bias against Norwegian queer organisations. First prize in electronic literature, Digital Culture Awards 2025.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>HAGEN</b><span class="d">Interactive night garden and projection, in development.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>What the Roots Keep</b><span class="d">Five parts of electronic literature about connection, distance, family inheritance and staying open after a relationship changes.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>Trail Mix</b><span class="d">A walking DJ set from Sandviken to Fløyen, made with Preem Cast.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>Fjordtatt</b><span class="d">The continuation of Bergtatt at SALT in Oslo, a sauna ritual built around warmth, water, breath and chosen family.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>Pride Park</b><span class="d">A location-based game in Nygårdsparken during Bergen Pride, with Norwegian folklore, QR codes, sound and movement.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>Bergtatt</b><span class="d">A generative, sound-reactive visual system for Regnbuenatt in Marinehagen.</span></li>
+      <li class="reveal"><span class="yr">2025–2026</span><b>The Turing Test: Fragments of a Life Saved by Pixels</b><span class="d">Interactive story about AI bias against Norwegian queer organisations. First prize in electronic literature, Digital Culture Awards 2025.</span></li>
     </ul>
-        <h3 class="tl-h">Live streaming and production</h3>
+        <h3 class="tl-h reveal">Live streaming and production</h3>
     <ul class="root-tl">
-      <li><span class="yr">2020–2023</span><b>Live streaming technician</b> <span class="d">Bergen Kjøtt</span><span class="d">Live broadcasts, multi-camera production and interviews for cultural events through the pandemic.</span></li>
-      <li><span class="yr">During the pandemic</span><b>Live streaming and recording</b> <span class="d">BEK, Bergen Centre for Electronic Arts</span></li>
-      <li><span class="yr">During the pandemic</span><b>Live streaming</b> <span class="d">Ekko festival</span></li>
-      <li><span class="yr">During the pandemic</span><b>Live streaming</b> <span class="d">Prøverommet</span></li>
-      <li><span class="yr">2020</span><b>Grip workshop</b></li>
-      <li><span class="yr"></span><b>Live stream, Trans Awareness Week</b><span class="d">Multi-camera stream with Blackmagic cameras.</span></li>
+      <li class="reveal"><span class="yr">2020–2023</span><b>Live streaming technician</b> <span class="d">Bergen Kjøtt</span><span class="d">Live broadcasts, multi-camera production and interviews for cultural events through the pandemic.</span></li>
+      <li class="reveal"><span class="yr">During the pandemic</span><b>Live streaming and recording</b> <span class="d">BEK, Bergen Centre for Electronic Arts</span></li>
+      <li class="reveal"><span class="yr">During the pandemic</span><b>Live streaming</b> <span class="d">Ekko festival</span></li>
+      <li class="reveal"><span class="yr">During the pandemic</span><b>Live streaming</b> <span class="d">Prøverommet</span></li>
+      <li class="reveal"><span class="yr">2020</span><b>Grip workshop</b></li>
+      <li class="reveal"><span class="yr"></span><b>Live stream, Trans Awareness Week</b><span class="d">Multi-camera stream with Blackmagic cameras.</span></li>
     </ul>
       </div>
     </div>
     <div class="grid">
       <div>
-        <h3 class="tl-h">Experience</h3>
+        <h3 class="tl-h reveal">Experience</h3>
     <ul class="root-tl">
-      <li><span class="yr">2026 to now</span><b>Artistic director and developer</b> <span class="d">Mount Media</span><span class="d">Location-based games, sound and interactive narrative, coded in HTML5, JavaScript and CSS. Real-time systems where sound, camera and movement drive the visuals in live spaces.</span></li>
-      <li><span class="yr">2026 to now</span><b>Teaching assistant</b> <span class="d">University of Bergen, DIKULT105 Creating Digital Culture</span><span class="d">Teaching Construct 3 and Visual Studio Code in the labs.</span></li>
-      <li><span class="yr">2026</span><b>Research intern, SurvivingSOGICE</b> <span class="d">Center for Digital Narrative, University of Bergen</span><span class="d">Mapped Norwegian networks connected to conversion practices and built interactive network maps.</span></li>
-      <li><span class="yr">2023 to now</span><b>Content and concept development</b> <span class="d">KIM</span><span class="d">Concepts, booking, visual communication and event work.</span></li>
-      <li><span class="yr">2023–2026</span><b>Digital media strategist</b> <span class="d">Regnbuedagene i Bergen</span><span class="d">Led the festival's social media and content. Reach grew from 273 000 to over 330 000 views. Coordinated volunteer photographers.</span></li>
-      <li><span class="yr">2025</span><b>Project lead, Skeiv Jul</b> <span class="d">Regnbuedagene, FRI Vestland and Skeiv Verden Vest</span><span class="d">Initiated the project, raised funding from Vestland fylkeskommune and private sponsors, and ran seven events.</span></li>
-      <li><span class="yr">2023–2025</span><b>Head of communication</b> <span class="d">FRI Vestland</span></li>
-      <li><span class="yr">2018–2024</span><b>Founder</b> <span class="d">Queer Fashion of Scandinavia</span><span class="d">A digital platform for queer representation with consent-based documentation.</span></li>
-      <li><span class="yr">2015–2018</span><b>Bar manager</b> <span class="d">Rockefeller Music Hall, John Dee and Sentrum Scene</span><span class="d">Operations, staffing, audience handling and safety.</span></li>
-      <li><span class="yr">2010–2015, 2023–2025</span><b>Bartender and door staff</b> <span class="d">Fincken</span><span class="d">Hosting, audience work and safety in nightlife and culture.</span></li>
+      <li class="reveal"><span class="yr">2026 to now</span><b>Artistic director and developer</b> <span class="d">Mount Media</span><span class="d">Location-based games, sound and interactive narrative, coded in HTML5, JavaScript and CSS. Real-time systems where sound, camera and movement drive the visuals in live spaces.</span></li>
+      <li class="reveal"><span class="yr">2026 to now</span><b>Teaching assistant</b> <span class="d">University of Bergen, DIKULT105 Creating Digital Culture</span><span class="d">Teaching Construct 3 and Visual Studio Code in the labs.</span></li>
+      <li class="reveal"><span class="yr">2026</span><b>Research intern, SurvivingSOGICE</b> <span class="d">Center for Digital Narrative, University of Bergen</span><span class="d">Mapped Norwegian networks connected to conversion practices and built interactive network maps.</span></li>
+      <li class="reveal"><span class="yr">2023 to now</span><b>Content and concept development</b> <span class="d">KIM</span><span class="d">Concepts, booking, visual communication and event work.</span></li>
+      <li class="reveal"><span class="yr">2023–2026</span><b>Digital media strategist</b> <span class="d">Regnbuedagene i Bergen</span><span class="d">Led the festival's social media and content. Reach grew from 273 000 to over 330 000 views. Coordinated volunteer photographers.</span></li>
+      <li class="reveal"><span class="yr">2025</span><b>Project lead, Skeiv Jul</b> <span class="d">Regnbuedagene, FRI Vestland and Skeiv Verden Vest</span><span class="d">Initiated the project, raised funding from Vestland fylkeskommune and private sponsors, and ran seven events.</span></li>
+      <li class="reveal"><span class="yr">2023–2025</span><b>Head of communication</b> <span class="d">FRI Vestland</span></li>
+      <li class="reveal"><span class="yr">2018–2024</span><b>Founder</b> <span class="d">Queer Fashion of Scandinavia</span><span class="d">A digital platform for queer representation with consent-based documentation.</span></li>
+      <li class="reveal"><span class="yr">2015–2018</span><b>Bar manager</b> <span class="d">Rockefeller Music Hall, John Dee and Sentrum Scene</span><span class="d">Operations, staffing, audience handling and safety.</span></li>
+      <li class="reveal"><span class="yr">2010–2015, 2023–2025</span><b>Bartender and door staff</b> <span class="d">Fincken</span><span class="d">Hosting, audience work and safety in nightlife and culture.</span></li>
     </ul>
       </div>
       <div>
-        <h3 class="tl-h">Talks, writing, education and awards</h3>
+        <h3 class="tl-h reveal">Talks, writing, education and awards</h3>
     <ul class="root-tl">
-      <li><span class="yr">23 September 2026</span><b>Me, Myself and A.I.</b> <span class="d">CDN Autumn Equinox, Litteraturhuset i Bergen</span><span class="d">Talk in the panel "The Haunting of the Author" with Yagmur Cisem Vik and Hanna Hellesø Lauvli, on how AI represents queer lives.</span></li>
-      <li><span class="yr">In progress</span><b>"Synthetic Influencers: Content, Co-creation and Advocacy"</b> <span class="d">Routledge Handbook of Influencer Activism and Advocacy</span><span class="d">Chapter co-written with Zahra Rizvi.</span></li>
-      <li><span class="yr">2024–2027</span><b>BA in Digital Culture</b> <span class="d">University of Bergen</span><span class="d">Electronic literature, digital games and critical technology studies. Member of the digital culture student committee 2024–2025.</span></li>
-      <li><span class="yr">2025</span><b>First prize in electronic literature</b> <span class="d">Digital Culture Awards</span><span class="d">For The Turing Test: Fragments of a Life Saved by Pixels.</span></li>
-      <li><span class="yr">2023 to now</span><b>Board member</b> <span class="d">FRI Vestland</span></li>
+      <li class="reveal"><span class="yr">23 September 2026</span><b>Me, Myself and A.I.</b> <span class="d">CDN Autumn Equinox, Litteraturhuset i Bergen</span><span class="d">Talk in the panel "The Haunting of the Author" with Yagmur Cisem Vik and Hanna Hellesø Lauvli, on how AI represents queer lives.</span></li>
+      <li class="reveal"><span class="yr">In progress</span><b>"Synthetic Influencers: Content, Co-creation and Advocacy"</b> <span class="d">Routledge Handbook of Influencer Activism and Advocacy</span><span class="d">Chapter co-written with Zahra Rizvi.</span></li>
+      <li class="reveal"><span class="yr">2024–2027</span><b>BA in Digital Culture</b> <span class="d">University of Bergen</span><span class="d">Electronic literature, digital games and critical technology studies. Member of the digital culture student committee 2024–2025.</span></li>
+      <li class="reveal"><span class="yr">2025</span><b>First prize in electronic literature</b> <span class="d">Digital Culture Awards</span><span class="d">For The Turing Test: Fragments of a Life Saved by Pixels.</span></li>
+      <li class="reveal"><span class="yr">2023 to now</span><b>Board member</b> <span class="d">FRI Vestland</span></li>
     </ul>
       </div>
     </div>
   </div>
-</div>
+  <footer>
+    <div class="logo" data-logo></div>
+    <p>HAGEN by Ingrid Ormevik · Bergen · <a href="../cv.html">CV</a></p>
+    <p>Music on this page: HAGEN, Siren Abyss (8D remix).<br>Church images are renderings. Test clips are filmed on a phone.</p>
+    <p><button id="top" class="quiet">Back to the start</button></p>
+  </footer>
+</section>
+</main>
+
 
 
 <audio id="music" src="media/hagen_abyss.mp3" loop preload="none"></audio>
@@ -721,7 +719,7 @@ body.noscroll{overflow:hidden}
   $('#top').onclick=()=>go(0);
   $('#menuBtn').onclick=()=>{const o=menu.classList.toggle('open');$('#menuBtn').setAttribute('aria-expanded',o)};
   addEventListener('keydown',e=>{
-    if(!gate.classList.contains('gone')||!$('#artist').hidden||e.target.closest('video,input,textarea'))return;
+    if(!gate.classList.contains('gone')||e.target.closest('video,input,textarea'))return;
     if(['ArrowRight','ArrowDown','PageDown'].includes(e.key)){e.preventDefault();go(cur()+1)}
     if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(cur()-1)}
   });
@@ -743,12 +741,7 @@ body.noscroll{overflow:hidden}
 
 
 
-  // the artist panel
-  const ap=$('#artist');
-  function openArtist(){ap.hidden=false;document.body.classList.add('noscroll');requestAnimationFrame(()=>ap.classList.add('open'));ap.scrollTop=0;$('#artistClose').focus()}
-  function closeArtist(){ap.classList.remove('open');document.body.classList.remove('noscroll');setTimeout(()=>ap.hidden=true,600)}
-  $('#artistLink').onclick=openArtist;$$('.openArtist').forEach(b=>b.onclick=openArtist);$('#artistClose').onclick=closeArtist;
-  addEventListener('keydown',e=>{if(e.key==='Escape'&&!ap.hidden)closeArtist()});
+  const toArtist=()=>$('#c14').scrollIntoView({behavior:'smooth',block:'start'});$('#artistLink').onclick=toArtist;$$('.openArtist').forEach(b=>b.onclick=toArtist);
   // day and night
   const dn=$('#dn');$$('[data-dn]').forEach(b=>b.onclick=()=>{dn.classList.toggle('night',b.dataset.dn==='night');$$('[data-dn]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
 
