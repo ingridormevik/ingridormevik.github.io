@@ -177,6 +177,19 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
 
 #artistLink{margin-left:14px;white-space:nowrap;font-size:16px;color:var(--gold)}
 body.noscroll{overflow:hidden}
+
+/* clean artist chapter */
+.cv-links a{margin-right:1.4em}
+.cv-h{font-size:clamp(22px,1.8vw,27px);margin:1.6em 0 .5em;border-bottom:1px solid var(--line);padding-bottom:.3em}
+ul.cv{list-style:none;margin:0;padding:0}
+ul.cv li{display:grid;grid-template-columns:9.5em 1fr;column-gap:1.2em;padding:.38em 0;border-bottom:1px solid rgba(241,234,217,.06)}
+ul.cv .cv-y{color:var(--sage);font-style:italic;font-size:.92em;grid-row:span 2}
+ul.cv .cv-t{color:var(--pearl)}
+ul.cv .cv-p{color:var(--soft);font-size:.92em;grid-column:2}
+ul.cv.works .cv-t{font-size:1.08em}
+ul.cv a{color:var(--pearl);text-decoration-color:rgba(217,179,106,.6)}
+ul.cv a:hover{color:var(--gold)}
+@media (max-width:900px){ul.cv li{grid-template-columns:6.5em 1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 </style>
 </head>
 <body>
@@ -598,72 +611,68 @@ body.noscroll{overflow:hidden}
 
 <section class="ch" id="c14" data-title="The artist">
   <div class="in">
-    <div class="kick">The artist</div>
+    <div class="kick reveal">The artist</div>
     <h2 class="reveal">Ingrid Ormevik</h2>
-    <div class="grid" style="margin-top:1.2em">
-      <div>
-        <p class="lead">Artist and creative technologist in Bergen, working as Mount Media. I make electronic literature, games and sound-reactive works for real places, from mountain paths and parks to club rooms and façades.</p>
-        <p>Behind HAGEN are years of live production: multi-camera streaming through the pandemic, festival media, and work with crowds, hosting and safety in Bergen's venues. That is the practical ground the projection stands on.</p>
-        <div class="stats">
-          <div><b>1st</b><span>prize in electronic literature, Digital Culture Awards 2025</span></div>
-          <div><b>330 000</b><span>views for Regnbuedagene, up from 273 000</span></div>
-          <div><b>7</b><span>events in Skeiv Jul 2025, funded from scratch</span></div>
-          <div><b>2018</b><span>the start of my work with social media and queer representation</span></div>
-        </div>
-        <p><a href="mailto:ingrid.ormevik@student.uib.no">ingrid.ormevik@student.uib.no</a><br><a href="https://github.com/ingridormevik">github.com/ingridormevik</a><br><a href="../cv.html">Interactive portfolio</a></p>
-        <h3 class="tl-h reveal">Tools</h3>
-        <p class="soft">HTML5, JavaScript, CSS, Python, Git and GitHub, Visual Studio Code, Claude Code, Codex, Construct 3, Twine, Canvas, Web Audio API, Premiere Pro, DaVinci Resolve, Photoshop, OBS and multi-camera, Blackmagic Studio, Canva.</p>
-        <h3 class="tl-h reveal">Certificates and languages</h3>
-        <p class="soft">Drone operator. Responsible alcohol service. Responsible hosting. Norwegian, native. English, fluent.</p>
-      </div>
-      <div>
-        <h3 class="tl-h reveal" style="margin-top:0">Works</h3>
-    <ul class="root-tl">
-      <li class="reveal"><span class="yr">2026</span><b>HAGEN</b><span class="d">Interactive night garden and projection, in development.</span></li>
-      <li class="reveal"><span class="yr">2026</span><b>What the Roots Keep</b><span class="d">Five parts of electronic literature about connection, distance, family inheritance and staying open after a relationship changes.</span></li>
-      <li class="reveal"><span class="yr">2026</span><b>Fjordtatt</b><span class="d">The continuation of Bergtatt at SALT in Oslo, a sauna ritual built around warmth, water, breath and chosen family.</span></li>
-      <li class="reveal"><span class="yr">2026</span><b>Pride Park, the game</b><span class="d">A location-based game in Nygårdsparken during Bergen Pride, with Norwegian folklore, QR codes, sound and movement.</span></li>
-      <li class="reveal"><span class="yr">6 June 2026</span><b>Regnbuenatt</b><span class="d">Marinehagen, Bergen Pride</span><span class="d">A night event in Marinehagen in two parts, The Enchanted Forest and The Forbidden. I came up with the idea and ran the project, from concept and visual identity to the campaign templates and the live visuals.</span></li>
-      <li class="reveal"><span class="yr">2026</span><b>Bergtatt</b><span class="d">A generative, sound-reactive visual system made for Regnbuenatt in Marinehagen.</span></li>
-      <li class="reveal"><span class="yr">2025–2026</span><b>The Turing Test: Fragments of a Life Saved by Pixels</b><span class="d">Interactive story about AI bias against Norwegian queer organisations. First prize in electronic literature, Digital Culture Awards 2025.</span></li>
-    </ul>
-        <h3 class="tl-h reveal">Live streaming and production</h3>
-    <ul class="root-tl">
-      <li class="reveal"><span class="yr">2020–2023</span><b>Live streaming technician</b> <span class="d">Bergen Kjøtt</span><span class="d">Live broadcasts, multi-camera production and interviews for cultural events through the pandemic.</span></li>
-      <li class="reveal"><span class="yr">During the pandemic</span><b>Live streaming and recording</b> <span class="d">BEK, Bergen Centre for Electronic Arts</span></li>
-      <li class="reveal"><span class="yr">During the pandemic</span><b>Live streaming</b> <span class="d">Ekko festival</span></li>
-      <li class="reveal"><span class="yr">During the pandemic</span><b>Live streaming</b> <span class="d">Prøverommet</span></li>
-      <li class="reveal"><span class="yr">2020</span><b>Grip workshop</b></li>
-      <li class="reveal"><span class="yr"></span><b>Live stream, Trans Awareness Week</b><span class="d">Multi-camera stream with Blackmagic cameras.</span></li>
-    </ul>
-      </div>
+    <p class="lead reveal" style="max-width:820px;margin-top:.6em">Artist and creative technologist in Bergen, working as Mount Media. I make electronic literature, games and sound-reactive works for real places, and I bring years of live production and work with crowds in Bergen's venues.</p>
+    <p class="reveal cv-links"><a href="mailto:ingrid.ormevik@student.uib.no">ingrid.ormevik@student.uib.no</a><a href="https://github.com/ingridormevik">GitHub</a><a href="https://ingridormevik.github.io/blog.html">Blog</a><a href="https://ingridormevik.github.io/cv.html">Full portfolio</a></p>
+    <div class="stats reveal" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+      <div><b>1st</b><span>prize in electronic literature, 2025</span></div>
+      <div><b>330 000</b><span>views for Regnbuedagene</span></div>
+      <div><b>7</b><span>events in Skeiv Jul 2025</span></div>
+      <div><b>2018</b><span>start of my work with queer representation</span></div>
     </div>
-    <div class="grid">
+    <div class="reveal">
+      <h3 class="cv-h">Selected works</h3>
+      <ul class="cv works">
+        <li><span class="cv-y">2026</span><span class="cv-t">HAGEN</span><span class="cv-p">Interactive night garden and projection, in development. This proposal.</span></li>
+        <li><span class="cv-y">2026</span><span class="cv-t"><a href="https://ingridormevik.itch.io/what-the-roots-keep">What the Roots Keep</a></span><span class="cv-p">Electronic literature in five parts about connection, distance and family inheritance.</span></li>
+        <li><span class="cv-y">2026</span><span class="cv-t"><a href="https://ingridormevik.github.io/regnbuenatt.html">Regnbuenatt</a></span><span class="cv-p">Night event in Marinehagen during Bergen Pride. My idea and my project, from concept to campaign.</span></li>
+        <li><span class="cv-y">2026</span><span class="cv-t"><a href="https://ingridormevik.github.io/Regnbuenatt_LED_final.html">Bergtatt</a></span><span class="cv-p">Generative, sound-reactive visuals made for Regnbuenatt.</span></li>
+        <li><span class="cv-y">2026</span><span class="cv-t"><a href="https://ingridormevik.github.io/fjordtatt-visuals.html">Fjordtatt</a></span><span class="cv-p">Continuation of Bergtatt for SALT in Oslo, a sauna ritual about warmth, water and chosen family.</span></li>
+        <li><span class="cv-y">2026</span><span class="cv-t"><a href="https://ingridormevik.github.io/regnbuedagene/pride-park-spill-2026.html">Pride Park, the game</a></span><span class="cv-p">Location-based game in Nygårdsparken during Bergen Pride.</span></li>
+        <li><span class="cv-y">2025</span><span class="cv-t"><a href="https://ingridormevik.github.io/touch%20game.html">The Turing Test: Fragments of a Life Saved by Pixels</a></span><span class="cv-p">Interactive story about AI bias. First prize in electronic literature, Digital Culture Awards 2025.</span></li>
+      </ul>
+    </div>
+    <div class="grid reveal" style="margin-top:1em">
       <div>
-        <h3 class="tl-h reveal">Experience</h3>
-    <ul class="root-tl">
-      <li class="reveal"><span class="yr">2026 to now</span><b>Artistic director and developer</b> <span class="d">Mount Media</span><span class="d">Location-based games, sound and interactive narrative, coded in HTML5, JavaScript and CSS. Real-time systems where sound, camera and movement drive the visuals in live spaces.</span></li>
-      <li class="reveal"><span class="yr">2026 to now</span><b>Teaching assistant</b> <span class="d">University of Bergen, DIKULT105 Creating Digital Culture</span><span class="d">Teaching Construct 3 and Visual Studio Code in the labs.</span></li>
-      <li class="reveal"><span class="yr">2026</span><b>Research intern, SurvivingSOGICE</b> <span class="d">Center for Digital Narrative, University of Bergen</span><span class="d">Mapped Norwegian networks connected to conversion practices and built interactive network maps.</span></li>
-      <li class="reveal"><span class="yr">2023–2025</span><b>KIM events at Fincken</b> <span class="d">Fincken, Bergen</span><span class="d">Concept development, booking, visual communication and running the events.</span></li>
-      <li class="reveal"><span class="yr">2023–2026</span><b>Digital media strategist</b> <span class="d">Regnbuedagene i Bergen</span><span class="d">Led the festival's social media and content. Reach grew from 273 000 to over 330 000 views. Coordinated volunteer photographers.</span></li>
-      <li class="reveal"><span class="yr">2025</span><b>Project lead, Skeiv Jul</b> <span class="d">Regnbuedagene, FRI Vestland and Skeiv Verden Vest</span><span class="d">Initiated the project, raised funding from Vestland fylkeskommune and private sponsors, and ran seven events.</span></li>
-      <li class="reveal"><span class="yr">2023–2025</span><b>Head of communication</b> <span class="d">FRI Vestland</span></li>
-      <li class="reveal"><span class="yr">2018–2024</span><b>Founder</b> <span class="d">Queer Fashion of Scandinavia</span><span class="d">A digital platform for queer representation with consent-based documentation.</span></li>
-      <li class="reveal"><span class="yr">2015–2018</span><b>Bar manager</b> <span class="d">Rockefeller Music Hall, John Dee and Sentrum Scene</span><span class="d">Operations, staffing, audience handling and safety.</span></li>
-      <li class="reveal"><span class="yr">2010–2015, 2023–2025</span><b>Bartender and door staff</b> <span class="d">Fincken</span><span class="d">Hosting, audience work and safety in nightlife and culture.</span></li>
-    </ul>
+      <h3 class="cv-h">Experience</h3>
+      <ul class="cv">
+        <li><span class="cv-y">2026 to now</span><span class="cv-t">Artistic director and developer</span><span class="cv-p">Mount Media</span></li>
+        <li><span class="cv-y">2026 to now</span><span class="cv-t">Teaching assistant, DIKULT105</span><span class="cv-p">University of Bergen</span></li>
+        <li><span class="cv-y">2026</span><span class="cv-t">Research intern, SurvivingSOGICE</span><span class="cv-p">Center for Digital Narrative</span></li>
+        <li><span class="cv-y">2023–2026</span><span class="cv-t">Digital media strategist</span><span class="cv-p">Regnbuedagene i Bergen</span></li>
+        <li><span class="cv-y">2023–2025</span><span class="cv-t">KIM events</span><span class="cv-p">Fincken</span></li>
+        <li><span class="cv-y">2025</span><span class="cv-t">Project lead, Skeiv Jul</span><span class="cv-p">Regnbuedagene, FRI Vestland, Skeiv Verden Vest</span></li>
+        <li><span class="cv-y">2023–2025</span><span class="cv-t">Head of communication</span><span class="cv-p">FRI Vestland</span></li>
+        <li><span class="cv-y">2018–2024</span><span class="cv-t">Founder</span><span class="cv-p">Queer Fashion of Scandinavia</span></li>
+        <li><span class="cv-y">2015–2018</span><span class="cv-t">Bar manager</span><span class="cv-p">Rockefeller, John Dee, Sentrum Scene</span></li>
+        <li><span class="cv-y">2010–2015, 2023–2025</span><span class="cv-t">Bartender and door staff</span><span class="cv-p">Fincken</span></li>
+      </ul>
       </div>
       <div>
-        <h3 class="tl-h reveal">Talks, writing, education and awards</h3>
-    <ul class="root-tl">
-      <li class="reveal"><span class="yr">In progress, autumn 2026</span><b>"Synthetic Influencers: Content, Co-creation and Advocacy"</b> <span class="d">Routledge Handbook of Influencer Activism and Advocacy</span><span class="d">Chapter co-written with Zahra Rizvi.</span></li>
-      <li class="reveal"><span class="yr">23 September 2026</span><b>Me, Myself and A.I.</b> <span class="d">CDN Autumn Equinox, Litteraturhuset i Bergen</span><span class="d">Talk in the panel "The Haunting of the Author" with Yagmur Cisem Vik and Hanna Hellesø Lauvli, on how AI represents queer lives.</span></li>
-      <li class="reveal"><span class="yr">2024–2027</span><b>BA in Digital Culture</b> <span class="d">University of Bergen</span><span class="d">Electronic literature, digital games and critical technology studies. Member of the digital culture student committee 2024–2025.</span></li>
-      <li class="reveal"><span class="yr">2025</span><b>First prize in electronic literature</b> <span class="d">Digital Culture Awards</span><span class="d">For The Turing Test: Fragments of a Life Saved by Pixels.</span></li>
-      <li class="reveal"><span class="yr">2023 to now</span><b>Volunteer, Bergen Pride committee</b> <span class="d">Regnbuedagene i Bergen</span></li>
-      <li class="reveal"><span class="yr">2023 to now</span><b>Board member</b> <span class="d">FRI Vestland</span></li>
-    </ul>
+      <h3 class="cv-h">Talks and writing</h3>
+      <ul class="cv">
+        <li><span class="cv-y">In progress, autumn 2026</span><span class="cv-t">"Synthetic Influencers: Content, Co-creation and Advocacy", with Zahra Rizvi</span><span class="cv-p">Routledge Handbook of Influencer Activism and Advocacy</span></li>
+        <li><span class="cv-y">23 September 2026</span><span class="cv-t"><a href="https://www4.uib.no/en/research/research-centres/center-for-digital-narrative/events/cdn-autumn-equinox-open-research-day">Me, Myself and A.I.</a></span><span class="cv-p">CDN Autumn Equinox, Litteraturhuset i Bergen</span></li>
+        <li><span class="cv-y">2026</span><span class="cv-t"><a href="https://ingridormevik.github.io/posts/2026-09-26-the-room-has-been-sorted.html">Reflection after Equinox</a></span><span class="cv-p">Blog post</span></li>
+      </ul>
+      <h3 class="cv-h">Live streaming and production</h3>
+      <ul class="cv">
+        <li><span class="cv-y">2020–2023</span><span class="cv-t">Live streaming technician</span><span class="cv-p">Bergen Kjøtt</span></li>
+        <li><span class="cv-y">Pandemic years</span><span class="cv-t">Live streaming and recording</span><span class="cv-p">BEK, Bergen Centre for Electronic Arts</span></li>
+        <li><span class="cv-y">Pandemic years</span><span class="cv-t">Live streaming</span><span class="cv-p">Ekko festival</span></li>
+        <li><span class="cv-y">Pandemic years</span><span class="cv-t">Live streaming</span><span class="cv-p">Prøverommet</span></li>
+        <li><span class="cv-y">2020</span><span class="cv-t">Grip workshop</span></li>
+        <li><span class="cv-y"></span><span class="cv-t">Multi-camera live stream, Blackmagic</span><span class="cv-p">Trans Awareness Week</span></li>
+      </ul>
+      <h3 class="cv-h">Education, awards and volunteering</h3>
+      <ul class="cv">
+        <li><span class="cv-y">2024–2027</span><span class="cv-t">BA in Digital Culture</span><span class="cv-p">University of Bergen</span></li>
+        <li><span class="cv-y">2025</span><span class="cv-t">First prize in electronic literature</span><span class="cv-p">Digital Culture Awards</span></li>
+        <li><span class="cv-y">2023 to now</span><span class="cv-t">Volunteer, Bergen Pride committee</span><span class="cv-p">Regnbuedagene i Bergen</span></li>
+        <li><span class="cv-y">2023 to now</span><span class="cv-t">Board member</span><span class="cv-p">FRI Vestland</span></li>
+        <li><span class="cv-y"></span><span class="cv-t">Drone operator, responsible alcohol service, responsible hosting</span><span class="cv-p">Certificates</span></li>
+      </ul>
       </div>
     </div>
   </div>
