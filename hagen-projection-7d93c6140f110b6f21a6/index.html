@@ -156,7 +156,7 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
 .gline2{font-size:clamp(18px,1.6vw,22px);color:var(--soft);max-width:680px;margin-top:1em;opacity:0;animation:fade 2.4s 2.6s forwards}
 .gbtn{margin-top:2.2em;gap:28px}
 .gbtn button{font-size:1.2em}
-.budget td:last-child,.budget th:last-child{text-align:right;white-space:nowrap}
+.budget td:not(:first-child),.budget th:not(:first-child){text-align:right;white-space:nowrap}
 .budget tr.sum td{border-top:1px solid var(--soft);font-style:italic}
 </style>
 </head>
@@ -463,33 +463,20 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
       </div>
       <div class="reveal">
         <table class="budget">
-          <tr><th>Stage one, the church evening</th><th>NOK</th></tr>
-          <tr><td>Outdoor laser projector, about 20,000 lumen, test night and event night</td><td>18 000</td></tr>
-          <tr><td>Projection technician, two nights of six hours</td><td>9 000</td></tr>
-          <tr><td>Outdoor microphone and wind cover</td><td>3 000</td></tr>
-          <tr><td>Stand, barrier, cable covers, outdoor leads with RCD, rain cover</td><td>7 000</td></tr>
-          <tr><td>Event liability insurance</td><td>3 000</td></tr>
-          <tr><td>Sign and visitor information</td><td>2 000</td></tr>
-          <tr><td>Photo and video documentation on the night</td><td>8 000</td></tr>
-          <tr><td>Documentation package for future marketing: edited film, stills and social media versions</td><td>10 000</td></tr>
-          <tr><td>Artist fee: development, mapping, programming and the evening, 10 days</td><td>35 000</td></tr>
-          <tr><td>Contingency, 10 percent</td><td>9 500</td></tr>
-          <tr class="sum"><td>Total, stage one</td><td>104 500</td></tr>
-          <tr><td>With projector through a CDN cooperation</td><td>84 700</td></tr>
+          <tr><th>Stage one, the church evening</th><th>Lean, with CDN</th><th>With rented equipment</th></tr>
+          <tr><td>Outdoor projector</td><td>0</td><td>18 000</td></tr>
+          <tr><td>Projection technician</td><td>4 500</td><td>9 000</td></tr>
+          <tr><td>Outdoor microphone and wind cover</td><td>2 500</td><td>3 000</td></tr>
+          <tr><td>Stand, barrier, cable covers, outdoor leads, rain cover</td><td>4 000</td><td>7 000</td></tr>
+          <tr><td>Event liability insurance</td><td>2 000</td><td>3 000</td></tr>
+          <tr><td>Sign and visitor information</td><td>1 000</td><td>2 000</td></tr>
+          <tr><td>Documentation for future marketing: film and stills</td><td>5 000</td><td>18 000</td></tr>
+          <tr><td>Artist fee, NOK 3 500 a day</td><td>21 000</td><td>35 000</td></tr>
+          <tr><td>Contingency, 10 percent</td><td>4 000</td><td>9 500</td></tr>
+          <tr class="sum"><td>Total</td><td>44 000</td><td>104 500</td></tr>
         </table>
-        <table class="budget">
-          <tr><th>Stage two, Muséhagen, four evenings (first estimate)</th><th>NOK</th></tr>
-          <tr><td>Three projectors with blended edges, four evenings and a test night</td><td>60 000</td></tr>
-          <tr><td>Projection technician, five evenings</td><td>22 500</td></tr>
-          <tr><td>Weatherproof housings, power along the paths, cables</td><td>15 000</td></tr>
-          <tr><td>Wayfinding signs and visitor information</td><td>5 000</td></tr>
-          <tr><td>Event liability insurance</td><td>4 000</td></tr>
-          <tr><td>Documentation and marketing package</td><td>15 000</td></tr>
-          <tr><td>Artist fee, 20 days</td><td>70 000</td></tr>
-          <tr><td>Contingency, 10 percent</td><td>19 150</td></tr>
-          <tr class="sum"><td>Total, stage two</td><td>210 650</td></tr>
-        </table>
-        <p class="cap">Estimates from November 2026, to be confirmed with quotes from rental companies and a technician. The artist day rate is set at NOK 3 500.</p>
+        <p class="cap">The lean budget is the one applied for. It assumes projector and test night through a cooperation with CDN, one paid technician night and six artist days. The second column shows the cost if all equipment has to be rented. Estimates from November 2026, to be confirmed with quotes. Whether UiB or CDN insurance covers the evening will be checked.</p>
+        <p class="soft">Stage two in Muséhagen gets its own budget after the church test, when the needed brightness, number of projectors and number of evenings are known.</p>
       </div>
     </div>
   </div>
