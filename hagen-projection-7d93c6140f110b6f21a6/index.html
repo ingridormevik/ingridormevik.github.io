@@ -5,507 +5,569 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <title>HAGEN on Johanneskirken</title>
-<meta name="description" content="HAGEN, a night garden that listens. A projection mapping proposal for Johanneskirken and Muséhagen in Bergen by Ingrid Ormevik.">
-<meta property="og:title" content="HAGEN on Johanneskirken">
-<meta property="og:description" content="A night garden that listens, projected onto the covered church in Bergen.">
+<meta name="description" content="I am asking for support to test HAGEN as a projection on Johanneskirken this winter, and to develop it into a listening garden in Muséhagen in autumn 2027.">
+<meta property="og:title" content="HAGEN, a night garden that listens">
+<meta property="og:description" content="Proposal for a projection on Johanneskirken and a listening garden in Muséhagen, Bergen. Ingrid Ormevik.">
 <meta property="og:image" content="media/church_night_2.jpg">
 <style>
 @font-face{font-family:CG;font-weight:500;src:url(fonts/cormorant-garamond-latin-500-normal.woff2) format('woff2');font-display:swap}
 @font-face{font-family:CG;font-style:italic;font-weight:500;src:url(fonts/cormorant-garamond-latin-500-italic.woff2) format('woff2');font-display:swap}
-:root{
-  --night:#050806;--deep:#0b120e;--moss:#14211a;--pearl:#f1ead9;--soft:#c9c2ae;--dim:#8f8a7b;
-  --gold:#d9b36a;--sage:#a9c3ad;--line:rgba(241,234,217,.14);
-}
+:root{--night:#050806;--pearl:#f1ead9;--soft:#cdc6b2;--dim:#948f80;--gold:#d9b36a;--sage:#a9c3ad;--line:rgba(241,234,217,.15)}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--night);color:var(--pearl);font-family:CG,'Cormorant Garamond',serif;font-weight:500;font-size:clamp(19px,1.35vw,23px);line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-a{color:var(--gold);text-decoration-thickness:1px;text-underline-offset:3px}
+html{scroll-behavior:smooth;scroll-snap-type:y proximity;overflow-x:hidden}
+.grid>*,.pair>*,.vids>*{min-width:0}
+body{margin:0;background:var(--night);color:var(--pearl);font-family:CG,'Cormorant Garamond',serif;font-weight:500;font-size:clamp(19px,1.3vw,22px);line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:var(--gold);text-underline-offset:3px;text-decoration-thickness:1px}
 img,video{display:block;max-width:100%}
 #roots{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
 main{position:relative;z-index:1}
-.wrap{width:min(1120px,100% - 32px);margin:0 auto}
-.narrow{width:min(720px,100% - 32px);margin:0 auto}
-section{padding:18vh 0}
 h1,h2,h3{font-weight:500;margin:0}
-h2{font-size:clamp(38px,5vw,74px);line-height:1.02;letter-spacing:-.01em}
-h3{font-size:clamp(25px,2.2vw,32px);line-height:1.15;margin-bottom:.4em}
-.kicker{font-size:14px;letter-spacing:.32em;text-transform:uppercase;color:var(--sage);margin-bottom:1.6em;font-style:normal}
+h2{font-size:clamp(40px,5vw,76px);line-height:1.02}
+h3{font-size:clamp(24px,2vw,30px);line-height:1.2;margin:1.6em 0 .4em}
+p{margin:0 0 1em}
 .it{font-style:italic}
-p{margin:0 0 1.1em}
-.lead{font-size:clamp(24px,2.1vw,32px);line-height:1.38;color:var(--pearl)}
-.muted{color:var(--soft)}
-.note{font-size:.78em;color:var(--dim);font-style:italic}
-.reveal{opacity:0;transform:translateY(34px);filter:blur(8px);transition:opacity 1.6s ease,transform 1.6s cubic-bezier(.2,.6,.2,1),filter 1.6s ease}
-.reveal.in{opacity:1;transform:none;filter:none}
-
-/* gate */
-#gate{position:fixed;inset:0;z-index:20;background:radial-gradient(ellipse at 50% 42%,#15211a 0%,#070b09 60%,#020302 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;transition:opacity 2.2s ease,visibility 2.2s}
+.lead{font-size:clamp(23px,1.95vw,30px);line-height:1.4}
+.soft{color:var(--soft)}
+.cap{font-size:15px;color:var(--dim);font-style:italic;margin-top:.6em;line-height:1.4}
+.kick{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--sage);margin-bottom:1.2em}
+.ch{min-height:100vh;scroll-snap-align:start;padding:120px 0 90px;position:relative}
+.in{width:min(1160px,100% - 32px);margin:0 auto}
+.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:5vw;align-items:start}
+.grid.mid{align-items:center}
+.cols{columns:2;column-gap:48px}
+.cols p{break-inside:avoid}
+.next{display:flex;justify-content:center;margin-top:64px}
+.reveal{opacity:0;transform:translateY(26px);filter:blur(6px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(.2,.6,.2,1),filter 1.4s ease}
+.reveal.on{opacity:1;transform:none;filter:none}
+button{font:inherit;color:var(--pearl);background:rgba(5,8,6,.55);border:1px solid rgba(217,179,106,.6);padding:.62em 1.5em;border-radius:999px;cursor:pointer;letter-spacing:.04em;transition:background .5s,border-color .5s;display:inline-flex;align-items:center;gap:.6em}
+button:hover,button:focus-visible{background:rgba(217,179,106,.16);border-color:var(--gold);outline:none}
+button.quiet{border-color:var(--line);color:var(--soft)}
+.next button{font-size:1.08em;padding:.8em 1.9em}
+.next button .arr{display:inline-block;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(4px)}}
+#bar{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:18px;padding:12px 18px;background:linear-gradient(180deg,rgba(5,8,6,.94),rgba(5,8,6,0));opacity:0;transition:opacity 1.5s;pointer-events:none}
+#bar.show{opacity:1;pointer-events:auto}
+#bar .mark{font-size:22px;letter-spacing:.3em;color:var(--pearl);text-decoration:none;white-space:nowrap}
+#menu{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+#menu::-webkit-scrollbar{display:none}
+#menu a{font-size:15px;color:var(--soft);text-decoration:none;padding:.35em .65em;border-radius:999px;white-space:nowrap;border:1px solid transparent;transition:color .4s,border-color .4s}
+#menu a b{font-weight:500;color:var(--gold);margin-right:.35em;font-style:italic}
+#menu a.cur{color:var(--pearl);border-color:rgba(217,179,106,.5)}
+#menuBtn{display:none;margin-left:auto;padding:.4em 1em;font-size:15px}
+#prog{position:fixed;top:0;left:0;height:2px;background:var(--gold);z-index:11;width:0;transition:width .3s}
+#sound{position:fixed;right:16px;bottom:16px;z-index:12;font-size:14px;padding:.5em 1.1em;backdrop-filter:blur(6px)}
+#keys{position:fixed;left:16px;bottom:18px;z-index:12;font-size:15px;color:var(--soft);font-style:italic;opacity:0;transition:opacity 1.2s;pointer-events:none}
+#keys.show{opacity:1}
+#gate{position:fixed;inset:0;z-index:30;background:radial-gradient(ellipse at 50% 42%,#15211a 0%,#070b09 60%,#020302 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;transition:opacity 2s,visibility 2s}
 #gate.gone{opacity:0;visibility:hidden}
-.logo{width:min(720px,92vw)}
+.logo{width:min(700px,90vw)}
 .logo svg{width:100%;overflow:visible;display:block}
-.logo .hagen-word{font-family:CG,serif;font-size:156px;font-weight:500}
+.logo .hagen-word{font-family:CG,serif;font-size:156px}
 .logo .root{fill:none;stroke-dasharray:1;stroke-dashoffset:1;animation:grow 2.6s cubic-bezier(.22,.5,.3,1) var(--root-delay,0s) both}
 @keyframes grow{to{stroke-dashoffset:0}}
-.gate-sub{font-style:italic;font-size:clamp(22px,2.4vw,34px);margin-top:-.4em;opacity:0;animation:fade 2s 1.6s forwards}
-.gate-place{font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--soft);margin-top:1.2em;opacity:0;animation:fade 2s 2.2s forwards}
-.gate-buttons{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:2.6em;opacity:0;animation:fade 2s 3s forwards}
+.gsub{font-style:italic;font-size:clamp(22px,2.4vw,34px);margin-top:-.3em;opacity:0;animation:fade 2s 1.4s forwards}
+.gplace{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--soft);margin-top:1.1em;opacity:0;animation:fade 2s 2s forwards}
+.gbtn{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:2.4em;opacity:0;animation:fade 2s 2.6s forwards}
+.ghint{font-size:16px;color:var(--dim);margin-top:1.4em;opacity:0;animation:fade 2s 3s forwards;font-style:italic;max-width:540px}
 @keyframes fade{to{opacity:1}}
-button{font:inherit;color:var(--pearl);background:transparent;border:1px solid rgba(217,179,106,.55);padding:.7em 1.6em;border-radius:999px;cursor:pointer;letter-spacing:.06em;transition:background .6s,border-color .6s,color .6s}
-button:hover,button:focus-visible{background:rgba(217,179,106,.14);border-color:var(--gold);outline:none}
-button.quiet{border-color:var(--line);color:var(--soft)}
-.gate-hint{font-size:14px;color:var(--dim);margin-top:1.4em;opacity:0;animation:fade 2s 3.4s forwards;font-style:italic}
-
-#sound{position:fixed;right:16px;bottom:16px;z-index:15;font-size:14px;padding:.55em 1.1em;background:rgba(5,8,6,.6);backdrop-filter:blur(6px)}
-
-/* hero */
-#hero{min-height:100vh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:6vw;align-items:center;padding-top:12vh}
-.hero-video{position:relative;border-radius:2px;overflow:hidden;box-shadow:0 0 120px rgba(217,179,106,.12);max-height:86vh;aspect-ratio:9/16;justify-self:center;width:min(100%,48vh)}
-.hero-video video{width:100%;height:100%;object-fit:cover}
-.hero-text h1{font-size:clamp(44px,6vw,96px);line-height:.98;font-style:italic}
-.hero-text .lead{margin-top:.9em}
-.cap{font-size:13px;letter-spacing:.08em;color:var(--dim);margin-top:.8em;font-style:italic}
-
-/* day to night */
-#daynight{height:260vh;padding:0;position:relative}
-.sticky{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:5vw;align-items:center;width:min(1120px,100% - 32px);margin:0 auto}
-.dn-frame{position:relative;height:86vh;aspect-ratio:9/16;justify-self:center;max-width:100%;overflow:hidden}
-.dn-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#dnNight{opacity:0}
-.dn-label{position:absolute;left:12px;bottom:10px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;text-shadow:0 0 8px #000}
-.dn-text p{transition:opacity .8s}
-
-/* acts */
-.acts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:3em}
-.act figure{margin:0}
-.act img{aspect-ratio:9/16;object-fit:cover;width:100%;filter:saturate(.95)}
-.act figcaption{margin-top:.8em}
-.act .n{font-size:13px;letter-spacing:.3em;color:var(--gold)}
-
-/* garden */
-.loops{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-top:3em}
-.loop{position:relative;overflow:hidden;background:#000}
-.loop video{width:100%;aspect-ratio:1280/536;object-fit:cover}
-.loop span{position:absolute;left:10px;bottom:8px;font-style:italic;font-size:17px;text-shadow:0 0 10px #000}
-.loop.l1{grid-column:span 4}.loop.l2{grid-column:span 2}.loop.l3{grid-column:span 2}.loop.l4{grid-column:span 2}.loop.l5{grid-column:span 2}
-.loop.l2 video,.loop.l3 video,.loop.l4 video,.loop.l5 video{height:100%}
-.film{margin-top:5em}
-.film video{width:100%;aspect-ratio:1280/720;background:#000}
-
-/* how */
-.flow{margin:3.5em 0 4em}
-.flow svg{width:100%;height:auto}
-.flow text{font-family:CG,serif;fill:var(--pearl)}
-.steps{counter-reset:s;list-style:none;padding:0;margin:2.4em 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 48px}
-.steps li{position:relative;padding-left:3.1em}
-.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:-.08em;font-size:1.8em;color:var(--gold);font-style:italic;line-height:1}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;justify-self:center;width:min(100%,640px)}
+.pair figure,.vids figure{margin:0}
+.tall{aspect-ratio:9/16;position:relative;overflow:hidden;background:#000}
+.tall video,.tall img{width:100%;height:100%;object-fit:cover}
+.glow{box-shadow:0 0 110px rgba(217,179,106,.12)}
+.vids{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:2em}
+.tag{display:inline-block;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--night);background:var(--gold);padding:.25em .7em;border-radius:3px;margin-bottom:.6em}
+.tag.v{background:var(--sage)}
+.daynight{position:relative;aspect-ratio:9/16;width:min(100%,58vh);margin:0 auto;overflow:hidden}
+.daynight img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 2.2s ease}
+.daynight .n{opacity:0}
+.daynight.night .n{opacity:1}
+.dnctl{display:flex;gap:10px;justify-content:center;margin-top:14px}
+.dnctl button[aria-pressed=true]{background:rgba(217,179,106,.2);border-color:var(--gold)}
+.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:2.4em}
+.strip img{aspect-ratio:9/16;object-fit:cover;width:100%}
+.loops{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:1.4em}
+.loops figure{margin:0;position:relative;overflow:hidden;background:#000}
+.loops video{width:100%;aspect-ratio:1280/536;object-fit:cover}
+.loops figcaption{position:absolute;left:10px;bottom:6px;font-style:italic;text-shadow:0 0 10px #000}
+.film video{width:100%;aspect-ratio:16/9;background:#000;margin-top:1.4em}
+blockquote{margin:1.4em 0;padding-left:1.1em;border-left:1px solid var(--gold);font-style:italic;font-size:1.22em;line-height:1.42}
+table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.9em}
+th,td{text-align:left;vertical-align:top;padding:.65em .9em .65em 0;border-bottom:1px solid var(--line)}
+th{font-weight:500;color:var(--sage);font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+.steps{list-style:none;counter-reset:s;padding:0;margin:1.2em 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 40px}
+.steps li{position:relative;padding-left:2.4em}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:-.1em;font-size:1.6em;color:var(--gold);font-style:italic;line-height:1}
 .steps b{font-weight:500;color:var(--gold)}
-.shots{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;margin-top:4em}
-.shots img{width:100%;border:1px solid var(--line)}
-table{width:100%;border-collapse:collapse;margin-top:2em;font-size:.92em}
-th,td{text-align:left;vertical-align:top;padding:.75em .9em .75em 0;border-bottom:1px solid var(--line)}
-th{font-weight:500;color:var(--sage);font-size:14px;letter-spacing:.18em;text-transform:uppercase}
-.twocol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px}
-
-/* research */
-.theory{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:3em}
-.card{border:1px solid var(--line);padding:1.5em 1.6em 1.2em;background:linear-gradient(180deg,rgba(20,33,26,.55),rgba(5,8,6,.35));backdrop-filter:blur(3px)}
-.card .who{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--sage)}
-.card h3{margin-top:.5em}
-.card .q{font-style:italic;color:var(--gold)}
-.card.wide{grid-column:1/-1}
-.reading{display:flex;gap:12px;overflow-x:auto;padding:6px 0 14px;margin-top:3.5em;scrollbar-width:thin}
-.reading img{height:220px;width:auto;flex:0 0 auto;filter:grayscale(.5) brightness(.75) sepia(.25);transition:filter .8s}
-.reading img:hover{filter:none}
-blockquote{margin:2.4em 0;padding-left:1.2em;border-left:1px solid var(--gold);font-style:italic;font-size:1.25em;line-height:1.4}
-
-.questions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:2.6em 0}
-.questions div{font-size:clamp(26px,2.6vw,40px);font-style:italic;line-height:1.2;border-top:1px solid var(--gold);padding-top:.6em}
-
-.refs{font-size:.8em;color:var(--soft);columns:2;column-gap:48px}
-.refs p{break-inside:avoid;margin-bottom:.8em;padding-left:1.4em;text-indent:-1.4em}
-footer{padding:12vh 0 16vh;text-align:center;color:var(--dim);font-size:.85em}
-footer .logo{width:min(380px,70vw);margin:0 auto 1.6em}
-
-@media (max-width:860px){
-  section{padding:12vh 0}
-  #hero,.sticky{grid-template-columns:1fr}
-  #hero{padding-top:8vh}
-  .hero-video{width:min(100%,60vh)}
-  #daynight{height:auto}
-  .sticky{position:relative;height:auto;padding:10vh 0}
-  .dn-frame{height:auto;width:100%}
-  #dnNight{opacity:1;animation:none}
-  .dn-frame.both #dnDay{position:relative}
-  .acts{grid-template-columns:repeat(2,minmax(0,1fr))}
+.flow svg{width:100%;height:auto;margin:1.6em 0 .4em}
+.flow text{font-family:CG,serif;fill:var(--pearl)}
+.qs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:1.8em 0}
+.qs div{font-size:clamp(26px,2.5vw,38px);font-style:italic;line-height:1.2;border-top:1px solid var(--gold);padding-top:.5em}
+.card{border:1px solid var(--line);padding:1.3em 1.4em .5em;background:linear-gradient(180deg,rgba(20,33,26,.6),rgba(5,8,6,.4));margin-bottom:18px}
+.learn{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:2em}
+.refs{font-size:.8em;color:var(--soft);columns:2;column-gap:44px}
+.refs p{break-inside:avoid;padding-left:1.4em;text-indent:-1.4em;margin-bottom:.7em}
+footer{padding:10vh 16px 14vh;text-align:center;color:var(--dim);font-size:.85em}
+footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
+@media (max-width:900px){
+  .ch{padding:96px 0 70px}
+  .grid,.qs,.steps,.learn{grid-template-columns:1fr}
+  .cols,.refs{columns:1}
+  .strip,.vids{grid-template-columns:repeat(2,minmax(0,1fr))}
   .loops{grid-template-columns:1fr}
-  .loop.l1,.loop.l2,.loop.l3,.loop.l4,.loop.l5{grid-column:auto}
-  .steps,.twocol,.theory,.questions,.shots{grid-template-columns:1fr}
-  .refs{columns:1}
-  .flow{overflow-x:auto}
-  .flow svg{min-width:760px}
+  #menu{display:none;position:fixed;top:58px;left:12px;right:12px;flex-direction:column;background:rgba(5,8,6,.97);border:1px solid var(--line);padding:10px;border-radius:14px;max-height:75vh;overflow-y:auto}
+  #menu.open{display:flex}
+  #menu a{font-size:19px;padding:.55em .8em}
+  #menuBtn{display:inline-flex}
+  #keys{display:none}
+  .flow{overflow-x:auto}.flow svg{min-width:760px}
+  table{table-layout:fixed;overflow-wrap:anywhere;font-size:.82em}
 }
-@media (prefers-reduced-motion:reduce){.reveal{transition:none;opacity:1;transform:none;filter:none}}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;filter:none;transition:none}}
 </style>
 </head>
 <body>
 <canvas id="roots" aria-hidden="true"></canvas>
+<div id="prog"></div>
 
 <div id="gate" role="dialog" aria-label="Enter HAGEN">
   <div class="logo" data-logo></div>
-  <div class="gate-sub">A night garden that listens</div>
-  <div class="gate-place">Projection proposal · Johanneskirken · Muséhagen · Bergen</div>
-  <div class="gate-buttons">
+  <div class="gsub">A night garden that listens</div>
+  <div class="gplace">Proposal · Johanneskirken and Muséhagen · Bergen</div>
+  <div class="gbtn">
     <button id="enterSound">Enter with sound</button>
     <button id="enterQuiet" class="quiet">Enter in silence</button>
   </div>
-  <div class="gate-hint">Headphones and a dark room are best. The roots on this page grow with the music.</div>
+  <div class="ghint">The proposal is told in ten short chapters. Use the Next button at the bottom of each chapter, the arrow keys, or the chapter menu at the top.</div>
 </div>
+
+<nav id="bar" aria-label="Chapters">
+  <a class="mark" href="#c1">HAGEN</a>
+  <button id="menuBtn" class="quiet" aria-expanded="false" aria-controls="menu">Chapters</button>
+  <div id="menu"></div>
+</nav>
 <button id="sound" hidden>Sound off</button>
+<div id="keys">Next button, arrow keys or the menu at the top</div>
 
 <main>
-  <section id="hero" class="wrap">
-    <div class="hero-text">
-      <div class="kicker reveal">Ingrid Ormevik · Proposal · November 2026</div>
-      <h1 class="reveal">There is a garden that does not forget.</h1>
-      <p class="lead reveal">I want to take HAGEN, the digital night garden I have built this autumn, out of the screen. First onto the white covering of Johanneskirken while the church is being restored, and then down into the soil and trees of Muséhagen.</p>
-      <p class="muted reveal">The roots grow up the cloth. Crowns of light grow out of the shadows of the real trees. When people clap, hum or speak, the light answers. When they stand still, lines of poetry come up from the ground.</p>
+<section class="ch" id="c1" data-title="Summary">
+  <div class="in grid mid">
+    <div>
+      <div class="kick reveal">Ingrid Ormevik · Proposal · November 2026</div>
+      <h2 class="reveal it">HAGEN, a night garden that listens</h2>
+      <p class="lead reveal" style="margin-top:.8em">I am asking for support to test HAGEN as a projection on Johanneskirken this winter, and to develop it into a listening garden in Muséhagen in autumn 2027.</p>
+      <p class="reveal">HAGEN is a digital night garden I have been building this autumn. It has glowing roots, mushrooms and plants, and it reacts when people make sound, move or stand still. The garden is also a text: fifteen short poems in Norwegian and English, seven acts, and voices from folklore that speak from the earth and the water. You do not read them on a page. They appear in the garden when you come close, when the place goes quiet or when someone hums.</p>
+      <p class="reveal soft">The browser version works, and so does a tool I made for mapping it onto real surfaces. I have tried it with a projector twice, once on a white sheet indoors and once by holding a borrowed projector out of my window and aiming it at the building outside. I have not yet set up a projector outdoors on a fixed mount, and I do not know how a microphone will cope with wind and buses. For that I need permission from both sites, help from someone who knows outdoor projection, and money for equipment.</p>
     </div>
-    <div class="hero-video reveal">
-      <video src="media/church_mockup.mp4" poster="media/church_mockup_poster.jpg" muted loop playsinline autoplay preload="metadata"></video>
+    <div class="pair reveal">
+      <figure><div class="tall glow"><video src="media/church_mockup.mp4" poster="media/church_mockup_poster.jpg" muted loop playsinline autoplay preload="metadata"></video></div><figcaption class="cap"><span class="tag v">Visualisation</span><br>The plan: Johanneskirken</figcaption></figure>
+      <figure><div class="tall glow"><video src="media/bldg_roots.mp4" poster="media/bldg_roots.jpg" muted loop playsinline autoplay preload="metadata"></video></div><figcaption class="cap"><span class="tag">Real test</span><br>What I did: my student building, 31 October</figcaption></figure>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="daynight">
-    <div class="sticky">
-      <div class="dn-frame">
-        <img id="dnDay" src="media/church_day1.jpg" alt="Johanneskirken in daylight, wrapped in white covering panels, with trees in front">
-        <img id="dnNight" src="media/church_night_2.jpg" alt="Visualisation of golden roots of light on the church covering at night">
-        <div class="dn-label" id="dnLabel">Today</div>
+<section class="ch" id="c2" data-title="What I have tried">
+  <div class="in">
+    <div class="kick reveal">Tests so far</div>
+    <h2 class="reveal">I have already put HAGEN on a building</h2>
+    <div class="grid" style="margin-top:1.4em">
+      <div>
+        <p class="lead reveal">I projected HAGEN from my apartment window onto the dark green student building outside, with a projector from the Center for Digital Narrative.</p>
+        <p class="reveal">The angle did not suit the projector, so I held it out of the window and steered the image by hand while filming and controlling the garden with my voice. First I mapped the façade in my tool, with the windows masked out, and then let the roots grow across the wall. I worked in short slots, because when my neighbours came home their lights washed out the image.</p>
+        <p class="reveal">What this showed me: the roots and the mushrooms read on a dark wall from a distance, the window masks matter, and the church test needs a fixed mount, more than one person on site and a plan for the light around the surface.</p>
       </div>
-      <div class="dn-text">
-        <div class="kicker">The site</div>
-        <h2>A church wrapped in cloth</h2>
-        <p class="lead" style="margin-top:.8em">Johanneskirken is covered in white panels during the restoration (2024 to 2029). For a short time the church has become a screen.</p>
-        <p class="muted">The trees in front already throw their shadows on the cloth. I want the light to start from those shadows, so the real trees and the drawn roots belong to the same garden. The covering will come down when the tower scaffolding is removed in 2027, so the test has to happen this winter.</p>
-        <p class="note">Keep scrolling to turn the night on. The night image is a visualisation: a daylight photo of the church turned to night with light from my mapping tool laid on top. It is not a photo of a real projection.</p>
+      <div class="reveal">
+        <div class="pair" style="width:100%">
+          <figure><div class="tall"><img src="media/bldg_day.jpg" alt="The green student building in daylight" loading="lazy"></div><figcaption class="cap">The building in daylight</figcaption></figure>
+          <figure><div class="tall"><img src="media/bldg_tool.jpg" alt="The mapping tool with a grid fitted to the building and roots" loading="lazy"></div><figcaption class="cap">Fitting the grid to the façade</figcaption></figure>
+        </div>
       </div>
     </div>
-  </section>
+    <div class="vids">
+      <figure class="reveal"><div class="tall"><video data-src="media/bldg_mapped.mp4" poster="media/bldg_mapped.jpg" muted loop playsinline preload="none"></video></div><figcaption class="cap">30 October. First mapping on the wall, with the window outlines.</figcaption></figure>
+      <figure class="reveal"><div class="tall"><video data-src="media/bldg_mushroom.mp4" poster="media/bldg_mushroom.jpg" muted loop playsinline preload="none"></video></div><figcaption class="cap">31 October. A mushroom floating past the lit windows.</figcaption></figure>
+      <figure class="reveal"><div class="tall"><video data-src="media/bldg_roots.mp4" poster="media/bldg_roots.jpg" muted loop playsinline preload="none"></video></div><figcaption class="cap">31 October. Roots spreading over the whole façade.</figcaption></figure>
+      <figure class="reveal"><div class="tall"><video data-src="media/sheet_title.mp4" poster="media/sheet_title.jpg" muted loop playsinline preload="none"></video></div><figcaption class="cap">Indoors on a white sheet, the HAGEN title.</figcaption></figure>
+    </div>
+    <p class="cap reveal">Phone videos from the tests. The building clips have their exposure lifted a little so the lines can be seen on a screen.</p>
+    <div class="grid" style="margin-top:2.6em">
+      <div>
+        <h3 class="reveal" style="margin-top:0">Indoors on a sheet</h3>
+        <p class="reveal">Before the building, I projected the running garden onto a white sheet with folds and seams, a small version of the problem the church covering will give me. The roots, mushrooms and poem lines held up on fabric. The browser's control bar was visible in the projection, so the projection needs its own mode where the garden is the only interface. Light from a TV and lamps in the room also competed with the image.</p>
+      </div>
+      <div class="pair reveal" style="width:100%">
+        <figure><div class="tall"><video data-src="media/sheet_wide.mp4" poster="media/sheet_wide.jpg" muted loop playsinline preload="none"></video></div><figcaption class="cap">The garden on the sheet</figcaption></figure>
+        <figure><div class="tall"><video data-src="media/sheet_tv.mp4" poster="media/sheet_tv.jpg" muted loop playsinline preload="none"></video></div><figcaption class="cap">The TV competing with the image</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <section id="look" class="wrap">
-    <div class="narrow">
-      <div class="kicker reveal">How it will look</div>
-      <h2 class="reveal">An evening in the light of the roots</h2>
-      <p class="lead reveal" style="margin-top:.8em">It should feel like walking past a garden at night where the roots have started to glow. Dark and slow. The light comes from below and grows, so it never turns into a club or a light show.</p>
-      <p class="reveal">Most of the image stays black, so the Bergen evening is part of the work. The roots are thin lines in warm gold and pale green that branch and pulse like signals through mycelium. Each panel of the covering breathes on its own, lit from the middle and outwards on every beat. The words are set small and in italics. They come out of a blur, stay for a moment and fade.</p>
+<section class="ch" id="c3" data-title="Theme">
+  <div class="in grid">
+    <div>
+      <div class="kick reveal">1 · Theme</div>
+      <h2 class="reveal">There is a garden that does not forget</h2>
+      <p class="lead reveal" style="margin-top:.8em">HAGEN is about belonging when you do not have one fixed place. I use roots as the main image because roots hold on to the ground, and they also spread, travel and meet other roots under the soil without turning into them.</p>
+      <p class="reveal">The poems are spoken from inside the soil. Most of them are about carrying more than one language, place or name. This is the first one:</p>
+      <blockquote class="reveal">Beneath the bark we carried different languages. The soil did not ask us to translate. A fine thread found the space between and left both names intact.</blockquote>
+      <p class="reveal">Other poems use the same image for moving to a new country (<span class="it">Transplants</span>), for love and bodies that do not fit the usual family map (<span class="it">Queer roots</span> and <span class="it">Nonbinary plants</span>: "The map had two boxes. / I grew beyond the edge of both"), and for what is dug out of the ground and taken away (<span class="it">Extracted</span>).</p>
     </div>
-    <div class="acts">
-      <div class="act reveal"><figure><img src="media/church_night_1.jpg" alt="First roots on the lower covering" loading="lazy"><figcaption><div class="n">I · CALL</div>The first thin roots appear at the foot of the cloth. Almost nothing, so people notice it slowly.</figcaption></figure></div>
-      <div class="act reveal"><figure><img src="media/church_night_2.jpg" alt="Roots climbing the panels" loading="lazy"><figcaption><div class="n">II · WAKING</div>The roots climb the seams. Where a tree shadow meets the cloth, a crown of light grows upward.</figcaption></figure></div>
-      <div class="act reveal"><figure><img src="media/church_night_3.jpg" alt="Light spreading across the covering" loading="lazy"><figcaption><div class="n">III · RECOGNITION</div>A clap or a voice sends a pulse through the network. Silence lets a line of a poem come up.</figcaption></figure></div>
-      <div class="act reveal"><figure><img src="media/church_night_4.jpg" alt="The whole covering alive with roots" loading="lazy"><figcaption><div class="n">IV · COMMUNITY</div>The whole covering is a shared root system. The roots meet without turning into each other.</figcaption></figure></div>
+    <div>
+      <div class="card reveal">
+        <h3 style="margin-top:0">Seven acts</h3>
+        <p>The garden moves through seven acts, from metals lying in separate veins underground to something shared that bears fruit. Act six is the one I care most about:</p>
+        <blockquote style="font-size:1.1em">Two voices that don't melt into one still become an alloy.</blockquote>
+        <p>In an alloy two metals stay two metals, and together they get stronger. I think that is a better picture of living together than the idea that everyone should blend into one.</p>
+      </div>
+      <div class="card reveal">
+        <h3 style="margin-top:0">Voices from folklore</h3>
+        <p>Between the acts, figures from folklore speak: the Norwegian huldra, Mélusine from French legend, the Ukrainian mavka, the princess of Gunung Ledang in Malaysia, and Aab-e-Jinn, a water figure carried in Urdu. I keep them apart instead of merging them into one universal figure. The mavka says <span class="it">"I arrived with my roots already full of somewhere else."</span></p>
+      </div>
     </div>
-    <p class="cap">Stills from the visualisation. Night versions of a daylight photo, not photos of a projection.</p>
-  </section>
+  </div>
+</section>
 
-  <section id="garden" class="wrap">
-    <div class="narrow">
-      <div class="kicker reveal">Where the light comes from</div>
-      <h2 class="reveal">The garden itself</h2>
-      <p class="lead reveal" style="margin-top:.8em">HAGEN is a real-time garden that runs in a web browser. It has roots, mushrooms, a white sphere of threads, a crystal flower, fifteen poems in Norwegian and English, seven acts and voices from folklore that speak from the earth and the water.</p>
-      <p class="reveal">It reacts to presence, sound and stillness instead of clicks. You can talk to it with about fifty spoken commands. Nothing is recorded or stored. The clips below are the garden itself, filmed today while it was listening to the same sombr track you can hear on this page.</p>
+<section class="ch" id="c4" data-title="Who is listening">
+  <div class="in grid">
+    <div>
+      <div class="kick reveal">Who is listening?</div>
+      <h2 class="reveal">The garden listens, and that listening is code I wrote</h2>
+      <p class="lead reveal" style="margin-top:.8em">HAGEN reacts to presence, sound and stillness. If you stop or hum, the light answers. Here I have to take an objection seriously.</p>
+      <p class="reveal">As Joseph Tabbi presents the debate, Patricia MacCormack calls listening to the nonhuman other a human fantasy and argues for withdrawal and for letting others be, while Donna Haraway asks for a capacity to imagine and care for other worlds (Tabbi 2024, 64–65). What I can do is make withdrawal count. When visitors step back or go quiet, the garden keeps what has grown, and some lines only appear when people give space.</p>
+      <div class="kick reveal" style="margin-top:2.4em">Why these two places</div>
+      <p class="reveal">Johanneskirken and Muséhagen lie a few minutes apart on Nygårdshøyden. The church is a place for memory and for people gathering. Muséhagen was founded at the end of the 1890s and is full of plants brought to Bergen from other parts of the world, which is close to what the poems are about. I want the light to start on the church and continue down into the soil of the garden.</p>
+      <p class="reveal">HAGEN is a locative work. In Muséhagen I would tune it to the actual species, paths and trees. Later the same garden could be tuned to other gardens, because what it is about travels: connection, and how much richer a place gets when many cultures grow side by side.</p>
     </div>
-    <div class="loops">
-      <div class="loop l1 reveal"><video data-src="media/loop_walk.mp4" poster="media/loop_walk.jpg" muted loop playsinline preload="none"></video><span>walk</span></div>
-      <div class="loop l2 reveal"><video data-src="media/loop_grow.mp4" poster="media/loop_grow.jpg" muted loop playsinline preload="none"></video><span>grow</span></div>
-      <div class="loop l3 reveal"><video data-src="media/loop_roots.mp4" poster="media/loop_roots.jpg" muted loop playsinline preload="none"></video><span>down, into the roots</span></div>
-      <div class="loop l4 reveal"><video data-src="media/loop_algorithm.mp4" poster="media/loop_algorithm.jpg" muted loop playsinline preload="none"></video><span>algorithm</span></div>
-      <div class="loop l5 reveal"><video data-src="media/loop_fly.mp4" poster="media/loop_fly.jpg" muted loop playsinline preload="none"></video><span>fly</span></div>
+    <div class="reveal">
+      <div class="daynight" id="dn">
+        <img src="media/church_day1.jpg" alt="Johanneskirken in daylight, wrapped in white covering panels">
+        <img class="n" src="media/church_night_1.jpg" alt="Visualisation of roots of light on the covering at night">
+      </div>
+      <div class="dnctl"><button data-dn="day" aria-pressed="true">Day</button><button data-dn="night" aria-pressed="false">Night</button></div>
+      <p class="cap" style="text-align:center">Johanneskirken in its restoration covering. Press Night for the visualisation.</p>
     </div>
-    <div class="film reveal">
-      <video src="media/garden_film.mp4" poster="media/garden_film_poster.jpg" controls playsinline preload="none"></video>
-      <p class="cap">One-minute film of HAGEN V26, made for this proposal in the style of the cinematic version of Alice Bucknell's <span class="it">Nightcrawlers</span>. Every shot was recorded while the garden listened to my own track <span class="it">Nordic Rainforest Pulse</span> in 8D, so the light reacts to the music you hear.</p>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <section id="how" class="wrap">
-    <div class="narrow">
-      <div class="kicker reveal">How it will be done</div>
-      <h2 class="reveal">One computer, one projector, one microphone</h2>
-      <p class="lead reveal" style="margin-top:.8em">The projection is drawn live, frame by frame. It is not a video on a loop. The software exists already. What I am missing is the outdoor equipment, the permission and the knowledge to set it up safely.</p>
+<section class="ch" id="c5" data-title="Aesthetic">
+  <div class="in">
+    <div class="grid">
+      <div>
+        <div class="kick reveal">2 · Aesthetic</div>
+        <h2 class="reveal">Dark and slow, the light grows from below</h2>
+        <p class="lead reveal" style="margin-top:.8em">I want HAGEN to feel like walking into a garden at night where the roots have started to glow. It should never feel like a club or a light show.</p>
+        <p class="reveal">Most of the image is black and deep green, so that the light has somewhere to grow. The roots are thin lines in warm gold and pale green that branch and pulse. Between them are see-through mushrooms, a white sphere made of fine threads and a crystal flower that opens. They should look alive without looking realistic, somewhere between a plant, a lamp and a drawing.</p>
+        <p class="reveal">The words are set in Cormorant Garamond, small and in italics. They come out of a blur, stay for a moment and fade. In the projection there are no buttons or menus. This choice comes from Kristine Jørgensen's <span class="it">Gameworld Interfaces</span> (2013), which looks at how the game world itself can show the player what is possible. In HAGEN the roots, the light and the sound should do that job.</p>
+      </div>
+      <div>
+        <p class="reveal">I keep the flaws in. The garden follows the local weather and season, so it rains, the wind moves things and plants wilt and grow unevenly. Jason's feedback was to avoid work that looks AI-made, and I think that happens easily when everything is too smooth.</p>
+        <p class="reveal">Alice Bucknell's essay <span class="it">All the World's Polygons</span> sharpened this for me. She shows how game engines sell nature as libraries of assets and links this to the old museum urge to collect all the world's life (Bucknell n.d.). Muséhagen is itself a collection of plants from around the world. That comparison is my own, and it is why HAGEN's plants are allowed to fail.</p>
+        <p class="reveal soft">When it is quiet the light moves slowly by itself. A voice or a clap sends a pulse through the roots, and music sets the tempo. I do not use generated music.</p>
+      </div>
     </div>
-    <div class="flow reveal" aria-label="Diagram: visitors make sound, an outdoor microphone measures levels, a PC runs HAGEN and the mapping tool, the projector draws light on the covering, and visitors see the light answer.">
+    <div class="strip">
+      <img class="reveal" src="media/church_night_1.jpg" alt="Visualisation: roots on the lower covering" loading="lazy">
+      <img class="reveal" src="media/church_night_2.jpg" alt="Visualisation: roots climbing the panels" loading="lazy">
+      <img class="reveal" src="media/church_night_3.jpg" alt="Visualisation: light spreading over the covering" loading="lazy">
+      <img class="reveal" src="media/church_night_4.jpg" alt="Visualisation: the whole covering lit" loading="lazy">
+    </div>
+    <p class="cap">Visualisations of the church at night: a daylight photo turned to night with light from my mapping tool, not photos of a projection.</p>
+    <h3 class="reveal">Visual references</h3>
+    <table class="reveal">
+      <tr><th>Work</th><th>What I take from it</th><th>Where HAGEN is different</th></tr>
+      <tr><td>Camille Utterback and Romy Achituv, <span class="it">Text Rain</span>, 1999</td><td>People catching the letters of a poem with their bodies</td><td>The words grow out of roots and come when you are still</td></tr>
+      <tr><td>Dominic Fike, <span class="it">Politics & Violence</span>, dir. Reed Bennett, projections by Double Take Projections, 2020</td><td>A line of text projected onto a mountainside at night</td><td>It was made for one camera. In HAGEN people stand in the place, and the words answer them</td></tr>
+      <tr><td>Mattia Cupelli, visual work on Instagram</td><td>Near-black images where small text and sound share one mood</td><td>I take the darkness and the small text, and keep away from the polished look</td></tr>
+      <tr><td><span class="it">Elvelangs</span>, walk along Akerselva, Oslo, 2018</td><td>An audience walking through the dark and meeting something at each stop</td><td>In Muséhagen the stops are the garden listening and writing</td></tr>
+      <tr><td>Alice Bucknell, <span class="it">Nightcrawlers</span>, in <span class="it">Persistent Worlds</span>, Kunsthalle Praha, 2025</td><td>A game about a bat and a flower at night, with slow camera moves and close-ups</td><td>The style of my film of HAGEN. HAGEN leaves the screen for a real garden</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="ch" id="c6" data-title="Map of the work">
+  <div class="in">
+    <div class="kick reveal">3 · Map of the work</div>
+    <h2 class="reveal">Two levels and two sites</h2>
+    <div class="grid" style="margin-top:1.4em">
+      <div>
+        <p class="lead reveal">On the surface you arrive among mushrooms, light columns, the white sphere and the crystal flower. A root beside a mushroom leads down to the root level, where the acts happen.</p>
+        <p class="reveal">The way back up is always visible, a lesson from my earlier piece <span class="it">What the Roots Keep</span>. An act moves on when the place meets its condition, such as stillness or a voice, and the garden can stay in one act for as long as people stay with it.</p>
+      </div>
+      <div>
+        <p class="reveal">At Johanneskirken there is one big surface, the covering, which hangs in vertical panels, plus the ground in front of the church.</p>
+        <p class="reveal">In Muséhagen visitors follow the paths and pass three kinds of stations: roots spreading over soil and grass, crowns of light growing on real trees, and a listening stop where lines appear if people are quiet for a while. The walk is inspired by <span class="it">Elvelangs</span> in Oslo, where people follow a river in the dark and meet something new at each stop.</p>
+      </div>
+    </div>
+    <div class="flow reveal" aria-label="How the work runs: visitors, microphone, HAGEN, mapping tool, projector, and back to the visitor">
       <svg viewBox="0 0 1120 230" role="img">
         <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#d9b36a"/></marker></defs>
-        <g fill="none" stroke="#d9b36a" stroke-width="1.2" marker-end="url(#ar)">
-          <path d="M178 92H232"/><path d="M402 92H456"/><path d="M626 92H680"/><path d="M850 92H904"/>
-          <path d="M990 140C990 210 90 210 90 140" stroke-dasharray="4 6"/>
-        </g>
-        <g fill="rgba(20,33,26,.8)" stroke="rgba(241,234,217,.3)">
-          <rect x="10" y="50" width="168" height="84" rx="42"/><rect x="234" y="50" width="168" height="84"/><rect x="458" y="50" width="168" height="84"/><rect x="682" y="50" width="168" height="84"/><rect x="906" y="50" width="168" height="84"/>
-        </g>
+        <g fill="none" stroke="#d9b36a" stroke-width="1.2" marker-end="url(#ar)"><path d="M178 92H232"/><path d="M402 92H456"/><path d="M626 92H680"/><path d="M850 92H904"/><path d="M990 140C990 210 90 210 90 140" stroke-dasharray="4 6"/></g>
+        <g fill="rgba(20,33,26,.85)" stroke="rgba(241,234,217,.3)"><rect x="10" y="50" width="168" height="84" rx="42"/><rect x="234" y="50" width="168" height="84"/><rect x="458" y="50" width="168" height="84"/><rect x="682" y="50" width="168" height="84"/><rect x="906" y="50" width="168" height="84"/></g>
         <g text-anchor="middle" font-size="21">
-          <text x="94" y="88">Visitors</text><text x="94" y="112" font-size="15" fill="#c9c2ae" font-style="italic">clap, hum, wait</text>
-          <text x="318" y="88">Microphone</text><text x="318" y="112" font-size="15" fill="#c9c2ae" font-style="italic">levels only, wind cover</text>
-          <text x="542" y="88">HAGEN</text><text x="542" y="112" font-size="15" fill="#c9c2ae" font-style="italic">PC, Chrome, WebGL</text>
-          <text x="766" y="88">Mapping tool</text><text x="766" y="112" font-size="15" fill="#c9c2ae" font-style="italic">corners, seams, masks</text>
-          <text x="990" y="88">Projector</text><text x="990" y="112" font-size="15" fill="#c9c2ae" font-style="italic">onto the covering</text>
-          <text x="540" y="222" font-size="15" fill="#a9c3ad" font-style="italic">the visitor sees the light answer and acts again</text>
+          <text x="94" y="88">Visitors</text><text x="94" y="112" font-size="15" fill="#cdc6b2" font-style="italic">stand still, hum, speak</text>
+          <text x="318" y="88">Microphone</text><text x="318" y="112" font-size="15" fill="#cdc6b2" font-style="italic">levels only, nothing saved</text>
+          <text x="542" y="88">HAGEN</text><text x="542" y="112" font-size="15" fill="#cdc6b2" font-style="italic">one PC, browser, WebGL</text>
+          <text x="766" y="88">Mapping tool</text><text x="766" y="112" font-size="15" fill="#cdc6b2" font-style="italic">corners, grid, masks</text>
+          <text x="990" y="88">Projector</text><text x="990" y="112" font-size="15" fill="#cdc6b2" font-style="italic">covering, bark, ground</text>
+          <text x="540" y="222" font-size="15" fill="#a9c3ad" font-style="italic">the light and the words answer, and people respond again</text>
         </g>
       </svg>
     </div>
-    <div class="narrow">
-      <h3 class="reveal">On site, after dark</h3>
-      <p class="reveal muted">I have written a step-by-step guide for the evening. The first setup takes one to two hours. The control desk is projected onto the covering itself, so I fit the image while looking at the church.</p>
+    <h3 class="reveal">The garden, filmed while it listens</h3>
+    <div class="loops">
+      <figure class="reveal"><video data-src="media/loop_walk.mp4" poster="media/loop_walk.jpg" muted loop playsinline preload="none"></video><figcaption>the surface</figcaption></figure>
+      <figure class="reveal"><video data-src="media/loop_roots.mp4" poster="media/loop_roots.jpg" muted loop playsinline preload="none"></video><figcaption>the root level</figcaption></figure>
+      <figure class="reveal"><video data-src="media/loop_algorithm.mp4" poster="media/loop_algorithm.jpg" muted loop playsinline preload="none"></video><figcaption>a realm opening</figcaption></figure>
     </div>
+  </div>
+</section>
+
+<section class="ch" id="c7" data-title="How it is done">
+  <div class="in">
+    <div class="kick reveal">4 · Technical description</div>
+    <h2 class="reveal">One computer, one projector, one microphone</h2>
+    <div class="grid" style="margin-top:1.4em">
+      <div>
+        <p class="reveal">HAGEN runs in an ordinary web browser on one PC with a graphics card. It is a real-time 3D world made with WebGL (three.js), HTML and JavaScript, drawn live frame by frame, so it is never a video on a loop. It listens through a microphone and measures loudness, bass, treble and beats. A speech recogniser runs locally without internet and understands about 50 spoken commands, such as "walk" and "grow". An optional camera layer notices that someone is standing there by comparing changes in the image. It does not recognise faces or who people are. Sound and video are never saved. The only thing the garden keeps between visits is how far it has grown.</p>
+        <p class="reveal">The browser version and the projection are two different situations. In the browser, one person chooses how to move: by voice, with the mouse or with the arrow keys. In the projection nobody holds anything, and several people influence the garden at once. How it should weigh one loud voice against a quiet group is an open design question.</p>
+      </div>
+      <div>
+        <p class="reveal">For the projection I made a mapping tool that draws HAGEN onto real surfaces. Each surface gets four corners and a grid that can be bent to follow folds and seams, and masks keep the light off lamp posts, signs and windows. On my own computer it has run for 10 minutes in full HD and 3 minutes in 4K without errors.</p>
+        <img class="reveal" src="media/mapper.jpg" alt="The church mapping tool with a bendable grid" loading="lazy" style="border:1px solid var(--line)">
+        <p class="cap">The mapping tool set up for the church covering.</p>
+      </div>
+    </div>
+    <h3 class="reveal">On site at Johanneskirken, after dark</h3>
     <ol class="steps">
-      <li class="reveal"><b>Place the projector</b> square to the covering, steady and covered from rain. Keystone off. Aim with zoom and lens shift, focus on the cloth, brightest mode.</li>
-      <li class="reveal"><b>Start HAGEN</b> on the PC, extend the screen to the projector at its native resolution and load the Johanneskirken starting profile.</li>
-      <li class="reveal"><b>Fit the corners.</b> A white grid is projected. I drag its four corners to the edges of the covering, then fine-tune with the arrow keys.</li>
-      <li class="reveal"><b>Lay the grid on the seams.</b> I count the cloth panels and bend the grid until every vertical line sits on a seam, because fabric never hangs straight.</li>
-      <li class="reveal"><b>Draw masks</b> around lamp posts, signs, the fence, windows and tree crowns, so the light stays on the cloth and out of people's eyes.</li>
-      <li class="reveal"><b>Place the trees.</b> I click where each trunk or its shadow meets the covering, and a crown of light grows upward from there.</li>
-      <li class="reveal"><b>Turn on listening.</b> An outdoor microphone with a wind cover. I tune it so the garden answers people and not buses.</li>
-      <li class="reveal"><b>Save and perform.</b> The whole setup is saved to a file and a USB stick. One key hides the desk and only the light is left. Space fades to black at any time.</li>
+      <li class="reveal"><b>Mount the projector</b> square to the covering, fixed and covered from rain. Keystone off, aim with zoom and lens shift, focus on the cloth.</li>
+      <li class="reveal"><b>Start HAGEN</b> on the PC and send the image to the projector at its native resolution, in a projection mode with no browser bar.</li>
+      <li class="reveal"><b>Fit the corners.</b> A white grid is projected and I drag its corners to the edges of the covering.</li>
+      <li class="reveal"><b>Lay the grid on the seams.</b> I bend it until every line follows a seam of the cloth, since fabric never hangs straight.</li>
+      <li class="reveal"><b>Draw masks</b> around lamp posts, signs, the fence and windows, as I did on the student building, and keep bright light out of people's eyes.</li>
+      <li class="reveal"><b>Grow from the trees.</b> Where a trunk or its shadow meets the covering, a crown of light grows upward.</li>
+      <li class="reveal"><b>Tune the listening.</b> Outdoor microphone with a wind cover, set so the garden answers people and ignores buses.</li>
+      <li class="reveal"><b>Save and run.</b> The setup is saved to a file. One key hides the controls, and the light can fade to black at any moment.</li>
     </ol>
-    <div class="shots">
-      <figure class="reveal" style="margin:0"><img src="media/studio.jpg" alt="The HAGEN mapping studio with a wall model, corner handles and controls" loading="lazy"><figcaption class="cap">The mapping studio (30 October). Here it is fitted to a test façade with 47 window masks, not yet to the church.</figcaption></figure>
-      <figure class="reveal" style="margin:0"><img src="media/mapper.jpg" alt="The first church mapper with a bendable grid and root light" loading="lazy"><figcaption class="cap">The church mapper. Each surface has four corners and a grid that bends with the folds of the cloth.</figcaption></figure>
-    </div>
-    <div class="twocol" style="margin-top:4em">
+    <div class="grid" style="margin-top:2.4em">
       <div class="reveal">
-        <h3>What the church needs</h3>
         <table>
-          <tr><th>Part</th><th>Plan</th></tr>
-          <tr><td>Projector</td><td>One bright projector, at least 1920×1080, ideally 4K. Chosen only after a dark test, because distance, surface size and city light decide it.</td></tr>
-          <tr><td>Computer</td><td>PC with a graphics card running Chrome. Power saving and updates off.</td></tr>
-          <tr><td>Sound</td><td>Outdoor microphone with a wind cover.</td></tr>
-          <tr><td>Site</td><td>Power, a safe dry place for the projector, protection from theft.</td></tr>
-          <tr><td>Permission</td><td>Bergen kirkelige fellesråd, who run the restoration.</td></tr>
+          <tr><th></th><th>Johanneskirken</th><th>Muséhagen</th></tr>
+          <tr><td>Projector</td><td>One bright projector for the covering, ideally 4K</td><td>Two or more for ground and trees, with blended edges</td></tr>
+          <tr><td>Sound</td><td>Outdoor microphone with a wind cover</td><td>Microphones by the paths, maybe small speakers</td></tr>
+          <tr><td>Site</td><td>Power, a fixed and safe mount, cover from rain</td><td>Power along the paths, weatherproof boxes, no damage to roots or lawn</td></tr>
+          <tr><td>Permission</td><td>Bergen kirkelige fellesråd</td><td>Universitetsmuseet i Bergen</td></tr>
         </table>
       </div>
       <div class="reveal">
-        <h3>Honest status</h3>
-        <p>The mapping tool has run for 10 minutes in full HD and 3 minutes in 4K without errors, at 93 to 144 frames per second. The sound reaction has been tested with a simulated microphone and with music.</p>
-        <p>I have not yet tested a real projector on the church, a microphone outdoors in wind and traffic, or a whole evening of running. That is what the test evening is for. I will learn the outdoor parts (lumens, throw distance, lenses, power, rain) together with a lighting or projection technician.</p>
+        <h3 style="margin-top:0">What I need to learn</h3>
+        <p>Brightness in lumens, throw distance and lenses, and how to blend several projectors into one image. I also need to calibrate brightness and colour for each device, because the garden looks one way on a screen, another through a projector and another again on a wall outdoors. Then there is protecting equipment from rain, running power safely and keeping bright light out of people's eyes.</p>
+        <p>Sound outside is the biggest open question. I need to find out how a microphone behaves with wind, buses and crowds, and how sensitive the garden should be so it reacts to people and ignores traffic. It also has to run a whole evening and restart by itself. In Muséhagen I would work with the gardeners on what light, cables and visitors mean for the plants. I expect to learn most of this from a projection technician and from the test evening at the church.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="test" class="wrap">
-    <div class="narrow">
-      <div class="kicker reveal">The test evening</div>
-      <h2 class="reveal">What changes when people take part?</h2>
-      <p class="lead reveal" style="margin-top:.8em">The main question for the evening is how different ways of taking part change what visitors can do, what they understand that they have done, and how they read HAGEN.</p>
-      <p class="reveal">I will ask some visitors two short questions and write their answers by hand. Nothing will be recorded. I will also note who claps, who waits and who just walks past, and I will keep their words apart from my guesses about them.</p>
-    </div>
-    <div class="questions">
-      <div class="reveal">What did you expect would happen?</div>
-      <div class="reveal">What did you feel your action changed?</div>
-    </div>
-  </section>
-
-  <section id="research" class="wrap">
-    <div class="narrow">
-      <div class="kicker reveal">What the design stands on</div>
-      <h2 class="reveal">Research from this semester</h2>
-      <p class="lead reveal" style="margin-top:.8em">HAGEN is electronic literature. Its poems could not work outside a computer, because the code decides which lines appear, when and where, from what the visitor does. These are the texts that shaped the choices for the projection.</p>
-    </div>
-    <div class="theory">
-      <div class="card reveal">
-        <div class="who">Kristine Jørgensen · 2013</div>
-        <h3>The world is the interface</h3>
-        <p>In <span class="it">Gameworld Interfaces</span> the game world itself tells the player what the system is doing and what is possible. That is why the projection has no buttons, menus or instructions. The roots, the light and the sound have to do that job. Whether visitors actually read it that way is one of the things the test must show.</p>
-      </div>
-      <div class="card reveal">
-        <div class="who">Jesper Juul & Marleigh Norton · 2009</div>
-        <h3>Interface and play cannot be separated</h3>
-        <p>"Easy to Use and Incredibly Difficult" shows that operating an interface and playing are tangled up. Clapping at a church, speaking to it and simply waiting can trigger the same thing in the garden and still be different experiences. The test compares them.</p>
-      </div>
-      <div class="card reveal">
-        <div class="who">Torill Elvira Mortensen · 2018</div>
-        <h3>Fiction that is felt for real</h3>
-        <p>In "Real game worlds" what people feel in a fictional world is emotionally real, and play is part of their social lives. A gamer, a churchgoer and someone walking home from the pub bring different habits to the same roots. I want to ask them, not assume.</p>
-      </div>
-      <div class="card reveal">
-        <div class="who">Anders Frank · 2015 · and my own observation</div>
-        <h3>The hand that remembers the trigger</h3>
-        <p>At the After Virtual Reality symposium I held VR controllers in a memorial piece and felt my hands want to shoot, because they remembered Fortnite. Frank calls a related pattern <span class="it">gamer mode</span>: the game's goals start to matter more than what the activity is about. My observation is an anecdote and does not prove gamer mode. It still made me sure of one thing: the projection asks for an empty hand. No score, nothing to win, nothing to aim at.</p>
-      </div>
-      <div class="card reveal">
-        <div class="who">Scott Rettberg · Nick Montfort · ELO</div>
-        <h3>Combinatory poetry</h3>
-        <p>HAGEN's text never comes in the same order twice. Rettberg's <span class="it">Electronic Literature</span> (2019) calls this combinatory poetics: texts put together by rules and chance from words the author wrote. Montfort's <span class="it">Taroko Gorge</span> is a nature poem that works the same way. On the church the code chooses lines from where people stand, how loud it is and how long they wait.</p>
-      </div>
-      <div class="card reveal">
-        <div class="who">Jason Nelson & Scott Rettberg · 2023</div>
-        <h3>Text as code, sound and movement</h3>
-        <p>In <span class="it">Off Center</span> Nelson talks about text as code, image, sound, interface and movement, and about taking digital writing into exhibitions. Moving HAGEN from a browser onto a building is that step. Like Jenny Holzer's projections and <span class="it">Text Rain</span> by Utterback and Achituv, the words get a body and a place.</p>
-      </div>
-      <div class="card reveal">
-        <div class="who">Gunderson, Solberg, Kronman, de Seta & Walker Rettberg · 2024</div>
-        <h3>A machine vision situation</h3>
-        <p>When a camera or microphone changes what happens, agency is shared. Visitor moves, sensor registers a number, my rules interpret it, the garden changes, the visitor reads the change and acts again. The sensor registering sound does not mean it understands care or hesitation. Those meanings come from the visitor and from me.</p>
-      </div>
-      <div class="card reveal">
-        <div class="who">Alice Bucknell · 2024 to 2026</div>
-        <h3>Nature as an asset library</h3>
-        <p>In <span class="it">All the World's Polygons</span> Bucknell shows how game engines sell plants as libraries of perfect ready-made species. Muséhagen is also a collection of plants from all over the world, but those were grown by someone and can die. So HAGEN keeps its flaws: weather, wilting and uneven growth. Her <span class="it">Nightcrawlers</span> set the style of the garden film.</p>
-      </div>
-      <div class="card wide reveal">
-        <div class="who">Making HAGEN with AI · ISEA 2023 panel <span class="it">AIwriting</span></div>
-        <h3>Three things kept apart</h3>
-        <p>I have built HAGEN together with AI coding assistants, and I want to be open about it. How I made the work is my instructions, corrections and what I kept or threw away. How the running garden works is rules, sensors and timing that I decided, with no generative AI during a visit. What visitors do when they meet it is theirs. The <span class="it">AIwriting</span> panel with Scott Rettberg, Talan Memmott, Jill Walker Rettberg, Jason Nelson and Patrick Lichty discusses writing in exchange with generative systems as literary practice, which is close to how I have worked.</p>
-      </div>
-    </div>
-    <blockquote class="reveal narrow">Beneath the bark we carried different languages. The soil did not ask us to translate.</blockquote>
-    <div class="reading" aria-label="Photos of pages from my reading this semester">
-      <img src="reading/handbook.jpg" alt="Electronic literature handbook on a table" loading="lazy">
-      <img src="reading/IMG_3260.jpg" alt="Highlighted page" loading="lazy">
-      <img src="reading/IMG_3431.jpg" alt="Chapter opening" loading="lazy">
-      <img src="reading/IMG_3261.jpg" alt="Highlighted page" loading="lazy">
-      <img src="reading/IMG_3444.jpg" alt="Chapter opening" loading="lazy">
-      <img src="reading/IMG_3369.jpg" alt="Prototype diagram" loading="lazy">
-      <img src="reading/IMG_3262.jpg" alt="Highlighted page" loading="lazy">
-      <img src="reading/IMG_3455.jpg" alt="Chapter opening" loading="lazy">
-      <img src="reading/IMG_3472.jpg" alt="Illustrated page" loading="lazy">
-      <img src="reading/IMG_3267.jpg" alt="Highlighted page" loading="lazy">
-      <img src="reading/IMG_3466.jpg" alt="Chapter opening" loading="lazy">
-      <img src="reading/IMG_3366.jpg" alt="Page with prototype photos" loading="lazy">
-      <img src="reading/IMG_3476.jpg" alt="Illustrated page" loading="lazy">
-      <img src="reading/IMG_3374.jpg" alt="Page from a design book" loading="lazy">
-    </div>
-    <p class="cap">Pages from my reading this semester, photographed with my phone.</p>
-  </section>
-
-  <section id="next" class="wrap">
-    <div class="twocol">
+<section class="ch" id="c8" data-title="Electronic literature">
+  <div class="in">
+    <div class="kick reveal">5 and 6 · Similar projects and electronic literature</div>
+    <h2 class="reveal">A text you read with your body</h2>
+    <div class="grid" style="margin-top:1.4em">
       <div>
-        <div class="kicker reveal">After the church</div>
-        <h2 class="reveal">Down into Muséhagen</h2>
+        <p class="lead reveal">The Electronic Literature Organization describes e-lit as work "with an important literary aspect that takes advantage of the capabilities and contexts provided by the stand-alone or networked computer." HAGEN's poems could be printed, but their timing, placement and relation to what a visitor does would be lost.</p>
+        <p class="reveal">The text is the core of the work. HAGEN has 15 poems, six of them also in Urdu, seven acts, the earth voices, 181 short root passages and 93 lines that come up from the soil. Without the words it would be a light installation.</p>
+        <p class="reveal">The code chooses the order. It picks passages from where the visitor is, how long they stand still, how loud it is and which act the garden is in. Scott Rettberg calls writing assembled by rules and chance from authored material combinatory poetics (Rettberg 2019), and Montfort's <span class="it">Taroko Gorge</span> is a well-known nature poem of this kind.</p>
+        <p class="reveal">You read with your body. You walk towards a root to get its passage, you stand still and <span class="it">something is still on its way</span> appears, you hum and a flower opens. As in <span class="it">Text Rain</span>, what the reader does becomes part of how the text is put together.</p>
       </div>
       <div>
-        <p class="lead reveal">Muséhagen is a few minutes away on Nygårdshøyden. It has been a botanical garden since the 1890s and is full of plants brought to Bergen from other parts of the world, which is close to what the poems are about.</p>
-        <p class="reveal">There the light lands on bark, soil, grass and leaves, with dark gaps left between them. Visitors follow the paths past roots spreading over the ground, crowns of light on real trees and a listening stop where the lines appear if people are quiet. This needs the University Museum and its gardeners as partners, so the trees are never harmed.</p>
-        <table class="reveal">
-          <tr><th>When</th><th>What</th></tr>
-          <tr><td>Winter 2026</td><td>One test evening at Johanneskirken, small grant</td></tr>
-          <tr><td>Spring and summer 2027</td><td>Development from what the test showed</td></tr>
-          <tr><td>Autumn 2027</td><td>Opening in Muséhagen when the dark evenings return</td></tr>
+        <div class="card reveal">
+          <h3 style="margin-top:0">The body remembers the controller</h3>
+          <p>At the After Virtual Reality symposium at the Center for Digital Narrative in October 2026, colleagues told me about young visitors who reached for the triggers of a VR controller as if to shoot, even in a memorial work. When I held the controllers myself I felt the same pull from playing Fortnite. This is an anecdote and a self-observation, and it proves nothing general (Ormevik 2026b).</p>
+          <p>Anders Frank calls a related pattern gamer mode: players treat the rules as all that matters and stop taking seriously what the game portrays, and explicit rewards or victory conditions can push them there (Frank 2014). Jesper Juul and Marleigh Norton argue that operating an interface and playing cannot be cleanly separated (Juul and Norton 2009). This is why HAGEN has no score, nothing to win and nothing to aim at. Whether visitors still bring game habits into the garden is something the test evening has to show.</p>
+        </div>
+        <div class="card reveal">
+          <h3 style="margin-top:0">Text in a real place</h3>
+          <p>At Johanneskirken and in Muséhagen the text leaves the screen and is written on a church, on tree bark and on the ground. Poems about roots and about having more than one name mean something else on a church from 1894 and in a garden of plants from other countries. The garden also remembers what grew on earlier evenings, never who was there, so later visitors find a garden others have shaped.</p>
+        </div>
+        <div class="card reveal">
+          <h3 style="margin-top:0">Making HAGEN with AI</h3>
+          <p>I have built HAGEN together with AI coding assistants, and I want to be open about that. The running garden uses no generative AI. It follows rules, sensors and timing that I decided. The panel <span class="it">AIwriting</span> at ISEA 2023 gives me a frame for thinking about writing in exchange with generative systems as part of literary practice (Rettberg et al. 2023).</p>
+        </div>
+      </div>
+    </div>
+    <h3 class="reveal">Similar projects</h3>
+    <p class="reveal">I have found works that project text onto buildings, works that put light into real gardens, and poems written by code. I have not found one that combines these with a garden that listens.</p>
+    <table class="reveal">
+      <tr><th>Work</th><th>Where and when</th><th>How it relates to HAGEN</th></tr>
+      <tr><td>Jenny Holzer, light projections</td><td>Since 1996, on buildings and landscapes in many cities</td><td>Words on a building at night. Her texts scroll past, while HAGEN's lines wait until someone stops</td></tr>
+      <tr><td>Rafael Lozano-Hemmer, <span class="it">Voz Alta</span></td><td>Tlatelolco, Mexico City, 2008, a memorial for the 1968 massacre</td><td>Voices from the public turned into light. HAGEN uses the public's sound for growth and care</td></tr>
+      <tr><td>teamLab, <span class="it">A Forest Where Gods Live</span></td><td>Mifuneyama Rakuen, Japan, since 2017</td><td>Interactive light in a historic garden at night. HAGEN is smaller and built around written text</td></tr>
+      <tr><td>Marshmallow Laser Feast, <span class="it">In the Eyes of the Animal</span></td><td>Grizedale Forest, England, 2015</td><td>A forest through animal senses, seen in a headset. In HAGEN hands stay free and people stand together</td></tr>
+      <tr><td>Nick Montfort, <span class="it">Taroko Gorge</span>, remixed by Scott Rettberg as <span class="it">Tokyo Garage</span></td><td>Web, 2009</td><td>A nature poem that never ends. HAGEN's text also comes in a new order every time</td></tr>
+    </table>
+    <div class="film reveal">
+      <h3>Film of the newest version</h3>
+      <video src="media/garden_film.mp4" poster="media/garden_film_poster.jpg" controls playsinline preload="none"></video>
+      <p class="cap">A one minute film of HAGEN V26, inspired by the cinematic style of Bucknell's <span class="it">Nightcrawlers</span>: widescreen, slow camera moves and close-ups at night. Every shot was recorded while the garden listened to my own track <span class="it">Nordic Rainforest Pulse</span>, so the light reacts to the music you hear.</p>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="c9" data-title="Test evening and plan">
+  <div class="in">
+    <div class="kick reveal">Questions for the test evening</div>
+    <h2 class="reveal">How do different ways of taking part change how people read HAGEN?</h2>
+    <p class="lead reveal" style="margin-top:.8em;max-width:840px">I want the test evening to start answering what visitors can do, what they understand they have done, and how they read HAGEN. I will ask some visitors two questions and write their answers by hand. Nothing will be recorded.</p>
+    <div class="qs"><div class="reveal">What did you expect would happen?</div><div class="reveal">What did you feel your action changed?</div></div>
+    <div class="grid" style="margin-top:2em">
+      <div class="reveal">
+        <h3 style="margin-top:0">7 · Schedule</h3>
+        <p>The project would take about a year. The church test has to happen soon. According to the restoration plan, the scaffolding around the tower comes down in 2027, so the covering that turns the church into a screen will not be there much longer. Muséhagen can wait until the dark autumn evenings come back.</p>
+        <h3>8 · Funding and support</h3>
+        <p>I would apply for a small grant for the test at Johanneskirken first, and use what I learn in a bigger application for Muséhagen. Each application has to be written for that funder's purpose: for Kunst og teknologi I would stress the experiment with art and technology, for Bergen kommune that the work is public and rooted in Nygårdshøyden.</p>
+        <p>Besides money I need the sites and the university as partners. Universitetsmuseet i Bergen runs Muséhagen and could give access to the garden and power, and its gardeners know the trees. Bergen kirkelige fellesråd runs the restoration and would have to approve the projection. The Center for Digital Narrative at the University of Bergen has already made my first tests possible by lending me a projector, and could be an academic home for the work and help with documentation.</p>
+      </div>
+      <div class="reveal">
+        <table>
+          <tr><th>Source</th><th>Deadline</th><th>How it fits</th></tr>
+          <tr><td>Kulturrådet, Kunst og teknologi</td><td>No next deadline set yet</td><td>The best national fit for the whole project</td></tr>
+          <tr><td>Bergen kommune, professional art and culture</td><td>1 February and 1 September</td><td>The church test and planning for Muséhagen</td></tr>
+          <tr><td>Bergen kommune, event grants</td><td>Four weeks before the event</td><td>Opening evenings</td></tr>
+          <tr><td>Sparebankstiftelsen DNB</td><td>Not confirmed for 2027</td><td>Production in Muséhagen</td></tr>
+          <tr><td>Billedkunstnernes vederlagsfond</td><td>Not confirmed for 2027</td><td>Artist fee and equipment</td></tr>
         </table>
-        <p class="note" style="margin-top:1.4em">Possible support: Kulturrådet Kunst og teknologi, Bergen kommune (1 February and 1 September), Sparebankstiftelsen DNB and BKV. Partners: Bergen kirkelige fellesråd, Universitetsmuseet i Bergen and the Center for Digital Narrative at UiB.</p>
+        <table>
+          <tr><th>Budget post</th><th>Amount (NOK)</th></tr>
+          <tr><td>Projector rental, church test and Muséhagen</td><td>From quote</td></tr>
+          <tr><td>Outdoor microphones and wind covers</td><td>From quote</td></tr>
+          <tr><td>Projection technician</td><td>From quote</td></tr>
+          <tr><td>Mounts, cables, power and weather protection</td><td>From quote</td></tr>
+          <tr><td>Artist fee</td><td>From rates</td></tr>
+          <tr><td>Documentation, photo and video</td><td>From quote</td></tr>
+          <tr><td>Signs and visitor information</td><td>From quote</td></tr>
+        </table>
+        <p class="cap">Deadlines checked 1 November 2026.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="refs" class="wrap">
-    <div class="kicker">References</div>
+<section class="ch" id="c10" data-title="References and CV">
+  <div class="in">
+    <div class="kick">References</div>
     <div class="refs">
-      <p>Bergen kirkelige fellesråd. <span class="it">Rehabilitering av Johanneskirken 2024–29.</span> <a href="https://www.kyrkja.no/nn-NO/fellesrad/Bergen/rehabilitering%20av%20johanneskirken%202024-29/">kyrkja.no</a>.</p>
-      <p>Bucknell, Alice. 2024. "All the World's Polygons." Lecture, ARIA Worlds' End symposium, Museum of Modern Art Ljubljana, 18 August.</p>
-      <p>Bucknell, Alice. 2025–26. <span class="it">Persistent Worlds.</span> Exhibition, Kunsthalle Praha. Includes <span class="it">Nightcrawlers</span> (2025).</p>
-      <p>Electronic Literature Organization. Working definition of electronic literature.</p>
-      <p>Frank, Anders. 2015. <span class="it">Gamer Mode: Identifying and Managing Unwanted Behaviour in Educational Wargaming.</span> Doctoral thesis, KTH Royal Institute of Technology.</p>
-      <p>Gunderson, Marianne, Ragnhild Solberg, Linda Kronman, Gabriele de Seta and Jill Walker Rettberg. 2024. "Machine vision situations: Tracing distributed agency." <span class="it">Open Research Europe</span> 3. doi:10.12688/openreseurope.16112.2.</p>
-      <p>Holzer, Jenny. Light projections, since 1996.</p>
+      <p>Bennett, Reed, dir. 2020. <span class="it">Politics & Violence.</span> Music video for Dominic Fike. Projections by Double Take Projections. YouTube, July 9, 2020.</p>
+      <p>Bergen kirkelige fellesråd. n.d. "St. John's Church in Bergen: Rehabilitation." Accessed November 1, 2026.</p>
+      <p>Bucknell, Alice. n.d. "All the World's Polygons." <span class="it">ŠUM</span>, no. 23. <a href="https://www.sum.si/journal-articles/all-the-worlds-polygons">sum.si</a>.</p>
+      <p>Bucknell, Alice. 2025. <span class="it">Persistent Worlds.</span> Exhibition, Kunsthalle Praha, Prague, October 10, 2025, to January 19, 2026.</p>
+      <p>Cupelli, Mattia. n.d. Instagram profile @mattiacupelli_. Accessed November 1, 2026.</p>
+      <p>Electronic Literature Organization. n.d. "What Is Electronic Literature?" Accessed November 1, 2026. <a href="https://eliterature.org/what-is-e-lit/">eliterature.org</a>.</p>
+      <p>Frank, Anders. 2014. "Gamer Mode: Identifying and Managing Unwanted Behaviour in Military Educational Wargaming." PhD diss., KTH Royal Institute of Technology.</p>
+      <p>Holzer, Jenny. 1996. <span class="it">Projections.</span> Light projections, first shown in Florence.</p>
       <p>Jørgensen, Kristine. 2013. <span class="it">Gameworld Interfaces.</span> Cambridge, MA: MIT Press.</p>
-      <p>Juul, Jesper and Marleigh Norton. 2009. "Easy to Use and Incredibly Difficult: On the Mythical Border between Interface and Gameplay." <span class="it">Proceedings of the 4th International Conference on Foundations of Digital Games</span>, 107–112. ACM.</p>
-      <p>Lozano-Hemmer, Rafael. 2008. <span class="it">Voz Alta.</span> Mexico City.</p>
-      <p>Montfort, Nick. 2009. <span class="it">Taroko Gorge.</span> Electronic Literature Collection, volume 3.</p>
-      <p>Mortensen, Torill Elvira. 2018. "Real game worlds: The emotional reality of fictional worlds." <span class="it">MedieKultur</span> 34 (64): 71–86.</p>
+      <p>Juul, Jesper, and Marleigh Norton. 2009. "Easy to Use and Incredibly Difficult: On the Mythical Border between Interface and Gameplay." In <span class="it">Proceedings of the 4th International Conference on Foundations of Digital Games</span>, 107–12. New York: ACM.</p>
+      <p>Kulturdirektoratet. n.d. "Tips til prosjektbeskrivelsen." Accessed November 1, 2026.</p>
+      <p>Kulturrådet. n.d. "Kunst og teknologi." Accessed November 1, 2026.</p>
+      <p>Lozano-Hemmer, Rafael. 2008. <span class="it">Voz Alta.</span> Interactive installation, Tlatelolco, Mexico City.</p>
+      <p>Marshmallow Laser Feast. 2015. <span class="it">In the Eyes of the Animal.</span> Immersive installation, Grizedale Forest.</p>
+      <p>Mathallen Oslo. 2018. "Elvelangs 2018." Filmed by Mathias Normann. YouTube, October 29, 2018.</p>
+      <p>Montfort, Nick. 2009. <span class="it">Taroko Gorge.</span> Web-based generative poem. <a href="https://nickm.com/taroko_gorge/">nickm.com</a>.</p>
+      <p>Ormevik, Ingrid. 2026a. <span class="it">What the Roots Keep.</span> Interactive work, itch.io. <a href="https://ingridormevik.itch.io/what-the-roots-keep">itch.io</a>.</p>
+      <p>Ormevik, Ingrid. 2026b. "The Body Remembers the Controller." Unpublished research note, October 22, 2026, After Virtual Reality symposium, Center for Digital Narrative, University of Bergen.</p>
+      <p>Rettberg, Scott. 2009. <span class="it">Tokyo Garage.</span> Web-based generative poem, remix of Montfort's <span class="it">Taroko Gorge.</span></p>
       <p>Rettberg, Scott. 2019. <span class="it">Electronic Literature.</span> Cambridge: Polity.</p>
-      <p>Rettberg, Scott and Jason Nelson. 2023. "Off Center Episode 3: Artistic Research and Digital Writing, with Jason Nelson." <span class="it">Electronic Book Review</span>, 8 October. doi:10.7273/5df1-1f13.</p>
-      <p>Rettberg, Scott, Talan Memmott, Jill Walker Rettberg, Jason Nelson and Patrick Lichty. 2023. "AIwriting: Relations Between Image Generation and Digital Writing." Panel, ISEA 2023.</p>
-      <p>teamLab. 2017–. <span class="it">A Forest Where Gods Live.</span> Mifuneyama Rakuen, Takeo.</p>
-      <p>Universitetsmuseet i Bergen. Muséhagen.</p>
-      <p>Utterback, Camille and Romy Achituv. 1999. <span class="it">Text Rain.</span> Smithsonian American Art Museum.</p>
+      <p>Rettberg, Scott, Talan Memmott, Jill Walker Rettberg, Jason Nelson, and Patrick Lichty. 2023. "AIwriting: Relations Between Image Generation and Digital Writing." Panel presented at ISEA 2023, Paris. <a href="https://doi.org/10.48550/arXiv.2305.10834">doi:10.48550/arXiv.2305.10834</a>.</p>
+      <p>Tabbi, Joseph. 2024. <span class="it">The Cambridge Introduction to Literary Posthumanism.</span> Cambridge: Cambridge University Press.</p>
+      <p>teamLab. 2017. <span class="it">A Forest Where Gods Live.</span> Interactive installation, Mifuneyama Rakuen, Takeo.</p>
+      <p>Universitetsmuseet i Bergen. n.d. "Muséhagen." Accessed November 1, 2026.</p>
+      <p>Utterback, Camille, and Romy Achituv. 1999. <span class="it">Text Rain.</span> Interactive installation.</p>
     </div>
-  </section>
-
+    <div class="kick" style="margin-top:3em">Short CV</div>
+    <div class="cols" style="font-size:.9em">
+      <p>Ingrid Ormevik, Bergen. Artist and creative technologist working as Mount Media. <a href="../cv.html">Interactive CV</a>.</p>
+      <p>BA in Digital Culture, University of Bergen, in progress. Relevant courses: DIKULT103 Digital genres, DIKULT104 Computer technology, DIKULT105 Creating digital culture, DIKULT216 Digital games, DIKULT210 Practice at the Center for Digital Narrative, and DIKULT203 Electronic literature (autumn 2026).</p>
+      <p>Research intern on SurvivingSOGICE at the Center for Digital Narrative, spring 2026, continuing in autumn 2026. Lab assistant in DIKULT105 Creating Digital Culture, autumn 2026, teaching Construct 3 and Visual Studio Code.</p>
+      <p>Speaker and panelist at CDN Autumn Equinox 2026, Litteraturhuset i Bergen, 23 September 2026, with the talk <span class="it">Me, Myself and A.I</span> in the panel "The Haunting of the Author". Co-writing with Zahra Rizvi on the chapter "Synthetic Influencers: Content, Co-creation and Advocacy" for the Routledge Handbook of Influencer Activism and Advocacy.</p>
+      <p>Selected works: HAGEN, 2026, in development. <span class="it">What the Roots Keep</span>, 2026. <span class="it">The Turing Test: Fragments of a Life Saved by Pixels</span>, first prize in electronic literature at the Digital Culture Awards 2025. <span class="it">Trail Mix</span>, Mount Media × Preem Cast. <span class="it">Pride Park spillet</span> for Bergen Pride.</p>
+      <p>Content producer and social media strategist for Regnbuedagene since 2023. Board member of FRI Vestland since 2023. Initiated Skeiv Jul 2025.</p>
+    </div>
+  </div>
   <footer>
     <div class="logo" data-logo></div>
     <p>HAGEN by Ingrid Ormevik · Bergen, 2026</p>
-    <p>Music on this page: sombr, "My Body Isn't Ready" (Riri reference remix). Garden film: <span class="it">Nordic Rainforest Pulse</span> in 8D by Ingrid Ormevik.<br>The church images are visualisations. No projection has taken place yet.</p>
+    <p>Music on this page: sombr, "My Body Isn't Ready" (Riri reference remix).<br>The church images are visualisations. The building and sheet clips are my own phone videos from the tests.</p>
+    <p><button id="top" class="quiet">Back to the start</button></p>
   </footer>
+</section>
 </main>
 
-<audio id="music" src="media/sombr.mp3" loop preload="auto"></audio>
+<audio id="music" src="media/sombr.mp3" loop preload="none"></audio>
 
 <script>
 (()=>{
-  // logo, with its own root-grow animation
-  fetch('media/logo.svg').then(r=>r.text()).then(svg=>{document.querySelectorAll('[data-logo]').forEach(el=>el.innerHTML=svg)}).catch(()=>{});
+  fetch('media/logo.svg').then(r=>r.text()).then(s=>document.querySelectorAll('[data-logo]').forEach(e=>e.innerHTML=s)).catch(()=>{});
+  const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+  const gate=$('#gate'),music=$('#music'),snd=$('#sound'),bar=$('#bar'),menu=$('#menu'),keys=$('#keys'),chs=$$('.ch');
 
-  const gate=document.getElementById('gate'),music=document.getElementById('music'),btn=document.getElementById('sound');
+  // chapter menu, and a Next button at the end of every chapter
+  chs.forEach((c,i)=>{
+    const a=document.createElement('a');a.href='#'+c.id;a.innerHTML=`<b>${i+1}</b>${c.dataset.title}`;
+    a.onclick=e=>{e.preventDefault();go(i);menu.classList.remove('open');$('#menuBtn').setAttribute('aria-expanded','false')};menu.appendChild(a);
+    if(i<chs.length-1){const n=document.createElement('div');n.className='next';
+      n.innerHTML=`<button>Next · ${chs[i+1].dataset.title} <span class="arr">↓</span></button>`;n.firstChild.onclick=()=>go(i+1);
+      c.querySelector('.in').appendChild(n)}
+  });
+  function cur(){let k=0;chs.forEach((c,i)=>{if(c.getBoundingClientRect().top<innerHeight*.4)k=i});return k}
+  function go(i){i=Math.max(0,Math.min(chs.length-1,i));chs[i].scrollIntoView({behavior:'smooth',block:'start'})}
+  $('#top').onclick=()=>go(0);
+  $('#menuBtn').onclick=()=>{const o=menu.classList.toggle('open');$('#menuBtn').setAttribute('aria-expanded',o)};
+  addEventListener('keydown',e=>{
+    if(!gate.classList.contains('gone')||e.target.closest('video,input,textarea'))return;
+    if(['ArrowRight','ArrowDown','PageDown'].includes(e.key)){e.preventDefault();go(cur()+1)}
+    if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(cur()-1)}
+  });
+  function onScroll(){const k=cur();$$('#menu a').forEach((a,i)=>a.classList.toggle('cur',i===k));
+    const h=document.documentElement;$('#prog').style.width=(100*h.scrollTop/((h.scrollHeight-innerHeight)||1))+'%'}
+  addEventListener('scroll',onScroll,{passive:true});
+
+  // entering
   let ctx=null,an=null,buf=null;
-  function listen(){
-    try{
-      ctx=new (window.AudioContext||window.webkitAudioContext)();
-      const src=ctx.createMediaElementSource(music);an=ctx.createAnalyser();an.fftSize=1024;an.smoothingTimeConstant=.82;
-      src.connect(an);an.connect(ctx.destination);buf=new Uint8Array(an.frequencyBinCount);
-    }catch(e){an=null}
-  }
-  function enter(withSound){
-    gate.classList.add('gone');document.body.style.overflow='';
-    btn.hidden=false;
-    if(withSound){if(!ctx)listen();music.volume=0;music.play().then(()=>{fadeTo(.9,4000);btn.textContent='Sound off'}).catch(()=>{btn.textContent='Sound on'})}
-    else btn.textContent='Sound on';
-  }
-  function fadeTo(v,ms){const a=music.volume,t0=performance.now();(function s(t){const k=Math.min(1,Math.max(0,(t-t0)/ms));music.volume=a+(v-a)*k;if(k<1)requestAnimationFrame(s)})(t0)}
+  function listen(){try{ctx=new (window.AudioContext||window.webkitAudioContext)();const s=ctx.createMediaElementSource(music);
+    an=ctx.createAnalyser();an.fftSize=1024;an.smoothingTimeConstant=.82;s.connect(an);an.connect(ctx.destination);buf=new Uint8Array(an.frequencyBinCount)}catch(e){an=null}}
+  function fade(v,ms){const a=music.volume,t0=performance.now();(function s(t){const k=Math.min(1,Math.max(0,(t-t0)/ms));music.volume=a+(v-a)*k;if(k<1)requestAnimationFrame(s)})(t0)}
+  function enter(withSound){gate.classList.add('gone');document.body.style.overflow='';bar.classList.add('show');keys.classList.add('show');setTimeout(()=>keys.classList.remove('show'),10000);snd.hidden=false;
+    if(withSound){if(!ctx)listen();music.volume=0;music.play().then(()=>{fade(.9,4000);snd.textContent='Sound off'}).catch(()=>snd.textContent='Sound on')}else snd.textContent='Sound on';onScroll()}
   document.body.style.overflow='hidden';
-  document.getElementById('enterSound').onclick=()=>enter(true);
-  document.getElementById('enterQuiet').onclick=()=>enter(false);
-  btn.onclick=()=>{
-    if(music.paused){if(!ctx)listen();if(ctx&&ctx.state==='suspended')ctx.resume();music.play();fadeTo(.9,1500);btn.textContent='Sound off'}
-    else{fadeTo(0,900);setTimeout(()=>music.pause(),950);btn.textContent='Sound on'}
-  };
+  $('#enterSound').onclick=()=>enter(true);$('#enterQuiet').onclick=()=>enter(false);
+  snd.onclick=()=>{if(music.paused){if(!ctx)listen();if(ctx&&ctx.state==='suspended')ctx.resume();music.play();fade(.9,1500);snd.textContent='Sound off'}
+    else{fade(0,900);setTimeout(()=>music.pause(),950);snd.textContent='Sound on'}};
 
-  // reveals and lazy loops
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-  const vo=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;
-    if(e.isIntersecting){if(v.dataset.src&&!v.src)v.src=v.dataset.src;v.play().catch(()=>{})}else v.pause()}),{threshold:.2});
-  document.querySelectorAll('.loop video,.hero-video video').forEach(v=>vo.observe(v));
+  // day and night
+  const dn=$('#dn');$$('[data-dn]').forEach(b=>b.onclick=()=>{dn.classList.toggle('night',b.dataset.dn==='night');$$('[data-dn]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
 
-  // day to night on scroll
-  const dn=document.getElementById('daynight'),night=document.getElementById('dnNight'),lab=document.getElementById('dnLabel');
-  function dayNight(){
-    if(innerWidth<=860)return;
-    const r=dn.getBoundingClientRect(),k=Math.min(1,Math.max(0,(-r.top)/(r.height-innerHeight)));
-    const v=Math.min(1,Math.max(0,(k-.15)/.6));night.style.opacity=v;lab.textContent=v<.5?'Today':'Visualisation, at night';
-  }
-  addEventListener('scroll',dayNight,{passive:true});dayNight();
+  // reveals and videos
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}}),{threshold:.12});
+  $$('.reveal').forEach(e=>io.observe(e));
+  const vo=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){if(v.dataset.src&&!v.src)v.src=v.dataset.src;v.play().catch(()=>{})}else v.pause()}),{threshold:.2});
+  $$('video[muted],video[data-src]').forEach(v=>vo.observe(v));
 
-  // living roots that grow with the music
-  const cv=document.getElementById('roots'),g=cv.getContext('2d');let W,H,dpr;
-  function size(){dpr=Math.min(2,devicePixelRatio||1);W=cv.width=innerWidth*dpr;H=cv.height=innerHeight*dpr}
-  size();addEventListener('resize',size);
-  const tips=[];const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function seed(){const x=(Math.random()*.9+.05)*W,up=Math.random()<.65;
-    tips.push({x,y:up?H+5:-5,a:(up?-Math.PI/2:Math.PI/2)+(Math.random()-.5)*.6,w:(1.2+Math.random()*1.4)*dpr,life:260+Math.random()*320,hue:Math.random()<.7?0:1,gen:0})}
-  let energy=0,beat=0,prevBass=0,last=0;
-  function frame(t){
-    requestAnimationFrame(frame);if(t-last<30)return;last=t;
-    let bass=0,mid=0;
+  // roots that grow with the music
+  const cv=$('#roots'),g=cv.getContext('2d');let W,H,dpr;
+  function size(){dpr=Math.min(2,devicePixelRatio||1);W=cv.width=innerWidth*dpr;H=cv.height=innerHeight*dpr}size();addEventListener('resize',size);
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches,tips=[];
+  function seed(){const up=Math.random()<.65;tips.push({x:(Math.random()*.9+.05)*W,y:up?H+5:-5,a:(up?-Math.PI/2:Math.PI/2)+(Math.random()-.5)*.6,w:(1.2+Math.random()*1.4)*dpr,life:260+Math.random()*320,hue:Math.random()<.7?0:1,gen:0})}
+  let energy=0,beat=0,pb=0,last=0;
+  function frame(t){requestAnimationFrame(frame);if(t-last<30)return;last=t;let bass=0,mid=0;
     if(an&&!music.paused){an.getByteFrequencyData(buf);for(let i=1;i<10;i++)bass+=buf[i];for(let i=10;i<120;i++)mid+=buf[i];bass/=9*255;mid/=110*255}
-    energy+=((bass*.6+mid*.6)-energy)*.12;
-    if(bass-prevBass>.05&&bass>.45)beat=1;prevBass=bass;beat*=.9;
-    // the old roots sink back into the dark slowly
-    g.globalCompositeOperation='source-over';g.fillStyle=`rgba(5,8,6,${.035+.02*(1-energy)})`;g.fillRect(0,0,W,H);
-    g.globalCompositeOperation='lighter';
-    const want=still?0:Math.round(8+energy*30+beat*12);
-    while(tips.length<want)seed();
-    const speed=(.6+energy*2.6+beat*2)*dpr;
-    for(let i=tips.length-1;i>=0;i--){const p=tips[i];
-      const nx=p.x+Math.cos(p.a)*speed,ny=p.y+Math.sin(p.a)*speed;
-      const al=Math.min(1,p.life/120)*(.32+energy*.6+beat*.4);
-      g.strokeStyle=p.hue?`rgba(169,195,173,${al})`:`rgba(217,179,106,${al})`;g.lineWidth=p.w;g.lineCap='round';
-      g.beginPath();g.moveTo(p.x,p.y);g.lineTo(nx,ny);g.stroke();
-      p.x=nx;p.y=ny;p.a+=(Math.random()-.5)*.22;p.w*=.997;p.life-=1;
+    energy+=((bass*.6+mid*.6)-energy)*.12;if(bass-pb>.05&&bass>.45)beat=1;pb=bass;beat*=.9;
+    g.globalCompositeOperation='source-over';g.fillStyle=`rgba(5,8,6,${.035+.02*(1-energy)})`;g.fillRect(0,0,W,H);g.globalCompositeOperation='lighter';
+    const want=Math.round(8+energy*30+beat*12);while(tips.length<want)seed();
+    const sp=(.6+energy*2.6+beat*2)*dpr;
+    for(let i=tips.length-1;i>=0;i--){const p=tips[i],nx=p.x+Math.cos(p.a)*sp,ny=p.y+Math.sin(p.a)*sp,al=Math.min(1,p.life/120)*(.32+energy*.6+beat*.4);
+      g.strokeStyle=p.hue?`rgba(169,195,173,${al})`:`rgba(217,179,106,${al})`;g.lineWidth=p.w;g.lineCap='round';g.beginPath();g.moveTo(p.x,p.y);g.lineTo(nx,ny);g.stroke();
+      p.x=nx;p.y=ny;p.a+=(Math.random()-.5)*.22;p.w*=.997;p.life--;
       if(p.gen<4&&Math.random()<.012+beat*.03&&tips.length<70)tips.push({...p,a:p.a+(Math.random()<.5?-1:1)*(.35+Math.random()*.5),w:p.w*.62,life:p.life*.7,gen:p.gen+1});
-      if(p.life<=0||p.x<-20||p.x>W+20||p.y<-20||p.y>H+20||p.w<.15)tips.splice(i,1);
-    }
-  }
+      if(p.life<=0||p.x<-20||p.x>W+20||p.y<-20||p.y>H+20||p.w<.15)tips.splice(i,1)}}
   if(!still)requestAnimationFrame(frame);
 })();
 </script>
