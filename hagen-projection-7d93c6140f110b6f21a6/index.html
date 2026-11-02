@@ -158,7 +158,28 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
 .gbtn button{font-size:1.2em}
 .budget td:not(:first-child),.budget th:not(:first-child){text-align:right;white-space:nowrap}
 .budget tr.sum td{border-top:1px solid var(--soft);font-style:italic}
+
+/* Mount Media window, at home in HAGEN's night */
+.mm{scroll-margin-top:90px;--bar:#2B2440;--bar2:#463A63;--hot:#D4145A;--face:#D8D4CB;margin-top:3em;border:2px solid #0b0f0c;box-shadow:0 0 0 1px rgba(216,212,203,.35),6px 6px 0 rgba(0,0,0,.55);background:#07100b}
+.mm-bar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,var(--bar),var(--bar2));padding:6px 8px 6px 12px;font:600 15px "Pixelify Sans",monospace;color:#f3eefb;letter-spacing:.02em}
+.mm-btns{display:flex;gap:5px}.mm-btns i{width:14px;height:12px;background:var(--face);box-shadow:inset -1px -1px 0 #7C776D,inset 1px 1px 0 #fff;display:block}
+.mm-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:10px 12px 0;background:#0c1510;border-bottom:1px solid rgba(216,212,203,.2)}
+.mm-tabs button{font:500 14px "Pixelify Sans",monospace;color:var(--soft);background:#132019;border:1px solid rgba(216,212,203,.25);border-bottom:0;padding:5px 12px;text-decoration:none;border-radius:0}
+.mm-tabs button[aria-selected=true]{background:#07100b;color:var(--gold);position:relative;top:1px}
+.mm-body{font-weight:400;padding:22px 24px 26px;font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15.5px;line-height:1.6;color:#ddd8cc}
+.mm-body h4{font:700 clamp(30px,3.4vw,46px) "Pixelify Sans",monospace;color:var(--pearl);margin:0;letter-spacing:.01em}
+.mm-sub{font-weight:600;color:var(--gold);margin:.2em 0 1em}
+.mm-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:1.2em 0 .4em}
+.mm-stats div{border:1px solid rgba(216,212,203,.3);padding:10px 12px;background:#0b1510}
+.mm-stats b{display:block;font:700 22px "Pixelify Sans",monospace;color:var(--hot)}
+.mm-stats span{font-size:13px;color:var(--soft)}
+.mm-pane{display:none}.mm-pane.on{display:block}
+.mm-pane ul{margin:.4em 0 0;padding-left:1.1em}.mm-pane li{margin:.35em 0}
+.mm-body a{color:#8fb0ff}
+@media (max-width:900px){.mm-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.mm-body{padding:18px 16px}}
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 <canvas id="roots" aria-hidden="true"></canvas>
@@ -521,7 +542,59 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
           <p>CDN at the University of Bergen already supported the façade test by lending a projector. I propose to develop that into a cooperation for both stages.</p>
           <p>CDN could provide projectors and technical equipment, which would lower the rental budget, and give the work an academic home where the evenings are documented and shared as an example of site-specific digital narrative in Bergen. In return the project offers CDN a public event on Nygårdshøyden and documentation material for its channels.</p>
         </div>
-        <p>Ingrid Ormevik is an artist and creative technologist in Bergen working as Mount Media, with a background in interactive art and digital culture at the University of Bergen. <a href="../cv.html">Full CV</a>.</p>
+      </div>
+    </div>
+    <div class="mm reveal" id="cv">
+      <div class="mm-bar"><span>ingrid_ormevik.cv</span><span class="mm-btns"><i></i><i></i><i></i></span></div>
+      <div class="mm-tabs" role="tablist">
+        <button role="tab" aria-selected="true" data-p="0">About</button>
+        <button role="tab" aria-selected="false" data-p="1">Works</button>
+        <button role="tab" aria-selected="false" data-p="2">Research and teaching</button>
+        <button role="tab" aria-selected="false" data-p="3">Talks and writing</button>
+        <button role="tab" aria-selected="false" data-p="4">Organising</button>
+      </div>
+      <div class="mm-body">
+        <div class="mm-pane on">
+          <h4>Ingrid Ormevik</h4>
+          <div class="mm-sub">Artist and creative technologist · Mount Media · Bergen</div>
+          <p>I make electronic literature, games and sound-reactive works under the name Mount Media. BA student in Digital Culture at the University of Bergen, working at the Center for Digital Narrative.</p>
+          <div class="mm-stats">
+            <div><b>1st</b><span>prize in electronic literature, Digital Culture Awards 2025</span></div>
+            <div><b>330 000</b><span>views for Regnbuedagene, up from 273 000</span></div>
+            <div><b>7</b><span>events in Skeiv Jul 2025, with funding raised</span></div>
+            <div><b>2015</b><span>working with minority communities since</span></div>
+          </div>
+          <p style="margin-top:1em"><a href="mailto:ingrid.ormevik@student.uib.no">ingrid.ormevik@student.uib.no</a> · <a href="../cv.html">Interactive CV</a></p>
+        </div>
+        <div class="mm-pane">
+          <ul>
+            <li><b>HAGEN</b>, interactive night garden and projection, 2026, in development.</li>
+            <li><b>What the Roots Keep</b>, interactive prelude to HAGEN, 2026.</li>
+            <li><b>The Turing Test: Fragments of a Life Saved by Pixels</b>, interactive story. First prize in electronic literature, Digital Culture Awards 2025, UiB.</li>
+            <li><b>Trail Mix</b>, a walking AI music hike in Bergen's mountains, Mount Media × Preem Cast.</li>
+            <li><b>Pride Park spillet</b>, a game for Bergen Pride.</li>
+          </ul>
+        </div>
+        <div class="mm-pane">
+          <ul>
+            <li>Research intern on SurvivingSOGICE, Center for Digital Narrative, spring 2026, continuing autumn 2026.</li>
+            <li>Lab assistant in DIKULT105 Creating Digital Culture, autumn 2026, teaching Construct 3 and Visual Studio Code.</li>
+            <li>BA in Digital Culture, University of Bergen, in progress.</li>
+          </ul>
+        </div>
+        <div class="mm-pane">
+          <ul>
+            <li>Speaker and panelist at CDN Autumn Equinox 2026, Litteraturhuset i Bergen, 23 September 2026: <i>Me, Myself and A.I</i>, in the panel "The Haunting of the Author".</li>
+            <li>Co-writing with Zahra Rizvi on "Synthetic Influencers: Content, Co-creation and Advocacy" for the Routledge Handbook of Influencer Activism and Advocacy, in progress.</li>
+          </ul>
+        </div>
+        <div class="mm-pane">
+          <ul>
+            <li>Content producer and social media strategist for Regnbuedagene (Bergen Pride) since 2023.</li>
+            <li>Board member of FRI Vestland since 2023.</li>
+            <li>Initiated Skeiv Jul 2025 with Regnbuedagene, FRI Vestland and Skeiv Verden Vest, with funding from Vestland fylkeskommune and private sponsors.</li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="film reveal">
@@ -579,6 +652,11 @@ th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:v
   snd.onclick=()=>{if(music.paused){if(!ctx)listen();if(ctx&&ctx.state==='suspended')ctx.resume();music.play();fade(.9,1500);snd.textContent='Sound off'}
     else{fade(0,900);setTimeout(()=>music.pause(),950);snd.textContent='Sound on'}};
 
+
+  // CV window tabs
+  $$('.mm-tabs button').forEach(b=>b.onclick=()=>{const i=+b.dataset.p;
+    $$('.mm-tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+    $$('.mm-pane').forEach((p,k)=>p.classList.toggle('on',k===i))});
   // day and night
   const dn=$('#dn');$$('[data-dn]').forEach(b=>b.onclick=()=>{dn.classList.toggle('night',b.dataset.dn==='night');$$('[data-dn]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
 
