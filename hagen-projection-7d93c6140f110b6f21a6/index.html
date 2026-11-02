@@ -199,7 +199,6 @@ body.noscroll{overflow:hidden}
   <a class="mark" href="#c1">HAGEN</a>
   <button id="menuBtn" class="quiet" aria-expanded="false" aria-controls="menu">Chapters</button>
   <div id="menu"></div>
-  <button id="artistLink" class="quiet">The artist</button>
 </nav>
 <button id="sound" hidden>Sound off</button>
 <div id="keys">Next button, arrow keys or the menu at the top</div>
@@ -396,6 +395,20 @@ body.noscroll{overflow:hidden}
         <p class="cap">The mapping tool.</p>
       </div>
     </div>
+    <h3 class="reveal">Two modes: cinematic and voice</h3>
+    <div class="grid">
+      <div class="card reveal">
+        <h3 style="margin-top:0">Cinematic mode, for the public evening</h3>
+        <p>In a large crowd outdoors, spoken commands get lost, and only the people closest to the microphone would be heard. The public evening therefore runs in a cinematic mode that needs no instructions from anyone. The garden moves through its sequence on its own, with slow camera paths, growth and text, and the crowd shapes it simply by being there.</p>
+        <p>Agency comes from presence. The level of sound and quiet changes the pace and the text. An optional camera that only measures movement and stillness, never faces or identity, could let the number of people staying make the roots grow further. The more people who stay, the more the garden grows that evening.</p>
+        <p class="cap">The garden has a cinematic edition today. Programming it for the projection, and the presence camera, are proposed. The camera would only be used if the site agrees, with a sign at the entrance.</p>
+      </div>
+      <div class="card reveal">
+        <h3 style="margin-top:0">Voice mode, for private and small viewings</h3>
+        <p>In a small group, a smaller room or a guided viewing, visitors can speak to the garden with simple commands such as walk, grow, look up, follow the root, down into the roots, algorithm and glitch. Here a single voice can be heard clearly, and each person gets a direct way to steer.</p>
+        <p class="cap">Voice commands work in the browser garden today, running locally with no internet connection.</p>
+      </div>
+    </div>
     <h3 class="reveal">The evening, step by step</h3>
     <ol class="steps">
       <li class="reveal">The projector is fixed on a stand facing the covering, protected from rain.</li>
@@ -522,6 +535,8 @@ body.noscroll{overflow:hidden}
       </div>
       <div>
         <p class="reveal">The dream is to link these gardens into one shared network. Rain in Bergen, a dry afternoon in another country, the quiet of visitors on the other side of the world: each garden would send small signals of weather, season and presence to the others, and the roots would carry them across. Only anonymous signals travel, never sound, images or personal data.</p>
+        <p class="reveal">Online, the garden would change with whoever opens it. Someone logging in from Nairobi would see Nairobi's weather and season, and the plants of a botanical garden nearby. Someone in Bergen would see Bergen's rain and the species of Muséhagen. From there, visitors could travel to each other's gardens, a shared meeting place where the gardens of the world are on display side by side.</p>
+        <p class="reveal">Every visit leaves a trace. The garden keeps how far it has grown, so the roots continue from where earlier visitors left them, and the next person finds a garden that others have helped grow, without knowing who they were.</p>
         <p class="reveal">It would become one large immersive exhibition across many places, a garden society where species and people belong together even though their locations, weather and origins differ. That is HAGEN's question on a global scale: can we grow toward each other from different soil?</p>
         <p class="cap reveal">A long-term vision, beyond this application. It would need partner gardens, plant data from their collections, funding, and its own safety and privacy plan.</p>
       </div>
@@ -754,7 +769,7 @@ body.noscroll{overflow:hidden}
 
 
 
-  const toArtist=()=>$('#c14').scrollIntoView({behavior:'smooth',block:'start'});$('#artistLink').onclick=toArtist;$$('.openArtist').forEach(b=>b.onclick=toArtist);
+  const toArtist=()=>$('#c14').scrollIntoView({behavior:'smooth',block:'start'});$$('.openArtist').forEach(b=>b.onclick=toArtist);
   // day and night
   const dn=$('#dn');$$('[data-dn]').forEach(b=>b.onclick=()=>{dn.classList.toggle('night',b.dataset.dn==='night');$$('[data-dn]').forEach(x=>x.setAttribute('aria-pressed',x===b))});
 
