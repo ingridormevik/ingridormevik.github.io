@@ -124,6 +124,40 @@ footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
   table{table-layout:fixed;overflow-wrap:anywhere;font-size:.82em}
 }
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;filter:none;transition:none}}
+
+/* calm editorial overrides */
+#prog{display:none}
+.kick{text-transform:none;letter-spacing:0;font-style:italic;font-size:1.02rem;color:var(--sage);margin-bottom:.7em}
+button,.btn{background:none;border:0;border-radius:0;padding:.2em 0;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:7px;text-decoration-color:rgba(217,179,106,.55);letter-spacing:0;gap:.4em}
+button:hover,button:focus-visible{background:none;text-decoration-color:var(--gold);color:#fff}
+button.quiet{color:var(--soft);text-decoration-color:var(--line)}
+.next button{font-size:1.15em;padding:.2em 0;font-style:italic}
+.next button .arr{display:none}
+#sound{background:none;backdrop-filter:none;font-size:15px}
+#menu a{border:0;border-radius:0;padding:.3em .55em}
+#menu a b{color:var(--dim);font-style:normal;font-weight:500}
+#menu a.cur{color:#fff;text-decoration:underline;text-underline-offset:6px;text-decoration-color:var(--gold)}
+#menuBtn{padding:.2em 0}
+.card{background:none;border:0;border-top:1px solid var(--line);padding:1.1em 0 .2em;backdrop-filter:none}
+.tag{background:none;color:var(--dim);padding:0;letter-spacing:0;text-transform:none;font-size:14px;border-radius:0;font-style:italic}
+.tag.v{background:none}
+th{text-transform:none;letter-spacing:0;font-style:italic;font-size:15px;color:var(--sage)}
+.glow{box-shadow:none}
+.reveal{filter:none;transform:translateY(14px)}
+.dnctl button[aria-pressed=true]{background:none;color:#fff;text-decoration-color:var(--gold)}
+#keys{font-size:14px}
+/* the opening */
+#gate{background:#020302}
+#gateVid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 4s ease;filter:saturate(.9)}
+#gate.ready #gateVid{opacity:.55}
+#gate::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(2,3,2,.15) 0%,rgba(2,3,2,.75) 70%,rgba(2,3,2,.95) 100%);pointer-events:none}
+#gate>*:not(video){position:relative;z-index:1}
+.gline{font-size:clamp(24px,2.6vw,38px);font-style:italic;max-width:900px;line-height:1.3;margin-top:.4em;opacity:0;animation:fade 2.4s 1.6s forwards}
+.gline2{font-size:clamp(18px,1.6vw,22px);color:var(--soft);max-width:680px;margin-top:1em;opacity:0;animation:fade 2.4s 2.6s forwards}
+.gbtn{margin-top:2.2em;gap:28px}
+.gbtn button{font-size:1.2em}
+.budget td:last-child,.budget th:last-child{text-align:right;white-space:nowrap}
+.budget tr.sum td{border-top:1px solid var(--soft);font-style:italic}
 </style>
 </head>
 <body>
@@ -131,14 +165,15 @@ footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
 <div id="prog"></div>
 
 <div id="gate" role="dialog" aria-label="Enter HAGEN">
+  <video id="gateVid" src="media/muse_mockup_v2.mp4" muted loop playsinline autoplay preload="auto"></video>
   <div class="logo" data-logo></div>
-  <div class="gsub">Light on Johanneskirken</div>
-  <div class="gplace">Public art proposal · Bergen · 2027</div>
+  <div class="gline">One winter evening, a church wrapped in scaffolding becomes a garden of light.</div>
+  <div class="gline2">Then the garden walks down the hill and takes root in Muséhagen. A public art proposal for Bergen, 2027.</div>
   <div class="gbtn">
     <button id="enterSound">Enter with sound</button>
     <button id="enterQuiet" class="quiet">Enter in silence</button>
   </div>
-  <div class="ghint">Twelve short chapters. Use the Next button at the bottom of each one, the arrow keys, or the menu at the top.</div>
+  <div class="ghint">Twelve short chapters. Move on with the link at the end of each one, the arrow keys, or the menu at the top.</div>
 </div>
 
 <nav id="bar" aria-label="Chapters">
@@ -153,7 +188,7 @@ footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
 <section class="ch" id="c1" data-title="Statement">
   <div class="in grid mid">
     <div>
-      <div class="kick reveal">Artist statement · Ingrid Ormevik</div>
+      <div class="kick reveal">Artist statement, Ingrid Ormevik</div>
       <h2 class="reveal it">A garden of light on a church in scaffolding</h2>
       <p class="lead reveal" style="margin-top:.8em">I propose one free public evening in winter 2027 where HAGEN, my real-time night garden, grows across the white restoration cloth of Johanneskirken.</p>
       <p class="reveal">For a short period the church on Nygårdshøyden is wrapped in cloth, and the cloth works as a screen that will not be there again. I want to use that window to bring a quiet work of digital art out into the city, where anyone walking past can stop, stay and take part.</p>
@@ -253,7 +288,7 @@ footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
       <li class="reveal">The grid is bent to follow the seams and folds of the covering.</li>
       <li class="reveal">Anything that should stay dark, such as street lamps, signs and the fence, is masked out.</li>
       <li class="reveal">Crowns of light are placed where the trees' shadows meet the cloth.</li>
-      <li class="reveal">The microphone is tuned to respond to voices and claps while ignoring traffic.</li>
+      <li class="reveal">The microphone is tuned on site. The night test shows how well it can tell voices and claps apart from traffic.</li>
       <li class="reveal">The setup is saved, the controls are hidden, and the garden runs for the evening.</li>
       <li class="reveal">A single key blacks out the image instantly.</li>
     </ol>
@@ -266,7 +301,7 @@ footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
     <h2 class="reveal">Open to anyone passing by</h2>
     <div class="grid" style="margin-top:1.4em">
       <div>
-        <p class="lead reveal">The evening is free and needs no ticket, app or device. People take part with their voice, a clap or simply by standing still.</p>
+        <p class="lead reveal">The evening is free and needs no ticket, app or device. People take part with their voice, a clap or by waiting quietly. The microphone hears sound, not bodies, so silence is something the whole crowd makes together.</p>
         <p class="reveal">A small sign at the site explains, in Norwegian and English, that the garden listens and how to make it respond. Visitors can watch from the street or come closer. Step-free access to the viewing area will be checked with the site before the date is set.</p>
         <p class="reveal">On the evening I will talk with visitors and write down what they say about the experience by hand. These notes will shape the version for Muséhagen.</p>
       </div>
@@ -295,7 +330,7 @@ footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
     <div class="kick reveal">Stage two · autumn 2027</div>
     <h2 class="reveal">Down the hill, into Muséhagen</h2>
     <div class="film reveal" style="margin-top:1.6em">
-      <video src="media/muse_mockup.mp4" poster="media/muse_mockup.jpg" muted loop playsinline autoplay preload="metadata"></video>
+      <video src="media/muse_mockup_v2.mp4" poster="media/muse_mockup_v2.jpg" muted loop playsinline autoplay preload="metadata"></video>
       <p class="cap"><span class="tag v">Rendering</span> Muséhagen at night. Frames from my own footage of the garden, turned to night, with roots of light growing over the ground and up into the trees.</p>
     </div>
     <div class="strip" style="grid-template-columns:repeat(3,minmax(0,1fr))">
@@ -308,7 +343,7 @@ footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
       <div>
         <p class="lead reveal">After the church, the garden moves a few minutes down the hill into Muséhagen, the botanical garden beside the University Museum. Here the light lands on real trees, paths and soil.</p>
         <p class="reveal">Visitors walk the garden paths after dark and meet the work at a few stops along the way: roots of light spreading over the ground, crowns of light growing up real tree trunks, and a quiet place where lines of text appear if people wait.</p>
-        <p class="reveal">Each stop has its own small projector, and the edges of neighbouring images are blended so the light reads as one garden. The installation is planned together with the museum gardeners, so light, cables and visitors never harm the plants. It runs over several dark autumn evenings.</p>
+        <p class="reveal">Each stop has its own small projector, and the edges of neighbouring images are blended so the light reads as one garden. I would plan the installation with the museum gardeners, subject to their agreement, so light, cables and visitors do not harm the plants. It runs over several dark autumn evenings.</p>
       </div>
       <div>
         <div class="card reveal">
@@ -396,18 +431,34 @@ footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
         <p class="cap">Dates depend on the restoration schedule and on permission from the site.</p>
       </div>
       <div class="reveal">
-        <table>
-          <tr><th>Budget, church evening</th><th>NOK</th></tr>
-          <tr><td>Outdoor projector and lens, rented or through a CDN cooperation</td><td>By quote</td></tr>
-          <tr><td>Projection technician, test night and event night</td><td>By quote</td></tr>
-          <tr><td>Outdoor microphone with wind cover</td><td>By quote</td></tr>
-          <tr><td>Stand, barrier, cable covers and rain protection</td><td>By quote</td></tr>
-          <tr><td>Sign and visitor information</td><td>By quote</td></tr>
-          <tr><td>Photo and video documentation</td><td>By quote</td></tr>
-          <tr><td>Artist fee</td><td>By rate</td></tr>
-          <tr><td>Contingency, 10 percent</td><td>Of the total</td></tr>
+        <table class="budget">
+          <tr><th>Stage one, the church evening</th><th>NOK</th></tr>
+          <tr><td>Outdoor laser projector, about 20,000 lumen, test night and event night</td><td>18 000</td></tr>
+          <tr><td>Projection technician, two nights of six hours</td><td>9 000</td></tr>
+          <tr><td>Outdoor microphone and wind cover</td><td>3 000</td></tr>
+          <tr><td>Stand, barrier, cable covers, outdoor leads with RCD, rain cover</td><td>7 000</td></tr>
+          <tr><td>Event liability insurance</td><td>3 000</td></tr>
+          <tr><td>Sign and visitor information</td><td>2 000</td></tr>
+          <tr><td>Photo and video documentation on the night</td><td>8 000</td></tr>
+          <tr><td>Documentation package for future marketing: edited film, stills and social media versions</td><td>10 000</td></tr>
+          <tr><td>Artist fee: development, mapping, programming and the evening, 10 days</td><td>35 000</td></tr>
+          <tr><td>Contingency, 10 percent</td><td>9 500</td></tr>
+          <tr class="sum"><td>Total, stage one</td><td>104 500</td></tr>
+          <tr><td>With projector through a CDN cooperation</td><td>84 700</td></tr>
         </table>
-        <p class="cap">Amounts will be filled in when quotes arrive. No figure is given before it is confirmed.</p>
+        <table class="budget">
+          <tr><th>Stage two, Muséhagen, four evenings (first estimate)</th><th>NOK</th></tr>
+          <tr><td>Three projectors with blended edges, four evenings and a test night</td><td>60 000</td></tr>
+          <tr><td>Projection technician, five evenings</td><td>22 500</td></tr>
+          <tr><td>Weatherproof housings, power along the paths, cables</td><td>15 000</td></tr>
+          <tr><td>Wayfinding signs and visitor information</td><td>5 000</td></tr>
+          <tr><td>Event liability insurance</td><td>4 000</td></tr>
+          <tr><td>Documentation and marketing package</td><td>15 000</td></tr>
+          <tr><td>Artist fee, 20 days</td><td>70 000</td></tr>
+          <tr><td>Contingency, 10 percent</td><td>19 150</td></tr>
+          <tr class="sum"><td>Total, stage two</td><td>210 650</td></tr>
+        </table>
+        <p class="cap">Estimates from November 2026, to be confirmed with quotes from rental companies and a technician. The artist day rate is set at NOK 3 500.</p>
       </div>
     </div>
   </div>
@@ -421,9 +472,9 @@ footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
       <tr><th>Risk</th><th>Plan</th></tr>
       <tr><td>Rain or storm on the evening</td><td>Rain cover for the projector, and a reserve date the following week.</td></tr>
       <tr><td>Too much light around the church</td><td>Night test in January to measure it, visuals tuned to the projector, and a brighter model if needed.</td></tr>
-      <tr><td>Traffic noise drowns out the visitors</td><td>The microphone is tuned on site. Without sound input the garden still grows slowly by itself.</td></tr>
+      <tr><td>Traffic noise drowns out the visitors</td><td>Tested on the night test. Without usable sound input the garden still grows slowly by itself.</td></tr>
       <tr><td>The covering is removed earlier than planned</td><td>Early contact with the restoration team, and a test date as soon as permission is given.</td></tr>
-      <tr><td>Permission is not given</td><td>The work moves directly to the Muséhagen stage.</td></tr>
+      <tr><td>Permission is not given</td><td>An alternative surface is sought, which needs its own approval. If the museum agrees, the work can also go straight to the Muséhagen stage.</td></tr>
       <tr><td>The computer fails</td><td>A second laptop with the same saved setup is ready on site.</td></tr>
     <tr><td>Light or cables harm plants in Muséhagen</td><td>Placement planned with the museum gardeners, and no fixings in trees or soil.</td></tr>
     </table>
@@ -463,19 +514,19 @@ footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
   <footer>
     <div class="logo" data-logo></div>
     <p>HAGEN by Ingrid Ormevik · Bergen · <a href="../cv.html">CV</a></p>
-    <p>Music on this page: sombr, "My Body Isn't Ready" (Riri reference remix).<br>Church images are renderings. Test clips are filmed on a phone.</p>
+    <p>Music on this page: HAGEN, Siren Abyss (8D remix).<br>Church images are renderings. Test clips are filmed on a phone.</p>
     <p><button id="top" class="quiet">Back to the start</button></p>
   </footer>
 </section>
 </main>
 
-<audio id="music" src="media/sombr.mp3" loop preload="none"></audio>
+<audio id="music" src="media/hagen_abyss.mp3" loop preload="none"></audio>
 
 <script>
 (()=>{
   fetch('media/logo.svg').then(r=>r.text()).then(s=>document.querySelectorAll('[data-logo]').forEach(e=>e.innerHTML=s)).catch(()=>{});
   const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-  const gate=$('#gate'),music=$('#music'),snd=$('#sound'),bar=$('#bar'),menu=$('#menu'),keys=$('#keys'),chs=$$('.ch');
+  const gate=$('#gate'),gv=$('#gateVid'),music=$('#music'),snd=$('#sound'),bar=$('#bar'),menu=$('#menu'),keys=$('#keys'),chs=$$('.ch');
 
   // chapter menu, and a Next button at the end of every chapter
   chs.forEach((c,i)=>{
@@ -505,7 +556,7 @@ footer .logo{width:min(360px,70vw);margin:0 auto 1.4em}
   function fade(v,ms){const a=music.volume,t0=performance.now();(function s(t){const k=Math.min(1,Math.max(0,(t-t0)/ms));music.volume=a+(v-a)*k;if(k<1)requestAnimationFrame(s)})(t0)}
   function enter(withSound){gate.classList.add('gone');document.body.style.overflow='';bar.classList.add('show');keys.classList.add('show');setTimeout(()=>keys.classList.remove('show'),10000);snd.hidden=false;
     if(withSound){if(!ctx)listen();music.volume=0;music.play().then(()=>{fade(.9,4000);snd.textContent='Sound off'}).catch(()=>snd.textContent='Sound on')}else snd.textContent='Sound on';onScroll()}
-  document.body.style.overflow='hidden';
+  document.body.style.overflow='hidden';if(gv){gv.addEventListener('playing',()=>gate.classList.add('ready'));setTimeout(()=>gate.classList.add('ready'),1200)}
   $('#enterSound').onclick=()=>enter(true);$('#enterQuiet').onclick=()=>enter(false);
   snd.onclick=()=>{if(music.paused){if(!ctx)listen();if(ctx&&ctx.state==='suspended')ctx.resume();music.play();fade(.9,1500);snd.textContent='Sound off'}
     else{fade(0,900);setTimeout(()=>music.pause(),950);snd.textContent='Sound on'}};
