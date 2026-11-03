@@ -202,6 +202,20 @@ ul.cv.research .cv-p{grid-column:auto;font-size:1em}
 .reflist p{font-size:.92em;color:var(--soft);padding-left:2em;text-indent:-2em;margin:.5em 0;overflow-wrap:anywhere}
 .reflist a{color:var(--soft)}
 @media (max-width:900px){.states{grid-template-columns:1fr}ul.cv.research li{grid-template-columns:1fr}ul.cv.research .cv-p{grid-column:1}}
+
+/* artist chapter: drop-down groups */
+.cvwrap{max-width:980px;margin-top:2.2em}
+details.cvd{border-top:1px solid var(--line)}
+details.cvd:last-child{border-bottom:1px solid var(--line)}
+details.cvd summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:1em;padding:1.05em 0;font-size:clamp(21px,1.7vw,26px);color:var(--pearl)}
+details.cvd summary::-webkit-details-marker{display:none}
+details.cvd summary::after{content:"+";margin-left:auto;color:var(--gold);font-size:1.1em;line-height:1;transition:transform .5s ease}
+details.cvd[open] summary::after{transform:rotate(45deg)}
+details.cvd summary:hover .cvd-t{color:var(--gold)}
+.cvd-n{font-size:.62em;color:var(--sage);font-style:italic}
+details.cvd ul.cv{padding:0 0 1.2em}
+details.cvd[open] ul.cv{animation:cvdIn .7s ease both}
+@keyframes cvdIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -662,8 +676,9 @@ ul.cv.research .cv-p{grid-column:auto;font-size:1em}
       <div><b>7</b><span>events in Skeiv Jul 2025</span></div>
       <div><b>2018</b><span>founded Queer Fashion of Scandinavia</span></div>
     </div>
-    <div class="reveal">
-      <h3 class="cv-h">Selected works</h3>
+    <div class="cvwrap reveal">
+    <details class="cvd" open>
+      <summary><span class="cvd-t">Selected works</span><span class="cvd-n">7</span></summary>
       <ul class="cv works">
         <li><span class="cv-y">2026</span><span class="cv-t">HAGEN</span><span class="cv-p">Interactive night garden and projection, in development. This proposal.</span></li>
         <li><span class="cv-y">2026</span><span class="cv-t"><a href="https://ingridormevik.itch.io/what-the-roots-keep">What the Roots Keep</a></span><span class="cv-p">Electronic literature in five parts about connection, distance and family inheritance.</span></li>
@@ -673,10 +688,9 @@ ul.cv.research .cv-p{grid-column:auto;font-size:1em}
         <li><span class="cv-y">2026</span><span class="cv-t"><a href="https://ingridormevik.github.io/regnbuedagene/pride-park-spill-2026.html">Pride Park, the game</a></span><span class="cv-p">Location-based game in Nygårdsparken during Bergen Pride.</span></li>
         <li><span class="cv-y">2025</span><span class="cv-t"><a href="https://ingridormevik.github.io/touch%20game.html">The Turing Test: Fragments of a Life Saved by Pixels</a></span><span class="cv-p">Interactive story about AI bias. First prize in electronic literature, Digital Culture Awards 2025.</span></li>
       </ul>
-    </div>
-    <div class="grid reveal" style="margin-top:1em">
-      <div>
-      <h3 class="cv-h">Experience</h3>
+    </details>
+    <details class="cvd">
+      <summary><span class="cvd-t">Experience</span><span class="cvd-n">10</span></summary>
       <ul class="cv">
         <li><span class="cv-y">2026 to now</span><span class="cv-t">Artistic director and developer</span><span class="cv-p">Mount Media</span></li>
         <li><span class="cv-y">2026 to now</span><span class="cv-t">Teaching assistant, DIKULT105</span><span class="cv-p">University of Bergen</span></li>
@@ -689,15 +703,17 @@ ul.cv.research .cv-p{grid-column:auto;font-size:1em}
         <li><span class="cv-y">2015–2018</span><span class="cv-t">Bar manager</span><span class="cv-p">Rockefeller, John Dee, Sentrum Scene</span></li>
         <li><span class="cv-y">2010–2015, 2023–2025</span><span class="cv-t">Bartender and door staff</span><span class="cv-p">Fincken</span></li>
       </ul>
-      </div>
-      <div>
-      <h3 class="cv-h">Talks and writing</h3>
+    </details>
+    <details class="cvd">
+      <summary><span class="cvd-t">Talks and writing</span><span class="cvd-n">3</span></summary>
       <ul class="cv">
         <li><span class="cv-y">In progress, autumn 2026</span><span class="cv-t">"Synthetic Influencers: Content, Co-creation and Advocacy", with Zahra Rizvi</span><span class="cv-p">Routledge Handbook of Influencer Activism and Advocacy</span></li>
         <li><span class="cv-y">23 September 2026</span><span class="cv-t"><a href="https://www4.uib.no/en/research/research-centres/center-for-digital-narrative/events/cdn-autumn-equinox-open-research-day">Me, Myself and A.I.</a></span><span class="cv-p">CDN Autumn Equinox, Litteraturhuset i Bergen</span></li>
         <li><span class="cv-y">2026</span><span class="cv-t"><a href="https://ingridormevik.github.io/posts/2026-09-26-the-room-has-been-sorted.html">Reflection after Equinox</a></span><span class="cv-p">Blog post</span></li>
       </ul>
-      <h3 class="cv-h">Live streaming and production</h3>
+    </details>
+    <details class="cvd">
+      <summary><span class="cvd-t">Live streaming and production</span><span class="cvd-n">6</span></summary>
       <ul class="cv">
         <li><span class="cv-y">2020–2023</span><span class="cv-t">Live streaming technician</span><span class="cv-p">Bergen Kjøtt</span></li>
         <li><span class="cv-y">Pandemic years</span><span class="cv-t">Live streaming and recording</span><span class="cv-p">BEK, Bergen Centre for Electronic Arts</span></li>
@@ -706,7 +722,9 @@ ul.cv.research .cv-p{grid-column:auto;font-size:1em}
         <li><span class="cv-y">2020</span><span class="cv-t">Grip workshop</span></li>
         <li><span class="cv-y"></span><span class="cv-t">Multi-camera live stream, Blackmagic</span><span class="cv-p">Trans Awareness Week</span></li>
       </ul>
-      <h3 class="cv-h">Education, awards and volunteering</h3>
+    </details>
+    <details class="cvd">
+      <summary><span class="cvd-t">Education, awards and volunteering</span><span class="cvd-n">5</span></summary>
       <ul class="cv">
         <li><span class="cv-y">2024–2027</span><span class="cv-t">BA in Digital Culture</span><span class="cv-p">University of Bergen</span></li>
         <li><span class="cv-y">2025</span><span class="cv-t">First prize in electronic literature</span><span class="cv-p">Digital Culture Awards</span></li>
@@ -714,7 +732,7 @@ ul.cv.research .cv-p{grid-column:auto;font-size:1em}
         <li><span class="cv-y">2023 to now</span><span class="cv-t">Board member</span><span class="cv-p">FRI Vestland</span></li>
         <li><span class="cv-y"></span><span class="cv-t">Drone operator, responsible alcohol service, responsible hosting</span><span class="cv-p">Certificates</span></li>
       </ul>
-      </div>
+    </details>
     </div>
   </div>
   <footer>
