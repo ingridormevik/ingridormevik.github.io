@@ -190,6 +190,18 @@ ul.cv.works .cv-t{font-size:1.08em}
 ul.cv a{color:var(--pearl);text-decoration-color:rgba(217,179,106,.6)}
 ul.cv a:hover{color:var(--gold)}
 @media (max-width:900px){ul.cv li{grid-template-columns:6.5em 1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+
+/* research chapter */
+.states{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:2em}
+.states figure{background:none;margin:0!important}
+.states img{width:100%;aspect-ratio:780/420;object-fit:cover;display:block}
+.states .cap b{font-style:normal;font-weight:500;color:var(--pearl)}
+ul.cv.research li{grid-template-columns:9.5em minmax(0,1fr) minmax(0,1fr);column-gap:2em}
+ul.cv.research .cv-y{grid-row:auto}
+ul.cv.research .cv-p{grid-column:auto;font-size:1em}
+.reflist p{font-size:.92em;color:var(--soft);padding-left:2em;text-indent:-2em;margin:.5em 0;overflow-wrap:anywhere}
+.reflist a{color:var(--soft)}
+@media (max-width:900px){.states{grid-template-columns:1fr}ul.cv.research li{grid-template-columns:1fr}ul.cv.research .cv-p{grid-column:1}}
 </style>
 </head>
 <body>
@@ -205,7 +217,7 @@ ul.cv a:hover{color:var(--gold)}
     <button id="enterSound">Enter with sound</button>
     <button id="enterQuiet" class="quiet">Enter in silence</button>
   </div>
-  <div class="ghint">Fourteen short chapters. Move on with the link at the end of each one, the arrow keys, or the menu at the top.</div>
+  <div class="ghint">Fifteen short chapters. Move on with the link at the end of each one, the arrow keys, or the menu at the top.</div>
 </div>
 
 <nav id="bar" aria-label="Chapters">
@@ -241,14 +253,10 @@ ul.cv a:hover{color:var(--gold)}
     <div class="grid" style="margin-top:1.4em">
       <div>
         <p class="lead reveal">HAGEN is a work of electronic literature. The light carries words, and the order and timing of those words depend on the people in front of it.</p>
-        <p class="reveal">Electronic literature is writing made on a computer and meant to be read on one. N. Katherine Hayles (<a href="https://eliterature.org/pad/elp.html">2007</a>, section 1) calls it "digital born", and she describes how it has moved off the desktop and into the environment, with site-specific installations as part of the field. The projection follows that move. On the church and in the garden, the place becomes part of the text.</p>
-        <p class="reveal">On the church, this line is the first thing the cloth can say, and it is not shown at a set time. In the proposed projection, quiet lets the sentence gather out of the roots and settle. A voice or a clap loosens its arrangement and changes how the words move. Sound and silence offer two different ways of meeting the same words, and both are part of reading it. The sentence also describes the system: the garden keeps how far it has grown from one evening to the next, while it keeps nothing about who was there.</p>
-        <p class="reveal">In small viewings, words like <i>algorithm</i> and <i>glitch</i> are both part of the poem and commands the code carries out. Hayles (2007, section 2) describes this meeting of "human-only languages and machine-readable code" as part of all electronic text. In HAGEN the visitor says it out loud.</p>
-        <p class="reveal">Ian Bogost (2007) calls the way a work argues through its rules procedural rhetoric. In HAGEN the rules carry part of the meaning. Nobody is punished for walking away, the garden keeps growing when no one is there, and it remembers what grew and never who was there. The rules say what the poems say: the garden notices whoever arrives and asks nothing back.</p>
-        <p class="reveal">Between the seven acts, voices from folklore speak: the Norwegian huldra, Mélusine, the Ukrainian mavka, the princess of Gunung Ledang and Aab-e-Jinn. These beings live on the edge between worlds, and they give a shape to the feeling of broken roots that only a myth can give.</p>
-        <p class="reveal">The poems will also change with the work. For each site I will rewrite and add poems in the same tone, adjusted to the place, the space and the time of year: lines that fit a church wrapped in scaffolding in winter, and others that speak to the plants, paths and autumn evenings of Muséhagen.</p>
-        <h3 class="reveal">Broken roots</h3>
         <p class="reveal">HAGEN is about belonging when your roots are broken. Roots that have been cut off still find ways to reach each other through the soil. The garden notices whoever arrives, and anyone can belong there, even with broken roots.</p>
+                <p class="reveal">On the church, this line is the first thing the cloth can say, and it is not shown at a set time. In the proposed projection, quiet lets the sentence gather out of the roots and settle. A voice or a clap loosens its arrangement and changes how the words move. Sound and silence offer two different ways of meeting the same words, and both are part of reading it. The sentence also describes the system: the garden keeps how far it has grown from one evening to the next, while it keeps nothing about who was there.</p>
+                        <p class="reveal">Between the seven acts, voices from folklore speak: the Norwegian huldra, Mélusine, the Ukrainian mavka, the princess of Gunung Ledang and Aab-e-Jinn. These beings live on the edge between worlds, and they give a shape to the feeling of broken roots that only a myth can give.</p>
+        <p class="reveal">The poems will also change with the work. For each site I will rewrite and add poems in the same tone, adjusted to the place, the space and the time of year: lines that fit a church wrapped in scaffolding in winter, and others that speak to the plants, paths and autumn evenings of Muséhagen.</p>
       </div>
       <div class="reveal">
         <table>
@@ -270,6 +278,35 @@ ul.cv a:hover{color:var(--gold)}
       <tr><td>Consequence</td><td>The line stays while people stay. Their sound and their quiet shape how it moves, so each group reads it a little differently.</td><td>Proposed</td></tr>
       <tr><td>Departure</td><td>People leave, the words sink back, and the garden keeps what grew for the next evening, with nothing kept about who was there.</td><td>Growth memory exists in the garden today</td></tr>
     </table>
+  </div>
+</section>
+
+<section class="ch" id="c1c" data-title="Research">
+  <div class="in">
+    <div class="kick reveal">The research behind it</div>
+    <h2 class="reveal">Garden, Algorithm and Glitch</h2>
+    <p class="lead reveal" style="max-width:820px;margin-top:.6em">The garden has three states, and each one rests on research in electronic literature and digital media. In the projection they give the evening its changes in mood.</p>
+    <div class="states reveal">
+      <figure><img src="media/state_garden.jpg" alt="The Garden state: dark, warm, seeds drifting" loading="lazy"><figcaption class="cap"><b>Garden.</b> Roots and plants grow freely in warm light, with seeds in the air.</figcaption></figure>
+      <figure><img src="media/state_algorithm.jpg" alt="The Algorithm state: straight cool green stems" loading="lazy"><figcaption class="cap"><b>Algorithm.</b> The plants straighten into cool green stems in a regular pattern.</figcaption></figure>
+      <figure><img src="media/state_glitch.jpg" alt="The Glitch state: white broken branches" loading="lazy"><figcaption class="cap"><b>Glitch.</b> The pattern breaks, and the stems turn white and branch in ways that do not fit.</figcaption></figure>
+    </div>
+    <p class="cap">The three views of the running HAGEN garden (V26), captured on 3 November 2026.</p>
+    <h3 class="cv-h reveal">What the work builds on</h3>
+    <ul class="cv research reveal">
+        <li><span class="cv-y"><a href="https://eliterature.org/pad/elp.html">Hayles 2007</a></span><span class="cv-t">Electronic literature is "digital born", made on a computer and meant to be read on one. Hayles also describes how it has moved off the desktop and into the environment, with site-specific installations as part of the field (section 1 and 2).</span><span class="cv-p">This is why HAGEN leaves the screen. On the church and in Muséhagen the place becomes part of the text.</span></li>
+        <li><span class="cv-y"><a href="https://eliterature.org/pad/elp.html">Hayles 2007</a></span><span class="cv-t">All electronic text lives where "human-only languages and machine-readable code" meet (section 2).</span><span class="cv-p">In small viewings, words like <i>algorithm</i> and <i>glitch</i> are part of a poem and commands the code carries out at the same time. The visitor says them out loud.</span></li>
+        <li><span class="cv-y"><a href="https://doi.org/10.7551/mitpress/5334.001.0001">Bogost 2007</a></span><span class="cv-t">Procedural rhetoric: a work makes its argument through its rules.</span><span class="cv-p">The rules say what the poems say. Nobody is punished for walking away, the garden keeps growing when no one is there, and it remembers what grew and never who was there.</span></li>
+        <li><span class="cv-y"><a href="https://nickm.com/poems/taroko_gorge/">Montfort 2009</a></span><span class="cv-t"><i>Taroko Gorge</i> is a nature poem made by code that never ends and comes in a new order each time.</span><span class="cv-p">The Algorithm state, where the rules behind the garden become visible and the growth falls into a regular pattern.</span></li>
+        <li><span class="cv-y"><a href="https://networkcultures.org/blog/publication/no-04-the-glitch-momentum-rosa-menkman/">Menkman 2011</a></span><span class="cv-t">A glitch is a break from an expected flow that is perceived as an accident or error (page 9).</span><span class="cv-p">The Glitch state, a planned break that makes people look again.</span></li>
+    </ul>
+    <h3 class="cv-h reveal">References</h3>
+    <div class="reflist reveal">
+      <p>Bogost, Ian. 2007. <i>Persuasive Games: The Expressive Power of Videogames</i>. Cambridge, MA: MIT Press. <a href="https://doi.org/10.7551/mitpress/5334.001.0001">https://doi.org/10.7551/mitpress/5334.001.0001</a>.</p>
+      <p>Hayles, N. Katherine. 2007. "Electronic Literature: What Is It?" Electronic Literature Organization, January 2, 2007. <a href="https://eliterature.org/pad/elp.html">https://eliterature.org/pad/elp.html</a>.</p>
+      <p>Menkman, Rosa. 2011. <i>The Glitch Moment(um)</i>. Network Notebooks 04. Amsterdam: Institute of Network Cultures. <a href="https://networkcultures.org/blog/publication/no-04-the-glitch-momentum-rosa-menkman/">networkcultures.org</a>.</p>
+      <p>Montfort, Nick. 2009. <i>Taroko Gorge</i>. Web-based generative poem. <a href="https://nickm.com/poems/taroko_gorge/">https://nickm.com/poems/taroko_gorge/</a>.</p>
+    </div>
   </div>
 </section>
 
