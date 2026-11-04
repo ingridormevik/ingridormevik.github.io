@@ -55,7 +55,6 @@ button.quiet{border-color:var(--line);color:var(--soft)}
 #menu a.cur{color:var(--pearl);border-color:rgba(217,179,106,.5)}
 #menuBtn{display:none;margin-left:auto;padding:.4em 1em;font-size:15px}
 #prog{position:fixed;top:0;left:0;height:2px;background:var(--gold);z-index:11;width:0;transition:width .3s}
-#sound{position:fixed;right:16px;bottom:16px;z-index:12;font-size:14px;padding:.5em 1.1em}
 #keys{position:fixed;left:16px;bottom:18px;z-index:12;font-size:15px;color:var(--soft);font-style:italic;opacity:0;transition:opacity 1.2s;pointer-events:none}
 #keys.show{opacity:1}
 #gate{position:fixed;inset:0;z-index:30;background:radial-gradient(ellipse at 50% 42%,#15211a 0%,#070b09 60%,#020302 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;transition:opacity 2s,visibility 2s}
@@ -133,7 +132,6 @@ button:hover,button:focus-visible{background:none;text-decoration-color:var(--go
 button.quiet{color:var(--soft);text-decoration-color:var(--line)}
 .next button{font-size:1.15em;padding:.2em 0;font-style:italic}
 .next button .arr{display:none}
-#sound{background:none;backdrop-filter:none;font-size:15px}
 #menu a{border:0;border-radius:0;padding:.3em .55em}
 #menu a b{color:var(--dim);font-style:normal;font-weight:500}
 #menu a.cur{color:#fff;text-decoration:underline;text-underline-offset:6px;text-decoration-color:var(--gold)}
@@ -228,8 +226,7 @@ details.cvd[open] ul.cv{animation:cvdIn .7s ease both}
   <div class="gline">One winter evening, a church wrapped in scaffolding becomes a garden of light.</div>
   <div class="gline2">Then the garden walks down the hill and takes root in Muséhagen. A public art proposal for Bergen, 2027.</div>
   <div class="gbtn">
-    <button id="enterSound">Enter with sound</button>
-    <button id="enterQuiet" class="quiet">Enter in silence</button>
+    <button id="enterGarden">Enter HAGEN</button>
   </div>
   <div class="ghint">Fifteen short chapters. Move on with the link at the end of each one, the arrow keys, or the menu at the top.</div>
 </div>
@@ -239,7 +236,6 @@ details.cvd[open] ul.cv{animation:cvdIn .7s ease both}
   <button id="menuBtn" class="quiet" aria-expanded="false" aria-controls="menu">Chapters</button>
   <div id="menu"></div>
 </nav>
-<button id="sound" hidden>Sound off</button>
 <div id="keys">Next button, arrow keys or the menu at the top</div>
 
 <main>
@@ -757,7 +753,7 @@ details.cvd[open] ul.cv{animation:cvdIn .7s ease both}
   <footer>
     <div class="logo" data-logo></div>
     <p>HAGEN by Ingrid Ormevik · Bergen</p>
-    <p>Music on this page: <span class="it">Nordic Rainforest Pulse</span> by Ingrid Ormevik.<br>Church and Muséhagen images are visualisations made with Claude Code and Codex from my own photographs. All photos and videos by Ingrid Ormevik.<br>This website was made together with Claude (Claude Code, by Anthropic).</p>
+    <p>Church and Muséhagen images are visualisations made with Claude Code and Codex from my own photographs. All photos and videos by Ingrid Ormevik.<br>This website was made together with Claude (Claude Code, by Anthropic).</p>
     <p><button id="top" class="quiet">Back to the start</button></p>
   </footer>
 </section>
@@ -765,7 +761,7 @@ details.cvd[open] ul.cv{animation:cvdIn .7s ease both}
 
 
 
-<audio id="music" src="media/hagen_pulse.mp3" loop preload="none"></audio>
+
 
 <script>if(location.hash){history.replaceState(null,'',location.pathname+location.search)}</script>
 <script>
@@ -775,7 +771,7 @@ window.scrollTo(0,0);addEventListener('load',()=>{window.scrollTo(0,0);setTimeou
 (()=>{
   fetch('media/logo.svg').then(r=>r.text()).then(s=>document.querySelectorAll('[data-logo]').forEach(e=>e.innerHTML=s)).catch(()=>{});
   const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-  const gate=$('#gate'),gv=$('#gateVid'),music=$('#music'),snd=$('#sound'),bar=$('#bar'),menu=$('#menu'),keys=$('#keys'),chs=$$('.ch');
+  const gate=$('#gate'),gv=$('#gateVid'),bar=$('#bar'),menu=$('#menu'),keys=$('#keys'),chs=$$('.ch');
 
   // chapter menu, and a Next button at the end of every chapter
   chs.forEach((c,i)=>{
@@ -799,18 +795,9 @@ window.scrollTo(0,0);addEventListener('load',()=>{window.scrollTo(0,0);setTimeou
   let sq=false;addEventListener('scroll',()=>{if(sq)return;sq=true;requestAnimationFrame(()=>{sq=false;onScroll()})},{passive:true});
 
   // entering
-  let ctx=null,an=null,buf=null;
-  function listen(){try{ctx=new (window.AudioContext||window.webkitAudioContext)();const s=ctx.createMediaElementSource(music);
-    an=ctx.createAnalyser();an.fftSize=1024;an.smoothingTimeConstant=.82;s.connect(an);an.connect(ctx.destination);buf=new Uint8Array(an.frequencyBinCount)}catch(e){an=null}}
-  function fade(v,ms){const a=music.volume,t0=performance.now();(function s(t){const k=Math.min(1,Math.max(0,(t-t0)/ms));music.volume=a+(v-a)*k;if(k<1)requestAnimationFrame(s)})(t0)}
-  function enter(withSound){document.documentElement.style.scrollBehavior='auto';window.scrollTo(0,0);document.documentElement.style.scrollBehavior='';gate.classList.add('gone');if(gv){setTimeout(()=>{gv.pause();gv.removeAttribute('src');gv.load()},2200)}document.body.style.overflow='';bar.classList.add('show');keys.classList.add('show');setTimeout(()=>keys.classList.remove('show'),10000);snd.hidden=false;
-    if(withSound){if(!ctx)listen();music.volume=0;music.play().then(()=>{fade(.9,4000);snd.textContent='Sound off'}).catch(()=>snd.textContent='Sound on')}else snd.textContent='Sound on';onScroll()}
+  function enter(){document.documentElement.style.scrollBehavior='auto';window.scrollTo(0,0);document.documentElement.style.scrollBehavior='';gate.classList.add('gone');if(gv){setTimeout(()=>{gv.pause();gv.removeAttribute('src');gv.load()},2200)}document.body.style.overflow='';bar.classList.add('show');keys.classList.add('show');setTimeout(()=>keys.classList.remove('show'),10000);onScroll()}
   document.body.style.overflow='hidden';if(gv){gv.addEventListener('playing',()=>gate.classList.add('ready'));setTimeout(()=>gate.classList.add('ready'),1200)}
-  $('#enterSound').onclick=()=>enter(true);$('#enterQuiet').onclick=()=>enter(false);
-  snd.onclick=()=>{if(music.paused){if(!ctx)listen();if(ctx&&ctx.state==='suspended')ctx.resume();music.play();fade(.9,1500);snd.textContent='Sound off'}
-    else{fade(0,900);setTimeout(()=>music.pause(),950);snd.textContent='Sound on'}};
-
-
+  $('#enterGarden').onclick=enter;
 
   const toArtist=()=>$('#c14').scrollIntoView({behavior:'smooth',block:'start'});$$('.openArtist').forEach(b=>b.onclick=toArtist);
   // day and night
@@ -822,15 +809,13 @@ window.scrollTo(0,0);addEventListener('load',()=>{window.scrollTo(0,0);setTimeou
   const vo=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting){if(v.dataset.src&&!v.src)v.src=v.dataset.src;v.play().catch(()=>{})}else v.pause()}),{threshold:.2});
   $$('video[muted],video[data-src]').forEach(v=>vo.observe(v));
 
-  // roots that grow with the music
+  // quiet growing roots
   const cv=$('#roots'),g=cv.getContext('2d');let W,H,dpr;
   function size(){dpr=Math.min(1.5,devicePixelRatio||1);W=cv.width=Math.round(innerWidth*dpr);H=cv.height=Math.round(innerHeight*dpr)}size();addEventListener('resize',size);
   const still=matchMedia('(prefers-reduced-motion: reduce)').matches,tips=[];
   function seed(){const up=Math.random()<.65;tips.push({x:(Math.random()*.9+.05)*W,y:up?H+5:-5,a:(up?-Math.PI/2:Math.PI/2)+(Math.random()-.5)*.6,w:(1.2+Math.random()*1.4)*dpr,life:260+Math.random()*320,hue:Math.random()<.7?0:1,gen:0})}
-  let energy=0,beat=0,pb=0,last=0;
-  function frame(t){requestAnimationFrame(frame);if(document.hidden||t-last<42)return;last=t;let bass=0,mid=0;
-    if(an&&!music.paused){an.getByteFrequencyData(buf);for(let i=1;i<10;i++)bass+=buf[i];for(let i=10;i<120;i++)mid+=buf[i];bass/=9*255;mid/=110*255}
-    energy+=((bass*.6+mid*.6)-energy)*.12;if(bass-pb>.05&&bass>.45)beat=1;pb=bass;beat*=.9;
+  const energy=0,beat=0;let last=0;
+  function frame(t){requestAnimationFrame(frame);if(document.hidden||t-last<42)return;last=t;
     g.globalCompositeOperation='source-over';g.fillStyle=`rgba(5,8,6,${.035+.02*(1-energy)})`;g.fillRect(0,0,W,H);g.globalCompositeOperation='lighter';
     const want=Math.round(8+energy*30+beat*12);while(tips.length<want)seed();
     const sp=(.6+energy*2.6+beat*2)*dpr;
@@ -844,3 +829,4 @@ window.scrollTo(0,0);addEventListener('load',()=>{window.scrollTo(0,0);setTimeou
 </script>
 </body>
 </html>
+
