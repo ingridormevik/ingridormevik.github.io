@@ -149,6 +149,84 @@
   sync();
 })();
 
+// Physical feedback and optional room controls. The original machines own rules.
+(() => {
+ const root=document.getElementById('lab-6-machines');if(!root)return;
+ const q=s=>root.querySelector(s),all=s=>[...root.querySelectorAll(s)],tried=new Set(),timers=new Map();let awake=false,frame=0;
+ const allowed=()=>root.dataset.fmMotion==='running'&&!document.hidden;
+ function check(id,index){const key=id+'-'+index,node=q('[data-fm-checkpoint="'+key+'"]');if(node){node.classList.add('is-on');tried.add(key);}}
+ function complete(id){all('[data-fm-panel="'+id+'"] [data-fm-checkpoint]').forEach((node,index)=>check(id,index));}
+ all('[data-fm-select].is-tested').forEach(tab=>complete(tab.dataset.fmSelect));
+ root.addEventListener('fm-discovery',event=>{if(event.detail?.id)complete(event.detail.id);});
+ root.addEventListener('input',event=>{if(event.target.matches('[data-fm-type]'))check(1,0);if(event.target.matches('[data-fm-space]'))check(1,1);if(event.target.matches('[data-fm-clarity]'))delete q('.fm-test-machine').dataset.fmJourney;});
+ root.addEventListener('click',event=>{
+  const b=event.target.closest('button');if(!b||b.disabled)return;
+  const machine=b.closest('.fm-apparatus,.fm-engine-port');
+  if(machine&&allowed()){clearTimeout(timers.get(machine));machine.classList.remove('fm-operated');void machine.offsetWidth;machine.classList.add('fm-operated');timers.set(machine,setTimeout(()=>{machine.classList.remove('fm-operated');timers.delete(machine);},600));}
+  const id=Number(b.closest('[data-fm-panel]')?.dataset.fmPanel);
+  if(b.matches('[data-fm-switch]')){if(q('[data-fm-signal]').dataset.state==='on')check(2,0);else if(tried.has('2-0'))check(2,1);}
+  if(b.matches('[data-fm-place]')){check(3,b.dataset.fmPlace==='shelf'?0:1);root.dataset.fmArchive=b.dataset.fmPlace;}
+  if(b.matches('[data-fm-gate]'))check(4,q('[data-fm-door]').dataset.open==='true'?1:0);
+  if(id===4){const keys=Number(q('[data-fm-keys]').textContent);all('.fm-key-rack i').forEach((key,index)=>key.classList.toggle('is-held',index<keys));}
+  if(b.matches('[data-fm-book]'))check(5,b.dataset.fmBook==='interface'?0:1);
+  if(id===6){if(q('[data-fm-access]').dataset.fmAccess==='denied')check(6,0);else if(tried.has('6-0'))check(6,1);}
+  if(b.matches('[data-fm-bus]')){const version=Number(q('[data-fm-clarity]').value);if(version===0)check(7,0);if(version===2&&tried.has('7-0'))check(7,1);b.closest('.fm-test-machine').dataset.fmJourney='arrived';}
+  if(id===8){if(q('[data-fm-file=index]').getAttribute('aria-pressed')==='true')check(8,0);if(q('[data-fm-file=style]').getAttribute('aria-pressed')==='true'&&q('[data-fm-file=image]').getAttribute('aria-pressed')==='true')check(8,1);if(q('.fm-export-machine').dataset.fmPackageState==='verified')check(8,2);}
+ });
+ function power(){root.dataset.fmPower=awake?'awake':'idle';const b=q('[data-fm-wake]');b.setAttribute('aria-pressed',String(awake));b.textContent=awake?'Let the lab idle':'Wake the lab';q('[data-fm-power-status]').textContent=awake?(allowed()?'The equipment picks up speed. Choose an experiment below.':'Power is on; animation is paused in the motion controls below.'):'The equipment is idling. Try its controls.';}
+ function energy(){const n=Number(root.dataset.fmDiscoveries)||0;all('.fm-current>i').forEach((lamp,index)=>lamp.classList.toggle('is-earned',index<n));}
+ q('[data-fm-wake]').addEventListener('click',()=>{awake=!awake;power();if(awake&&allowed())try{window.labAudio?.play('transmit');}catch{}});
+ q('[data-fm-room-controls]').hidden=false;power();energy();
+ new MutationObserver(records=>{if(records.some(r=>r.attributeName==='data-fm-motion'))power();if(records.some(r=>r.attributeName==='data-fm-discoveries'))energy();}).observe(root,{attributes:true,attributeFilter:['data-fm-motion','data-fm-discoveries']});
+ const art=q('[data-native-lab-art]');
+ function clear(){if(frame){cancelAnimationFrame(frame);frame=0;}art.style.removeProperty('--fm-look-x');art.style.removeProperty('--fm-look-y');}
+ art.addEventListener('pointermove',event=>{if(!allowed()||event.pointerType==='touch'||frame)return;frame=requestAnimationFrame(()=>{frame=0;if(!allowed())return;const box=art.getBoundingClientRect();if(!box.width||!box.height)return;art.style.setProperty('--fm-look-x',Math.max(-4,Math.min(4,(event.clientX-box.left)/box.width*8-4))+'px');art.style.setProperty('--fm-look-y',Math.max(-3,Math.min(3,(event.clientY-box.top)/box.height*6-3))+'px');});},{passive:true});
+ art.addEventListener('pointerleave',clear);
+ function stop(){clear();timers.forEach(clearTimeout);timers.clear();all('.fm-operated').forEach(node=>node.classList.remove('fm-operated'));}
+ document.addEventListener('lab-motion-change',stop);document.addEventListener('lab-preferences-change',stop);document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});addEventListener('pagehide',stop);
+})();
+
+// Six forms, six small actions. Nothing is generated for an assessed project.
+document.querySelectorAll('[data-genre-playground]').forEach(root=>{
+  const q=s=>root.querySelector(s),stage=q('[data-genre-stage]');let mode='art',turn=0,palette=0,moves=0,notes=[],layers=new Set();
+  const specs={art:['What changes when the composition moves?','ART / FORM + MOVEMENT',1,'Try the Light room for scale and spacing.'],game:['Can you reach the exit?','GAME / STATE + RULES',4,'Try the Gate engine to test a condition.'],literature:['Which memory do you keep?','E-LIT / CHOICE + LANGUAGE',3,'Try the Hidden archive to connect place and story.'],sound:['What can three notes suggest?','SOUND / SEQUENCE + TIME',2,'Try the Switchboard to connect an action with a response.'],documentary:['How does the viewpoint change the account?','WEBDOC / VIEWPOINT + EVIDENCE',5,'Try the Evidence desk to connect a question with a source.'],hybrid:['What happens when forms meet?','HYBRID / COMBINE + TEST',6,'Try the Future simulator to connect form with a question.']};
+  function report(text){q('[data-genre-status]').textContent=text;root.dispatchEvent(new CustomEvent('genre-action',{bubbles:true,detail:{genre:mode}}));}
+  function button(label,action,pressed){const b=document.createElement('button');b.type='button';b.textContent=label;if(pressed!==undefined)b.setAttribute('aria-pressed',String(pressed));b.addEventListener('click',()=>action(b));q('[data-genre-actions]').append(b);return b;}
+  function load(name){
+    mode=name;stage.dataset.mode=name;delete stage.dataset.ending;delete stage.dataset.playing;stage.style.removeProperty('--genre-turn');stage.style.removeProperty('--genre-player');
+    notes=[];moves=0;turn=0;palette=0;layers.clear();stage.dataset.palette='0';stage.dataset.layers='';
+    root.querySelectorAll('[data-genre]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.genre===name)));
+    const [question,stamp,station,bridge]=specs[name];q('[data-genre-question]').textContent=question;q('[data-genre-stamp]').textContent=stamp;q('[data-genre-bridge]').textContent=bridge;
+    const route=q('[data-genre-route]');route.href=(root.closest('.coding-lab')?'lab-programme.html':'')+'#fm-station-'+station;
+    q('[data-genre-actions]').replaceChildren();const words=q('[data-genre-words]');
+    if(name==='art'){
+      words.textContent='A composition you can change.';q('[data-genre-status]').textContent='Rotate it or change its palette. Compare both versions.';
+      button('Rotate',()=>{turn=(turn+1)%4;stage.style.setProperty('--genre-turn',turn*90+'deg');report('Same shapes, different relationships. What draws your eye now?');});
+      button('Change palette',()=>{palette=1-palette;stage.dataset.palette=String(palette);report('The colours changed. Which version fits your intention?');});
+    }else if(name==='game'){
+      words.textContent='0 / 3 moves';q('[data-genre-status]').textContent='Each move changes a value. The exit opens at three.';
+      button('Make a move',()=>{if(moves===3){report('You reached the exit. Restart to test the rule again.');return;}moves++;stage.style.setProperty('--genre-player',moves*100+'%');words.textContent=moves+' / 3 moves';stage.dataset.ending=moves===3?'open':'locked';report(moves===3?'The condition is true. The exit opens.':'The value changed; the exit is still closed.');});
+      button('Restart',()=>load('game'));
+    }else if(name==='literature'){
+      words.textContent='At the station, you find a letter addressed to your future self.';q('[data-genre-status]').textContent='Choose what the reader does. Read the consequence.';
+      button('Keep the letter',()=>{words.textContent='You keep the letter unopened. Its weight stays with you all the way home.';stage.dataset.ending='keep';report('The reader chose to keep it. What could the next scene remember?');});
+      button('Read it here',()=>{words.textContent='Only one line: “You are allowed to begin again.” The train arrives.';stage.dataset.ending='read';report('The choice revealed a different passage. Your words carry the consequence.');});
+    }else if(name==='sound'){
+      words.textContent='Choose three notes';q('[data-genre-status]').textContent='Build a sequence. Play shows the score; sound follows the lab’s sound setting.';
+      ['Low','Mid','High'].forEach((label,index)=>button(label,()=>{if(notes.length===3)notes=[];notes.push(index);words.textContent=notes.map(n=>['LOW','MID','HIGH'][n]).join(' → ');q('.genre-score').dataset.score=notes.join('');q('.genre-score').querySelectorAll('i').forEach((bar,i)=>bar.style.setProperty('--note-height',notes[i]===undefined?'10%':[25,55,90][notes[i]]+'%'));report(notes.length===3?'Three notes ready. Play and compare their order.':'Add another note.');}));
+      button('Play',()=>{if(notes.length!==3){q('[data-genre-status]').textContent='Choose three notes first.';return;}stage.dataset.playing=stage.dataset.playing==='a'?'b':'a';try{window.labAudio?.play('history-'+notes.join(''));}catch{}report('Playing '+notes.map(n=>['low','mid','high'][n]).join(' → ')+'. The score remains visible with sound off.');});
+    }else if(name==='documentary'){
+      words.textContent='One square. Three ways to approach it.';q('[data-genre-status]').textContent='These are fictional examples. Choose a viewpoint and notice what evidence it would need.';
+      [['Place','A map marks the bench where people used to wait.','A map needs a maker, date and a clear source.'],['Witness','“I remember meeting everyone here.”','A recorded account needs context, consent and attribution.'],['Sequence','Before: a meeting place. After: an empty route through the square.','A before/after claim needs dated evidence; sequence alone is not proof.']].forEach(([label,text,status])=>button(label,()=>{words.textContent=text;stage.dataset.ending=label.toLowerCase();report(status);}));
+    }else{
+      words.textContent='Choose the layers you want to combine.';q('[data-genre-status]').textContent='Turn layers on and off. Keep the combination that communicates your idea.';
+      ['art','text','score'].forEach(layer=>button({art:'Visual layer',text:'Text layer',score:'Score layer'}[layer],b=>{layers.has(layer)?layers.delete(layer):layers.add(layer);stage.dataset.layers=[...layers].join(' ');b.setAttribute('aria-pressed',String(layers.has(layer)));words.textContent=layers.has('text')?'The same place holds more than one story.':'Choose the layers you want to combine.';report(layers.size>1?'You combined '+layers.size+' forms. Which layer is doing useful work?':'One form can be enough. Try another layer if it adds meaning.');},false));
+    }
+  }
+  root.querySelectorAll('[data-genre]').forEach(b=>b.addEventListener('click',()=>load(b.dataset.genre)));
+  load('art');root.classList.add('genre-ready');
+});
+
     }catch(error){
       const fallback=document.querySelector('[data-fm-fallback]');
       if(fallback){fallback.hidden=false;fallback.textContent='The machine controls could not start. Reload this lab to try again. The experiments and guides remain readable below.';}
