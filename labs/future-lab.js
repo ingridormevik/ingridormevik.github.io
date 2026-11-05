@@ -1,37 +1,21 @@
-/* A classroom illustration, not a resource simulation or student submission. */
+// Optional questions. Students write and save their own idea in the existing notebook.
 (() => {
-  const demo=document.querySelector('[data-future-demo]');
-  if(!demo)return;
-  const budget=8, names=['homes','garden','server'];
-  const values={homes:3,garden:3,server:2};
-  const total=()=>names.reduce((sum,name)=>sum+values[name],0);
-  const render=()=>{
-    const remaining=budget-total();
-    demo.querySelector('[data-remaining]').textContent=String(remaining);
-    for(const name of names){
-      demo.querySelector(`[data-value="${name}"]`).textContent=String(values[name]);
-      demo.querySelector(`[data-add="${name}"]`).disabled=remaining===0;
-      demo.querySelector(`[data-remove="${name}"]`).disabled=values[name]===0;
-    }
-    const effects=[];
-    if(values.homes<3)effects.push('Homes: the fictional neighbourhood has water restrictions.');
-    else effects.push('Homes: the fictional neighbourhood has its usual supply.');
-    if(values.garden<3)effects.push('Garden: fewer growing beds can be watered.');
-    else effects.push('Garden: all its growing beds can be watered.');
-    if(values.server<2)effects.push('Server: the fictional archive is offline.');
-    else effects.push('Server: the fictional archive is online.');
-    demo.querySelector('[data-consequence]').textContent=effects.join(' ');
+  const lab=document.getElementById('lab-6');if(!lab)return;
+  const controls=lab.querySelector('[data-future-controls]');if(!controls)return;
+  const question=lab.querySelector('[data-future-question]');
+  const own=lab.querySelector('[data-future-own]');
+  const fallback=lab.querySelector('[data-future-fallback]');
+  const questions={
+    care:'Choose a place or activity you care about. What needs repairing in its future? What could a visitor do that makes a difference?',
+    access:'Choose one rule people live with. Who benefits from it? What happens when a visitor follows it, refuses it or changes it?',
+    memory:'Choose something someone wants to keep, share or forget. Who decides what remains? What action lets a visitor experience that decision?'
   };
-  demo.addEventListener('click',event=>{
-    const button=event.target.closest('button');
-    if(!button||!demo.contains(button))return;
-    const add=button.dataset.add,remove=button.dataset.remove;
-    if(names.includes(add)&&total()<budget)values[add]++;
-    if(names.includes(remove)&&values[remove]>0)values[remove]--;
-    if(button.hasAttribute('data-demo-reset'))Object.assign(values,{homes:3,garden:3,server:2});
-    render();
-  });
-  demo.querySelector('[data-demo-controls]').hidden=false;
-  demo.querySelector('[data-demo-fallback]').hidden=true;
-  render();
+  const initial=question.textContent;
+  const choose=key=>{
+    lab.querySelectorAll('[data-future-direction]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.futureDirection===key)));
+    question.textContent=questions[key]||initial;
+  };
+  lab.querySelectorAll('[data-future-direction]').forEach(button=>button.addEventListener('click',()=>choose(button.dataset.futureDirection)));
+  own.addEventListener('click',()=>choose(null));
+  controls.hidden=false;own.hidden=false;fallback.hidden=true;
 })();

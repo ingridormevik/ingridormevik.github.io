@@ -1,22 +1,19 @@
-/* Friday 6 November. Keep these rules inside this lab. */
-#lab-6 .future-intro,#lab-6 .future-rule-demo,#lab-6 .future-build,#lab-6 .future-test,#lab-6 .future-assessment{margin:1.5rem 0;padding:clamp(1rem,3vw,2rem);border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;box-shadow:none}
-#lab-6 .future-intro h3,#lab-6 .future-rule-demo h3,#lab-6 .future-build h3,#lab-6 .future-test h3{font-family:Arial,Helvetica,sans-serif;letter-spacing:-.025em;line-height:1.15;font-size:clamp(1.4rem,3vw,2rem);text-transform:none;margin:.3rem 0 1rem}
-#lab-6 .future-intro p,#lab-6 .future-rule-demo p,#lab-6 .future-build p,#lab-6 .future-test p{max-width:70ch;line-height:1.6}
-#lab-6 .future-rule-demo fieldset{border:0;padding:0;margin:1.5rem 0}
-#lab-6 .future-rule-demo legend{font-weight:700;margin-bottom:.75rem}
-#lab-6 .future-resource{display:grid;grid-template-columns:minmax(9rem,1fr) auto auto auto;gap:.6rem;align-items:center;border-top:1px solid currentColor;padding:.8rem 0}
-#lab-6 .future-rule-demo button{min-width:2.75rem;min-height:2.75rem;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;box-shadow:none;font:inherit;padding:.5rem .8rem;cursor:pointer}
-#lab-6 .future-rule-demo button:disabled{opacity:.45;cursor:default}
-#lab-6 .future-rule-demo button:focus-visible,#lab-6 .future-rule-demo a:focus-visible{outline:3px solid currentColor;outline-offset:4px}
-#lab-6 .future-resource output{font-size:1.5rem;font-weight:700;min-width:2ch;text-align:center;font-variant-numeric:tabular-nums}
-#lab-6 .future-total{font-weight:700;font-size:1.15rem}
-#lab-6 .future-consequence{min-height:3.5em;border-left:3px solid currentColor;padding-left:1rem}
-#lab-6 .future-rule-demo .future-demo-note,#lab-6 .future-assessment p{font-size:.95rem}
-#lab-6 .future-build ol,#lab-6 .future-test ol{padding-left:1.3rem}
-#lab-6 .future-build li,#lab-6 .future-test li{margin:.8rem 0;line-height:1.6}
-#lab-6 .future-build details{margin:1rem 0;padding:.5rem 0;border-top:1px solid currentColor}
-#lab-6 .future-build summary{font-weight:700;cursor:pointer;padding:.5rem 0}
-#lab-6 .future-assessment h4{font-family:Arial,Helvetica,sans-serif;font-size:1.1rem;text-transform:none;margin:0 0 .7rem}
-#lab-6 .future-optional{padding:1rem 0;border-top:1px solid currentColor;margin-top:1.5rem}
-@media(max-width:450px){#lab-6 .future-resource{grid-template-columns:minmax(5rem,1fr) auto auto auto;gap:.35rem}#lab-6 .future-rule-demo button{padding:.4rem .6rem}}
-@media print{#lab-6 .future-rule-demo button{display:none}#lab-6 .future-consequence{min-height:0}}
+/* Only layout within Lab 6. The existing lab CSS supplies the visual system. */
+#lab-6 .future-workbench{margin:22px 0 30px}
+#lab-6 .future-workbench>h3{margin-bottom:10px}
+#lab-6 .future-choice{width:100%;cursor:pointer}
+#lab-6 .future-choice svg{display:block;width:64px;height:64px;margin-bottom:12px}
+#lab-6 .future-choice>strong{display:block;margin:0 0 8px;font:inherit;font-weight:800}
+#lab-6 .future-choice[aria-pressed=true]{outline:3px solid var(--accent);outline-offset:4px}
+#lab-6 [data-future-question]{min-height:5em}
+#lab-6 [data-future-own]{margin-bottom:14px}
+#lab-6 .future-test{margin-top:0}
+#lab-6 .future-test li{padding:5px 0}
+#lab-6 .resources>details{margin:16px}
+#lab-6 #mission-note-6{display:block;width:100%;min-height:130px;margin-top:10px}
+#lab-6 .mission-note-label{display:block;margin-top:22px}
+#lab-6 .obligatory-banner>summary{cursor:pointer}
+#lab-6 .quest-requirements{display:none}
+.access-no-motion #lab-6 .future-choice *,.access-calm #lab-6 .future-choice *{animation:none!important}
+@media(prefers-reduced-motion:reduce){#lab-6 .future-choice *{animation:none!important}}
+@media(max-width:650px){#lab-6 .future-workbench .fw-moves{grid-template-columns:1fr}#lab-6 [data-future-question]{min-height:0}}

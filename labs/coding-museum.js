@@ -13,9 +13,11 @@
   function speak(){const [person,words]=conversations[topic][step];scene.dataset.speaker=person;speaker.textContent=person==='ada'?'Ada Lovelace · imagined dialogue':'Alan Turing · imagined dialogue';line.textContent=words;root.querySelector('[data-dialogue-count]').textContent=`${step+1} / ${conversations[topic].length}`;next.textContent=step===conversations[topic].length-1?'Replay conversation':'Continue conversation';root.querySelectorAll('[data-dialogue-topic]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.dialogueTopic===topic)));}
   root.querySelectorAll('[data-dialogue-topic]').forEach(b=>b.addEventListener('click',()=>{topic=b.dataset.dialogueTopic;step=0;speak();}));
   next.addEventListener('click',()=>{step=(step+1)%conversations[topic].length;speak();});
-  const pause=root.querySelector('[data-museum-pause]');let paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const setPause=()=>{root.classList.toggle('museum-paused',paused);pause.setAttribute('aria-pressed',String(paused));pause.textContent=paused?'Motion paused':'Pause motion';};
-  pause.addEventListener('click',()=>{paused=!paused;setPause();});setPause();
+  const pause=root.querySelector('[data-museum-pause]');let paused=matchMedia('(prefers-reduced-motion: reduce)').matches||Boolean(document.documentElement?.classList.contains('access-no-motion'));
+  const setPause=()=>{root.classList.toggle('museum-paused',paused);if(pause){pause.setAttribute('aria-pressed',String(paused));pause.textContent=paused?'Motion paused':'Pause motion';}};
+  pause?.addEventListener('click',()=>{paused=!paused;setPause();});setPause();
+  document.addEventListener('lab-motion-change',()=>{paused=Boolean(document.documentElement?.classList.contains('access-no-motion'));setPause();});
+  document.addEventListener('lab-preferences-change',event=>{paused=event.detail.choice==='off'||matchMedia('(prefers-reduced-motion: reduce)').matches;setPause();});
   document.addEventListener('visibilitychange',()=>root.classList.toggle('museum-offscreen',document.hidden));
   if('IntersectionObserver' in window){new IntersectionObserver(entries=>entries.forEach(entry=>entry.target.classList.toggle('museum-offscreen',!entry.isIntersecting)),{rootMargin:'80px'}).observe(scene);}
   const specimen=root.querySelector('[data-specimen]'),heading=root.querySelector('[data-specimen-title]'),message=root.querySelector('[data-specimen-message]'),action=root.querySelector('[data-specimen-action]'),code=root.querySelector('[data-bench-code]');
@@ -33,6 +35,6 @@
   root.querySelectorAll('[data-lesson]').forEach(b=>b.addEventListener('click',()=>{lesson=b.dataset.lesson;render();}));
   [text,spacing,border,colour,speed].forEach(input=>input.addEventListener('input',render));
   action.addEventListener('click',()=>{count++;render();});root.querySelector('[data-count-reset]').addEventListener('click',()=>{count=0;render();});motion.addEventListener('click',()=>{moving=!moving;render();});
-  root.querySelector('[data-bench-controls]').hidden=false;root.querySelector('[data-museum-controls]').hidden=false;root.querySelector('[data-bench-fallback]').hidden=true;
+  root.querySelector('[data-bench-controls]').hidden=false;const ownControls=root.querySelector('[data-museum-controls]');if(ownControls)ownControls.hidden=false;root.querySelector('[data-bench-fallback]').hidden=true;
   speak();render();root.classList.add('museum-ready');
 })();
