@@ -347,6 +347,8 @@
 @media(max-width:650px){#lab-6 .fm-opening{padding:24px 18px}#lab-6 .fm-opening h3{font-size:clamp(38px,10vw,52px);max-width:14ch}#lab-6 .fm-stations{grid-template-columns:repeat(2,minmax(0,1fr));padding:8px 14px 24px;gap:13px}#lab-6 .fm-stations button{grid-template-rows:80px auto;min-height:145px;padding:10px 10px 14px}#lab-6 .fm-station-art{height:80px}#lab-6 .fm-stations button>span:not(.fm-station-art){font-size:13px}#lab-6 .fm-station{padding:24px 16px}#lab-6 .fm-apparatus{padding:24px 16px}#lab-6 .fm-brief h4{font-size:28px}}
 @media(prefers-reduced-motion:reduce){#lab-6 .fm-opening .mega-lab{transform:none!important}#lab-6 .fm-station-art *{animation:none!important;transition:none!important}}
 @media print{#lab-6 .fm-room-controls,#lab-6 .fm-checkpoints{display:none}#lab-6 .fm-floor{display:block}#lab-6 .fm-chambers{border:0}}
+/* Keep the active machine close to its selector on a phone. */
+@media(max-width:650px){#lab-6 .fm-stations{display:flex;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;align-items:stretch;padding-bottom:19px}#lab-6 .fm-stations button{flex:0 0 155px;scroll-snap-align:start}#lab-6 .fm-stations button:focus-visible{outline-offset:-4px}}
 
 .studio .genre-playground{border:4px solid #10151f;background:#17384a;color:#f3f0e8;border-radius:12px;padding:24px;margin:24px 0 30px;box-shadow:6px 8px 0 #10151f}
 .studio .genre-heading h3{font-size:clamp(25px,3vw,36px);line-height:1.12;margin:10px 0 14px;color:#f3f0e8}
