@@ -1,3 +1,9 @@
+(() => {
+  let started=false,observer;
+  function start(){
+    if(started||!document.querySelector('[data-fm-markup-ready]'))return;
+    started=true;observer?.disconnect();
+    try{
 // Eight small practice machines. No network calls or assessment artefact generation.
 (() => {
   const root=document.getElementById('lab-6-machines');if(!root)return;
@@ -45,7 +51,21 @@
   all('[data-fm-file]').forEach(button=>button.addEventListener('click',()=>{const id=button.dataset.fmFile;files.has(id)?files.delete(id):files.add(id);button.setAttribute('aria-pressed',String(files.has(id)));button.textContent=(files.has(id)?'✓ ':'+ ')+fileNames[id];packageView();}));
   $('[data-fm-wrapper]').addEventListener('change',packageView);
   $('[data-fm-export-test]').addEventListener('click',()=>{const status=$('[data-fm-export-status]');if(!files.has('index'))status.textContent='No entry page. Add index.html so the host has somewhere to start.';else if($('[data-fm-wrapper]').checked)status.textContent='The entry page is inside an extra folder. Put index.html at the root of the upload.';else if(files.size<3)status.textContent='The page is there, but its styles or image are missing. Include the assets it needs.';else{$('.fm-export-machine').dataset.fmPackageState='verified';status.textContent='Package check passed: index.html and its assets are together. Next: publish and test the real URL signed out.';done(8,'Export bay tried. You checked the delivery package; the real published link still needs testing.');}});
-  all('.fm-apparatus button,.fm-apparatus input').forEach(control=>{control.disabled=false;});
+  // These are controls for the original illustrated engines, not extra lab milestones.
+  let cardStep=0,tapeHead=0;
+  $('[data-fm-card]')?.addEventListener('click',()=>{
+    cardStep=(cardStep+1)%4;
+    const labels=['Read a card','Add the values','Print the result','Start another card'];
+    $('[data-fm-card]').textContent=labels[cardStep];
+    $('[data-fm-card-output]').textContent=['Input: 2 + 3','READ: 2 and 3 are in memory','ADD: 2 + 3 = 5','PRINT: 5'][cardStep];
+    root.dataset.fmCard=String(cardStep);
+  });
+  $('[data-fm-tape]')?.addEventListener('click',()=>{
+    tapeHead=tapeHead===4?1:tapeHead+1;
+    $('[data-fm-tape-output]').textContent=Array.from({length:4},(_,i)=>(i===tapeHead?'[':'')+(i<tapeHead?'1':'0')+(i===tapeHead?']':'')).join(' ')+(tapeHead===4?' · done':'');
+    root.dataset.fmTape=String(tapeHead);
+  });
+  all('.fm-apparatus button,.fm-apparatus input,.fm-engine-controls button').forEach(control=>{control.disabled=false;});
   $('[data-fm-fallback]').hidden=true;$('[data-fm-nav]').hidden=false;$('[data-fm-footer]').hidden=false;
   paint();select(1);fromHash();root.classList.add('fm-ready');
 })();
@@ -67,13 +87,46 @@
   const lab=root.closest('.lab'),workbench=root.closest('.journey-panel');
   const html=document.documentElement||document.body;
   const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)');
-  let inView=true,queued=false,rewardTimer;
-  function paused(){return Boolean(document.hidden||!inView||lab?.hidden||workbench?.hidden||reduced?.matches||html.classList.contains('access-no-motion')||html.classList.contains('access-calm'));}
-  function sync(){const off=paused();root.classList.toggle('fm-motion-paused',off);root.dataset.fmMotion=off?'paused':'running';}
+  let inView=true,queued=false,rewardTimer,localPaused=false;
+  let waitingMotionOff=false,waitingCalm=false;
+  try{waitingMotionOff=localStorage.getItem('dik105-motion')==='off';waitingCalm=JSON.parse(localStorage.getItem('dik105-accessibility-v1')||'null')?.calm===true;}catch{}
+  const motionStatus=root.querySelector('[data-fm-motion-status]'),motionToggle=root.querySelector('[data-fm-motion-toggle]');
+  function reason(){
+    if(reduced?.matches)return 'device';
+    if(html.classList.contains('access-calm')||(waitingCalm&&document.querySelector('[data-access-calm]')?.disabled!==false))return 'calm';
+    if(html.classList.contains('access-no-motion')||(waitingMotionOff&&!document.querySelector('.motion-toggle')))return 'settings';
+    if(localPaused)return 'local';
+    if(document.hidden||!inView||lab?.hidden||workbench?.hidden)return 'hidden';
+    return '';
+  }
+  const paused=()=>Boolean(reason());
+  function sync(){
+    const why=reason(),off=Boolean(why);root.classList.toggle('fm-motion-paused',off);root.dataset.fmMotion=off?'paused':'running';root.dataset.fmMotionReason=why;
+    if(motionStatus)motionStatus.textContent={device:'Your device requests reduced motion. The controls still work.',calm:'Calm layout is on. The controls still work.',settings:'Motion is off in your saved lab settings.',local:'Machinery paused. The controls still work.',hidden:'Machinery waits while this room is out of view.'}[why]||'Machinery running';
+    if(motionToggle){motionToggle.textContent=why==='device'||why==='calm'?'Motion settings':off?'Resume machinery':'Pause machinery';motionToggle.setAttribute('aria-pressed',String(!off));}
+  }
   function queue(){if(queued)return;queued=true;const update=()=>{queued=false;sync();};if(window.requestAnimationFrame)window.requestAnimationFrame(update);else update();}
   document.addEventListener('visibilitychange',sync);
   document.addEventListener('lab-motion-change',sync);
   document.addEventListener('lab-preferences-change',queue);
+  motionToggle?.addEventListener('click',()=>{
+    const why=reason();
+    if(why==='device'||why==='calm'){
+      const settings=document.querySelector('.access-console');if(settings){settings.open=true;settings.querySelector('summary')?.focus();settings.scrollIntoView?.({block:'center'});}return;
+    }
+    if(why==='settings'){
+      const native=document.querySelector('.motion-toggle');
+      if(native){native.click();localPaused=false;sync();return;}
+      const control=document.querySelector('[data-access-motion]');
+      if(control&&!control.disabled){control.checked=false;control.dispatchEvent(new Event('change',{bubbles:true}));localPaused=false;sync();return;}
+      // The older preference controllers can still be loading. Record this
+      // explicit choice so they read it when they start, without waiting for them.
+      waitingMotionOff=false;localPaused=false;html.classList.remove('access-no-motion');
+      try{localStorage.setItem('dik105-motion','on');}catch{}
+      document.dispatchEvent(new CustomEvent('lab-preferences-change',{detail:{choice:'on'}}));sync();return;
+    }
+    localPaused=!localPaused;sync();
+  });
   reduced?.addEventListener?.('change',sync);
   if(typeof MutationObserver!=='undefined'){
     const observer=new MutationObserver(queue);
@@ -92,5 +145,16 @@
   });
   window.addEventListener('pagehide',()=>{root.classList.toggle('fm-motion-paused',true);root.dataset.fmMotion='paused';clearTimeout(rewardTimer);});
   window.addEventListener('pageshow',sync);
+  const controls=root.querySelector('[data-fm-motion-controls]');if(controls)controls.hidden=false;
   sync();
+})();
+
+    }catch(error){
+      const fallback=document.querySelector('[data-fm-fallback]');
+      if(fallback){fallback.hidden=false;fallback.textContent='The machine controls could not start. Reload this lab to try again. The experiments and guides remain readable below.';}
+      console.error('Future lab could not start',error);
+    }
+  }
+  start();
+  if(!started){observer=new MutationObserver(start);observer.observe(document.documentElement,{childList:true,subtree:true});document.addEventListener('DOMContentLoaded',start,{once:true});}
 })();
