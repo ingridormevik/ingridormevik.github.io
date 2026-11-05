@@ -20,7 +20,7 @@ I designed and built this interactive teaching environment for DIKULT105 at the 
 
 - [Read the article: Building the DIKULT105 labs](https://ingridormevik.github.io/posts/2026-11-05-building-the-dikult105-labs.html)
 - [Open the eight-week lab map](https://ingridormevik.github.io/labs/lab-programme.html)
-- [Future lab, 6 November](https://ingridormevik.github.io/labs/lab-programme.html#lab-6-workbench)
+- [Whole-course recap and Future lab, 6 November](https://ingridormevik.github.io/labs/lab-programme.html#lab-6-workbench): all eight labs with new tips, practical tests, troubleshooting and a final-assignment route
 - [The coding museum](https://ingridormevik.github.io/labs/vscode-workflow.html): HTML, CSS, JavaScript, animation, practical VS Code advice, debugging, reusable styles, performance and critical judgement
 - [Academic library](https://ingridormevik.github.io/labs/academic-library.html)
 - [Construct toolkit](https://ingridormevik.github.io/labs/tools.html#construct-toolkit)
@@ -28,7 +28,7 @@ I designed and built this interactive teaching environment for DIKULT105 at the 
 
 The coding museum uses imagined Ada Lovelace and Alan Turing conversations, labelled as fiction and accompanied by historical sources. It includes a static transcript, motion controls and an interactive specimen for comparing the three web languages.
 
-The optional AI-assisted coding practice has separate rules from the final assessment. The current final guide prohibits AI in making the assessed work and writing its text. The official course brief and Mitt UiB govern assessment requirements.
+The optional AI-assisted coding practice has separate rules from the final assessment. The current final guide says no AI in making the work unless it specifically addresses AI as part of speculative digital futures, within the scope explained by Alinta. AI must not write the text; light editing is permitted in English. The official course brief and Mitt UiB govern assessment requirements.
 
 ## HAGEN proposal
 

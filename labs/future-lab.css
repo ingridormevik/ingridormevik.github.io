@@ -1,19 +1,27 @@
-/* Only layout within Lab 6. The existing lab CSS supplies the visual system. */
-#lab-6 .future-workbench{margin:22px 0 30px}
-#lab-6 .future-workbench>h3{margin-bottom:10px}
-#lab-6 .future-choice{width:100%;cursor:pointer}
-#lab-6 .future-choice svg{display:block;width:64px;height:64px;margin-bottom:12px}
-#lab-6 .future-choice>strong{display:block;margin:0 0 8px;font:inherit;font-weight:800}
-#lab-6 .future-choice[aria-pressed=true]{outline:3px solid var(--accent);outline-offset:4px}
-#lab-6 [data-future-question]{min-height:5em}
-#lab-6 [data-future-own]{margin-bottom:14px}
+/* Layout only, scoped to Friday. Colours, type and controls come from the lab. */
+#lab-6 .course-recap,#lab-6 .assignment-route,#lab-6 .recap-help{margin:24px 0 36px}
+#lab-6 .recap-controls{display:flex;flex-wrap:wrap;gap:14px;margin:22px 0}
+#lab-6 .recap-labs{display:grid;gap:12px}
+#lab-6 .recap-lab{margin:0}
+#lab-6 .recap-lab>summary{display:list-item}
+#lab-6 .recap-lab>summary>span{display:inline-block;vertical-align:top}
+#lab-6 .recap-controls[hidden]{display:none}
+#lab-6 .recap-number{min-width:2.5ch;font-size:1.5em;font-weight:800}
+#lab-6 .recap-lab>summary strong,#lab-6 .recap-lab>summary small{display:block}
+#lab-6 .recap-lab>summary small{font-size:.9em;font-weight:400;margin-top:5px}
+#lab-6 .recap-body{padding:0 24px 20px}
+#lab-6 .recap-body p{max-width:78ch}
+#lab-6 .recap-body li{padding:6px 0;max-width:78ch}
+#lab-6 .submission-route{padding-left:28px}
+#lab-6 .submission-route>li{padding:8px 0 16px}
+#lab-6 .submission-route h4{font-size:1.15em;margin-bottom:10px}
+#lab-6 .recap-help>details{margin:14px 0}
+#lab-6 .future-assessment{margin:24px 0}
+#lab-6 .future-assessment>p{padding:0 24px 20px}
+#lab-6 #mission-note-6{display:block;width:100%;min-height:170px;margin-top:10px}
+#lab-6 .mission-note-label{display:block;margin-top:22px}
 #lab-6 .future-test{margin-top:0}
 #lab-6 .future-test li{padding:5px 0}
-#lab-6 .resources>details{margin:16px}
-#lab-6 #mission-note-6{display:block;width:100%;min-height:130px;margin-top:10px}
-#lab-6 .mission-note-label{display:block;margin-top:22px}
 #lab-6 .obligatory-banner>summary{cursor:pointer}
 #lab-6 .quest-requirements{display:none}
-.access-no-motion #lab-6 .future-choice *,.access-calm #lab-6 .future-choice *{animation:none!important}
-@media(prefers-reduced-motion:reduce){#lab-6 .future-choice *{animation:none!important}}
-@media(max-width:650px){#lab-6 .future-workbench .fw-moves{grid-template-columns:1fr}#lab-6 [data-future-question]{min-height:0}}
+@media(max-width:650px){#lab-6 .recap-body{padding:0 16px 16px}#lab-6 .recap-lab>summary{gap:12px}#lab-6 .future-assessment>p{padding:0 16px 16px}}
