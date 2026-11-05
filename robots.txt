@@ -5,3 +5,5 @@ Allow: /
 Disallow: /hagen/
 Disallow: /gaymers-playing-identity.html
 Disallow: /signal-unknown.html
+Disallow: /bodyline/
+Disallow: /hagen-v26-3f0d474f1993b041e972c46e/
