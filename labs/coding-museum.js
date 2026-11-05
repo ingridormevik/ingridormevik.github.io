@@ -1,0 +1,38 @@
+(() => {
+  'use strict';
+  const root=document.querySelector('[data-coding-museum]');if(!root)return;
+  const conversations={
+    begin:[['ada','You do not need to know every command. Start with something you want someone to encounter. What should they notice?'],['turing','Then describe one action precisely. What is there before the action, and what should change afterwards?'],['ada','Give the idea a form. A heading, a colour, a pause or a rule can each carry part of its meaning.'],['turing','Run it. Compare the result with your prediction. If they differ, you have a specific question to investigate.']],
+    web:[['turing','HTML names the things in the document. A button should be a button, so a visitor can use it with a keyboard too.'],['ada','CSS gives those things their relationships: space, scale, contrast and movement. Choose those relationships for your work.'],['turing','JavaScript can listen for an action, remember a value and change the document. The browser runs it; VS Code is where you edit it.'],['ada','Try the four controls below. Notice which decisions belong to structure, presentation, behaviour and time.']],
+    debug:[['ada','The page is suddenly plain white. Before redesigning it, check whether the stylesheet loaded.'],['turing','Look at the first useful error. Read its file and line. A wrong filename is enough to stop the intended result.'],['ada','Keep the last working version. Change one thing, reload, and compare. You can undo a failed experiment.'],['turing','A useful question is: I expected this action to change this value. Instead, this happened. Can you reproduce it?']],
+    style:[['ada','When you find a visual language that fits, keep a small record: type, spacing, colour and interaction.'],['turing','Put repeated decisions into shared CSS. Check that every page actually loads that same file.'],['ada','Individual works can need their own composition. Reuse the parts that support them, and explain the exceptions.'],['turing','Consistency also means behaviour. A link should go somewhere; a button should do what its label promises.']],
+    judgement:[['turing','A convincing appearance does not prove that a claim or a program is correct. What evidence would let you check it?'],['ada','Generic output becomes a problem when it avoids the particular work. Can you connect each choice to the thing you are making?'],['turing','Try the controls, inspect the code and follow the sources. Record what actually happens.'],['ada','You can change your mind after a test. Keep the parts you can defend, rewrite the vague parts, and make the next version yours.']]
+  };
+  let topic='begin',step=0;
+  const scene=root.querySelector('[data-museum-scene]'),speaker=root.querySelector('[data-speaker-label]'),line=root.querySelector('[data-dialogue-line]'),next=root.querySelector('[data-dialogue-next]');
+  function speak(){const [person,words]=conversations[topic][step];scene.dataset.speaker=person;speaker.textContent=person==='ada'?'Ada Lovelace · imagined dialogue':'Alan Turing · imagined dialogue';line.textContent=words;root.querySelector('[data-dialogue-count]').textContent=`${step+1} / ${conversations[topic].length}`;next.textContent=step===conversations[topic].length-1?'Replay conversation':'Continue conversation';root.querySelectorAll('[data-dialogue-topic]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.dialogueTopic===topic)));}
+  root.querySelectorAll('[data-dialogue-topic]').forEach(b=>b.addEventListener('click',()=>{topic=b.dataset.dialogueTopic;step=0;speak();}));
+  next.addEventListener('click',()=>{step=(step+1)%conversations[topic].length;speak();});
+  const pause=root.querySelector('[data-museum-pause]');let paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const setPause=()=>{root.classList.toggle('museum-paused',paused);pause.setAttribute('aria-pressed',String(paused));pause.textContent=paused?'Motion paused':'Pause motion';};
+  pause.addEventListener('click',()=>{paused=!paused;setPause();});setPause();
+  document.addEventListener('visibilitychange',()=>root.classList.toggle('museum-offscreen',document.hidden));
+  if('IntersectionObserver' in window){new IntersectionObserver(entries=>entries.forEach(entry=>entry.target.classList.toggle('museum-offscreen',!entry.isIntersecting)),{rootMargin:'80px'}).observe(scene);}
+  const specimen=root.querySelector('[data-specimen]'),heading=root.querySelector('[data-specimen-title]'),message=root.querySelector('[data-specimen-message]'),action=root.querySelector('[data-specimen-action]'),code=root.querySelector('[data-bench-code]');
+  const text=root.querySelector('[data-title-input]'),spacing=root.querySelector('[data-gap-input]'),border=root.querySelector('[data-border-input]'),colour=root.querySelector('[data-colour-input]'),speed=root.querySelector('[data-speed-input]'),motion=root.querySelector('[data-specimen-motion]');
+  let count=0,moving=false,lesson='html';
+  const render=()=>{
+    heading.textContent=text.value||'My experiment';
+    specimen.style.setProperty('--demo-gap',spacing.value+'px');specimen.style.setProperty('--demo-border',border.value+'px');specimen.style.setProperty('--demo-colour',colour.value);specimen.style.setProperty('--demo-speed',speed.value+'s');specimen.classList.toggle('is-moving',moving);
+    root.querySelector('[data-gap-value]').textContent=spacing.value+'px';root.querySelector('[data-border-value]').textContent=border.value+'px';root.querySelector('[data-speed-value]').textContent=speed.value+'s';
+    message.textContent=count===0?'No visits recorded yet.':`Visits recorded: ${count}.`;action.textContent='Record a visit';motion.setAttribute('aria-pressed',String(moving));motion.textContent=moving?'Stop specimen movement':'Try specimen movement';
+    const snippets={html:'<article class="specimen">\n  <h2>'+heading.textContent.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</h2>\n  <p id="visits">No visits recorded yet.</p>\n  <button type="button">Record a visit</button>\n</article>',css:'.specimen {\n  display: grid;\n  gap: '+spacing.value+'px;\n  border: '+border.value+'px solid #101114;\n  background: '+colour.value+';\n}',javascript:'let visits = 0;\nbutton.addEventListener("click", () => {\n  visits += 1;\n  message.textContent = "Visits recorded: " + visits;\n});\n// button and message refer to selected elements.\n// Reloading this page resets this example.',animation:'.specimen.is-moving {\n  animation: float '+speed.value+'s ease-in-out infinite;\n}\n@keyframes float {\n  50% { transform: translateY(-12px); }\n}\n@media (prefers-reduced-motion: reduce) {\n  .specimen.is-moving { animation: none; }\n}'};
+    code.textContent=snippets[lesson];
+    root.querySelectorAll('[data-lesson-panel]').forEach(panel=>panel.hidden=panel.dataset.lessonPanel!==lesson);root.querySelectorAll('[data-lesson]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lesson===lesson)));
+  };
+  root.querySelectorAll('[data-lesson]').forEach(b=>b.addEventListener('click',()=>{lesson=b.dataset.lesson;render();}));
+  [text,spacing,border,colour,speed].forEach(input=>input.addEventListener('input',render));
+  action.addEventListener('click',()=>{count++;render();});root.querySelector('[data-count-reset]').addEventListener('click',()=>{count=0;render();});motion.addEventListener('click',()=>{moving=!moving;render();});
+  root.querySelector('[data-bench-controls]').hidden=false;root.querySelector('[data-museum-controls]').hidden=false;root.querySelector('[data-bench-fallback]').hidden=true;
+  speak();render();root.classList.add('museum-ready');
+})();
