@@ -25,3 +25,97 @@
 #lab-6 .obligatory-banner>summary{cursor:pointer}
 #lab-6 .quest-requirements{display:none}
 @media(max-width:650px){#lab-6 .recap-body{padding:0 16px 16px}#lab-6 .recap-lab>summary{gap:12px}#lab-6 .future-assessment>p{padding:0 16px 16px}}
+
+/* The lab's existing paper, ink, equipment panels and controls. No global theme. */
+#lab-6 .fm-opening{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center;gap:30px;margin:24px 0 36px}
+#lab-6 .fm-opening h3{font-size:clamp(32px,4vw,52px);line-height:1.05;margin:12px 0 20px}
+#lab-6 .fm-opening p{max-width:48ch}
+#lab-6 .fm-intro-links{display:flex;flex-wrap:wrap;align-items:center;gap:18px}
+#lab-6 .fm-console{border:4px solid #10151f;border-radius:10px;box-shadow:8px 8px 0 #10151f;overflow:hidden;background:#142e3e;color:#f3f0e8}
+#lab-6 .fm-console-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:14px 20px;background:#10151f;color:#c6f15b;font-weight:800;font-size:13px;letter-spacing:.06em}
+#lab-6 .fm-progress{display:block;width:100%;height:8px;border:0;border-radius:0;accent-color:#c6f15b;margin:0}
+#lab-6 .fm-progress::-webkit-progress-bar{background:#33515e}#lab-6 .fm-progress::-webkit-progress-value{background:#c6f15b}
+#lab-6 .fm-instruction,#lab-6 [data-fm-fallback]{padding:0 22px}
+#lab-6 .fm-stations{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:6px 18px 24px}
+#lab-6 .fm-stations[hidden],#lab-6 .fm-footer[hidden],#lab-6 .fm-station[hidden]{display:none}
+#lab-6 .fm-stations button{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;text-align:left;background:#17384a;color:#f3f0e8;border:2px solid #91bbbd;box-shadow:3px 3px 0 #10151f;padding:12px 10px;min-height:80px}
+#lab-6 .fm-stations b{font-size:22px;color:#c6f15b}
+#lab-6 .fm-stations small{display:block;font-size:11px;line-height:1.4;margin-top:5px;font-weight:400;color:#d5e2e8}
+#lab-6 .fm-stations i{font-style:normal;color:#c6f15b}
+#lab-6 .fm-stations button[aria-selected=true]{background:#ffdb43;color:#10151f;border-color:#10151f;box-shadow:inset 0 -5px 0 #10151f}
+#lab-6 .fm-stations button[aria-selected=true] :is(b,small,i){color:#10151f}
+#lab-6 .fm-station{padding:24px;border-top:3px solid #91bbbd}
+#lab-6 .fm-brief{margin:0 0 22px}
+#lab-6 .fm-brief h4{font-size:clamp(25px,3vw,36px);line-height:1.2;margin:8px 0 12px;color:#f3f0e8}
+#lab-6 .fm-brief>p{max-width:70ch;margin:10px 0}
+#lab-6 .fm-apparatus{border:3px solid #10151f;border-radius:8px;background:#241d3f;padding:24px;min-height:250px;box-shadow:5px 5px 0 #10151f}
+#lab-6 :is(.fm-style-machine,.fm-gate-machine,.fm-test-machine,.fm-export-machine){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center}
+#lab-6 .fm-mini-page{--fm-type:20px;--fm-space:18px;padding:var(--fm-space);background:#f3f0e8;border:4px solid #10151f;border-radius:5px;color:#10151f;box-shadow:7px 7px 0 #10151f}
+#lab-6 .fm-mini-page .fm-mini-tag{font-size:11px;letter-spacing:.09em;font-weight:800;color:#6a2c8c}
+#lab-6 .fm-mini-page h5{font-size:calc(var(--fm-type)*1.5);line-height:1.1;margin:var(--fm-space) 0;color:#10151f}
+#lab-6 .fm-mini-page p{font-size:var(--fm-type);line-height:1.45;color:#10151f;margin:var(--fm-space) 0}
+#lab-6 .fm-sample-action{display:inline-block;padding:10px 14px;border:2px solid #10151f;border-radius:3px;background:#c6f15b;color:#10151f;font-size:15px;font-weight:800}
+#lab-6 .fm-instruments{display:grid;gap:12px;min-width:0}
+#lab-6 .fm-instruments label{display:flex;justify-content:space-between;gap:12px;font-weight:750}
+#lab-6 input[type=range]{width:100%;min-height:38px;accent-color:#c6f15b;cursor:pointer}
+#lab-6 .fm-live{min-height:3em;font-size:16px;margin:12px 0 0;color:#d5e2e8}
+#lab-6 .fm-takeaway{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px 24px;border-top:1px dashed #91bbbd;margin-top:26px;padding-top:16px}
+#lab-6 .fm-takeaway p{font-size:16px;max-width:66ch;margin:0}
+#lab-6 .fm-takeaway a{font-weight:750;font-size:15px}
+#lab-6 .fm-switch-machine{text-align:center;display:grid;justify-items:center;gap:20px}
+#lab-6 .fm-signal{width:100%;padding:20px;border:2px solid #91bbbd;background:#10151f}
+#lab-6 .fm-signal p{margin:12px auto;font-size:clamp(20px,2.6vw,29px);max-width:30ch}
+#lab-6 .fm-signal-lamp{display:block;width:24px;height:24px;margin:auto;border:3px solid #91bbbd;border-radius:50%;background:#17384a}
+#lab-6 .fm-signal[data-state=on] .fm-signal-lamp{background:#c6f15b;box-shadow:0 0 25px #c6f15b66}
+#lab-6 .fm-signal code{color:#c6f15b;font-size:16px}
+#lab-6 .fm-map{position:relative;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:24px;min-height:180px;background:linear-gradient(90deg,transparent 49%,#91bbbd22 50%,transparent 51%),linear-gradient(transparent 49%,#91bbbd22 50%,transparent 51%);background-size:30px 30px}
+#lab-6 .fm-map button{position:relative;z-index:1;display:grid;justify-items:center;gap:14px;padding:20px 10px;background:#f3f0e8;color:#10151f}
+#lab-6 .fm-map button span{font-size:48px;line-height:1}
+#lab-6 .fm-map button:nth-child(2){align-self:start}
+#lab-6 .fm-map button[aria-pressed=true]{background:#c6f15b}
+#lab-6 .fm-map-path{position:absolute;inset:35% 15%;border:3px dashed #91bbbd;transform:rotate(-7deg)}
+#lab-6 .fm-found{padding:18px 20px;margin:20px 0 0;border-left:6px solid #c6f15b;background:#10151f;font-size:20px;min-height:5em}
+#lab-6 .fm-door{position:relative;min-height:250px;border:6px solid #10151f;background:radial-gradient(ellipse,#c6f15b99,transparent 70%),#17384a;overflow:hidden;display:grid;align-content:end;text-align:center;padding:15px;perspective:600px}
+#lab-6 .fm-door-leaf{position:absolute;inset:0;background:repeating-linear-gradient(90deg,#33515e 0 18px,#17384a 18px 22px);border:6px solid #10151f;display:grid;place-items:center;transform-origin:left;transition:transform .6s ease}
+#lab-6 .fm-door-leaf span{padding:14px;border:3px solid #10151f;background:#ffdb43;color:#10151f;font-size:34px;font-weight:900}
+#lab-6 .fm-door[data-open=true] .fm-door-leaf{transform:rotateY(-100deg)}
+#lab-6 .fm-door p{position:relative;z-index:1;background:#10151f;color:#c6f15b;margin:0;padding:9px;font-weight:900;letter-spacing:.12em}
+#lab-6 .fm-readout{font-size:30px;margin:0;font-weight:800;color:#c6f15b}
+#lab-6 .fm-book-shelf{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:0 0 24px}
+#lab-6 .fm-book-shelf button{display:flex;flex-direction:column;gap:18px;text-align:left;min-height:240px;padding:24px;border-width:4px;border-left-width:14px;background:#f3f0e8;color:#10151f}
+#lab-6 .fm-book-shelf button:nth-child(2){background:#bbded9}
+#lab-6 .fm-book-shelf button[aria-pressed=true]{outline:3px solid #c6f15b;outline-offset:5px}
+#lab-6 .fm-book-shelf small{font-size:11px;letter-spacing:.06em}
+#lab-6 .fm-book-shelf strong{font-size:clamp(23px,3vw,34px);line-height:1.15}
+#lab-6 .fm-book-shelf span{font-size:15px;margin-top:auto}
+#lab-6 .fm-evidence{border-left:5px solid #c6f15b;padding:14px 18px;background:#10151f;margin-bottom:18px;min-height:5em;font-size:18px}
+#lab-6 .fm-future-machine fieldset{border:0;padding:0;margin:0 0 24px}
+#lab-6 .fm-future-machine legend{font-size:16px;font-weight:800;margin-bottom:12px}
+#lab-6 .fm-policy{display:flex;flex-wrap:wrap;gap:12px}
+#lab-6 .fm-policy [aria-pressed=false]{background:#17384a;color:#f3f0e8;border-color:#91bbbd}
+#lab-6 .fm-access-result{display:flex;align-items:center;gap:20px;background:#10151f;border-left:7px solid #c6f15b;padding:22px}
+#lab-6 .fm-access-result[data-fm-access=denied]{border-color:#ff7a59}
+#lab-6 .fm-access-result>span{font-size:40px;color:#c6f15b}
+#lab-6 .fm-access-result[data-fm-access=denied]>span{color:#ff7a59}
+#lab-6 .fm-access-result p{font-size:22px;margin:0}
+#lab-6 .fm-files{display:grid;gap:12px;margin:14px 0 24px}
+#lab-6 .fm-files button{text-align:left;background:#f3f0e8;color:#10151f;overflow-wrap:anywhere}
+#lab-6 .fm-files button[aria-pressed=true]{background:#c6f15b}
+#lab-6 .fm-folder-label{display:flex;gap:12px;align-items:flex-start;line-height:1.5}
+#lab-6 .fm-folder-label input{width:22px;height:22px;flex:0 0 auto;accent-color:#c6f15b}
+#lab-6 .fm-package pre{margin:0 0 20px;min-height:145px;padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}
+#lab-6 .fm-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;border-top:3px solid #91bbbd;padding:18px 24px;background:#10151f}
+#lab-6 .fm-footer p{font-size:16px;max-width:54ch;margin:0;color:#c6f15b}
+#lab-6 .fm-progress-note{font-size:13px;padding:0 24px 14px;color:#d5e2e8}
+#lab-6 .fm-reference>summary{font-size:18px;font-weight:750}
+#lab-6 .fm-reference>div{margin:0;padding:0 24px 24px}
+#lab-6 .fm-reference .course-recap{margin-top:20px}
+#lab-6 .fm-reference .course-recap>.eyebrow,#lab-6 .fm-reference .course-recap>h3{display:none}
+@media(prefers-reduced-motion:no-preference){#lab-6 .fm-signal[data-state=on] .fm-signal-lamp{animation:fm-breathe 2.5s ease-in-out infinite}#lab-6 .fm-stations button.is-tested i{animation:fm-arrive .4s ease-out both}}
+@keyframes fm-breathe{50%{box-shadow:0 0 38px #c6f15b88}}
+@keyframes fm-arrive{from{transform:scale(.6)}to{transform:scale(1)}}
+.access-no-motion #lab-6 .future-machines *,.access-calm #lab-6 .future-machines *,.lab-motion-paused #lab-6 .future-machines *{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){#lab-6 .future-machines *{animation:none!important;transition:none!important}}
+@media(max-width:900px){#lab-6 .fm-opening{grid-template-columns:1fr}#lab-6 .fm-opening .mega-lab{max-width:720px}#lab-6 .fm-stations{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){#lab-6 :is(.fm-style-machine,.fm-gate-machine,.fm-test-machine,.fm-export-machine){grid-template-columns:1fr}#lab-6 .fm-station{padding:18px 14px}#lab-6 .fm-apparatus{padding:18px 14px}#lab-6 .fm-stations{padding:6px 12px 20px;gap:8px}#lab-6 .fm-stations button{gap:6px;padding:10px 7px;font-size:13px;min-height:84px}#lab-6 .fm-stations b{font-size:18px}#lab-6 .fm-stations small{font-size:11px}#lab-6 .fm-book-shelf{grid-template-columns:1fr;gap:14px}#lab-6 .fm-book-shelf button{min-height:180px;padding:16px 12px;border-left-width:8px}#lab-6 .fm-map{gap:12px}#lab-6 .fm-map button{font-size:13px;padding:20px 6px}#lab-6 .fm-map button span{font-size:36px}#lab-6 .fm-reference>div{padding:0 14px 18px}}
+@media print{#lab-6 .fm-station[hidden]{display:block}#lab-6 .fm-stations,#lab-6 .fm-footer{display:none}#lab-6 .fm-console,#lab-6 .fm-apparatus{box-shadow:none}}

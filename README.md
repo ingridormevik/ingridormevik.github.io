@@ -20,11 +20,13 @@ I designed and built this interactive teaching environment for DIKULT105 at the 
 
 - [Read the article: Building the DIKULT105 labs](https://ingridormevik.github.io/posts/2026-11-05-building-the-dikult105-labs.html)
 - [Open the eight-week lab map](https://ingridormevik.github.io/labs/lab-programme.html)
-- [Whole-course recap and Future lab, 6 November](https://ingridormevik.github.io/labs/lab-programme.html#lab-6-workbench): all eight labs with new tips, practical tests, troubleshooting and a final-assignment route
+- [Whole-course recap and Future lab, 6 November](https://ingridormevik.github.io/labs/lab-programme.html#lab-6-workbench): eight working practice machines with saved discoveries, the original animated equipment-room artwork, new tips and a full assignment reference
 - [The coding museum](https://ingridormevik.github.io/labs/vscode-workflow.html): HTML, CSS, JavaScript, animation, practical VS Code advice, debugging, reusable styles, performance and critical judgement
 - [Academic library](https://ingridormevik.github.io/labs/academic-library.html)
 - [Construct toolkit](https://ingridormevik.github.io/labs/tools.html#construct-toolkit)
 - [Final-assignment guide](https://ingridormevik.github.io/labs/final-assessment.html)
+
+Friday?s practice machines cover CSS, reversible state, hidden text, conditions, research, future access rules, interface testing and web exports. Students choose which techniques to take into their own work. The full recap and submission guidance remain available in a reference drawer.
 
 The coding museum uses imagined Ada Lovelace and Alan Turing conversations, labelled as fiction and accompanied by historical sources. It includes a static transcript, motion controls and an interactive specimen for comparing the three web languages.
 
