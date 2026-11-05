@@ -8,12 +8,12 @@
   try{const saved=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(saved))saved.filter(n=>Number.isInteger(n)&&n>=1&&n<=8).forEach(n=>completed.add(n));}catch{}
   const names=['Light room','Switchboard','Hidden archive','Gate engine','Evidence desk','Future simulator','Test chamber','Export bay'];let current=1;
   function paint(){
-    $('[data-fm-count]').textContent=completed.size+' / 8 stations tried';$('[data-fm-progress]').value=completed.size;
+    root.dataset.fmDiscoveries=String(completed.size);$('[data-fm-count]').textContent=completed.size+' / 8 stations tried';$('[data-fm-progress]').value=completed.size;
     $('[data-fm-next]').textContent=completed.size===8?'Take a discovery into my project →':'Next station →';
     tabs.forEach((tab,i)=>{const done=completed.has(i+1);tab.classList.toggle('is-tested',done);tab.setAttribute('aria-label',names[i]+(done?', tried':''));$('[data-fm-mark="'+(i+1)+'"]').textContent=done?'✓':'○';});
   }
-  function done(id,message){if(completed.has(id))return;completed.add(id);paint();try{window.labAudio?.play(completed.size===8?'complete':'star');}catch{}$('[data-fm-discovery]').textContent=completed.size===8?'All eight stations tried. Choose one discovery to use in your own work.':message;try{localStorage.setItem(key,JSON.stringify([...completed]));}catch{}}
-  function select(id,focus=false){current=id;tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i+1===id));tab.tabIndex=i+1===id?0:-1;});panels.forEach((panel,i)=>{panel.hidden=i+1!==id;});if(focus)tabs[id-1].focus();}
+  function done(id,message){if(completed.has(id))return;completed.add(id);paint();root.dispatchEvent(new CustomEvent('fm-discovery',{detail:{id,count:completed.size}}));try{window.labAudio?.play(completed.size===8?'complete':'star');}catch{}$('[data-fm-discovery]').textContent=completed.size===8?'All eight stations tried. Choose one discovery to use in your own work.':message;try{localStorage.setItem(key,JSON.stringify([...completed]));}catch{}}
+  function select(id,focus=false){current=id;root.dataset.fmActive=String(id);tabs.forEach((tab,i)=>{tab.setAttribute('aria-selected',String(i+1===id));tab.tabIndex=i+1===id?0:-1;});panels.forEach((panel,i)=>{panel.hidden=i+1!==id;});if(focus)tabs[id-1].focus();}
   tabs.forEach((tab,i)=>{tab.setAttribute('role','tab');tab.addEventListener('click',()=>select(i+1));tab.addEventListener('keydown',event=>{let id;if(event.key==='ArrowRight'||event.key==='ArrowDown')id=current%8+1;else if(event.key==='ArrowLeft'||event.key==='ArrowUp')id=(current+6)%8+1;else if(event.key==='Home')id=1;else if(event.key==='End')id=8;if(id){event.preventDefault();select(id,true);}});});
   panels.forEach((panel,i)=>{panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',tabs[i].id);panel.tabIndex=0;});
   $('[data-fm-nav]').setAttribute('role','tablist');$('[data-fm-next]').addEventListener('click',()=>{if(completed.size===8)location.hash='lab-6-sec-2';else select(current%8+1,true);});
@@ -41,10 +41,10 @@
   $('[data-fm-clarity]').addEventListener('input',()=>{clarity=Number($('[data-fm-clarity]').value);$('[data-fm-bus]').textContent=['→','Begin','Start the story'][clarity];$('[data-fm-clarity-out]').textContent=['Version 1: an arrow','Version 2: a verb','Version 3: the action and its purpose'][clarity];$('[data-fm-bus-story]').textContent='You are the last person at the stop.';$('[data-fm-test-status]').textContent='The mechanism is unchanged. Try this label and compare.';});
   $('[data-fm-bus]').addEventListener('click',()=>{if(clarity===0)firstVersionTried=true;$('[data-fm-bus-story]').textContent='The night bus arrives. Someone has kept a seat for you.';$('[data-fm-test-status]').textContent='The story started. What did the label lead you to expect?';if(firstVersionTried&&clarity===2)done(7,'Test chamber tried. Compare a revision, then test your real work with another person.');});
   const files=new Set(),fileNames={index:'index.html',style:'styles.css',image:'assets/room.png'};
-  function packageView(){const wrapped=$('[data-fm-wrapper]').checked,lines=[...files].map(id=>(wrapped?'  ':'')+fileNames[id]);$('[data-fm-package]').textContent=(wrapped?'project/\n':'')+(lines.length?lines.join('\n'):(wrapped?'  ':'')+'(empty)');}
+  function packageView(){const wrapped=$('[data-fm-wrapper]').checked;$('.fm-export-machine').dataset.fmPackageState=files.size===3&&!wrapped?'ready':files.size?'partial':'empty';const lines=[...files].map(id=>(wrapped?'  ':'')+fileNames[id]);$('[data-fm-package]').textContent=(wrapped?'project/\n':'')+(lines.length?lines.join('\n'):(wrapped?'  ':'')+'(empty)');}
   all('[data-fm-file]').forEach(button=>button.addEventListener('click',()=>{const id=button.dataset.fmFile;files.has(id)?files.delete(id):files.add(id);button.setAttribute('aria-pressed',String(files.has(id)));button.textContent=(files.has(id)?'✓ ':'+ ')+fileNames[id];packageView();}));
   $('[data-fm-wrapper]').addEventListener('change',packageView);
-  $('[data-fm-export-test]').addEventListener('click',()=>{const status=$('[data-fm-export-status]');if(!files.has('index'))status.textContent='No entry page. Add index.html so the host has somewhere to start.';else if($('[data-fm-wrapper]').checked)status.textContent='The entry page is inside an extra folder. Put index.html at the root of the upload.';else if(files.size<3)status.textContent='The page is there, but its styles or image are missing. Include the assets it needs.';else{status.textContent='Package check passed: index.html and its assets are together. Next: publish and test the real URL signed out.';done(8,'Export bay tried. You checked the delivery package; the real published link still needs testing.');}});
+  $('[data-fm-export-test]').addEventListener('click',()=>{const status=$('[data-fm-export-status]');if(!files.has('index'))status.textContent='No entry page. Add index.html so the host has somewhere to start.';else if($('[data-fm-wrapper]').checked)status.textContent='The entry page is inside an extra folder. Put index.html at the root of the upload.';else if(files.size<3)status.textContent='The page is there, but its styles or image are missing. Include the assets it needs.';else{$('.fm-export-machine').dataset.fmPackageState='verified';status.textContent='Package check passed: index.html and its assets are together. Next: publish and test the real URL signed out.';done(8,'Export bay tried. You checked the delivery package; the real published link still needs testing.');}});
   all('.fm-apparatus button,.fm-apparatus input').forEach(control=>{control.disabled=false;});
   $('[data-fm-fallback]').hidden=true;$('[data-fm-nav]').hidden=false;$('[data-fm-footer]').hidden=false;
   paint();select(1);fromHash();root.classList.add('fm-ready');
@@ -59,4 +59,38 @@
   recap.querySelector('[data-recap-expand]').addEventListener('click',()=>reminders.forEach(item=>{item.open=true;}));
   recap.querySelector('[data-recap-collapse]').addEventListener('click',()=>reminders.forEach(item=>{item.open=false;}));
   controls.hidden=false;
+})();
+
+// The existing lab motion controls govern the cabinet loops as well as its artwork.
+(() => {
+  const root=document.getElementById('lab-6-machines');if(!root)return;
+  const lab=root.closest('.lab'),workbench=root.closest('.journey-panel');
+  const html=document.documentElement||document.body;
+  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  let inView=true,queued=false,rewardTimer;
+  function paused(){return Boolean(document.hidden||!inView||lab?.hidden||workbench?.hidden||reduced?.matches||html.classList.contains('access-no-motion')||html.classList.contains('access-calm'));}
+  function sync(){const off=paused();root.classList.toggle('fm-motion-paused',off);root.dataset.fmMotion=off?'paused':'running';}
+  function queue(){if(queued)return;queued=true;const update=()=>{queued=false;sync();};if(window.requestAnimationFrame)window.requestAnimationFrame(update);else update();}
+  document.addEventListener('visibilitychange',sync);
+  document.addEventListener('lab-motion-change',sync);
+  document.addEventListener('lab-preferences-change',queue);
+  reduced?.addEventListener?.('change',sync);
+  if(typeof MutationObserver!=='undefined'){
+    const observer=new MutationObserver(queue);
+    observer.observe(html,{attributes:true,attributeFilter:['class']});
+    if(document.body!==html)observer.observe(document.body,{attributes:true,attributeFilter:['class']});
+    if(lab)observer.observe(lab,{attributes:true,attributeFilter:['hidden']});
+    if(workbench)observer.observe(workbench,{attributes:true,attributeFilter:['hidden']});
+  }
+  if(window.IntersectionObserver){const observer=new window.IntersectionObserver(entries=>{inView=entries[0].isIntersecting;sync();},{rootMargin:'100px'});observer.observe(root);}
+  root.addEventListener('fm-discovery',()=>{
+    if(paused())return;
+    clearTimeout(rewardTimer);root.classList.toggle('fm-reward-active',false);
+    if(root.offsetWidth!==undefined)void root.offsetWidth;
+    root.classList.toggle('fm-reward-active',true);
+    rewardTimer=setTimeout(()=>root.classList.toggle('fm-reward-active',false),1100);
+  });
+  window.addEventListener('pagehide',()=>{root.classList.toggle('fm-motion-paused',true);root.dataset.fmMotion='paused';clearTimeout(rewardTimer);});
+  window.addEventListener('pageshow',sync);
+  sync();
 })();
