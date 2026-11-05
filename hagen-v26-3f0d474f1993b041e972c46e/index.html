@@ -64,7 +64,7 @@ button:hover{background:#29433288;border-color:#c9d6b780}button:disabled{color:#
 <script>
 (()=>{
  const query=new URLSearchParams(location.search);
- if(query.has('vr')||query.has('research')||query.has('gather')){location.replace('HAGEN_V31_WOODLAND_ENGINE.html?'+query);return;}
+ if(query.has('vr')||query.has('research')||query.has('gather')){location.replace('HAGEN_V32_DESCENT_ENGINE.html?'+query);return;}
  const art=document.getElementById('art'),enter=document.getElementById('enter'),status=document.getElementById('status'),front=document.getElementById('entrance');
  // Reveal a static root engraving with two compositor transforms; no per-path repaint loop.
  const titleSvg=art.querySelector('svg'),rootLayer=titleSvg?.querySelector('.root-system');
@@ -108,7 +108,7 @@ button:hover{background:#29433288;border-color:#c9d6b780}button:disabled{color:#
  // Give the rooted title its first paint before evaluating the embedded engine.
  requestAnimationFrame(()=>requestAnimationFrame(()=>{
   frame=document.createElement('iframe');frame.title='HAGEN night garden';frame.allow='microphone; camera; geolocation; fullscreen';
-  query.set('noentrance','1');frame.src='HAGEN_V31_WOODLAND_ENGINE.html?'+query;document.body.prepend(frame);
+  query.set('noentrance','1');frame.src='HAGEN_V32_DESCENT_ENGINE.html?'+query;document.body.prepend(frame);
   const timer=setInterval(()=>{
    const h=frame.contentWindow?.HAGEN;
    if(!ready){try{const [stage,p]=preparation(h);grow(p);murmur(stage);}catch(error){}}else murmur(wanted);
