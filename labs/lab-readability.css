@@ -1,0 +1,40 @@
+/* Readable surfaces for the Future Lab, including existing machine states. */
+body.studio #lab-6{background-color:#10151f;background-image:none}
+body.studio #lab-6 .elapsed{color:#233843}
+body.studio #lab-6 .plan-row details>summary{color:#173b58}
+body.studio #lab-6 .row-detail>summary{color:#173b58}
+body.studio #lab-6 .journey-nav a small{color:#172630}
+body.studio #lab-6 .step-map .sm-required em{color:#ffb59d}
+body.studio #lab-6 .mission-console .console-top{background:#bbded9;color:#10151f}
+body.studio #lab-6 .mission-console .console-top>span{color:#10151f}
+body.studio #lab-6 .mission-storage{color:#172630}
+body.studio #lab-6 .fm-opening{background:#17384a}
+body.studio #lab-6 .fm-console,body.studio #lab-6 .fm-station{background:#142e3e}
+body.studio #lab-6 .fm-console-top{background:#10151f}
+body.studio #lab-6 .fm-apparatus{background:#241d3f}
+body.studio #lab-6 .fm-stations button{background:#254352;color:#f3f0e8}
+body.studio #lab-6 .fm-stations button:not([aria-selected=true]) :is(span,small,i){color:#f3f0e8}
+body.studio #lab-6 .fm-stations button[aria-selected=true]{background:#ffdb43;color:#10151f}
+body.studio #lab-6 .fm-stations button[aria-selected=true] :is(span,small,i){color:#10151f}
+body.studio #lab-6 .fm-stations button[aria-selected=true] b{color:#ffdb43;background:#10151f}
+body.studio #lab-6 .fm-book-shelf button{background:#f3f0e8;color:#10151f}
+body.studio #lab-6 .fm-book-shelf button:nth-child(2){background:#bbded9}
+body.studio #lab-6 .fm-book-shelf button :is(strong,span,small){color:#10151f;text-shadow:none}
+body.studio #lab-6 .fm-book-shelf button:hover{background:#ffdb43;color:#10151f}
+body.studio #lab-6 .fm-book-shelf button:hover :is(strong,span,small){color:#10151f}
+body.studio #lab-6 :is(.fm-footer,.fm-signal,.fm-found,.fm-access-result,.fm-package pre){background:#10151f;background-image:none}
+body.studio #lab-6 .fm-map button{background:#f3f0e8;color:#10151f}
+body.studio #lab-6 .fm-map button[aria-pressed=true]{background:#bbded9;color:#10151f}
+body.studio #lab-6 .fm-map button:is(:hover,:focus-visible){background:#ffdb43;color:#10151f}
+body.studio #lab-6 :is(.genre-words,.genre-stamp){background:#10151f;color:#f3f0e8}
+body.studio #lab-6 .genre-stamp{padding:6px 10px}
+body.studio #lab-6 .fm-access-result>span{background:#10151f;color:#ffdb43}
+body.studio #lab-6 .fm-access-result[data-fm-access=denied]>span{color:#ffb59d}
+.access-contrast body.studio #lab-6 .journey-schedule>summary{color:#111!important}
+body.studio #lab-6 .sl-tips .sl-tip-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+body.studio #lab-6 .submission-lab .sl-readout span{display:block;visibility:visible}
+body.studio #lab-6 .sl-homes>div{position:relative;isolation:isolate;overflow:hidden}
+body.studio #lab-6 .sl-homes>div:after{content:'';position:absolute;inset:auto 0 0;height:calc(var(--sl-water,0)*12%);background:#33515e;z-index:-1;border-top:2px solid #bbded9}
+body.studio #lab-6 .sl-homes>div:has(b:not(:empty)):after{min-height:2px}
+body.studio #lab-6 .submission-lab .sl-tip-controls button{width:100%;text-align:center;padding-inline:8px}
+@media(max-width:600px){body.studio #lab-6 .sl-tips .sl-tip-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
