@@ -1,4 +1,4 @@
-/* An illustrated Halloween reading room. All interactions keep a plain HTML route. */
+/* An illustrated research reading room. All interactions keep a plain HTML route. */
 body.studio.hl-season{background-color:#151e29;background-image:radial-gradient(#b4c0a521 1px,transparent 1px);background-size:26px 26px}
 body.studio.hl-season .hl-entrance{display:block;position:relative;width:100%;max-width:none;margin:24px 0;padding:clamp(20px,4vw,42px);border:4px solid #090e17;background:#233336;color:#f4e7c9;box-shadow:8px 8px 0 #090e17;box-sizing:border-box}
 body.studio.hl-season .hl-topline{display:flex;gap:16px;justify-content:space-between;align-items:center;flex-wrap:wrap}
@@ -124,3 +124,7 @@ body.studio.hl-season .hl-library-hero .hl-entrance-copy{max-width:84ch}
 body.studio.hl-season .hl-picker-heading>div>p:not(.hl-kicker){max-width:70ch;color:#e4e9da;font-size:18px;line-height:1.7}
 @media(max-width:800px){body.studio.hl-season .hl-friday-hero{grid-template-columns:1fr}body.studio.hl-season .hl-friday-hero h2{max-width:24ch}body.studio.hl-season .hl-friday-hero .hl-scene{grid-column:1}}
 @media print{body.studio.hl-season .hl-scene-controls{display:none}}
+/* Keep the reusable lab room readable on narrow screens. */
+body.studio.hl-season :is(.ff-social-heading,.ff-snacks,.hl-entrance-copy){min-width:0;overflow-wrap:anywhere}
+body.studio.hl-season .ff-social-heading h2{overflow-wrap:anywhere}
+body.studio.hl-season #lab-5 code{white-space:normal;overflow-wrap:anywhere;word-break:break-word}

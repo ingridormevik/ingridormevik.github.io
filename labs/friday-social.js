@@ -35,7 +35,7 @@
   });
   const pumpkin=room.querySelector('[data-ff-boo]');
   const status=room.querySelector('[data-ff-boo-status]');
-  const greetings=['Boo! The friendliest ghost in the library says hello.','A tiny haunting. Back to your very real project.','The pumpkin approves of helping your neighbour.','Happy Halloween. Take your time and enjoy the company.'];
+  const greetings=['Let someone try your project without instructions. Watch their first click.','Save a working version before trying a big change.','Stuck? Describe what you expected and what actually happened.','Keep the source and page number when you borrow an idea.'];
   let taps=0;
   pumpkin.hidden=false;
   pumpkin.addEventListener('click',()=>{
