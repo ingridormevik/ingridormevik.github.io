@@ -1,0 +1,46 @@
+/* Full inventory stays compact. All colours are scoped to this reading bench. */
+body.studio #shelf-catalogue{background:#10151f;color:#f3f0e8;border:2px solid #91bbbd;margin:32px 0;scroll-margin-top:100px}
+body.studio #shelf-catalogue *{box-sizing:border-box;min-width:0}
+body.studio #shelf-catalogue [hidden]{display:none!important}
+body.studio #shelf-catalogue .sc-entrance{display:flex;align-items:center;justify-content:space-between;gap:20px;cursor:pointer;padding:clamp(18px,3vw,28px);list-style:none;color:#f3f0e8}
+body.studio #shelf-catalogue .sc-entrance::-webkit-details-marker{display:none}
+body.studio #shelf-catalogue .sc-entrance small{display:block;font:700 12px/1.6 ui-monospace,monospace;letter-spacing:.05em;color:#bbded9;margin-bottom:8px}
+body.studio #shelf-catalogue .sc-entrance strong{display:block;font:700 clamp(24px,3vw,36px)/1.2 Georgia,serif;color:#f3f0e8}
+body.studio #shelf-catalogue .sc-entrance>b{font:700 14px/1.6 system-ui,sans-serif;white-space:nowrap;color:#ffdb43}
+body.studio #shelf-catalogue .sc-entrance>b:after{content:' +'}
+body.studio #shelf-catalogue[open] .sc-entrance>b:after{content:' −'}
+body.studio #shelf-catalogue .sc-room{padding:0 clamp(18px,3vw,28px) 24px}
+body.studio #shelf-catalogue :is(p,li,label,summary,button,input,select){font:16px/1.6 system-ui,sans-serif}
+body.studio #shelf-catalogue p{color:#f3f0e8;margin:0 0 14px;max-width:75ch}
+body.studio #shelf-catalogue a{color:#ffdb43;text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+body.studio #shelf-catalogue a:hover{color:#f3f0e8}
+body.studio #shelf-catalogue .sc-check{border:0;background:none;padding:0;margin:8px 0 20px;color:#f3f0e8}
+body.studio #shelf-catalogue .sc-check summary{color:#bbded9;cursor:pointer;min-height:44px;padding:8px 0}
+body.studio #shelf-catalogue .sc-controls{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;background:#17384a;border:1px solid #91bbbd;padding:18px;margin-bottom:18px}
+body.studio #shelf-catalogue label{color:#f3f0e8;display:grid;gap:6px}
+body.studio #shelf-catalogue :is(input[type=search],select){display:block;width:100%;min-height:44px;padding:9px 10px;background:#f3f0e8;color:#10151f;border:2px solid #91bbbd;border-radius:2px;opacity:1}
+body.studio #shelf-catalogue input::placeholder{color:#394650;opacity:1}
+body.studio #shelf-catalogue .sc-toggle{display:flex;gap:10px;align-items:center;min-height:44px}
+body.studio #shelf-catalogue input[type=checkbox]{width:22px;height:22px;flex:none;accent-color:#ffdb43}
+body.studio #shelf-catalogue button{background:#bbded9;color:#10151f;border:2px solid #bbded9;border-radius:2px;min-height:44px;padding:9px 14px;font-weight:700;box-shadow:none;text-shadow:none;cursor:pointer;white-space:normal}
+body.studio #shelf-catalogue button:is(:hover,[aria-pressed=true]){background:#ffdb43;color:#10151f;border-color:#ffdb43;transform:none;box-shadow:none}
+body.studio #shelf-catalogue button:disabled{background:#d4d4d4;color:#333;border-color:#d4d4d4;cursor:default}
+body.studio #shelf-catalogue :is(button,input,select,summary,a):focus-visible{outline:3px solid #ffdb43;outline-offset:4px}
+body.studio #shelf-catalogue .sc-book{margin:0;padding:0;background:#10151f;border:0;border-top:1px solid #91bbbd;color:#f3f0e8;scroll-margin-top:100px}
+body.studio #shelf-catalogue .sc-book>summary{display:flex;align-items:center;justify-content:space-between;gap:18px;cursor:pointer;list-style:none;padding:16px 0;color:#f3f0e8}
+body.studio #shelf-catalogue .sc-book>summary::-webkit-details-marker{display:none}
+body.studio #shelf-catalogue .sc-book>summary:after{content:'+';color:#ffdb43;font-size:24px;line-height:1}
+body.studio #shelf-catalogue .sc-book[open]>summary:after{content:'−'}
+body.studio #shelf-catalogue .sc-book summary strong{display:block;color:#f3f0e8;font:700 18px/1.45 system-ui,sans-serif;overflow-wrap:anywhere}
+body.studio #shelf-catalogue .sc-book summary small{display:block;color:#bbded9;font:14px/1.55 system-ui,sans-serif;margin-top:4px}
+body.studio #shelf-catalogue .sc-status{color:#ffdb43;font:13px/1.5 system-ui,sans-serif;margin-left:auto;max-width:130px;flex-shrink:0}
+body.studio #shelf-catalogue .sc-body{padding:4px 0 22px}
+body.studio #shelf-catalogue :is(.sc-topic,.sc-edition){font-size:14px;color:#bbded9}
+body.studio #shelf-catalogue .sc-links{display:flex;flex-wrap:wrap;gap:10px 22px}
+body.studio #shelf-catalogue .sc-count{font-size:14px;color:#bbded9}
+body.studio #shelf-catalogue .sc-pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;font-size:14px}
+body.studio #shelf-catalogue .sc-save-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:22px;padding-top:18px;border-top:1px solid #91bbbd}
+body.studio #shelf-catalogue .sc-save-bar p{font-size:14px;color:#bbded9;margin:0}
+.sc-entry-link{margin:16px 0}
+@media(max-width:600px){body.studio #shelf-catalogue .sc-controls{grid-template-columns:1fr}body.studio #shelf-catalogue .sc-entrance{flex-wrap:wrap}body.studio #shelf-catalogue .sc-book>summary{gap:10px;flex-wrap:wrap}body.studio #shelf-catalogue .sc-book>summary>span:first-child{flex:1 1 100%}body.studio #shelf-catalogue .sc-status{margin-left:0;max-width:none}body.studio #shelf-catalogue .sc-pagination button{padding:9px 10px}body.studio #shelf-catalogue .sc-save-bar button{width:100%}}
+@media print{body.studio #shelf-catalogue .sc-book[hidden]{display:block!important}body.studio #shelf-catalogue :is(.sc-controls,.sc-pagination,button){display:none!important}}
