@@ -9,7 +9,9 @@
     const formats = Array.isArray(answers.formats) ? answers.formats : [];
     const add = (title,why,question,terms,url,label) => found.push({title,why,question,terms,url,label});
     if (answers.agency === 'meaning' || answers.rules === 'game' || formats.includes('game'))
-      add('Game studies and player agency','Your choices or rule-based actions may make game studies useful. This is a research lead, not proof that the work is a game.','What can the participant change, and how do the rules make that matter?','player agency game mechanics meaningful choice','#jorgensen-start','Start with Kristine Jørgensen');
+      add('Game studies and player agency','Your choices or rule-based actions may make game studies useful. This is a research lead, not proof that the work is a game.','What can the participant change, and how do the rules make that matter?','Jesper Juul Half-Real rules fiction player agency','#juul-half-real','Start with Jesper Juul: rules and fiction');
+    if ((formats.includes('game') || answers.rules === 'game') && ['belong','ethics'].includes(answers.values))
+      add('Critical play and procedural rhetoric','Flanagan and Bogost offer different ways to examine conventions, values and arguments in games.','What does your system reward, prevent or ask someone to accept?','Mary Flanagan Critical Play Ian Bogost procedural rhetoric','#flanagan-critical-play','Compare critical game-studies sources');
     if (['branch','fragments'].includes(answers.structure) || answers.agency === 'navigate')
       add('Hypertext, interactive fiction and narrative structure','You describe choice, navigation or a variable reading order. Compare how these terms are used in actual works.','Does the route change events, interpretation, or only the order of presentation?','hypertext fiction nonlinear narrative reader agency',glossary,'Explore the Living Glossary');
     if (['literary','generated'].includes(answers.language))

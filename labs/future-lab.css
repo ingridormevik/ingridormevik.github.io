@@ -393,3 +393,16 @@
 .access-no-motion .genre-playground *,.access-calm .genre-playground *{animation:none!important;transition:none!important}
 @media(prefers-reduced-motion:reduce){.studio .genre-playground *{animation:none!important;transition:none!important}}
 @media(max-width:650px){.studio .genre-playground{padding:22px 16px}.studio .genre-bench{grid-template-columns:1fr;gap:24px}.studio .genre-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px}.studio .genre-tabs button{font-size:12px}.studio .genre-instruments [role=status]{min-height:0}.studio .genre-stage{min-height:220px}}
+/* Research books keep their own readable surface in every interaction state. */
+body.studio #lab-6 .fm-book-shelf{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:16px;perspective:none}
+body.studio #lab-6 .fm-book-shelf button{display:flex;flex-direction:column;align-items:stretch;gap:14px;min-height:190px;max-width:100%;padding:22px 18px 18px;background:#f3f0e8;background-image:none;color:#10151f;border:2px solid #10151f;border-left:8px solid #91bbbd;border-radius:2px;transform:none;box-shadow:none;opacity:1;text-align:left;white-space:normal}
+body.studio #lab-6 .fm-book-shelf button:nth-child(even){background:#bbded9;transform:none}
+body.studio #lab-6 .fm-book-shelf button :is(small,strong,span){color:#10151f;-webkit-text-fill-color:currentColor;text-shadow:none;opacity:1;overflow-wrap:anywhere}
+body.studio #lab-6 .fm-book-shelf button small{font:700 12px/1.55 system-ui,sans-serif;letter-spacing:0;text-transform:none;margin-top:0}
+body.studio #lab-6 .fm-book-shelf button strong{font:800 clamp(21px,2vw,27px)/1.25 system-ui,sans-serif}
+body.studio #lab-6 .fm-book-shelf button span{font:500 15px/1.55 system-ui,sans-serif;margin-top:auto}
+body.studio #lab-6 .fm-book-shelf button:before{display:none}
+body.studio #lab-6 .fm-book-shelf button:is(:hover,[aria-pressed=true]){background:#ffdb43;background-image:none;color:#10151f;border-left-color:#10151f;transform:none;box-shadow:none}
+body.studio #lab-6 .fm-book-shelf button:is(:hover,[aria-pressed=true]) :is(small,strong,span){color:#10151f}
+body.studio #lab-6 .fm-book-shelf button:focus-visible{outline:3px solid #ffdb43;outline-offset:4px}
+@media(max-width:650px){body.studio #lab-6 .fm-book-shelf{grid-template-columns:1fr}body.studio #lab-6 .fm-book-shelf button{min-height:150px;padding:18px 14px}}
