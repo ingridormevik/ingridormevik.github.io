@@ -2613,21 +2613,21 @@ function createGarden3D(){
  installArchiveGarden(g);
  return world;
 }
-// One neighbouring clearing, explicit GPU disposal, and one visible 2D surface.
-function gardenNeighbour(g){if(H.journey?.phase==='roots'){const above=Math.floor((4-g.camera.position.z-g.origin)/80);if(above!==g.activeIndex)return above;}return g.activeIndex+(g.player.z+g.activeIndex*80 < -36?1:-1);}
+// Retain a bounded neighbourhood in both directions; prioritise the actual traveller.
+function gardenNeighbour(g){if(H.journey?.phase==='roots'){const above=Math.floor((4-g.camera.position.z-g.origin)/80);if(above!==g.activeIndex)return above;}const here=Math.floor((4-g.player.z)/80);if(here!==g.activeIndex)return here;return here+(g.player.z+here*80 < -36?1:-1);}
 function releaseGardenSection(g,index){
  const chunk=g.chunks.get(index);if(!chunk)return;rememberGardenSection(g,chunk);disposeGardenTree(chunk.root);g.chunks.delete(index);g.linkSignature='';
 }
 function trimGardenSections(g){
- const neighbour=gardenNeighbour(g);
- for(const index of g.chunks.keys())if(index!==g.activeIndex&&index!==neighbour&&index!==H.journey?.localExit?.targetIndex)releaseGardenSection(g,index);
- for(const [index,job] of g.jobs)if(index!==neighbour&&index!==H.journey?.localExit?.targetIndex){job.return();g.jobs.delete(index);}
+ const here=Math.floor((4-g.player.z)/80),keep=index=>Math.abs(index-here)<=1||index===g.activeIndex||index===H.journey?.localExit?.targetIndex;
+ for(const index of g.chunks.keys())if(!keep(index))releaseGardenSection(g,index);
+ for(const [index,job] of g.jobs)if(!keep(index)){job.return();g.jobs.delete(index);}
 }
 function streamGarden(g){
  if(H.session.mode==='waiting')return;
- trimGardenSections(g);const index=H.journey?.localExit?.targetIndex??gardenNeighbour(g);
- if(!g.chunks.has(index)&&!g.jobs.has(index))g.jobs.set(index,buildGardenSection(g,index));
- const item=g.jobs.entries().next().value;
+ trimGardenSections(g);const here=Math.floor((4-g.player.z)/80),preferred=gardenNeighbour(g),targets=[H.journey?.localExit?.targetIndex,here,preferred,here-1,here+1].filter((n,i,a)=>Number.isInteger(n)&&a.indexOf(n)===i),index=targets.find(n=>!g.chunks.has(n)&&!g.jobs.has(n));
+ if(index!==undefined)g.jobs.set(index,buildGardenSection(g,index));
+ const next=targets.find(n=>g.jobs.has(n)),item=next===undefined?null:[next,g.jobs.get(next)];
  if(item){const [i,job]=item,start=performance.now();let result;do{result=job.next();g.generationSteps++;}while(!result.done&&performance.now()-start<2);if(result.done){g.jobs.delete(i);attachGardenSection(g,result.value);}}
 }
 function releaseEncounterSurroundings(g){
@@ -2691,9 +2691,11 @@ function updateGardenPlayer(g,dt){
  if(H.session.mode!=='waiting'){
   if(g.auto){if(!H.walkGardenRoute?.(g,dt)){p.z-=g.speed*dt;p.x=lerp(p.x,gardenPath(p.z),1-Math.exp(-dt*2));}}
   else{const k=g.keys;let f=(k.has('w')||k.has('arrowup')?1:0)-(k.has('s')||k.has('arrowdown')?1:0),s=(k.has('d')||k.has('arrowright')?1:0)-(k.has('a')||k.has('arrowleft')?1:0),length=Math.hypot(f,s);if(length){f/=length;s/=length;p.x+=(-Math.sin(p.yaw)*f+Math.cos(p.yaw)*s)*g.speed*dt;p.z+=(-Math.cos(p.yaw)*f-Math.sin(p.yaw)*s)*g.speed*dt;}}
-  p.x=clamp(p.x,gardenPath(p.z)-(g.archive?.realms?.phase==='active'?20:12.2),gardenPath(p.z)+(g.archive?.realms?.phase==='active'?20:12.2));
-  const index=Math.floor((4-p.z)/80);if(index!==g.activeIndex){if(g.chunks.has(index)&&(!g.chunks.get(index).gardenGPU||["ready","failed"].includes(g.chunks.get(index).gardenGPU.phase))){setGardenActive(g,index);queueActII('crossing',2);}else{p.x=oldX;p.z=oldZ;}}
-  for(const chunk of g.chunks.values())for(const tree of chunk.trees){const dx=p.x-tree.x,dz=p.z-(tree.z+chunk.offset),d=Math.hypot(dx,dz),r=tree.r+.24;if(d<r){p.x=tree.x+dx/(d||1)*r;p.z=tree.z+chunk.offset+dz/(d||1)*r;}}
+  // Continuous outland replaces the narrow living-garden corridor.
+  if(g.archive?.realms?.phase==='active')p.x=clamp(p.x,gardenPath(p.z)-20,gardenPath(p.z)+20);
+  const index=Math.floor((4-p.z)/80);if(index!==g.activeIndex&&g.chunks.has(index)&&(!g.chunks.get(index).gardenGPU||["ready","failed"].includes(g.chunks.get(index).gardenGPU.phase))){setGardenActive(g,index);queueActII('crossing',2);}
+  // Surface travel continues on outland while detailed planting prepares.
+  if(!H.gardenPassage?.resolve)for(const chunk of g.chunks.values())for(const tree of chunk.trees){const dx=p.x-tree.x,dz=p.z-(tree.z+chunk.offset),d=Math.hypot(dx,dz),r=tree.r+.24;if(d<r){p.x=tree.x+dx/(d||1)*r;p.z=tree.z+chunk.offset+dz/(d||1)*r;}}
   const travelled=Math.hypot(p.x-oldX,p.z-oldZ);g.walking=travelled>.0001;g.travel+=travelled;g.forwardTravel+=Math.max(0,oldZ-p.z);updateDigitalBoundary(g,dt);
  }
  // The camera and every section share a floating origin for long walks.
@@ -4697,7 +4699,7 @@ function createSoilRoom(g,entrance){
  entrance.build??=buildSoilRoom(g,entrance);while(!entrance.build.next().done){}entrance.build=null;return entrance.room;
 }
 function warmRootRooms(g){
- if(!['start','surface','descending'].includes(H.journey.phase))return;if(H.journey.phase==='surface'&&g.world.age-(H.journey.surfaceArrivedAt??-99)<4)return;
+ if(!['start','surface','descending'].includes(H.journey.phase))return;if(H.journey.phase==='surface'&&g.world.age-(H.journey.surfaceArrivedAt??-99)<4&&(g.encounter?.nearest?.distance??Infinity)>8)return;
  const candidates=[];for(const chunk of g.chunks.values())for(const e of chunk.rootEntrances||[]){const distance=Math.hypot(g.player.x-e.x,g.player.z-e.z-chunk.offset);if(distance<24&&!e.room?.ready)candidates.push({e,distance});}
  candidates.sort((a,b)=>a.distance-b.distance);const e=H.journey.phase==='descending'?H.journey.activeEntrance:candidates[0]?.e;if(!e||e.room?.ready)return;
  e.build??=buildSoilRoom(g,e);const start=performance.now();let result,steps=0;do{result=e.build.next();steps++;}while(!result.done&&steps<12&&performance.now()-start<2);
@@ -4888,11 +4890,11 @@ function rootEntryPoints(g,e){
 }
 function updateRootProximity(g,dt){
  const s=g.encounter;if(H.session.mode==='waiting'||H.journey.phase!=='surface'){s.dwell=0;return;}
- let nearest=null;for(const chunk of g.chunks.values())for(const portal of chunk.portals||[]){const distance=Math.hypot(g.player.x-portal.x,g.player.z-portal.z-chunk.offset);if(!nearest||distance<nearest.distance)nearest={chunk,portal,distance,key:chunk.index+'-'+(portal.encounter??portal.group)};}
+ let nearest=null;for(const chunk of g.chunks.values()){if(chunk.root?.visible===false||chunk.gardenGPU&&!['ready','failed'].includes(chunk.gardenGPU.phase))continue;for(const portal of chunk.portals||[]){const distance=Math.hypot(g.player.x-portal.x,g.player.z-portal.z-chunk.offset);if(!nearest||distance<nearest.distance)nearest={chunk,portal,distance,key:chunk.index+'-'+(portal.encounter??portal.group)};}}
  const previous=s.nearest;s.nearest=nearest;
  if(s.locked!==null&&(!nearest||nearest.key!==s.locked||nearest.distance>4.8))s.locked=null;
  const forward=H.embodied?.active?H.embodied.speed>.05&&H.embodied.descentRequest===nearest?.key:g.keys.has('w')||g.keys.has('arrowup'),dx=nearest?nearest.portal.x-g.player.x:0,dz=nearest?nearest.portal.z+nearest.chunk.offset-g.player.z:0,toward=(-Math.sin(g.player.yaw)*dx-Math.cos(g.player.yaw)*dz)/Math.max(.01,nearest?.distance||0);
- const approaching=previous?.key===nearest?.key&&nearest.distance<=previous.distance+.002;
+ const approaching=!!(previous&&nearest&&previous.key===nearest.key&&nearest.distance<=previous.distance+.002);
  if(nearest&&nearest.distance<2.65&&g.walking&&forward&&toward>.65&&approaching&&s.locked!==nearest.key&&!H.audioControls.open){s.dwell+=dt;if(s.dwell>=.09)beginRootDescent(g);}else s.dwell=0;
  if(previous?.key!==nearest?.key||(previous?.distance<4.4)!==(nearest?.distance<4.4))journeyRefreshControls(g);
 }
@@ -4919,6 +4921,9 @@ function beginRootDescent(g){
  return startRootTransit(g,points,'roots');
 }
 function beginRootAscent(g,original=false){
+ // A return must release the previous follow target before reversing or rising.
+ const controller=H.embodied;if(controller){controller.route=null;controller.descentRequest=null;controller.steered=false;}
+ g.auto=false;g.keys.clear();
  if(g.archive?.realms?.phase==='active')finishDigitalRealm(g);
  const j=H.journey;if(j.transit){j.transit.direction=j.transit.destination==='surface'?1:-1;j.transit.paused=false;journeyRefreshControls(g);return true;}
  if(j.phase!=='roots'||!j.activeEntrance)return false;
@@ -9987,6 +9992,7 @@ function executeEmbodiedCommand(command){
   b.lookPitch=-.035;embodiedSay('Looking straight ahead.');
  }
  else if(command==='return'||command==='next'&&j.phase!=='surface'){
+  manual();b.steered=false;
   if(g.archive?.realms?.phase==='active')finishDigitalRealm(g);
   if(H.poetryReader?.open)H.poetryReader.close?.();
   if(j.phase==='roots'){beginRootAscent(g);drive(.9,1);b.stopAfterAscent=true;b.nextAfterAscent=command==='next';}
@@ -16746,12 +16752,15 @@ H.PlantMeshoptDecoder=MeshoptDecoder;
  H.updateNaturalRealm=(g,a,dt)=>{
   previous?.(g,a,dt);if(!installed){installed=true;const dispose=g.dispose;g.dispose=()=>{try{return dispose();}finally{for(const release of owned)release();owned.clear();managed.clear();}};}if(!R.ready)return;clock+=dt||.016;if(clock<.08)return;clock=0;g.camera.updateMatrixWorld();
   R.originalTriangles=R.drawnTriangles=0;R.maxChosenErrorPixels=0;
+  const targetError=.55+Math.min(4,H.performanceGovernor?.level||0)*.24;
+  R.pixelError+=(targetError-R.pixelError)*.08;
   for(const mesh of managed){
    let attached=false;for(let p=mesh;p;p=p.parent)if(p===g.scene){attached=true;break;}if(!attached){managed.delete(mesh);continue;}
    let state=mesh.userData.plantDetail;
    if(!state){const base=mesh.geometry,levels=lods.get(base.userData.plantDetailKey);if(!levels)continue;let pool=shared.get(base);if(!pool){retain(base);pool=levels.map(l=>{const geometry=new T.BufferGeometry();for(const [key,value] of Object.entries(base.attributes))geometry.setAttribute(key,value);geometry.setIndex(new T.BufferAttribute(l.indices,1));geometry.boundingBox=base.boundingBox?.clone();geometry.boundingSphere=base.boundingSphere.clone();retain(geometry);return {geometry,error:l.error*(base.userData.plantDetailScale||1)};});shared.set(base,pool);}state=mesh.userData.plantDetail={base,level:0,levels:pool};}
    mesh.updateWorldMatrix(true,false);let projected=0;
    for(let i=0;i<mesh.count;i++){mesh.getMatrixAt(i,instance);world.multiplyMatrices(mesh.matrixWorld,instance);const scale=world.getMaxScaleOnAxis();center.copy(state.base.boundingSphere.center).applyMatrix4(world);view.copy(center).applyMatrix4(g.camera.matrixWorldInverse);const depth=Math.max(.1,-view.z-state.base.boundingSphere.radius*scale);projected=Math.max(projected,g.canvas.height*g.camera.projectionMatrix.elements[5]*.5*scale/depth);}
+   // Spend detail on nearby silhouettes before reducing the actual image resolution.
    let selected=0;if(!R.forceOriginal)for(let i=0;i<state.levels.length;i++){const limit=R.pixelError*(state.level===i+1?1.15:1);if(state.levels[i].error*projected<=limit)selected=i+1;}
    if(selected!==state.level){state.level=selected;mesh.geometry=selected?state.levels[selected-1].geometry:state.base;R.changes++;}
    R.maxChosenErrorPixels=Math.max(R.maxChosenErrorPixels,selected?state.levels[selected-1].error*projected:0);R.originalTriangles+=state.base.index.count/3*mesh.count;R.drawnTriangles+=mesh.geometry.index.count/3*mesh.count;
@@ -17133,7 +17142,7 @@ H.PlantMeshoptDecoder=MeshoptDecoder;
  };
  material.customProgramCacheKey=()=> 'hagen-curved-autumn-litter-1';material.userData.realmShared=true;
  const pebbleGeometry=new T.IcosahedronGeometry(1,1),pebbleMaterial=new T.MeshStandardMaterial({color:'#555d53',roughness:.81});pebbleMaterial.userData.realmShared=true;
- const pose=new T.Object3D(),up=new T.Vector3(0,1,0),normal=new T.Vector3(),color=new T.Color(),palette=['#73503a','#80543c','#684b35','#98734f','#716247','#493d31'];
+ const pose=new T.Object3D(),up=new T.Vector3(0,1,0),normal=new T.Vector3(),color=new T.Color(),palette=['#92683a','#aa7b42','#78492e','#b18b4b','#766040','#63412b'];
  function grow(chunk){
   const group=new T.Group();group.name='Damp forest floor · fallen leaves and small stones';group.userData.hagenPhysical=true;chunk.root.add(group);
   let seed=(chunk.index+8843)>>>0;const random=()=>{seed=(1664525*seed+1013904223)>>>0;return seed/4294967296;};
@@ -18289,12 +18298,11 @@ H.PlantMeshoptDecoder=MeshoptDecoder;
 // V24.2: bound GPU allocations independently of Windows display scaling.
 // Preserve the authored shaders; budget their buffers and surrounding detail.
 (()=>{
- // 24 Oct: the ratio was also capped at 1, so scaled Windows displays drew fewer pixels than the
- // screen and stretched them (Ingrid: blurry). Follow the display up to 2560x1440 physical pixels.
- // 24 Oct (later): 2560x1440 lagged; keep the display ratio but cap at 1920x1080 physical pixels.
- const maxWidth=1920,maxHeight=1080;
+ // Cinematic presentation follows display density up to a 4K ceiling.
+ // Cinematic retains native sharpness; Smooth adapts below its 1080p ceiling.
+ const maxWidth=3840,maxHeight=2160;
  // H.renderScale is lowered by perf_governor.js when this machine cannot keep up.
- hagenNativePixelRatio=()=>Math.min(devicePixelRatio||1,maxWidth/Math.max(1,innerWidth),maxHeight/Math.max(1,innerHeight))*(H.renderScale||1);
+ hagenNativePixelRatio=()=>{const q=H.presentationQuality||{maxWidth,maxHeight};const scale=q.mode==='cinematic'?1:(H.renderScale||1);const native=Math.min(devicePixelRatio||1,q.maxWidth/Math.max(1,innerWidth),q.maxHeight/Math.max(1,innerHeight));return Math.max(Math.min(native,1),native*scale);};
  H.prepare4KFrame=g=>{
   const ratio=hagenNativePixelRatio();if(g.renderer.getPixelRatio()!==ratio)g.renderer.setPixelRatio(ratio);
   g.performance4k={native:false,maxWidth,maxHeight,samples:0,pixelRatio:ratio};
@@ -19424,7 +19432,7 @@ H.PlantMeshoptDecoder=MeshoptDecoder;
 (()=>{
  const query=new URLSearchParams(location.search);
  if(query.get('research')==='1'||globalThis.HAGEN_RESEARCH_DEFAULT||query.has('vr')||query.has('gather')||query.get('projection')==='lights')return;
- const allowed=new Set(['walk','stop','run','slower','faster','resume','turnLeft','turnRight','around','lookLeft','lookRight','lookUp','lookDown','follow','enterRoots','return','algorithm','glitch','textOn','textOff','zoomIn','zoomOut','zoomReset']);
+ const allowed=new Set(['walk','stop','run','slower','faster','resume','turnLeft','turnRight','around','lookLeft','lookRight','lookUp','lookDown','follow','enterRoots','return','fly','land','algorithm','glitch','textOn','textOff','zoomIn','zoomOut','zoomReset']);
  const state=H.naturalVoice={state:'off',error:'',executed:0};
  const endpoint='http://127.0.0.1:8936';
  let pc,channel,speaker,stream,sourceStream,request,timer,button,status,activated=false,stopping=false;
@@ -19991,7 +19999,7 @@ window.HagenTitleArt=()=>"<svg class=\"filaments\" viewBox=\"0 0 1000 440\" role
  const cleanup=()=>{front.remove();removeEventListener('keydown',keyEnter,true);removeEventListener('pointerdown',guard,true);removeEventListener('keydown',guard,true);};
  function go(){
   if(!ready||gone)return;gone=true;front.classList.add('leaving');
-  Promise.resolve(H.soundInput?.enableMicrophone?.()).then(ok=>{if(ok)H.startGardenVoice?.();});H.garden?.canvas?.focus({preventScroll:true});
+  if(!H.quietEntry)Promise.resolve(H.soundInput?.enableMicrophone?.()).then(ok=>{if(ok)H.startGardenVoice?.();});H.garden?.canvas?.focus({preventScroll:true});
   setTimeout(cleanup,1400);
  }
  function keyEnter(e){if(!gone&&ready&&(e.key==='Enter'||e.key===' ')){e.preventDefault();e.stopImmediatePropagation();go();}}
@@ -20441,8 +20449,9 @@ window.HagenTitleArt=()=>"<svg class=\"filaments\" viewBox=\"0 0 1000 440\" role
   {scale:.6,firs:true,nettles:true,leaves:true},
   {scale:.5,firs:true,nettles:true,leaves:true}
  ];
- const G=H.performanceGovernor={targetFPS:60,slowFrameMs:18.5,recoverFrameMs:16.5,level:0,fps:0,frameMs:0,changes:0};
- H.renderScale=1;
+ const G=H.performanceGovernor={targetFPS:60,slowFrameMs:18.5,recoverFrameMs:16.5,level:2,fps:0,frameMs:0,changes:0};
+ // Start below the 4K ceiling; raise detail only after sustained rendering headroom.
+ H.renderScale=LEVELS[G.level].scale;
  let last=null,samples=[],since=null,slowFor=0,fastFor=0;
  const managed=new Set();let scene=null,revision=null;
  document.addEventListener('visibilitychange',()=>{last=since=null;samples=[];slowFor=fastFor=0;});
@@ -20489,8 +20498,8 @@ window.HagenTitleArt=()=>"<svg class=\"filaments\" viewBox=\"0 0 1000 440\" role
   const nextScale=LEVELS[Math.max(0,G.level-1)].scale,ratio=nextScale/LEVELS[G.level].scale;
   const graphicsHeadroom=measured&&gpu.ms*ratio*ratio<14;
   G.gpuMs=measured?+gpu.ms.toFixed(2):null;G.bottleneck=median>G.slowFrameMs?(graphicsSlow?'graphics':'cpu'):'within budget';
-  if(median>G.slowFrameMs&&graphicsSlow){slowFor++;fastFor=0;}else if(median<G.recoverFrameMs||graphicsHeadroom){fastFor++;slowFor=0;}else{slowFor=0;fastFor=0;}
-  if(slowFor>=2&&G.level<LEVELS.length-1){G.level++;G.changes++;slowFor=0;apply(g);}
+  if(median>G.slowFrameMs&&graphicsSlow){slowFor++;fastFor=0;}else if(median<17.5&&(median<G.recoverFrameMs||graphicsHeadroom)){fastFor++;slowFor=0;}else{slowFor=0;fastFor=0;}
+  if(slowFor>=(median>33?1:2)&&G.level<LEVELS.length-1){G.level++;G.changes++;slowFor=0;apply(g);}
   else if(fastFor>=8&&G.level>0){G.level--;G.changes++;fastFor=0;apply(g);}
  };
 })();
@@ -20641,7 +20650,7 @@ window.HagenTitleArt=()=>"<svg class=\"filaments\" viewBox=\"0 0 1000 440\" role
    woodlandUv=uv;transformed.z+=pow(uv.y,2.)*sin(woodlandClock*.65+instanceMatrix[3].x*.9+instanceMatrix[3].z)*(.0015+woodlandSound*.001);`);
   s.fragmentShader='uniform vec4 woodlandSeason;varying vec2 woodlandUv;\n'+s.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
    float rib=exp(-abs(woodlandUv.x-.5)*120.);float vein=pow(.5+.5*cos(woodlandUv.y*43.-abs(woodlandUv.x-.5)*19.),22.);
-   diffuseColor.rgb*=.88+rib*.22+vein*.10;diffuseColor.rgb=mix(diffuseColor.rgb,diffuseColor.rgb*vec3(1.34,.66,.43),woodlandSeason.z*.67);
+   diffuseColor.rgb*=.88+rib*.22+vein*.10;diffuseColor.rgb=mix(diffuseColor.rgb,diffuseColor.rgb*vec3(1.72,.53,.29),woodlandSeason.z*.86);
    diffuseColor.rgb*=1.-woodlandSeason.w*.37;`);
  };leafMaterial.customProgramCacheKey=()=> 'norwegian-bilberry-curved-leaf-1';
  const stemGeometry=new T.CylinderGeometry(.0025,.0045,1,6,3);stemGeometry.translate(0,.5,0);
@@ -20702,19 +20711,20 @@ window.HagenTitleArt=()=>"<svg class=\"filaments\" viewBox=\"0 0 1000 440\" role
  if(new URLSearchParams(location.search).get('projection')==='lights')return;
  const T=THREE,matrix=new T.Matrix4(),world=new T.Matrix4(),bounds=new T.Box3(),center=new T.Vector3(),size=new T.Vector3();
  const R=H.gardenPassage={corrections:0,obstacles:[],revision:null};let cacheAt=0,staticObstacles=[];const envelopes=new WeakMap();
- const revision=g=>[...g.chunks.keys()].join(',')+':'+[H.gardenQuality?.chunks,H.realTrees?.chunks,H.canopySchedule?.prepared,H.canopySchedule?.relocated,g.origin].join(':');
+ const revision=g=>[...g.chunks.keys()].join(',')+':'+[H.gardenQuality?.chunks,H.realTrees?.chunks,H.canopySchedule?.prepared,H.canopySchedule?.relocated,H.nordicOutland?.clearings,H.streamGPU?.prepared,H.streamGPU?.errors?.length,g.origin].join(':');
  function rebuild(g){
   const keyRevision=revision(g),fresh=keyRevision!==R.revision;if(fresh)staticObstacles=[];
-  H.clearance.refresh(g);const list=H.clearance.spheres.map(s=>{
+  H.clearance.refresh(g);const list=H.clearance.spheres.filter(s=>{let o=s.body;while(o){if(o.visible===false)return false;o=o.parent;}return true;}).map(s=>{
    const x=s.center.x,z=s.center.z+g.origin;let e=envelopes.get(s.body);
    if(!e){e={x,z,r:s.r,bottom:s.bottom,top:s.top};envelopes.set(s.body,e);}
    e.r=Math.max(e.r,s.r+Math.hypot(x-e.x,z-e.z));e.top=Math.max(e.top,s.top);e.bottom=Math.min(e.bottom,s.bottom);
    return {...e,body:s.body};
   });
+  if(fresh)for(const chunk of g.chunks.values()){if(chunk.root?.visible===false||chunk.gardenGPU&&!['ready','failed'].includes(chunk.gardenGPU.phase))continue;for(const tree of chunk.trees||[]){const z=tree.z+chunk.offset,bottom=gardenWorldHeight(tree.x,z);staticObstacles.push({x:tree.x,z,r:tree.r,bottom,top:bottom+16,body:tree});}}
   const seen=new Set();
   g.scene.updateMatrixWorld(true);
-  g.scene.traverse(o=>{
-   if(fresh&&o.isInstancedMesh&&/^(Bark trunks rising|Scanned fir_sapling|Near-field fern_02)/.test(o.name)){
+  g.scene.traverseVisible(o=>{
+   if(fresh&&o.isInstancedMesh&&/^(Bark trunks rising|Scanned fir_sapling)/.test(o.name)){
     if(!o.geometry.boundingBox)o.geometry.computeBoundingBox();
     for(let i=0;i<o.count;i++){
      o.getMatrixAt(i,matrix);if(Math.abs(matrix.determinant())<1e-9)continue;world.multiplyMatrices(o.matrixWorld,matrix);bounds.copy(o.geometry.boundingBox).applyMatrix4(world);bounds.getCenter(center);bounds.getSize(size);
@@ -20776,7 +20786,7 @@ window.HagenTitleArt=()=>"<svg class=\"filaments\" viewBox=\"0 0 1000 440\" role
    angle+=avoid.side*strength*1.25;
    speed=1-.55*strength;R.anticipated=(R.anticipated||0)+1;
   }else avoid=null;
-  travelAngle??=angle;const turn=Math.atan2(Math.sin(angle-travelAngle),Math.cos(angle-travelAngle));travelAngle+=T.MathUtils.clamp(turn,-dt*1.7,dt*1.7);
+  travelAngle??=angle;if(!nearest&&Math.cos(angle-travelAngle)<-.5)travelAngle=angle;const turn=Math.atan2(Math.sin(angle-travelAngle),Math.cos(angle-travelAngle));travelAngle+=T.MathUtils.clamp(turn,-dt*1.7,dt*1.7);
   // Turn through the arc while easing the pace. An instant reversal makes
   // the body run backwards while the eyes are still turning toward the path.
   speed*=Math.max(.15,Math.pow(Math.cos(Math.min(Math.PI,Math.abs(turn))*.5),2));
@@ -20931,12 +20941,12 @@ window.HagenTitleArt=()=>"<svg class=\"filaments\" viewBox=\"0 0 1000 440\" role
   return true;
  };
  const prepare=H.prepareRootGPU;H.prepareRootGPU=(g,e)=>{if(e.room?.group&&!e.room.group.userData.risePrepared){e.room.group.userData.risePrepared=true;const template=new T.Mesh(new T.CylinderGeometry(1,1,1,8,1,true),wall);template.visible=false;e.room.group.add(template);}return prepare?.(g,e);};
- const surfacePrograms=new WeakMap();
+ const surfacePrograms=new WeakMap();let lightScanAt=-Infinity,cachedLightCount=0;
  function prepareSurface(g,chunk){
   if(!chunk||chunk.gardenGPU&&!['ready','failed'].includes(chunk.gardenGPU.phase))return false;
   const planted=!H.quickGarden||chunk.root.children.some(o=>o.name==='Scanned night undergrowth'&&o.userData.plantingComplete)&&(H.realTrees?.errors?.length||chunk.root.children.some(o=>o.name==='Real trees and undergrowth'));
   if(!planted)return false;if(g.archive?.realms?.phase==='active')return false;
-  let count=0;g.scene.traverse(o=>{if(o.isLight)count++;});const key=count+':'+chunk.root.children.length;
+  const now=performance.now();if(now>=lightScanAt){cachedLightCount=0;g.scene.traverse(o=>{if(o.isLight)cachedLightCount++;});lightScanAt=now+500;}const key=cachedLightCount+':'+chunk.root.children.length;
   let state=surfacePrograms.get(chunk);if(state?.key===key)return state.ready;
   state={key,ready:false};surfacePrograms.set(chunk,state);
   queueMicrotask(()=>{
@@ -21746,7 +21756,7 @@ globalThis.HagenQuietGarden={
   if(state.phase==='failed'){state.target?.dispose();chunk.root.visible=true;}
  }
  const previous=H.updateNaturalRealm;
- H.updateNaturalRealm=(g,...args)=>{previous?.(g,...args);if(!g.quickShadersReady||H.journey.phase==='descending')return;for(const chunk of g.chunks.values())if(chunk.gardenGPU&&!['ready','failed'].includes(chunk.gardenGPU.phase)){const state=chunk.gardenGPU,at=performance.now(),phase=state.phase;prepare(g,chunk);const ms=performance.now()-at;state.maxCpuMs=Math.max(state.maxCpuMs||0,ms);if(ms>12){(R.longJobs??=[]).push({phase,chunk:chunk.index,ms});if(R.longJobs.length>32)R.longJobs.shift();}}};
+ H.updateNaturalRealm=(g,...args)=>{previous?.(g,...args);if(!g.quickShadersReady||H.journey.phase==='descending')return;const here=Math.floor((4-g.player.z)/80),pending=[...g.chunks.values()].filter(c=>c.gardenGPU&&!['ready','failed'].includes(c.gardenGPU.phase)).sort((a,b)=>Math.abs(a.index-here)-Math.abs(b.index-here)),chunk=pending[0];if(chunk){const state=chunk.gardenGPU,at=performance.now(),phase=state.phase;prepare(g,chunk);const ms=performance.now()-at;state.maxCpuMs=Math.max(state.maxCpuMs||0,ms);if(ms>12){(R.longJobs??=[]).push({phase,chunk:chunk.index,ms});if(R.longJobs.length>32)R.longJobs.shift();}}};
 })();
 
 // Antialias the final HDR image at native resolution without an MSAA resolve.
@@ -21761,8 +21771,8 @@ globalThis.HagenQuietGarden={
     vec3 m=texture2D(sceneTex,uv).rgb,nw=texture2D(sceneTex,uv+vec2(-1.,-1.)*gardenInvPixel).rgb,ne=texture2D(sceneTex,uv+vec2(1.,-1.)*gardenInvPixel).rgb,sw=texture2D(sceneTex,uv+vec2(-1.,1.)*gardenInvPixel).rgb,se=texture2D(sceneTex,uv+vec2(1.,1.)*gardenInvPixel).rgb;
     vec3 luma=vec3(.299,.587,.114);float lm=dot(m,luma),lnw=dot(nw,luma),lne=dot(ne,luma),lsw=dot(sw,luma),lse=dot(se,luma),lo=min(lm,min(min(lnw,lne),min(lsw,lse))),hi=max(lm,max(max(lnw,lne),max(lsw,lse)));
     if(hi-lo<max(.025,hi*.125))return m;
-    vec2 direction=vec2(-((lnw+lne)-(lsw+lse)),(lnw+lsw)-(lne+lse));float reduce=max((lnw+lne+lsw+lse)*.03125,.0078125);float inverse=1./(min(abs(direction.x),abs(direction.y))+reduce);direction=clamp(direction*inverse,vec2(-8.),vec2(8.))*gardenInvPixel;
-    vec3 a=.5*(texture2D(sceneTex,uv+direction*(1./3.-.5)).rgb+texture2D(sceneTex,uv+direction*(2./3.-.5)).rgb),b=a*.5+.25*(texture2D(sceneTex,uv-direction*.5).rgb+texture2D(sceneTex,uv+direction*.5).rgb);float lb=dot(b,luma);return lb<lo||lb>hi?a:b;
+    vec2 direction=vec2(-((lnw+lne)-(lsw+lse)),(lnw+lsw)-(lne+lse));float reduce=max((lnw+lne+lsw+lse)*.03125,.0078125);float inverse=1./(min(abs(direction.x),abs(direction.y))+reduce);direction=clamp(direction*inverse,vec2(-4.),vec2(4.))*gardenInvPixel;
+    vec3 a=.5*(texture2D(sceneTex,uv+direction*(1./3.-.5)).rgb+texture2D(sceneTex,uv+direction*(2./3.-.5)).rgb),b=a*.5+.25*(texture2D(sceneTex,uv-direction*.5).rgb+texture2D(sceneTex,uv+direction*.5).rgb);float lb=dot(b,luma);return mix(m,lb<lo||lb>hi?a:b,.65);
    }`).replace('vec3 base=texture2D(sceneTex,vUv).rgb','vec3 base=gardenAntialias(vUv)');
  };
  const previous=H.updateNaturalRealm;
@@ -21782,6 +21792,8 @@ globalThis.HagenQuietGarden={
   function clear(destroy){if(destroy)for(const slot of owned)gl.deleteQuery(slot.query);owned.clear();free.length=pending.length=spare.length=0;frames.clear();current=null;inside=false;R.valid=false;}
   r.render=function(...args){
    if(!ext||!g.quickShadersReady||gl.isContextLost()||inside)return render.apply(this,args);
+   // Sample one complete frame in twelve; driver queries can stall the render thread.
+   if(g.world.frame%12!==0)return render.apply(this,args);
    if(gl.getQuery(ext.TIME_ELAPSED_EXT,gl.CURRENT_QUERY)){skipped=g.world.frame;R.valid=false;return render.apply(this,args);}
    while(pending.length&&gl.getQueryParameter(pending[0].query,gl.QUERY_RESULT_AVAILABLE)){
     const slot=pending.shift(),frame=slot.frame;if(!gl.getParameter(ext.GPU_DISJOINT_EXT))frame.gpu+=gl.getQueryParameter(slot.query,gl.QUERY_RESULT)/1e6;else frame.skipped=true;frame.pending--;slot.frame=null;free.push(slot);finish(frame);
@@ -21947,7 +21959,7 @@ globalThis.HagenQuietGarden={
    if(keys.has('s')||keys.has('arrowdown')){t.direction=-1;t.paused=false;}
    const drive=t.paused?0:t.direction*(b?.active?b.transitDrive:1),ready=t.destination!=='roots'||j.activeEntrance?.room?.gpuReady===true;
    t.recoveryProgress??=0;
-   const duration=H.session.reduced?6:3.8;
+   const duration=H.session.reduced?6:2.8;
    if(drive){
     const limit=j.activeEntrance?.room?.shaftGPUReady?.55:.12,targetPace=ready||drive<0?1:T.MathUtils.clamp((limit-t.u)*6,.04,1);t.preparationPace??=1;t.preparationPace+=(targetPace-t.preparationPace)*(1-Math.exp(-elapsed*4));const progress=T.MathUtils.clamp(t.recoveryProgress+Math.sign(drive)*elapsed*t.preparationPace/duration,0,1),u=progress*progress*(3-2*progress);
     if(drive<0||ready||u<=(j.activeEntrance?.room?.shaftGPUReady?.55:.12))t.recoveryProgress=progress;
@@ -22099,7 +22111,8 @@ globalThis.HagenListeningModel={create(storage,seed,now=()=>Date.now()){
   model.step(dt,{active,near:!moving&&nearest?.distance<5.5,holding:!!H.inputGarden?.holding,voice:H.audio?.kind==='mic'?a.fastLevel||0:0,root:H.journey.phase==='roots'?H.journey.encounter:nearest?.root||0,zone:H.journey.phase==='roots'?'root:'+H.journey.encounter:'surface:'+g.activeIndex,mode});
   if(scan&&active&&model.signal>.01)nourish();
   // No new geometries, material programs, lights, draw calls or animation loop.
-  if(nearest?.body&&active){let uniforms=energies.get(nearest.body);if(!uniforms){uniforms=[];nearest.body.traverse(o=>{const u=o.material?.uniforms;if(u?.energy)uniforms.push(u.energy);});energies.set(nearest.body,uniforms);}const strength=model.signal*.18;for(const u of uniforms)u.value=Math.max(u.value,strength);}
+  R.nearRoot=!!nearest&&nearest.distance<5.5;R.visualResponse=false;
+  if(nearest?.body&&active){let uniforms=energies.get(nearest.body);if(!uniforms){uniforms=[];nearest.body.traverse(o=>{const u=o.material?.uniforms;if(u?.energy)uniforms.push(u.energy);});energies.set(nearest.body,uniforms);}const strength=model.signal*.18;for(const u of uniforms)u.value=Math.max(u.value,strength);R.visualResponse=uniforms.length>0&&strength>.002;}
   mutedByMusic=!!(H.sensory?.music&&!H.sensory.music.media.paused||H.music?.media&&!H.music.media.paused);
   if(graph&&g.world.age>=audioAt){
    audioAt=g.world.age+.25;const c=graph.context,t=c.currentTime,allowed=active&&R.enabled&&!mutedByMusic;
@@ -22371,13 +22384,15 @@ globalThis.HagenListeningModel={create(storage,seed,now=()=>Date.now()){
 (()=>{
  const T=THREE,wrap=a=>Math.atan2(Math.sin(a),Math.cos(a));
  const C=H.cinematic={active:false,reason:'',distance:0,replans:0,recoveries:0,waiting:0,shot:'glide',drone:false,droneBlend:0,landing:false,hovering:false,suspended:false,lookOffset:0,aerialLook:0};
- let button,status,statusTimer,angle=0,target=0,planTime=0,elapsed=0,stuckTime=0,anchor=null,unready=0,originalFov=64,height=1.63,routeClear=true;
+ let button,flyButton,landButton,status,statusTimer,angle=0,target=0,planTime=0,elapsed=0,stuckTime=0,anchor=null,unready=0,originalFov=64,height=1.63,routeClear=true;
  const shots=[{name:'glide',height:1.55,fov:64,pitch:-.025,speed:1,pan:-.12},{name:'low glide',height:.9,fov:61,pitch:.055,speed:.82,pan:.18},{name:'rising view',height:2.35,fov:67,pitch:.15,speed:.72,pan:-.16},{name:'garden portrait',height:1.4,fov:51,pitch:.035,speed:.55,pan:.2}];
  function install(){
   if(button)return;const tools=document.querySelector('#hagen-bar .tools');if(!tools)return;
   button=document.createElement('button');button.type='button';button.textContent='Cinematic mode';button.setAttribute('aria-pressed','false');
   button.title='Slow automatic surface journey; press Escape or use the controls to stop';button.onclick=()=>C.active?C.stop('Stopped'):C.start();tools.prepend(button);
-  status=document.createElement('span');status.setAttribute('role','status');status.style.cssText="position:fixed;right:18px;top:18px;z-index:2147482990;color:#e5e9dd;background:#071419dd;padding:8px 12px;font:16px 'Cormorant Garamond',HagenReading,serif;pointer-events:none;max-width:22em";status.hidden=true;document.body.appendChild(status);
+  flyButton=document.createElement('button');flyButton.type='button';flyButton.textContent='Fly';flyButton.setAttribute('aria-pressed','false');flyButton.title='Rise into an aerial view above the surface garden';flyButton.onclick=()=>{H.gardenPause?.setPaused(false);C.fly();};
+  landButton=document.createElement('button');landButton.type='button';landButton.textContent='Land';landButton.title='Land smoothly in the garden';landButton.disabled=true;landButton.onclick=()=>{H.gardenPause?.setPaused(false);C.land();};tools.append(flyButton,landButton);
+  status=document.createElement('span');status.id='hagen-cinematic-status';status.setAttribute('role','status');status.style.cssText="position:fixed;right:18px;top:18px;z-index:2147482990;color:#e5e9dd;background:#071419dd;padding:8px 12px;font:16px 'Cormorant Garamond',HagenReading,serif;pointer-events:none;max-width:22em";status.hidden=true;document.body.appendChild(status);
  }
  function say(s){C.reason=s;if(status){clearTimeout(statusTimer);status.textContent=s;status.hidden=!s;if(s)statusTimer=setTimeout(()=>{status.hidden=true;},4000);}}
  function unavailable(){const g=H.garden;return !g||!H.exhibitionAccess?.started||H.entryCovered||document.hidden||H.session.mode==='waiting'||H.journey?.phase!=='surface'||H.vr?.active||g.contextLost||g.archive?.realms?.phase==='active'||H.patternAccess?.open||H.poetryReader?.open||H.music?.dialog?.open||!!document.querySelector('dialog[open]');}
@@ -22403,6 +22418,7 @@ globalThis.HagenListeningModel={create(storage,seed,now=()=>Date.now()){
  // Interrupt before native keyboard, drag, button and voice actions execute.
  const manual=H.runManualCommand;H.runManualCommand=(...args)=>{if(C.active)C.stop('Manual control');return manual?.(...args);};
  C.fly=()=>{
+  if(unavailable()){say('Fly is available above the surface garden. Return from the roots and close open panels first.');return false;}
   if(C.drone)return true;
   if(!C.active&&!C.start())return false;
   C.drone=true;C.lookOffset=C.aerialLook=0;say('A view from above');return true;
@@ -22431,18 +22447,19 @@ globalThis.HagenListeningModel={create(storage,seed,now=()=>Date.now()){
  // Check the whole short look-ahead segment, including the native tree circles.
  function clear(g,a,length){
   const p=g.player,dx=-Math.sin(a),dz=-Math.cos(a),end={x:p.x+dx*length,z:p.z+dz*length},ground=gardenWorldHeight(p.x,p.z);
-  if(Math.abs(end.x-gardenWorldPath(end.z))>10.9)return false;
+  if(g.archive?.realms?.phase==='active'&&Math.abs(end.x-gardenWorldPath(end.z))>19)return false;
   const obstacles=H.gardenPassage.obstacles;
   function intersects(x,z,r){const rx=x-p.x,rz=z-p.z,initial=Math.hypot(rx,rz),along=rx*dx+rz*dz;
    if(initial<r&&along<0)return false;
    const t=Math.max(0,Math.min(length,along));return Math.hypot(rx-dx*t,rz-dz*t)<r;
   }
   for(const o of obstacles)if(ground+2.55>=o.bottom-.15&&ground+.7<=o.top+.18&&intersects(o.x,o.z,o.r+.55))return false;
-  for(const chunk of g.chunks.values())for(const tree of chunk.trees||[])if(intersects(tree.x,tree.z+chunk.offset,tree.r+.48))return false;
+  for(const chunk of g.chunks.values()){if(chunk.root?.visible===false||chunk.gardenGPU&&!['ready','failed'].includes(chunk.gardenGPU.phase))continue;for(const tree of chunk.trees||[])if(intersects(tree.x,tree.z+chunk.offset,tree.r+.48))return false;}
   return true;
  }
  function plan(g){
   const p=g.player,goalZ=p.z-5,goalX=gardenWorldPath(goalZ),goal=Math.atan2(-(goalX-p.x),-(goalZ-p.z));
+  if(C.drone&&C.droneBlend>=.99){target=goal;C.replans++;return true;}
   // Never send the camera backwards to escape an obstacle. A limited forward
   // fan avoids the repeated half-turns that felt like spinning.
   const offsets=[0,.25,-.25,.5,-.5,.8,-.8,1.15,-1.15];let best=null;
@@ -22455,14 +22472,17 @@ globalThis.HagenListeningModel={create(storage,seed,now=()=>Date.now()){
   if(C.hovering||C.suspended)return true;
   const step=g.speed*dt,from={x:g.player.x,z:g.player.z},next={x:from.x-Math.sin(angle)*step,z:from.z-Math.cos(angle)*step};
   const index=Math.floor((4-next.z)/80),chunk=g.chunks.get(index),ready=chunk&&(!chunk.gardenGPU||chunk.gardenGPU.phase==='ready');
-  if(index!==g.activeIndex&&!ready){C.waiting+=dt;unready+=dt;if(unready>25){if(C.drone)hover('Hovering while the next garden section prepares.');else C.stop('Stopped safely: the next garden section did not become ready.');}return true;}unready=0;
+  if(index!==g.activeIndex&&!ready){C.waiting+=dt;unready+=dt;}else unready=0;
+  if(C.drone&&C.droneBlend>=.99){g.player.x=next.x;g.player.z=next.z;C.distance+=Math.hypot(next.x-from.x,next.z-from.z);return true;}
   if(!clear(g,angle,Math.max(.24,step+.16)))return true;
   const safe=H.gardenPassage.resolve(from,next,gardenWorldHeight(from.x,from.z)+1.63);
   g.player.x=safe.x;g.player.z=safe.z;C.distance+=Math.hypot(safe.x-from.x,safe.z-from.z);return true;
  };
  const input=H.updateEmbodiedInput;
  H.updateEmbodiedInput=(dt,...args)=>{
-  const previousYaw=H.garden?.player?.yaw;input?.(dt,...args);install();if(!C.active)return;
+  const previousYaw=H.garden?.player?.yaw;input?.(dt,...args);install();
+  if(flyButton){const surface=H.journey?.phase==='surface';flyButton.disabled=!surface||C.drone;flyButton.setAttribute('aria-pressed',String(C.drone));landButton.disabled=!surface||(!C.drone&&C.droneBlend<=0);}
+  if(!C.active)return;
   if(unavailable()){
    if(canPauseDrone()){C.suspended=true;H.garden.auto=false;H.garden.speed=0;return;}
    C.stop('Cinematic mode stopped; the garden controls are available.');return;
@@ -22749,7 +22769,7 @@ globalThis.HagenListeningModel={create(storage,seed,now=()=>Date.now()){
  const uniforms={time:{value:0},opacity:{value:.16},tint:{value:new T.Color('#8b9d9b')},wind:{value:new T.Vector2()}};
  const material=new T.ShaderMaterial({uniforms,transparent:true,depthWrite:false,side:T.FrontSide,
   vertexShader:`varying vec2 vUv;varying float vDepth,vSeed;void main(){vUv=uv;vec4 center=instanceMatrix*vec4(0.,0.,0.,1.);vSeed=center.x*.13+center.z*.071;vec4 mv=modelViewMatrix*center;mv.xy+=position.xy*vec2(length(instanceMatrix[0].xyz),length(instanceMatrix[1].xyz));vDepth=-mv.z;gl_Position=projectionMatrix*mv;}`,
-  fragmentShader:`uniform float time,opacity;uniform vec3 tint;uniform vec2 wind;varying vec2 vUv;varying float vDepth,vSeed;float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+1.),f.x),f.y);}float fbm(vec2 p){float v=0.,a=.5;for(int k=0;k<3;k++){v+=a*n(p);p*=2.03;a*=.5;}return v;}void main(){vec2 p=vUv*vec2(3.2,1.3)+vec2(time*.03+vSeed,vSeed*.37)+wind*time*.002;float d=fbm(p+vec2(fbm(p*1.6+time*.018),0.));float edge=smoothstep(0.,.28,vUv.x)*smoothstep(1.,.72,vUv.x)*smoothstep(0.,.2,vUv.y)*smoothstep(1.,.3,vUv.y);float near=smoothstep(.8,4.,vDepth)*(1.-smoothstep(38.,65.,vDepth));float a=smoothstep(.25,.7,d)*edge*near*opacity;if(a<.003)discard;gl_FragColor=vec4(tint,a);}`});
+  fragmentShader:`uniform float time,opacity;uniform vec3 tint;uniform vec2 wind;varying vec2 vUv;varying float vDepth,vSeed;float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+1.),f.x),f.y);}float fbm(vec2 p){float v=0.,a=.5;for(int k=0;k<3;k++){v+=a*n(p);p*=2.03;a*=.5;}return v;}void main(){float edge=smoothstep(0.,.28,vUv.x)*smoothstep(1.,.72,vUv.x)*smoothstep(0.,.2,vUv.y)*smoothstep(1.,.3,vUv.y);float near=smoothstep(.8,4.,vDepth)*(1.-smoothstep(38.,65.,vDepth));float coverage=edge*near*opacity;if(coverage<.003)discard;vec2 p=vUv*vec2(3.2,1.3)+vec2(time*.03+vSeed,vSeed*.37)+wind*time*.002;float d=fbm(p+vec2(fbm(p*1.6+time*.018),0.));float a=smoothstep(.25,.7,d)*coverage;if(a<.003)discard;gl_FragColor=vec4(tint,a);}`});
  const geometry=new T.PlaneGeometry(1,1);geometry.translate(0,.5,0);const pose=new T.Object3D(),releaseGeometry=geometry.dispose.bind(geometry),releaseMaterial=material.dispose.bind(material);geometry.dispose=()=>{};material.dispose=()=>{};
  function add(c){
   let seed=(9001+c.index*7919)>>>0;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
@@ -22839,8 +22859,10 @@ globalThis.HagenListeningModel={create(storage,seed,now=()=>Date.now()){
   e.preventDefault();e.stopImmediatePropagation();R.toggle();
  },true);
  const labels={walk:'Walk through the garden',stop:'Stop walking; the garden stays alive',run:'Run along the path',turnLeft:'Turn left',turnRight:'Turn right',around:'Look behind you',up:'Look up',follow:'Follow the root route',enterRoots:'Descend into the roots',grow:'Grow through the root network',return:'Return through the ground',help:'Open the garden guide'};
+ let nextControlScan=0;
  function mount(){
-  if(disposed)return;const tools=document.querySelector('#hagen-bar .tools');if(!tools)return;
+  if(disposed)return;const now=performance.now();if(now<nextControlScan)return;nextControlScan=now+500;
+  const tools=document.querySelector('#hagen-bar .tools');if(!tools)return;
   if(!button){button=document.createElement('button');button.id='hagen-pause';button.type='button';button.onclick=e=>{R.toggle();if(e.detail>0)button.blur();};tools.prepend(button);document.body.append(note);paint();}
   for(const el of document.querySelectorAll('#hagen-bar button'))if(!el.title)el.title=el.dataset.pauseHint||el.textContent.trim();
   const commandButtons=document.querySelectorAll('#hagen-bar button.cmd');for(const el of commandButtons){const key=Object.keys(labels).find(k=>({turnLeft:'left',turnRight:'right',around:'turn around',up:'look up',follow:'follow the root',enterRoots:'down',return:'return',grow:'grow',help:'help',walk:'walk',stop:'stop',run:'run'})[k]===el.textContent.trim());if(key)el.title=labels[key];}
@@ -22909,6 +22931,216 @@ globalThis.HagenListeningModel={create(storage,seed,now=()=>Date.now()){
  const prepare=H.prepareRootGPU;H.prepareRootGPU=(g,e)=>{const result=prepare(g,e),q=g.gpuWarmQueue;if(H.journey.activeEntrance===e&&q){const index=q.findIndex(j=>j.e===e);if(index>0)q.unshift(q.splice(index,1)[0]);}return result;};
  const advance=advanceRootGPU;advanceRootGPU=g=>{const q=g.gpuWarmQueue,e=H.journey.activeEntrance;if(H.journey.phase==='descending'&&q){const index=q.findIndex(j=>j.e===e);if(index>0)q.unshift(q.splice(index,1)[0]);}return advance(g);};
  const dispose=H.dispose;H.dispose=(...a)=>{target?.dispose();return dispose?.(...a);};
+})();
+
+// Presentation quality keeps the authored woodland lighting, HDR bloom and FXAA.
+// Cinematic stays at display resolution up to 4K; Smooth trades resolution for speed.
+(()=>{
+ const presets={cinematic:{label:'Cinematic · native / 4K',maxWidth:3840,maxHeight:2160},smooth:{label:'Smooth · adaptive 1080p',maxWidth:1920,maxHeight:1080}};
+ const R=H.presentationQuality={mode:'cinematic',...presets.cinematic};let select;
+ R.set=mode=>{
+  if(!presets[mode])return false;
+  Object.assign(R,presets[mode],{mode});
+  if(select)select.value=mode;
+  const g=H.garden;if(g){g.world.w=g.world.h=0;H.prepare4KFrame?.(g);}
+  return true;
+ };
+ const natural=H.updateNaturalRealm;
+ H.updateNaturalRealm=(g,...args)=>{
+  natural?.(g,...args);
+  if(select)return;const tools=document.querySelector('#hagen-bar .tools');if(!tools)return;
+  select=document.createElement('select');select.setAttribute('aria-label','Picture quality');select.title='Cinematic keeps the display resolution up to 4K for a sharp picture. Smooth lowers resolution when needed for responsiveness.';
+  select.style.cssText='font:inherit;color:inherit;background:#102018;border:1px solid #81967b66;border-radius:3px;padding:5px 8px;max-width:15em';
+  for(const [key,preset]of Object.entries(presets)){const option=document.createElement('option');option.value=key;option.textContent=preset.label;select.append(option);}
+  select.value=R.mode;select.onchange=()=>R.set(select.value);tools.append(select);
+ };
+})();
+
+// Equal access: quietness is a full way in, with feedback tied to actual root response.
+(()=>{
+ const R=H.participation={mode:'open',responses:0,lastZone:null};let dialog,feedback,toolsButton,nextCheck=0,hideAt=0;
+ const say=text=>{if(feedback){feedback.textContent=text;feedback.hidden=false;hideAt=performance.now()+6500;}};
+ R.quiet=()=>{H.quietEntry=true;R.mode='quiet';if(H.naturalVoice?.state==='connected')H.naturalVoice.stop();if(H.embodied?.voiceState==='ready'&&typeof stopEmbodiedVoice==='function')stopEmbodiedVoice();if(H.audio?.kind==='mic')H.soundInput?.disableMicrophone?.();say('You can stay quiet. Every root, text and choice remains available through the controls.');};
+ R.action=command=>{dialog?.close();return !!H.runManualCommand?.(command);};
+ function install(){
+  const tools=document.querySelector('#hagen-bar .tools');if(!tools||toolsButton)return;
+  feedback=document.createElement('p');feedback.hidden=true;feedback.setAttribute('role','status');feedback.setAttribute('aria-live','polite');feedback.style.cssText='position:fixed;left:50%;top:20px;transform:translateX(-50%);max-width:min(38em,90vw);margin:0;padding:10px 16px;background:#07140ee8;color:#e1e8d8;font:20px/1.4 HagenReading,serif;text-align:center;pointer-events:none;z-index:2147482975';document.body.append(feedback);
+  dialog=document.createElement('dialog');dialog.id='hagen-ways-in';dialog.setAttribute('aria-labelledby','hagen-ways-title');dialog.style.cssText='max-width:min(36em,92vw);max-height:85vh;overflow:auto;background:#101b15;color:#e1e8d8;border:1px solid #80997b;padding:24px;font:22px/1.4 HagenReading,serif';
+  const title=document.createElement('h2');title.id='hagen-ways-title';title.textContent='Find your way into the garden';dialog.append(title);
+  const intro=document.createElement('p');intro.textContent='You can wait, listen, use the controls or speak. Stillness can nourish a nearby root. The same passages and literary choices are available without a microphone or camera. Nothing asks you to explain why you are quiet.';dialog.append(intro);
+  const button=(label,fn)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.style.cssText='margin:6px;padding:8px 12px;font:inherit';b.onclick=fn;dialog.append(b);return b;};
+  button('Explore quietly',()=>{dialog.close();R.quiet();});
+  button('Use my voice',()=>{dialog.close();H.quietEntry=false;R.mode='voice';H.startGardenVoice?.();});
+  for(const [label,command]of [['Stop and listen','stop'],['Fly above the garden','fly'],['Land','land'],['Follow a root','follow'],['Descend','enterRoots'],['Return to the garden','return'],['Give space','space'],['Come closer','close'],['Choose left','chooseLeft'],['Choose right','chooseRight'],['Read the poems','poems']])button(label,()=>R.action(command));
+  const pace=document.createElement('p');pace.textContent='You choose the pace: use Pause to rest, and Return to leave a root. Give space and Come closer are available inside a root encounter. Different ways of participating may produce different responses.';dialog.append(pace);
+  button('Close',()=>dialog.close());dialog.addEventListener('cancel',()=>{});document.body.append(dialog);
+  toolsButton=document.createElement('button');toolsButton.type='button';toolsButton.textContent='Ways in';toolsButton.onclick=()=>{if(!dialog.open)dialog.showModal();};tools.append(toolsButton);
+ }
+ const natural=H.updateNaturalRealm;
+ H.updateNaturalRealm=(g,...args)=>{
+  natural?.(g,...args);const now=performance.now();if(now<nextCheck)return;nextCheck=now+250;install();
+  if(feedback&&!feedback.hidden&&now>=hideAt)feedback.hidden=true;
+  const active=H.exhibitionAccess?.started&&!H.entryCovered&&!document.hidden&&!document.querySelector('dialog[open]')&&['surface','roots'].includes(H.journey.phase);
+  const model=H.listeningGarden?.model,zone=H.journey.phase==='roots'?'root:'+H.journey.encounter:'surface:'+g.activeIndex;
+  if(active&&!g.walking&&!g.auto&&H.listeningGarden?.nearRoot&&H.listeningGarden?.visualResponse&&model?.signal>.035&&['awakening','connection','resonance'].includes(model.phase)&&R.lastZone!==zone){R.lastZone=zone;R.responses++;say('This root is responding to your presence. You can stay, give it space, or follow it further.');}
+ };
+})();
+
+// Unobtrusive controls: preserve place, soil/weather feedback and literary layers.
+(()=>{
+ const R=H.controlsVisibility={visible:true,idleMs:2200,keyboard:false},listeners=[];let timer,hovering=false,disposed=false;
+ const chrome='#hagen-bar,#hagen-navigation,#hagen-realm-controls,#hagen-encounter-controls,#hagen-journey>div,#hagen-journey>small,#hagen-controls-toggle,#hagen-voice-fullscreen,#hagen-audio-controls,#hagen-cinematic-status,#hagen-pause-note,#hagen-body-caption';
+ const style=document.createElement('style');style.id='hagen-auto-hide-controls';style.textContent=`
+ body[data-hagen-controls="hidden"]:not(:has(dialog[open])) :is(${chrome}){opacity:0!important;pointer-events:none!important;transition:opacity .45s ease!important}
+ body[data-hagen-controls="hidden"]:not(:has(dialog[open])) :is(${chrome}) *{pointer-events:none!important}
+ body[data-hagen-controls="hidden"]:not(:has(dialog[open])) #hagen-reactivity :is(.ring,.motion,.core){opacity:0!important;pointer-events:none!important}
+ @media(prefers-reduced-motion:reduce){body[data-hagen-controls="hidden"] :is(${chrome}){transition:none!important}}
+ `;document.head.append(style);
+ const focused=()=>R.keyboard&&!!document.activeElement?.closest?.(chrome);
+ const pinned=()=>hovering||focused()||!!document.querySelector('dialog[open]');
+ function arm(){clearTimeout(timer);if(!disposed)timer=setTimeout(()=>R.hide(),R.idleMs);}
+ R.show=()=>{if(disposed)return;R.visible=true;document.body.dataset.hagenControls='visible';arm();};
+ R.hide=()=>{if(disposed)return;if(pinned()){arm();return;}clearTimeout(timer);R.visible=false;document.body.dataset.hagenControls='hidden';};
+ const on=(target,type,fn,options)=>{target.addEventListener(type,fn,options);listeners.push(()=>target.removeEventListener(type,fn,options));};
+ on(document,'pointermove',e=>{if(e.pointerType!=='touch')R.keyboard=false;hovering=!!e.target.closest?.(chrome);R.show();},{passive:true});
+ on(document,'pointerdown',e=>{R.keyboard=false;hovering=!!e.target.closest?.(chrome);R.show();},{passive:true});
+ on(document.documentElement,'pointerleave',()=>{hovering=false;R.hide();});
+ on(document,'mouseout',e=>{if(!e.relatedTarget){hovering=false;R.hide();}});
+ on(window,'blur',()=>{hovering=false;R.hide();});
+ on(document,'keydown',e=>{if(e.key==='Tab'){R.keyboard=true;R.show();}else if(e.key==='Escape'){hovering=false;arm();}},true);
+ on(document,'focusin',()=>{if(R.keyboard)R.show();});on(document,'focusout',()=>arm());
+ on(document,'visibilitychange',()=>{if(document.hidden){hovering=false;R.hide();}});
+ R.dispose=()=>{disposed=true;clearTimeout(timer);for(const remove of listeners)remove();style.remove();delete document.body.dataset.hagenControls;};
+ const dispose=H.dispose;H.dispose=(...args)=>{R.dispose();return dispose?.(...args);};
+ R.show();
+})();
+
+// Distant folds of the same garden: four opaque ridges, no extra fog render passes.
+(()=>{
+ if(new URLSearchParams(location.search).get('projection')==='lights')return;
+ const T=THREE,R=H.distantHorizons={layers:4,triangles:0,echoes:0,lastZone:null,pendingAt:null,echoAt:-100},segments=256;
+ let group,scene,lastSignal=false;const materials=[];
+ R.profile=(angle,layer)=>{const a=angle+layer*.055,wrap=x=>Math.atan2(Math.sin(x),Math.cos(x)),mass=(c,w)=>Math.exp(-Math.pow(wrap(a-c)/w,4));const relief=Math.max(mass(-.85,.62),mass(1.45,.42)*.8,mass(2.7,.52)*.9);const ledges=.83+Math.sin(a*7+layer*.7)*.09+Math.sin(a*17+.8)*.045+Math.sin(a*31)*.018;return -85+relief*(430-layer*53)*ledges;};
+ const vertex=`varying vec3 ridgeNormal;varying vec2 ridgeUv;void main(){ridgeNormal=normal;ridgeUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);gl_Position.z=gl_Position.w*.99998;}`;
+ const fragment=`uniform vec3 ridgeTint,hazeTint;uniform float distanceVeil,echoAge,bearing,layer;varying vec3 ridgeNormal;varying vec2 ridgeUv;
+ void main(){float light=.32+.68*max(0.,dot(normalize(ridgeNormal),normalize(vec3(-.45,.7,.3))));
+ float folds=.5+.5*sin(ridgeUv.x*31.4159+layer*.7);vec3 stone=ridgeTint*(.65+light*.35)*(1.-folds*.11);
+ float veil=clamp(distanceVeil+pow(1.-ridgeUv.y,2.)*.45,0.,.9);vec3 color=mix(stone,hazeTint,veil);
+ float age=echoAge-layer*1.1;float angle=ridgeUv.x*6.2831853;float arc=abs(atan(sin(angle-bearing),cos(angle-bearing)));
+ float wave=exp(-pow((arc-age*.14)/.12,2.))*smoothstep(0.,1.,age)*(1.-smoothstep(5.,9.,age));
+ float filament=pow(.5+.5*sin(angle*37.+ridgeUv.y*13.),14.)*smoothstep(.7,1.,ridgeUv.y);
+ color+=vec3(.32,.34,.38)*wave*filament*.055;
+ gl_FragColor=vec4(color,1.);
+ #include <tonemapping_fragment>
+ #include <colorspace_fragment>
+ }`;
+ function build(g){
+  scene=g.scene;group=new T.Group();group.name='HAGEN distant horizon folds';
+  for(let layer=0;layer<4;layer++){
+   const radius=6000-layer*900,positions=[],uv=[],indices=[];
+   for(let i=0;i<=segments;i++){const angle=i/segments*Math.PI*2,top=R.profile(angle,layer);for(const y of [-4500,top]){positions.push(Math.sin(angle)*radius,y,Math.cos(angle)*radius);uv.push(i/segments,y===-4500?0:1);}}
+   for(let i=0;i<segments;i++){const a=i*2;indices.push(a,a+1,a+2,a+1,a+3,a+2);}
+   const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geometry.setIndex(indices);geometry.computeVertexNormals();
+   const tint=['#343b46','#2c333e','#252c35','#20262e'][layer];
+   const material=new T.ShaderMaterial({uniforms:{ridgeTint:{value:new T.Color(tint)},hazeTint:{value:new T.Color('#171b22')},distanceVeil:{value:.5-layer*.1},echoAge:{value:-100},bearing:{value:0},layer:{value:layer}},vertexShader:vertex,fragmentShader:fragment,side:T.DoubleSide,depthWrite:false,transparent:false,fog:false});
+   const mesh=new T.Mesh(geometry,material);mesh.name='Distant mountain horizon '+(layer+1);mesh.renderOrder=-120+layer;mesh.frustumCulled=false;group.add(mesh);materials.push(material);R.triangles+=segments*2;
+  }
+  scene.add(group);R.group=group;R.materials=materials;
+ }
+ const natural=H.updateNaturalRealm;
+ H.updateNaturalRealm=(g,a,dt)=>{
+  natural?.(g,a,dt);if(!group)build(g);
+  const surface=H.journey?.phase==='surface'&&g.archive?.realms?.phase!=='active';group.visible=surface;
+  if(!surface)return;
+  // Following the camera in X/Z prevents clipping during world rebases; altitude stays grounded.
+  group.position.set(g.camera.position.x,0,g.camera.position.z);
+  const now=g.world.age||0,responding=!!H.listeningGarden?.visualResponse&&H.listeningGarden?.model?.signal>.035,zone=g.activeIndex;
+  if(responding&&!lastSignal&&R.lastZone!==zone){R.lastZone=zone;R.pendingAt=now+4.5;R.bearing=g.player.yaw+Math.PI;}lastSignal=responding;
+  if(R.pendingAt!==null&&now>=R.pendingAt){R.echoAt=now;R.pendingAt=null;R.echoes++;}
+  const fog=g.scene.fog?.color,luma=fog?fog.r*.2126+fog.g*.7152+fog.b*.0722:.008;
+  for(const m of materials){m.uniforms.echoAge.value=H.session.reduced?-100:now-R.echoAt;m.uniforms.bearing.value=R.bearing||0;m.uniforms.hazeTint.value.setRGB(luma*.92,luma*.98,luma*1.08).lerp(m.uniforms.ridgeTint.value,.35);}
+ };
+ R.dispose=()=>{if(!group)return;for(const mesh of group.children){mesh.geometry.dispose();mesh.material.dispose();}group.removeFromParent();materials.length=0;group=null;};
+ const dispose=H.dispose;H.dispose=(...args)=>{R.dispose();return dispose?.(...args);};
+})();
+
+// Continuous outland and modest native saplings reuse the existing season/audio signals.
+(()=>{
+ if(new URLSearchParams(location.search).get('projection')==='lights')return;
+ const T=THREE,R=H.nordicOutland={saplings:0,clearings:0,sound:0},done=new WeakSet(),season={value:new T.Vector4(0,0,1,0)},sound={value:0},clock={value:0},origin={value:0},ranges={value:Array.from({length:4},()=>new T.Vector2(1e8,-1e8))};let ground;
+ const woodGeometry=new T.CylinderGeometry(.025,.055,1,5,1);woodGeometry.translate(0,.5,0);
+ const shape=new T.Shape();shape.moveTo(0,0);shape.lineTo(.055,.04);shape.lineTo(.045,.11);shape.lineTo(0,.155);shape.lineTo(-.045,.11);shape.lineTo(-.055,.04);shape.closePath();const leafGeometry=new T.ShapeGeometry(shape);
+ const woodMaterial=new T.MeshStandardMaterial({roughness:.92,vertexColors:true});
+ const leafMaterial=new T.MeshStandardMaterial({roughness:.88,side:T.DoubleSide,vertexColors:true});
+ leafMaterial.onBeforeCompile=s=>{Object.assign(s.uniforms,{nordicSeason:season,nordicSound:sound,nordicClock:clock});s.vertexShader='uniform vec4 nordicSeason;uniform float nordicSound,nordicClock;attribute float nordicKind;varying float nordicSpecies;\n'+s.vertexShader.replace('#include <begin_vertex>',`#include <begin_vertex>
+ nordicSpecies=nordicKind;transformed*=1.-nordicSeason.w*.97-nordicSeason.x*.22;
+ transformed.x+=uv.y*uv.y*sin(nordicClock*.8+instanceMatrix[3].x*.7+instanceMatrix[3].z)*(.003+nordicSound*.003);`);
+ s.fragmentShader='uniform vec4 nordicSeason;varying float nordicSpecies;\n'+s.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
+ vec3 autumn=mix(vec3(.62,.40,.10),vec3(.48,.17,.08),nordicSpecies);diffuseColor.rgb=mix(diffuseColor.rgb,autumn,nordicSeason.z*.9);`);};leafMaterial.customProgramCacheKey=()=> 'hagen-birch-rowan-season-1';
+ function buildGround(g){
+  const geo=new T.PlaneGeometry(1600,1600,40,40);geo.rotateX(-Math.PI/2);
+  const mat=new T.MeshStandardMaterial({color:'#152219',roughness:1});mat.onBeforeCompile=s=>{s.uniforms.outlandOrigin=origin;s.uniforms.outlandRanges=ranges;s.vertexShader='uniform float outlandOrigin;varying vec2 outlandWorld;\n'+s.vertexShader.replace('#include <begin_vertex>',`#include <begin_vertex>
+ vec4 wp=modelMatrix*vec4(position,1.);float z=wp.z+outlandOrigin;outlandWorld=vec2(wp.x,z);float path=sin(z*.095)*1.75+sin(z*.23)*.48;float d=max(0.,abs(wp.x-path)-3.);float h=(sin(z*.24)*.14+sin(wp.x*.61+z*.17)*.08+d*d*.013)/(1.+d*d*.025);transformed.y=h-.06;`);
+  s.fragmentShader='uniform vec2 outlandRanges[4];varying vec2 outlandWorld;\n'+s.fragmentShader.replace('#include <clipping_planes_fragment>','#include <clipping_planes_fragment>\nif(abs(outlandWorld.x)<23.95){for(int i=0;i<4;i++){if(outlandWorld.y>=outlandRanges[i].x&&outlandWorld.y<=outlandRanges[i].y)discard;}}').replace('#include <color_fragment>','#include <color_fragment>\nfloat grain=.5+.5*sin(outlandWorld.x*.43)*sin(outlandWorld.y*.37);diffuseColor.rgb*=.8+grain*.2;');};mat.customProgramCacheKey=()=> 'hagen-continuous-outland-1';
+  ground=new T.Mesh(geo,mat);ground.name='Continuous ground beyond the planted garden';ground.frustumCulled=false;g.scene.add(ground);R.ground=ground;
+ }
+ function plant(g,c){
+  const trunks=[],leaves=[],kinds=[],trunkColors=[],leafColors=[],pose=new T.Object3D();let seed=(c.index+9173)>>>0;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
+  for(let i=0;i<14;i++){
+   const species=i%3===0?1:0,z=2-rand()*76,absolute=z+c.offset,x=gardenWorldPath(absolute)+(i%2?1:-1)*(12+rand()*24),y=gardenWorldHeight(x,absolute),height=2.4+rand()*2.4;
+   if((c.rootEntrances||[]).some(e=>Math.hypot(x-e.x,z-e.z)<3))continue;
+   pose.position.set(x,y,z);pose.rotation.set(.03*(rand()-.5),rand()*6.28,.04*(rand()-.5));pose.scale.set(1,height,1);pose.updateMatrix();trunks.push(pose.matrix.clone());trunkColors.push(species?'#777568':'#b9bdb0');
+   c.trees.push({x,z,r:.16});R.saplings++;
+   for(let j=0;j<64;j++){const angle=j*2.39996+i,radius=Math.sqrt(rand())*(species?.85:1.15),level=.48+rand()*.52;pose.position.set(x+Math.cos(angle)*radius,y+height*level,z+Math.sin(angle)*radius);pose.rotation.set(-.5+rand(),angle,rand());pose.scale.setScalar(species?.65:.9+rand()*.35);pose.updateMatrix();leaves.push(pose.matrix.clone());kinds.push(species);leafColors.push(species?'#6a8154':'#839b61');}
+  }
+  const group=new T.Group();group.name='Birch and rowan saplings at the woodland edge';group.userData.hagenPhysical=true;
+  for(const [name,template,material,records,colors]of [['Birch and rowan stems',woodGeometry,woodMaterial,trunks,trunkColors],['Birch and rowan seasonal leaves',leafGeometry,leafMaterial,leaves,leafColors]]){
+   const geometry=template.clone();if(name.includes('leaves'))geometry.setAttribute('nordicKind',new T.InstancedBufferAttribute(new Float32Array(kinds),1));const mat=material.clone();mat.onBeforeCompile=material.onBeforeCompile;mat.customProgramCacheKey=material.customProgramCacheKey;const mesh=new T.InstancedMesh(geometry,mat,records.length);mesh.name=name;records.forEach((m,i)=>{mesh.setMatrixAt(i,m);mesh.setColorAt(i,new T.Color(colors[i]));});mesh.computeBoundingSphere();group.add(mesh);
+  }
+  c.root.add(group);done.add(c);R.clearings++;
+ }
+ const natural=H.updateNaturalRealm;H.updateNaturalRealm=(g,a,dt)=>{
+  natural?.(g,a,dt);if(!ground)buildGround(g);ground.visible=H.journey?.phase==='surface'&&g.archive?.realms?.phase!=='active';origin.value=g.origin||0;ground.position.set(Math.round(g.player.x/100)*100,0,Math.round(g.player.z/100)*100-(g.origin||0));
+  let rangeIndex=0;for(const c of g.chunks.values())if(rangeIndex<4&&c.root.visible&&(!c.gardenGPU||['ready','failed'].includes(c.gardenGPU.phase)))ranges.value[rangeIndex++].set(c.offset-76,c.offset+4);while(rangeIndex<4)ranges.value[rangeIndex++].set(1e8,-1e8);
+  season.value.set(...H.season.weights);clock.value=g.world.age;R.sound+=(Math.min(.5,Math.max(0,a?.fastLevel||0))-R.sound)*(1-Math.exp(-Math.max(0,dt||0)*3));sound.value=R.sound;
+  for(const c of g.chunks.values())if(!done.has(c)&&(!c.gardenGPU||c.gardenGPU.phase==='ready')&&H.chunkWorkTurn?.(g,c)!==false){plant(g,c);break;}
+ };
+ R.dispose=()=>{ground?.geometry.dispose();ground?.material.dispose();ground?.removeFromParent();woodGeometry.dispose();leafGeometry.dispose();woodMaterial.dispose();leafMaterial.dispose();};const dispose=H.dispose;H.dispose=(...args)=>{R.dispose();return dispose?.(...args);};
+})();
+
+// Ease terrain-height changes during surface running; never smooth through a root transit.
+(()=>{
+ const R=H.runningView={height:null,x:0,z:0,phase:null},move=updateGardenPlayer;
+ updateGardenPlayer=(g,dt)=>{
+  move(g,dt);const phase=H.journey?.phase,flight=H.cinematic;
+  if(phase!=='surface'||flight?.drone||flight?.landing||flight?.droneBlend>.001){R.height=null;R.phase=phase;return;}
+  const target=g.camera.position.y,distance=Math.hypot(g.player.x-R.x,g.player.z-R.z);
+  if(R.height===null||R.phase!==phase||distance>2)R.height=target;
+  else R.height+=(target-R.height)*(1-Math.exp(-Math.max(0,dt||0)*18));
+  g.camera.position.y=R.height;R.x=g.player.x;R.z=g.player.z;R.phase=phase;
+ };
+})();
+
+// Draw only camera-relevant fern instances; retain every authored placement for turns/revisits.
+(()=>{
+ const T=THREE,R=H.fernVisibility={total:0,drawn:0,updates:0},managed=new Set(),states=new WeakMap(),matrix=new T.Matrix4(),world=new T.Matrix4(),projection=new T.Matrix4(),frustum=new T.Frustum(),sphere=new T.Sphere();let revision='',nextAt=0;
+ function restore(m,s){m.count=s.count;m.instanceMatrix.array.set(s.matrices);m.instanceMatrix.needsUpdate=true;if(s.colors&&m.instanceColor){m.instanceColor.array.set(s.colors);m.instanceColor.needsUpdate=true;}}
+ const natural=H.updateNaturalRealm;H.updateNaturalRealm=(g,...args)=>{
+  natural?.(g,...args);const now=performance.now();if(now<nextAt)return;nextAt=now+80;
+  const key=[...g.chunks.keys()].join(',')+':'+H.gardenQuality?.chunks+':'+H.streamGPU?.prepared;
+  if(key!==revision){revision=key;for(const c of g.chunks.values())if(c.root.visible&&(!c.gardenGPU||['ready','failed'].includes(c.gardenGPU.phase)))c.root.traverse(o=>{if(o.isInstancedMesh&&/^(Near-field fern_02|Curved woodland leaves|Forest-floor leaves|Scanned nettle_plant)/.test(o.name)&&!Object.values(o.geometry.attributes).some(a=>a.isInstancedBufferAttribute))managed.add(o);});}
+  g.camera.updateMatrixWorld();projection.multiplyMatrices(g.camera.projectionMatrix,g.camera.matrixWorldInverse);frustum.setFromProjectionMatrix(projection);R.total=R.drawn=0;
+  for(const m of managed){let attached=false;for(let p=m;p;p=p.parent)if(p===g.scene){attached=true;break;}if(!attached){managed.delete(m);continue;}let s=states.get(m);
+   if(!s){m.geometry.computeBoundingSphere();s={count:m.count,matrices:m.instanceMatrix.array.slice(),colors:m.instanceColor?.array.slice(),bounds:m.geometry.boundingSphere.clone()};states.set(m,s);}
+   m.updateWorldMatrix(true,false);let count=0;R.total+=s.count;
+   for(let i=0;i<s.count;i++){matrix.fromArray(s.matrices,i*16);world.multiplyMatrices(m.matrixWorld,matrix);sphere.copy(s.bounds).applyMatrix4(world);sphere.radius+=2;
+    if(!frustum.intersectsSphere(sphere))continue;
+    m.instanceMatrix.array.set(s.matrices.subarray(i*16,i*16+16),count*16);if(s.colors&&m.instanceColor)m.instanceColor.array.set(s.colors.subarray(i*3,i*3+3),count*3);count++;
+   }
+   m.count=count;m.instanceMatrix.needsUpdate=true;if(m.instanceColor)m.instanceColor.needsUpdate=true;R.drawn+=count;
+  }R.updates++;
+ };
+ R.restore=()=>{for(const m of managed){const s=states.get(m);if(s)restore(m,s);}managed.clear();};const dispose=H.dispose;H.dispose=(...a)=>{R.restore();return dispose?.(...a);};
 })();
 
 H.tick=currentRuntime=>{
