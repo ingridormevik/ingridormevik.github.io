@@ -16367,9 +16367,9 @@ H.gpuTextureFiles={"assets/realm/earth_color.jpg": "assets/gpu/realm/earth_color
      // Opening the root-body AudioContext took ~300ms on the visitor's first click or key in
      // the garden. Open it now behind the entrance; that first gesture only resumes it.
      if(H.rootMirror?.enabled&&!H.rootMirror.body){try{H.rootMirror.body=createRootBodySound();}catch(error){H.bootTiming.rootSoundError=String(error);}}
-     const assetsAt=performance.now();
-     while((H.gardenQuality&&(!H.gardenQuality.assetsSettled||!H.gardenQuality.chunks||(H.botanicalDetail&&H.botanicalDetail.scanMeshes===0))||H.realTrees&&!H.realTrees.ready&&!H.realTrees.errors.length||H.realMirrorPlants&&!H.realMirrorPlants.ready&&!H.realMirrorPlants.error||H.surfaceDetail&&H.surfaceDetail.loaded+H.surfaceDetail.errors.length<6||H.foliageMaterials&&H.foliageMaterials.loaded+H.foliageMaterials.errors.length<H.foliageMaterials.expected)&&performance.now()-assetsAt<30000)await new Promise(resolve=>setTimeout(resolve,30));
-     H.bootTiming.assetWaitMs=performance.now()-assetsAt;H.bootTiming.assets={planting:H.gardenQuality?.assetsSettled,scans:H.realTrees?.ready,mirror:H.realMirrorPlants?.ready,foliage:H.foliageMaterials?.loaded,surfaces:H.surfaceDetail?.loaded};
+     const assetsAt=performance.now(),assetBudget=query.get('projection')==='lights'?30000:8000;
+     while((H.gardenQuality&&(!H.gardenQuality.assetsSettled||!H.gardenQuality.chunks||(H.botanicalDetail&&H.botanicalDetail.scanMeshes===0))||H.realTrees&&!H.realTrees.ready&&!H.realTrees.errors.length||H.realMirrorPlants&&!H.realMirrorPlants.ready&&!H.realMirrorPlants.error||H.surfaceDetail&&H.surfaceDetail.loaded+H.surfaceDetail.errors.length<6||H.foliageMaterials&&H.foliageMaterials.loaded+H.foliageMaterials.errors.length<H.foliageMaterials.expected)&&performance.now()-assetsAt<assetBudget)await new Promise(resolve=>setTimeout(resolve,30));
+     H.bootTiming.assetWaitMs=performance.now()-assetsAt;H.bootTiming.assetWaitExpired=H.bootTiming.assetWaitMs>=assetBudget;H.bootTiming.assets={planting:H.gardenQuality?.assetsSettled,scans:H.realTrees?.ready,mirror:H.realMirrorPlants?.ready,foliage:H.foliageMaterials?.loaded,surfaces:H.surfaceDetail?.loaded};
      H.finalizeGardenMaterials?.(g,true);
      const at=performance.now(),renderer=g.renderer,warm=new THREE.Scene(),projection=query.get('projection')==='lights';
      g.scene.updateMatrixWorld(true);g.camera.updateMatrixWorld(true);
@@ -19284,7 +19284,7 @@ H.PlantMeshoptDecoder=MeshoptDecoder;
    b.requested=false;b.active=false;b.operatorOpen=false;dialog.close();if(H.entry)H.entry.hidden=true;
    document.body.dataset.hagenGardenFirst='true';
   }
-  access.ready=(!H.quickGarden||H.quickProfile.phase==='ready')&&(!H.gardenQuality||H.gardenQuality.ready);
+  access.ready=(!H.quickGarden||H.quickProfile.phase==='ready')&&(!H.gardenQuality||H.gardenQuality.ready||H.bootTiming?.assetWaitExpired&&g.quickShadersReady);
   if(access.ready&&!access.started){
    access.started=true;if(!H.audio.ready&&!H.soundInput.pending)H.enter('walk');b.active=false;b.operatorOpen=false;
    document.body.dataset.hagenAccess='manual';delete document.body.dataset.hagenEmbodied;
@@ -23145,7 +23145,7 @@ globalThis.HagenListeningModel={create(storage,seed,now=()=>Date.now()){
 
 H.tick=currentRuntime=>{
  H.runtime=currentRuntime;if(H.gardenPause?.paused){H.lastFrameAt=performance.now();H.gardenPause.holdAudio();return;}if(H.disposed||document.hidden)return;
- if(H.entryCovered&&H.quickProfile?.phase==="ready"&&H.bootTiming?.firstRender!==undefined)return;
+ if(H.entryCovered&&H.exhibitionAccess?.started&&H.gardenQuality?.assetsSettled&&H.quickProfile?.phase==="ready"&&H.bootTiming?.firstRender!==undefined)return;
  const budgetNow=performance.now(),minimumTick=H.quickGarden&&H.quickProfile?.phase!=="ready"?50:0;if(!H.vr?.active&&budgetNow-(H.budgetTickAt||0)<minimumTick)return;H.budgetTickAt=budgetNow;
  const now=performance.now(),elapsed=H.lastFrameAt?Math.max(.001,(now-H.lastFrameAt)/1000):(currentRuntime.dt||1/60);
  H.lastFrameAt=now;const dt=clamp(elapsed,.001,.05);
