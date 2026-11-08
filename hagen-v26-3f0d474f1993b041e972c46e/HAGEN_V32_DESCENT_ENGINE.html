@@ -23141,22 +23141,30 @@ globalThis.HagenListeningModel={create(storage,seed,now=()=>Date.now()){
 
 // Draw only camera-relevant fern instances; retain every authored placement for turns/revisits.
 (()=>{
- const T=THREE,R=H.fernVisibility={total:0,drawn:0,updates:0},managed=new Set(),states=new WeakMap(),matrix=new T.Matrix4(),world=new T.Matrix4(),projection=new T.Matrix4(),frustum=new T.Frustum(),sphere=new T.Sphere();let revision='',nextAt=0;
+ const T=THREE,R=H.fernVisibility={total:0,drawn:0,updates:0,reused:0,uploads:0},managed=new Set(),states=new WeakMap(),matrix=new T.Matrix4(),world=new T.Matrix4(),projection=new T.Matrix4(),lastProjection=new T.Matrix4(),frustum=new T.Frustum(),sphere=new T.Sphere();let revision='',nextAt=0,projectionValid=false;
  function restore(m,s){m.count=s.count;m.instanceMatrix.array.set(s.matrices);m.instanceMatrix.needsUpdate=true;if(s.colors&&m.instanceColor){m.instanceColor.array.set(s.colors);m.instanceColor.needsUpdate=true;}}
  const natural=H.updateNaturalRealm;H.updateNaturalRealm=(g,...args)=>{
   natural?.(g,...args);const now=performance.now();if(now<nextAt)return;nextAt=now+80;
   const key=[...g.chunks.keys()].join(',')+':'+H.gardenQuality?.chunks+':'+H.streamGPU?.prepared;
-  if(key!==revision){revision=key;for(const c of g.chunks.values())if(c.root.visible&&(!c.gardenGPU||['ready','failed'].includes(c.gardenGPU.phase)))c.root.traverse(o=>{if(o.isInstancedMesh&&/^(Near-field fern_02|Curved woodland leaves|Forest-floor leaves|Scanned nettle_plant)/.test(o.name)&&!Object.values(o.geometry.attributes).some(a=>a.isInstancedBufferAttribute))managed.add(o);});}
-  g.camera.updateMatrixWorld();projection.multiplyMatrices(g.camera.projectionMatrix,g.camera.matrixWorldInverse);frustum.setFromProjectionMatrix(projection);R.total=R.drawn=0;
+  const structureChanged=key!==revision;
+  if(structureChanged){revision=key;for(const c of g.chunks.values())if(c.root.visible&&(!c.gardenGPU||['ready','failed'].includes(c.gardenGPU.phase)))c.root.traverse(o=>{if(o.isInstancedMesh&&/^(Near-field fern_02|Curved woodland leaves|Forest-floor leaves|Scanned nettle_plant)/.test(o.name)&&!Object.values(o.geometry.attributes).some(a=>a.isInstancedBufferAttribute))managed.add(o);});}
+  g.camera.updateMatrixWorld();projection.multiplyMatrices(g.camera.projectionMatrix,g.camera.matrixWorldInverse);const sameView=projectionValid&&lastProjection.equals(projection);if(!sameView)frustum.setFromProjectionMatrix(projection);R.total=R.drawn=0;
   for(const m of managed){let attached=false;for(let p=m;p;p=p.parent)if(p===g.scene){attached=true;break;}if(!attached){managed.delete(m);continue;}let s=states.get(m);
-   if(!s){m.geometry.computeBoundingSphere();s={count:m.count,matrices:m.instanceMatrix.array.slice(),colors:m.instanceColor?.array.slice(),bounds:m.geometry.boundingSphere.clone()};states.set(m,s);}
+   if(!s){m.geometry.computeBoundingSphere();s={count:m.count,matrices:m.instanceMatrix.array.slice(),colors:m.instanceColor?.array.slice(),bounds:m.geometry.boundingSphere.clone(),world:new T.Matrix4(),selection:new Uint32Array(m.count),nextSelection:new Uint32Array(m.count),drawn:-1,matrixVersion:-1,colorVersion:-1};states.set(m,s);}
    m.updateWorldMatrix(true,false);let count=0;R.total+=s.count;
+   const sameBuffers=s.matrixAttribute===m.instanceMatrix&&s.colorAttribute===m.instanceColor&&s.matrixArray===m.instanceMatrix.array&&s.colorArray===m.instanceColor?.array&&s.matrixVersion===m.instanceMatrix.version&&s.colorVersion===(m.instanceColor?.version??-1);
+   if(!structureChanged&&sameView&&s.drawn===m.count&&sameBuffers&&s.world.equals(m.matrixWorld)){R.drawn+=m.count;R.reused++;continue;}
+   let changed=!sameBuffers||s.drawn<0;
    for(let i=0;i<s.count;i++){matrix.fromArray(s.matrices,i*16);world.multiplyMatrices(m.matrixWorld,matrix);sphere.copy(s.bounds).applyMatrix4(world);sphere.radius+=2;
     if(!frustum.intersectsSphere(sphere))continue;
-    m.instanceMatrix.array.set(s.matrices.subarray(i*16,i*16+16),count*16);if(s.colors&&m.instanceColor)m.instanceColor.array.set(s.colors.subarray(i*3,i*3+3),count*3);count++;
+    s.nextSelection[count]=i;if(s.selection[count]!==i)changed=true;count++;
    }
-   m.count=count;m.instanceMatrix.needsUpdate=true;if(m.instanceColor)m.instanceColor.needsUpdate=true;R.drawn+=count;
-  }R.updates++;
+   if(changed||count!==s.drawn){
+    for(let j=0;j<count;j++){const i=s.nextSelection[j];m.instanceMatrix.array.set(s.matrices.subarray(i*16,i*16+16),j*16);if(s.colors&&m.instanceColor)m.instanceColor.array.set(s.colors.subarray(i*3,i*3+3),j*3);}
+    m.instanceMatrix.needsUpdate=true;if(m.instanceColor)m.instanceColor.needsUpdate=true;R.uploads++;
+   }else R.reused++;
+   const selection=s.selection;s.selection=s.nextSelection;s.nextSelection=selection;m.count=count;s.drawn=count;s.world.copy(m.matrixWorld);s.matrixAttribute=m.instanceMatrix;s.colorAttribute=m.instanceColor;s.matrixArray=m.instanceMatrix.array;s.colorArray=m.instanceColor?.array;s.matrixVersion=m.instanceMatrix.version;s.colorVersion=m.instanceColor?.version??-1;R.drawn+=count;
+  }lastProjection.copy(projection);projectionValid=true;R.updates++;
  };
  R.restore=()=>{for(const m of managed){const s=states.get(m);if(s)restore(m,s);}managed.clear();};const dispose=H.dispose;H.dispose=(...a)=>{R.restore();return dispose?.(...a);};
 })();
