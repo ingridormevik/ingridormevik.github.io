@@ -1,52 +1,31 @@
-﻿PRAKTINF · seminar 13. november 2026
-12 lysbilder. Equinox og sluttfilmen beholdt. Promo, råd til CDN og KI-forskningsideen tatt ut.
-Høyrepil: neste punkt/lysbilde. F: fullskjerm. N: notater. Mellomrom: film.
-
+PRAKTINF · kort seminarversjon · 13. november 2026
+7 lysbilder. Statistikken og de gjentatte historiene vises i sluttfilmen.
+F: fullskjerm. N: notater. Mellomrom: film. På lysbilde 5: 1 = før, 2 = etter.
 
 1. POV: du er praktikant på CDN
 
-Hei, jeg heter Ingrid. I høst hadde jeg praksis på Center for Digital Narrative, med ansvar for sosiale medier og filmdokumentasjon. Jeg skal vise hva jobben faktisk besto av. Filmen kommer til slutt.
+Ca. 10 sekunder. Hei, jeg heter Ingrid. Jeg hadde praksis på Center for Digital Narrative. Jeg viser først noen konkrete eksempler, og avslutter med en film som samler arbeidet, resultatene og koblingen til PRAKTINF.
 
 2. Jeg fikk Instagram-passordet til et senter for fremragende forskning
 
-CDN er et senter for fremragende forskning ved UiB, med Scott Rettberg som senterdirektør. Veilederen min var kommunikasjonsrådgiver Andreas Hadsel Opsvik. Jeg hadde Instagram og Facebook rundt to arrangementer: forskningsdagen Equinox 23. september og utstillingen After Virtual Reality under BIFF, 15. til 21. oktober. [Trykk pil.] Og dette var min andre praksis på CDN. I vår var jeg der gjennom DIKULT210. Det var en stor fordel. Jeg kjente folkene og hva de forsker på, så det var mye lettere å lage en fortelling om dem.
+Ca. 20 sekunder. Scott Rettberg er senterdirektør, og Andreas Hadsel Opsvik var veilederen min. Jeg jobbet med Instagram, Facebook og filmdokumentasjon rundt Equinox og After Virtual Reality under BIFF. Dette var min andre praksis på CDN. Fra DIKULT210 i vår kjente jeg allerede folkene og forskningen.
 
 3. Før første post: en plan
 
-Før utstillingen lagde jeg en kommunikasjonsplan, bygd slik vi lærte i kurset. Hvor er vi? Forskere snakker mest med andre forskere, på LinkedIn. Det er en filterboble. Hvem vil vi nå? BIFF-publikummet, som ikke kjenner CDN, og fagmiljøet. Hva vil vi oppnå? Folk inn i Visningsrommet. Og hvordan? Fire faser, fra teasere til én post om dagen. Vi tagget BIFF og USF i alt, fordi de deler videre. Det er den billigste rekkevidden som finnes.
+Ca. 20 sekunder. Før første post avklarte jeg avsender, målgruppe og mål. Vi skulle nå både fagmiljøet og BIFF-publikummet, med mål om å få folk til Visningsrommet. Planen hadde fire faser. Filmen til slutt viser hvordan jeg gjennomførte den og hva jeg lærte.
 
 4. En senterdirektør som rapper, klippet for hånd
 
-Equinox-filmen er klippet for hånd i Premiere. Jeg fant en sjanger som passet Scotts stemme, laget beaten i Suno og klippet rapen på beaten, så det ser ut som han opptrer med alle forskerne. Forskere og nittitallsrap: det er stopp-effekten. Hver undertekst er satt for hånd. [Trykk pil.] Equinox var fullt, vi kunne ikke ta inn flere. Det solgte seg selv, så det trengte ingen markedsføring på forhånd. Derfor ble filmen markedsføringen etterpå. [Space starter og pauser filmen.]
+Ca. 15 sekunder + Equinox-filmen. Scott hadde allerede rappet. Jeg tok opptaket inn i Suno for å lage en beat, og klippet bildet og undertekstene for hånd i Premiere. Her er originalfilmen som et eksempel på arbeidet. [Space starter og pauser filmen.]
 
-5. Poste mens det skjer
+5. Rookie-feil: ingen mikrofon
 
-Under en festival er tid det viktigste. Ting må ut mens det skjer, ellers er det for sent. Det er kairos. Derfor postet jeg én film om dagen og tagget kunstnerne. Instagram fikk korte tekster og Facebook hele programmet, samme fakta, men ulik lesesituasjon. Og før hver post sjekket jeg åpningstider, verk og roller, for programmet endret seg flere ganger. [Trykk pil.] Nest-filmen var et spesialønske fra Scott. Og etter at han sa at videoene mine får ham til å se kulere ut enn han er, var presset på. Han måtte jo fortsette å tro at jeg var kul. Det ble 16 versjoner. [Trykk pil.] Men det viktigste jeg lærte under festivalen, er at når ting skjer nå, er kvantitet og timing viktigere enn kvalitet. Perfeksjonisten i meg liker det ikke i det hele tatt. Blir det ikke postet i tide, går folk glipp av det. Da er det bedre å få noe ut enn ingenting.
+Ca. 20 sekunder + lydklippene. Her er et konkret eksempel som sluttfilmen bare nevner: lyd før og etter behandling. Jeg rakk ikke å koble til mikrofonen da Scott snakket i reiret. Vi brukte hans egen stemme fra Equinox som referanse. Ingen nye ord er lagt til. Derfor må jeg være åpen om behandlingen. [1 spiller før, 2 spiller etter.]
 
-6. Rookie-feil: ingen mikrofon
+6. Det filmen ikke viser
 
-[Klikk «før» eller trykk 1, «etter» eller trykk 2.] Rett før Scott snakket i reiret rakk jeg ikke å koble til mikrofonen. Etter et par timer med prompting fikk vi reddet lyden, med hans egen stemme fra Equinox som referanse. Ingen nye ord er lagt til. «Mikrofon på alt», sa de i forelesningen. Nå vet jeg hvorfor.
+Ca. 20 sekunder. Noen deler av emnet er enklere å si kort her: pressemeldingen i kurset, spørsmålet til Andreas om pressen og vurderingen av nettsiden. Overleveringen er også viktig: materialet skal kunne brukes videre av CDN. Planlegging, målgruppe, prosessmodell, etikk og resultater er samlet i filmen, så dem gjentar jeg ikke nå.
 
-7. Størst rekkevidde
+7. Some rooms you just want to stay in
 
-Dette er toppinnholdet fra Innsikt. Equinox-filmen fikk flest visninger, 2 903. [Trykk pil.] Nummer to og tre var samarbeidsposter med Visningsrommet på USF Verftet. Sammen fikk de over 5 100 visninger. Dette er viktig, fordi samarbeidspartneren allerede har sitt eget publikum. Når innhold deles mellom kontoene, kan det nå mennesker som aldri har hørt om CDN. I kommunikasjonsfaget snakker vi om svake bånd. Det er forbindelsene utenfor vårt nærmeste nettverk. En venninne i Drammen så faktisk en av filmene, selv om vi ikke engang er venner på Facebook. Det er de svake båndene i praksis.
-
-8. Utstillinger og publikumsarrangementer er døren ut til publikum
-
-Utstillinger er døren ut til publikum. Der kan alle oppleve det forskerne jobber med. Scott fortalte meg at rundt 800 mennesker besøkte utstillingen i løpet av de sju dagene. [Trykk pil.] To eldre damer prøvde en poesibok i utvidet virkelighet. Jeg filmet det ikke, for det var deres øyeblikk. Det lærte meg at dokumentasjon også handler om å vite når jeg skal la kameraet ligge.
-
-9. Én person, sju jobber
-
-Det var ikke bare å dra på Verftet og filme litt. På ti opptaksdager tok jeg 223 kameraklipp, og det ble 23 filmer og 160 overleggskort. Ti videoer postet jeg under Equinox og After Virtual Reality, og alle gikk ut på både Instagram og Facebook. Det er tjue innlegg å følge opp. Jeg lærte meg navnene og fagfeltene til alle de 20 forskerne på Equinox, planla, filmet, fløy drone med Alexander, tok lyd og klippet. I forelesningen lærte vi rollene: grafiker, videoprodusent, fotograf, lydtekniker, skribent, strateg og SoMe-spesialist. Hver av dem er en egen jobb. [Trykk pil.] Når du driver sosiale medier, er du alle sju på en gang. Og en kommunikasjonsrådgiver har møter og e-post i tillegg. Sosiale medier på toppen av det går ikke.
-
-10. praktinf · det kurset ba om, og det jeg gjorde
-
-[Trykk pil for hvert punkt, eller la dem komme selv.] Til slutt, det kurset ba om. Kommunikasjonsplanen bygde jeg som i Rotary-oppgaven. Prosessmodellen fant jeg igjen i feeden, der støyen er alt det andre folk ser på, og tilbakemeldingen er Innsikt. Kildekritikk gjelder egne tall også, så statistikken har periode og n. Etikken handler om samtykke og personvern: de to damene filmet jeg ikke. Krisekommunikasjon? Den største krisen var CDN-arret fra greinene. Den løste Andreas med et plaster. Og overlevering: alt materialet, både råopptak og ferdige filmer, sorterer jeg og leverer til CDN, så senteret kan bruke det videre.
-
-11. Over halvparten nådde nye kontoer
-
-Her er sluttresultatet fra praksisperioden. På 60 dager, fra 13. september til 11. november, fikk kontoen 12 474 visninger, 452 prosent mer enn perioden før. 56 prosent kom fra folk som ikke fulgte CDN. Budskapet kom gjennom støyen, og Innsikt er tilbakemeldingen. Netto 45 nye følgere, og det er det vanskeligste steget. [Trykk pil.] Det siste jeg postet var reirfilmen, onsdag kveld klokka 21, akkurat når Innsikt sa at følgerne er våkne. Etter 20 timer hadde den 770 prosent flere visninger enn et vanlig innlegg, og 79 prosent kom fra folk som ikke følger oss. Av de ti siste innleggene er den nummer to. Nummer én er promoen jeg klippet for hånd i oktober. Og flest seere kom fra Canada, der York University, Caitlin Fishers universitet, er invitert som samarbeidspartner på innlegget. Reirfilmen tyder på at tidspunktet kan ha betydning for hvor langt filmen når ut. Men færre så den helt til slutt, så neste steg er en sterkere start.
-
-12. Some rooms you just want to stay in
-
-Jeg har bare skrapt i overflaten. På en av de første forelesningene skrev jeg ned at sannheten ligger i poesi, og ikke i retorikk. Så til slutt viser jeg ingen flere tall, bare praksisen min, slik jeg opplevde den. [Space starter filmen.] Takk for meg.
+Ca. 10 sekunder + filmen, 4 min 11. Fra første forelesning tok jeg med meg at sannheten ligger i poesi, og ikke i retorikk. Denne filmen samler praksisen min og det jeg lærte i PRAKTINF. [Space starter filmen.] Takk for meg.
