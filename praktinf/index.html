@@ -247,6 +247,19 @@ td { font-family: var(--type); color: var(--muted); }
 #tick { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1500px; }
 .team.plain li { grid-template-columns: minmax(0, 1fr); } .team.plain li span { display: none; } .team.plain li b { font-size: clamp(1.2rem, min(2vw, 3.4vh), 2rem); }
 @media (min-width: 1000px) { .learn { grid-template-columns: repeat(2,minmax(0,1fr)); max-width:1100px; } }
+
+/* The CDN site disallows framing; this preview opens the live site at top level. */
+.cdn-intro{grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr)}
+.cdn-intro .copy{gap:clamp(12px,2.2vh,24px);padding-right:2vw}
+.cdn-intro .h{font-size:clamp(2rem,4.8vh,3.7rem)}
+.cdn-intro .p{font-size:clamp(.95rem,min(1.35vw,2.35vh),1.3rem)}
+.cdn-site-preview{width:calc(100% - 4vw);justify-self:start;align-self:center;margin:0;min-width:0}
+.cdn-site-preview a{display:block;text-decoration:none;outline-offset:6px}
+.cdn-site-preview a:focus-visible{outline:3px solid var(--green)}
+.cdn-site-preview img{display:block;width:100%;height:auto;border:1px solid rgba(245,245,245,.3)}
+.cdn-site-preview figcaption{padding-top:12px;color:var(--green);font-family:var(--type);font-size:1rem}
+@media(max-width:860px){.cdn-intro{grid-template-columns:minmax(0,1fr)}.cdn-intro .copy{padding-bottom:20px}.cdn-site-preview{width:88%;justify-self:center;margin-bottom:35px}}
+
 </style>
 
 <canvas id="net" aria-hidden="true"></canvas>
@@ -257,7 +270,7 @@ td { font-family: var(--type); color: var(--muted); }
 
 <section class="scene solo" data-net="sphere"><div class="copy"><p class="cap rise">Ingrid Ormevik · PRAKTINF · høsten 2026</p><h1 class="h xl rise">Jeg fikk passordet.<br>Så måtte jeg <b>fortjene tilliten.</b></h1></div><aside class="notes" hidden>Ca. 20 sekunder. Hei, jeg heter Ingrid. I høst hadde jeg praksis på Center for Digital Narrative. Jeg fikk ansvar for sosiale medier, og dermed også Instagram-passordet. Etter hvert oppdaget jeg at en viktig del av jobben var å vite når jeg skulle legge fra meg kameraet.</aside></section>
 
-<section class="scene solo" data-net="drift"><div class="copy"><p class="cap rise">praksisplassen</p><h2 class="h rise">Hvem er <b>CDN?</b></h2><p class="p rise">Center for Digital Narrative<br>Forskningssenter ved Universitetet i Bergen</p><p class="p rise"><b>Equinox:</b> forskningsdag<br><b>After Virtual Reality:</b> utstilling under BIFF</p><p class="p rise">Veileder: Andreas Hadsel Opsvik<br>Min andre praksisperiode på senteret</p></div><aside class="notes" hidden>Ca. 40 sekunder. Center for Digital Narrative, eller CDN, er et forskningssenter ved Universitetet i Bergen. Der forsker de på digitale fortellinger. Scott Rettberg er senterdirektør, og veilederen min var kommunikasjonsrådgiver Andreas Hadsel Opsvik.
+<section class="scene cdn-intro" data-net="drift" id="cdn-intro"><div class="copy"><p class="cap rise">praksisplassen</p><h2 class="h rise">Hvem er <b>CDN?</b></h2><p class="p rise">Center for Digital Narrative<br>Forskningssenter ved Universitetet i Bergen</p><p class="p rise"><b>Equinox:</b> forskningsdag<br><b>After Virtual Reality:</b> utstilling under BIFF</p><p class="p rise">Veileder: Andreas Hadsel Opsvik<br>Min andre praksisperiode på senteret</p></div><figure class="cdn-site-preview"><a href="https://cdn.uib.no/" target="_blank" rel="noopener" aria-label="Åpne CDNs nettside live i en ny fane"><img src="media/cdn_website_preview.png" alt="CDNs nettside med forskningsområder, arrangementer og nyheter"><figcaption>cdn.uib.no ↗</figcaption></a></figure><aside class="notes" hidden>Ca. 40 sekunder. Center for Digital Narrative, eller CDN, er et forskningssenter ved Universitetet i Bergen. Der forsker de på digitale fortellinger. [Åpne CDNs nettside: klikk på forhåndsvisningen. Gå tilbake til presentasjonsfanen når du er ferdig.] Scott Rettberg er senterdirektør, og veilederen min var kommunikasjonsrådgiver Andreas Hadsel Opsvik.
 
 Jeg jobbet særlig med to arrangementer. Det ene var Equinox, en forskningsdag der forskerne presenterte arbeidet sitt. Det andre var After Virtual Reality, en utstilling under Bergen internasjonale filmfestival, BIFF. Jeg filmet og laget innhold til Instagram og Facebook.
 
