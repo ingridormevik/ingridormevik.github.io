@@ -1,8 +1,7 @@
-PRAKTINF · kort øvingsmanus · 13. november 2026
+﻿PRAKTINF · seminar 13. november 2026
+13 lysbilder. Equinox og sluttfilmen beholdt. Promo og råd til CDN tatt ut.
+Høyrepil: neste punkt/lysbilde. F: fullskjerm. N: notater. Mellomrom: film.
 
-Dette er en kortere muntlig versjon til de samme 14 lysbildene.
-De fullstendige notatene ligger i MANUS.html og i presentasjonen.
-Trykk høyrepil ved [pil]. Mellomrom spiller/pauser film.
 
 1. POV: du er praktikant på CDN
 
@@ -60,11 +59,7 @@ Svake bånd er forbindelser utenfor vårt nærmeste nettverk. En venninne i Dram
 
 Scott fortalte meg at rundt 800 mennesker besøkte utstillingen på sju dager. Der kunne folk oppleve forskningen selv.
 
-[Pil.] To eldre damer prøvde en poesibok i utvidet virkelighet. Jeg filmet det ikke, for det var deres øyeblikk.
-
-Denne promoen klippet jeg selv i Premiere. Av de ti siste innleggene fikk den flest visninger de første 20 timene.
-
-[Spill promoen, omtrent 33 sekunder.]
+[Pil.] To eldre damer prøvde en poesibok i utvidet virkelighet. Jeg filmet det ikke, for det var deres øyeblikk. Jeg lærte også når jeg skulle la kameraet ligge.
 
 10. Én person, sju jobber
 
@@ -74,25 +69,13 @@ Jeg lærte navn og fagfelt, planla, filmet, fløy drone med Alexander og klippet
 
 [Pil.] Her var jeg alle sju. En kommunikasjonsrådgiver har også møter, e-post og forskerne å følge opp. Sosiale medier trenger egen tid.
 
-11. Mine råd til CDN
-
-[La punktene komme, eller trykk pil.]
-
-Fortsett med samarbeidsposter. Lag Reels, som ga 62 prosent av visningene. Bruk opptakene som finnes: 99 klipp fra symposiet kan bli korte filmer.
-
-Vis forskergruppene med podcasten som lyd. Prøv tidspunktene Innsikt foreslår, og sammenlign flere poster. Gi en senterjournalist fast tid til sosiale medier og arkiv.
-
-Dette er én konto over 60 dager. Tallene viser tendenser, ikke lover.
-
-[Pil.] Handling er kommunikasjon. Fast tid til formidling sier at forskningen fortjener et publikum.
-
-12. Markedsføring med KI
+11. Markedsføring med KI
 
 KI har jeg brukt, men jeg har ikke forsket på det. Det vil jeg gjøre videre. Equinox-filmen klippet jeg for hånd, og den fikk flest visninger. Sparer KI tid, eller flytter den arbeidet? Nest-filmen tok 16 versjoner.
 
 Jeg vil samle det jeg har kodet og bygge et eget kreativt KI-verktøy som kjører lokalt, og som også kan brukes til podcasten. Jeg vil undersøke verktøyene, ikke bare bruke dem slik de store selskapene vil.
 
-13. Det kurset ba om
+12. Det kurset ba om
 
 [Punktene kommer selv, eller trykk pil.]
 
@@ -102,7 +85,7 @@ Kildekritikk gjelder egne tall også. Etikk handler om samtykke og personvern. K
 
 Til slutt sorterer og overleverer jeg materialet, så CDN kan bruke det videre.
 
-14. Some rooms you just want to stay in
+13. Some rooms you just want to stay in
 
 Jeg har bare skrapt i overflaten. På en av de første forelesningene skrev jeg at sannheten ligger i poesi, og ikke i retorikk. Så til slutt viser jeg ingen flere tall, bare praksisen slik jeg opplevde den.
 
