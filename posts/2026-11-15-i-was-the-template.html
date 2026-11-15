@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I Was the Template · Ingrid Ormevik</title>
+<title>I Was the Template: Editing Films with AI as an Intern at CDN · Ingrid Ormevik</title>
 <meta name="description" content="Notes from an autumn of making films for the Center for Digital Narrative, by hand and with AI.">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
@@ -33,6 +33,23 @@ article p{font-size:17px;line-height:1.8;margin-bottom:22px}
 .log{margin:30px 0 34px;padding:0 0 0 22px;border-left:1px solid var(--line)}
 .log p{font-size:16px;line-height:1.65;margin-bottom:18px}
 .log time{display:block;font-size:12px;color:#888;margin-bottom:2px}
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,5vw,80px);align-items:end;max-width:1100px;margin:0 auto;padding:56px 0 64px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(46px,7vw,104px);line-height:.95;letter-spacing:-.055em;margin-bottom:26px}
+.hero .dek{margin-bottom:0}
+.hero h1 span{display:block;font-size:.36em;line-height:1.15;letter-spacing:-.03em;color:var(--muted);margin-top:18px;font-weight:500}
+.hero-film{position:relative;margin:0;justify-self:end;width:100%;max-width:340px}
+.hero-film video{max-width:none;max-height:none;aspect-ratio:9/16;object-fit:cover;width:100%}
+.hero-film figcaption{max-width:none;text-align:left}
+h2 .n{display:block;font-size:13px;letter-spacing:.08em;color:#e5483d;margin-bottom:8px;font-weight:700}
+.strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:40px 0 46px}
+.strip figure{margin:0}
+.strip img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;background:#111}
+.strip-cap{font-size:12px;color:#888;margin:-34px 0 46px}
+pre.editlist{margin:26px 0 30px;padding:18px 20px;background:#0d0d0d;border:1px solid var(--line);font:13px/1.6 Consolas,Menlo,monospace;color:#cfcfcf;overflow-x:auto;white-space:pre}
+.wide{margin:44px 0 50px}
+.wide video{max-width:100%;width:100%;max-height:none;aspect-ratio:16/9}
+.wide figcaption{max-width:none}
+@media(max-width:700px){.hero{grid-template-columns:1fr;padding:34px 0 44px}.hero-film{justify-self:start;max-width:260px;order:-1}}
 .quote{font-size:clamp(22px,2.4vw,28px);line-height:1.35;letter-spacing:-.02em;margin:34px 0}
 figure{margin:44px 0 50px}
 video{display:block;width:100%;max-width:360px;max-height:80vh;margin:0 auto;background:#111}
@@ -64,43 +81,56 @@ footer p{margin:0 0 5px}
 </header>
 
 <main id="main-content">
-<article>
+<header class="hero">
+<div>
 <p class="meta"><time datetime="2026-11-15">15 November 2026</time> · Internship notes</p>
-<h1>I Was the Template</h1>
+<h1>I Was the Template<span>Editing films with AI as an intern at CDN</span></h1>
 <p class="dek">Notes from an autumn of making films for the Center for Digital Narrative, by hand and with AI.</p>
+</div>
+<figure class="hero-film"><video id="hero" muted loop playsinline preload="metadata" poster="../assets/i-was-the-template/hero.jpg" aria-label="Scott Rettberg thanking Ingrid at the opening of After Virtual Reality"><source src="../assets/i-was-the-template/hero.mp4" type="video/mp4"></video><figcaption>From POV: intern at Center for Digital Narrative</figcaption></figure>
+</header>
+<article>
 
 <p>Premiere crashed five or six times in two days. On the timeline sat Scott Rettberg's rap, twenty researchers waiting to be cut onto the beat, and a subtitle track I was building one line at a time.</p>
 <p>Scott is the director of the Center for Digital Narrative (CDN) at the University of Bergen. He had already recorded the rap. I took his recording into Suno and made a nineties backing track that suited his voice. Everything after that I did by hand in Premiere. Every cut lands on the beat and every subtitle sits where his words do, so it looks as if he is performing with all twenty researchers.</p>
 <p>That was CDN Equinox on 23 September, early in my practice placement. It was my second time at the center. In the spring I was there through DIKULT210, so I already knew the people and what they research. That helped more than I expected. Before I cut anything, I learned the names and research fields of all twenty researchers. I needed to know what I was looking at before I could decide what belonged together.</p>
 <p>Equinox was fully booked, so the event needed no promotion beforehand. The film became the marketing afterwards.</p>
 <figure><video controls playsinline preload="none" poster="../assets/i-was-the-template/equinox.jpg" aria-label="The Equinox rap film"><source src="../assets/i-was-the-template/equinox.mp4" type="video/mp4"><a href="../assets/i-was-the-template/equinox.mp4">Open the film</a></video><figcaption>The Equinox rap film<span>Rap: Scott Rettberg · backing track: Suno, from Scott's recording · edit and subtitles: Ingrid Ormevik, Premiere</span></figcaption></figure>
+<div class="strip"><figure><img src="../assets/i-was-the-template/still_eq_1.jpg" alt="Jakob Kusnick at Equinox, subtitle: machines in our souls" loading="lazy"></figure><figure><img src="../assets/i-was-the-template/still_eq_2.jpg" alt="Jan Lietz at Equinox, subtitle: that grow in the mix" loading="lazy"></figure><figure><img src="../assets/i-was-the-template/still_eq_3.jpg" alt="Anders Fagerjord at Equinox, subtitle: questions will flow" loading="lazy"></figure></div>
+<p class="strip-cap">Three of the twenty. Every subtitle placed by hand on the beat.</p>
 <p>I have watched that film more times than anyone. I still see the places where the timing slips. At some point you have to finish anyway.</p>
 
-<h2>The humans that know</h2>
+<h2><span class="n">01</span>The humans that know</h2>
 <p>Scott's rap ends on one line:</p>
 <p class="quote">"It's not what AI makes. It's the humans that know."</p>
 <p>A few weeks later I opened the promo for After Virtual Reality with it. The exhibition, made by CDN with BIFF and USF Verftet, ran in Visningsrommet from 15 to 21 October. I cut that promo by hand as well.</p>
 <figure><video controls playsinline preload="none" poster="../assets/i-was-the-template/avr_promo.jpg" aria-label="After Virtual Reality promo"><source src="../assets/i-was-the-template/avr_promo.mp4" type="video/mp4"><a href="../assets/i-was-the-template/avr_promo.mp4">Open the film</a></video><figcaption>After Virtual Reality, opening with Scott's line from Equinox<span>Opening line: Scott Rettberg · edit: Ingrid Ormevik, Premiere</span></figcaption></figure>
 
-<h2>Microphone on everything</h2>
+<h2><span class="n">02</span>Microphone on everything</h2>
 <p>An exhibition that is open for seven days gives a film a very short life. Post the opening film a week late and you have made a historical document.</p>
 <p>So I edited fast, a film a day, checking every name and credit against a programme that kept changing. The perfectionist in me hated it. During a festival, being on time matters more than being perfect.</p>
 <p>The opening also gave me my rookie mistake. Scott spoke inside the giant nest before I had connected the microphone. We rescued the sound after a couple of hours of prompting, using his own voice from Equinox as the reference. No new words were added. In the lectures they told us to put a microphone on everything. Now I know why.</p>
 
-<h2>One voice at a time</h2>
+<h2><span class="n">03</span>One voice at a time</h2>
 <p>The exhibition films had to make an unfamiliar exhibition readable on a phone screen while there was still time to visit. I gave myself rules for them. A hook in the first two seconds. Cuts on the beat. The works speaking in their own voices, one voice at a time, with the music ducked underneath. A mouth on screen always belongs to the voice you hear.</p>
 <figure><video controls playsinline preload="none" poster="../assets/i-was-the-template/exhibition.jpg" aria-label="Entering After Virtual Reality"><source src="../assets/i-was-the-template/exhibition.mp4" type="video/mp4"><a href="../assets/i-was-the-template/exhibition.mp4">Open the film</a></video><figcaption>Entering After Virtual Reality<span>Film and edit: Ingrid Ormevik</span></figcaption></figure>
 
-<h2>Cut here</h2>
+<h2><span class="n">04</span>Cut here</h2>
 <p>This is where AI came into the editing. I worked in VS Code with an AI assistant. I described the edit, it searched, measured and rendered, and I checked the result and corrected it. People sometimes picture AI editing as a CapCut template. In my case I was the template. I said "cut here", and every decision about what belonged where came from me.</p>
 <p>Then I watched another export.</p>
 <p>Scott asked for a film about building the nest. He had told me my videos make him look cooler than he is, so the pressure was on. The film went through sixteen versions.</p>
 <figure><video controls playsinline preload="none" poster="../assets/i-was-the-template/continuation.jpg" aria-label="Building the nest"><source src="../assets/i-was-the-template/continuation.mp4" type="video/mp4"><a href="../assets/i-was-the-template/continuation.mp4">Open the film</a></video><figcaption>Building the nest<span>Voice: Scott Rettberg · edit: Ingrid Ormevik, AI-assisted with Claude Code in VS Code</span></figcaption></figure>
+<div class="strip"><figure><img src="../assets/i-was-the-template/still_nest_1.jpg" alt="Scott Rettberg beside the nest, subtitle: and the host of the nest was a fortune-telling cockatoo" loading="lazy"></figure><figure><img src="../assets/i-was-the-template/still_nest_2.jpg" alt="Drone view of the branch pillars outside CDN, subtitle: For me authorship has always already been collaborative" loading="lazy"></figure><figure><img src="../assets/i-was-the-template/still_nest_3.jpg" alt="The finished nest, subtitle: And they're leaving the nest behind" loading="lazy"></figure></div>
+<p class="strip-cap">From Building the nest. Every one of these cuts went through words before it went through code.</p>
 <p>Across the AI-assisted films, the assistant kept doing more than I had asked for. After it added a purple dream filter and a new opening on its own, I made a rule: plan first, and only do what I say. My words needed translating too. "Slow", "POW" and "immersive" had to become seconds, beats and decibels before anything changed.</p>
 
-<h2>Version eight</h2>
+<h2><span class="n">05</span>Version eight</h2>
 <p>After the exhibition closed, I made one more film about the nest. The Grand Hotels is about three works by Roderick Coover, Caitlin Fisher and Scott Rettberg, and the nest built by Felix Costain Schou. The voices are Scott, Rod, Caitlin and the cockatoo, sixteen lines, every one a whole sentence.</p>
-<p>It went through eight named versions over four days, and a new version is not a button. Claude Code never opens Premiere. A version of The Grand Hotels is a list in a text file: clip 0112 from 31 seconds, for 0.66 seconds, then clip 0271 from 763.7 seconds, for 1.28, and on through the whole film. Code renders that list into video. To move one cut, I described it in words, waited for a new render, watched it and described what was still wrong.</p>
+<p>It went through eight named versions over four days, and a new version is not a button. Claude Code never opens Premiere. A version of The Grand Hotels is a list in a text file: clip 0112 from 31 seconds, for 0.66 seconds, then clip 0271 from 763.7 seconds, for 1.28, and on through the whole film. Code renders that list into video. These are the first three cuts of the posted version, shortened a little from the file:</p>
+<pre class="editlist">{ "src": "0112", "in": 31.0,  "dur": 0.66, "kind": "v" },
+{ "src": "0271", "in": 763.7, "dur": 1.28, "kind": "v" },
+{ "src": "0878", "in": 40.0,  "dur": 0.5,  "kind": "land" },</pre>
+<p> To move one cut, I described it in words, waited for a new render, watched it and described what was still wrong.</p>
 <p>The hardest part was the beat. Claude Code cannot listen. It can measure loudness, calculate that the beat falls every 0.975 seconds, transcribe hours of recordings and find the sentence I am looking for. It cannot hear whether a cut lands. So I was the ears. I listened to every render and wrote back what was wrong. It turned my words into new numbers, and I watched again. The hum under Rod's voice was something I heard. Its own checks never caught it.</p>
 <p>This is what directing it looked like. A few of my messages from those four days, typos fixed:</p>
 <blockquote class="log">
@@ -113,21 +143,23 @@ footer p{margin:0 0 5px}
 <p><time>11 Nov, 01:23</time>&quot;Subtitles are still a bit slow. After Caitlin, in the nest.&quot;</p>
 <p><time>11 Nov, 09:49</time>&quot;The subtitles are wrong when Scott says they are no birds. They&#39;re all birds. That&#39;s actually the last fix.&quot;</p>
 </blockquote>
+<p>Afterwards I made a short film of the process itself, version by version, with what I said about each one.</p>
+<figure class="wide"><video controls playsinline preload="none" poster="../assets/i-was-the-template/process.jpg" aria-label="The making of The Grand Hotels, version by version"><source src="../assets/i-was-the-template/process.mp4" type="video/mp4"><a href="../assets/i-was-the-template/process.mp4">Open the film</a></video><figcaption>Behind the scenes: eight versions of The Grand Hotels<span>Edit and process film: Ingrid Ormevik, with Claude Code</span></figcaption></figure>
 <p>The eight versions took one conversation, from 8 to 11 November: more than 170 messages from me and around 50 renders. AI assistance did not make this film quick. Getting the result I wanted took a lot of time.</p>
 <p>The eighth version is the one I posted, on a Wednesday at nine in the evening, when the followers were awake.</p>
 <p>It became my most watched AI-assisted film this autumn. I am really proud of it.</p>
 <figure><video controls playsinline preload="none" poster="../assets/i-was-the-template/grand_hotels.jpg" aria-label="The Grand Hotels"><source src="../assets/i-was-the-template/grand_hotels.mp4" type="video/mp4"><a href="../assets/i-was-the-template/grand_hotels.mp4">Open the film</a></video><figcaption>The Grand Hotels<span>Works: Roderick Coover, Caitlin Fisher, Scott Rettberg · nest: Felix Costain Schou · edit: Ingrid Ormevik, AI-assisted with Claude Code in VS Code</span></figcaption></figure>
 
-<h2>So who made it?</h2>
+<h2><span class="n">06</span>So who made it?</h2>
 <p>The finished films show none of the rejected versions or the instructions I rewrote. That history is part of the answer to who made them.</p>
 <p>In the Equinox film, the recording is Scott's and the backing track came from Suno. The cut, the subtitles and the choice of material are mine. In the AI-assisted films, the machine searched hours of footage and rendered on request. The story, the rhythm and the judgement of what was good enough came from me, and so did every decision to publish.</p>
 <p>Something else surprised me. I see fewer mistakes in the AI-assisted films, but I have also watched them fewer times, and I did not cut every millimetre myself. That is my own impression. I have not measured it. The films end up roughly as good. The feeling afterwards is different. Building something from the ground up, mistakes and all, is more rewarding. With two days to sit with a project, I would rather do it myself. During a festival I never had two days.</p>
 
-<h2>A template of my own</h2>
+<h2><span class="n">07</span>A template of my own</h2>
 <p>A lot of my editing hours went into searching for the right clip, matching subtitles to voices, checking names and credits, and exporting again. So I want to gather the code and methods from this autumn into a tool of my own.</p>
 <p>It would run locally on my own machine, and I would talk to it, maybe out loud. It would sort footage and sound, find what I ask for and put together a first cut. It would give me an editable timeline I can open and change myself, alongside the finished video, with my credits and visual guidelines already in place. The choices and the decision to publish would stay with me. I also want to try the same workflow on podcasts.</p>
 
-<h2>Credits roll</h2>
+<h2><span class="n">08</span>Credits roll</h2>
 <p>Thank you to Andreas Hadsel Opsvik for supervising me and trusting me to work on my own. Thank you to Scott Rettberg for the rap, the nest and for letting me keep filming. Thank you to Alexander for flying the drone with me, to the artists in After Virtual Reality for sharing their material, and to the twenty Equinox researchers, who came to a research day and left as backup dancers in their director's music video. They found out when it was posted, with Andreas's blessing. Sorry, and you're welcome.</p>
 <figure><video controls playsinline preload="none" poster="../assets/i-was-the-template/internship.jpg" aria-label="POV: you're an intern at CDN"><source src="../assets/i-was-the-template/internship.mp4" type="video/mp4"><a href="../assets/i-was-the-template/internship.mp4">Open the film</a></video><figcaption>POV: you're an intern at CDN<span>Soundtrack: Scott Rettberg's Equinox rap and my own remix · film and edit: Ingrid Ormevik</span></figcaption></figure>
 <p>I am keeping the versions and corrections next to the finished films. They show what I actually did.</p>
@@ -135,5 +167,8 @@ footer p{margin:0 0 5px}
 </main>
 
 <footer><p>© 2026 Ingrid Ormevik · Bergen</p><p><a href="../blog.html">← All writing</a></p></footer>
+<script>
+(function(){var v=document.getElementById('hero');if(!v)return;var m=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)');if(m&&m.matches)return;v.autoplay=true;var p=v.play();if(p&&p.catch)p.catch(function(){});})();
+</script>
 </body>
 </html>
