@@ -18,31 +18,46 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="When the Mirror Knows Better - Ingrid Ormevik">
 <meta name="twitter:image" content="https://ingridormevik.github.io/og-image.png">
-    <link rel="stylesheet" href="../style.css">
-    <script>
-    /* The rest of the site stores its theme under ingrid-theme and defaults to dark.
-       script.js reads the key "theme" and defaults to light, so these pages used to
-       open white and the choice did not carry between them. Read the site's key,
-       then mirror it so script.js agrees. */
-    (function(){var r=document.documentElement,t='dark';
-    try{t=localStorage.getItem('ingrid-theme')||'dark';}catch(e){}
-    r.setAttribute('data-theme',t);
-    try{localStorage.setItem('theme',t);}catch(e){}
-    /* script.js builds its own toggle and writes only its own key, so mirror any
-       change it makes back to the site's key. Then one choice holds both ways. */
-    if(window.MutationObserver)new MutationObserver(function(){
-      var n=r.getAttribute('data-theme');if(!n)return;
-      try{if(localStorage.getItem('ingrid-theme')!==n)localStorage.setItem('ingrid-theme',n);}catch(e){}
-    }).observe(r,{attributes:true,attributeFilter:['data-theme']});})();
-    </script>
+    
+    
+<style id="portfolio-post">
+*{box-sizing:border-box}
+:root{color-scheme:dark;--ink:#e8e8e8;--muted:#aaa;--line:#292929;--pad:clamp(22px,4vw,72px);--primary:#e8e8e8;--bg-alt:#0d0d0d;--text-color:#e8e8e8;--text-light:#aaa;--text-lighter:#888}
+html{background:#000}
+body{margin:0 auto;max-width:1800px;padding:0 var(--pad);background:#000;color:var(--ink);font:16px/1.6 Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+a{color:inherit;text-underline-offset:5px}
+a:focus-visible{outline:2px solid #fff;outline-offset:6px}
+body>header{display:flex;align-items:center;justify-content:space-between;gap:30px;padding:28px 0;border-bottom:1px solid var(--line)}
+body>header .brand{font-size:18px;font-weight:500;letter-spacing:-.025em;text-decoration:none}
+body>header nav{display:flex;flex-wrap:wrap;gap:26px;font-size:13px;line-height:1.4}
+body>header nav a{color:var(--muted);padding:9px 0;text-decoration:none}
+body>header nav a:hover{text-decoration:underline}
+body>header nav a[aria-current=page]{color:#fff;text-decoration:underline}
+main article{max-width:680px;margin:0 auto;padding:64px 0 20px}
+main article>h2:first-child{font-size:clamp(36px,5vw,60px);line-height:1.05;font-weight:500;letter-spacing:-.045em;margin:0 0 18px}
+main article h3{font-size:clamp(22px,2.4vw,28px);line-height:1.2;font-weight:500;letter-spacing:-.03em;margin:56px 0 18px}
+.date,p.meta{display:block;font-size:12px;color:#888;margin:0 0 40px}
+main article p{font-size:17px;line-height:1.8;margin:0 0 22px}
+main article strong{font-weight:600}
+main article hr{border:0;border-top:1px solid var(--line);margin:56px 0}
+main article img{max-width:100%;height:auto}
+main article blockquote{margin:30px 0;padding-left:22px;border-left:1px solid var(--line);color:var(--muted)}
+section.commentary p{color:var(--muted);font-size:16px}
+main>p{max-width:680px;margin:40px auto 0}
+footer{border-top:1px solid var(--line);margin-top:60px;padding:26px 0 42px;font-size:11px;line-height:1.8;color:#888}
+footer p{margin:0 0 5px}
+@media(max-width:700px){body>header{flex-wrap:wrap;gap:18px;padding:23px 0 15px}body>header .brand{width:100%;font-size:17px}body>header nav{justify-content:space-between;width:100%;gap:15px;font-size:12px}main article{padding-top:40px}main article p{font-size:16px}}
+</style>
 </head>
 <body>
     <header>
-        <h1><a href="../index.html">Ingrid Ormevik</a></h1>
+        <a class="brand" href="../index.html">Mount Media</a>
         <nav>
             <a href="../index.html">Home</a>
-            <a href="../blog.html">Writing</a>
+            <a href="../blog.html" aria-current="page">Writing</a>
             <a href="../about.html">About</a>
+            <a href="../cv.html">Experience</a>
+            <a href="../projects.html">Projects</a>
         </nav>
     </header>
     
@@ -138,10 +153,6 @@
         <p style="margin-top: 3em;"><a href="../blog.html">← Back to all writing</a></p>
     </main>
     
-    <footer>
-        <p>&copy; 2026 Ingrid Ormevik</p>
-        <p>Digital Culture BA Student, University of Bergen </p>
-    </footer>
-     <script src="../script.js"></script>
+    <footer><p>© 2026 Ingrid Ormevik · Bergen</p><p><a href="../blog.html">← All writing</a></p></footer>
 </body>
 </html>
