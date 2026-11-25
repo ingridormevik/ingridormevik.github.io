@@ -4383,9 +4383,12 @@ document.getElementById('btn-play').addEventListener('click',()=>{
     // No audio API at all (e.g. insecure context) → demo mode rather than dead button.
     _startDemoMode();return;
   }
+  // If the browser is still asking for mic permission after 1.5 s, keep the piece moving and say where to allow it.
+  let _micAnswered=false;
+  const _micWait=setTimeout(()=>{if(_micAnswered)return;_startDemoMode();const b=document.getElementById('mic-badge');if(b)b.textContent='ALLOW THE MICROPHONE IN THE ADDRESS BAR';},1500);
   navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:false})
-    .then(stream=>{DEMO_MODE=false;micStream=stream;const src=audioCtx.createMediaStreamSource(stream);const _comp=audioCtx.createDynamicsCompressor();_comp.threshold.setValueAtTime(-22,audioCtx.currentTime);_comp.knee.setValueAtTime(20,audioCtx.currentTime);_comp.ratio.setValueAtTime(10,audioCtx.currentTime);_comp.attack.setValueAtTime(0.003,audioCtx.currentTime);_comp.release.setValueAtTime(0.2,audioCtx.currentTime);const _gain=audioCtx.createGain();_gain.gain.setValueAtTime(5.0,audioCtx.currentTime);src.connect(_comp);_comp.connect(_gain);_gain.connect(analyserHi);_gain.connect(analyserLo);const badge=document.getElementById('mic-badge');if(badge){badge.textContent='🎙 LIVE MIC';badge.style.display='block';}_beginSessionState();requestAnimationFrame(loop);})
-    .catch((err)=>{console.warn('mic denied, demo mode',err);_startDemoMode();});
+    .then(stream=>{_micAnswered=true;clearTimeout(_micWait);DEMO_MODE=false;micStream=stream;const src=audioCtx.createMediaStreamSource(stream);const _comp=audioCtx.createDynamicsCompressor();_comp.threshold.setValueAtTime(-22,audioCtx.currentTime);_comp.knee.setValueAtTime(20,audioCtx.currentTime);_comp.ratio.setValueAtTime(10,audioCtx.currentTime);_comp.attack.setValueAtTime(0.003,audioCtx.currentTime);_comp.release.setValueAtTime(0.2,audioCtx.currentTime);const _gain=audioCtx.createGain();_gain.gain.setValueAtTime(5.0,audioCtx.currentTime);src.connect(_comp);_comp.connect(_gain);_gain.connect(analyserHi);_gain.connect(analyserLo);const badge=document.getElementById('mic-badge');if(badge){badge.textContent='🎙 LIVE MIC';badge.style.display='block';}_beginSessionState();requestAnimationFrame(loop);})
+    .catch((err)=>{_micAnswered=true;clearTimeout(_micWait);console.warn('mic denied, demo mode',err);if(!DEMO_MODE)_startDemoMode();});
 });
 
 document.getElementById('btn-stop').addEventListener('click',()=>{
